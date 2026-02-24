@@ -1426,10 +1426,6 @@ func BenchmarkListFewApps(b *testing.B) {
 	}
 }
 
-func strToPtr(v string) *string {
-	return &v
-}
-
 func BenchmarkListMuchAppsWithName(b *testing.B) {
 	// 10000 apps
 	appsMuch := generateTestApp(10000)
@@ -1440,7 +1436,7 @@ func BenchmarkListMuchAppsWithName(b *testing.B) {
 	appServer := newTestAppServerWithBenchmark(b, obj...)
 
 	for b.Loop() {
-		app := &application.ApplicationQuery{Name: strToPtr("test-app000099")}
+		app := &application.ApplicationQuery{Name: new("test-app000099")}
 		_, err := appServer.List(b.Context(), app)
 		if err != nil {
 			break
@@ -1479,7 +1475,7 @@ func BenchmarkListMuchAppsWithRepo(b *testing.B) {
 	appServer := newTestAppServerWithBenchmark(b, obj...)
 
 	for b.Loop() {
-		app := &application.ApplicationQuery{Repo: strToPtr("https://some-fake-source")}
+		app := &application.ApplicationQuery{Repo: new("https://some-fake-source")}
 		_, err := appServer.List(b.Context(), app)
 		if err != nil {
 			break
@@ -1877,10 +1873,10 @@ func TestDeleteResourcesRBAC(t *testing.T) {
 	req := application.ApplicationResourceDeleteRequest{
 		Name:         &testApp.Name,
 		AppNamespace: &testApp.Namespace,
-		Group:        strToPtr("fake.io"),
-		Kind:         strToPtr("PodTest"),
-		Namespace:    strToPtr("fake-ns"),
-		ResourceName: strToPtr("my-pod-test"),
+		Group:        new("fake.io"),
+		Kind:         new("PodTest"),
+		Namespace:    new("fake-ns"),
+		ResourceName: new("my-pod-test"),
 	}
 
 	expectedErrorWhenDeleteAllowed := "rpc error: code = InvalidArgument desc = PodTest fake.io my-pod-test not found as part of application test-app"
@@ -1970,10 +1966,10 @@ func TestPatchResourcesRBAC(t *testing.T) {
 	req := application.ApplicationResourcePatchRequest{
 		Name:         &testApp.Name,
 		AppNamespace: &testApp.Namespace,
-		Group:        strToPtr("fake.io"),
-		Kind:         strToPtr("PodTest"),
-		Namespace:    strToPtr("fake-ns"),
-		ResourceName: strToPtr("my-pod-test"),
+		Group:        new("fake.io"),
+		Kind:         new("PodTest"),
+		Namespace:    new("fake-ns"),
+		ResourceName: new("my-pod-test"),
 	}
 
 	expectedErrorWhenUpdateAllowed := "rpc error: code = InvalidArgument desc = PodTest fake.io my-pod-test not found as part of application test-app"
@@ -3987,7 +3983,7 @@ func TestGetAmbiguousRevision_MultiSource(t *testing.T) {
 		Sources: nil,
 	}
 	syncReq = &application.ApplicationSyncRequest{
-		Revision: strToPtr("revision3"),
+		Revision: new("revision3"),
 	}
 	expected = "revision3"
 	result = getAmbiguousRevision(app, syncReq, sourceIndex)
@@ -4003,7 +3999,7 @@ func TestGetAmbiguousRevision_SingleSource(t *testing.T) {
 		},
 	}
 	syncReq := &application.ApplicationSyncRequest{
-		Revision: strToPtr("rev1"),
+		Revision: new("rev1"),
 	}
 
 	// Test when app.Spec.HasMultipleSources() is true
@@ -4054,7 +4050,7 @@ func TestServer_ResolveSourceRevisions_SingleSource(t *testing.T) {
 	}
 
 	syncReq := &application.ApplicationSyncRequest{
-		Revision: strToPtr("HEAD"),
+		Revision: new("HEAD"),
 	}
 
 	revision, displayRevision, sourceRevisions, displayRevisions, err := s.resolveSourceRevisions(ctx, a, syncReq)
