@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Snyk test report</title>
-  <meta name="description" content="54 known vulnerabilities found in 6551 vulnerable dependency paths.">
+  <meta name="description" content="77 known vulnerabilities found in 6588 vulnerable dependency paths.">
   <base target="_blank">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/snyk/image/upload/v1468845142/favicon/favicon.png"
     sizes="194x194">
@@ -492,7 +492,7 @@
               <div class="header-wrap">
                   <h1 class="project__header__title">Snyk test report</h1>
     
-                <p class="timestamp">April 26th 2026, 12:50:44 am (UTC+00:00)</p>
+                <p class="timestamp">May 3rd 2026, 12:55:53 am (UTC+00:00)</p>
               </div>
               <div class="source-panel">
                 <span>Scanned the following paths:</span>
@@ -500,13 +500,14 @@
                   <li class="paths">/argo-cd/argoproj/argo-cd/v3/go.mod (gomodules)</li>
                   <li class="paths">/argo-cd/argoproj/argo-cd/get-previous-release/hack/get-previous-release/go.mod (gomodules)</li>
                   <li class="paths">/argo-cd/ui/yarn.lock (yarn)</li>
+                  <li class="paths">/argo-cd/ui-test/yarn.lock (yarn)</li>
                 </ul>
               </div>
     
               <div class="meta-counts">
-                <div class="meta-count"><span>54</span> <span>known vulnerabilities</span></div>
-                <div class="meta-count"><span>6551 vulnerable dependency paths</span></div>
-                <div class="meta-count"><span>2240</span> <span>dependencies</span></div>
+                <div class="meta-count"><span>77</span> <span>known vulnerabilities</span></div>
+                <div class="meta-count"><span>6588 vulnerable dependency paths</span></div>
+                <div class="meta-count"><span>2363</span> <span>dependencies</span></div>
               </div><!-- .meta-counts -->
             </div><!-- .layout-container--short -->
           </header><!-- .project__header -->
@@ -1996,6 +1997,19 @@
                                 </span>
         
                             </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        form-data@4.0.0
+                                        
+                                </span>
+        
+                            </li>
                     </ul><!-- .list-paths -->
         
             </div><!-- .card__section -->
@@ -2019,6 +2033,331 @@
         
             <div class="cta card__cta">
                 <p><a href="https://snyk.io/vuln/SNYK-JS-FORMDATA-10841150">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--critical" data-snyk-test="critical">
+            <h2 class="card__title">CRLF Injection</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--critical">
+                        <span class="label__text">critical severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            basic-ftp
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        proxy-agent@6.4.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        pac-proxy-agent@7.0.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        get-uri@6.0.3
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        basic-ftp@5.0.5
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.org/package/basic-ftp">basic-ftp</a> is a FTP client for Node.js, supports FTPS over TLS, IPv6, Async/Await, and Typescript.</p>
+        <p>Affected versions of this package are vulnerable to CRLF Injection via unsanitized path parameters in the <code>protectWhitespace</code> function. An attacker can execute arbitrary FTP commands by injecting CRLF sequences into file path inputs, which are then interpreted as separate commands by the FTP server. This can lead to unauthorized file deletion, directory manipulation, file exfiltration, command execution on supporting servers, session hijacking, or service disruption.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>basic-ftp</code> to version 5.2.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/security/advisories/GHSA-chqc-8p9q-pq6q">GitHub Advisory</a></li>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/commit/2ecc8e2c500c5234115f06fd1dbde1aa03d70f4b">GitHub Commit</a></li>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/releases/tag/v5.2.1">GitHub Release</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-BASICFTP-15953339">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--critical" data-snyk-test="critical">
+            <h2 class="card__title">HTTP Response Splitting</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--critical">
+                        <span class="label__text">critical severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to HTTP Response Splitting via the <code>isFormData</code> and <code>getHeaders</code> handling in the HTTP request path. An attacker can inject arbitrary request headers by supplying a prototype-polluted object that is mistaken for <code>FormData</code>, causing <code>getHeaders()</code> output to be merged into an outgoing request.
+        This lets attacker-controlled values, such as <code>authorization</code> or custom headers, ride along with requests made by applications that pass untrusted objects into Axios, exposing credentials or altering server-side request handling.</p>
+        <p><strong>Notes</strong></p>
+        <ul>
+        <li>The gadget only matters when the request body is a non-<code>FormData</code> payload that Axios still routes through the Node HTTP adapter’s form-data detection path; browser-side usage is not implicated by this code path.</li>
+        <li>The advisory’s prototype-pollution prerequisite can come from any dependency in the application’s tree, not necessarily from Axios itself, so a separate merge/parser bug elsewhere can be enough to trigger the header injection.</li>
+        </ul>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/37cf18f2e2c10171ddd851c8e46938d48cc35948">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/e3ddeb40f6a142a234925341151e2ca631a6de64">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-6chq-wfr3-2hj9">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16298058">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--critical" data-snyk-test="critical">
+            <h2 class="card__title">Prototype Pollution</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--critical">
+                        <span class="label__text">critical severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Not Defined</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Prototype Pollution through the <code>mergeConfig</code> code path in the request configuration handling. An attacker can influence request behavior by supplying a crafted config object with inherited properties such as <code>transport</code>, <code>env</code>, <code>formSerializer</code>, or transform callbacks on <code>Object.prototype</code>, causing Axios to use attacker-controlled settings during request dispatch and form serialization. This can redirect requests, alter serialization and response handling, and break application logic that relies on trusted per-request configuration.</p>
+        <h2 id="details">Details</h2>
+        <p>Prototype Pollution is a vulnerability affecting JavaScript. Prototype Pollution refers to the ability to inject properties into existing JavaScript language construct prototypes, such as objects. JavaScript allows all Object attributes to be altered, including their magical attributes such as <code>__proto__</code>, <code>constructor</code> and <code>prototype</code>. An attacker manipulates these attributes to overwrite, or pollute, a JavaScript application object prototype of the base object by injecting other values.  Properties on the <code>Object.prototype</code> are then inherited by all the JavaScript objects through the prototype chain. When that happens, this leads to either denial of service by triggering JavaScript exceptions, or it tampers with the application source code to force the code path that the attacker injects, thereby leading to remote code execution.</p>
+        <p>There are two main ways in which the pollution of prototypes occurs:</p>
+        <ul>
+        <li><p>Unsafe <code>Object</code> recursive merge</p>
+        </li>
+        <li><p>Property definition by path</p>
+        </li>
+        </ul>
+        <h3 id="unsafe-object-recursive-merge">Unsafe Object recursive merge</h3>
+        <p>The logic of a vulnerable recursive merge function follows the following high-level model:</p>
+        <pre><code>merge (target, source)
+        
+          foreach property of source
+        
+            if property exists and is an object on both the target and the source
+        
+              merge(target[property], source[property])
+        
+            else
+        
+              target[property] = source[property]
+        </code></pre>
+        <br>  
+        
+        <p>When the source object contains a property named <code>__proto__</code> defined with <code>Object.defineProperty()</code> , the condition that checks if the property exists and is an object on both the target and the source passes and the merge recurses with the target, being the prototype of <code>Object</code> and the source of <code>Object</code> as defined by the attacker. Properties are then copied on the <code>Object</code> prototype.</p>
+        <p>Clone operations are a special sub-class of unsafe recursive merges, which occur when a recursive merge is conducted on an empty object: <code>merge({},source)</code>.</p>
+        <p><code>lodash</code> and <code>Hoek</code> are examples of libraries susceptible to recursive merge attacks.</p>
+        <h3 id="property-definition-by-path">Property definition by path</h3>
+        <p>There are a few JavaScript libraries that use an API to define property values on an object based on a given path. The function that is generally affected contains this signature: <code>theFunction(object, path, value)</code></p>
+        <p>If the attacker can control the value of “path”, they can set this value to <code>__proto__.myValue</code>. <code>myValue</code> is then assigned to the prototype of the class of the object.</p>
+        <h2 id="types-of-attacks">Types of attacks</h2>
+        <p>There are a few methods by which Prototype Pollution can be manipulated:</p>
+        <table>
+        <thead>
+        <tr>
+        <th>Type</th>
+        <th>Origin</th>
+        <th>Short description</th>
+        </tr>
+        </thead>
+        <tbody><tr>
+        <td><strong>Denial of service (DoS)</strong></td>
+        <td>Client</td>
+        <td>This is the most likely attack. <br>DoS occurs when <code>Object</code> holds generic functions that are implicitly called for various operations (for example, <code>toString</code> and <code>valueOf</code>). <br> The attacker pollutes <code>Object.prototype.someattr</code> and alters its state to an unexpected value such as <code>Int</code> or <code>Object</code>. In this case, the code fails and is likely to cause a denial of service.  <br><strong>For example:</strong> if an attacker pollutes <code>Object.prototype.toString</code> by defining it as an integer, if the codebase at any point was reliant on <code>someobject.toString()</code> it would fail.</td>
+        </tr>
+        <tr>
+        <td><strong>Remote Code Execution</strong></td>
+        <td>Client</td>
+        <td>Remote code execution is generally only possible in cases where the codebase evaluates a specific attribute of an object, and then executes that evaluation.<br><strong>For example:</strong> <code>eval(someobject.someattr)</code>. In this case, if the attacker pollutes <code>Object.prototype.someattr</code> they are likely to be able to leverage this in order to execute code.</td>
+        </tr>
+        <tr>
+        <td><strong>Property Injection</strong></td>
+        <td>Client</td>
+        <td>The attacker pollutes properties that the codebase relies on for their informative value, including security properties such as cookies or tokens.<br>  <strong>For example:</strong> if a codebase checks privileges for <code>someuser.isAdmin</code>, then when the attacker pollutes <code>Object.prototype.isAdmin</code> and sets it to equal <code>true</code>, they can then achieve admin privileges.</td>
+        </tr>
+        </tbody></table>
+        <h2 id="affected-environments">Affected environments</h2>
+        <p>The following environments are susceptible to a Prototype Pollution attack:</p>
+        <ul>
+        <li><p>Application server</p>
+        </li>
+        <li><p>Web server</p>
+        </li>
+        <li><p>Web browser</p>
+        </li>
+        </ul>
+        <h2 id="how-to-prevent">How to prevent</h2>
+        <ol>
+        <li><p>Freeze the prototype— use <code>Object.freeze (Object.prototype)</code>.</p>
+        </li>
+        <li><p>Require schema validation of JSON input.</p>
+        </li>
+        <li><p>Avoid using unsafe recursive merge functions.</p>
+        </li>
+        <li><p>Consider using objects without prototypes (for example, <code>Object.create(null)</code>), breaking the prototype chain and preventing pollution.</p>
+        </li>
+        <li><p>As a best practice use <code>Map</code> instead of <code>Object</code>.</p>
+        </li>
+        </ol>
+        <h3 id="for-more-information-on-this-vulnerability-type">For more information on this vulnerability type:</h3>
+        <p><a href="https://github.com/HoLyVieR/prototype-pollution-nsec18/blob/master/paper/JavaScript_prototype_pollution_attack_in_NodeJS.pdf">Arteau, Olivier. “JavaScript prototype pollution attack in NodeJS application.” GitHub, 26 May 2018</a></p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/17b90d0be692f1704e4623731163285b0480520f">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/b52187f4571b6b8663fed5904e3082ab30660364">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-pf86-5x62-jrwf">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16299904">More about this vulnerability</a></p>
             </div>
         
         </div><!-- .card -->
@@ -27258,6 +27597,417 @@
         
         </div><!-- .card -->
         <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">Allocation of Resources Without Limits or Throttling</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Not Defined</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd/argoproj/argo-cd/v3 <span class="list-paths__item__arrow">›</span> go.mod
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: golang
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            github.com/moby/spdystream/spdy
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    github.com/argoproj/argo-cd/v3@0.0.0, k8s.io/client-go/tools/portforward@0.33.1 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/portforward@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/diff@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/utils/kube@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/cache@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/utils/kube@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/common@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/utils/kube@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/hook@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/hook/helm@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/common@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/utils/kube@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/syncwaves@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/hook/helm@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/common@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/utils/kube@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/health@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/hook@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/hook/helm@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/common@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/utils/kube@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        github.com/argoproj/argo-cd/v3@0.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/ignore@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/hook@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/hook/helm@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/sync/common@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/argoproj/gitops-engine/pkg/utils/kube@#e48120133eec
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/cmd/util@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/templates@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/kubectl/pkg/util/term@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/tools/remotecommand@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/client-go/transport/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        k8s.io/apimachinery/pkg/util/httpstream/spdy@0.33.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream@0.5.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        github.com/moby/spdystream/spdy@0.5.0
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p>Affected versions of this package are vulnerable to Allocation of Resources Without Limits or Throttling due to the lack of validation on attacker-controlled counts and lengths in the SPDY/3 frame parser. An attacker can exhaust process memory and cause an out-of-memory crash by sending a single crafted control frame with compressed header blocks that decompress into large allocation sizes.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>github.com/moby/spdystream/spdy</code> to version 0.5.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/moby/spdystream/security/advisories/GHSA-pc3f-x583-g7j2">GitHub Advisory</a></li>
+        <li><a href="https://github.com/moby/spdystream/commit/cf0ec5d0fe4dbb2f3525f733946e0d0ddbfd5b13">GitHub Commit</a></li>
+        <li><a href="https://github.com/moby/spdystream/releases/tag/v0.5.1">GitHub Release</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-GOLANG-GITHUBCOMMOBYSPDYSTREAMSPDY-16304822">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
             <h2 class="card__title">Uncaught Exception</h2>
             <div class="card__section">
         
@@ -27434,6 +28184,83 @@
         
             <div class="cta card__cta">
                 <p><a href="https://snyk.io/vuln/SNYK-GOLANG-GITHUBCOMGOJOSEGOJOSEV4-15875221">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">Improper Removal of Sensitive Information Before Storage or Transfer</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Not Defined</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            follow-redirects
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        follow-redirects@1.15.6
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p>Affected versions of this package are vulnerable to Improper Removal of Sensitive Information Before Storage or Transfer in the cross-domain redirects that do not strip custom authentication headers (such as <code>X-API-Key</code>, <code>X-Auth-Token</code>, <code>Api-Key</code>, <code>Token</code>). An attacker can obtain sensitive authentication headers by triggering a cross-domain redirect that causes custom authentication headers to be forwarded to an attacker-controlled domain.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>follow-redirects</code> to version 1.16.0 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/follow-redirects/follow-redirects/security/advisories/GHSA-r4q5-vmmm-2653">GitHub Advisory</a></li>
+        <li><a href="https://github.com/follow-redirects/follow-redirects/commit/844c4d302ac963d29bdb5dc1754ec7df3d70d7f9">GitHub Commit</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-FOLLOWREDIRECTS-16032162">More about this vulnerability</a></p>
             </div>
         
         </div><!-- .card -->
@@ -27754,6 +28581,699 @@
             </div>
         
         </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">Directory Traversal</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Not Defined</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            basic-ftp
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        proxy-agent@6.4.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        pac-proxy-agent@7.0.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        get-uri@6.0.3
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        basic-ftp@5.0.5
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.org/package/basic-ftp">basic-ftp</a> is a FTP client for Node.js, supports FTPS over TLS, IPv6, Async/Await, and Typescript.</p>
+        <p>Affected versions of this package are vulnerable to Directory Traversal in the <code>downloadToDir()</code> method. A malicious FTP server can overwrite or create files outside the intended directory.</p>
+        <h2 id="details">Details</h2>
+        <p>A Directory Traversal attack (also known as path traversal) aims to access files and directories that are stored outside the intended folder. By manipulating files with &quot;dot-dot-slash (../)&quot; sequences and its variations, or by using absolute file paths, it may be possible to access arbitrary files and directories stored on file system, including application source code, configuration, and other critical system files.</p>
+        <p>Directory Traversal vulnerabilities can be generally divided into two types:</p>
+        <ul>
+        <li><strong>Information Disclosure</strong>: Allows the attacker to gain information about the folder structure or read the contents of sensitive files on the system.</li>
+        </ul>
+        <p><code>st</code> is a module for serving static files on web pages, and contains a <a href="https://snyk.io/vuln/npm:st:20140206">vulnerability of this type</a>. In our example, we will serve files from the <code>public</code> route.</p>
+        <p>If an attacker requests the following URL from our server, it will in turn leak the sensitive private key of the root user.</p>
+        <pre><code>curl http://localhost:8080/public/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/root/.ssh/id_rsa
+        </code></pre>
+        <p><strong>Note</strong> <code>%2e</code> is the URL encoded version of <code>.</code> (dot).</p>
+        <ul>
+        <li><strong>Writing arbitrary files</strong>: Allows the attacker to create or replace existing files. This type of vulnerability is also known as <code>Zip-Slip</code>.</li>
+        </ul>
+        <p>One way to achieve this is by using a malicious <code>zip</code> archive that holds path traversal filenames. When each filename in the zip archive gets concatenated to the target extraction folder, without validation, the final path ends up outside of the target folder. If an executable or a configuration file is overwritten with a file containing malicious code, the problem can turn into an arbitrary code execution issue quite easily.</p>
+        <p>The following is an example of a <code>zip</code> archive with one benign file and one malicious file. Extracting the malicious file will result in traversing out of the target folder, ending up in <code>/root/.ssh/</code> overwriting the <code>authorized_keys</code> file:</p>
+        <pre><code>2018-04-15 22:04:29 .....           19           19  good.txt
+        2018-04-15 22:04:42 .....           20           20  ../../../../../../root/.ssh/authorized_keys
+        </code></pre>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>basic-ftp</code> to version 5.2.0 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/commit/2a2a0e6514357b9eda07c2f8afbd3f04727a7cd9">GitHub Commit</a></li>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/releases/tag/v5.2.0">GitHub Release</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-BASICFTP-15366428">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">CRLF Injection</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            basic-ftp
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        proxy-agent@6.4.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        pac-proxy-agent@7.0.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        get-uri@6.0.3
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        basic-ftp@5.0.5
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.org/package/basic-ftp">basic-ftp</a> is a FTP client for Node.js, supports FTPS over TLS, IPv6, Async/Await, and Typescript.</p>
+        <p>Affected versions of this package are vulnerable to CRLF Injection via the <code>login</code> and <code>_openDir</code> methods. An attacker can execute arbitrary FTP commands by injecting control characters into credentials or directory names sent to the FTP server.</p>
+        <p><strong>Note:</strong> This vulnerability extends the incomplete fix for <a href="https://security.snyk.io/vuln/SNYK-JS-BASICFTP-15953339">CVE-2026-39983</a>.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>basic-ftp</code> to version 5.2.2 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/security/advisories/GHSA-6v7q-wjvx-w8wg">GitHub Advisory</a></li>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/commit/20327d35126e57e5fdbaae79a4b65222fbadc53c">GitHub Commit</a></li>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/releases/tag/v5.2.2">GitHub Release</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-BASICFTP-15989098">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">Allocation of Resources Without Limits or Throttling</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            basic-ftp
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        proxy-agent@6.4.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        pac-proxy-agent@7.0.1
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        get-uri@6.0.3
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        basic-ftp@5.0.5
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.org/package/basic-ftp">basic-ftp</a> is a FTP client for Node.js, supports FTPS over TLS, IPv6, Async/Await, and Typescript.</p>
+        <p>Affected versions of this package are vulnerable to Allocation of Resources Without Limits or Throttling in the <code>StringWriter</code> method. An attacker can cause excessive memory consumption and potential process termination by sending an extremely large or unbounded directory listing response from a malicious or compromised FTP server.</p>
+        <h2 id="poc">PoC</h2>
+        <pre><code class="language-js">const { StringWriter } = require(&quot;basic-ftp/dist/StringWriter.js&quot;);
+        
+        function mb(n) {
+          return Math.round(n / 1024 / 1024) + &quot;MB&quot;;
+        }
+        
+        const writer = new StringWriter();
+        let wrote = 0;
+        
+        for (let i = 0; i &lt; 32; i++) {
+          const chunk = Buffer.alloc(4 * 1024 * 1024, 0x41);
+          writer.write(chunk);
+          wrote += chunk.length;
+        
+          if ((i + 1) % 8 === 0) {
+            const m = process.memoryUsage();
+            console.log(&quot;written&quot;, mb(wrote), &quot;rss&quot;, mb(m.rss), &quot;heap&quot;, mb(m.heapUsed), &quot;buf&quot;, mb(m.arrayBuffers));
+          }
+        }
+        
+        console.log(&quot;final text len&quot;, writer.getText(&quot;utf8&quot;).length);
+        </code></pre>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>basic-ftp</code> to version 5.3.0 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/security/advisories/GHSA-rp42-5vxx-qpwr">GitHub Advisory</a></li>
+        <li><a href="https://github.com/patrickjuchli/basic-ftp/commit/9c3bf4f893470cd2418b54862eb9b609efc3d335">GitHub Commit</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-BASICFTP-16094986">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">Prototype Pollution</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Prototype Pollution via the <code>mergeConfig</code> function. An attacker can cause the application to crash by supplying a malicious configuration object containing a <code>__proto__</code> property, typically by leveraging <code>JSON.parse()</code>.</p>
+        <h2 id="poc">PoC</h2>
+        <pre><code class="language-js">import axios from &quot;axios&quot;;
+        
+        const maliciousConfig = JSON.parse(&#39;{&quot;__proto__&quot;: {&quot;x&quot;: 1}}&#39;);
+        await axios.get(&quot;https://domain/get&quot;, maliciousConfig);
+        </code></pre>
+        <h2 id="details">Details</h2>
+        <p>Prototype Pollution is a vulnerability affecting JavaScript. Prototype Pollution refers to the ability to inject properties into existing JavaScript language construct prototypes, such as objects. JavaScript allows all Object attributes to be altered, including their magical attributes such as <code>__proto__</code>, <code>constructor</code> and <code>prototype</code>. An attacker manipulates these attributes to overwrite, or pollute, a JavaScript application object prototype of the base object by injecting other values.  Properties on the <code>Object.prototype</code> are then inherited by all the JavaScript objects through the prototype chain. When that happens, this leads to either denial of service by triggering JavaScript exceptions, or it tampers with the application source code to force the code path that the attacker injects, thereby leading to remote code execution.</p>
+        <p>There are two main ways in which the pollution of prototypes occurs:</p>
+        <ul>
+        <li><p>Unsafe <code>Object</code> recursive merge</p>
+        </li>
+        <li><p>Property definition by path</p>
+        </li>
+        </ul>
+        <h3 id="unsafe-object-recursive-merge">Unsafe Object recursive merge</h3>
+        <p>The logic of a vulnerable recursive merge function follows the following high-level model:</p>
+        <pre><code>merge (target, source)
+        
+          foreach property of source
+        
+            if property exists and is an object on both the target and the source
+        
+              merge(target[property], source[property])
+        
+            else
+        
+              target[property] = source[property]
+        </code></pre>
+        <br>  
+        
+        <p>When the source object contains a property named <code>__proto__</code> defined with <code>Object.defineProperty()</code> , the condition that checks if the property exists and is an object on both the target and the source passes and the merge recurses with the target, being the prototype of <code>Object</code> and the source of <code>Object</code> as defined by the attacker. Properties are then copied on the <code>Object</code> prototype.</p>
+        <p>Clone operations are a special sub-class of unsafe recursive merges, which occur when a recursive merge is conducted on an empty object: <code>merge({},source)</code>.</p>
+        <p><code>lodash</code> and <code>Hoek</code> are examples of libraries susceptible to recursive merge attacks.</p>
+        <h3 id="property-definition-by-path">Property definition by path</h3>
+        <p>There are a few JavaScript libraries that use an API to define property values on an object based on a given path. The function that is generally affected contains this signature: <code>theFunction(object, path, value)</code></p>
+        <p>If the attacker can control the value of “path”, they can set this value to <code>__proto__.myValue</code>. <code>myValue</code> is then assigned to the prototype of the class of the object.</p>
+        <h2 id="types-of-attacks">Types of attacks</h2>
+        <p>There are a few methods by which Prototype Pollution can be manipulated:</p>
+        <table>
+        <thead>
+        <tr>
+        <th>Type</th>
+        <th>Origin</th>
+        <th>Short description</th>
+        </tr>
+        </thead>
+        <tbody><tr>
+        <td><strong>Denial of service (DoS)</strong></td>
+        <td>Client</td>
+        <td>This is the most likely attack. <br>DoS occurs when <code>Object</code> holds generic functions that are implicitly called for various operations (for example, <code>toString</code> and <code>valueOf</code>). <br> The attacker pollutes <code>Object.prototype.someattr</code> and alters its state to an unexpected value such as <code>Int</code> or <code>Object</code>. In this case, the code fails and is likely to cause a denial of service.  <br><strong>For example:</strong> if an attacker pollutes <code>Object.prototype.toString</code> by defining it as an integer, if the codebase at any point was reliant on <code>someobject.toString()</code> it would fail.</td>
+        </tr>
+        <tr>
+        <td><strong>Remote Code Execution</strong></td>
+        <td>Client</td>
+        <td>Remote code execution is generally only possible in cases where the codebase evaluates a specific attribute of an object, and then executes that evaluation.<br><strong>For example:</strong> <code>eval(someobject.someattr)</code>. In this case, if the attacker pollutes <code>Object.prototype.someattr</code> they are likely to be able to leverage this in order to execute code.</td>
+        </tr>
+        <tr>
+        <td><strong>Property Injection</strong></td>
+        <td>Client</td>
+        <td>The attacker pollutes properties that the codebase relies on for their informative value, including security properties such as cookies or tokens.<br>  <strong>For example:</strong> if a codebase checks privileges for <code>someuser.isAdmin</code>, then when the attacker pollutes <code>Object.prototype.isAdmin</code> and sets it to equal <code>true</code>, they can then achieve admin privileges.</td>
+        </tr>
+        </tbody></table>
+        <h2 id="affected-environments">Affected environments</h2>
+        <p>The following environments are susceptible to a Prototype Pollution attack:</p>
+        <ul>
+        <li><p>Application server</p>
+        </li>
+        <li><p>Web server</p>
+        </li>
+        <li><p>Web browser</p>
+        </li>
+        </ul>
+        <h2 id="how-to-prevent">How to prevent</h2>
+        <ol>
+        <li><p>Freeze the prototype— use <code>Object.freeze (Object.prototype)</code>.</p>
+        </li>
+        <li><p>Require schema validation of JSON input.</p>
+        </li>
+        <li><p>Avoid using unsafe recursive merge functions.</p>
+        </li>
+        <li><p>Consider using objects without prototypes (for example, <code>Object.create(null)</code>), breaking the prototype chain and preventing pollution.</p>
+        </li>
+        <li><p>As a best practice use <code>Map</code> instead of <code>Object</code>.</p>
+        </li>
+        </ol>
+        <h3 id="for-more-information-on-this-vulnerability-type">For more information on this vulnerability type:</h3>
+        <p><a href="https://github.com/HoLyVieR/prototype-pollution-nsec18/blob/master/paper/JavaScript_prototype_pollution_attack_in_NodeJS.pdf">Arteau, Olivier. “JavaScript prototype pollution attack in NodeJS application.” GitHub, 26 May 2018</a></p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.30.3, 1.13.5 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/28c721588c7a77e7503d0a434e016f852c597b57">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/pull/7369">GitHub PR</a></li>
+        <li><a href="https://github.com/axios/axios/releases/tag/v1.13.5">GitHub Release</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-15252993">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">HTTP Response Splitting</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Not Defined</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to HTTP Response Splitting via the <code>parseTokens</code> header processing path in <code>lib/core/AxiosHeaders.js</code>. An attacker can smuggle HTTP requests or inject arbitrary headers by supplying a header value containing <code>\r\n</code>, which Axios merges into an outbound request. Under specific conditions, this can be used to exfiltrate cloud metadata tokens, pivot into internal services, or poison downstream HTTP traffic.</p>
+        <p><strong>Notes</strong></p>
+        <ul>
+        <li>Exploitation requires prior successful prototype pollution in a third-party dependency, enabling attacker-controlled header data to flow into Axios via configuration merging or <code>AxiosHeaders.set(...)</code>.</li>
+        <li>IMDSv2 token exfiltration (described in the original vulnerability report as another step in the exploit chain following the smuggling of a <code>PUT</code> request) further depends on the application running in an AWS environment with instance metadata access enabled, and on the Axios process having network access to the metadata endpoint.</li>
+        <li>A possible but uncommon vector mentioned in the maintainers&#39; advisory relies on the use of a non standard Axios transport mechanism, e.g. a custom adapter, to bypass Node.js header validation, thereby permitting malformed or injected header values to be transmitted without rejection. In most cases, this vector is blocked by Node.JS&#39;s built in header validation.</li>
+        </ul>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.0, 1.15.0 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/pull/10688/changes/24c45391b6529404fa59e8c2e5089098d58ee902">GitHub Commit (v1 backport)</a></li>
+        <li><a href="https://github.com/axios/axios/pull/10660">GitHub PR</a></li>
+        <li><a href="https://github.com/axios/axios/releases/tag/v1.15.0">GitHub Release</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-fvcv-3m26-pcqx">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-15969258">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">Improperly Controlled Modification of Dynamically-Determined Object Attributes</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Improperly Controlled Modification of Dynamically-Determined Object Attributes through the <code>transformResponse</code> and request serialization paths in the defaults configuration. An attacker can influence JSON parsing and request handling by supplying a crafted object with inherited <code>parseReviver</code>, <code>responseType</code>, <code>transitional</code>, <code>env</code>, or <code>formSerializer</code> properties, causing Axios to read attacker-controlled prototype values during response parsing or form encoding. This can lead to malformed response processing, unexpected parser behavior, and application-level data corruption or denial-of-service in code that passes untrusted config objects to Axios.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 1.15.2 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/70302b6c9008b3d5242c9685a4c01151e53a4c74">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-3w6x-2g7m-8v23">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16299921">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--high" data-snyk-test="high">
+            <h2 class="card__title">Uncontrolled Recursion</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--high">
+                        <span class="label__text">high severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Uncontrolled Recursion through the <code>toFormData</code> recursive serializer in <code>lib/helpers/toFormData.js</code>. An attacker can crash a process by supplying a deeply nested object as request <code>data</code> or <code>params</code>, causing unbounded recursion and a call-stack overflow during multipart/form-data or query-string serialization.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/85132ffba1a77609ea5d101c8a413dea7174932f">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/b0c632f36a5ea2e73c9bdf3a54164a8ede925736">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-62hf-57xw-28j9">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16299923">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
         <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
             <h2 class="card__title">Uncontrolled Recursion</h2>
             <div class="card__section">
@@ -27972,9 +29492,10 @@
         }&quot;
         </code></pre>
         <h2 id="remediation">Remediation</h2>
-        <p>Upgrade <code>uuid</code> to version 14.0.0 or higher.</p>
+        <p>Upgrade <code>uuid</code> to version 11.1.1, 14.0.0 or higher.</p>
         <h2 id="references">References</h2>
         <ul>
+        <li><a href="https://github.com/uuidjs/uuid/commit/32389c887c9e75f90442ee4cc95bbab0c4e8346e">GitHub Commit</a></li>
         <li><a href="https://github.com/uuidjs/uuid/commit/3d2c5b0342f0fcb52a5ac681c3d47c13e7444b34">GitHub Commit</a></li>
         <li><a href="https://github.com/uuidjs/uuid/releases/tag/v14.0.0">GitHub Release</a></li>
         </ul>
@@ -27983,6 +29504,106 @@
         
             <div class="cta card__cta">
                 <p><a href="https://snyk.io/vuln/SNYK-JS-UUID-16133035">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Symlink Attack</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            tmp
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, selenium-webdriver@4.33.0 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        selenium-webdriver@4.33.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        tmp@0.2.3
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p>Affected versions of this package are vulnerable to Symlink Attack via the <code>dir</code> parameter. An attacker can cause files or directories to be written to arbitrary locations by supplying a crafted symbolic link that resolves outside the intended temporary directory.</p>
+        <h2 id="poc">PoC</h2>
+        <pre><code>const tmp = require(&#39;tmp&#39;);
+        
+        const tmpobj = tmp.fileSync({ &#39;dir&#39;: &#39;evil-dir&#39;});
+        console.log(&#39;File: &#39;, tmpobj.name);
+        
+        try {
+            tmp.fileSync({ &#39;dir&#39;: &#39;mydir1&#39;});
+        } catch (err) {
+            console.log(&#39;test 1:&#39;, err.message)
+        }
+        
+        try {
+            tmp.fileSync({ &#39;dir&#39;: &#39;/foo&#39;});
+        } catch (err) {
+            console.log(&#39;test 2:&#39;, err.message)
+        }
+        
+        try {
+            const fs = require(&#39;node:fs&#39;);
+            const resolved = fs.realpathSync(&#39;/tmp/evil-dir&#39;);
+            tmp.fileSync({ &#39;dir&#39;: resolved});
+        } catch (err) {
+            console.log(&#39;test 3:&#39;, err.message)
+        }
+        </code></pre>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>tmp</code> to version 0.2.4 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/raszi/node-tmp/commit/188b25e529496e37adaf1a1d9dccb40019a08b1b">GitHub Commit</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-TMP-11501554">More about this vulnerability</a></p>
             </div>
         
         </div><!-- .card -->
@@ -140487,6 +142108,860 @@
         
             <div class="cta card__cta">
                 <p><a href="https://snyk.io/vuln/SNYK-JS-DIFF-14917201">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Allocation of Resources Without Limits or Throttling</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Allocation of Resources Without Limits or Throttling via the <code>data:</code> URL handler. An attacker can trigger a denial of service by crafting a <code>data:</code> URL with an excessive payload, causing allocation of memory for content decoding before verifying content size limits.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.30.0, 1.12.0 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/945435fc51467303768202250debb8d4ae892593">GitHub Commit</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-12613773">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Unintended Proxy or Intermediary (&#x27;Confused Deputy&#x27;)</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Unintended Proxy or Intermediary (&#39;Confused Deputy&#39;) via improper hostname normalization in the <code>NO_PROXY</code> environment variable. An attacker controlling request URLs can access internal or loopback services by crafting requests (with a trailing dot or <code>[::1]</code>) that bypass proxy restrictions, causing sensitive requests to be routed through an unintended proxy.</p>
+        <p><strong>Note:</strong></p>
+        <p>This is only exploitable if the application relies on <code>NO_PROXY=localhost,127.0.0.1,::1</code> for protecting loopback/internal access.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.0, 1.15.0 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-3p68-rc4w-qgx5">GitHub Advisory</a></li>
+        <li><a href="https://github.com/axios/axios/commit/fb3befb6daac6cad26b2e54094d0f2d9e47f24df">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/releases/tag/v1.15.0">GitHub Release</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-15965856">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Improper Encoding or Escaping of Output</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Improper Encoding or Escaping of Output through the <code>encode</code> function in <code>AxiosURLSearchParams</code>. An attacker can smuggle a NUL byte into serialized query strings by supplying crafted parameter values, causing downstream parsers or backend components to misinterpret the request and potentially truncate or alter parameter handling.</p>
+        <p><strong>Notes:</strong> Standard axios request flow (<code>buildURL</code>) uses its own encode function, which does NOT have this bug. Only triggered via direct <code>AxiosURLSearchParams.toString()</code> without an encoder, or via custom <code>paramsSerializer</code> delegation</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/44bca902e1bdd7dd6490c7b4985b63e729b0e634">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/5266af94540552e99079caa66bb241bf35b42051">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-xhjh-pmcv-23jw">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16298055">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Server-side Request Forgery (SSRF)</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Not Defined</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Server-side Request Forgery (SSRF) through the <code>AxiosHeaders</code> normalization path and <code>shouldBypassProxy</code> helper. An attacker can smuggle CRLF and other control characters into request header values by supplying crafted header input, causing injected header fields to be sent on outbound requests and potentially altering how downstream servers interpret the request; in proxy configurations, a request to <code>localhost</code>, <code>127.0.0.1</code>, or <code>::1</code> can be routed differently depending on the <code>no_proxy</code> entry, allowing loopback traffic to bypass the intended proxy handling.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/03cdfc99e8db32a390e12128208b6778492cee9c">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/163da7226fd2cd21f0f238f99b2f75a51bf9b2a3">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-m7pr-hjqh-92cm">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16298095">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Allocation of Resources Without Limits or Throttling</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Allocation of Resources Without Limits or Throttling due to the <code>data.pipe(req)</code> upload path in the HTTP adapter. An attacker can send a streamed request body larger than the configured <code>maxBodyLength</code> while <code>maxRedirects</code> is <code>0</code>, causing the client to transmit the oversized payload to the server instead of stopping at the limit. This lets a remote peer force excessive bandwidth and request processing on applications that rely on <code>maxBodyLength</code> to cap upload size, potentially exhausting resources and disrupting service.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/1c7f6d76e58359daddf38a6e636dd801ffd9c61b">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/b0c632f36a5ea2e73c9bdf3a54164a8ede925736">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-5c9x-8gcm-mpgx">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16298130">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Allocation of Resources Without Limits or Throttling</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Not Defined</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Allocation of Resources Without Limits or Throttling through the HTTP response handling path in the <code>http.js</code> adapter. An attacker can force a client to accept and process a response body larger than <code>maxContentLength</code> by sending a streamed response with an oversized payload. This allows a remote server to bypass the configured response-size limit, causing the application to read and buffer more data than intended, potentially exhausting memory or stalling request processing.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-vf2m-468p-8v99">GitHub Advisory</a></li>
+        <li><a href="https://github.com/axios/axios/commit/b0c632f36a5ea2e73c9bdf3a54164a8ede925736">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/e8904af03385b040e53f1263a444e825db4335d9">GitHub Commit</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16298162">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Insertion of Sensitive Information Into Sent Data</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Insertion of Sensitive Information Into Sent Data through the request configuration handling in the <code>adapters/xhr.js</code> adapter and <code>helpers/resolveConfig.js‎</code>. An attacker can force the <code>withXSRFToken</code> option to a truthy non-boolean value, or pollute <code>Object.prototype.withXSRFToken</code>, by supplying a crafted request config that causes the XSRF header to be sent on cross-origin requests. When <code>withXSRFToken</code> is treated as a generic truthy value, the same-origin check is bypassed, and the browser reads the XSRF cookie and attaches it to an attacker-controlled destination. This exposes the user&#39;s XSRF token to a cross-origin endpoint, potentially enabling request forgery against the victim&#39;s authenticated session.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/1728aa1b15b8857f970611fd8983c06b423fc486">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/b0c632f36a5ea2e73c9bdf3a54164a8ede925736">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-xx6v-rp6x-q39c">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16299478">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">CRLF Injection</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to CRLF Injection through the <code>FormDataPart</code> multipart header construction in the form-data streaming helper. An attacker can inject arbitrary multipart headers by supplying a <code>Blob</code>-like value whose <code>type</code> contains <code>\r</code> or <code>\n</code>, causing the generated <code>Content-Type</code> line to break and append attacker-controlled header fields. This lets a crafted upload alter the multipart body sent by the application, which can corrupt downstream request parsing and expose or tamper with data handled by the receiving server.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/75873270a59bd5d895322eee145738e95fb89258">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-445q-vr5w-6q77">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16299819">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Prototype Pollution</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Proof of Concept</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Prototype Pollution via the <code>mergeDirectKeys</code> function in <code>mergeConfig</code>. An attacker can force a request configuration to inherit attacker-controlled properties by supplying a polluted <code>Object.prototype</code>, causing Axios to read inherited values, such as <code>validateStatus</code>, during config merging.
+        This lets a malicious page or library alter how responses are handled, including making 4xx and 5xx responses be treated as successful and bypassing normal error handling in applications that rely on Axios defaults.</p>
+        <h2 id="details">Details</h2>
+        <p>Prototype Pollution is a vulnerability affecting JavaScript. Prototype Pollution refers to the ability to inject properties into existing JavaScript language construct prototypes, such as objects. JavaScript allows all Object attributes to be altered, including their magical attributes such as <code>__proto__</code>, <code>constructor</code> and <code>prototype</code>. An attacker manipulates these attributes to overwrite, or pollute, a JavaScript application object prototype of the base object by injecting other values.  Properties on the <code>Object.prototype</code> are then inherited by all the JavaScript objects through the prototype chain. When that happens, this leads to either denial of service by triggering JavaScript exceptions, or it tampers with the application source code to force the code path that the attacker injects, thereby leading to remote code execution.</p>
+        <p>There are two main ways in which the pollution of prototypes occurs:</p>
+        <ul>
+        <li><p>Unsafe <code>Object</code> recursive merge</p>
+        </li>
+        <li><p>Property definition by path</p>
+        </li>
+        </ul>
+        <h3 id="unsafe-object-recursive-merge">Unsafe Object recursive merge</h3>
+        <p>The logic of a vulnerable recursive merge function follows the following high-level model:</p>
+        <pre><code>merge (target, source)
+        
+          foreach property of source
+        
+            if property exists and is an object on both the target and the source
+        
+              merge(target[property], source[property])
+        
+            else
+        
+              target[property] = source[property]
+        </code></pre>
+        <br>  
+        
+        <p>When the source object contains a property named <code>__proto__</code> defined with <code>Object.defineProperty()</code> , the condition that checks if the property exists and is an object on both the target and the source passes and the merge recurses with the target, being the prototype of <code>Object</code> and the source of <code>Object</code> as defined by the attacker. Properties are then copied on the <code>Object</code> prototype.</p>
+        <p>Clone operations are a special sub-class of unsafe recursive merges, which occur when a recursive merge is conducted on an empty object: <code>merge({},source)</code>.</p>
+        <p><code>lodash</code> and <code>Hoek</code> are examples of libraries susceptible to recursive merge attacks.</p>
+        <h3 id="property-definition-by-path">Property definition by path</h3>
+        <p>There are a few JavaScript libraries that use an API to define property values on an object based on a given path. The function that is generally affected contains this signature: <code>theFunction(object, path, value)</code></p>
+        <p>If the attacker can control the value of “path”, they can set this value to <code>__proto__.myValue</code>. <code>myValue</code> is then assigned to the prototype of the class of the object.</p>
+        <h2 id="types-of-attacks">Types of attacks</h2>
+        <p>There are a few methods by which Prototype Pollution can be manipulated:</p>
+        <table>
+        <thead>
+        <tr>
+        <th>Type</th>
+        <th>Origin</th>
+        <th>Short description</th>
+        </tr>
+        </thead>
+        <tbody><tr>
+        <td><strong>Denial of service (DoS)</strong></td>
+        <td>Client</td>
+        <td>This is the most likely attack. <br>DoS occurs when <code>Object</code> holds generic functions that are implicitly called for various operations (for example, <code>toString</code> and <code>valueOf</code>). <br> The attacker pollutes <code>Object.prototype.someattr</code> and alters its state to an unexpected value such as <code>Int</code> or <code>Object</code>. In this case, the code fails and is likely to cause a denial of service.  <br><strong>For example:</strong> if an attacker pollutes <code>Object.prototype.toString</code> by defining it as an integer, if the codebase at any point was reliant on <code>someobject.toString()</code> it would fail.</td>
+        </tr>
+        <tr>
+        <td><strong>Remote Code Execution</strong></td>
+        <td>Client</td>
+        <td>Remote code execution is generally only possible in cases where the codebase evaluates a specific attribute of an object, and then executes that evaluation.<br><strong>For example:</strong> <code>eval(someobject.someattr)</code>. In this case, if the attacker pollutes <code>Object.prototype.someattr</code> they are likely to be able to leverage this in order to execute code.</td>
+        </tr>
+        <tr>
+        <td><strong>Property Injection</strong></td>
+        <td>Client</td>
+        <td>The attacker pollutes properties that the codebase relies on for their informative value, including security properties such as cookies or tokens.<br>  <strong>For example:</strong> if a codebase checks privileges for <code>someuser.isAdmin</code>, then when the attacker pollutes <code>Object.prototype.isAdmin</code> and sets it to equal <code>true</code>, they can then achieve admin privileges.</td>
+        </tr>
+        </tbody></table>
+        <h2 id="affected-environments">Affected environments</h2>
+        <p>The following environments are susceptible to a Prototype Pollution attack:</p>
+        <ul>
+        <li><p>Application server</p>
+        </li>
+        <li><p>Web server</p>
+        </li>
+        <li><p>Web browser</p>
+        </li>
+        </ul>
+        <h2 id="how-to-prevent">How to prevent</h2>
+        <ol>
+        <li><p>Freeze the prototype— use <code>Object.freeze (Object.prototype)</code>.</p>
+        </li>
+        <li><p>Require schema validation of JSON input.</p>
+        </li>
+        <li><p>Avoid using unsafe recursive merge functions.</p>
+        </li>
+        <li><p>Consider using objects without prototypes (for example, <code>Object.create(null)</code>), breaking the prototype chain and preventing pollution.</p>
+        </li>
+        <li><p>As a best practice use <code>Map</code> instead of <code>Object</code>.</p>
+        </li>
+        </ol>
+        <h3 id="for-more-information-on-this-vulnerability-type">For more information on this vulnerability type:</h3>
+        <p><a href="https://github.com/HoLyVieR/prototype-pollution-nsec18/blob/master/paper/JavaScript_prototype_pollution_attack_in_NodeJS.pdf">Arteau, Olivier. “JavaScript prototype pollution attack in NodeJS application.” GitHub, 26 May 2018</a></p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.31.1, 1.15.1 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/42eb721eebc95cfded8d6c70cf62f3fbe83f3246">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/b0c632f36a5ea2e73c9bdf3a54164a8ede925736">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/security/advisories/GHSA-w9j2-pvgh-6h63">Maintainer&#39;s Advisory</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-16299925">More about this vulnerability</a></p>
+            </div>
+        
+        </div><!-- .card -->
+        <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
+            <h2 class="card__title">Server-side Request Forgery (SSRF)</h2>
+            <div class="card__section">
+        
+                <div class="card__labels">
+                    <div class="label label--medium">
+                        <span class="label__text">medium severity</span>
+                    </div>
+                    <div class="label label--exploit">
+                        <span class="label__text">Exploit: Not Defined</span>
+                    </div>
+                </div>
+        
+                <hr/>
+        
+                <ul class="card__meta">
+                    <li class="card__meta__item">
+                        Manifest file: /argo-cd <span class="list-paths__item__arrow">›</span> ui-test/yarn.lock
+                    </li>
+                    <li class="card__meta__item">
+                        Package Manager: npm
+                    </li>
+                    <li class="card__meta__item">
+                            Vulnerable module:
+        
+                            axios
+                    </li>
+        
+                    <li class="card__meta__item">Introduced through:
+        
+        
+                                    ui-test@1.0.0, chromedriver@136.0.2 and others
+                    </li>
+                </ul>
+        
+                <hr/>
+        
+        
+                        <h3 class="card__section__title">Detailed paths</h3>
+        
+                    <ul class="card__meta__paths">
+                                <li>
+                                <span class="list-paths__item__introduced"><em>Introduced through</em>:
+                                        ui-test@1.0.0
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        chromedriver@136.0.2
+                                         <span class="list-paths__item__arrow">›</span> 
+                                        axios@1.8.2
+                                        
+                                </span>
+        
+                            </li>
+                    </ul><!-- .list-paths -->
+        
+            </div><!-- .card__section -->
+        
+              <hr/>
+              <!-- Overview -->
+              <h2 id="overview">Overview</h2>
+        <p><a href="https://www.npmjs.com/package/axios">axios</a> is a promise-based HTTP client for the browser and Node.js.</p>
+        <p>Affected versions of this package are vulnerable to Server-side Request Forgery (SSRF) due to not setting <code>allowAbsoluteUrls</code> to <code>false</code> by default when processing a requested URL in <code>buildFullPath()</code>. It may not be obvious that this value is being used with the less safe default, and URLs that are expected to be blocked may be accepted. This is a bypass of the fix for the vulnerability described in <a href="https://security.snyk.io/vuln/SNYK-JS-AXIOS-9292519">CVE-2025-27152</a>.</p>
+        <h2 id="remediation">Remediation</h2>
+        <p>Upgrade <code>axios</code> to version 0.30.0, 1.8.3 or higher.</p>
+        <h2 id="references">References</h2>
+        <ul>
+        <li><a href="https://github.com/axios/axios/commit/10fa70ef14fe39558b15a179f0e82f5f5e5d11b2">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/commit/c01062253a780bca049e5fabe95d26fe441a8a0f">GitHub Commit</a></li>
+        <li><a href="https://github.com/axios/axios/issues/6821">GitHub Issue</a></li>
+        <li><a href="https://github.com/axios/axios/pull/6818">GitHub PR</a></li>
+        </ul>
+        
+              <hr/>
+        
+            <div class="cta card__cta">
+                <p><a href="https://snyk.io/vuln/SNYK-JS-AXIOS-9403194">More about this vulnerability</a></p>
             </div>
         
         </div><!-- .card -->
