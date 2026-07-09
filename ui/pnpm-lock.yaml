@@ -354,8 +354,8 @@ importers:
         specifier: ^8.60.1
         version: 8.60.1(eslint@9.39.4)(typescript@5.9.3)
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^14.0.1
+        version: 14.0.1
       webpack:
         specifier: ^5.105.4
         version: 5.106.2(postcss@8.5.14)(webpack-cli@5.1.4)
@@ -5857,6 +5857,10 @@ packages:
   utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+
+  uuid@14.0.1:
+    resolution: {integrity: sha512-6ZxzVpzDXDa3bJWaHilVayA+BH/1zmxCJoVgvmqJnid/gPoKHxUrS/aC/T6LGQtNHT+XHG9fXPJB4d+IrU30Ew==}
+    hasBin: true
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
@@ -12522,6 +12526,8 @@ snapshots:
   utila@0.4.0: {}
 
   utils-merge@1.0.1: {}
+
+  uuid@14.0.1: {}
 
   uuid@8.3.2: {}
 
