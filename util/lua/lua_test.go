@@ -12,9 +12,9 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/yaml"
 
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/grpc"
+	applicationpkg "github.com/hanzoai/deploy/v3/pkg/apiclient/application"
+	appv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/grpc"
 )
 
 const objJSON = `

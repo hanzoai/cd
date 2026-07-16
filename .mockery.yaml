@@ -2,54 +2,54 @@ dir: '{{.InterfaceDir}}/mocks'
 filename: '{{.InterfaceName}}.go'
 include-auto-generated: true # Needed since mockery 3.6.1
 packages:
-  github.com/argoproj/argo-cd/v3/applicationset/generators:
+  github.com/hanzoai/deploy/v3/applicationset/generators:
     interfaces:
       Generator: {}
-  github.com/argoproj/argo-cd/v3/applicationset/services:
+  github.com/hanzoai/deploy/v3/applicationset/services:
     interfaces:
       Repos: {}
-  github.com/argoproj/argo-cd/v3/applicationset/services/scm_provider:
+  github.com/hanzoai/deploy/v3/applicationset/services/scm_provider:
     interfaces:
       AWSCodeCommitClient: {}
       AWSTaggingClient: {}
       AzureDevOpsClientFactory: {}
-  github.com/argoproj/argo-cd/v3/applicationset/utils:
+  github.com/hanzoai/deploy/v3/applicationset/utils:
     interfaces:
       Renderer: {}
-  github.com/argoproj/argo-cd/v3/commitserver/apiclient:
+  github.com/hanzoai/deploy/v3/commitserver/apiclient:
     interfaces:
       CommitServiceClient: {}
-  github.com/argoproj/argo-cd/v3/commitserver/commit:
+  github.com/hanzoai/deploy/v3/commitserver/commit:
     interfaces:
       RepoClientFactory: {}
-  github.com/argoproj/argo-cd/v3/controller/cache:
+  github.com/hanzoai/deploy/v3/controller/cache:
     interfaces:
       LiveStateCache: {}
-  github.com/argoproj/argo-cd/v3/controller/hydrator:
+  github.com/hanzoai/deploy/v3/controller/hydrator:
     interfaces:
       Dependencies: {}
       RepoGetter: {}
-  github.com/argoproj/argo-cd/v3/pkg/apiclient/cluster:
+  github.com/hanzoai/deploy/v3/pkg/apiclient/cluster:
     interfaces:
       ClusterServiceServer: {}
-  github.com/argoproj/argo-cd/v3/pkg/apiclient/project:
+  github.com/hanzoai/deploy/v3/pkg/apiclient/project:
     interfaces:
       ProjectServiceClient: {}
-  github.com/argoproj/argo-cd/v3/pkg/apiclient/session:
+  github.com/hanzoai/deploy/v3/pkg/apiclient/session:
     interfaces:
       SessionServiceClient: {}
       SessionServiceServer: {}
-  github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/typed/application/v1alpha1:
+  github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/typed/application/v1alpha1:
     interfaces:
       AppProjectInterface: {}
-  github.com/argoproj/argo-cd/v3/reposerver/apiclient:
+  github.com/hanzoai/deploy/v3/reposerver/apiclient:
     interfaces:
       RepoServerServiceClient: {}
       RepoServerService_GenerateManifestWithFilesClient: {}
-  github.com/argoproj/argo-cd/v3/server/broadcast:
+  github.com/hanzoai/deploy/v3/server/broadcast:
     interfaces:
       Broadcaster: {}
-  github.com/argoproj/argo-cd/v3/server/extension:
+  github.com/hanzoai/deploy/v3/server/extension:
     interfaces:
       ApplicationGetter: {}
       ExtensionMetricsRegistry: {}
@@ -57,26 +57,26 @@ packages:
       RbacEnforcer: {}
       SettingsGetter: {}
       UserGetter: {}
-  github.com/argoproj/argo-cd/v3/util/db:
+  github.com/hanzoai/deploy/v3/util/db:
     interfaces:
       ArgoDB: {}
       RepoCredsDB: {}
-  github.com/argoproj/argo-cd/v3/util/git:
+  github.com/hanzoai/deploy/v3/util/git:
     interfaces:
       Client: {}
-  github.com/argoproj/argo-cd/v3/util/helm:
+  github.com/hanzoai/deploy/v3/util/helm:
     interfaces:
       Client: {}
-  github.com/argoproj/argo-cd/v3/util/io:
+  github.com/hanzoai/deploy/v3/util/io:
     interfaces:
       TempPaths: {}
-  github.com/argoproj/argo-cd/v3/util/notification/argocd:
+  github.com/hanzoai/deploy/v3/util/notification/argocd:
     interfaces:
       Service: {}
-  github.com/argoproj/argo-cd/v3/util/oci:
+  github.com/hanzoai/deploy/v3/util/oci:
     interfaces:
       Client: {}
-  github.com/argoproj/argo-cd/v3/util/workloadidentity:
+  github.com/hanzoai/deploy/v3/util/workloadidentity:
     interfaces:
       TokenProvider: {}
   github.com/argoproj/argo-cd/gitops-engine/pkg/cache:

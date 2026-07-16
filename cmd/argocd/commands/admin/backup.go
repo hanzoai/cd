@@ -20,13 +20,13 @@ import (
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/utils"
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
-	secutil "github.com/argoproj/argo-cd/v3/util/security"
+	"github.com/hanzoai/deploy/v3/cmd/argocd/commands/utils"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application"
+	"github.com/hanzoai/deploy/v3/util/cli"
+	"github.com/hanzoai/deploy/v3/util/errors"
+	"github.com/hanzoai/deploy/v3/util/localconfig"
+	secutil "github.com/hanzoai/deploy/v3/util/security"
 )
 
 // NewExportCommand defines a new command for exporting Kubernetes and Argo CD resources.

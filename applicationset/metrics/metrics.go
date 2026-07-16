@@ -7,10 +7,10 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	argoappv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applisters "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	metricsutil "github.com/argoproj/argo-cd/v3/util/metrics"
-	"github.com/argoproj/argo-cd/v3/util/metrics/kubectl"
+	argoappv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	applisters "github.com/hanzoai/deploy/v3/pkg/client/listers/application/v1alpha1"
+	metricsutil "github.com/hanzoai/deploy/v3/util/metrics"
+	"github.com/hanzoai/deploy/v3/util/metrics/kubectl"
 )
 
 var (

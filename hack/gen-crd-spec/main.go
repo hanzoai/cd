@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application"
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"

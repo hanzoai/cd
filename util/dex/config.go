@@ -7,8 +7,8 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/util/settings"
 
 	log "github.com/sirupsen/logrus"
 )

@@ -3,7 +3,7 @@
 package v1alpha1
 
 import (
-	applicationv1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	applicationv1alpha1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	listers "k8s.io/client-go/listers"
 	cache "k8s.io/client-go/tools/cache"

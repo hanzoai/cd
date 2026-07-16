@@ -16,9 +16,9 @@ import (
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/diff"
 
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/cli"
+	applicationpkg "github.com/hanzoai/deploy/v3/pkg/apiclient/application"
+	appsv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/cli"
 )
 
 type testNormalizer struct{}

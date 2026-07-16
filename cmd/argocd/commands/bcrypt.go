@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/argoproj/argo-cd/v3/util/cli"
+	"github.com/hanzoai/deploy/v3/util/cli"
 )
 
 // NewBcryptCmd represents the bcrypt command

@@ -16,10 +16,10 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/client-go/rest"
 
-	"github.com/argoproj/argo-cd/v3/util/lua"
+	"github.com/hanzoai/deploy/v3/util/lua"
 
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	argoutil "github.com/argoproj/argo-cd/v3/util/argo"
+	appv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	argoutil "github.com/hanzoai/deploy/v3/util/argo"
 )
 
 type HookType string

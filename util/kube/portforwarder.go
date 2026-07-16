@@ -18,7 +18,7 @@ import (
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	"k8s.io/kubectl/pkg/util/podutils"
 
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
 )
 
 func selectPodForPortForward(clientSet kubernetes.Interface, namespace string, podSelectors ...string) (*corev1.Pod, error) {

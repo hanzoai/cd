@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/project"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/project"
 
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/v3/test/e2e/fixture"
 )
 
 // this implements the "then" part of given/when/then

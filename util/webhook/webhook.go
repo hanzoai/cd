@@ -15,7 +15,7 @@ import (
 	bb "github.com/ktrysmt/go-bitbucket"
 	"k8s.io/apimachinery/pkg/labels"
 
-	alpha1 "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
+	alpha1 "github.com/hanzoai/deploy/v3/pkg/client/listers/application/v1alpha1"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/go-playground/webhooks/v6/azuredevops"
@@ -27,18 +27,18 @@ import (
 	gogsclient "github.com/gogits/go-gogs-client"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned"
-	"github.com/argoproj/argo-cd/v3/reposerver/cache"
-	servercache "github.com/argoproj/argo-cd/v3/server/cache"
-	"github.com/argoproj/argo-cd/v3/util/app/path"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	"github.com/argoproj/argo-cd/v3/util/glob"
-	"github.com/argoproj/argo-cd/v3/util/guard"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned"
+	"github.com/hanzoai/deploy/v3/reposerver/cache"
+	servercache "github.com/hanzoai/deploy/v3/server/cache"
+	"github.com/hanzoai/deploy/v3/util/app/path"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/db"
+	"github.com/hanzoai/deploy/v3/util/git"
+	"github.com/hanzoai/deploy/v3/util/glob"
+	"github.com/hanzoai/deploy/v3/util/guard"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 type settingsSource interface {

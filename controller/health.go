@@ -9,11 +9,11 @@ import (
 	kubeutil "github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applog "github.com/argoproj/argo-cd/v3/util/app/log"
-	"github.com/argoproj/argo-cd/v3/util/lua"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application"
+	appv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	applog "github.com/hanzoai/deploy/v3/util/app/log"
+	"github.com/hanzoai/deploy/v3/util/lua"
 )
 
 // setApplicationHealth updates the health statuses of all resources performed in the comparison

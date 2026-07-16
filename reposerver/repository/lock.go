@@ -5,7 +5,7 @@ import (
 	"io"
 	"sync"
 
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
 )
 
 func NewRepositoryLock() *repositoryLock {

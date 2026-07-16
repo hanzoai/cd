@@ -16,9 +16,9 @@ import (
 	gocache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"
 
-	argoutils "github.com/argoproj/argo-cd/v3/util"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity"
+	argoutils "github.com/hanzoai/deploy/v3/util"
+	"github.com/hanzoai/deploy/v3/util/env"
+	"github.com/hanzoai/deploy/v3/util/workloadidentity"
 )
 
 // In memory cache for storing Azure tokens

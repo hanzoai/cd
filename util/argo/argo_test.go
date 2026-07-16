@@ -23,16 +23,16 @@ import (
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
 
-	argoappv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	"github.com/argoproj/argo-cd/v3/pkg/client/informers/externalversions/application/v1alpha1"
-	applisters "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient/mocks"
-	"github.com/argoproj/argo-cd/v3/test"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	dbmocks "github.com/argoproj/argo-cd/v3/util/db/mocks"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	argoappv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/fake"
+	"github.com/hanzoai/deploy/v3/pkg/client/informers/externalversions/application/v1alpha1"
+	applisters "github.com/hanzoai/deploy/v3/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/reposerver/apiclient"
+	"github.com/hanzoai/deploy/v3/reposerver/apiclient/mocks"
+	"github.com/hanzoai/deploy/v3/test"
+	"github.com/hanzoai/deploy/v3/util/db"
+	dbmocks "github.com/hanzoai/deploy/v3/util/db/mocks"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 func TestRefreshApp(t *testing.T) {

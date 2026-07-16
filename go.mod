@@ -1,4 +1,4 @@
-module github.com/argoproj/argo-cd/v3
+module github.com/hanzoai/deploy/v3
 
 go 1.26.0
 

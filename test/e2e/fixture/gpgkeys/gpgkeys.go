@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	"github.com/argoproj/argo-cd/v3/util/errors"
+	"github.com/hanzoai/deploy/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/v3/util/errors"
 )
 
 // Add GPG public key via API and create appropriate file where the ConfigMap mount would de it as well

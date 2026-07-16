@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
+	jwtutil "github.com/hanzoai/deploy/v3/util/jwt"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/golang-jwt/jwt/v5"
@@ -21,18 +21,18 @@ import (
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	sessionpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/session"
-	settingspkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/settings"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	grpc_util "github.com/argoproj/argo-cd/v3/util/grpc"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
-	oidcutil "github.com/argoproj/argo-cd/v3/util/oidc"
-	"github.com/argoproj/argo-cd/v3/util/rand"
-	oidcconfig "github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/cmd/argocd/commands/headless"
+	argocdclient "github.com/hanzoai/deploy/v3/pkg/apiclient"
+	sessionpkg "github.com/hanzoai/deploy/v3/pkg/apiclient/session"
+	settingspkg "github.com/hanzoai/deploy/v3/pkg/apiclient/settings"
+	"github.com/hanzoai/deploy/v3/util/cli"
+	"github.com/hanzoai/deploy/v3/util/errors"
+	grpc_util "github.com/hanzoai/deploy/v3/util/grpc"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
+	"github.com/hanzoai/deploy/v3/util/localconfig"
+	oidcutil "github.com/hanzoai/deploy/v3/util/oidc"
+	"github.com/hanzoai/deploy/v3/util/rand"
+	oidcconfig "github.com/hanzoai/deploy/v3/util/settings"
 )
 
 // NewLoginCommand returns a new instance of `argocd login` command

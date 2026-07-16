@@ -13,12 +13,12 @@ import (
 	"gopkg.in/yaml.v3"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/argo-cd/v3/commitserver/apiclient"
-	"github.com/argoproj/argo-cd/v3/common"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	"github.com/argoproj/argo-cd/v3/util/hydrator"
-	"github.com/argoproj/argo-cd/v3/util/io"
+	"github.com/hanzoai/deploy/v3/commitserver/apiclient"
+	"github.com/hanzoai/deploy/v3/common"
+	appv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/git"
+	"github.com/hanzoai/deploy/v3/util/hydrator"
+	"github.com/hanzoai/deploy/v3/util/io"
 )
 
 var sprigFuncMap = sprig.GenericFuncMap() // a singleton for better performance

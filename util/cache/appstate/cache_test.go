@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	. "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	cacheutil "github.com/argoproj/argo-cd/v3/util/cache"
+	. "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	cacheutil "github.com/hanzoai/deploy/v3/util/cache"
 )
 
 type fixtures struct {

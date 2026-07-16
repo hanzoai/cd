@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/version"
+	argocdclient "github.com/hanzoai/deploy/v3/pkg/apiclient"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/version"
 )
 
 func TestShortVersionClient(t *testing.T) {

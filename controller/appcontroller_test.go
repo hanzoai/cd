@@ -20,9 +20,9 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	statecache "github.com/argoproj/argo-cd/v3/controller/cache"
-	"github.com/argoproj/argo-cd/v3/controller/sharding"
+	"github.com/hanzoai/deploy/v3/common"
+	statecache "github.com/hanzoai/deploy/v3/controller/cache"
+	"github.com/hanzoai/deploy/v3/controller/sharding"
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/cache/mocks"
 	synccommon "github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
@@ -41,21 +41,21 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"sigs.k8s.io/yaml"
 
-	dbmocks "github.com/argoproj/argo-cd/v3/util/db/mocks"
+	dbmocks "github.com/hanzoai/deploy/v3/util/db/mocks"
 
-	mockcommitclient "github.com/argoproj/argo-cd/v3/commitserver/apiclient/mocks"
-	mockstatecache "github.com/argoproj/argo-cd/v3/controller/cache/mocks"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	mockrepoclient "github.com/argoproj/argo-cd/v3/reposerver/apiclient/mocks"
-	"github.com/argoproj/argo-cd/v3/test"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	cacheutil "github.com/argoproj/argo-cd/v3/util/cache"
-	appstatecache "github.com/argoproj/argo-cd/v3/util/cache/appstate"
-	"github.com/argoproj/argo-cd/v3/util/settings"
-	utilTest "github.com/argoproj/argo-cd/v3/util/test"
+	mockcommitclient "github.com/hanzoai/deploy/v3/commitserver/apiclient/mocks"
+	mockstatecache "github.com/hanzoai/deploy/v3/controller/cache/mocks"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/fake"
+	"github.com/hanzoai/deploy/v3/reposerver/apiclient"
+	mockrepoclient "github.com/hanzoai/deploy/v3/reposerver/apiclient/mocks"
+	"github.com/hanzoai/deploy/v3/test"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/argo/normalizers"
+	cacheutil "github.com/hanzoai/deploy/v3/util/cache"
+	appstatecache "github.com/hanzoai/deploy/v3/util/cache/appstate"
+	"github.com/hanzoai/deploy/v3/util/settings"
+	utilTest "github.com/hanzoai/deploy/v3/util/test"
 )
 
 var testEnableEventList []string = argo.DefaultEnableEventList()

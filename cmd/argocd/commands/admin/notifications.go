@@ -8,17 +8,17 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	service "github.com/argoproj/argo-cd/v3/util/notification/argocd"
-	"github.com/argoproj/argo-cd/v3/util/notification/settings"
-	"github.com/argoproj/argo-cd/v3/util/tls"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/reposerver/apiclient"
+	"github.com/hanzoai/deploy/v3/util/env"
+	service "github.com/hanzoai/deploy/v3/util/notification/argocd"
+	"github.com/hanzoai/deploy/v3/util/notification/settings"
+	"github.com/hanzoai/deploy/v3/util/tls"
 
 	"github.com/argoproj/notifications-engine/pkg/cmd"
 	"github.com/spf13/cobra"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application"
 )
 
 var applications = schema.GroupVersionResource{Group: application.Group, Version: "v1alpha1", Resource: application.ApplicationPlural}

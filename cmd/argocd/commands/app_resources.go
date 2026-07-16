@@ -10,23 +10,23 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/argoproj/argo-cd/v3/util/templates"
+	"github.com/hanzoai/deploy/v3/util/templates"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/utils"
-	"github.com/argoproj/argo-cd/v3/cmd/util"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/cmd/argocd/commands/utils"
+	"github.com/hanzoai/deploy/v3/cmd/util"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	"github.com/hanzoai/deploy/v3/cmd/argocd/commands/headless"
+	argocdclient "github.com/hanzoai/deploy/v3/pkg/apiclient"
+	applicationpkg "github.com/hanzoai/deploy/v3/pkg/apiclient/application"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/errors"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
 )
 
 // NewApplicationGetResourceCommand returns a new instance of the `app get-resource` command

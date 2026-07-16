@@ -11,9 +11,9 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	certutil "github.com/argoproj/argo-cd/v3/util/cert"
+	"github.com/hanzoai/deploy/v3/common"
+	appsv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	certutil "github.com/hanzoai/deploy/v3/util/cert"
 )
 
 // A struct representing an entry in the list of SSH known hosts.

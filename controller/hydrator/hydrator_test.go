@@ -18,14 +18,14 @@ import (
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
 
-	commitclient "github.com/argoproj/argo-cd/v3/commitserver/apiclient"
-	commitservermocks "github.com/argoproj/argo-cd/v3/commitserver/apiclient/mocks"
-	"github.com/argoproj/argo-cd/v3/controller/hydrator/mocks"
-	"github.com/argoproj/argo-cd/v3/controller/hydrator/types"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	repoclient "github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	reposervermocks "github.com/argoproj/argo-cd/v3/reposerver/apiclient/mocks"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	commitclient "github.com/hanzoai/deploy/v3/commitserver/apiclient"
+	commitservermocks "github.com/hanzoai/deploy/v3/commitserver/apiclient/mocks"
+	"github.com/hanzoai/deploy/v3/controller/hydrator/mocks"
+	"github.com/hanzoai/deploy/v3/controller/hydrator/types"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	repoclient "github.com/hanzoai/deploy/v3/reposerver/apiclient"
+	reposervermocks "github.com/hanzoai/deploy/v3/reposerver/apiclient/mocks"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 var message = `testn

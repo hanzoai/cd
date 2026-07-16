@@ -10,12 +10,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/util/proxy"
+	"github.com/hanzoai/deploy/v3/util/proxy"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/test/fixture/log"
-	"github.com/argoproj/argo-cd/v3/test/fixture/path"
-	"github.com/argoproj/argo-cd/v3/test/fixture/test"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/test/fixture/log"
+	"github.com/hanzoai/deploy/v3/test/fixture/path"
+	"github.com/hanzoai/deploy/v3/test/fixture/test"
 )
 
 func TestMain(m *testing.M) {

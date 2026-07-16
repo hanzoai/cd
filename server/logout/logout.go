@@ -10,11 +10,11 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	httputil "github.com/argoproj/argo-cd/v3/util/http"
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
-	"github.com/argoproj/argo-cd/v3/util/session"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/common"
+	httputil "github.com/hanzoai/deploy/v3/util/http"
+	jwtutil "github.com/hanzoai/deploy/v3/util/jwt"
+	"github.com/hanzoai/deploy/v3/util/session"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 // NewHandler creates handler serving to do api/logout endpoint

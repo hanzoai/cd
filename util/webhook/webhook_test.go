@@ -31,23 +31,23 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	kubetesting "k8s.io/client-go/testing"
 
-	argov1 "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	servercache "github.com/argoproj/argo-cd/v3/server/cache"
-	"github.com/argoproj/argo-cd/v3/util/cache/appstate"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/db/mocks"
+	argov1 "github.com/hanzoai/deploy/v3/pkg/client/listers/application/v1alpha1"
+	servercache "github.com/hanzoai/deploy/v3/server/cache"
+	"github.com/hanzoai/deploy/v3/util/cache/appstate"
+	"github.com/hanzoai/deploy/v3/util/db"
+	"github.com/hanzoai/deploy/v3/util/db/mocks"
 
 	"github.com/sirupsen/logrus/hooks/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/reposerver/cache"
-	cacheutil "github.com/argoproj/argo-cd/v3/util/cache"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/fake"
+	"github.com/hanzoai/deploy/v3/reposerver/apiclient"
+	"github.com/hanzoai/deploy/v3/reposerver/cache"
+	cacheutil "github.com/hanzoai/deploy/v3/util/cache"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 type fakeSettingsSrc struct{}

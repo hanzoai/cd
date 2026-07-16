@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/test/fixture/test"
-	argoexec "github.com/argoproj/argo-cd/v3/util/exec"
+	"github.com/hanzoai/deploy/v3/test/fixture/test"
+	argoexec "github.com/hanzoai/deploy/v3/util/exec"
 )
 
 func TestKustomizeVersion(t *testing.T) {

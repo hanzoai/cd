@@ -9,11 +9,11 @@ import (
 
 	k8smanagedfields "k8s.io/apimachinery/pkg/util/managedfields"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/argo/managedfields"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	appstatecache "github.com/argoproj/argo-cd/v3/util/cache/appstate"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/argo/managedfields"
+	"github.com/hanzoai/deploy/v3/util/argo/normalizers"
+	appstatecache "github.com/hanzoai/deploy/v3/util/cache/appstate"
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/diff"
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"

@@ -14,9 +14,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	"github.com/argoproj/argo-cd/v3/common"
-	argoprojiov1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/applicationset/utils"
+	"github.com/hanzoai/deploy/v3/common"
+	argoprojiov1alpha1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 )
 
 // clusterSecretEventHandler is used when watching Secrets to check if they are ArgoCD Cluster Secrets, and if so

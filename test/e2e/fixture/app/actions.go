@@ -16,10 +16,10 @@ import (
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	client "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	"github.com/argoproj/argo-cd/v3/util/grpc"
+	client "github.com/hanzoai/deploy/v3/pkg/apiclient/application"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/v3/util/grpc"
 )
 
 // this implements the "when" part of given/when/then

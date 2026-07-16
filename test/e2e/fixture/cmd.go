@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	argoexec "github.com/argoproj/argo-cd/v3/util/exec"
+	argoexec "github.com/hanzoai/deploy/v3/util/exec"
 )
 
 func Run(workDir, name string, args ...string) (string, error) {

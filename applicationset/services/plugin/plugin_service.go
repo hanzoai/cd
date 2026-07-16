@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	internalhttp "github.com/argoproj/argo-cd/v3/applicationset/services/internal/http"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	internalhttp "github.com/hanzoai/deploy/v3/applicationset/services/internal/http"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 )
 
 // ServiceRequest is the request object sent to the plugin service.

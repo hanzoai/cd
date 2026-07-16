@@ -1,5 +1,5 @@
 syntax = "proto2";
-option go_package = "github.com/argoproj/argo-cd/v3/pkg/apiclient/notification";
+option go_package = "github.com/hanzoai/deploy/v3/pkg/apiclient/notification";
 
 // Notification Service
 //

@@ -8,15 +8,15 @@ import (
 	"regexp"
 	"strings"
 
-	service "github.com/argoproj/argo-cd/v3/util/notification/argocd"
+	service "github.com/hanzoai/deploy/v3/util/notification/argocd"
 
-	"github.com/argoproj/argo-cd/v3/util/notification/expression/shared"
+	"github.com/hanzoai/deploy/v3/util/notification/expression/shared"
 
 	"github.com/argoproj/notifications-engine/pkg/util/text"
 	giturls "github.com/chainguard-dev/git-urls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 )
 
 var gitSuffix = regexp.MustCompile(`\.git$`)

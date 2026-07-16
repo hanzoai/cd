@@ -30,17 +30,17 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/argoproj/argo-cd/v3/controller/metrics"
-	"github.com/argoproj/argo-cd/v3/controller/sharding"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	logutils "github.com/argoproj/argo-cd/v3/util/log"
-	"github.com/argoproj/argo-cd/v3/util/lua"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/controller/metrics"
+	"github.com/hanzoai/deploy/v3/controller/sharding"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application"
+	appv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/argo/normalizers"
+	"github.com/hanzoai/deploy/v3/util/db"
+	"github.com/hanzoai/deploy/v3/util/env"
+	logutils "github.com/hanzoai/deploy/v3/util/log"
+	"github.com/hanzoai/deploy/v3/util/lua"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 const (

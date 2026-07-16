@@ -6,13 +6,13 @@ import (
 
 	"github.com/spf13/cobra"
 
-	generator "github.com/argoproj/argo-cd/v3/hack/gen-resources/generators"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	generator "github.com/hanzoai/deploy/v3/hack/gen-resources/generators"
+	"github.com/hanzoai/deploy/v3/util/db"
+	"github.com/hanzoai/deploy/v3/util/settings"
 
-	cmdutil "github.com/argoproj/argo-cd/v3/cmd/util"
-	"github.com/argoproj/argo-cd/v3/hack/gen-resources/util"
-	"github.com/argoproj/argo-cd/v3/util/cli"
+	cmdutil "github.com/hanzoai/deploy/v3/cmd/util"
+	"github.com/hanzoai/deploy/v3/hack/gen-resources/util"
+	"github.com/hanzoai/deploy/v3/util/cli"
 )
 
 const (

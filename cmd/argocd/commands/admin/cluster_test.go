@@ -4,10 +4,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	fakeapps "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	cacheutil "github.com/argoproj/argo-cd/v3/util/cache"
-	"github.com/argoproj/argo-cd/v3/util/cache/appstate"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	fakeapps "github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/fake"
+	cacheutil "github.com/hanzoai/deploy/v3/util/cache"
+	"github.com/hanzoai/deploy/v3/util/cache/appstate"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

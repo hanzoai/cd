@@ -5,8 +5,8 @@ import (
 
 	. "github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
 
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/app"
+	"github.com/hanzoai/deploy/v3/test/e2e/fixture"
+	. "github.com/hanzoai/deploy/v3/test/e2e/fixture/app"
 )
 
 func TestCanAccessInsecureSSHRepo(t *testing.T) {

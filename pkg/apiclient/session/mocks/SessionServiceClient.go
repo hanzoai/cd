@@ -7,7 +7,7 @@ package mocks
 import (
 	"context"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/session"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/session"
 	mock "github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
 )

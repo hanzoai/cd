@@ -11,7 +11,7 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/argoproj/argo-cd/v3/util/db/mocks"
+	"github.com/hanzoai/deploy/v3/util/db/mocks"
 
 	gitopsCache "github.com/argoproj/argo-cd/gitops-engine/pkg/cache"
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
@@ -24,10 +24,10 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"sigs.k8s.io/yaml"
 
-	argoappv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	appinformer "github.com/argoproj/argo-cd/v3/pkg/client/informers/externalversions"
-	applister "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
+	argoappv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/fake"
+	appinformer "github.com/hanzoai/deploy/v3/pkg/client/informers/externalversions"
+	applister "github.com/hanzoai/deploy/v3/pkg/client/listers/application/v1alpha1"
 
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/manager"

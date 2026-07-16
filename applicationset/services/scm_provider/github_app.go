@@ -4,9 +4,9 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/services/github_app_auth"
-	"github.com/argoproj/argo-cd/v3/applicationset/services/internal/github_app"
-	appsetutils "github.com/argoproj/argo-cd/v3/applicationset/utils"
+	"github.com/hanzoai/deploy/v3/applicationset/services/github_app_auth"
+	"github.com/hanzoai/deploy/v3/applicationset/services/internal/github_app"
+	appsetutils "github.com/hanzoai/deploy/v3/applicationset/utils"
 )
 
 func NewGithubAppProviderFor(ctx context.Context, g github_app_auth.Authentication, organization string, url string, allBranches bool, optionalHTTPClient ...*http.Client) (*GithubProvider, error) {

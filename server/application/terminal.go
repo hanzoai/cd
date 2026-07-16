@@ -19,14 +19,14 @@ import (
 	"k8s.io/client-go/tools/remotecommand"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applisters "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
-	"github.com/argoproj/argo-cd/v3/util/security"
-	util_session "github.com/argoproj/argo-cd/v3/util/session"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	appv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	applisters "github.com/hanzoai/deploy/v3/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/db"
+	"github.com/hanzoai/deploy/v3/util/rbac"
+	"github.com/hanzoai/deploy/v3/util/security"
+	util_session "github.com/hanzoai/deploy/v3/util/session"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 type terminalHandler struct {

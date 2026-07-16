@@ -25,17 +25,17 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/argoproj/argo-cd/v3/server/rbacpolicy"
+	"github.com/hanzoai/deploy/v3/server/rbacpolicy"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/dex"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	httputil "github.com/argoproj/argo-cd/v3/util/http"
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
-	oidcutil "github.com/argoproj/argo-cd/v3/util/oidc"
-	passwordutil "github.com/argoproj/argo-cd/v3/util/password"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/dex"
+	"github.com/hanzoai/deploy/v3/util/env"
+	httputil "github.com/hanzoai/deploy/v3/util/http"
+	jwtutil "github.com/hanzoai/deploy/v3/util/jwt"
+	oidcutil "github.com/hanzoai/deploy/v3/util/oidc"
+	passwordutil "github.com/hanzoai/deploy/v3/util/password"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 // SessionManager generates and validates JWT tokens for login sessions.
@@ -109,7 +109,7 @@ var InvalidLoginErr = status.Errorf(codes.Unauthenticated, invalidLoginError)
 var tracer trace.Tracer
 
 func init() {
-	tracer = otel.Tracer("github.com/argoproj/argo-cd/v3/util/session")
+	tracer = otel.Tracer("github.com/hanzoai/deploy/v3/util/session")
 }
 
 // Returns the maximum cache size as number of entries

@@ -15,9 +15,9 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	executil "github.com/argoproj/argo-cd/v3/util/exec"
+	"github.com/hanzoai/deploy/v3/common"
+	appsv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	executil "github.com/hanzoai/deploy/v3/util/exec"
 )
 
 // Regular expression to match public key beginning

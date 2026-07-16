@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/argoproj/argo-cd/v3/pkg/apiclient/applicationset";
+option go_package = "github.com/hanzoai/deploy/v3/pkg/apiclient/applicationset";
 
 
 // ApplicationSet Service
@@ -9,7 +9,7 @@ package applicationset;
 
 import "google/api/annotations.proto";
 import "k8s.io/api/core/v1/generated.proto";
-import "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1/generated.proto";
+import "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1/generated.proto";
 
 // ApplicationSetGetQuery is a query for applicationset resources
 message ApplicationSetGetQuery {

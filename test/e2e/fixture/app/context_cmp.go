@@ -8,9 +8,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/cmpserver/plugin"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	"github.com/argoproj/argo-cd/v3/util/errors"
+	"github.com/hanzoai/deploy/v3/cmpserver/plugin"
+	"github.com/hanzoai/deploy/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/v3/util/errors"
 )
 
 // RunningCMPServer starts a CMP server with the given config directory and waits for it to be ready.

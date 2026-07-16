@@ -11,7 +11,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	argocdcommon "github.com/argoproj/argo-cd/v3/common"
+	argocdcommon "github.com/hanzoai/deploy/v3/common"
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"

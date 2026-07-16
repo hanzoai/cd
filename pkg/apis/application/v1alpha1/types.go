@@ -43,13 +43,13 @@ import (
 	"k8s.io/client-go/tools/clientcmd/api"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/util/rbac"
+	"github.com/hanzoai/deploy/v3/util/rbac"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	"github.com/argoproj/argo-cd/v3/util/helm"
-	utilhttp "github.com/argoproj/argo-cd/v3/util/http"
-	"github.com/argoproj/argo-cd/v3/util/security"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/util/env"
+	"github.com/hanzoai/deploy/v3/util/helm"
+	utilhttp "github.com/hanzoai/deploy/v3/util/http"
+	"github.com/hanzoai/deploy/v3/util/security"
 )
 
 // Note: Application and ApplicationSet share the same field structure (TypeMeta, ObjectMeta, spec, status)

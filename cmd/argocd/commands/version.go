@@ -8,12 +8,12 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	"github.com/argoproj/argo-cd/v3/common"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/version"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	"github.com/hanzoai/deploy/v3/cmd/argocd/commands/headless"
+	"github.com/hanzoai/deploy/v3/common"
+	argocdclient "github.com/hanzoai/deploy/v3/pkg/apiclient"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/version"
+	"github.com/hanzoai/deploy/v3/util/errors"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
 )
 
 // NewVersionCmd returns a new `version` command to be used as a sub-command to root

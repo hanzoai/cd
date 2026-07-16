@@ -9,8 +9,8 @@ import (
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	"github.com/google/go-github/v69/github"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/services/github_app_auth"
-	"github.com/argoproj/argo-cd/v3/util/git"
+	"github.com/hanzoai/deploy/v3/applicationset/services/github_app_auth"
+	"github.com/hanzoai/deploy/v3/util/git"
 )
 
 // getInstallationClient creates a new GitHub client with the specified installation ID.

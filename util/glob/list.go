@@ -3,7 +3,7 @@ package glob
 import (
 	"strings"
 
-	"github.com/argoproj/argo-cd/v3/util/regex"
+	"github.com/hanzoai/deploy/v3/util/regex"
 )
 
 const (

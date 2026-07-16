@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/util/version"
 
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	kubeutil "github.com/argoproj/argo-cd/v3/util/kube"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/errors"
+	kubeutil "github.com/hanzoai/deploy/v3/util/kube"
 )
 
 type Versions struct {

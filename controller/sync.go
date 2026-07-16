@@ -12,7 +12,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/util/strategicpatch"
 
-	cdcommon "github.com/argoproj/argo-cd/v3/common"
+	cdcommon "github.com/hanzoai/deploy/v3/common"
 
 	gitopsDiff "github.com/argoproj/argo-cd/gitops-engine/pkg/diff"
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/sync"
@@ -27,16 +27,16 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 
-	"github.com/argoproj/argo-cd/v3/controller/metrics"
-	"github.com/argoproj/argo-cd/v3/controller/syncid"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applog "github.com/argoproj/argo-cd/v3/util/app/log"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/argo/diff"
-	"github.com/argoproj/argo-cd/v3/util/glob"
-	kubeutil "github.com/argoproj/argo-cd/v3/util/kube"
-	logutils "github.com/argoproj/argo-cd/v3/util/log"
-	"github.com/argoproj/argo-cd/v3/util/lua"
+	"github.com/hanzoai/deploy/v3/controller/metrics"
+	"github.com/hanzoai/deploy/v3/controller/syncid"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	applog "github.com/hanzoai/deploy/v3/util/app/log"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/argo/diff"
+	"github.com/hanzoai/deploy/v3/util/glob"
+	kubeutil "github.com/hanzoai/deploy/v3/util/kube"
+	logutils "github.com/hanzoai/deploy/v3/util/log"
+	"github.com/hanzoai/deploy/v3/util/lua"
 )
 
 const (

@@ -16,11 +16,11 @@ import (
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/health"
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
 
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	. "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/app"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	applicationpkg "github.com/hanzoai/deploy/v3/pkg/apiclient/application"
+	. "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/deploy/v3/test/e2e/fixture"
+	. "github.com/hanzoai/deploy/v3/test/e2e/fixture/app"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
 )
 
 // Values of `.data` & `.stringData“ fields in Secret resources are masked in UI/CLI

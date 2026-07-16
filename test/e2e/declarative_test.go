@@ -6,8 +6,8 @@ import (
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/health"
 	. "github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
 
-	. "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/app"
+	. "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/deploy/v3/test/e2e/fixture/app"
 )
 
 func TestDeclarativeHappyApp(t *testing.T) {

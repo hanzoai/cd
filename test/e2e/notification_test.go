@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/notification"
-	notifFixture "github.com/argoproj/argo-cd/v3/test/e2e/fixture/notification"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/notification"
+	notifFixture "github.com/hanzoai/deploy/v3/test/e2e/fixture/notification"
 )
 
 func TestNotificationsListServices(t *testing.T) {

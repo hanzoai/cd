@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	httputil "github.com/argoproj/argo-cd/v3/util/http"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
-	util_session "github.com/argoproj/argo-cd/v3/util/session"
+	"github.com/hanzoai/deploy/v3/common"
+	httputil "github.com/hanzoai/deploy/v3/util/http"
+	"github.com/hanzoai/deploy/v3/util/rbac"
+	util_session "github.com/hanzoai/deploy/v3/util/session"
 
 	"github.com/gorilla/websocket"
 	log "github.com/sirupsen/logrus"

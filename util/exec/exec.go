@@ -16,8 +16,8 @@ import (
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/tracing"
 	"github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/util/log"
-	"github.com/argoproj/argo-cd/v3/util/rand"
+	"github.com/hanzoai/deploy/v3/util/log"
+	"github.com/hanzoai/deploy/v3/util/rand"
 )
 
 var (

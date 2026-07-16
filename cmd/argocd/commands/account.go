@@ -17,20 +17,20 @@ import (
 	"golang.org/x/term"
 	"sigs.k8s.io/yaml"
 
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
+	jwtutil "github.com/hanzoai/deploy/v3/util/jwt"
+	"github.com/hanzoai/deploy/v3/util/rbac"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/utils"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	accountpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/account"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/session"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
-	sessionutil "github.com/argoproj/argo-cd/v3/util/session"
-	"github.com/argoproj/argo-cd/v3/util/templates"
+	"github.com/hanzoai/deploy/v3/cmd/argocd/commands/headless"
+	"github.com/hanzoai/deploy/v3/cmd/argocd/commands/utils"
+	argocdclient "github.com/hanzoai/deploy/v3/pkg/apiclient"
+	accountpkg "github.com/hanzoai/deploy/v3/pkg/apiclient/account"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/session"
+	"github.com/hanzoai/deploy/v3/util/cli"
+	"github.com/hanzoai/deploy/v3/util/errors"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
+	"github.com/hanzoai/deploy/v3/util/localconfig"
+	sessionutil "github.com/hanzoai/deploy/v3/util/session"
+	"github.com/hanzoai/deploy/v3/util/templates"
 )
 
 func NewAccountCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {

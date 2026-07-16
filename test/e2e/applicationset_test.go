@@ -17,19 +17,19 @@ import (
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/health"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/applicationset"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/applicationset"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/test/e2e/fixture"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/applicationsets"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture/applicationsets/utils"
+	. "github.com/hanzoai/deploy/v3/test/e2e/fixture/applicationsets"
+	"github.com/hanzoai/deploy/v3/test/e2e/fixture/applicationsets/utils"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application"
 )
 
 var ExpectedConditions = []v1alpha1.ApplicationSetCondition{

@@ -25,10 +25,10 @@ import (
 
 	argoio "github.com/argoproj/argo-cd/gitops-engine/pkg/utils/io"
 
-	"github.com/argoproj/argo-cd/v3/util/cert"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity/mocks"
+	"github.com/hanzoai/deploy/v3/util/cert"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
+	"github.com/hanzoai/deploy/v3/util/workloadidentity"
+	"github.com/hanzoai/deploy/v3/util/workloadidentity/mocks"
 )
 
 type cred struct {

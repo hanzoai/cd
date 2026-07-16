@@ -27,10 +27,10 @@ import (
 	"k8s.io/kubectl/pkg/util/term"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	utillog "github.com/argoproj/argo-cd/v3/util/log"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/util/errors"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
+	utillog "github.com/hanzoai/deploy/v3/util/log"
 )
 
 // NewVersionCmd returns a new `version` command to be used as a sub-command to root

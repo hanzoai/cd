@@ -13,12 +13,12 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/services"
-	"github.com/argoproj/argo-cd/v3/applicationset/services/github_app_auth"
-	"github.com/argoproj/argo-cd/v3/applicationset/services/scm_provider"
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	"github.com/argoproj/argo-cd/v3/common"
-	argoprojiov1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/applicationset/services"
+	"github.com/hanzoai/deploy/v3/applicationset/services/github_app_auth"
+	"github.com/hanzoai/deploy/v3/applicationset/services/scm_provider"
+	"github.com/hanzoai/deploy/v3/applicationset/utils"
+	"github.com/hanzoai/deploy/v3/common"
+	argoprojiov1alpha1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 )
 
 var _ Generator = (*SCMProviderGenerator)(nil)

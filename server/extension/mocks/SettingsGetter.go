@@ -5,7 +5,7 @@
 package mocks
 
 import (
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/util/settings"
 	mock "github.com/stretchr/testify/mock"
 )
 

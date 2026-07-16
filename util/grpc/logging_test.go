@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/account"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/account"
 )
 
 func Test_JSONLogging(t *testing.T) {

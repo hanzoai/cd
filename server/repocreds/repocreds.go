@@ -4,15 +4,15 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/argoproj/argo-cd/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/argo"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	repocredspkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/repocreds"
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
+	repocredspkg "github.com/hanzoai/deploy/v3/pkg/apiclient/repocreds"
+	appsv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/db"
+	"github.com/hanzoai/deploy/v3/util/rbac"
 )
 
 // Server provides a Repository service

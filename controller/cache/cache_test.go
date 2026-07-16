@@ -25,13 +25,13 @@ import (
 	"github.com/stretchr/testify/mock"
 	"k8s.io/client-go/kubernetes/fake"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/controller/metrics"
-	"github.com/argoproj/argo-cd/v3/controller/sharding"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	dbmocks "github.com/argoproj/argo-cd/v3/util/db/mocks"
-	argosettings "github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/controller/metrics"
+	"github.com/hanzoai/deploy/v3/controller/sharding"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application"
+	appv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	dbmocks "github.com/hanzoai/deploy/v3/util/db/mocks"
+	argosettings "github.com/hanzoai/deploy/v3/util/settings"
 )
 
 type netError string

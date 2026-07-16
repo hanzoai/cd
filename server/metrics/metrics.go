@@ -9,9 +9,9 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/metrics/kubectl"
-	"github.com/argoproj/argo-cd/v3/util/profile"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/util/metrics/kubectl"
+	"github.com/hanzoai/deploy/v3/util/profile"
 )
 
 type MetricsServer struct {

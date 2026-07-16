@@ -15,14 +15,14 @@ import (
 	"google.golang.org/grpc/status"
 	"k8s.io/kubectl/pkg/util/slice"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/account"
-	"github.com/argoproj/argo-cd/v3/server/rbacpolicy"
-	"github.com/argoproj/argo-cd/v3/util/password"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
-	"github.com/argoproj/argo-cd/v3/util/security"
-	"github.com/argoproj/argo-cd/v3/util/session"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient/account"
+	"github.com/hanzoai/deploy/v3/server/rbacpolicy"
+	"github.com/hanzoai/deploy/v3/util/password"
+	"github.com/hanzoai/deploy/v3/util/rbac"
+	"github.com/hanzoai/deploy/v3/util/security"
+	"github.com/hanzoai/deploy/v3/util/session"
+	"github.com/hanzoai/deploy/v3/util/settings"
 )
 
 // Server provides a Session service

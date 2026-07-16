@@ -7,9 +7,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	. "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/app"
+	. "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/deploy/v3/test/e2e/fixture"
+	. "github.com/hanzoai/deploy/v3/test/e2e/fixture/app"
 )
 
 // when a app gets stuck in sync, and we try to delete it, it won't delete, instead we must then terminate it

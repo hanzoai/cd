@@ -13,8 +13,8 @@ import (
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v7"
 	azureGit "github.com/microsoft/azure-devops-go-api/azuredevops/v7/git"
 
-	azureMock "github.com/argoproj/argo-cd/v3/applicationset/services/scm_provider/azure_devops/git/mocks"
-	"github.com/argoproj/argo-cd/v3/applicationset/services/scm_provider/mocks"
+	azureMock "github.com/hanzoai/deploy/v3/applicationset/services/scm_provider/azure_devops/git/mocks"
+	"github.com/hanzoai/deploy/v3/applicationset/services/scm_provider/mocks"
 )
 
 func TestAzureDevopsRepoHasPath(t *testing.T) {

@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/go-github/v69/github"
 
-	appsetutils "github.com/argoproj/argo-cd/v3/applicationset/utils"
+	appsetutils "github.com/hanzoai/deploy/v3/applicationset/utils"
 )
 
 type GithubService struct {

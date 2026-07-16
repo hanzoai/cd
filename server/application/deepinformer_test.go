@@ -10,10 +10,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	clientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/typed/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/typed/application/v1alpha1/mocks"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/fake"
+	clientset "github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/typed/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/typed/application/v1alpha1/mocks"
 )
 
 func Test_deepCopyAppProjectClient_Get(t *testing.T) {

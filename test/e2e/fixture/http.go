@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/argoproj/argo-cd/v3/common"
+	"github.com/hanzoai/deploy/v3/common"
 )
 
 // DoHttpRequest executes a http request against the Argo CD API server

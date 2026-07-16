@@ -18,16 +18,16 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	ctrlmetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	argoappv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applister "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	"github.com/argoproj/argo-cd/v3/util/healthz"
-	metricsutil "github.com/argoproj/argo-cd/v3/util/metrics"
-	"github.com/argoproj/argo-cd/v3/util/metrics/kubectl"
-	"github.com/argoproj/argo-cd/v3/util/profile"
+	"github.com/hanzoai/deploy/v3/common"
+	argoappv1 "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	applister "github.com/hanzoai/deploy/v3/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/v3/util/argo"
+	"github.com/hanzoai/deploy/v3/util/db"
+	"github.com/hanzoai/deploy/v3/util/git"
+	"github.com/hanzoai/deploy/v3/util/healthz"
+	metricsutil "github.com/hanzoai/deploy/v3/util/metrics"
+	"github.com/hanzoai/deploy/v3/util/metrics/kubectl"
+	"github.com/hanzoai/deploy/v3/util/profile"
 )
 
 type MetricsServer struct {

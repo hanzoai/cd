@@ -14,11 +14,11 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	executil "github.com/argoproj/argo-cd/v3/util/exec"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	pathutil "github.com/argoproj/argo-cd/v3/util/io/path"
-	"github.com/argoproj/argo-cd/v3/util/proxy"
+	"github.com/hanzoai/deploy/v3/common"
+	executil "github.com/hanzoai/deploy/v3/util/exec"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
+	pathutil "github.com/hanzoai/deploy/v3/util/io/path"
+	"github.com/hanzoai/deploy/v3/util/proxy"
 )
 
 // A thin wrapper around the "helm" command, adding logging and error translation.

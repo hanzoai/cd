@@ -21,10 +21,10 @@ import (
 	"k8s.io/apimachinery/pkg/util/yaml"
 	"k8s.io/client-go/kubernetes/fake"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	testutil "github.com/argoproj/argo-cd/v3/test"
-	"github.com/argoproj/argo-cd/v3/util/test"
+	"github.com/hanzoai/deploy/v3/common"
+	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
+	testutil "github.com/hanzoai/deploy/v3/test"
+	"github.com/hanzoai/deploy/v3/util/test"
 )
 
 func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *corev1.Secret)) (*fake.Clientset, *SettingsManager) {

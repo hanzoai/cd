@@ -37,12 +37,12 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	certutil "github.com/argoproj/argo-cd/v3/util/cert"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	executil "github.com/argoproj/argo-cd/v3/util/exec"
-	"github.com/argoproj/argo-cd/v3/util/proxy"
-	"github.com/argoproj/argo-cd/v3/util/versions"
+	"github.com/hanzoai/deploy/v3/common"
+	certutil "github.com/hanzoai/deploy/v3/util/cert"
+	"github.com/hanzoai/deploy/v3/util/env"
+	executil "github.com/hanzoai/deploy/v3/util/exec"
+	"github.com/hanzoai/deploy/v3/util/proxy"
+	"github.com/hanzoai/deploy/v3/util/versions"
 )
 
 var (

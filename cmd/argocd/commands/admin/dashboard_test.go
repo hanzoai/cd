@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient"
+	"github.com/hanzoai/deploy/v3/pkg/apiclient"
 )
 
 func TestRun_SignalHandling_GracefulShutdown(t *testing.T) {

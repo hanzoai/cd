@@ -31,11 +31,11 @@ import (
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	argoutils "github.com/argoproj/argo-cd/v3/util"
-	certutil "github.com/argoproj/argo-cd/v3/util/cert"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity"
+	"github.com/hanzoai/deploy/v3/common"
+	argoutils "github.com/hanzoai/deploy/v3/util"
+	certutil "github.com/hanzoai/deploy/v3/util/cert"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
+	"github.com/hanzoai/deploy/v3/util/workloadidentity"
 )
 
 var (

@@ -8,14 +8,14 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	settingspkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/settings"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
-	"github.com/argoproj/argo-cd/v3/util/session"
+	"github.com/hanzoai/deploy/v3/cmd/argocd/commands/headless"
+	argocdclient "github.com/hanzoai/deploy/v3/pkg/apiclient"
+	settingspkg "github.com/hanzoai/deploy/v3/pkg/apiclient/settings"
+	"github.com/hanzoai/deploy/v3/util/errors"
+	utilio "github.com/hanzoai/deploy/v3/util/io"
+	jwtutil "github.com/hanzoai/deploy/v3/util/jwt"
+	"github.com/hanzoai/deploy/v3/util/localconfig"
+	"github.com/hanzoai/deploy/v3/util/session"
 )
 
 // NewReloginCommand returns a new instance of `argocd relogin` command

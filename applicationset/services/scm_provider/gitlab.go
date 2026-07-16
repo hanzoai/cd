@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/go-retryablehttp"
 	gitlab "gitlab.com/gitlab-org/api/client-go"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
+	"github.com/hanzoai/deploy/v3/applicationset/utils"
 )
 
 type GitlabProvider struct {

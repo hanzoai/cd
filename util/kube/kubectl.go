@@ -6,7 +6,7 @@ import (
 	"github.com/go-logr/logr"
 	"k8s.io/client-go/rest"
 
-	"github.com/argoproj/argo-cd/v3/util/log"
+	"github.com/hanzoai/deploy/v3/util/log"
 
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/diff"
 	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
