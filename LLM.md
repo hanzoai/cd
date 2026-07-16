@@ -6,12 +6,12 @@ changes. Product name is Hanzo CD; the Go module is
 
 ## Lineages
 
-Two branches build images, and they are NOT interchangeable.
+One branch carries the rebrand.
 
-| branch | VERSION | what it is |
-|---|---|---|
-| `hanzo/v3.4.5` | 3.4.5 | the release lineage production runs |
-| `master` | 3.6.0 | tracks upstream master |
+| branch | VERSION | module | what it is |
+|---|---|---|---|
+| `hanzo/v3.4.5` | 3.4.5 | `github.com/hanzoai/deploy/v3` | the release lineage production runs |
+| `master` | 3.6.0 | `github.com/argoproj/argo-cd/v3` | an upstream mirror, unbranded |
 
 `v3.4.5` is **not an ancestor of master** (`git merge-base --is-ancestor
 v3.4.5 master` exits 1). Master is 823 commits ahead of v3.4.5, and v3.4.5
@@ -20,7 +20,30 @@ from master is a different codebase, not a rebuild.
 
 The first cutover of `hanzo-cd` off `quay.io/argoproj/argocd:v3.4.5` must come
 from `hanzo/v3.4.5`. It changes the registry and nothing else. Moving
-production onto the master lineage is a separate change with its own gate.
+production onto the master lineage is a separate change with its own gate: it
+is a 3.4.5 → 3.6.0 upgrade, and rebranding it at the same time makes one change
+out of two.
+
+### The rebrand is a rule, not a diff
+
+Rebranding master onto a second branch and maintaining it there is the same
+intent held in two places. It is also unnecessary, because the rebrand is a
+pure substitution over the files where the module path is code rather than
+prose, and one command reproduces it byte-for-byte:
+
+    grep -rlZ 'github.com/argoproj/argo-cd/v3' \
+      --include='*.go' --include='*.proto' --include='*.yaml' \
+      --include='*.sh' --include='go.mod' --include='Makefile' \
+      --include='Procfile' . \
+      | xargs -0 sed -i 's|github.com/argoproj/argo-cd/v3|github.com/hanzoai/deploy/v3|g'
+
+Run against the v3.4.5 base that is exactly the rebrand commit: 627 files,
+2950 insertions, 2950 deletions — insertions equal deletions because nothing is
+added, only swapped. Prose in `docs/` keeps upstream's name and URLs, which is
+what attribution requires.
+
+So the rebrand is regenerated at the moment a lineage is adopted, not carried
+on a branch that rots against upstream. When 3.6 is adopted, run the rule then.
 
 Build with `GOWORK=off`: `~/work/hanzo/go.work` otherwise captures this repo
 and the build fails with "directory prefix cmd does not contain modules listed
@@ -116,20 +139,112 @@ contract now.
 
 All three binaries — `argocd-server`, `argocd-repo-server`,
 `argocd-application-controller` — construct their own `redis.Client`. Redis is
-not a cache inside a process. It is the shared cache **between four separate
+not a cache inside a process. It is the shared store **between four separate
 processes**, and the pub/sub channel they use to invalidate each other.
 
-`util/cache.CacheClient` is already a clean seam with two implementations,
-`redisCache` and `InMemoryCache`. It is tempting to conclude the swap is free.
-It is not, and the trap is specific:
+Classify each use by who writes and who reads, not by what the operation is
+called. `SetItem`, `GetItem` and `SetNX` read as cache primitives, and reading
+them that way is how you conclude redis is droppable. The primitive is a claim.
+The writer-to-reader boundary is the value.
+
+### The resource tree is computed in one process and read in another
+
+`argocd-server` has no cluster informers. Only the controller watches the
+cluster, so the server cannot compute a resource tree at all. On a miss,
+`getCachedAppState` pokes the controller via `Refresh` and re-reads the same
+store. That works only because both point at one redis.
+
+    argocd-application-controller-0  hanzo-val-37mglj    writes the tree
+    argocd-server-…                  worker-pool-3ck6l8  reads the tree
+
+Separate pods, separate nodes. Without the shared store the UI returns
+`error getting cached app resource tree` and never recovers.
+
+| flow | writer | reader |
+|---|---|---|
+| `SetAppResourcesTree`, `SetAppManagedResources` | controller | server |
+| `NotifyUpdated` → `OnUpdated`, backing `WatchResourceTree` | controller | server |
+| manifest cache invalidation (`util/webhook`) | server | repo-server |
+| OIDC refresh token, encrypted under `server.secretkey` | server | server, across restarts |
+
+`util/cache.CacheClient` is a clean seam with two implementations, `redisCache`
+and `InMemoryCache`, so the swap looks free. It is not, and the trap is
+specific:
 
     func (i *InMemoryCache) OnUpdated(...) error   { return nil }
     func (i *InMemoryCache) NotifyUpdated(...) error { return nil }
 
-`InMemoryCache` satisfies the interface by making cross-process invalidation a
-silent no-op. Dropping it in under the current four-process split does not
-degrade performance — it serves stale state with no error anywhere. That is a
-wrong-state bug wearing a cache's clothes.
+`twoLevelClient.OnUpdated` delegates only to `externalCache`, so an in-memory
+L1 structurally cannot carry pub/sub, and `InMemoryCache` satisfies the
+interface by making cross-process invalidation a silent no-op. Dropping it in
+under the current four-process split does not degrade performance — it serves
+stale state with no error anywhere. That is a wrong-state bug wearing a cache's
+clothes.
+
+### There is no in-memory path
+
+An empty `--redis` does not mean "no redis". `AddCacheFlagsToCmd` has no
+in-memory branch and no flag, and an empty address defaults to
+`common.DefaultRedisAddr`. Dial errors do not map to `ErrCacheMiss` — only a
+real miss does — so `getCachedAppState` never triggers a refresh and the dial
+error reaches the UI.
+
+A nil client is worse. `IsTokenRevoked(nil)` is safe, but
+`userStateStorage.Init` panics inside its own goroutines, which no caller can
+recover: the process exits. Around 40 tests construct
+`NewUserStateStorage(nil)` and stay green only because they never call `Init`.
+Their passing is not evidence of safety.
+
+### The revoked token list, and why it does not get a store
+
+`RevokeToken` has exactly one writer: `server/logout`. There is no admin revoke
+API. The entry is written with `ttl = time.Until(exp)`, so the list's whole job
+is the gap between a logout and the token's own expiry.
+
+Down and flushed are not the same failure:
+
+- redis **down** — `loadRevokedTokens` returns the iterator error before the
+  assignment and `loadRevokedTokensSafe` retries, so the in-memory set is
+  **preserved**.
+- redis **flushed** — `Scan` succeeds with zero keys and the set is replaced
+  wholesale with an empty one. `recentRevokedTokens` buys exactly one cycle.
+
+Redis here is a Deployment with no PVC, so a restart is a flush. The list
+already fails open in stock Argo CD, independent of anything in this fork. The
+failure is also swallowed — `log.Warnf`, then the redirect — so a logout can
+report success while leaving the session valid.
+
+The gap it covers is bounded by the token's expiry, which is
+`users.session.duration`. The control is therefore the session lifetime, not a
+new store. A store added to shorten a window that a config value already bounds
+complects session lifetime with revocation state; setting the lifetime keeps
+them one thing each, and is one line.
+
+The durable case is already covered without redis: an API key is checked
+against `account.TokenIndex(id) == -1` in `argocd-cm`. The redis list only ever
+served short-lived session tokens — the credential for which waiting out the
+expiry is the right answer.
+
+**There is no `revocations` store.** The value should not exist. Upstream's list
+stays as upstream best-effort and nothing relies on it.
+
+### The git-ref lock is real, and still not `ha`'s job
+
+`SetNX` here is a genuine claim of ownership. `TryLockGitRefCache` and
+`GetOrLockGitReferences` exist so that "only one process is able to claim
+ownership". Reading `DisableOverwrite` as a cache-write option and concluding
+there is no lock reads the primitive instead of the caller, and is wrong.
+
+The conclusion survives the correction. On timeout the loser returns its own
+lock id and proceeds as owner anyway, so the lock is advisory dedup: losing it
+costs a duplicate `git ls-remote`, not correctness. Nothing here needs
+`hanzoai/ha`.
+
+### Ruling: redis stays
+
+Redis is not droppable by deleting a Deployment. A replacement has to be a
+shared store carrying app state **and** pub/sub across processes, and that is a
+design task with its own gate — not a deletion.
 
 ### The trade, stated for a decision
 
@@ -161,6 +276,81 @@ not.
 
 This is a CTO decision. It should not be made as a side effect of deleting a
 Deployment.
+
+## Persistence inventory
+
+What is stored, where, who reads it, and the ruling.
+
+| what | where today | read by | ruling |
+|---|---|---|---|
+| `admin.password`, `admin.passwordMtime`, `server.secretkey` | `argocd-secret` | server | **KMS**, gated below |
+| repository credentials (`hanzo-cd-repo-universe`: url/username/password) | k8s Secret, `argocd.argoproj.io/secret-type: repository` | repo-server, server | **KMS** |
+| `argocd-initial-admin-secret` | k8s Secret | bootstrap only | **delete**, after a KMS-sourced admin credential exists |
+| `argocd-cm`, `argocd-rbac-cm` | ConfigMaps | all | **stays** |
+| app state, manifest, cluster state, OIDC refresh token | redis | server, repo-server, controller | **stays** — the store is the bus |
+| revoked token list | redis | server | **no store** — bounded by `users.session.duration` |
+| `Application`, `AppProject` | etcd (CRDs) | controller, server, CLI, kubectl | **stays in etcd** |
+
+### Secrets move to KMS, and it costs no fork code
+
+A k8s Secret is base64, not encryption. `hanzo-cd-repo-universe` is a live git
+credential sitting in etcd in the clear, and `argocd-initial-admin-secret` — the
+bootstrap admin password — is still present long after bootstrap.
+
+The move needs **zero changes to this fork**. The house mechanism already
+exists and is already running in this cluster: `KMSSecret`
+(`secrets.lux.network/v1alpha1`) syncs KMS → CR → k8s Secret, and is in live
+use elsewhere. Argo keeps reading k8s Secrets through its existing informer;
+KMS becomes the source of truth. Prefer deletion: the right change here is a
+`KMSSecret` CR, not a secret backend in Go.
+
+`argocd-secret` carries a gate the repository credential does not.
+`argocd-server` **writes back to it**: `InitializeSettings` generates a 32-byte
+`server.secretkey` when absent, and `saveSignatureAndCertificate` upserts it. A
+`KMSSecret` whose template omits `server.secretkey` therefore write-write flaps
+against the server every resync. Both effects are fail-closed, and both are
+outages:
+
+- every session signature changes each cycle, so every session dies each cycle;
+- `server.secretkey` is also the key the OIDC refresh tokens in redis are
+  encrypted under, so each rotation makes every cached token undecryptable.
+
+Put `server.secretkey` in KMS and in the template, or leave `argocd-secret`
+alone. Settle this before `argocd-secret` goes under KMS, not after.
+
+### Settings stay in ConfigMaps
+
+`argocd-cm` and `argocd-rbac-cm` are declarative configuration, held in git at
+`universe/infra/k8s/hanzo-cd` and applied with `kubectl apply -k`, read through
+a k8s informer, and gated by k8s RBAC. Moving them into an embedded database
+would convert declarative config into out-of-band mutable state, take them out
+of git, and drop RBAC — losing the property that makes them good. They hold no
+secrets. They stay.
+
+### Application and AppProject stay in etcd
+
+The CRD is the right value in the right place.
+
+- **It is the public contract.** `kubectl get applications` is how these are
+  operated, including by us; ApplicationSet generates Applications *as* CRs;
+  k8s RBAC gates them.
+- **The controller is built on watches.** Argo reconciles via client-go
+  informers. An embedded SQL store has no watch primitive; serving Applications
+  from it means replacing informers with polling — that is not a store swap,
+  it is a rewrite of the reconciler.
+- **It is the house pattern.** `hanzod` reconciles `App` CRs (`hanzo.ai/v1`)
+  from etcd for exactly these reasons. Moving Argo the other way would make the
+  two operators disagree about where desired state lives.
+- **The live chain depends on it.** `universe-crs` *is* an Application. It syncs
+  the App CRs hanzod reconciles. Moving Applications out of etcd breaks the
+  path all of production ships through.
+
+etcd is already a consistent, watchable, RBAC-gated store, and a controller's
+desired state is precisely what it is for. A Kubernetes controller whose
+desired state is not in Kubernetes is not a Kubernetes controller. So the scope
+of "Argo on our stack" is secrets → KMS. The cache is the bus and stays; the
+revocation list gets a bound, not a store; Applications stay where the operator
+pattern wants them.
 
 ## ZAP: staged, not half-landed
 

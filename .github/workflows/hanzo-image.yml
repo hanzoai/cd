@@ -5,13 +5,11 @@ name: Hanzo CD image
 # on GitHub-hosted runners; both are left in place, unused, so upstream merges
 # do not conflict here. This workflow is the only one that builds our image.
 #
-# One file, identical on every branch that builds an image, so the two lineages
-# do not drift apart in their build:
-#
-#   hanzo/v3.4.5 — the release lineage production runs. An image from here is a
-#                  like-for-like cutover: identical argo-cd code, our registry.
-#   master       — tracks upstream master (VERSION 3.6.0). Moving production onto
-#                  this lineage is a separate, gated change, not a registry swap.
+# Builds run on the hanzo/** lineage only. That is where the rebrand lives, and
+# it is the codebase production runs: an image from hanzo/v3.4.5 is a
+# like-for-like cutover — identical argo-cd code, our registry. master mirrors
+# upstream unbranded and builds nothing; adopting a newer upstream means
+# regenerating the rebrand onto a new hanzo/** branch (see LLM.md).
 #
 # The build uses upstream's Dockerfile unmodified. Its build-stage bases still
 # come from docker.io. Repointing them at ghcr.io/hanzoai/* is a separate, gated
@@ -21,10 +19,10 @@ name: Hanzo CD image
 
 on:
   push:
-    branches: [master, 'hanzo/**']
+    branches: ['hanzo/**']
     tags: ['v*']
   pull_request:
-    branches: [master, 'hanzo/**']
+    branches: ['hanzo/**']
   workflow_dispatch:
 
 permissions:
