@@ -1,0 +1,86 @@
+name: Hanzo CD image
+
+# Builds the Hanzo CD image and publishes it to ghcr.io/hanzoai/deploy on Hanzo
+# runners. Upstream's image.yaml/release.yaml publish to quay.io/argoproj/argocd
+# on GitHub-hosted runners; both are left in place, unused, so upstream merges
+# do not conflict here. This workflow is the only one that builds our image.
+#
+# One file, identical on every branch that builds an image, so the two lineages
+# do not drift apart in their build:
+#
+#   hanzo/v3.4.5 — the release lineage production runs. An image from here is a
+#                  like-for-like cutover: identical argo-cd code, our registry.
+#   master       — tracks upstream master (VERSION 3.6.0). Moving production onto
+#                  this lineage is a separate, gated change, not a registry swap.
+#
+# The build uses upstream's Dockerfile unmodified. Its build-stage bases still
+# come from docker.io. Repointing them at ghcr.io/hanzoai/* is a separate, gated
+# change: ghcr.io/hanzoai/node publishes only 18.19.0-alpine where the UI build
+# needs 24.x, and ghcr.io/hanzoai/{ubuntu,golang} are private, so their tags
+# cannot be enumerated to pin them. Swapping blind would break the build.
+
+on:
+  push:
+    branches: [master, 'hanzo/**']
+    tags: ['v*']
+  pull_request:
+    branches: [master, 'hanzo/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    runs-on: hanzo-build-linux-amd64
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Reset Docker credential store (runner hygiene)
+        run: |
+          mkdir -p "$HOME/.docker"
+          printf '{}' > "$HOME/.docker/config.json"
+
+      - name: Log in to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          # GH_PAT carries org write:packages so the ghcr.io/hanzoai/deploy
+          # package can be created on first push; GITHUB_TOKEN is the fallback
+          # once the package exists and is linked to this repo. Same idiom as
+          # gateway/console.
+          password: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/hanzoai/deploy
+          # sha-<short> on every branch push, which is what an operator CR pins.
+          # A vX.Y.Z tag also yields clean semver, the only form the universe
+          # image-update receiver accepts. Tag the v3.4.5 lineage as
+          # v3.4.5-hanzo.N: the correspondence to upstream v3.4.5 stays legible
+          # for advisory triage, and our build stays distinguishable from theirs.
+          tags: |
+            type=sha,prefix=sha-,format=short
+            type=ref,event=tag
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: false
+          cache-from: type=gha,scope=deploy-amd64
+          cache-to: type=gha,scope=deploy-amd64,mode=max

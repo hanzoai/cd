@@ -1,0 +1,38 @@
+Hanzo CD
+Copyright (c) 2026 Hanzo AI, Inc.
+
+Forked from https://github.com/argoproj/argo-cd at v3.4.5
+(commit 564b94973b284b8de98da7cee6eeade2cb941e46).
+
+This product includes software from Argo CD
+(https://github.com/argoproj/argo-cd), licensed under Apache-2.0:
+
+    Copyright 2017-2018 The Argo Authors
+
+Upstream Argo CD ships no NOTICE file (only LICENSE); there are no
+Apache-2.0 Section 4(d) attributions to propagate from upstream. LICENSE in
+this repository is upstream's Apache-2.0 text, retained verbatim and
+unmodified.
+
+The overwhelming majority of this repository is upstream Argo CD source,
+authored by The Argo Authors and its contributors, who retain their
+copyright. Hanzo AI, Inc. claims copyright only in the changes it authored.
+
+This product also includes software from third-party Go modules imported at
+their upstream paths. Their copyright notices are preserved within those
+modules, and the upstream projects retain their respective rights.
+
+DEVIATIONS
+Changes made by Hanzo AI, Inc. relative to upstream Argo CD v3.4.5, per
+Apache-2.0 Section 4(b):
+
+- Repackaged from the Go module github.com/argoproj/argo-cd/v3 to
+  github.com/hanzoai/deploy/v3. The /v3 major suffix is retained so release
+  tags stay in correspondence with the upstream v3 lineage a release is cut
+  from, which is what keeps upstream security advisories answerable against
+  our builds. Behaviour is unchanged by the rename.
+
+- Container images are built by Hanzo CI on Hanzo runners and published to
+  ghcr.io/hanzoai/deploy, rather than quay.io/argoproj/argocd.
+
+- Product name is Hanzo CD.
