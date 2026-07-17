@@ -7,8 +7,8 @@ package mocks
 import (
 	"context"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/gpgkey"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	mock "github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
 )

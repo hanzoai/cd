@@ -6,8 +6,8 @@ import (
 
 	bitbucketv1 "github.com/gfleury/go-bitbucket-v1"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	"github.com/argoproj/argo-cd/v3/util/proxy"
+	"github.com/hanzoai/deploy/applicationset/utils"
+	"github.com/hanzoai/deploy/util/proxy"
 )
 
 // SetupBitbucketClient configures and creates a Bitbucket API client with TLS settings

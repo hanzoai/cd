@@ -16,7 +16,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	application "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	application "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 type fakeMultiNamespaceCache struct {

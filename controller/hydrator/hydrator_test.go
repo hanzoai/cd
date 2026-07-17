@@ -17,16 +17,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 
-	commitclient "github.com/argoproj/argo-cd/v3/commitserver/apiclient"
-	commitservermocks "github.com/argoproj/argo-cd/v3/commitserver/apiclient/mocks"
-	"github.com/argoproj/argo-cd/v3/controller/hydrator/mocks"
-	"github.com/argoproj/argo-cd/v3/controller/hydrator/types"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	repoclient "github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	reposervermocks "github.com/argoproj/argo-cd/v3/reposerver/apiclient/mocks"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	commitclient "github.com/hanzoai/deploy/commitserver/apiclient"
+	commitservermocks "github.com/hanzoai/deploy/commitserver/apiclient/mocks"
+	"github.com/hanzoai/deploy/controller/hydrator/mocks"
+	"github.com/hanzoai/deploy/controller/hydrator/types"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	repoclient "github.com/hanzoai/deploy/reposerver/apiclient"
+	reposervermocks "github.com/hanzoai/deploy/reposerver/apiclient/mocks"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 var message = `testn

@@ -20,14 +20,14 @@ import (
 	"encoding/json"
 	"sort"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/apimachinery/pkg/watch"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/security"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/security"
 )
 
 // SecretRef struct for a reference to a secret key.

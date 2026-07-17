@@ -15,11 +15,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	sessionpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/session"
-	sessionmocks "github.com/argoproj/argo-cd/v3/pkg/apiclient/session/mocks"
-	versionpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/version"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	sessionpkg "github.com/hanzoai/deploy/pkg/apiclient/session"
+	sessionmocks "github.com/hanzoai/deploy/pkg/apiclient/session/mocks"
+	versionpkg "github.com/hanzoai/deploy/pkg/apiclient/version"
+	"github.com/hanzoai/deploy/util/localconfig"
 )
 
 // fakeVersionServer satisfies VersionServiceServer so apiclient.NewClient passes its

@@ -10,9 +10,9 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync"
-	synccommon "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync"
+	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
@@ -21,14 +21,14 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/controller/testdata"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/test"
-	"github.com/argoproj/argo-cd/v3/util/argo/diff"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/controller/testdata"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/test"
+	"github.com/hanzoai/deploy/util/argo/diff"
+	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 type fakeDiscovery struct {

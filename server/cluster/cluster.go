@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -14,14 +14,14 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/cluster"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	servercache "github.com/argoproj/argo-cd/v3/server/cache"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/clusterauth"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apiclient/cluster"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	servercache "github.com/hanzoai/deploy/server/cache"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/clusterauth"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/rbac"
 )
 
 // Server provides a Cluster service

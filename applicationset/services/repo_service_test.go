@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"k8s.io/client-go/kubernetes/fake"
 
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	repo_mocks "github.com/argoproj/argo-cd/v3/reposerver/apiclient/mocks"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	repo_mocks "github.com/hanzoai/deploy/reposerver/apiclient/mocks"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/settings"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 func TestGetDirectories(t *testing.T) {

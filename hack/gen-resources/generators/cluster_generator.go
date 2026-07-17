@@ -17,10 +17,10 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/remotecommand"
 
-	"github.com/argoproj/argo-cd/v3/hack/gen-resources/util"
-	argoappv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/helm"
+	"github.com/hanzoai/deploy/hack/gen-resources/util"
+	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/helm"
 )
 
 const POD_PREFIX = "vcluster"

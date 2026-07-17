@@ -13,13 +13,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/common"
+	"github.com/hanzoai/deploy/common"
 
 	bb "github.com/ktrysmt/go-bitbucket"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/util/workqueue"
 
-	alpha1 "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
+	alpha1 "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/go-playground/webhooks/v6/azuredevops"
@@ -33,17 +33,17 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned"
-	"github.com/argoproj/argo-cd/v3/reposerver/cache"
-	servercache "github.com/argoproj/argo-cd/v3/server/cache"
-	"github.com/argoproj/argo-cd/v3/util/app/path"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	"github.com/argoproj/argo-cd/v3/util/glob"
-	"github.com/argoproj/argo-cd/v3/util/guard"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
+	"github.com/hanzoai/deploy/reposerver/cache"
+	servercache "github.com/hanzoai/deploy/server/cache"
+	"github.com/hanzoai/deploy/util/app/path"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/deploy/util/glob"
+	"github.com/hanzoai/deploy/util/guard"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 type settingsSource interface {

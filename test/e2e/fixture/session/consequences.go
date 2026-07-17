@@ -3,7 +3,7 @@ package session
 import (
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
 )
 
 // Consequences implements the "then" part of given/when/then for session/logout tests.

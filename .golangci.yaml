@@ -6,7 +6,7 @@ formatters:
   settings:
     goimports:
       local-prefixes:
-        - github.com/argoproj/argo-cd/v3
+        - github.com/hanzoai/deploy
 
 issues:
   max-issues-per-linter: 0
@@ -116,7 +116,7 @@ linters:
         - pkg: errors
           alias: stderrors
 
-        - pkg: github.com/argoproj/argo-cd/v3/util/io
+        - pkg: github.com/hanzoai/deploy/util/io
           alias: utilio
 
     modernize:

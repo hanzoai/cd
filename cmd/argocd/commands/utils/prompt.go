@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/argoproj/argo-cd/v3/util/cli"
+	"github.com/hanzoai/deploy/util/cli"
 )
 
 type Prompt struct {

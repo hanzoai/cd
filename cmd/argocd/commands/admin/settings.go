@@ -13,7 +13,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	healthutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
+	healthutil "github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	corev1 "k8s.io/api/core/v1"
@@ -24,14 +24,14 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	"github.com/argoproj/argo-cd/v3/util/lua"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/common"
+	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/deploy/util/lua"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 type settingsOpts struct {

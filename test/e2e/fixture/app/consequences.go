@@ -4,15 +4,15 @@ import (
 	"context"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
+	utilio "github.com/hanzoai/deploy/util/io"
 )
 
 // this implements the "then" part of given/when/then

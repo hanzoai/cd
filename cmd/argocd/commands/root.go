@@ -3,21 +3,21 @@ package commands
 import (
 	"fmt"
 
-	"github.com/argoproj/argo-cd/v3/util/cache"
+	"github.com/hanzoai/deploy/util/cache"
 
 	"github.com/spf13/cobra"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/admin"
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/initialize"
-	cmdutil "github.com/argoproj/argo-cd/v3/cmd/util"
-	"github.com/argoproj/argo-cd/v3/common"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/config"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/admin"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/initialize"
+	cmdutil "github.com/hanzoai/deploy/cmd/util"
+	"github.com/hanzoai/deploy/common"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/config"
+	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/deploy/util/localconfig"
 )
 
 func init() {

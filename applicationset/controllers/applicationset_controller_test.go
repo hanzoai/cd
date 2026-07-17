@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/progressivesync"
+	"github.com/hanzoai/deploy/applicationset/progressivesync"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -30,19 +30,19 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/generators"
-	"github.com/argoproj/argo-cd/v3/applicationset/generators/mocks"
-	appsetmetrics "github.com/argoproj/argo-cd/v3/applicationset/metrics"
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	argocommon "github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applog "github.com/argoproj/argo-cd/v3/util/app/log"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/settings"
-	testutil "github.com/argoproj/argo-cd/v3/util/test"
+	"github.com/hanzoai/deploy/applicationset/generators"
+	"github.com/hanzoai/deploy/applicationset/generators/mocks"
+	appsetmetrics "github.com/hanzoai/deploy/applicationset/metrics"
+	"github.com/hanzoai/deploy/applicationset/utils"
+	argocommon "github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apis/application"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	applog "github.com/hanzoai/deploy/util/app/log"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/settings"
+	testutil "github.com/hanzoai/deploy/util/test"
 )
 
 // getDefaultTestClientSet creates a Clientset with the default argo objects

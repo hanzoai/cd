@@ -14,9 +14,9 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/util/cache"
-	"github.com/argoproj/argo-cd/v3/util/crypto"
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
+	"github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/deploy/util/crypto"
+	jwtutil "github.com/hanzoai/deploy/util/jwt"
 )
 
 const (

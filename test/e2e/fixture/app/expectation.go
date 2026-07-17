@@ -7,15 +7,15 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
 )
 
 type state = string

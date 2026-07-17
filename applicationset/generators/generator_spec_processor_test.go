@@ -9,9 +9,9 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/services/mocks"
+	"github.com/hanzoai/deploy/applicationset/services/mocks"
 
-	argov1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 
 	"github.com/stretchr/testify/mock"
 	corev1 "k8s.io/api/core/v1"

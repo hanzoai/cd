@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	azureMock "github.com/argoproj/argo-cd/v3/applicationset/services/scm_provider/azure_devops/git/mocks"
-	"github.com/argoproj/argo-cd/v3/applicationset/services/scm_provider/mocks"
+	azureMock "github.com/hanzoai/deploy/applicationset/services/scm_provider/azure_devops/git/mocks"
+	"github.com/hanzoai/deploy/applicationset/services/scm_provider/mocks"
 )
 
 func TestListPullRequest(t *testing.T) {

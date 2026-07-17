@@ -15,8 +15,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/services/scm_provider/mocks"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/applicationset/services/scm_provider/mocks"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 type awsCodeCommitTestRepository struct {

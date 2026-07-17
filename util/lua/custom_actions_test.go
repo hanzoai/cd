@@ -14,11 +14,11 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
 
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/cli"
+	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
+	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/cli"
 )
 
 type testNormalizer struct{}

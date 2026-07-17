@@ -3,13 +3,13 @@ package e2e
 import (
 	"testing"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	. "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"
 
-	. "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/app"
+	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
+	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
 )
 
 var projectWithNoKeys = AppProjectSpec{

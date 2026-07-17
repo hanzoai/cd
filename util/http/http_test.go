@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/argoproj/argo-cd/v3/common"
+	"github.com/hanzoai/deploy/common"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
