@@ -278,7 +278,7 @@ export class App extends React.Component<
                     <link rel='icon' type='image/png' href={`${base}assets/favicon/favicon-32x32.png`} sizes='32x32' />
                     <link rel='icon' type='image/png' href={`${base}assets/favicon/favicon-16x16.png`} sizes='16x16' />
                 </Helmet>
-                <PageContext.Provider value={{title: 'Argo CD'}}>
+                <PageContext.Provider value={{title: 'Hanzo CD'}}>
                     <Provider value={contextApis}>
                         {/*
                           argo-ui's class components (e.g. DataLoader) read context via the modern
@@ -367,7 +367,7 @@ export class App extends React.Component<
         const component = () => (
             <>
                 <Helmet>
-                    <title>{extension.title} - Argo CD</title>
+                    <title>{extension.title} - Hanzo CD</title>
                 </Helmet>
                 <Page title={extension.title}>
                     <extension.component />
