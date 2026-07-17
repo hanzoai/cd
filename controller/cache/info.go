@@ -89,7 +89,7 @@ func populateNodeInfo(un *unstructured.Unstructured, res *ResourceInfo, customLa
 		case "Gateway":
 			populateGatewayInfo(un, res)
 		}
-	case "argoproj.io":
+	case "deploy.hanzo.ai":
 		if gvk.Kind == "Application" {
 			populateApplicationInfo(un, res)
 		}

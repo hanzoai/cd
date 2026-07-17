@@ -48,7 +48,7 @@ func NewFilteredApplicationSetInformer(client versioned.Interface, namespace str
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
 func NewApplicationSetInformerWithOptions(client versioned.Interface, namespace string, options internalinterfaces.InformerOptions) cache.SharedIndexInformer {
-	gvr := schema.GroupVersionResource{Group: "argoproj.io", Version: "v1alpha1", Resource: "applicationsets"}
+	gvr := schema.GroupVersionResource{Group: "deploy.hanzo.ai", Version: "v1alpha1", Resource: "applicationsets"}
 	identifier := options.InformerName.WithResource(gvr)
 	tweakListOptions := options.TweakListOptions
 	return cache.NewSharedIndexInformerWithOptions(
