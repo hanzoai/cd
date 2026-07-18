@@ -24,8 +24,8 @@ import (
 
 	"github.com/hanzoai/deploy/v3/util/oci"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
-	textutils "github.com/argoproj/argo-cd/gitops-engine/pkg/utils/text"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	textutils "github.com/hanzoai/deploy/gitops-engine/pkg/utils/text"
 	"github.com/argoproj/pkg/v2/sync"
 	jsonpatch "github.com/evanphx/json-patch"
 	gogit "github.com/go-git/go-git/v5"

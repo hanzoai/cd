@@ -24,7 +24,7 @@ import (
 	argoexec "github.com/hanzoai/deploy/v3/util/exec"
 	"github.com/hanzoai/deploy/v3/util/io/files"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	securejoin "github.com/cyphar/filepath-securejoin"
 	"github.com/mattn/go-zglob"
 	log "github.com/sirupsen/logrus"

@@ -16,7 +16,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 
 	commitclient "github.com/hanzoai/deploy/v3/commitserver/apiclient"
 	commitservermocks "github.com/hanzoai/deploy/v3/commitserver/apiclient/mocks"

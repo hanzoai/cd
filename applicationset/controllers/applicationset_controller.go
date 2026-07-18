@@ -47,7 +47,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 
 	"github.com/hanzoai/deploy/v3/applicationset/controllers/template"
 	"github.com/hanzoai/deploy/v3/applicationset/generators"

@@ -11,7 +11,7 @@ import (
 
 	"github.com/hanzoai/deploy/v3/util/errors"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 )
 

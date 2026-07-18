@@ -7,8 +7,8 @@ package mocks
 import (
 	"context"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/cache"
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/cache"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	cache0 "github.com/hanzoai/deploy/v3/controller/cache"
 	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 	mock "github.com/stretchr/testify/mock"

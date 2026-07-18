@@ -13,7 +13,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/tracing"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/tracing"
 	"github.com/sirupsen/logrus"
 
 	"github.com/hanzoai/deploy/v3/util/log"

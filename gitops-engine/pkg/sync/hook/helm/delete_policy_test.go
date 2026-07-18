@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
-	testingutils "github.com/argoproj/argo-cd/gitops-engine/pkg/utils/testing"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	testingutils "github.com/hanzoai/deploy/gitops-engine/pkg/utils/testing"
 )
 
 func TestDeletePolicies(t *testing.T) {
