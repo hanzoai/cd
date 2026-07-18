@@ -26,3 +26,5 @@ RUN NODE_ENV=production NODE_ONLINE_ENV=online NODE_OPTIONS=--max_old_space_size
 
 FROM scratch
 COPY --from=build /src/dist/app/ /dist/
+
+# build: publish the monochrome embed for cloud /v1/deploy/ui.
