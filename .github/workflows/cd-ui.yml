@@ -1,14 +1,14 @@
-name: Deploy UI embed image
+name: cd-ui SPA image
 
-# Builds the monochrome ArgoCD UI bundle as ghcr.io/hanzoai/deploy-ui-embed on
-# Hanzo runners — the go:embed source hanzoai/cloud consumes for /v1/deploy/ui.
+# Builds the monochrome ArgoCD UI bundle as ghcr.io/hanzoai/cd-ui on
+# Hanzo runners — the SPA served at cd.hanzo.ai/ (hanzoai/spa App CR).
 # Mirrors console-embed (hanzoai/console build-image.yml). Runs on the
 # rebrand/hanzo-monochrome lineage, where the monochrome UI lives.
 
 on:
   push:
     branches: ['rebrand/hanzo-monochrome']
-    paths: ['ui/**', 'Dockerfile.embed', '.github/workflows/deploy-ui-embed.yml']
+    paths: ['ui/**', 'Dockerfile.cd-ui', '.github/workflows/cd-ui.yml']
   workflow_dispatch:
 
 permissions:
@@ -42,7 +42,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hanzoai/deploy-ui-embed
+          images: ghcr.io/hanzoai/cd-ui
           # `latest` so cloud's Dockerfile ARG default resolves; sha-<short> for
           # pinning a cloud release to an exact UI bundle.
           tags: |
@@ -53,11 +53,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile.embed
+          file: ./Dockerfile.cd-ui
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: ${{ github.event_name != 'pull_request' }}
           provenance: false
-          cache-from: type=gha,scope=deploy-ui-embed-amd64
-          cache-to: type=gha,scope=deploy-ui-embed-amd64,mode=max
+          cache-from: type=gha,scope=cd-ui-amd64
+          cache-to: type=gha,scope=cd-ui-amd64,mode=max

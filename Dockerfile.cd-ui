@@ -1,0 +1,21 @@
+# hanzoai/cd-ui — the monochrome ArgoCD dashboard SPA, served by hanzoai/spa.
+#
+# Builds the ArgoCD React UI (rebrand/hanzo-monochrome, base-href /, API base
+# /v1/deploy/api/v1) and serves it via ghcr.io/hanzoai/spa (Go static server,
+# :3000, ROOT=/public, SPA history-fallback) — the SAME pattern as agency/id/
+# billing/yadota-site. Deployed as the `cd-ui` App CR at cd.hanzo.ai/; the
+# projection API it calls (cd.hanzo.ai/v1/deploy/*) terminates in the cloud
+# binary behind IAM. NOT baked into the money binary.
+FROM docker.io/library/node:23.0.0 AS build
+WORKDIR /src
+COPY ui/package.json ui/yarn.lock ./
+RUN yarn install --network-timeout 200000 && yarn cache clean
+COPY ui/ .
+RUN NODE_ENV=production NODE_ONLINE_ENV=online NODE_OPTIONS=--max_old_space_size=8192 yarn build \
+    && [ -s dist/app/index.html ] \
+    && echo ">> monochrome ArgoCD SPA: $(wc -c < dist/app/index.html)-byte index.html, $(du -sh dist/app | cut -f1)"
+
+# hanzoai/spa serves /public at :3000 with SPA history-fallback + a sane CSP.
+FROM ghcr.io/hanzoai/spa:1.2.0
+COPY --from=build /src/dist/app /public
+EXPOSE 3000
