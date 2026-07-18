@@ -1,0 +1,63 @@
+name: Deploy UI embed image
+
+# Builds the monochrome ArgoCD UI bundle as ghcr.io/hanzoai/deploy-ui-embed on
+# Hanzo runners — the go:embed source hanzoai/cloud consumes for /v1/deploy/ui.
+# Mirrors console-embed (hanzoai/console build-image.yml). Runs on the
+# rebrand/hanzo-monochrome lineage, where the monochrome UI lives.
+
+on:
+  push:
+    branches: ['rebrand/hanzo-monochrome']
+    paths: ['ui/**', 'Dockerfile.embed', '.github/workflows/deploy-ui-embed.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  embed:
+    runs-on: hanzo-build-linux-amd64
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Reset Docker credential store (runner hygiene)
+        run: |
+          mkdir -p "$HOME/.docker"
+          printf '{}' > "$HOME/.docker/config.json"
+
+      - name: Log in to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/hanzoai/deploy-ui-embed
+          # `latest` so cloud's Dockerfile ARG default resolves; sha-<short> for
+          # pinning a cloud release to an exact UI bundle.
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=sha-,format=short
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile.embed
+          platforms: linux/amd64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: false
+          cache-from: type=gha,scope=deploy-ui-embed-amd64
+          cache-to: type=gha,scope=deploy-ui-embed-amd64,mode=max
