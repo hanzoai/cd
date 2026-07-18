@@ -1,0 +1,28 @@
+# hanzoai/deploy — the UI EMBED artifact (monochrome ArgoCD dashboard).
+#
+# Builds the ArgoCD React UI (rebrand/hanzo-monochrome) ONCE, as a versioned
+# immutable image whose rootfs is just the bundle at /dist. hanzoai/cloud then
+# does `FROM ghcr.io/hanzoai/deploy-ui-embed:<ver> AS deployui` +
+# `COPY --from=deployui /dist/ clients/deploy/webui/dist/` (go:embed source for
+# /v1/deploy/ui) instead of re-running yarn on every cloud release. Same idiom as
+# ghcr.io/hanzoai/console-embed. The UI changes far less often than cloud ships,
+# so this moves the ~heavy webpack build to the deploy repo's cadence and turns a
+# cloud rebuild into a registry pull.
+#
+# Build recipe mirrors the argocd-ui stage in ./Dockerfile (node 23, yarn build →
+# ui/dist/app). The main image (Dockerfile) still bundles this UI for the
+# standalone argocd-server; this is a separate, additional artifact for the cloud
+# embed, not a replacement.
+FROM docker.io/library/node:23.0.0 AS build
+WORKDIR /src
+COPY ui/package.json ui/yarn.lock ./
+RUN yarn install --network-timeout 200000 && yarn cache clean
+COPY ui/ .
+# FAIL-HARD: the build MUST emit a real bundle (non-empty dist/app/index.html +
+# chunks), never a placeholder — the same invariant console-embed enforces.
+RUN NODE_ENV=production NODE_ONLINE_ENV=online NODE_OPTIONS=--max_old_space_size=8192 yarn build \
+    && [ -s dist/app/index.html ] \
+    && echo ">> embedded REAL monochrome ArgoCD bundle: $(wc -c < dist/app/index.html)-byte index.html, $(du -sh dist/app | cut -f1)"
+
+FROM scratch
+COPY --from=build /src/dist/app/ /dist/
