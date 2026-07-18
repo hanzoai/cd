@@ -31,7 +31,7 @@ function toAbsURL(val: string): string {
 }
 
 function apiRoot(): string {
-    return toAbsURL('/v1/deploy/api/v1');
+    return toAbsURL('/v1/deploy');
 }
 
 function initHandlers(req: agent.Request) {

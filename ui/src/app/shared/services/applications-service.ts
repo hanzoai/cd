@@ -320,7 +320,7 @@ export class ApplicationsService {
     ): string {
         const search = this.getLogsQuery({namespace, appNamespace, podName, resource, containerName, follow: false, previous});
         search.set('download', 'true');
-        return `/v1/deploy/api/v1/applications/${applicationName}/logs?${search.toString()}`;
+        return `/v1/deploy/applications/${applicationName}/logs?${search.toString()}`;
     }
 
     public getContainerLogs(query: {
