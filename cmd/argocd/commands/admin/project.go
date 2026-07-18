@@ -17,7 +17,7 @@ import (
 	utilio "github.com/hanzoai/deploy/v3/util/io"
 	"github.com/hanzoai/deploy/v3/util/templates"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/spf13/cobra"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/clientcmd"

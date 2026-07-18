@@ -4,7 +4,7 @@ import (
 	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/deploy/v3/util/argo/normalizers"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 

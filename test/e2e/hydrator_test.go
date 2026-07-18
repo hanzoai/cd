@@ -9,7 +9,7 @@ import (
 	"github.com/hanzoai/deploy/v3/test/e2e/fixture"
 	. "github.com/hanzoai/deploy/v3/test/e2e/fixture/app"
 
-	. "github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
+	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 )
 
 func TestSimpleHydrator(t *testing.T) {

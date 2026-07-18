@@ -12,9 +12,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/health"
-	. "github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
 
 	. "github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
 	. "github.com/hanzoai/deploy/v3/test/e2e/fixture"

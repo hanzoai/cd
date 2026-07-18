@@ -12,7 +12,7 @@ import (
 	appclientset "github.com/hanzoai/deploy/v3/pkg/client/clientset/versioned/fake"
 	"github.com/hanzoai/deploy/v3/util/settings"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"

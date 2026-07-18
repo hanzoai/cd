@@ -3,10 +3,10 @@ package controller
 import (
 	"fmt"
 
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/health"
-	hookutil "github.com/argoproj/argo-cd/gitops-engine/pkg/sync/hook"
-	"github.com/argoproj/argo-cd/gitops-engine/pkg/sync/ignore"
-	kubeutil "github.com/argoproj/argo-cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	hookutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/ignore"
+	kubeutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/hanzoai/deploy/v3/common"

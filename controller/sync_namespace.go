@@ -3,7 +3,7 @@ package controller
 import (
 	"maps"
 
-	gitopscommon "github.com/argoproj/argo-cd/gitops-engine/pkg/sync/common"
+	gitopscommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	"github.com/hanzoai/deploy/v3/pkg/apis/application/v1alpha1"
