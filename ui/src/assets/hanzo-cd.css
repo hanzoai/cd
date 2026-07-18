@@ -1,0 +1,188 @@
+/*
+ * Hanzo CD — monochrome brand skin.
+ *
+ * Recolours ArgoCD's teal / orange / purple brand accents and the login chrome
+ * to the Hanzo monochrome palette, and points the brand marks at the Hanzo
+ * block-H. Functional status colours (health / sync — green, red, yellow) are
+ * left untouched so the dashboard stays readable.
+ *
+ * One source, two delivery paths:
+ *   - live:   mounted into argocd-server at /shared/app/custom and referenced by
+ *             argocd-cm `ui.cssurl: ./custom/hanzo-cd.css`.
+ *   - durable: linked from ui/src/app/index.html so it ships inside the image.
+ */
+
+:root {
+    --hanzo-ink: #0b0b0f; /* near-black — primary brand ink */
+    --hanzo-ink-2: #1c1c22; /* hover / pressed */
+    --hanzo-graphite: #26262c; /* links / secondary interactive text */
+    --hanzo-panel: #0b0b0f; /* dark chrome (sidebar) */
+    --hanzo-muted: #9aa0a6; /* neutral grey (spinners, de-emphasis) */
+}
+
+/* ------------------------------------------------------------------ *
+ * Brand accent: ArgoCD teal (#00a2b3) -> Hanzo ink
+ * ------------------------------------------------------------------ */
+a,
+a:hover {
+    color: var(--hanzo-graphite) !important;
+}
+a:hover {
+    text-decoration: underline !important;
+}
+h1,
+h2 {
+    color: var(--hanzo-ink) !important;
+}
+.top-bar__breadcrumbs a {
+    color: var(--hanzo-graphite) !important;
+}
+
+.argo-button--link {
+    color: var(--hanzo-graphite) !important;
+}
+.argo-button--base,
+.argo-button--special {
+    background: var(--hanzo-ink) !important;
+    border-color: var(--hanzo-ink) !important;
+    color: #fff !important;
+}
+.argo-button--base:not(.disabled):not([disabled]):hover,
+.argo-button--special:not(.disabled):hover,
+.argo-button--special:not(.disabled):focus {
+    background: var(--hanzo-ink-2) !important;
+}
+.argo-button--base-o {
+    color: var(--hanzo-ink) !important;
+    box-shadow: var(--hanzo-ink) 0 0 0 1px inset !important;
+}
+.argo-button--base-o:not(.disabled):not([disabled]):hover,
+.argo-button--base-o:not(.disabled):not([disabled]):focus {
+    color: #fff !important;
+    background-color: var(--hanzo-ink) !important;
+}
+.argo-button--radius-2::before,
+.argo-button--radius-2::after {
+    background: var(--hanzo-ink) !important;
+}
+
+/* Form focus + selection controls */
+.argo-field:focus,
+.argo-textarea:focus,
+.tags-input--focused {
+    border-color: var(--hanzo-ink) !important;
+}
+.argo-field-container > .argo-field:focus + label.argo-label-placeholder,
+.argo-field-container > .argo-textarea:focus + label.argo-label-placeholder {
+    color: var(--hanzo-ink) !important;
+}
+.checkbox--selected,
+.argo-checkbox input:checked + span {
+    border-color: var(--hanzo-ink) !important;
+    background-color: var(--hanzo-ink) !important;
+}
+
+/* Application tree + status panels (highlights, not health status) */
+.application-resource-tree__node.active,
+.application-resource-tree__node--applicationset {
+    border-color: var(--hanzo-ink) !important;
+}
+.application-status-panel__item-value--highlight,
+.settings-overview__redirect-panel__title {
+    color: var(--hanzo-ink) !important;
+}
+
+/* Top bar: title + logout + selected view toggle -> monochrome */
+.top-bar__title {
+    color: var(--hanzo-ink) !important;
+}
+.login-logout-button {
+    color: var(--hanzo-graphite) !important;
+}
+.login-logout-button:hover,
+.login-logout-button:focus {
+    color: var(--hanzo-ink) !important;
+    box-shadow: none !important;
+}
+.menu_icon.selected,
+i.fa.selected {
+    color: var(--hanzo-ink) !important;
+}
+
+/* ------------------------------------------------------------------ *
+ * Sidebar (dark chrome): teal panel + orange active -> monochrome
+ * ------------------------------------------------------------------ */
+.sidebar {
+    background-color: var(--hanzo-panel) !important;
+}
+.sidebar__nav-item--active,
+.sidebar__nav-item--active i {
+    color: #fff !important;
+}
+/* Replace the upstream octopus mascot with the Hanzo mark (the running
+   image still ships the old logo.png), and drop the redundant second mark
+   so a single Hanzo H shows in both expanded and collapsed states. */
+.sidebar__logo__character {
+    content: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjcgNjciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIyLjIxIDY3VjQ0LjYzNjlIMFY2N0gyMi4yMVoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNjYuNzAzOCAyMi4zMTg0SDIyLjI1MzRMMC4wODc4OTA2IDQ0LjYzNjdINDQuNDYzNEw2Ni43MDM4IDIyLjMxODRaIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTIyLjIxIDBIMFYyMi4zMTg0SDIyLjIxVjBaIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTY2LjcxOTggMEg0NC41MDk4VjIyLjMxODRINjYuNzE5OFYwWiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik02Ni43MTk4IDY3VjQ0LjYzNjlINDQuNTA5OFY2N0g2Ni43MTk4WiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==') !important;
+    width: 34px !important;
+    height: 34px !important;
+    object-fit: contain !important;
+}
+.sidebar__logo__text-logo {
+    display: none !important;
+}
+
+/* Loading spinner: ArgoCD orange -> neutral grey */
+.cd-layout__loader .loader-inner > div,
+.argo-spinner,
+.spinner__dot {
+    background: var(--hanzo-muted) !important;
+    border-color: var(--hanzo-muted) !important;
+}
+
+/* ------------------------------------------------------------------ *
+ * Login page: monochrome
+ * ------------------------------------------------------------------ */
+.login {
+    background: linear-gradient(135deg, #202027 0%, #0b0b0f 100%) !important;
+}
+/* Big watermark on the dark panel -> Hanzo mark (white) */
+.login .argo__logo {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjcgNjciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIyLjIxIDY3VjQ0LjYzNjlIMFY2N0gyMi4yMVoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNjYuNzAzOCAyMi4zMTg0SDIyLjI1MzRMMC4wODc4OTA2IDQ0LjYzNjdINDQuNDYzNEw2Ni43MDM4IDIyLjMxODRaIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTIyLjIxIDBIMFYyMi4zMTg0SDIyLjIxVjBaIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTY2LjcxOTggMEg0NC41MDk4VjIyLjMxODRINjYuNzE5OFYwWiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik02Ni43MTk4IDY3VjQ0LjYzNjlINDQuNTA5OFY2N0g2Ni43MTk4WiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+.login__box {
+    background: #ffffff !important;
+}
+.login__text {
+    color: #ffffff !important;
+    font-weight: 300 !important;
+}
+/* Sign In (text submit button) -> ink */
+.login form button[type='submit'].argo-button {
+    color: var(--hanzo-ink) !important;
+}
+/* SSO "Log in via Hanzo ID" (filled base button) -> solid ink */
+.login .argo-button--base {
+    background: var(--hanzo-ink) !important;
+    border-color: var(--hanzo-ink) !important;
+    color: #fff !important;
+}
+.login .argo-button--base:hover {
+    background: #000 !important;
+}
+.login__box h3,
+.login__box h4,
+.login__box h5 {
+    color: var(--hanzo-ink) !important;
+}
+.login__saml-separator {
+    color: #6b7280 !important;
+}
+/* Footer links sit on the dark panel — keep them legible (light grey) */
+.login__footer a,
+.login__footer a:hover {
+    color: #c9ccd1 !important;
+}

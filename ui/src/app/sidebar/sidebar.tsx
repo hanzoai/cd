@@ -58,7 +58,7 @@ export const Sidebar = (props: SidebarProps) => {
                                 onClick={() => context.history.push('/')}
                                 title={'Go to start page'}
                                 src='assets/images/argologo.svg'
-                                alt='Argo'
+                                alt='Hanzo CD'
                                 className='sidebar__logo__text-logo'
                             />
                             <div className='sidebar__version' onClick={props.onVersionClick}>
@@ -66,7 +66,7 @@ export const Sidebar = (props: SidebarProps) => {
                             </div>
                         </div>
                     )}
-                    <img onClick={() => context.history.push('/')} title={'Go to start page'} src='assets/images/logo.png' alt='Argo' className='sidebar__logo__character' />{' '}
+                    <img onClick={() => context.history.push('/')} title={'Go to start page'} src='assets/images/logo.png' alt='Hanzo CD' className='sidebar__logo__character' />{' '}
                 </div>
 
                 {(props.navItems || []).map(item => (
