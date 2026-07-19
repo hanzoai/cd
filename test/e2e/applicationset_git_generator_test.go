@@ -13,12 +13,12 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/applicationsets"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture/applicationsets/utils"
+	"github.com/hanzoai/deploy/pkg/apis/application"
+	. "github.com/hanzoai/deploy/test/e2e/fixture/applicationsets"
+	"github.com/hanzoai/deploy/test/e2e/fixture/applicationsets/utils"
 )
 
 func randStr(t *testing.T) string {

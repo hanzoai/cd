@@ -9,7 +9,7 @@ import {services} from '../../../shared/services';
 const ReplaceWarning = () => (
     <div>
         <p>
-            Argo CD will sync using <strong>kubectl replace/create</strong>. This operation <strong>forces resource deletion and recreation</strong>. Proceed only if you understand
+            Hanzo CD will sync using <strong>kubectl replace/create</strong>. This operation <strong>forces resource deletion and recreation</strong>. Proceed only if you understand
             the risks.
         </p>
     </div>

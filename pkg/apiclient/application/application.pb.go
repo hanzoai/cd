@@ -10,9 +10,9 @@ package application
 import (
 	context "context"
 	fmt "fmt"
-	events "github.com/argoproj/argo-cd/v3/pkg/apiclient/events"
-	v1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	apiclient "github.com/argoproj/argo-cd/v3/reposerver/apiclient"
+	events "github.com/hanzoai/deploy/pkg/apiclient/events"
+	v1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	apiclient "github.com/hanzoai/deploy/reposerver/apiclient"
 	github_com_gogo_protobuf_proto "github.com/gogo/protobuf/proto"
 	proto "github.com/gogo/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"

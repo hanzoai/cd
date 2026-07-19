@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
 )
 
 // this implements the "when" part of given/when/then

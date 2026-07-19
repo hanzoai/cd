@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/robfig/cron/v3"
@@ -18,16 +18,16 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	ctrlmetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	argoappv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applister "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	"github.com/argoproj/argo-cd/v3/util/healthz"
-	metricsutil "github.com/argoproj/argo-cd/v3/util/metrics"
-	"github.com/argoproj/argo-cd/v3/util/metrics/kubectl"
-	"github.com/argoproj/argo-cd/v3/util/profile"
+	"github.com/hanzoai/deploy/common"
+	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	applister "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/deploy/util/healthz"
+	metricsutil "github.com/hanzoai/deploy/util/metrics"
+	"github.com/hanzoai/deploy/util/metrics/kubectl"
+	"github.com/hanzoai/deploy/util/profile"
 )
 
 type MetricsServer struct {

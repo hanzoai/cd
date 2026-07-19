@@ -5,16 +5,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture/project"
+	"github.com/hanzoai/deploy/test/e2e/fixture/project"
 
 	"github.com/stretchr/testify/require"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/app"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
+	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
 )
 
 const (

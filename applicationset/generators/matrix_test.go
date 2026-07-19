@@ -15,9 +15,9 @@ import (
 	"github.com/stretchr/testify/mock"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-	generatorsMock "github.com/argoproj/argo-cd/v3/applicationset/generators/mocks"
-	servicesMocks "github.com/argoproj/argo-cd/v3/applicationset/services/mocks"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	generatorsMock "github.com/hanzoai/deploy/applicationset/generators/mocks"
+	servicesMocks "github.com/hanzoai/deploy/applicationset/services/mocks"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 func TestMatrixGenerate(t *testing.T) {

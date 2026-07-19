@@ -20,8 +20,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/version"
 	"k8s.io/apimachinery/pkg/watch"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/common"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 const (

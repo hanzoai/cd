@@ -35,7 +35,7 @@ rules:
   verbs:
   - get     # supports viewing pod logs from UI
 - apiGroups:
-  - "argoproj.io"
+  - "deploy.hanzo.ai"
   resources:
   - "applications"
   - "applicationsets"

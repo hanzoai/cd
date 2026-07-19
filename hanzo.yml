@@ -1,0 +1,33 @@
+# Canonical CI/CD config for hanzoai/deploy ("Hanzo CD", a hard fork of
+# argoproj/argo-cd) — read by both the hanzoai/ci reusable workflow
+# (.github/workflows/cicd.yml) and platform.hanzo.ai.
+#
+# One image: the root multi-stage Dockerfile (unchanged upstream layout —
+# builds the UI + all Go binaries: cli/server/repo-server/controller/
+# applicationset-controller/notifications into one image).
+images:
+  - name: deploy
+    context: .
+    dockerfile: Dockerfile
+    repo: ghcr.io/hanzoai/deploy
+
+# Light gate: the multi-stage Dockerfile build is slow (UI + full Go build),
+# so `go-build` fails a broken PR fast, before waiting on the full image.
+test:
+  - name: go-build
+    run: CGO_ENABLED=0 go build ./...
+
+# BUILD-ONLY for the hard-fork cutover: no `deploy:` block. The live `hanzo-cd`
+# namespace reconciles the whole Hanzo fleet (ArgoCD IS the deploy mechanism
+# for everything else), so the prod cutover — deploy.hanzo.ai CRDs + image swap
+# + re-homing every live Application from argoproj.io → deploy.hanzo.ai — is a
+# deliberate, separately-greenlit action, never an auto-deploy on merge. See
+# universe: infra/k8s/hanzo-cd/ for the prepared-but-HELD swap. (Same
+# controlled build-only-first pattern as hanzoai/cms.)
+
+# KMS (kms.hanzo.ai, Universal Auth) supplies the GHCR push token at run time.
+# Only KMS_CLIENT_ID/KMS_CLIENT_SECRET live in GitHub; everything else is
+# fetched here.
+kms:
+  path: /deploy
+  environment: prod

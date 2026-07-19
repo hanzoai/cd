@@ -2,7 +2,7 @@ package application
 
 const (
 	// API Group
-	Group string = "argoproj.io"
+	Group string = "deploy.hanzo.ai"
 
 	// Application constants
 	ApplicationKind      string = "Application"

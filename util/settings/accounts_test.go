@@ -11,7 +11,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/argoproj/argo-cd/v3/common"
+	"github.com/hanzoai/deploy/common"
 )
 
 func TestGetAccounts_NoAccountsConfigured(t *testing.T) {

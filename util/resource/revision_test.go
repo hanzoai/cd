@@ -3,11 +3,11 @@ package resource
 import (
 	"testing"
 
-	. "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/testing"
+	. "github.com/hanzoai/deploy/gitops-engine/pkg/utils/testing"
 	"github.com/stretchr/testify/assert"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/argo-cd/v3/test"
+	"github.com/hanzoai/deploy/test"
 )
 
 func TestGetRevision(t *testing.T) {

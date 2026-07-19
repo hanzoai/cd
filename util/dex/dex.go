@@ -15,8 +15,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/errors"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/errors"
 )
 
 type DexTLSConfig struct {

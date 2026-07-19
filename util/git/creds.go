@@ -30,16 +30,16 @@ import (
 
 	gocache "github.com/patrickmn/go-cache"
 
-	argoio "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/io"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/text"
+	argoio "github.com/hanzoai/deploy/gitops-engine/pkg/utils/io"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/text"
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	argoutils "github.com/argoproj/argo-cd/v3/util"
-	certutil "github.com/argoproj/argo-cd/v3/util/cert"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity"
+	"github.com/hanzoai/deploy/common"
+	argoutils "github.com/hanzoai/deploy/util"
+	certutil "github.com/hanzoai/deploy/util/cert"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/workloadidentity"
 )
 
 var (

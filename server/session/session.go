@@ -4,16 +4,16 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/util/settings"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/session"
-	"github.com/argoproj/argo-cd/v3/server/rbacpolicy"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	sessionmgr "github.com/argoproj/argo-cd/v3/util/session"
+	"github.com/hanzoai/deploy/pkg/apiclient/session"
+	"github.com/hanzoai/deploy/server/rbacpolicy"
+	utilio "github.com/hanzoai/deploy/util/io"
+	sessionmgr "github.com/hanzoai/deploy/util/session"
 )
 
 // Server provides a Session service

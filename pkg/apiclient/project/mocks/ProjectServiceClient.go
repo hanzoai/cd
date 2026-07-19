@@ -7,10 +7,10 @@ package mocks
 import (
 	"context"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/events"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/project"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apiclient/application"
+	"github.com/hanzoai/deploy/pkg/apiclient/events"
+	"github.com/hanzoai/deploy/pkg/apiclient/project"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	mock "github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
 )

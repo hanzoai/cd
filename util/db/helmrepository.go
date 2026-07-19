@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 // ListHelmRepositories lists configured helm repositories

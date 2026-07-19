@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/settings"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/pkg/apiclient/settings"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
 )
 
 func checkHealth(t *testing.T, requireHealthy bool) {

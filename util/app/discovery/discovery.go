@@ -10,17 +10,17 @@ import (
 
 	"github.com/golang/protobuf/ptypes/empty"
 
-	"github.com/argoproj/argo-cd/v3/util/io/files"
+	"github.com/hanzoai/deploy/util/io/files"
 
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	log "github.com/sirupsen/logrus"
 
-	pluginclient "github.com/argoproj/argo-cd/v3/cmpserver/apiclient"
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/cmp"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/kustomize"
+	pluginclient "github.com/hanzoai/deploy/cmpserver/apiclient"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/cmp"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/kustomize"
 )
 
 func IsManifestGenerationEnabled(sourceType v1alpha1.ApplicationSourceType, enableGenerateManifests map[string]bool) bool {

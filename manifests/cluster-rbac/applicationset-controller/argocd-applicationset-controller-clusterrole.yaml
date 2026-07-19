@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: applicationset-controller
 rules:
   - apiGroups:
-      - argoproj.io
+      - deploy.hanzo.ai
     resources:
       - applications
       - applicationsets
@@ -22,7 +22,7 @@ rules:
       - update
       - watch
   - apiGroups:
-      - argoproj.io
+      - deploy.hanzo.ai
     resources:
       - appprojects
     verbs:
@@ -30,7 +30,7 @@ rules:
       - list
       - watch
   - apiGroups:
-      - argoproj.io
+      - deploy.hanzo.ai
     resources:
       - applicationsets/status
     verbs:
@@ -70,7 +70,7 @@ rules:
       - leases
     resourceNames:
       # Defined in `cmd/argocd-applicationset-controller/commands/applicationset_controller.go`
-      - 58ac56fa.applicationsets.argoproj.io
+      - 58ac56fa.applicationsets.deploy.hanzo.ai
     verbs:
       - get
       - update

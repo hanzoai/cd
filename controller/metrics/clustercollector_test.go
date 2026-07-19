@@ -4,12 +4,12 @@ import (
 	"errors"
 	"testing"
 
-	gitopsCache "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/cache"
+	gitopsCache "github.com/hanzoai/deploy/gitops-engine/pkg/cache"
 	"github.com/stretchr/testify/mock"
 
-	dbmocks "github.com/argoproj/argo-cd/v3/util/db/mocks"
+	dbmocks "github.com/hanzoai/deploy/util/db/mocks"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 func TestMetricClusterConnectivity(t *testing.T) {

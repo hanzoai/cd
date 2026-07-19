@@ -3,7 +3,7 @@ package plugin
 import (
 	"strings"
 
-	"github.com/argoproj/argo-cd/v3/common"
+	"github.com/hanzoai/deploy/common"
 )
 
 // ParseSecretKey retrieves secret appSetName if different from common ArgoCDSecretName.

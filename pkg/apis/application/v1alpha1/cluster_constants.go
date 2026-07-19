@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/util/env"
+	"github.com/hanzoai/deploy/util/env"
 )
 
 const (

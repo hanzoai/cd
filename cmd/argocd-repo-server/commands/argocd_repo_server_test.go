@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	utilstls "github.com/argoproj/argo-cd/v3/util/tls"
+	utilstls "github.com/hanzoai/deploy/util/tls"
 )
 
 func TestNewCommand_DisableTLSFlag(t *testing.T) {

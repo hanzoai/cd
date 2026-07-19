@@ -7,7 +7,7 @@ import (
 	"slices"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -19,14 +19,14 @@ import (
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	"k8s.io/streaming/pkg/httpstream"
 
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applisters "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
-	"github.com/argoproj/argo-cd/v3/util/security"
-	util_session "github.com/argoproj/argo-cd/v3/util/session"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/rbac"
+	"github.com/hanzoai/deploy/util/security"
+	util_session "github.com/hanzoai/deploy/util/session"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 type terminalHandler struct {

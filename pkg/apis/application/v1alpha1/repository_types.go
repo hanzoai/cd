@@ -5,13 +5,13 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/argoproj/argo-cd/v3/util/oci"
+	"github.com/hanzoai/deploy/util/oci"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/cert"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	"github.com/argoproj/argo-cd/v3/util/helm"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/cert"
+	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/deploy/util/helm"
+	"github.com/hanzoai/deploy/util/workloadidentity"
 
 	log "github.com/sirupsen/logrus"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

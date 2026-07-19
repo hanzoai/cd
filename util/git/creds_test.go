@@ -23,12 +23,12 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 
-	argoio "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/io"
+	argoio "github.com/hanzoai/deploy/gitops-engine/pkg/utils/io"
 
-	"github.com/argoproj/argo-cd/v3/util/cert"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity/mocks"
+	"github.com/hanzoai/deploy/util/cert"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/workloadidentity"
+	"github.com/hanzoai/deploy/util/workloadidentity/mocks"
 )
 
 type cred struct {

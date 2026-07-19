@@ -26,15 +26,15 @@ import (
 	"golang.org/x/oauth2"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/server/settings/oidc"
-	"github.com/argoproj/argo-cd/v3/util"
-	"github.com/argoproj/argo-cd/v3/util/cache"
-	"github.com/argoproj/argo-cd/v3/util/crypto"
-	"github.com/argoproj/argo-cd/v3/util/dex"
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
-	"github.com/argoproj/argo-cd/v3/util/settings"
-	"github.com/argoproj/argo-cd/v3/util/test"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/server/settings/oidc"
+	"github.com/hanzoai/deploy/util"
+	"github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/deploy/util/crypto"
+	"github.com/hanzoai/deploy/util/dex"
+	jwtutil "github.com/hanzoai/deploy/util/jwt"
+	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/deploy/util/test"
 )
 
 func setupAzureIdentity(t *testing.T) {

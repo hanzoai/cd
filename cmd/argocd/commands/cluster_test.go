@@ -9,10 +9,10 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 
-	cmdutil "github.com/argoproj/argo-cd/v3/cmd/util"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
+	cmdutil "github.com/hanzoai/deploy/cmd/util"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 func Test_getQueryBySelector(t *testing.T) {

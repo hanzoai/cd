@@ -16,15 +16,15 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	commitclient "github.com/argoproj/argo-cd/v3/commitserver/apiclient"
-	"github.com/argoproj/argo-cd/v3/controller/hydrator/types"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	applog "github.com/argoproj/argo-cd/v3/util/app/log"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	"github.com/argoproj/argo-cd/v3/util/hydrator"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/sourceintegrity"
+	commitclient "github.com/hanzoai/deploy/commitserver/apiclient"
+	"github.com/hanzoai/deploy/controller/hydrator/types"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	applog "github.com/hanzoai/deploy/util/app/log"
+	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/deploy/util/hydrator"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/sourceintegrity"
 )
 
 // RepoGetter is an interface that defines methods for getting repository objects. It's a subset of the DB interface to

@@ -10,16 +10,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/utils"
-	cmdutil "github.com/argoproj/argo-cd/v3/cmd/util"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	repositorypkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/repository"
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/headless"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/utils"
+	cmdutil "github.com/hanzoai/deploy/cmd/util"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	repositorypkg "github.com/hanzoai/deploy/pkg/apiclient/repository"
+	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/deploy/util/git"
+	utilio "github.com/hanzoai/deploy/util/io"
 )
 
 // NewRepoCommand returns a new instance of an `argocd repo` command

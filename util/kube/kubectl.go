@@ -6,11 +6,11 @@ import (
 	"github.com/go-logr/logr"
 	"k8s.io/client-go/rest"
 
-	"github.com/argoproj/argo-cd/v3/util/log"
+	"github.com/hanzoai/deploy/util/log"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/diff"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/tracing"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/tracing"
 )
 
 var (

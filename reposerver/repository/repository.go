@@ -24,12 +24,12 @@ import (
 	gocache "github.com/patrickmn/go-cache"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/util/sourceintegrity"
+	"github.com/hanzoai/deploy/util/sourceintegrity"
 
-	"github.com/argoproj/argo-cd/v3/util/oci"
+	"github.com/hanzoai/deploy/util/oci"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
-	textutils "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/text"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	textutils "github.com/hanzoai/deploy/gitops-engine/pkg/utils/text"
 	"github.com/argoproj/pkg/v2/sync"
 	jsonpatch "github.com/evanphx/json-patch"
 	gogit "github.com/go-git/go-git/v5"
@@ -51,28 +51,28 @@ import (
 	k8sversion "k8s.io/apimachinery/pkg/util/version"
 	kubeyaml "k8s.io/apimachinery/pkg/util/yaml"
 
-	pluginclient "github.com/argoproj/argo-cd/v3/cmpserver/apiclient"
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/reposerver/cache"
-	"github.com/argoproj/argo-cd/v3/reposerver/metrics"
-	"github.com/argoproj/argo-cd/v3/util/app/discovery"
-	apppathutil "github.com/argoproj/argo-cd/v3/util/app/path"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/cmp"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	"github.com/argoproj/argo-cd/v3/util/glob"
-	"github.com/argoproj/argo-cd/v3/util/grpc"
-	"github.com/argoproj/argo-cd/v3/util/helm"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/io/files"
-	pathutil "github.com/argoproj/argo-cd/v3/util/io/path"
-	"github.com/argoproj/argo-cd/v3/util/kustomize"
-	"github.com/argoproj/argo-cd/v3/util/manifeststream"
-	"github.com/argoproj/argo-cd/v3/util/settings"
-	traceutil "github.com/argoproj/argo-cd/v3/util/trace"
-	"github.com/argoproj/argo-cd/v3/util/versions"
+	pluginclient "github.com/hanzoai/deploy/cmpserver/apiclient"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/reposerver/cache"
+	"github.com/hanzoai/deploy/reposerver/metrics"
+	"github.com/hanzoai/deploy/util/app/discovery"
+	apppathutil "github.com/hanzoai/deploy/util/app/path"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cmp"
+	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/deploy/util/glob"
+	"github.com/hanzoai/deploy/util/grpc"
+	"github.com/hanzoai/deploy/util/helm"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/io/files"
+	pathutil "github.com/hanzoai/deploy/util/io/path"
+	"github.com/hanzoai/deploy/util/kustomize"
+	"github.com/hanzoai/deploy/util/manifeststream"
+	"github.com/hanzoai/deploy/util/settings"
+	traceutil "github.com/hanzoai/deploy/util/trace"
+	"github.com/hanzoai/deploy/util/versions"
 )
 
 const (
@@ -86,7 +86,7 @@ const (
 
 var ErrExceededMaxCombinedManifestFileSize = errors.New("exceeded max combined manifest file size")
 
-var tracer = otel.Tracer("github.com/argoproj/argo-cd/v3/reposerver/repository")
+var tracer = otel.Tracer("github.com/hanzoai/deploy/reposerver/repository")
 
 // Service implements ManifestService interface
 type Service struct {

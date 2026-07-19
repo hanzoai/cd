@@ -12,10 +12,10 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/util/io/files"
-	"github.com/argoproj/argo-cd/v3/util/tgzstream"
+	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/util/io/files"
+	"github.com/hanzoai/deploy/util/tgzstream"
 )
 
 // Defines the contract for the application sender, i.e. the CLI

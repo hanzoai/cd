@@ -9,13 +9,13 @@ import (
 	"github.com/spf13/cobra"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/argoproj/argo-cd/v3/util/cli"
+	"github.com/hanzoai/deploy/util/cli"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/initialize"
-	"github.com/argoproj/argo-cd/v3/common"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	"github.com/argoproj/argo-cd/v3/util/errors"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/headless"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/initialize"
+	"github.com/hanzoai/deploy/common"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	"github.com/hanzoai/deploy/util/errors"
 )
 
 // DashboardConfig holds the configuration for starting the dashboard

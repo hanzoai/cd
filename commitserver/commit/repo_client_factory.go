@@ -1,9 +1,9 @@
 package commit
 
 import (
-	"github.com/argoproj/argo-cd/v3/commitserver/metrics"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/git"
+	"github.com/hanzoai/deploy/commitserver/metrics"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/git"
 )
 
 // RepoClientFactory is a factory for creating git clients for a repository.

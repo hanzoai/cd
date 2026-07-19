@@ -31,15 +31,15 @@ import (
 	"k8s.io/klog/v2/textlogger"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/diff"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/hook"
-	resourceutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/resource"
-	kubeutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
+	resourceutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/resource"
+	kubeutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 )
 
-var tracer = otel.Tracer("github.com/argoproj/argo-cd/gitops-engine/pkg/sync")
+var tracer = otel.Tracer("github.com/hanzoai/deploy/gitops-engine/pkg/sync")
 
 // taskTraceAttrs returns the standard argocd.resource.* span attributes for a sync task.
 func taskTraceAttrs(t *syncTask) []attribute.KeyValue {

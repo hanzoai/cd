@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/util/assets"
-	"github.com/argoproj/argo-cd/v3/util/glob"
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
+	"github.com/hanzoai/deploy/util/assets"
+	"github.com/hanzoai/deploy/util/glob"
+	jwtutil "github.com/hanzoai/deploy/util/jwt"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"

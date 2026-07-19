@@ -10,11 +10,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/test/fixture/log"
-	"github.com/argoproj/argo-cd/v3/test/fixture/path"
-	"github.com/argoproj/argo-cd/v3/test/fixture/test"
-	"github.com/argoproj/argo-cd/v3/util/proxy"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/test/fixture/log"
+	"github.com/hanzoai/deploy/test/fixture/path"
+	"github.com/hanzoai/deploy/test/fixture/test"
+	"github.com/hanzoai/deploy/util/proxy"
 )
 
 func setupGitEnv(t *testing.T) {

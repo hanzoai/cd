@@ -14,7 +14,7 @@ import (
 	ctrlcache "sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	application "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	application "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 // NewCacheSyncingClient returns a client that wraps the given client and syncs the cache after each Create, Update, Patch, or Delete operation on Application objects.

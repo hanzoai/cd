@@ -6,10 +6,10 @@ import (
 	context "context"
 	time "time"
 
-	apisapplicationv1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	versioned "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned"
-	internalinterfaces "github.com/argoproj/argo-cd/v3/pkg/client/informers/externalversions/internalinterfaces"
-	applicationv1alpha1 "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
+	apisapplicationv1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	versioned "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
+	internalinterfaces "github.com/hanzoai/deploy/pkg/client/informers/externalversions/internalinterfaces"
+	applicationv1alpha1 "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -48,7 +48,7 @@ func NewFilteredApplicationInformer(client versioned.Interface, namespace string
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
 func NewApplicationInformerWithOptions(client versioned.Interface, namespace string, options internalinterfaces.InformerOptions) cache.SharedIndexInformer {
-	gvr := schema.GroupVersionResource{Group: "argoproj.io", Version: "v1alpha1", Resource: "applications"}
+	gvr := schema.GroupVersionResource{Group: "deploy.hanzo.ai", Version: "v1alpha1", Resource: "applications"}
 	identifier := options.InformerName.WithResource(gvr)
 	tweakListOptions := options.TweakListOptions
 	return cache.NewSharedIndexInformerWithOptions(

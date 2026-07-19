@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	gpgkeypkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/gpgkey"
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
-	"github.com/argoproj/argo-cd/v3/util/sourceintegrity"
+	gpgkeypkg "github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
+	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/rbac"
+	"github.com/hanzoai/deploy/util/sourceintegrity"
 )
 
 // Server provides a service of type GPGKeyService

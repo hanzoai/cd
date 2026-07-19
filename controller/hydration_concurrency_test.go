@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"k8s.io/client-go/util/workqueue"
 
-	hydratortypes "github.com/argoproj/argo-cd/v3/controller/hydrator/types"
-	"github.com/argoproj/argo-cd/v3/pkg/ratelimiter"
+	hydratortypes "github.com/hanzoai/deploy/controller/hydrator/types"
+	"github.com/hanzoai/deploy/pkg/ratelimiter"
 )
 
 // TestNormalizeHydrationProcessors verifies that the hydration worker count is clamped to a safe minimum.

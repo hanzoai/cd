@@ -11,13 +11,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/reposerver"
-	reposervercache "github.com/argoproj/argo-cd/v3/reposerver/cache"
-	"github.com/argoproj/argo-cd/v3/reposerver/metrics"
-	"github.com/argoproj/argo-cd/v3/reposerver/repository"
-	"github.com/argoproj/argo-cd/v3/util/askpass"
-	cacheutil "github.com/argoproj/argo-cd/v3/util/cache"
-	utilstls "github.com/argoproj/argo-cd/v3/util/tls"
+	"github.com/hanzoai/deploy/reposerver"
+	reposervercache "github.com/hanzoai/deploy/reposerver/cache"
+	"github.com/hanzoai/deploy/reposerver/metrics"
+	"github.com/hanzoai/deploy/reposerver/repository"
+	"github.com/hanzoai/deploy/util/askpass"
+	cacheutil "github.com/hanzoai/deploy/util/cache"
+	utilstls "github.com/hanzoai/deploy/util/tls"
 )
 
 func TestNewServer_DisableTLS(t *testing.T) {

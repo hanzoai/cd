@@ -14,15 +14,15 @@ import (
 	"strings"
 	"time"
 
-	cacheutil "github.com/argoproj/argo-cd/v3/util/cache"
-	"github.com/argoproj/argo-cd/v3/util/sourceintegrity"
+	cacheutil "github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/deploy/util/sourceintegrity"
 
-	kubecache "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/cache"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/diff"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/text"
+	kubecache "github.com/hanzoai/deploy/gitops-engine/pkg/cache"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/text"
 	"github.com/argoproj/pkg/v2/sync"
 	jsonpatch "github.com/evanphx/json-patch"
 	log "github.com/sirupsen/logrus"
@@ -41,38 +41,38 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 
-	argocommon "github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	eventspb "github.com/argoproj/argo-cd/v3/pkg/apiclient/events"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	argocommon "github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apiclient/application"
+	eventspb "github.com/hanzoai/deploy/pkg/apiclient/events"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned"
-	applisters "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/server/broadcast"
-	servercache "github.com/argoproj/argo-cd/v3/server/cache"
-	"github.com/argoproj/argo-cd/v3/server/deeplinks"
-	serverevents "github.com/argoproj/argo-cd/v3/server/events"
-	applog "github.com/argoproj/argo-cd/v3/util/app/log"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/collections"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/lua"
-	"github.com/argoproj/argo-cd/v3/util/manifeststream"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
-	"github.com/argoproj/argo-cd/v3/util/security"
-	"github.com/argoproj/argo-cd/v3/util/session"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
+	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/server/broadcast"
+	servercache "github.com/hanzoai/deploy/server/cache"
+	"github.com/hanzoai/deploy/server/deeplinks"
+	serverevents "github.com/hanzoai/deploy/server/events"
+	applog "github.com/hanzoai/deploy/util/app/log"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/collections"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/deploy/util/git"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/lua"
+	"github.com/hanzoai/deploy/util/manifeststream"
+	"github.com/hanzoai/deploy/util/rbac"
+	"github.com/hanzoai/deploy/util/security"
+	"github.com/hanzoai/deploy/util/session"
+	"github.com/hanzoai/deploy/util/settings"
 
-	resourceutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/resource"
+	resourceutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/resource"
 
-	applicationType "github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	argodiff "github.com/argoproj/argo-cd/v3/util/argo/diff"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	kubeutil "github.com/argoproj/argo-cd/v3/util/kube"
+	applicationType "github.com/hanzoai/deploy/pkg/apis/application"
+	argodiff "github.com/hanzoai/deploy/util/argo/diff"
+	"github.com/hanzoai/deploy/util/argo/normalizers"
+	kubeutil "github.com/hanzoai/deploy/util/kube"
 )
 
 type AppResourceTreeFn func(ctx context.Context, app *v1alpha1.Application) (*v1alpha1.ApplicationTree, error)
@@ -204,7 +204,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 		if apierrors.IsNotFound(err) {
 			if project != "" {
 				// We know that the user was allowed to get the Application, but the Application does not exist. Return 404.
-				return nil, nil, status.Error(codes.NotFound, apierrors.NewNotFound(schema.GroupResource{Group: "argoproj.io", Resource: "applications"}, name).Error())
+				return nil, nil, status.Error(codes.NotFound, apierrors.NewNotFound(schema.GroupResource{Group: "deploy.hanzo.ai", Resource: "applications"}, name).Error())
 			}
 			// We don't know if the user was allowed to get the Application, and we don't want to leak information about
 			// the Application's existence. Return 403.
@@ -226,7 +226,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 			// The user specified a project. We would have returned a 404 if the user had access to the app, but the app
 			// did not exist. So we have to return a 404 when the app does exist, but the user does not have access.
 			// Otherwise, they could infer that the app exists based on the error code.
-			return nil, nil, status.Error(codes.NotFound, apierrors.NewNotFound(schema.GroupResource{Group: "argoproj.io", Resource: "applications"}, name).Error())
+			return nil, nil, status.Error(codes.NotFound, apierrors.NewNotFound(schema.GroupResource{Group: "deploy.hanzo.ai", Resource: "applications"}, name).Error())
 		}
 		// The user didn't specify a project. We always return permission denied for both lack of access and lack of
 		// existence.
@@ -243,7 +243,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 		}).Warnf("user tried to %s application in project %s, but the application is in project %s", action, project, effectiveProject)
 		// The user has access to the app, but the app is in a different project. Return 404, meaning "app doesn't
 		// exist in that project".
-		return nil, nil, status.Error(codes.NotFound, apierrors.NewNotFound(schema.GroupResource{Group: "argoproj.io", Resource: "applications"}, name).Error())
+		return nil, nil, status.Error(codes.NotFound, apierrors.NewNotFound(schema.GroupResource{Group: "deploy.hanzo.ai", Resource: "applications"}, name).Error())
 	}
 	// Get the app's associated project, and make sure all project restrictions are enforced.
 	proj, err := s.getAppProject(ctx, a, logCtx)

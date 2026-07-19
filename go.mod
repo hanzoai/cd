@@ -1,4 +1,4 @@
-module github.com/argoproj/argo-cd/v3
+module github.com/hanzoai/deploy
 
 // Do NOT bump this unless we use features that are only available on the new version.
 // If you want to update the BUILD version, just update go versions in the release workflows.
@@ -14,7 +14,6 @@ require (
 	github.com/Masterminds/sprig/v3 v3.3.0
 	github.com/TomOnTime/utfutil v1.0.0
 	github.com/alicebob/miniredis/v2 v2.38.0
-	github.com/argoproj/argo-cd/gitops-engine/v3 v3.0.0-00010101000000-000000000000 // Tagged as gitops-engine/vX.Y.Z at release time
 	github.com/argoproj/notifications-engine v0.5.1-0.20260503100631-0cff13b8a717
 	github.com/argoproj/pkg/v2 v2.0.1
 	github.com/aws/aws-sdk-go-v2 v1.42.1
@@ -69,6 +68,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus v1.1.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
+	github.com/hanzoai/deploy/gitops-engine v0.0.0-00010101000000-000000000000 // Tagged as gitops-engine/vX.Y.Z at release time
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/improbable-eng/grpc-web v0.15.1-0.20230209220825-1d9bbb09a099
 	github.com/itchyny/gojq v0.12.19
@@ -369,4 +369,4 @@ replace (
 	k8s.io/sample-controller => k8s.io/sample-controller v0.36.1
 )
 
-replace github.com/argoproj/argo-cd/gitops-engine/v3 => ./gitops-engine
+replace github.com/hanzoai/deploy/gitops-engine => ./gitops-engine

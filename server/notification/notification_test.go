@@ -9,11 +9,11 @@ import (
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/notification"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient/mocks"
-	service "github.com/argoproj/argo-cd/v3/util/notification/argocd"
-	"github.com/argoproj/argo-cd/v3/util/notification/k8s"
-	"github.com/argoproj/argo-cd/v3/util/notification/settings"
+	"github.com/hanzoai/deploy/pkg/apiclient/notification"
+	"github.com/hanzoai/deploy/reposerver/apiclient/mocks"
+	service "github.com/hanzoai/deploy/util/notification/argocd"
+	"github.com/hanzoai/deploy/util/notification/k8s"
+	"github.com/hanzoai/deploy/util/notification/settings"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

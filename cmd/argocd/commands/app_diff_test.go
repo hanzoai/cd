@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/diff"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -21,12 +21,12 @@ import (
 
 	"k8s.io/utils/ptr"
 
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	applicationmocks "github.com/argoproj/argo-cd/v3/pkg/apiclient/application/mocks"
-	settingspkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/settings"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	repoapiclient "github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
+	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
+	applicationmocks "github.com/hanzoai/deploy/pkg/apiclient/application/mocks"
+	settingspkg "github.com/hanzoai/deploy/pkg/apiclient/settings"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	repoapiclient "github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/util/argo/normalizers"
 )
 
 // Test data helpers

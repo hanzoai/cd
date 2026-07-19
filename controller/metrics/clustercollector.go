@@ -5,12 +5,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/cache"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/cache"
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
 
-	argoappv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	metricsutil "github.com/argoproj/argo-cd/v3/util/metrics"
+	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	metricsutil "github.com/hanzoai/deploy/util/metrics"
 )
 
 const (

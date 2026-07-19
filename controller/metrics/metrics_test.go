@@ -11,10 +11,10 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/argoproj/argo-cd/v3/util/db/mocks"
+	"github.com/hanzoai/deploy/util/db/mocks"
 
-	gitopsCache "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/cache"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
+	gitopsCache "github.com/hanzoai/deploy/gitops-engine/pkg/cache"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -24,11 +24,11 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"sigs.k8s.io/yaml"
 
-	argoappv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	appinformer "github.com/argoproj/argo-cd/v3/pkg/client/informers/externalversions"
-	applister "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	settings_util "github.com/argoproj/argo-cd/v3/util/settings"
+	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
+	appinformer "github.com/hanzoai/deploy/pkg/client/informers/externalversions"
+	applister "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
+	settings_util "github.com/hanzoai/deploy/util/settings"
 
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/manager"

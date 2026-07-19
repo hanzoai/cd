@@ -7,8 +7,8 @@ package mocks
 import (
 	"context"
 
-	"github.com/argoproj/argo-cd/v3/util/helm"
-	"github.com/argoproj/argo-cd/v3/util/io"
+	"github.com/hanzoai/deploy/util/helm"
+	"github.com/hanzoai/deploy/util/io"
 	mock "github.com/stretchr/testify/mock"
 )
 

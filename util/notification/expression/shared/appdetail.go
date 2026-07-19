@@ -3,9 +3,9 @@ package shared
 import (
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
 )
 
 type CommitMetadata struct {

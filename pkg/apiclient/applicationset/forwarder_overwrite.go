@@ -8,7 +8,7 @@ import (
 	//nolint:staticcheck
 	"github.com/golang/protobuf/proto"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 func init() {

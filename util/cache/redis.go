@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/util/env"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	"github.com/hanzoai/deploy/util/env"
+	utilio "github.com/hanzoai/deploy/util/io"
 
 	rediscache "github.com/go-redis/cache/v9"
 	"github.com/redis/go-redis/v9"

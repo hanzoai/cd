@@ -18,7 +18,7 @@ import (
 	"k8s.io/kubectl/pkg/util/podutils"
 	"k8s.io/streaming/pkg/httpstream"
 
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	utilio "github.com/hanzoai/deploy/util/io"
 )
 
 func selectPodForPortForward(clientSet kubernetes.Interface, namespace string, podSelectors ...string) (*corev1.Pod, error) {

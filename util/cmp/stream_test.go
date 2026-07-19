@@ -12,10 +12,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	pluginclient "github.com/argoproj/argo-cd/v3/cmpserver/apiclient"
-	"github.com/argoproj/argo-cd/v3/test"
-	"github.com/argoproj/argo-cd/v3/util/cmp"
-	"github.com/argoproj/argo-cd/v3/util/io/files"
+	pluginclient "github.com/hanzoai/deploy/cmpserver/apiclient"
+	"github.com/hanzoai/deploy/test"
+	"github.com/hanzoai/deploy/util/cmp"
+	"github.com/hanzoai/deploy/util/io/files"
 )
 
 type streamMock struct {

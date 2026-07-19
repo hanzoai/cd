@@ -23,7 +23,7 @@ const settings = [
     },
     {
         title: 'Projects',
-        description: 'Configure Argo CD projects',
+        description: 'Configure Hanzo CD projects',
         path: './projects'
     },
     {
@@ -43,7 +43,7 @@ const settings = [
     },
     {
         title: 'Advanced',
-        description: 'View Argo CD instance configuration',
+        description: 'View Hanzo CD instance configuration',
         path: './advanced'
     }
 ];

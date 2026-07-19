@@ -10,7 +10,7 @@ import (
 	"k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/argoproj/argo-cd/v3/common"
+	"github.com/hanzoai/deploy/common"
 )
 
 // newChangeTrackingManager returns a SettingsManager whose onRepoOrClusterChanged

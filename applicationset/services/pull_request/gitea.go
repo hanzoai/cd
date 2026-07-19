@@ -9,7 +9,7 @@ import (
 
 	"code.gitea.io/sdk/gitea"
 
-	"github.com/argoproj/argo-cd/v3/util/proxy"
+	"github.com/hanzoai/deploy/util/proxy"
 )
 
 type GiteaService struct {

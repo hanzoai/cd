@@ -3,16 +3,16 @@ package e2e
 import (
 	"testing"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	. "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/admin"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/admin/utils"
-	appfixture "github.com/argoproj/argo-cd/v3/test/e2e/fixture/app"
+	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
+	. "github.com/hanzoai/deploy/test/e2e/fixture/admin"
+	. "github.com/hanzoai/deploy/test/e2e/fixture/admin/utils"
+	appfixture "github.com/hanzoai/deploy/test/e2e/fixture/app"
 )
 
 func TestBackupExportImport(t *testing.T) {

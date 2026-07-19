@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/go-retryablehttp"
 	gitlab "gitlab.com/gitlab-org/api/client-go"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	"github.com/argoproj/argo-cd/v3/util/proxy"
+	"github.com/hanzoai/deploy/applicationset/utils"
+	"github.com/hanzoai/deploy/util/proxy"
 )
 
 type GitLabService struct {

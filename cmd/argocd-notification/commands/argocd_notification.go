@@ -22,14 +22,14 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	notificationscontroller "github.com/argoproj/argo-cd/v3/notification_controller/controller"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	service "github.com/argoproj/argo-cd/v3/util/notification/argocd"
-	"github.com/argoproj/argo-cd/v3/util/tls"
+	"github.com/hanzoai/deploy/common"
+	notificationscontroller "github.com/hanzoai/deploy/notification_controller/controller"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/deploy/util/errors"
+	service "github.com/hanzoai/deploy/util/notification/argocd"
+	"github.com/hanzoai/deploy/util/tls"
 )
 
 const (

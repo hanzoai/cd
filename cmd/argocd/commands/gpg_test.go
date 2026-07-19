@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 // splitColumns splits a line produced by tabwriter using runs of 2 or more spaces

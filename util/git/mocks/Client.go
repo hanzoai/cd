@@ -7,7 +7,7 @@ package mocks
 import (
 	"context"
 
-	"github.com/argoproj/argo-cd/v3/util/git"
+	"github.com/hanzoai/deploy/util/git"
 	mock "github.com/stretchr/testify/mock"
 )
 

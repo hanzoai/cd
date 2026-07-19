@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
 )
 
 // Context implements the "given" part of given/when/then for session/logout tests.

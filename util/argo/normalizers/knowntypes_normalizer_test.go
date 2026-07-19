@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/errors"
+	"github.com/hanzoai/deploy/pkg/apis/application"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/errors"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

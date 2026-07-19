@@ -13,17 +13,17 @@ import (
 	"google.golang.org/grpc/codes"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	"github.com/argoproj/argo-cd/v3/cmd/util"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	"github.com/argoproj/argo-cd/v3/util/grpc"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/templates"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/headless"
+	"github.com/hanzoai/deploy/cmd/util"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
+	"github.com/hanzoai/deploy/pkg/apis/application"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/deploy/util/grpc"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/templates"
 )
 
 type DisplayedAction struct {

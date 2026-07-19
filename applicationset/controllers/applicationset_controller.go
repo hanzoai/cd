@@ -45,22 +45,22 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/controllers/template"
-	"github.com/argoproj/argo-cd/v3/applicationset/generators"
-	"github.com/argoproj/argo-cd/v3/applicationset/metrics"
-	"github.com/argoproj/argo-cd/v3/applicationset/progressivesync"
-	"github.com/argoproj/argo-cd/v3/applicationset/status"
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	"github.com/argoproj/argo-cd/v3/common"
-	applog "github.com/argoproj/argo-cd/v3/util/app/log"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/applicationset/controllers/template"
+	"github.com/hanzoai/deploy/applicationset/generators"
+	"github.com/hanzoai/deploy/applicationset/metrics"
+	"github.com/hanzoai/deploy/applicationset/progressivesync"
+	"github.com/hanzoai/deploy/applicationset/status"
+	"github.com/hanzoai/deploy/applicationset/utils"
+	"github.com/hanzoai/deploy/common"
+	applog "github.com/hanzoai/deploy/util/app/log"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/settings"
 
-	argov1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	argoutil "github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
+	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	argoutil "github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/argo/normalizers"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
+	"github.com/hanzoai/deploy/pkg/apis/application"
 )
 
 const (

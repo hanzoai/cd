@@ -10,15 +10,15 @@ import (
 
 	k8smanagedfields "k8s.io/apimachinery/pkg/util/managedfields"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/argo/managedfields"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	appstatecache "github.com/argoproj/argo-cd/v3/util/cache/appstate"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/argo/managedfields"
+	"github.com/hanzoai/deploy/util/argo/normalizers"
+	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/diff"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube/scheme"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/scheme"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 

@@ -16,16 +16,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"go.yaml.in/yaml/v3"
 
-	"github.com/argoproj/argo-cd/v3/util/rbac"
+	"github.com/hanzoai/deploy/util/rbac"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applisters "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/server/rbacpolicy"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/security"
-	"github.com/argoproj/argo-cd/v3/util/session"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/server/rbacpolicy"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/security"
+	"github.com/hanzoai/deploy/util/session"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 const (

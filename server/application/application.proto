@@ -1,5 +1,5 @@
 syntax = "proto2";
-option go_package = "github.com/argoproj/argo-cd/v3/pkg/apiclient/application";
+option go_package = "github.com/hanzoai/deploy/pkg/apiclient/application";
 
 // Application Service
 //
@@ -8,9 +8,9 @@ package application;
 
 import "google/api/annotations.proto";
 import "k8s.io/apimachinery/pkg/apis/meta/v1/generated.proto";
-import "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1/generated.proto";
-import "github.com/argoproj/argo-cd/v3/reposerver/repository/repository.proto";
-import "github.com/argoproj/argo-cd/v3/server/events/events.proto";
+import "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1/generated.proto";
+import "github.com/hanzoai/deploy/reposerver/repository/repository.proto";
+import "github.com/hanzoai/deploy/server/events/events.proto";
 
 
 // ApplicationQuery is a query for application resources. When getting multiple applications, the "projects" field acts

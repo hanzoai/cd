@@ -7,11 +7,11 @@ import (
 	"io"
 	"os"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/yaml"
 
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	utilio "github.com/hanzoai/deploy/util/io"
 )
 
 func getOutWriter(inline bool, filePath string) (io.Writer, io.Closer, error) {

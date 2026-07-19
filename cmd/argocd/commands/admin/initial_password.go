@@ -9,8 +9,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/errors"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/errors"
 )
 
 const initialPasswordSecretName = "argocd-initial-admin-secret"

@@ -1,0 +1,21 @@
+# Canonical CI/CD — imports the shared hanzoai/ci reusable workflow. All real
+# config (images, test) lives in the repo-root hanzo.yml; this file is just
+# the trigger + the import. Same shape every hanzo/lux/zoo repo uses.
+#
+# branches include both `main` and `master` — this repo's default branch is
+# still `master` (inherited from the argoproj/argo-cd fork point).
+name: CI/CD
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  cicd:
+    # Pin to @v1 once the fix lands on that tag; @main carries it today (same
+    # as every other hanzo/lux/zoo repo).
+    uses: hanzoai/ci/.github/workflows/build.yml@main
+    secrets: inherit
