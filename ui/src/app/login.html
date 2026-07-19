@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hanzo CD — Sign in</title>
-<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='64' height='64' rx='8' fill='%23000'/%3E%3Cg transform='translate(8,8) scale(0.716)'%3E%3Cpath d='M22.21 67V44.6369H0V67H22.21Z' fill='%23fff'/%3E%3Cpath d='M66.7038 22.3184H22.2534L0.0878906 44.6367H44.4634L66.7038 22.3184Z' fill='%23fff'/%3E%3Cpath d='M22.21 0H0V22.3184H22.21V0Z' fill='%23fff'/%3E%3Cpath d='M66.7198 0H44.5098V22.3184H66.7198V0Z' fill='%23fff'/%3E%3Cpath d='M66.7198 67V44.6369H44.5098V67H66.7198Z' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E">
 <style>
   :root { color-scheme: light dark; }
   * { box-sizing: border-box; }
   html,body { height:100%; margin:0; }
   body {
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
+    font-family: "Geist", "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     background:#0a0a0a; color:#e7e7e7;
     display:grid; grid-template-columns: 1.1fr 1fr; min-height:100vh;
   }
@@ -18,7 +18,7 @@
   .pitch { padding:64px 56px; display:flex; flex-direction:column; justify-content:center; gap:22px;
            border-right:1px solid #1c1c1c; }
   .brand { display:flex; align-items:center; gap:12px; font-size:22px; font-weight:700; letter-spacing:-.02em; }
-  .brand .mark { width:30px; height:30px; background:#fff; color:#000; display:grid; place-items:center; border-radius:7px; font-weight:900; }
+  .brand .mark { width:26px; height:26px; display:block; }
   h1 { font-size:40px; line-height:1.08; margin:6px 0 0; letter-spacing:-.03em; font-weight:800; }
   .sub { color:#9a9a9a; font-size:16px; max-width:38ch; line-height:1.5; }
   ul.feat { list-style:none; padding:0; margin:8px 0 0; display:grid; gap:12px; }
@@ -27,8 +27,7 @@
   ul.feat .dot { width:6px; height:6px; border-radius:50%; background:#fff; margin-top:7px; flex:none; }
   .auth { display:flex; align-items:center; justify-content:center; padding:40px; }
   .card { width:100%; max-width:360px; text-align:center; }
-  .card .mark2 { width:44px; height:44px; background:#fff; color:#000; display:grid; place-items:center;
-                 border-radius:10px; font-weight:900; font-size:20px; margin:0 auto 18px; }
+  .card .mark2 { width:52px; height:52px; display:block; margin:0 auto 18px; }
   .card h2 { font-size:22px; margin:0 0 6px; font-weight:700; }
   .card p.hint { color:#8f8f8f; font-size:14px; margin:0 0 26px; }
   button#login {
@@ -46,7 +45,7 @@
 </head>
 <body>
   <section class="pitch">
-    <div class="brand"><span class="mark">H</span> Hanzo CD</div>
+    <div class="brand"><svg class="mark" viewBox="0 0 67 67" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M22.21 67V44.6369H0V67H22.21Z" fill="#fff"/><path d="M66.7038 22.3184H22.2534L0.0878906 44.6367H44.4634L66.7038 22.3184Z" fill="#fff"/><path d="M22.21 0H0V22.3184H22.21V0Z" fill="#fff"/><path d="M66.7198 0H44.5098V22.3184H66.7198V0Z" fill="#fff"/><path d="M66.7198 67V44.6369H44.5098V67H66.7198Z" fill="#fff"/></svg> Hanzo CD</div>
     <h1>Continuous delivery for your whole fleet.</h1>
     <p class="sub">GitOps for every Hanzo App. Declarative, versioned, and auto-synced from git to your clusters — one control plane across hanzo, lux, zoo &amp; pars.</p>
     <ul class="feat">
@@ -59,11 +58,11 @@
 
   <section class="auth">
     <div class="card">
-      <div class="mark2">H</div>
+      <svg class="mark2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#fff"/><g transform="translate(8,8) scale(0.716)"><path d="M22.21 67V44.6369H0V67H22.21Z" fill="#000"/><path d="M66.7038 22.3184H22.2534L0.0878906 44.6367H44.4634L66.7038 22.3184Z" fill="#000"/><path d="M22.21 0H0V22.3184H22.21V0Z" fill="#000"/><path d="M66.7198 0H44.5098V22.3184H66.7198V0Z" fill="#000"/><path d="M66.7198 67V44.6369H44.5098V67H66.7198Z" fill="#000"/></g></svg>
       <h2>Hanzo CD</h2>
       <p class="hint">Sign in with your Hanzo account to manage the fleet.</p>
       <button id="login">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="13" width="8" height="8" rx="2" fill="currentColor"/></svg>
+        <svg width="17" height="17" viewBox="0 0 67 67" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M22.21 67V44.6369H0V67H22.21Z" fill="currentColor"/><path d="M66.7038 22.3184H22.2534L0.0878906 44.6367H44.4634L66.7038 22.3184Z" fill="currentColor"/><path d="M22.21 0H0V22.3184H22.21V0Z" fill="currentColor"/><path d="M66.7198 0H44.5098V22.3184H66.7198V0Z" fill="currentColor"/><path d="M66.7198 67V44.6369H44.5098V67H66.7198Z" fill="currentColor"/></svg>
         Sign in with Hanzo
       </button>
       <div class="status" id="status"></div>
