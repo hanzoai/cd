@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 func TestRepository_GetCredentialType(t *testing.T) {

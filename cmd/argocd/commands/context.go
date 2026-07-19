@@ -11,9 +11,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/deploy/util/localconfig"
 )
 
 // NewContextCommand returns a new instance of an `argocd ctx` command

@@ -10,7 +10,7 @@ import (
 	bitbucketv1 "github.com/gfleury/go-bitbucket-v1"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/services"
+	"github.com/hanzoai/deploy/applicationset/services"
 )
 
 type BitbucketServerProvider struct {

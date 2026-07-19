@@ -10,7 +10,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/argoproj/argo-cd/v3/util/cli"
+	"github.com/hanzoai/deploy/util/cli"
 
 	log "github.com/sirupsen/logrus"
 )

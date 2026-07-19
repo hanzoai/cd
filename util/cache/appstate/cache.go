@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	cacheutil "github.com/argoproj/argo-cd/v3/util/cache"
-	"github.com/argoproj/argo-cd/v3/util/env"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	cacheutil "github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/deploy/util/env"
 )
 
 var (

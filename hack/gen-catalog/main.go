@@ -22,7 +22,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/admin"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/admin"
 )
 
 func main() {

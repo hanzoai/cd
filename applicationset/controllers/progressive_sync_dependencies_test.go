@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -16,12 +16,12 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/generators"
-	appsetmetrics "github.com/argoproj/argo-cd/v3/applicationset/metrics"
-	appsetprogressiveSync "github.com/argoproj/argo-cd/v3/applicationset/progressivesync"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/applicationset/generators"
+	appsetmetrics "github.com/hanzoai/deploy/applicationset/metrics"
+	appsetprogressiveSync "github.com/hanzoai/deploy/applicationset/progressivesync"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 func TestUpdateApplicationSetApplicationStatus(t *testing.T) {

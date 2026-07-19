@@ -1,4 +1,4 @@
-PACKAGE=github.com/argoproj/argo-cd/v3/common
+PACKAGE=github.com/hanzoai/deploy/common
 CURRENT_DIR=$(shell pwd)
 DIST_DIR=${CURRENT_DIR}/dist
 CLI_NAME=argocd

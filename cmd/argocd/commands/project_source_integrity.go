@@ -13,15 +13,15 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/gpgkey"
-	projectpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/project"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/sourceintegrity"
-	"github.com/argoproj/argo-cd/v3/util/templates"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/headless"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	"github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
+	projectpkg "github.com/hanzoai/deploy/pkg/apiclient/project"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/cli"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/sourceintegrity"
+	"github.com/hanzoai/deploy/util/templates"
 )
 
 const (

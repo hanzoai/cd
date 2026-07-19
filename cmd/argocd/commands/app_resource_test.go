@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 func TestPrintTreeViewAppResources(t *testing.T) {

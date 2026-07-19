@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync/atomic"
 
-	"github.com/argoproj/argo-cd/v3/util/rand"
+	"github.com/hanzoai/deploy/util/rand"
 )
 
 var globalCount = &atomic.Uint64{}

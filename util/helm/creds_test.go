@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	argoutils "github.com/argoproj/argo-cd/v3/util"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity/mocks"
+	argoutils "github.com/hanzoai/deploy/util"
+	"github.com/hanzoai/deploy/util/workloadidentity"
+	"github.com/hanzoai/deploy/util/workloadidentity/mocks"
 )
 
 func TestWorkLoadIdentityUserNameShouldBeEmptyGuid(t *testing.T) {

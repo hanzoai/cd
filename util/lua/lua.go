@@ -15,7 +15,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	glob "github.com/bmatcuk/doublestar/v4"
 	"github.com/golang/groupcache/lru"
 	lua "github.com/yuin/gopher-lua"
@@ -23,10 +23,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	luajson "layeh.com/gopher-json"
 
-	applicationpkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/application"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/resource_customizations"
-	argoglob "github.com/argoproj/argo-cd/v3/util/glob"
+	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/resource_customizations"
+	argoglob "github.com/hanzoai/deploy/util/glob"
 )
 
 const (

@@ -18,11 +18,11 @@ import (
 	"gopkg.in/yaml.v3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/argoproj/argo-cd/v3/cmpserver/apiclient"
-	repoclient "github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/test"
-	"github.com/argoproj/argo-cd/v3/util/cmp"
-	"github.com/argoproj/argo-cd/v3/util/tgzstream"
+	"github.com/hanzoai/deploy/cmpserver/apiclient"
+	repoclient "github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/test"
+	"github.com/hanzoai/deploy/util/cmp"
+	"github.com/hanzoai/deploy/util/tgzstream"
 )
 
 func newService(configFilePath string) (*Service, error) {

@@ -6,8 +6,8 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	ctrlclient "sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	listers "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	listers "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
 )
 
 // Implements AppsetLister interface with controller-runtime client

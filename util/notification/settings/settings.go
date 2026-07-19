@@ -12,9 +12,9 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/util/notification/expression"
+	"github.com/hanzoai/deploy/util/notification/expression"
 
-	service "github.com/argoproj/argo-cd/v3/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/argocd"
 )
 
 func GetFactorySettings(argocdService service.Service, secretName, configMapName string, selfServiceNotificationEnabled bool) api.Settings {

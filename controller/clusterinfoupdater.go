@@ -5,22 +5,22 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/common"
+	"github.com/hanzoai/deploy/common"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/cache"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/cache"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 
-	"github.com/argoproj/argo-cd/v3/util/env"
+	"github.com/hanzoai/deploy/util/env"
 
-	"github.com/argoproj/argo-cd/v3/controller/metrics"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	appstatecache "github.com/argoproj/argo-cd/v3/util/cache/appstate"
-	"github.com/argoproj/argo-cd/v3/util/db"
+	"github.com/hanzoai/deploy/controller/metrics"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/argo"
+	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
+	"github.com/hanzoai/deploy/util/db"
 )
 
 const (

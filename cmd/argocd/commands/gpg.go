@@ -9,14 +9,14 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/headless"
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/utils"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	gpgkeypkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/gpgkey"
-	appsv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/templates"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/headless"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/utils"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	gpgkeypkg "github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
+	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/errors"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/templates"
 )
 
 // NewGPGCommand returns a new instance of an `argocd repo` command

@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/test"
-	"github.com/argoproj/argo-cd/v3/util/session"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/test"
+	"github.com/hanzoai/deploy/util/session"
+	"github.com/hanzoai/deploy/util/settings"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/require"

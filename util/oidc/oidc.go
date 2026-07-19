@@ -30,16 +30,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/oauth2"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/server/settings/oidc"
-	"github.com/argoproj/argo-cd/v3/util/cache"
-	"github.com/argoproj/argo-cd/v3/util/crypto"
-	"github.com/argoproj/argo-cd/v3/util/dex"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/server/settings/oidc"
+	"github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/deploy/util/crypto"
+	"github.com/hanzoai/deploy/util/dex"
 
-	httputil "github.com/argoproj/argo-cd/v3/util/http"
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
-	"github.com/argoproj/argo-cd/v3/util/rand"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	httputil "github.com/hanzoai/deploy/util/http"
+	jwtutil "github.com/hanzoai/deploy/util/jwt"
+	"github.com/hanzoai/deploy/util/rand"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 var ErrInvalidRedirectURL = errors.New("invalid return URL")
@@ -48,7 +48,7 @@ var ErrInvalidRedirectURL = errors.New("invalid return URL")
 var tracer trace.Tracer
 
 func init() {
-	tracer = otel.Tracer("github.com/argoproj/argo-cd/v3/util/oidc")
+	tracer = otel.Tracer("github.com/hanzoai/deploy/util/oidc")
 }
 
 const (

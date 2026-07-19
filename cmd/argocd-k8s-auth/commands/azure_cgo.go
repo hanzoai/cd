@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/kubelogin/pkg/token"
 	"github.com/spf13/cobra"
 
-	"github.com/argoproj/argo-cd/v3/util/errors"
+	"github.com/hanzoai/deploy/util/errors"
 )
 
 var (

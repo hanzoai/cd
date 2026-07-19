@@ -10,13 +10,13 @@ import (
 	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	testutil "github.com/argoproj/argo-cd/v3/test"
-	argo "github.com/argoproj/argo-cd/v3/util/argo/diff"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	"github.com/argoproj/argo-cd/v3/util/argo/testdata"
-	cacheutil "github.com/argoproj/argo-cd/v3/util/cache"
-	appstatecache "github.com/argoproj/argo-cd/v3/util/cache/appstate"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	testutil "github.com/hanzoai/deploy/test"
+	argo "github.com/hanzoai/deploy/util/argo/diff"
+	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/argo/testdata"
+	cacheutil "github.com/hanzoai/deploy/util/cache"
+	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
 )
 
 func TestStateDiff(t *testing.T) {

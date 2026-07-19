@@ -78,7 +78,7 @@ export function Login(props: RouteComponentProps<{}>) {
             </div>
             <div className='login__box'>
                 <div className='login__logo width-control'>
-                    <img className='logo-image' src='assets/images/argo_o.svg' alt='argo' />
+                    <img className='logo-image' src='assets/images/hanzo-mark.svg' alt='Hanzo' />
                 </div>
                 {ssoConfigured && (
                     <div className='login__box_saml width-control'>
@@ -141,8 +141,8 @@ export function Login(props: RouteComponentProps<{}>) {
                     <div className='argo-form-row__error-msg'>Login is disabled. Please contact your system administrator.</div>
                 )}
                 <div className='login__footer'>
-                    <a href='https://argoproj.io' target='_blank'>
-                        <img className='logo-image' src='assets/images/argologo.svg' alt='argo' />
+                    <a href='https://hanzo.ai' target='_blank'>
+                        <img className='logo-image' src='assets/images/hanzo-mark.svg' alt='Hanzo' />
                     </a>
                 </div>
             </div>

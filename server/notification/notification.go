@@ -6,7 +6,7 @@ import (
 	"github.com/argoproj/notifications-engine/pkg/api"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/notification"
+	"github.com/hanzoai/deploy/pkg/apiclient/notification"
 )
 
 // Server provides an Application service

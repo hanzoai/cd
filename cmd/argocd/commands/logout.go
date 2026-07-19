@@ -12,13 +12,13 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/argoproj/argo-cd/v3/cmd/argocd/commands/utils"
-	"github.com/argoproj/argo-cd/v3/common"
-	argocdclient "github.com/argoproj/argo-cd/v3/pkg/apiclient"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	errutil "github.com/argoproj/argo-cd/v3/util/errors"
-	grpc_util "github.com/argoproj/argo-cd/v3/util/grpc"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
+	"github.com/hanzoai/deploy/cmd/argocd/commands/utils"
+	"github.com/hanzoai/deploy/common"
+	argocdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	"github.com/hanzoai/deploy/util/cli"
+	errutil "github.com/hanzoai/deploy/util/errors"
+	grpc_util "github.com/hanzoai/deploy/util/grpc"
+	"github.com/hanzoai/deploy/util/localconfig"
 )
 
 // NewLogoutCommand returns a new instance of `argocd logout` command

@@ -8,11 +8,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
+	"github.com/hanzoai/deploy/util/settings"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"

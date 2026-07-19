@@ -5,14 +5,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/cache"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/cache"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/util/version"
 
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	kubeutil "github.com/argoproj/argo-cd/v3/util/kube"
+	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/errors"
+	kubeutil "github.com/hanzoai/deploy/util/kube"
 )
 
 type Versions struct {

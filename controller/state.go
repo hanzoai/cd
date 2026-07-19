@@ -11,19 +11,19 @@ import (
 	goSync "sync"
 	"time"
 
-	synccommon "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
+	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/diff"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync"
-	hookutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/hook"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/ignore"
-	resourceutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/resource"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/syncwaves"
-	kubeutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync"
+	hookutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/ignore"
+	resourceutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/resource"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/syncwaves"
+	kubeutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 
-	"github.com/argoproj/argo-cd/v3/util/sourceintegrity"
+	"github.com/hanzoai/deploy/util/sourceintegrity"
 
 	log "github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
@@ -34,29 +34,29 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	statecache "github.com/argoproj/argo-cd/v3/controller/cache"
-	"github.com/argoproj/argo-cd/v3/controller/metrics"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	appclientset "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	applog "github.com/argoproj/argo-cd/v3/util/app/log"
-	"github.com/argoproj/argo-cd/v3/util/app/path"
-	"github.com/argoproj/argo-cd/v3/util/argo"
-	argodiff "github.com/argoproj/argo-cd/v3/util/argo/diff"
-	"github.com/argoproj/argo-cd/v3/util/argo/normalizers"
-	appstatecache "github.com/argoproj/argo-cd/v3/util/cache/appstate"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/git"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/settings"
-	"github.com/argoproj/argo-cd/v3/util/stats"
-	traceutil "github.com/argoproj/argo-cd/v3/util/trace"
+	"github.com/hanzoai/deploy/common"
+	statecache "github.com/hanzoai/deploy/controller/cache"
+	"github.com/hanzoai/deploy/controller/metrics"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	applog "github.com/hanzoai/deploy/util/app/log"
+	"github.com/hanzoai/deploy/util/app/path"
+	"github.com/hanzoai/deploy/util/argo"
+	argodiff "github.com/hanzoai/deploy/util/argo/diff"
+	"github.com/hanzoai/deploy/util/argo/normalizers"
+	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/git"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/deploy/util/stats"
+	traceutil "github.com/hanzoai/deploy/util/trace"
 )
 
 var ErrCompareStateRepo = errors.New("failed to get repo objects")
 
-var tracer = otel.Tracer("github.com/argoproj/argo-cd/v3/controller")
+var tracer = otel.Tracer("github.com/hanzoai/deploy/controller")
 
 // setAppTraceAttrs sets the standard argocd.app.* span attributes (plus any extra attributes)
 // on span. It is a no-op when the span is not recording, so callers on hot reconcile paths do

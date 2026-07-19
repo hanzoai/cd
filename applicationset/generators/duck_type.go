@@ -17,9 +17,9 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	argoprojiov1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/applicationset/utils"
+	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 var _ Generator = (*DuckTypeGenerator)(nil)

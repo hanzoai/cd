@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	utiltls "github.com/argoproj/argo-cd/v3/util/tls"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/env"
+	utiltls "github.com/hanzoai/deploy/util/tls"
 
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
@@ -21,8 +21,8 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 
-	grpc_util "github.com/argoproj/argo-cd/v3/util/grpc"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
+	grpc_util "github.com/hanzoai/deploy/util/grpc"
+	utilio "github.com/hanzoai/deploy/util/io"
 )
 
 // MaxGRPCMessageSize contains max grpc message size

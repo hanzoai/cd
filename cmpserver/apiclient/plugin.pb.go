@@ -6,7 +6,7 @@ package apiclient
 import (
 	context "context"
 	fmt "fmt"
-	apiclient "github.com/argoproj/argo-cd/v3/reposerver/apiclient"
+	apiclient "github.com/hanzoai/deploy/reposerver/apiclient"
 	proto "github.com/gogo/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"

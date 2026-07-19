@@ -7,8 +7,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/services"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/applicationset/services"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 func GetGenerators(ctx context.Context, c client.Client, k8sClient kubernetes.Interface, controllerNamespace string, argoCDService services.Repos, dynamicClient dynamic.Interface, scmConfig SCMConfig, clusterInformer *settings.ClusterInformer) map[string]Generator {

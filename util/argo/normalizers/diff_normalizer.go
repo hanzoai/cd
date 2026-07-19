@@ -8,15 +8,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/diff"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
 	jsonpatch "github.com/evanphx/json-patch"
 	"github.com/itchyny/gojq"
 	log "github.com/sirupsen/logrus"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/glob"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/glob"
 )
 
 const (

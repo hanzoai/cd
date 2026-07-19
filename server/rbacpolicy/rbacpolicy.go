@@ -6,10 +6,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applister "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
-	jwtutil "github.com/argoproj/argo-cd/v3/util/jwt"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	applister "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
+	jwtutil "github.com/hanzoai/deploy/util/jwt"
+	"github.com/hanzoai/deploy/util/rbac"
 )
 
 // RBACPolicyEnforcer provides an RBAC Claims Enforcer which additionally consults AppProject

@@ -789,7 +789,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
 
                                 <div>
                                     Resources Ignore List
-                                    <HelpIcon title='Define resources that ArgoCD should not report as orphaned' />
+                                    <HelpIcon title='Define resources that Hanzo CD should not report as orphaned' />
                                 </div>
                                 <div className='row white-box__details-row'>
                                     <div className='columns small-4'>Group</div>

@@ -8,11 +8,11 @@ import (
 	"time"
 
 	"dario.cat/mergo"
-	cachemocks "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/cache/mocks"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	synccommon "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
-	. "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/testing"
+	cachemocks "github.com/hanzoai/deploy/gitops-engine/pkg/cache/mocks"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	. "github.com/hanzoai/deploy/gitops-engine/pkg/utils/testing"
 	"github.com/sirupsen/logrus"
 	logrustest "github.com/sirupsen/logrus/hooks/test"
 	"github.com/stretchr/testify/assert"
@@ -27,11 +27,11 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/controller/testdata"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/test"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/controller/testdata"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/test"
 )
 
 // TestCompareAppStateEmpty tests comparison when both git and live have no objects
