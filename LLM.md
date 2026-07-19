@@ -382,3 +382,42 @@ sequenced behind evidence, not exempted:
 
 Swapping blind breaks the build. The bases needed are node 24.17.0, golang
 1.26.5, and ubuntu 26.04 published to `ghcr.io/hanzoai/*`.
+
+## The `gitops-engine` submodule, and how cloud embeds it
+
+`gitops-engine/` is its own Go module with its own `go.mod`, wired into the
+parent through `replace github.com/argoproj/argo-cd/gitops-engine[...] =>
+./gitops-engine`. Because it is independently importable, it is also the seam
+the Hanzo cloud money binary uses: `github.com/hanzoai/cloud` `clients/deploy`
+serves `/v1/deploy` — the fleet view over the operator `App` CRs — by running
+the engine's read path (`pkg/health`, `pkg/diff`, `pkg/sync`) **in-process**.
+There is no separate `argocd` process on that side.
+
+The load-bearing decision, true on every lineage: **the submodule keeps its
+`argoproj` module path; it is not renamed to `github.com/hanzoai/deploy/...`**.
+The parent imports the engine under the `argoproj` path in hundreds of files
+and wires it with its own `replace ... => ./gitops-engine`; renaming the
+submodule would break the parent's `go build ./...` and force a repo-wide
+import rewrite for no gain. The parent module rebrand (see Lineages) stops at
+the parent — `hanzo/v3.4.5` carries `gitops-engine` at
+`github.com/argoproj/argo-cd/gitops-engine`, and the 3.6 line at
+`.../gitops-engine/v3`, both unrenamed. The fork is Hanzo-owned by repository,
+patched here as needed; ownership is not the module string.
+
+Cloud consumes it under that same `argoproj` path and points the path at this
+fork with a **consumer-side filesystem replace** onto the sibling checkout — no
+rename, no import rewrite. That wiring is the not-yet-landed `clients/deploy`
+P2b step: cloud's `go.mod` carries no `gitops-engine` require or replace today,
+and the read path is still the field-strip diff. The engine's read path funnels
+through `pkg/utils/kube`, which drags the `k8s.io/kubernetes` staging tree, so
+whichever `gitops-engine` version cloud embeds it must pin that k8s stack to
+its own (`controller-runtime`-compatible) versions so the money binary's k8s
+does not move. Those pins are the consumer's concern and live in cloud, against
+the engine version cloud actually embeds — they are not restated here, where
+they would rot against it.
+
+End state: tag the `gitops-engine/` submodule on this repo and swap cloud's
+filesystem replace for a pinned pseudo-version — same import path, no code
+change. This section consolidates the `feat/hanzo-gitops-engine` note onto the
+release lineage; that branch was a doc-only branch off the unbranded `master`
+mirror and is retired.
