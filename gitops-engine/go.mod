@@ -1,4 +1,4 @@
-module github.com/argoproj/argo-cd/gitops-engine/v3
+module github.com/hanzoai/deploy/gitops-engine
 
 go 1.26.1
 

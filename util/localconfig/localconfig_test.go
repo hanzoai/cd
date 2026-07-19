@@ -11,7 +11,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/util/config"
+	"github.com/hanzoai/deploy/util/config"
 )
 
 func TestGetUsername(t *testing.T) {

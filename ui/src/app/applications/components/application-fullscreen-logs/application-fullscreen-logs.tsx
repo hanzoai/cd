@@ -17,7 +17,7 @@ export const ApplicationFullscreenLogs = (props: RouteComponentProps<{name: stri
     const fullscreen = true;
     return (
         <div className='application-fullscreen-logs'>
-            <Helmet title={`${title} - Argo CD`} />
+            <Helmet title={`${title} - Hanzo CD`} />
             <h4 style={{fontSize: '18px', textAlign: 'center'}}>{title}</h4>
             <PodsLogsViewer
                 applicationName={props.match.params.name}

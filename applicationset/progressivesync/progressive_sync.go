@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	log "github.com/sirupsen/logrus"
@@ -20,8 +20,8 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/intstr"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	argov1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/applicationset/utils"
+	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )

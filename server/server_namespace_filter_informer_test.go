@@ -10,9 +10,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	apps "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	appinformer "github.com/argoproj/argo-cd/v3/pkg/client/informers/externalversions"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	apps "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
+	appinformer "github.com/hanzoai/deploy/pkg/client/informers/externalversions"
 )
 
 // TestInformerFilterDoesNotCacheDisallowedNamespaces drives the full

@@ -14,9 +14,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	utillog "github.com/argoproj/argo-cd/v3/util/log"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/common"
+	utillog "github.com/hanzoai/deploy/util/log"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 const invalidURL = ":://localhost/foo/bar"

@@ -7,9 +7,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	"github.com/hanzoai/deploy/common"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/settings"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -21,10 +21,10 @@ import (
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/status"
 
-	utilstls "github.com/argoproj/argo-cd/v3/util/tls"
+	utilstls "github.com/hanzoai/deploy/util/tls"
 
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient/mocks"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/deploy/reposerver/apiclient/mocks"
 )
 
 func TestNewRepoServerClient_CorrectClientReturned(t *testing.T) {

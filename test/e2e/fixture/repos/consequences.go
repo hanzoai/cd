@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
-	repositorypkg "github.com/argoproj/argo-cd/v3/pkg/apiclient/repository"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
+	repositorypkg "github.com/hanzoai/deploy/pkg/apiclient/repository"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
 )
 
 // this implements the "then" part of given/when/then

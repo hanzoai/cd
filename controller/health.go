@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	hookutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/hook"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/ignore"
-	kubeutil "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	hookutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/ignore"
+	kubeutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	applog "github.com/argoproj/argo-cd/v3/util/app/log"
-	"github.com/argoproj/argo-cd/v3/util/lua"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apis/application"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	applog "github.com/hanzoai/deploy/util/app/log"
+	"github.com/hanzoai/deploy/util/lua"
 )
 
 // maxHealthCausesShown bounds how many causes are rendered in events/logs to keep them readable.

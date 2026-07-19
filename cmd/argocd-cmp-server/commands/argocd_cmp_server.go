@@ -8,14 +8,14 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	cmdutil "github.com/argoproj/argo-cd/v3/cmd/util"
-	"github.com/argoproj/argo-cd/v3/cmpserver"
-	"github.com/argoproj/argo-cd/v3/cmpserver/plugin"
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	traceutil "github.com/argoproj/argo-cd/v3/util/trace"
+	cmdutil "github.com/hanzoai/deploy/cmd/util"
+	"github.com/hanzoai/deploy/cmpserver"
+	"github.com/hanzoai/deploy/cmpserver/plugin"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/deploy/util/errors"
+	traceutil "github.com/hanzoai/deploy/util/trace"
 )
 
 func NewCommand() *cobra.Command {

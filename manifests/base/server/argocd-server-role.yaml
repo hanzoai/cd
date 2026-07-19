@@ -21,7 +21,7 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - argoproj.io
+  - deploy.hanzo.ai
   resources:
   - applications
   - appprojects

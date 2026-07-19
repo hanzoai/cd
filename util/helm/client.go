@@ -18,7 +18,7 @@ import (
 	"strings"
 	"time"
 
-	executil "github.com/argoproj/argo-cd/v3/util/exec"
+	executil "github.com/hanzoai/deploy/util/exec"
 
 	"github.com/argoproj/pkg/v2/sync"
 	log "github.com/sirupsen/logrus"
@@ -27,11 +27,11 @@ import (
 	"oras.land/oras-go/v2/registry/remote/auth"
 	"oras.land/oras-go/v2/registry/remote/credentials"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/cache"
-	utilio "github.com/argoproj/argo-cd/v3/util/io"
-	"github.com/argoproj/argo-cd/v3/util/io/files"
-	"github.com/argoproj/argo-cd/v3/util/proxy"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/cache"
+	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/deploy/util/io/files"
+	"github.com/hanzoai/deploy/util/proxy"
 )
 
 var (

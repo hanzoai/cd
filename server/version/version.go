@@ -6,12 +6,12 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/google/go-jsonnet"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apiclient/version"
-	"github.com/argoproj/argo-cd/v3/server/settings"
-	"github.com/argoproj/argo-cd/v3/util/helm"
-	"github.com/argoproj/argo-cd/v3/util/kustomize"
-	sessionmgr "github.com/argoproj/argo-cd/v3/util/session"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apiclient/version"
+	"github.com/hanzoai/deploy/server/settings"
+	"github.com/hanzoai/deploy/util/helm"
+	"github.com/hanzoai/deploy/util/kustomize"
+	sessionmgr "github.com/hanzoai/deploy/util/session"
 )
 
 type Server struct {

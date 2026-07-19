@@ -11,9 +11,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	argocdcommon "github.com/argoproj/argo-cd/v3/common"
+	argocdcommon "github.com/hanzoai/deploy/common"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

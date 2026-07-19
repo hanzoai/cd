@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
-	. "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/testing"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	. "github.com/hanzoai/deploy/gitops-engine/pkg/utils/testing"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 

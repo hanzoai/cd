@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/argoproj/argo-cd/v3/pkg/apiclient/project";
+option go_package = "github.com/hanzoai/deploy/pkg/apiclient/project";
 
 // Project Service
 //
@@ -7,9 +7,9 @@ option go_package = "github.com/argoproj/argo-cd/v3/pkg/apiclient/project";
 package project;
 
 import "google/api/annotations.proto";
-import "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1/generated.proto";
-import "github.com/argoproj/argo-cd/v3/server/application/application.proto";
-import "github.com/argoproj/argo-cd/v3/server/events/events.proto";
+import "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1/generated.proto";
+import "github.com/hanzoai/deploy/server/application/application.proto";
+import "github.com/hanzoai/deploy/server/events/events.proto";
 
 // ProjectCreateRequest defines project creation parameters.
 message ProjectCreateRequest {

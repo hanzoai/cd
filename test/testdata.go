@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/alicebob/miniredis/v2"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/testing"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/testing"
 	"github.com/redis/go-redis/v9"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -12,12 +12,12 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	apps "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/fake"
-	appclient "github.com/argoproj/argo-cd/v3/pkg/client/clientset/versioned/typed/application/v1alpha1"
-	appinformer "github.com/argoproj/argo-cd/v3/pkg/client/informers/externalversions"
-	applister "github.com/argoproj/argo-cd/v3/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	apps "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
+	appclient "github.com/hanzoai/deploy/pkg/client/clientset/versioned/typed/application/v1alpha1"
+	appinformer "github.com/hanzoai/deploy/pkg/client/informers/externalversions"
+	applister "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
 )
 
 const (

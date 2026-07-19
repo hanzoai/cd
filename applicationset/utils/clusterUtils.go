@@ -5,8 +5,8 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	appv1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/settings"
+	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/settings"
 )
 
 // ClusterSpecifier contains only the name and server URL of a cluster. We use this struct to avoid partially-populating

@@ -3,7 +3,7 @@ package metrics
 import (
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/util/oci"
+	"github.com/hanzoai/deploy/util/oci"
 )
 
 type OCIRequestType string

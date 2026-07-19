@@ -15,8 +15,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	"github.com/argoproj/argo-cd/v3/util/localconfig"
+	"github.com/hanzoai/deploy/test/e2e/fixture"
+	"github.com/hanzoai/deploy/util/localconfig"
 )
 
 var (

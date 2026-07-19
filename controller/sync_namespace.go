@@ -3,10 +3,10 @@ package controller
 import (
 	"maps"
 
-	gitopscommon "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
+	gitopscommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 // syncNamespace determine if Argo CD should create and/or manage the namespace

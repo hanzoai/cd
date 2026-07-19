@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	pullrequest "github.com/argoproj/argo-cd/v3/applicationset/services/pull_request"
-	argoprojiov1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
+	pullrequest "github.com/hanzoai/deploy/applicationset/services/pull_request"
+	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
 func TestPullRequestGithubGenerateParams(t *testing.T) {

@@ -28,8 +28,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity"
-	"github.com/argoproj/argo-cd/v3/util/workloadidentity/mocks"
+	"github.com/hanzoai/deploy/util/workloadidentity"
+	"github.com/hanzoai/deploy/util/workloadidentity/mocks"
 )
 
 func runCmd(ctx context.Context, workingDir string, name string, args ...string) error {

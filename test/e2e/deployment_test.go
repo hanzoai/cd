@@ -17,15 +17,15 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/clusterauth"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/clusterauth"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	. "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 
-	. "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture"
-	. "github.com/argoproj/argo-cd/v3/test/e2e/fixture/app"
+	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/deploy/test/e2e/fixture"
+	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
 )
 
 // when we have a config map generator, AND the ignore annotation, it is ignored in the app's sync status

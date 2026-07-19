@@ -3,7 +3,7 @@ package security
 import (
 	"fmt"
 
-	"github.com/argoproj/argo-cd/v3/util/glob"
+	"github.com/hanzoai/deploy/util/glob"
 )
 
 func IsNamespaceEnabled(namespace string, serverNamespace string, enabledNamespaces []string) bool {

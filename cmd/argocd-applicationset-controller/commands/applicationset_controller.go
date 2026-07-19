@@ -8,25 +8,25 @@ import (
 	"runtime/debug"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/progressivesync"
+	"github.com/hanzoai/deploy/applicationset/progressivesync"
 
 	"github.com/argoproj/pkg/v2/stats"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	"github.com/argoproj/argo-cd/v3/reposerver/apiclient"
-	logutils "github.com/argoproj/argo-cd/v3/util/log"
-	"github.com/argoproj/argo-cd/v3/util/profile"
-	"github.com/argoproj/argo-cd/v3/util/tls"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	logutils "github.com/hanzoai/deploy/util/log"
+	"github.com/hanzoai/deploy/util/profile"
+	"github.com/hanzoai/deploy/util/tls"
 
-	"github.com/argoproj/argo-cd/v3/applicationset/controllers"
-	"github.com/argoproj/argo-cd/v3/applicationset/generators"
-	"github.com/argoproj/argo-cd/v3/applicationset/utils"
-	"github.com/argoproj/argo-cd/v3/applicationset/webhook"
-	cmdutil "github.com/argoproj/argo-cd/v3/cmd/util"
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	"github.com/argoproj/argo-cd/v3/util/github_app"
+	"github.com/hanzoai/deploy/applicationset/controllers"
+	"github.com/hanzoai/deploy/applicationset/generators"
+	"github.com/hanzoai/deploy/applicationset/utils"
+	"github.com/hanzoai/deploy/applicationset/webhook"
+	cmdutil "github.com/hanzoai/deploy/cmd/util"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/deploy/util/github_app"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -40,13 +40,13 @@ import (
 	ctrlclient "sigs.k8s.io/controller-runtime/pkg/client"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
-	appsetmetrics "github.com/argoproj/argo-cd/v3/applicationset/metrics"
-	"github.com/argoproj/argo-cd/v3/applicationset/services"
-	appv1alpha1 "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/db"
-	"github.com/argoproj/argo-cd/v3/util/errors"
-	argosettings "github.com/argoproj/argo-cd/v3/util/settings"
+	appsetmetrics "github.com/hanzoai/deploy/applicationset/metrics"
+	"github.com/hanzoai/deploy/applicationset/services"
+	appv1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/deploy/util/errors"
+	argosettings "github.com/hanzoai/deploy/util/settings"
 )
 
 var gitSubmoduleEnabled = env.ParseBoolFromEnv(common.EnvGitSubmoduleEnabled, true)
@@ -169,7 +169,7 @@ func NewCommand() *cobra.Command {
 				Cache:                  cacheOpt,
 				HealthProbeBindAddress: probeBindAddr,
 				LeaderElection:         enableLeaderElection,
-				LeaderElectionID:       "58ac56fa.applicationsets.argoproj.io",
+				LeaderElectionID:       "58ac56fa.applicationsets.deploy.hanzo.ai",
 				Client: ctrlclient.Options{
 					DryRun: &dryRun,
 				},

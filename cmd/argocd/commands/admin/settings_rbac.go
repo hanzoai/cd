@@ -14,10 +14,10 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/assets"
-	"github.com/argoproj/argo-cd/v3/util/cli"
-	"github.com/argoproj/argo-cd/v3/util/rbac"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/assets"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/rbac"
 )
 
 type actionTraitMap map[string]rbacTrait

@@ -129,7 +129,7 @@ export const AccountsList = () => {
                                 ) : accounts.length === 0 ? (
                                     <EmptyState icon='fa fa-user-circle'>
                                         <h4>No accounts yet</h4>
-                                        <h5>Define new accounts in Argo CD configuration</h5>
+                                        <h5>Define new accounts in Hanzo CD configuration</h5>
                                     </EmptyState>
                                 ) : (
                                     <EmptyState icon='fa fa-user-circle'>

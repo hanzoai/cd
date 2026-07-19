@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/argoproj/argo-cd/v3/util/rand"
+	"github.com/hanzoai/deploy/util/rand"
 
-	"github.com/argoproj/argo-cd/v3/util/errors"
+	"github.com/hanzoai/deploy/util/errors"
 )
 
 // TestContext defines the interface for test-specific state that enables parallel test execution.

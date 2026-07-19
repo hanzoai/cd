@@ -22,9 +22,9 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/health"
-	synccommon "github.com/argoproj/argo-cd/gitops-engine/v3/pkg/sync/common"
-	"github.com/argoproj/argo-cd/gitops-engine/v3/pkg/utils/kube"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/cespare/xxhash/v2"
 	"github.com/robfig/cron/v3"
 	log "github.com/sirupsen/logrus"
@@ -43,13 +43,13 @@ import (
 	"k8s.io/client-go/tools/clientcmd/api"
 	"sigs.k8s.io/yaml"
 
-	"github.com/argoproj/argo-cd/v3/util/rbac"
+	"github.com/hanzoai/deploy/util/rbac"
 
-	"github.com/argoproj/argo-cd/v3/common"
-	"github.com/argoproj/argo-cd/v3/util/env"
-	"github.com/argoproj/argo-cd/v3/util/helm"
-	utilhttp "github.com/argoproj/argo-cd/v3/util/http"
-	"github.com/argoproj/argo-cd/v3/util/security"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/deploy/util/helm"
+	utilhttp "github.com/hanzoai/deploy/util/http"
+	"github.com/hanzoai/deploy/util/security"
 )
 
 // Note: Application and ApplicationSet share the same field structure (TypeMeta, ObjectMeta, spec, status)
@@ -2150,7 +2150,7 @@ func (t *ApplicationTree) GetSummary(app *Application) ApplicationSummary {
 		for _, image := range node.Images {
 			imagesSet[image] = true
 		}
-		if node.Group == "argoproj.io" && node.Kind == "Application" {
+		if node.Group == "deploy.hanzo.ai" && node.Kind == "Application" {
 			appOfApps = true
 		}
 	}

@@ -6,17 +6,17 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/argoproj/argo-cd/v3/util/glob"
+	"github.com/hanzoai/deploy/util/glob"
 
-	"github.com/argoproj/argo-cd/v3/util/notification/k8s"
+	"github.com/hanzoai/deploy/util/notification/k8s"
 
-	service "github.com/argoproj/argo-cd/v3/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/argocd"
 
-	argocert "github.com/argoproj/argo-cd/v3/util/cert"
+	argocert "github.com/hanzoai/deploy/util/cert"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/argoproj/argo-cd/v3/util/notification/settings"
+	"github.com/hanzoai/deploy/util/notification/settings"
 
 	"github.com/argoproj/notifications-engine/pkg/api"
 	"github.com/argoproj/notifications-engine/pkg/controller"
@@ -32,7 +32,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/argoproj/argo-cd/v3/pkg/apis/application"
+	"github.com/hanzoai/deploy/pkg/apis/application"
 )
 
 const (
