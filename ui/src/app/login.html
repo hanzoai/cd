@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hanzo CD — Sign in</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg">
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  html,body { height:100%; margin:0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
+    background:#0a0a0a; color:#e7e7e7;
+    display:grid; grid-template-columns: 1.1fr 1fr; min-height:100vh;
+  }
+  @media (max-width: 820px){ body{ grid-template-columns:1fr; } .pitch{ display:none; } }
+  .pitch { padding:64px 56px; display:flex; flex-direction:column; justify-content:center; gap:22px;
+           border-right:1px solid #1c1c1c; }
+  .brand { display:flex; align-items:center; gap:12px; font-size:22px; font-weight:700; letter-spacing:-.02em; }
+  .brand .mark { width:30px; height:30px; background:#fff; color:#000; display:grid; place-items:center; border-radius:7px; font-weight:900; }
+  h1 { font-size:40px; line-height:1.08; margin:6px 0 0; letter-spacing:-.03em; font-weight:800; }
+  .sub { color:#9a9a9a; font-size:16px; max-width:38ch; line-height:1.5; }
+  ul.feat { list-style:none; padding:0; margin:8px 0 0; display:grid; gap:12px; }
+  ul.feat li { display:flex; gap:12px; align-items:flex-start; color:#cfcfcf; font-size:14.5px; }
+  ul.feat li b { color:#fff; font-weight:600; }
+  ul.feat .dot { width:6px; height:6px; border-radius:50%; background:#fff; margin-top:7px; flex:none; }
+  .auth { display:flex; align-items:center; justify-content:center; padding:40px; }
+  .card { width:100%; max-width:360px; text-align:center; }
+  .card .mark2 { width:44px; height:44px; background:#fff; color:#000; display:grid; place-items:center;
+                 border-radius:10px; font-weight:900; font-size:20px; margin:0 auto 18px; }
+  .card h2 { font-size:22px; margin:0 0 6px; font-weight:700; }
+  .card p.hint { color:#8f8f8f; font-size:14px; margin:0 0 26px; }
+  button#login {
+    width:100%; padding:14px 18px; font-size:15px; font-weight:600; cursor:pointer;
+    background:#fff; color:#000; border:0; border-radius:10px; display:flex; align-items:center;
+    justify-content:center; gap:10px; transition:opacity .15s;
+  }
+  button#login:hover { opacity:.88; }
+  button#login:disabled { opacity:.5; cursor:default; }
+  .status { margin-top:16px; font-size:13.5px; color:#9a9a9a; min-height:20px; }
+  .status.err { color:#ff7a7a; }
+  .foot { margin-top:28px; font-size:12px; color:#5c5c5c; }
+  a { color:#bdbdbd; }
+</style>
+</head>
+<body>
+  <section class="pitch">
+    <div class="brand"><span class="mark">H</span> Hanzo CD</div>
+    <h1>Continuous delivery for your whole fleet.</h1>
+    <p class="sub">GitOps for every Hanzo App. Declarative, versioned, and auto-synced from git to your clusters — one control plane across hanzo, lux, zoo &amp; pars.</p>
+    <ul class="feat">
+      <li><span class="dot"></span><span><b>Live fleet view</b> — health &amp; sync status for every App across all namespaces.</span></li>
+      <li><span class="dot"></span><span><b>Git-to-cluster</b> — desired state lives in <code>infra/k8s/operator/crs</code>, reconciled continuously.</span></li>
+      <li><span class="dot"></span><span><b>Sync &amp; rollback</b> — one click to reconcile or roll back any application.</span></li>
+      <li><span class="dot"></span><span><b>Resource trees &amp; logs</b> — drill into any workload the operator manages.</span></li>
+    </ul>
+  </section>
+
+  <section class="auth">
+    <div class="card">
+      <div class="mark2">H</div>
+      <h2>Hanzo CD</h2>
+      <p class="hint">Sign in with your Hanzo account to manage the fleet.</p>
+      <button id="login">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="13" width="8" height="8" rx="2" fill="currentColor"/></svg>
+        Sign in with Hanzo
+      </button>
+      <div class="status" id="status"></div>
+      <div class="foot">Powered by <a href="https://hanzo.id" rel="noreferrer">Hanzo IAM</a> · SuperAdmin access</div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  var IAM = 'https://hanzo.id';
+  var CLIENT = 'admin-console';                 // the IAM app whose org is `admin`
+  var REDIRECT = location.origin + '/login.html'; // must be registered on admin-console
+  var COOKIE = 'hanzo_iam_token';               // the cookie hanzoai/cloud validates
+
+  var statusEl = document.getElementById('status');
+  var btn = document.getElementById('login');
+  function setStatus(m, err){ statusEl.textContent = m || ''; statusEl.className = 'status' + (err ? ' err' : ''); }
+
+  function b64url(bytes){
+    var s = btoa(String.fromCharCode.apply(null, new Uint8Array(bytes)));
+    return s.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function randB64(n){ return b64url(crypto.getRandomValues(new Uint8Array(n))); }
+  async function sha256b64(str){
+    var d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return b64url(d);
+  }
+
+  async function startLogin(){
+    btn.disabled = true; setStatus('Redirecting to Hanzo…');
+    var verifier = randB64(48);
+    var state = randB64(16);
+    sessionStorage.setItem('cd_pkce_verifier', verifier);
+    sessionStorage.setItem('cd_oauth_state', state);
+    var challenge = await sha256b64(verifier);
+    var u = new URL(IAM + '/login/oauth/authorize');
+    u.search = new URLSearchParams({
+      client_id: CLIENT, response_type: 'code', redirect_uri: REDIRECT,
+      scope: 'openid profile email', state: state,
+      code_challenge: challenge, code_challenge_method: 'S256'
+    }).toString();
+    location.href = u.toString();
+  }
+
+  async function finishLogin(code, state){
+    btn.disabled = true; setStatus('Signing in…');
+    if (state !== sessionStorage.getItem('cd_oauth_state')) { setStatus('Sign-in state mismatch — please try again.', true); btn.disabled = false; return; }
+    var verifier = sessionStorage.getItem('cd_pkce_verifier');
+    if (!verifier) { setStatus('Sign-in session lost — please try again.', true); btn.disabled = false; return; }
+    try {
+      var r = await fetch(IAM + '/v1/iam/oauth/access_token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code', client_id: CLIENT, code: code,
+          redirect_uri: REDIRECT, code_verifier: verifier
+        })
+      });
+      var j = await r.json();
+      if (!j.access_token) { setStatus('Sign-in failed: ' + (j.error_description || j.error || 'no token'), true); btn.disabled = false; return; }
+      // set the session cookie cloud reads (non-httpOnly by design so the page can set it; still Secure)
+      document.cookie = COOKIE + '=' + j.access_token + '; path=/; secure; samesite=lax; max-age=86400';
+      sessionStorage.removeItem('cd_pkce_verifier'); sessionStorage.removeItem('cd_oauth_state');
+      setStatus('Signed in. Loading the dashboard…');
+      location.replace('/');
+    } catch (e) {
+      setStatus('Sign-in error: ' + (e && e.message ? e.message : e), true); btn.disabled = false;
+    }
+  }
+
+  var q = new URLSearchParams(location.search);
+  if (q.get('error')) { setStatus('Hanzo returned: ' + (q.get('error_description') || q.get('error')), true); }
+  else if (q.get('code')) { finishLogin(q.get('code'), q.get('state')); }
+  btn.onclick = startLogin;
+})();
+</script>
+</body>
+</html>
