@@ -62,7 +62,7 @@ jobs:
           echo "image_repository=$IMAGE_REPOSITORY" >> $GITHUB_OUTPUT
           
           # Construct image name
-          echo "quay_image_name=quay.io/$IMAGE_NAMESPACE/$IMAGE_REPOSITORY:latest" >> $GITHUB_OUTPUT
+          echo "quay_image_name=" >> $GITHUB_OUTPUT  # GHCR-only fork: no quay creds
           
           ALLOW_GHCR_PUBLISH=false
           if [[ "$GITHUB_REPOSITORY" == "argoproj/argo-cd" || "$GHCR_NAMESPACE" != argoproj/* ]]; then
