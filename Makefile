@@ -1,8 +1,8 @@
 PACKAGE=github.com/hanzoai/deploy/common
 CURRENT_DIR=$(shell pwd)
 DIST_DIR=${CURRENT_DIR}/dist
-CLI_NAME=argocd
-BIN_NAME=argocd
+CLI_NAME=hanzocd
+BIN_NAME=hanzocd
 
 UNAME_S:=$(shell uname)
 IS_DARWIN:=$(if $(filter Darwin, $(UNAME_S)),true,false)
