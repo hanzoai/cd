@@ -22,46 +22,46 @@ import (
 
 // Argo CD component names
 const (
-	CommandCLI                      = "argocd"
-	CommandApplicationController    = "argocd-application-controller"
-	CommandApplicationSetController = "argocd-applicationset-controller"
-	CommandServer                   = "argocd-server"
-	CommandCMPServer                = "argocd-cmp-server"
-	CommandCommitServer             = "argocd-commit-server"
-	CommandGitAskPass               = "argocd-git-ask-pass"
-	CommandNotifications            = "argocd-notifications"
-	CommandK8sAuth                  = "argocd-k8s-auth"
-	CommandDex                      = "argocd-dex"
-	CommandRepoServer               = "argocd-repo-server"
+	CommandCLI                      = "hanzocd"
+	CommandApplicationController    = "hanzocd-application-controller"
+	CommandApplicationSetController = "hanzocd-applicationset-controller"
+	CommandServer                   = "hanzocd-server"
+	CommandCMPServer                = "hanzocd-cmp-server"
+	CommandCommitServer             = "hanzocd-commit-server"
+	CommandGitAskPass               = "hanzocd-git-ask-pass"
+	CommandNotifications            = "hanzocd-notifications"
+	CommandK8sAuth                  = "hanzocd-k8s-auth"
+	CommandDex                      = "hanzocd-dex"
+	CommandRepoServer               = "hanzocd-repo-server"
 )
 
 // Default service addresses and URLS of Argo CD internal services
 const (
 	// DefaultRepoServerAddr is the gRPC address of the Argo CD repo server
-	DefaultRepoServerAddr = "argocd-repo-server:8081"
+	DefaultRepoServerAddr = "hanzocd-repo-server:8081"
 	// DefaultCommitServerAddr is the gRPC address of the Argo CD commit server
-	DefaultCommitServerAddr = "argocd-commit-server:8086"
+	DefaultCommitServerAddr = "hanzocd-commit-server:8086"
 	// DefaultDexServerAddr is the HTTP address of the Dex OIDC server, which we run a reverse proxy against
-	DefaultDexServerAddr = "argocd-dex-server:5556"
+	DefaultDexServerAddr = "hanzocd-dex-server:5556"
 	// DefaultRedisAddr is the default redis address
-	DefaultRedisAddr = "argocd-redis:6379"
+	DefaultRedisAddr = "hanzocd-redis:6379"
 )
 
 // Kubernetes ConfigMap and Secret resource names which hold Argo CD settings
 const (
-	ArgoCDConfigMapName              = "argocd-cm"
-	ArgoCDSecretName                 = "argocd-secret"
-	ArgoCDNotificationsConfigMapName = "argocd-notifications-cm"
-	ArgoCDNotificationsSecretName    = "argocd-notifications-secret"
-	ArgoCDRBACConfigMapName          = "argocd-rbac-cm"
+	ArgoCDConfigMapName              = "hanzocd-cm"
+	ArgoCDSecretName                 = "hanzocd-secret"
+	ArgoCDNotificationsConfigMapName = "hanzocd-notifications-cm"
+	ArgoCDNotificationsSecretName    = "hanzocd-notifications-secret"
+	ArgoCDRBACConfigMapName          = "hanzocd-rbac-cm"
 	// ArgoCDKnownHostsConfigMapName contains SSH known hosts data for connecting repositories. Will get mounted as volume to pods
-	ArgoCDKnownHostsConfigMapName = "argocd-ssh-known-hosts-cm"
+	ArgoCDKnownHostsConfigMapName = "hanzocd-ssh-known-hosts-cm"
 	// ArgoCDTLSCertsConfigMapName contains TLS certificate data for connecting repositories. Will get mounted as volume to pods
-	ArgoCDTLSCertsConfigMapName = "argocd-tls-certs-cm"
-	ArgoCDGPGKeysConfigMapName  = "argocd-gpg-keys-cm"
+	ArgoCDTLSCertsConfigMapName = "hanzocd-tls-certs-cm"
+	ArgoCDGPGKeysConfigMapName  = "hanzocd-gpg-keys-cm"
 	// ArgoCDAppControllerShardConfigMapName contains the application controller to shard mapping
-	ArgoCDAppControllerShardConfigMapName = "argocd-app-controller-shard-cm"
-	ArgoCDCmdParamsConfigMapName          = "argocd-cmd-params-cm"
+	ArgoCDAppControllerShardConfigMapName = "hanzocd-app-controller-shard-cm"
+	ArgoCDCmdParamsConfigMapName          = "hanzocd-cmd-params-cm"
 )
 
 // Some default configurables
@@ -123,9 +123,9 @@ const (
 	// ArgoCDAdminUsername is the username of the 'admin' user
 	ArgoCDAdminUsername = "admin"
 	// ArgoCDUserAgentName is the default user-agent name used by the gRPC API client library and grpc-gateway
-	ArgoCDUserAgentName = "argocd-client"
+	ArgoCDUserAgentName = "hanzocd-client"
 	// ArgoCDSSAManager is the default argocd manager name used by server-side apply syncs
-	ArgoCDSSAManager = "argocd-controller"
+	ArgoCDSSAManager = "hanzocd-controller"
 	// AuthCookieName is the HTTP cookie name where we store our auth token
 	AuthCookieName = "argocd.token"
 	// StateCookieName is the HTTP cookie name that holds temporary nonce tokens for CSRF protection
@@ -191,13 +191,13 @@ const (
 	// LabelKeyAppName is the label key to use to uniquely identify the name of the Kubernetes application
 	LabelKeyAppName = "app.kubernetes.io/name"
 	// LabelKeyAutoLabelClusterInfo if set to true will automatically add extra labels from the cluster info (currently it only adds a k8s version label)
-	LabelKeyAutoLabelClusterInfo = "argocd.argoproj.io/auto-label-cluster-info"
+	LabelKeyAutoLabelClusterInfo = "deploy.hanzo.ai/auto-label-cluster-info"
 	// LabelKeyLegacyApplicationName is the legacy label (v0.10 and below) and is superseded by 'app.kubernetes.io/instance'
 	LabelKeyLegacyApplicationName = "applications.argoproj.io/app-name"
 	// LabelKeySecretType contains the type of argocd secret (currently: 'cluster', 'repository', 'repo-config' or 'repo-creds')
-	LabelKeySecretType = "argocd.argoproj.io/secret-type"
+	LabelKeySecretType = "deploy.hanzo.ai/secret-type"
 	// LabelKeyClusterKubernetesVersion contains the kubernetes version of the cluster secret if it has been enabled
-	LabelKeyClusterKubernetesVersion = "argocd.argoproj.io/kubernetes-version"
+	LabelKeyClusterKubernetesVersion = "deploy.hanzo.ai/kubernetes-version"
 	// LabelValueSecretTypeCluster indicates a secret type of cluster
 	LabelValueSecretTypeCluster = "cluster"
 	// LabelValueSecretTypeRepository indicates a secret type of repository
@@ -212,41 +212,41 @@ const (
 	LabelValueSecretTypeSCMCreds = "scm-creds"
 
 	// AnnotationKeyAppInstance is the Argo CD application name is used as the instance name
-	AnnotationKeyAppInstance = "argocd.argoproj.io/tracking-id"
-	AnnotationInstallationID = "argocd.argoproj.io/installation-id"
+	AnnotationKeyAppInstance = "deploy.hanzo.ai/tracking-id"
+	AnnotationInstallationID = "deploy.hanzo.ai/installation-id"
 
 	// AnnotationCompareOptions is a comma-separated list of options for comparison
-	AnnotationCompareOptions = "argocd.argoproj.io/compare-options"
+	AnnotationCompareOptions = "deploy.hanzo.ai/compare-options"
 
 	// AnnotationClientSideApplyMigrationManager specifies a custom field manager for client-side apply migration
-	AnnotationClientSideApplyMigrationManager = "argocd.argoproj.io/client-side-apply-migration-manager"
+	AnnotationClientSideApplyMigrationManager = "deploy.hanzo.ai/client-side-apply-migration-manager"
 
 	// AnnotationIgnoreHealthCheck when set on an Application's immediate child indicates that its health check
 	// can be disregarded.
-	AnnotationIgnoreHealthCheck = "argocd.argoproj.io/ignore-healthcheck"
+	AnnotationIgnoreHealthCheck = "deploy.hanzo.ai/ignore-healthcheck"
 
 	// AnnotationKeyManagedBy is annotation name which indicates that k8s resource is managed by an application.
 	AnnotationKeyManagedBy = "managed-by"
 	// AnnotationValueManagedByArgoCD is a 'managed-by' annotation value for resources managed by Argo CD
-	AnnotationValueManagedByArgoCD = "argocd.argoproj.io"
+	AnnotationValueManagedByArgoCD = "deploy.hanzo.ai"
 
 	// AnnotationKeyLinkPrefix tells the UI to add an external link icon to the application node
 	// that links to the value given in the annotation.
-	// The annotation key must be followed by a unique identifier. Ex: link.argocd.argoproj.io/dashboard
+	// The annotation key must be followed by a unique identifier. Ex: link.deploy.hanzo.ai/dashboard
 	// It's valid to have multiple annotations that match the prefix.
 	// Values can simply be a url or they can have
 	// an optional link title separated by a "|"
 	// Ex: "http://grafana.example.com/d/yu5UH4MMz/deployments"
 	// Ex: "Go to Dashboard|http://grafana.example.com/d/yu5UH4MMz/deployments"
-	AnnotationKeyLinkPrefix = "link.argocd.argoproj.io/"
+	AnnotationKeyLinkPrefix = "link.deploy.hanzo.ai/"
 	// AnnotationKeyIgnoreDefaultLinks tells the Application to not add autogenerated links from this object into its externalURLs
 	// This applies to ingress objects and takes effect if set to "true"
 	// This only disables the default behavior of generating links based on the ingress spec, and does not disable AnnotationKeyLinkPrefix
-	AnnotationKeyIgnoreDefaultLinks = "argocd.argoproj.io/ignore-default-links"
+	AnnotationKeyIgnoreDefaultLinks = "deploy.hanzo.ai/ignore-default-links"
 
 	// AnnotationKeyAppSkipReconcile tells the Application to skip the Application controller reconcile.
 	// Skip reconcile when the value is "true" or any other string values that can be strconv.ParseBool() to be true.
-	AnnotationKeyAppSkipReconcile = "argocd.argoproj.io/skip-reconcile"
+	AnnotationKeyAppSkipReconcile = "deploy.hanzo.ai/skip-reconcile"
 
 	// LabelKeyComponentRepoServer is the label key to identify the component as repo-server
 	LabelKeyComponentRepoServer = "app.kubernetes.io/component"
@@ -355,7 +355,7 @@ const (
 	// DefaultCMPWorkDirName defines the work directory name used by the cmp-server
 	DefaultCMPWorkDirName = "_cmp_server"
 
-	ConfigMapPluginDeprecationWarning = "argocd-cm plugins are deprecated, and support will be removed in v2.7. Upgrade your plugin to be installed via sidecar. https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/"
+	ConfigMapPluginDeprecationWarning = "hanzocd-cm plugins are deprecated, and support will be removed in v2.7. Upgrade your plugin to be installed via sidecar. https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/"
 )
 
 const (
@@ -392,11 +392,11 @@ const (
 // Constants represent the pod selector labels of the Argo CD component names. These values are determined by the
 // installation manifests.
 const (
-	DefaultServerName                = "argocd-server"
-	DefaultRepoServerName            = "argocd-repo-server"
-	DefaultApplicationControllerName = "argocd-application-controller"
-	DefaultRedisName                 = "argocd-redis"
-	DefaultRedisHaProxyName          = "argocd-redis-ha-haproxy"
+	DefaultServerName                = "hanzocd-server"
+	DefaultRepoServerName            = "hanzocd-repo-server"
+	DefaultApplicationControllerName = "hanzocd-application-controller"
+	DefaultRedisName                 = "hanzocd-redis"
+	DefaultRedisHaProxyName          = "hanzocd-redis-ha-haproxy"
 )
 
 // GetGnuPGHomePath retrieves the path to use for GnuPG home directory, which is either taken from GNUPGHOME environment or a default value
@@ -442,7 +442,7 @@ func GetCMPWorkDir() string {
 
 const (
 	// AnnotationApplicationSetRefresh is an annotation that is added when an ApplicationSet is requested to be refreshed by a webhook. The ApplicationSet controller will remove this annotation at the end of reconciliation.
-	AnnotationApplicationSetRefresh = "argocd.argoproj.io/application-set-refresh"
+	AnnotationApplicationSetRefresh = "deploy.hanzo.ai/application-set-refresh"
 )
 
 // gRPC settings
@@ -493,7 +493,7 @@ var WatchAPIBufferSize = env.ParseNumFromEnv(EnvWatchAPIBufferSize, 1000, 0, mat
 // Redis password consts
 const (
 	// RedisInitialCredentials is the name for the argocd kubernetes secret which will have the redis password
-	RedisInitialCredentials = "argocd-redis"
+	RedisInitialCredentials = "hanzocd-redis"
 	// RedisInitialCredentialsKey is the key for the argocd kubernetes secret that maps to the redis password
 	RedisInitialCredentialsKey = "auth"
 )

@@ -7,19 +7,19 @@ const (
 	DefaultSyncRetryDuration    time.Duration = 5000000000   // 5s
 	DefaultSyncRetryFactor                    = int64(2)
 	// ResourcesFinalizerName is the finalizer value which we inject to finalize deletion of an application
-	ResourcesFinalizerName string = "resources-finalizer.argocd.argoproj.io"
+	ResourcesFinalizerName string = "resources-finalizer.deploy.hanzo.ai"
 
 	// PreDeleteFinalizerName is the finalizer that controls pre-delete hooks execution
-	PreDeleteFinalizerName string = "pre-delete-finalizer.argocd.argoproj.io"
+	PreDeleteFinalizerName string = "pre-delete-finalizer.deploy.hanzo.ai"
 
 	// PostDeleteFinalizerName is the finalizer that controls post-delete hooks execution
-	PostDeleteFinalizerName string = "post-delete-finalizer.argocd.argoproj.io"
+	PostDeleteFinalizerName string = "post-delete-finalizer.deploy.hanzo.ai"
 
 	// ForegroundPropagationPolicyFinalizer is the finalizer we inject to delete application with foreground propagation policy
-	ForegroundPropagationPolicyFinalizer string = "resources-finalizer.argocd.argoproj.io/foreground"
+	ForegroundPropagationPolicyFinalizer string = "resources-finalizer.deploy.hanzo.ai/foreground"
 
 	// BackgroundPropagationPolicyFinalizer is the finalizer we inject to delete application with background propagation policy
-	BackgroundPropagationPolicyFinalizer = "resources-finalizer.argocd.argoproj.io/background"
+	BackgroundPropagationPolicyFinalizer = "resources-finalizer.deploy.hanzo.ai/background"
 
 	// DefaultAppProjectName contains name of 'default' app project, which is available in every Argo CD installation
 	DefaultAppProjectName = "default"

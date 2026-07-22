@@ -151,17 +151,17 @@ RUN GIT_COMMIT=$GIT_COMMIT \
 ####################################################################################################
 FROM argocd-base
 ENTRYPOINT ["/usr/bin/tini", "--"]
-COPY --from=argocd-build /go/src/github.com/argoproj/argo-cd/dist/argocd* /usr/local/bin/
+COPY --from=argocd-build /go/src/github.com/argoproj/argo-cd/dist/hanzocd* /usr/local/bin/
 
 USER root
-RUN ln -s /usr/local/bin/argocd /usr/local/bin/argocd-server && \
-    ln -s /usr/local/bin/argocd /usr/local/bin/argocd-repo-server && \
-    ln -s /usr/local/bin/argocd /usr/local/bin/argocd-cmp-server && \
-    ln -s /usr/local/bin/argocd /usr/local/bin/argocd-application-controller && \
-    ln -s /usr/local/bin/argocd /usr/local/bin/argocd-dex && \
-    ln -s /usr/local/bin/argocd /usr/local/bin/argocd-notifications && \
-    ln -s /usr/local/bin/argocd /usr/local/bin/argocd-applicationset-controller && \
-    ln -s /usr/local/bin/argocd /usr/local/bin/argocd-k8s-auth && \
-    ln -s /usr/local/bin/argocd /usr/local/bin/argocd-commit-server
+RUN ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-server && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-repo-server && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-cmp-server && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-application-controller && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-dex && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-notifications && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-applicationset-controller && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-k8s-auth && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-commit-server
 
 USER $ARGOCD_USER_ID
