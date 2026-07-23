@@ -11,6 +11,6 @@ const (
 	// absolute path means an absolute path within the repository and the relative path is relative to the application
 	// source path within the repository.
 	AnnotationKeyManifestGeneratePaths = "deploy.hanzo.ai/manifest-generate-paths"
-	// AnnotationKeyManagedByURL contains the URL of the Argo CD instance managing the application
+	// AnnotationKeyManagedByURL contains the URL of the Hanzo CD instance managing the application
 	AnnotationKeyManagedByURL = "deploy.hanzo.ai/managed-by-url"
 )

@@ -462,7 +462,7 @@ func CreateServerTLSConfig(tlsCertPath, tlsKeyPath string, hosts []string, clien
 		log.Infof("Generating self-signed TLS certificate for this session")
 		c, err := GenerateX509KeyPair(CertOptions{
 			Hosts:        hosts,
-			Organization: "Argo CD",
+			Organization: "Hanzo CD",
 			IsCA:         false,
 		})
 		if err != nil {
@@ -554,7 +554,7 @@ func AddClientTLSFlagsToCmdWithPrefix(cmd *cobra.Command, prefix string) func() 
 func GenerateHealthCheckClientCert() (*tls.Certificate, error) {
 	return GenerateX509KeyPair(CertOptions{
 		Hosts:        []string{"argocd-repo-server-healthcheck"},
-		Organization: "Argo CD Health Check",
+		Organization: "Hanzo CD Health Check",
 		IsCA:         true, // self-signed CA so it can be added to ClientCAs pool directly
 		ECDSACurve:   "P256",
 		ValidFor:     10 * 365 * 24 * time.Hour,

@@ -85,7 +85,7 @@ func GenerateDexConfigYAML(argocdSettings *settings.ArgoCDSettings, disableTLS b
 	}
 	argoCDPKCEStaticClient := map[string]any{
 		"id":   "argo-cd-pkce",
-		"name": "Argo CD PKCE",
+		"name": "Hanzo CD PKCE",
 		"redirectURIs": []string{
 			"http://localhost:4000/auth/callback",
 		},

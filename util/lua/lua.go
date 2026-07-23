@@ -385,7 +385,7 @@ func cleanReturnedObj(newObj, obj map[string]any) map[string]any {
 	return mapToReturn
 }
 
-// cleanReturnedArray allows Argo CD to recurse into nested arrays when checking for unintentional empty struct to
+// cleanReturnedArray allows Hanzo CD to recurse into nested arrays when checking for unintentional empty struct to
 // empty array conversions.
 func cleanReturnedArray(newObj, obj []any) []any {
 	arrayToReturn := newObj

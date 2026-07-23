@@ -12,7 +12,7 @@ import (
 	"github.com/hanzoai/deploy/util/config"
 )
 
-// LocalConfig is a local Argo CD config file
+// LocalConfig is a local Hanzo CD config file
 type LocalConfig struct {
 	CurrentContext string       `json:"current-context"`
 	Contexts       []ContextRef `json:"contexts"`
@@ -35,9 +35,9 @@ type Context struct {
 	User   User
 }
 
-// Server contains Argo CD server information
+// Server contains Hanzo CD server information
 type Server struct {
-	// Server is the Argo CD server address
+	// Server is the Hanzo CD server address
 	Server string `json:"server"`
 	// Insecure indicates to connect to the server over TLS insecurely
 	Insecure bool `json:"insecure,omitempty"`
@@ -54,7 +54,7 @@ type Server struct {
 	ClientCertificateKeyData string `json:"client-certificate-key-data,omitempty"`
 	// PlainText indicates to connect with TLS disabled
 	PlainText bool `json:"plain-text,omitempty"`
-	// Core indicates to talk to Kubernetes API without using Argo CD API server
+	// Core indicates to talk to Kubernetes API without using Hanzo CD API server
 	Core bool `json:"core,omitempty"`
 }
 

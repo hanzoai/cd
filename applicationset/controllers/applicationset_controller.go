@@ -590,7 +590,7 @@ func (r *ApplicationSetReconciler) setApplicationSetStatusCondition(ctx context.
 	return nil
 }
 
-// validateGeneratedApplications uses the Argo CD validation functions to verify the correctness of the
+// validateGeneratedApplications uses the Hanzo CD validation functions to verify the correctness of the
 // generated applications.
 func (r *ApplicationSetReconciler) validateGeneratedApplications(ctx context.Context, desiredApplications []argov1alpha1.Application, applicationSetInfo argov1alpha1.ApplicationSet) (map[string]error, error) {
 	errorsByApp := map[string]error{}
@@ -891,7 +891,7 @@ func (r *ApplicationSetReconciler) deleteInCluster(ctx context.Context, logCtx *
 		}
 		appLogCtx := logCtx.WithFields(applog.GetAppLogFields(&app))
 		g.Go(func() error {
-			// Removes the Argo CD resources finalizer if the application contains an invalid target (eg missing cluster)
+			// Removes the Hanzo CD resources finalizer if the application contains an invalid target (eg missing cluster)
 			err := r.removeFinalizerOnInvalidDestination(ctx, applicationSet, &app, clusterList, appLogCtx)
 			if err != nil {
 				appLogCtx.WithError(err).Error("failed to update Application")
@@ -956,7 +956,7 @@ func firstAppError(appErrors map[string]error) error {
 	return appErrors[names[0]]
 }
 
-// removeFinalizerOnInvalidDestination removes the Argo CD resources finalizer if the application contains an invalid target (eg missing cluster)
+// removeFinalizerOnInvalidDestination removes the Hanzo CD resources finalizer if the application contains an invalid target (eg missing cluster)
 func (r *ApplicationSetReconciler) removeFinalizerOnInvalidDestination(ctx context.Context, applicationSet argov1alpha1.ApplicationSet, app *argov1alpha1.Application, clusterList []utils.ClusterSpecifier, appLog *log.Entry) error {
 	// Only check if the finalizers need to be removed IF there are finalizers to remove
 	if len(app.Finalizers) == 0 {
@@ -990,9 +990,9 @@ func (r *ApplicationSetReconciler) removeFinalizerOnInvalidDestination(ctx conte
 		validDestination = matchingCluster
 	}
 	// If the destination is invalid (for example the cluster is no longer defined), then remove
-	// the application finalizers to avoid triggering Argo CD bug #5817
+	// the application finalizers to avoid triggering Hanzo CD bug #5817
 	if !validDestination {
-		// Filter out the Argo CD finalizer from the finalizer list
+		// Filter out the Hanzo CD finalizer from the finalizer list
 		var newFinalizers []string
 		for _, existingFinalizer := range app.Finalizers {
 			if existingFinalizer != argov1alpha1.ResourcesFinalizerName { // only remove this one

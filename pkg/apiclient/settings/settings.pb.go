@@ -3,7 +3,7 @@
 
 // Settings Service
 //
-// Settings Service API retrieves Argo CD settings
+// Settings Service API retrieves Hanzo CD settings
 
 package settings
 
@@ -34,7 +34,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// SettingsQuery is a query for Argo CD settings
+// SettingsQuery is a query for Hanzo CD settings
 type SettingsQuery struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -887,9 +887,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type SettingsServiceClient interface {
-	// Get returns Argo CD settings
+	// Get returns Hanzo CD settings
 	Get(ctx context.Context, in *SettingsQuery, opts ...grpc.CallOption) (*Settings, error)
-	// Get returns Argo CD plugins
+	// Get returns Hanzo CD plugins
 	GetPlugins(ctx context.Context, in *SettingsQuery, opts ...grpc.CallOption) (*SettingsPluginsResponse, error)
 }
 
@@ -921,9 +921,9 @@ func (c *settingsServiceClient) GetPlugins(ctx context.Context, in *SettingsQuer
 
 // SettingsServiceServer is the server API for SettingsService service.
 type SettingsServiceServer interface {
-	// Get returns Argo CD settings
+	// Get returns Hanzo CD settings
 	Get(context.Context, *SettingsQuery) (*Settings, error)
-	// Get returns Argo CD plugins
+	// Get returns Hanzo CD plugins
 	GetPlugins(context.Context, *SettingsQuery) (*SettingsPluginsResponse, error)
 }
 

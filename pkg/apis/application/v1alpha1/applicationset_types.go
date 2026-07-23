@@ -183,7 +183,7 @@ type ApplicationSetTemplate struct {
 	Spec                       ApplicationSpec `json:"spec" protobuf:"bytes,2,name=spec"`
 }
 
-// ApplicationSetTemplateMeta represents the Argo CD application fields that may
+// ApplicationSetTemplateMeta represents the Hanzo CD application fields that may
 // be used for Applications generated from the ApplicationSet (based on metav1.ObjectMeta)
 type ApplicationSetTemplateMeta struct {
 	Name        string            `json:"name,omitempty" protobuf:"bytes,1,name=name"`
@@ -378,9 +378,9 @@ func (g NestedMergeGenerator) ToMergeGenerator() *MergeGenerator {
 	}
 }
 
-// ClusterGenerator defines a generator to match against clusters registered with ArgoCD.
+// ClusterGenerator defines a generator to match against clusters registered with Hanzo CD.
 type ClusterGenerator struct {
-	// Selector defines a label selector to match against all clusters registered with ArgoCD.
+	// Selector defines a label selector to match against all clusters registered with Hanzo CD.
 	// Clusters today are stored as Kubernetes Secrets, thus the Secret labels will be used
 	// for matching the selector.
 	Selector metav1.LabelSelector   `json:"selector,omitempty" protobuf:"bytes,1,name=selector"`
@@ -393,7 +393,7 @@ type ClusterGenerator struct {
 	FlatList bool `json:"flatList,omitempty" protobuf:"bytes,4,name=flatList"`
 }
 
-// DuckType defines a generator to match against clusters registered with ArgoCD.
+// DuckType defines a generator to match against clusters registered with Hanzo CD.
 type DuckTypeGenerator struct {
 	// ConfigMapRef is a ConfigMap with the duck type definitions needed to retrieve the data
 	//              this includes apiVersion(group/version), kind, matchKey and validation settings

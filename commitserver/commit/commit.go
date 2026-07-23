@@ -234,10 +234,10 @@ func (s *Service) initGitClient(ctx context.Context, logCtx *log.Entry, r *apicl
 	//	 cleanupOrLog()
 	//	 return nil, "", nil, fmt.Errorf("failed to get github app info: %w", err)
 	// }
-	// Use author name and email from request, defaulting to "Argo CD" if not provided
+	// Use author name and email from request, defaulting to "Hanzo CD" if not provided
 	authorName := r.AuthorName
 	if authorName == "" {
-		authorName = "Argo CD"
+		authorName = "Hanzo CD"
 	}
 	authorEmail := r.AuthorEmail
 	if authorEmail == "" {

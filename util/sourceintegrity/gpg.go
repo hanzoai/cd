@@ -45,13 +45,13 @@ Key-Type: RSA
 Key-Length: 2048
 Key-Usage: sign
 Name-Real: Anon Ymous
-Name-Comment: ArgoCD key signing key
+Name-Comment: Hanzo CD key signing key
 Name-Email: noreply@argoproj.io
 Expire-Date: 6m
 %commit
 `
 
-// Canary marker for GNUPGHOME created by Argo CD
+// Canary marker for GNUPGHOME created by Hanzo CD
 const canaryMarkerFilename = ".argocd-generated"
 
 type PGPKeyID string
@@ -142,7 +142,7 @@ func removeKeyRing(path string) error {
 	_, err := os.Stat(filepath.Join(path, canaryMarkerFilename))
 	if err != nil {
 		if os.IsNotExist(err) {
-			return fmt.Errorf("refusing to remove directory %s: it's not initialized by Argo CD", path)
+			return fmt.Errorf("refusing to remove directory %s: it's not initialized by Hanzo CD", path)
 		}
 		return err
 	}

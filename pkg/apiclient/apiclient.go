@@ -58,16 +58,16 @@ import (
 
 const (
 	MetaDataTokenKey = "token"
-	// EnvArgoCDServer is the environment variable to look for an Argo CD server address
+	// EnvArgoCDServer is the environment variable to look for an Hanzo CD server address
 	EnvArgoCDServer = "ARGOCD_SERVER"
-	// EnvArgoCDAuthToken is the environment variable to look for an Argo CD auth token
+	// EnvArgoCDAuthToken is the environment variable to look for an Hanzo CD auth token
 	EnvArgoCDAuthToken = "ARGOCD_AUTH_TOKEN"
 )
 
 // MaxGRPCMessageSize contains max grpc message size
 var MaxGRPCMessageSize = env.ParseNumFromEnv(common.EnvGRPCMaxSizeMB, 200, 0, math.MaxInt32) * 1024 * 1024
 
-// Client defines an interface for interaction with an Argo CD server.
+// Client defines an interface for interaction with an Hanzo CD server.
 type Client interface {
 	ClientOptions() ClientOptions
 	HTTPClient() (*http.Client, error)
@@ -224,7 +224,7 @@ func NewClient(opts *ClientOptions) (Client, error) {
 	// Make sure we got the server address and auth token from somewhere
 	if c.ServerAddr == "" {
 		//nolint:staticcheck // First letter of error is intentionally capitalized.
-		return nil, errors.New("Argo CD server address unspecified")
+		return nil, errors.New("Hanzo CD server address unspecified")
 	}
 	// Override auth-token if specified in env variable or CLI flag
 	c.AuthToken = env.StringFromEnv(EnvArgoCDAuthToken, c.AuthToken)
@@ -316,7 +316,7 @@ func NewClient(opts *ClientOptions) (Client, error) {
 	return &c, nil
 }
 
-// OIDCConfig returns OAuth2 client config and a OpenID Provider based on Argo CD settings
+// OIDCConfig returns OAuth2 client config and a OpenID Provider based on Hanzo CD settings
 // ctx can hold an appropriate http.Client to use for the exchange
 func (c *client) OIDCConfig(ctx context.Context, set *settingspkg.Settings) (*oauth2.Config, *oidc.Provider, error) {
 	var clientID string

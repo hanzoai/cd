@@ -23,7 +23,7 @@ import (
 // 1. lazy initialization/querying of the provider
 // 2. automatic detection of change in signing keys
 // 3. convenience function for verifying tokens
-// We have to initialize the provider lazily since Argo CD can be an OIDC client to itself (in the
+// We have to initialize the provider lazily since Hanzo CD can be an OIDC client to itself (in the
 // case of dex reverse proxy), which presents a chicken-and-egg problem of (1) serving dex over
 // HTTP, and (2) querying the OIDC provider (ourself) to initialize the OIDC client.
 type Provider interface {
@@ -101,8 +101,8 @@ func (p *providerImpl) Verify(ctx context.Context, tokenString string, argoSetti
 	// terminology).
 	//
 	// The OIDC spec says that the aud claim is required (https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
-	// But we cannot assume that all OIDC providers will follow the spec. For Argo CD <2.6.0, we will default to
-	// allowing the aud claim to be optional. In Argo CD >=2.6.0, we will default to requiring the aud claim to be
+	// But we cannot assume that all OIDC providers will follow the spec. For Hanzo CD <2.6.0, we will default to
+	// allowing the aud claim to be optional. In Hanzo CD >=2.6.0, we will default to requiring the aud claim to be
 	// present and give users the skipAudienceCheckWhenTokenHasNoAudience setting to revert the behavior if necessary.
 	//
 	// At this point, we have not verified that the token has not been altered. All code paths below MUST VERIFY

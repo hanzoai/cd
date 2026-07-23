@@ -517,7 +517,7 @@ func (e *Enforcer) rbacConfigMapEventHandler(onUpdated func(cm *corev1.ConfigMap
 }
 
 // PolicyCSV will generate the final policy csv to be used
-// by Argo CD RBAC. It will find entries in the given data
+// by Hanzo CD RBAC. It will find entries in the given data
 // that matches the policy key name convention:
 //
 //	policy[.overlay].csv

@@ -1,5 +1,5 @@
 // Utility functions for managing HTTPS server certificates and SSH known host
-// entries for ArgoCD
+// entries for Hanzo CD
 package cert
 
 import (

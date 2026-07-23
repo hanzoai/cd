@@ -85,14 +85,14 @@ type ClientApp struct {
 	redirectURI string
 	// URL of the issuer (e.g. https://argocd.example.com/api/dex)
 	issuerURL string
-	// The URL endpoint at which the ArgoCD server is accessed.
+	// The URL endpoint at which the Hanzo CD server is accessed.
 	baseHRef string
 	// client is the HTTP client which is used to query the IDp
 	client *http.Client
 	// secureCookie indicates if the cookie should be set with the Secure flag, meaning it should
 	// only ever be sent over HTTPS. This value is inferred by the scheme of the redirectURI.
 	secureCookie bool
-	// settings holds Argo CD settings
+	// settings holds Hanzo CD settings
 	settings *settings.ArgoCDSettings
 	// encryptionKey holds server encryption key
 	encryptionKey []byte
@@ -208,7 +208,7 @@ func getDomainHint(settings *settings.ArgoCDSettings) string {
 	return ""
 }
 
-// NewClientApp will register the Argo CD client app (either via Dex or external OIDC) and return an
+// NewClientApp will register the Hanzo CD client app (either via Dex or external OIDC) and return an
 // object which has HTTP handlers for handling the HTTP responses for login and callback
 func NewClientApp(settings *settings.ArgoCDSettings, dexServerAddr string, dexTLSConfig *dex.DexTLSConfig, baseHRef string, cacheClient cache.CacheClient) (*ClientApp, error) {
 	redirectURL, err := settings.RedirectURL()
@@ -273,7 +273,7 @@ func NewClientApp(settings *settings.ArgoCDSettings, dexServerAddr string, dexTL
 	}
 
 	a.provider = NewOIDCProvider(a.issuerURL, a.client)
-	// NOTE: if we ever have replicas of Argo CD, this needs to switch to Redis cache
+	// NOTE: if we ever have replicas of Hanzo CD, this needs to switch to Redis cache
 	a.secureCookie = bool(u.Scheme == "https")
 	a.settings = settings
 	return &a, nil
@@ -282,7 +282,7 @@ func NewClientApp(settings *settings.ArgoCDSettings, dexServerAddr string, dexTL
 func (a *ClientApp) getRedirectURIForRequest(req *http.Request) string {
 	redirectURI, err := a.settings.RedirectURLForRequest(req)
 	if err != nil {
-		log.Warnf("Unable to find ArgoCD URL from request, falling back to configured redirect URI: %v", err)
+		log.Warnf("Unable to find Hanzo CD URL from request, falling back to configured redirect URI: %v", err)
 		redirectURI = a.redirectURI
 	}
 	return redirectURI

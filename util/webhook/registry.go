@@ -25,7 +25,7 @@ type RegistryEvent struct {
 	// e.g. "ghcr.io", "docker.io", "123456789.dkr.ecr.us-east-1.amazonaws.com"
 	// Together with Repository, it forms the OCI repo URL: oci://RegistryURL/Repository.
 	// Parsers must ensure this value is consistent with how users configure repoURL
-	// in their Argo CD Applications (e.g. oci://ghcr.io/owner/repo).
+	// in their Hanzo CD Applications (e.g. oci://ghcr.io/owner/repo).
 	RegistryURL string `json:"registryUrl,omitempty"`
 	// Repository is the full repository path within the registry, without a leading slash.
 	// e.g. "owner/repo" for ghcr.io, "library/nginx" for docker.io.
@@ -36,7 +36,7 @@ type RegistryEvent struct {
 	Tag string `json:"tag,omitempty"`
 }
 
-// OCIRepoURL returns the full OCI repository URL for use in Argo CD Application
+// OCIRepoURL returns the full OCI repository URL for use in Hanzo CD Application
 // source matching, e.g. "oci://ghcr.io/owner/repo".
 func (e *RegistryEvent) OCIRepoURL() string {
 	return fmt.Sprintf("oci://%s/%s", e.RegistryURL, e.Repository)
@@ -46,7 +46,7 @@ func (e *RegistryEvent) OCIRepoURL() string {
 var ErrHMACVerificationFailed = errors.New("HMAC verification failed")
 
 // HandleRegistryEvent processes a normalized registry event and refreshes
-// matching Argo CD Applications.
+// matching Hanzo CD Applications.
 //
 // It constructs the full OCI repository URL from the event, finds Applications
 // whose sources reference that repository and revision, and triggers a refresh

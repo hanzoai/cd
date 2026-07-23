@@ -9,7 +9,7 @@ import (
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
-// syncNamespace determine if Argo CD should create and/or manage the namespace
+// syncNamespace determine if Hanzo CD should create and/or manage the namespace
 // where the application will be deployed.
 func syncNamespace(syncPolicy *v1alpha1.SyncPolicy) func(m *unstructured.Unstructured, l *unstructured.Unstructured) (bool, error) {
 	// This function must return true for the managed namespace to be synced.

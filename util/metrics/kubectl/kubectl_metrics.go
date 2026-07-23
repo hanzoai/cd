@@ -12,7 +12,7 @@ import (
 )
 
 // The label names are meant to match this: https://github.com/kubernetes/component-base/blob/264c1fd30132a3b36b7588e50ac54eb0ff75f26a/metrics/prometheus/restclient/metrics.go
-// Even in cases where the label name doesn't align well with Argo CD's other labels, we use the Kubernetes labels to
+// Even in cases where the label name doesn't align well with Hanzo CD's other labels, we use the Kubernetes labels to
 // make it easier to copy/paste dashboards/alerts/etc. designed for Kubernetes.
 const (
 	// LabelCallStatus represents the status of the exec plugin call, indicating whether it was successful or failed.
@@ -39,7 +39,7 @@ const (
 //
 // We use similar histogram bucket ranges, but reduce cardinality.
 //
-// We try to use similar labels, but we adjust to more closely match other Argo CD metrics.
+// We try to use similar labels, but we adjust to more closely match other Hanzo CD metrics.
 //
 // The idea is that if we stay close to the Kubernetes metrics, then people can take more advantage of copy/pasting
 // dashboards/alerts/etc. designed for Kubernetes.
@@ -170,7 +170,7 @@ var newKubectlMetricsOnce sync.Once
 // because it is protected by a sync.Once. controller-runtime registers a single handler, which blocks our registration
 // of our own handlers. So we must rudely set them all directly.
 //
-// Since the metrics are global, this function only needs to be called once for a given Argo CD component.
+// Since the metrics are global, this function only needs to be called once for a given Hanzo CD component.
 //
 // You must also call RegisterWithPrometheus to register the metrics with the metrics server's prometheus registry.
 func RegisterWithClientGo() {

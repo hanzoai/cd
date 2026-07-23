@@ -54,7 +54,7 @@ var (
 )
 
 // builtinGitConfig configuration contains statements that are needed
-// for correct ArgoCD operation. These settings will override any
+// for correct Hanzo CD operation. These settings will override any
 // user-provided configuration of same options.
 var builtinGitConfig = map[string]string{
 	"maintenance.autoDetach": "false",
@@ -383,7 +383,7 @@ func GetRepoHTTPClient(repoURL string, insecure bool, creds Creds, proxyURL stri
 	return customHTTPClient
 }
 
-// resolveSSHHostKeyConfig returns a HostKeyCallback bound to Argo CD's
+// resolveSSHHostKeyConfig returns a HostKeyCallback bound to Hanzo CD's
 // ssh_known_hosts file together with the HostKeyAlgorithms registered for the
 // given repo URL. Populating HostKeyAlgorithms is required to avoid
 // "knownhosts: key mismatch" handshake failures with go-git v5.16+ (see
@@ -403,7 +403,7 @@ func resolveSSHHostKeyConfig(repoURL string) (ssh.HostKeyCallback, []string, err
 // buildSSHAuth returns a go-git SSH AuthMethod for repoURL. When creds is non
 // nil the supplied private key is used; otherwise the auth falls back to the
 // local ssh-agent (mirroring go-git's DefaultAuthBuilder). In both cases
-// host-key verification is wired against Argo CD's ssh_known_hosts file rather
+// host-key verification is wired against Hanzo CD's ssh_known_hosts file rather
 // than the user's ~/.ssh/known_hosts, and HostKeyAlgorithms is populated to
 // avoid "knownhosts: key mismatch" with go-git v5.16+ (go-git/go-git#1551).
 func buildSSHAuth(repoURL string, creds *SSHCreds) (transport.AuthMethod, error) {
@@ -513,8 +513,8 @@ func newAuth(repoURL string, creds Creds) (transport.AuthMethod, error) {
 
 	// Without explicit credentials, go-git's DefaultAuthBuilder would fall
 	// back to ssh-agent and read known_hosts from ~/.ssh / $SSH_KNOWN_HOSTS,
-	// ignoring Argo CD's ssh_known_hosts ConfigMap. Build the same auth
-	// ourselves so we can wire in the Argo CD-managed known_hosts.
+	// ignoring Hanzo CD's ssh_known_hosts ConfigMap. Build the same auth
+	// ourselves so we can wire in the Hanzo CD-managed known_hosts.
 	if isSSH, _ := IsSSHURL(repoURL); isSSH {
 		auth, err := buildSSHAuth(repoURL, nil)
 		if err != nil {
@@ -1793,7 +1793,7 @@ func (m *nativeGitClient) runCmdOutput(cmd *exec.Cmd, ropts runOpts) (string, er
 	cmd.Env = append(cmd.Env, "GIT_LFS_SKIP_SMUDGE=1")
 	// Disable Git terminal prompts in case we're running with a tty
 	cmd.Env = append(cmd.Env, "GIT_TERMINAL_PROMPT=false")
-	// Add Git configuration options that are essential for ArgoCD operation
+	// Add Git configuration options that are essential for Hanzo CD operation
 	cmd.Env = append(cmd.Env, m.gitConfigEnv...)
 
 	// For HTTPS repositories, we need to consider insecure repositories as well

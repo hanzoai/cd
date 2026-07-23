@@ -419,7 +419,7 @@ message ApplicationSetTemplate {
   optional ApplicationSpec spec = 2;
 }
 
-// ApplicationSetTemplateMeta represents the Argo CD application fields that may
+// ApplicationSetTemplateMeta represents the Hanzo CD application fields that may
 // be used for Applications generated from the ApplicationSet (based on metav1.ObjectMeta)
 message ApplicationSetTemplateMeta {
   optional string name = 1;
@@ -572,12 +572,12 @@ message ApplicationSourceHelm {
   // Namespace is an optional namespace to template with. If left empty, defaults to the app's destination namespace.
   optional string namespace = 11;
 
-  // KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+  // KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
   // uses the Kubernetes version of the target cluster.
   optional string kubeVersion = 12;
 
   // APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-  // Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+  // Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
   repeated string apiVersions = 13;
 
   // SkipTests skips test manifest installation step (Helm's --skip-tests).
@@ -646,12 +646,12 @@ message ApplicationSourceKustomize {
   // LabelWithoutSelector specifies whether to apply common labels to resource selectors or not
   optional bool labelWithoutSelector = 14;
 
-  // KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+  // KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
   // uses the Kubernetes version of the target cluster.
   optional string kubeVersion = 15;
 
   // APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-  // Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+  // Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
   repeated string apiVersions = 16;
 
   // LabelIncludeTemplates specifies whether to apply common labels to resource templates or not
@@ -775,7 +775,7 @@ message ApplicationSummary {
   optional bool isAppOfApps = 3;
 }
 
-// ApplicationTree represents the hierarchical structure of resources associated with an Argo CD application.
+// ApplicationTree represents the hierarchical structure of resources associated with an Hanzo CD application.
 message ApplicationTree {
   // Nodes contains a list of resources that are either directly managed by the application
   // or are children of directly managed resources.
@@ -935,9 +935,9 @@ message ClusterConfig {
   optional string proxyUrl = 8;
 }
 
-// ClusterGenerator defines a generator to match against clusters registered with ArgoCD.
+// ClusterGenerator defines a generator to match against clusters registered with Hanzo CD.
 message ClusterGenerator {
-  // Selector defines a label selector to match against all clusters registered with ArgoCD.
+  // Selector defines a label selector to match against all clusters registered with Hanzo CD.
   // Clusters today are stored as Kubernetes Secrets, thus the Secret labels will be used
   // for matching the selector.
   optional .k8s.io.apimachinery.pkg.apis.meta.v1.LabelSelector selector = 1;
@@ -962,7 +962,7 @@ message ClusterInfo {
   // CacheInfo contains information about the cluster cache
   optional ClusterCacheInfo cacheInfo = 3;
 
-  // ApplicationsCount is the number of applications managed by Argo CD on the cluster
+  // ApplicationsCount is the number of applications managed by Hanzo CD on the cluster
   optional int64 applicationsCount = 4;
 
   // APIVersions contains list of API versions supported by the cluster
@@ -1103,7 +1103,7 @@ message DrySource {
   optional ApplicationSourcePlugin plugin = 7;
 }
 
-// DuckType defines a generator to match against clusters registered with ArgoCD.
+// DuckType defines a generator to match against clusters registered with Hanzo CD.
 message DuckTypeGenerator {
   // ConfigMapRef is a ConfigMap with the duck type definitions needed to retrieve the data
   //              this includes apiVersion(group/version), kind, matchKey and validation settings
@@ -1891,7 +1891,7 @@ message RepoCreds {
   // Proxy specifies the HTTP/HTTPS proxy used to access repos at the repo server
   optional string proxy = 19;
 
-  // ForceHttpBasicAuth specifies whether Argo CD should attempt to force basic auth for HTTP connections
+  // ForceHttpBasicAuth specifies whether Hanzo CD should attempt to force basic auth for HTTP connections
   optional bool forceHttpBasicAuth = 20;
 
   // NoProxy specifies a list of targets where the proxy isn't used, applies only in cases where the proxy is applied
@@ -1992,7 +1992,7 @@ message Repository {
   // GCPServiceAccountKey specifies the service account key in JSON format to be used for getting credentials to Google Cloud Source repos
   optional string gcpServiceAccountKey = 21;
 
-  // ForceHttpBasicAuth specifies whether Argo CD should attempt to force basic auth for HTTP connections
+  // ForceHttpBasicAuth specifies whether Hanzo CD should attempt to force basic auth for HTTP connections
   optional bool forceHttpBasicAuth = 22;
 
   // NoProxy specifies a list of targets where the proxy isn't used, applies only in cases where the proxy is applied
@@ -2111,7 +2111,7 @@ message ResourceActions {
   optional bool mergeBuiltinActions = 3;
 }
 
-// ResourceDiff holds the diff between a live and target resource object in Argo CD.
+// ResourceDiff holds the diff between a live and target resource object in Hanzo CD.
 // It is used to compare the desired state (from Git/Helm) with the actual state in the cluster.
 message ResourceDiff {
   // Group represents the API group of the resource (e.g., "apps" for Deployments).
@@ -2144,7 +2144,7 @@ message ResourceDiff {
   // Normalizations may include ignoring irrelevant fields like timestamps or defaults applied by Kubernetes.
   optional string normalizedLiveState = 9;
 
-  // PredictedLiveState contains the JSON-serialized resource state that Argo CD predicts based on the
+  // PredictedLiveState contains the JSON-serialized resource state that Hanzo CD predicts based on the
   // combination of the normalized live state and the desired target state.
   optional string predictedLiveState = 10;
 
@@ -2319,7 +2319,7 @@ message ResourceStatus {
   // Health indicates the health status of the resource (e.g., Healthy, Degraded, Progressing).
   optional HealthStatus health = 7;
 
-  // Hook is true if the resource is used as a lifecycle hook in an Argo CD application.
+  // Hook is true if the resource is used as a lifecycle hook in an Hanzo CD application.
   optional bool hook = 8;
 
   // RequiresPruning is true if the resource needs to be pruned (deleted) as part of synchronization.

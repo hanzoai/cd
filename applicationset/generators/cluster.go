@@ -18,10 +18,10 @@ import (
 
 var _ Generator = (*ClusterGenerator)(nil)
 
-// ClusterGenerator generates Applications for some or all clusters registered with ArgoCD.
+// ClusterGenerator generates Applications for some or all clusters registered with Hanzo CD.
 type ClusterGenerator struct {
 	client.Client
-	// namespace is the Argo CD namespace
+	// namespace is the Hanzo CD namespace
 	namespace string
 }
 

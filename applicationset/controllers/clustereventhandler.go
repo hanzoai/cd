@@ -19,7 +19,7 @@ import (
 	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
-// clusterSecretEventHandler is used when watching Secrets to check if they are ArgoCD Cluster Secrets, and if so
+// clusterSecretEventHandler is used when watching Secrets to check if they are Hanzo CD Cluster Secrets, and if so
 // requeue any related ApplicationSets.
 type clusterSecretEventHandler struct {
 	// handler.EnqueueRequestForOwner

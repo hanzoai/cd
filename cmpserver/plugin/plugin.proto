@@ -18,7 +18,7 @@ message AppStreamRequest {
 // ManifestRequestMetadata defines the metada related to the file being sent
 // to the CMP server.
 message ManifestRequestMetadata {
-    // appName refers to the ArgoCD Application name
+    // appName refers to the Hanzo CD Application name
     string appName = 1;
     // appRelPath points to the application relative path inside the tarball
     string appRelPath = 2;

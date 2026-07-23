@@ -68,7 +68,7 @@ func (l *AuditLogger) logEvent(objMeta ObjectRef, gvk schema.GroupVersionKind, i
 	// Determine which namespace to create the event in
 	eventNamespace := objMeta.Namespace
 	// For resource events (non-Application, non-AppProject, non-ApplicationSet),
-	// create events in the ArgoCD namespace to support multi-cluster
+	// create events in the Hanzo CD namespace to support multi-cluster
 	if gvk.Kind != application.ApplicationKind &&
 		gvk.Kind != application.AppProjectKind &&
 		gvk.Kind != application.ApplicationSetKind {

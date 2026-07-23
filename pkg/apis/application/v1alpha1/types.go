@@ -589,11 +589,11 @@ type ApplicationSourceHelm struct {
 	ValuesObject *runtime.RawExtension `json:"valuesObject,omitempty" protobuf:"bytes,10,opt,name=valuesObject"`
 	// Namespace is an optional namespace to template with. If left empty, defaults to the app's destination namespace.
 	Namespace string `json:"namespace,omitempty" protobuf:"bytes,11,opt,name=namespace"`
-	// KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+	// KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
 	// uses the Kubernetes version of the target cluster.
 	KubeVersion string `json:"kubeVersion,omitempty" protobuf:"bytes,12,opt,name=kubeVersion"`
 	// APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-	// Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+	// Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
 	APIVersions []string `json:"apiVersions,omitempty" protobuf:"bytes,13,opt,name=apiVersions"`
 	// SkipTests skips test manifest installation step (Helm's --skip-tests).
 	SkipTests bool `json:"skipTests,omitempty" protobuf:"bytes,14,opt,name=skipTests"`
@@ -748,11 +748,11 @@ type ApplicationSourceKustomize struct {
 	IgnoreMissingComponents bool `json:"ignoreMissingComponents,omitempty" protobuf:"bytes,17,opt,name=ignoreMissingComponents"`
 	// LabelWithoutSelector specifies whether to apply common labels to resource selectors or not
 	LabelWithoutSelector bool `json:"labelWithoutSelector,omitempty" protobuf:"bytes,14,opt,name=labelWithoutSelector"`
-	// KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+	// KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
 	// uses the Kubernetes version of the target cluster.
 	KubeVersion string `json:"kubeVersion,omitempty" protobuf:"bytes,15,opt,name=kubeVersion"`
 	// APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-	// Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+	// Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
 	APIVersions []string `json:"apiVersions,omitempty" protobuf:"bytes,16,opt,name=apiVersions"`
 	// LabelIncludeTemplates specifies whether to apply common labels to resource templates or not
 	LabelIncludeTemplates bool `json:"labelIncludeTemplates,omitempty" protobuf:"bytes,18,opt,name=labelIncludeTemplates"`
@@ -2019,7 +2019,7 @@ type HostInfo struct {
 	Labels map[string]string `json:"labels,omitempty" protobuf:"bytes,4,opt,name=labels"`
 }
 
-// ApplicationTree represents the hierarchical structure of resources associated with an Argo CD application.
+// ApplicationTree represents the hierarchical structure of resources associated with an Hanzo CD application.
 type ApplicationTree struct {
 	// Nodes contains a list of resources that are either directly managed by the application
 	// or are children of directly managed resources.
@@ -2241,7 +2241,7 @@ type ResourceStatus struct {
 	Status SyncStatusCode `json:"status,omitempty" protobuf:"bytes,6,opt,name=status"`
 	// Health indicates the health status of the resource (e.g., Healthy, Degraded, Progressing).
 	Health *HealthStatus `json:"health,omitempty" protobuf:"bytes,7,opt,name=health"`
-	// Hook is true if the resource is used as a lifecycle hook in an Argo CD application.
+	// Hook is true if the resource is used as a lifecycle hook in an Hanzo CD application.
 	Hook bool `json:"hook,omitempty" protobuf:"bytes,8,opt,name=hook"`
 	// RequiresPruning is true if the resource needs to be pruned (deleted) as part of synchronization.
 	RequiresPruning bool `json:"requiresPruning,omitempty" protobuf:"bytes,9,opt,name=requiresPruning"`
@@ -2257,7 +2257,7 @@ func (r *ResourceStatus) GroupVersionKind() schema.GroupVersionKind {
 	return schema.GroupVersionKind{Group: r.Group, Version: r.Version, Kind: r.Kind}
 }
 
-// ResourceDiff holds the diff between a live and target resource object in Argo CD.
+// ResourceDiff holds the diff between a live and target resource object in Hanzo CD.
 // It is used to compare the desired state (from Git/Helm) with the actual state in the cluster.
 type ResourceDiff struct {
 	// Group represents the API group of the resource (e.g., "apps" for Deployments).
@@ -2281,7 +2281,7 @@ type ResourceDiff struct {
 	// NormalizedLiveState contains the JSON-serialized live resource state after applying normalizations.
 	// Normalizations may include ignoring irrelevant fields like timestamps or defaults applied by Kubernetes.
 	NormalizedLiveState string `json:"normalizedLiveState,omitempty" protobuf:"bytes,9,opt,name=normalizedLiveState"`
-	// PredictedLiveState contains the JSON-serialized resource state that Argo CD predicts based on the
+	// PredictedLiveState contains the JSON-serialized resource state that Hanzo CD predicts based on the
 	// combination of the normalized live state and the desired target state.
 	PredictedLiveState string `json:"predictedLiveState,omitempty" protobuf:"bytes,10,opt,name=predictedLiveState"`
 	// ResourceVersion is the Kubernetes resource version, which helps in tracking changes.
@@ -2433,7 +2433,7 @@ type ClusterInfo struct {
 	ServerVersion string `json:"serverVersion,omitempty" protobuf:"bytes,2,opt,name=serverVersion"`
 	// CacheInfo contains information about the cluster cache
 	CacheInfo ClusterCacheInfo `json:"cacheInfo,omitempty" protobuf:"bytes,3,opt,name=cacheInfo"`
-	// ApplicationsCount is the number of applications managed by Argo CD on the cluster
+	// ApplicationsCount is the number of applications managed by Hanzo CD on the cluster
 	ApplicationsCount int64 `json:"applicationsCount" protobuf:"bytes,4,opt,name=applicationsCount"`
 	// APIVersions contains list of API versions supported by the cluster
 	APIVersions []string `json:"apiVersions,omitempty" protobuf:"bytes,5,opt,name=apiVersions"`

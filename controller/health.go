@@ -83,7 +83,7 @@ func setApplicationHealth(resources []managedResource, statuses []appv1.Resource
 			continue
 		}
 
-		// Missing or Unknown health status of child Argo CD app should not affect parent
+		// Missing or Unknown health status of child Hanzo CD app should not affect parent
 		if res.Kind == application.ApplicationKind && res.Group == application.Group && (healthStatus.Status == health.HealthStatusMissing || healthStatus.Status == health.HealthStatusUnknown) {
 			continue
 		}

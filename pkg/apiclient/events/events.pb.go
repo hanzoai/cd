@@ -4,7 +4,7 @@
 // Events Service
 //
 // Events Service API performs query actions against Kubernetes core/v1 Event
-// resources owned by Argo CD applications, application sets and projects.
+// resources owned by Hanzo CD applications, application sets and projects.
 
 package events
 
@@ -29,8 +29,8 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// EventList is a list of Argo CD Event messages. It mirrors corev1.EventList
-// field-for-field but is defined in Argo CD's apiclient package to avoid
+// EventList is a list of Hanzo CD Event messages. It mirrors corev1.EventList
+// field-for-field but is defined in Hanzo CD's apiclient package to avoid
 // pulling Kubernetes protobuf types into the public gRPC surface.
 type EventList struct {
 	// Standard list metadata.
@@ -89,7 +89,7 @@ func (m *EventList) GetItems() []Event {
 	return nil
 }
 
-// Event mirrors corev1.Event and exposes the fields consumed by the Argo CD
+// Event mirrors corev1.Event and exposes the fields consumed by the Hanzo CD
 // API and UI. Event is a report of an event somewhere in the cluster. Events
 // have a limited retention time and triggers and messages may evolve with
 // time. Event consumers should not rely on the timing of an event with a

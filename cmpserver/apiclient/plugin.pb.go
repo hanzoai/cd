@@ -121,7 +121,7 @@ func (*AppStreamRequest) XXX_OneofWrappers() []interface{} {
 // ManifestRequestMetadata defines the metada related to the file being sent
 // to the CMP server.
 type ManifestRequestMetadata struct {
-	// appName refers to the ArgoCD Application name
+	// appName refers to the Hanzo CD Application name
 	AppName string `protobuf:"bytes,1,opt,name=appName,proto3" json:"appName,omitempty"`
 	// appRelPath points to the application relative path inside the tarball
 	AppRelPath string `protobuf:"bytes,2,opt,name=appRelPath,proto3" json:"appRelPath,omitempty"`

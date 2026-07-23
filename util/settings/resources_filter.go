@@ -11,9 +11,9 @@ var coreExcludedResources = []FilteredResource{
 }
 
 type ResourcesFilter struct {
-	// ResourceExclusions holds the api groups, kinds per cluster to exclude from Argo CD's watch
+	// ResourceExclusions holds the api groups, kinds per cluster to exclude from Hanzo CD's watch
 	ResourceExclusions []FilteredResource
-	// ResourceInclusions holds the only api groups, kinds per cluster that Argo CD will watch
+	// ResourceInclusions holds the only api groups, kinds per cluster that Hanzo CD will watch
 	ResourceInclusions []FilteredResource
 }
 

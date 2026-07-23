@@ -85,10 +85,10 @@ git checkout {{ .DrySHA }}
 
 // ArgoCDSettings holds in-memory runtime configuration options.
 type ArgoCDSettings struct {
-	// URL is the externally facing URL users will visit to reach Argo CD.
+	// URL is the externally facing URL users will visit to reach Hanzo CD.
 	// The value here is used when configuring SSO. Omitting this value will disable SSO.
 	URL string `json:"url,omitempty"`
-	// URLs is a list of externally facing URLs users will visit to reach Argo CD.
+	// URLs is a list of externally facing URLs users will visit to reach Hanzo CD.
 	// The value here is used when configuring SSO reachable from multiple domains.
 	AdditionalURLs []string `json:"additionalUrls,omitempty"`
 	// Indicates if status badge is enabled or not.
@@ -101,7 +101,7 @@ type ArgoCDSettings struct {
 	OIDCConfigRAW string `json:"oidcConfig,omitempty"`
 	// ServerSignature holds the key used to generate JWT tokens.
 	ServerSignature []byte `json:"serverSignature,omitempty"`
-	// Certificate holds the certificate/private key for the Argo CD API server.
+	// Certificate holds the certificate/private key for the Hanzo CD API server.
 	// If nil, will run insecure without TLS.
 	Certificate *tls.Certificate `json:"-"`
 	// CertificateIsExternal indicates whether Certificate was loaded from external secret
@@ -128,7 +128,7 @@ type ArgoCDSettings struct {
 	AnonymousUserEnabled bool `json:"anonymousUserEnabled,omitempty"`
 	// Specifies token expiration duration
 	UserSessionDuration time.Duration `json:"userSessionDuration,omitempty"`
-	// UiCssURL local or remote path to user-defined CSS to customize ArgoCD UI
+	// UiCssURL local or remote path to user-defined CSS to customize Hanzo CD UI
 	UiCssURL string `json:"uiCssURL,omitempty"` //nolint:revive //FIXME(var-naming)
 	// Content of UI Banner
 	UiBannerContent string `json:"uiBannerContent,omitempty"` //nolint:revive //FIXME(var-naming)
@@ -161,7 +161,7 @@ type ArgoCDSettings struct {
 	OIDCTLSInsecureSkipVerify bool `json:"oidcTLSInsecureSkipVerify"`
 	// AppsInAnyNamespaceEnabled indicates whether applications are allowed to be created in any namespace
 	AppsInAnyNamespaceEnabled bool `json:"appsInAnyNamespaceEnabled"`
-	// ExtensionConfig configurations related to ArgoCD proxy extensions. The keys are the extension name.
+	// ExtensionConfig configurations related to Hanzo CD proxy extensions. The keys are the extension name.
 	// The value is a yaml string defined in extension.ExtensionConfigs struct.
 	ExtensionConfig map[string]string `json:"extensionConfig,omitempty"`
 	// ImpersonationEnabled indicates whether Application sync privileges can be decoupled from control plane
@@ -352,7 +352,7 @@ type Repository struct {
 	NoProxy string `json:"noProxy,omitempty"`
 	// GCPServiceAccountKey specifies the service account key in JSON format to be used for getting credentials to Google Cloud Source repos
 	GCPServiceAccountKey *corev1.SecretKeySelector `json:"gcpServiceAccountKey,omitempty"`
-	// ForceHttpBasicAuth determines whether Argo CD should force use of basic auth for HTTP connected repositories
+	// ForceHttpBasicAuth determines whether Hanzo CD should force use of basic auth for HTTP connected repositories
 	ForceHttpBasicAuth bool `json:"forceHttpBasicAuth,omitempty"` //nolint:revive //FIXME(var-naming)
 	// UseAzureWorkloadIdentity specifies whether to use Azure Workload Identity for authentication
 	UseAzureWorkloadIdentity bool `json:"useAzureWorkloadIdentity,omitempty"`
@@ -394,7 +394,7 @@ type RepositoryCredentials struct {
 	Type string `json:"type,omitempty"`
 	// GCPServiceAccountKey specifies the service account key in JSON format to be used for getting credentials to Google Cloud Source repos
 	GCPServiceAccountKey *corev1.SecretKeySelector `json:"gcpServiceAccountKey,omitempty"`
-	// ForceHttpBasicAuth determines whether Argo CD should force use of basic auth for HTTP connected repositories
+	// ForceHttpBasicAuth determines whether Hanzo CD should force use of basic auth for HTTP connected repositories
 	ForceHttpBasicAuth bool `json:"forceHttpBasicAuth,omitempty"` //nolint:revive //FIXME(var-naming)
 	// UseAzureWorkloadIdentity specifies whether to use Azure Workload Identity for authentication
 	UseAzureWorkloadIdentity bool `json:"useAzureWorkloadIdentity,omitempty"`
@@ -437,9 +437,9 @@ const (
 	settingServerCertificate = "tls.crt"
 	// settingServerPrivateKey designates the key for the private key used in TLS
 	settingServerPrivateKey = "tls.key"
-	// settingURLKey designates the key where Argo CD's external URL is set
+	// settingURLKey designates the key where Hanzo CD's external URL is set
 	settingURLKey = "url"
-	// settingAdditionalUrlsKey designates the key where Argo CD's additional external URLs are set
+	// settingAdditionalUrlsKey designates the key where Hanzo CD's additional external URLs are set
 	settingAdditionalUrlsKey = "additionalUrls"
 	// settingDexConfigKey designates the key for the dex config
 	settingDexConfigKey = "dex.config"
@@ -537,7 +537,7 @@ const (
 	initialPasswordLength = 16
 	// externalServerTLSSecretName defines the name of the external secret holding the server's TLS certificate
 	externalServerTLSSecretName = "argocd-server-tls"
-	// partOfArgoCDSelector holds label selector that should be applied to config maps and secrets used to manage Argo CD
+	// partOfArgoCDSelector holds label selector that should be applied to config maps and secrets used to manage Hanzo CD
 	partOfArgoCDSelector = "app.kubernetes.io/part-of=hanzocd"
 	// settingsPasswordPatternKey is the key to configure user password regular expression
 	settingsPasswordPatternKey = "passwordPattern"
@@ -842,7 +842,7 @@ func (mgr *SettingsManager) getSecrets() ([]*corev1.Secret, error) {
 
 	selector, err := labels.Parse(partOfArgoCDSelector)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing Argo CD selector %w", err)
+		return nil, fmt.Errorf("error parsing Hanzo CD selector %w", err)
 	}
 	secretList, err := secrets.Secrets(mgr.namespace).List(selector)
 	if err != nil {
@@ -1417,7 +1417,7 @@ func isRepositorySecret(obj any) bool {
 }
 
 // isSettingsObject reports whether obj carries app.kubernetes.io/part-of=hanzocd,
-// the label that identifies secrets and configmaps that participate in ArgoCD's
+// the label that identifies secrets and configmaps that participate in Hanzo CD's
 // settings system (OIDC config, webhook secrets, $secretName:key template references).
 // Unknown types return false (fail-closed).
 func isSettingsObject(obj any) bool {
@@ -1519,7 +1519,7 @@ func (mgr *SettingsManager) clusterSecretEventHandler() cache.ResourceEventHandl
 // settingsNotificationEventHandler returns the informer event handlers that notify
 // settings subscribers (via tryNotify) of changes. It is guarded by isSettingsObject so
 // that only changes to app.kubernetes.io/part-of=hanzocd objects (the documented contract
-// for secrets/configmaps that participate in ArgoCD settings) trigger a full
+// for secrets/configmaps that participate in Hanzo CD settings) trigger a full
 // GetSettings() reload. AddFunc only notifies for objects created after now, and
 // UpdateFunc only when the resource version actually changed; this prevents spurious
 // reloads caused by the informer resync period delivering synthetic events. Objects that
@@ -2507,7 +2507,7 @@ func (mgr *SettingsManager) InitializeSettings(insecureModeEnabled bool) (*ArgoC
 		}
 		certOpts := tlsutil.CertOptions{
 			Hosts:        hosts,
-			Organization: "Argo CD",
+			Organization: "Hanzo CD",
 			IsCA:         false,
 		}
 		cert, err := tlsutil.GenerateX509KeyPair(certOpts)

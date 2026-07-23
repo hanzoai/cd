@@ -296,7 +296,7 @@ func TestRepoWithKnownType(ctx context.Context, repoClient apiclient.RepoServerS
 // * the path contains valid manifests
 // * there are parameters of only one app source type
 //
-// The plugins parameter is no longer used. It is kept for compatibility with the old signature until Argo CD v3.0.
+// The plugins parameter is no longer used. It is kept for compatibility with the old signature until Hanzo CD v3.0.
 func ValidateRepo(
 	ctx context.Context,
 	app *argoappv1.Application,
@@ -639,7 +639,7 @@ func validateSourceHydrator(hydrator *argoappv1.SourceHydrator) []argoappv1.Appl
 	return conditions
 }
 
-// ValidatePermissions ensures that the referenced cluster has been added to Argo CD and the app source repo and destination namespace/cluster are permitted in app project
+// ValidatePermissions ensures that the referenced cluster has been added to Hanzo CD and the app source repo and destination namespace/cluster are permitted in app project
 func ValidatePermissions(ctx context.Context, spec *argoappv1.ApplicationSpec, proj *argoappv1.AppProject, db db.ArgoDB) ([]argoappv1.ApplicationCondition, error) {
 	conditions := []argoappv1.ApplicationCondition{}
 

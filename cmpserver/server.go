@@ -38,7 +38,7 @@ type ArgoCDCMPServer struct {
 	sig           os.Signal
 }
 
-// NewServer returns a new instance of the Argo CD config management plugin server
+// NewServer returns a new instance of the Hanzo CD config management plugin server
 func NewServer(initConstants plugin.CMPServerInitConstants) (*ArgoCDCMPServer, error) {
 	var serverMetricsOptions []grpc_prometheus.ServerMetricsOption
 	if os.Getenv(common.EnvEnableGRPCTimeHistogramEnv) == "true" {

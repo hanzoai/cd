@@ -1518,7 +1518,7 @@ func schema_pkg_apis_application_v1alpha1_ApplicationSetTemplateMeta(ref common.
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "ApplicationSetTemplateMeta represents the Argo CD application fields that may be used for Applications generated from the ApplicationSet (based on metav1.ObjectMeta)",
+				Description: "ApplicationSetTemplateMeta represents the Hanzo CD application fields that may be used for Applications generated from the ApplicationSet (based on metav1.ObjectMeta)",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"name": {
@@ -1899,14 +1899,14 @@ func schema_pkg_apis_application_v1alpha1_ApplicationSourceHelm(ref common.Refer
 					},
 					"kubeVersion": {
 						SchemaProps: spec.SchemaProps{
-							Description: "KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD uses the Kubernetes version of the target cluster.",
+							Description: "KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD uses the Kubernetes version of the target cluster.",
 							Type:        []string{"string"},
 							Format:      "",
 						},
 					},
 					"apiVersions": {
 						SchemaProps: spec.SchemaProps{
-							Description: "APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default, Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.",
+							Description: "APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default, Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.",
 							Type:        []string{"array"},
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
@@ -2140,14 +2140,14 @@ func schema_pkg_apis_application_v1alpha1_ApplicationSourceKustomize(ref common.
 					},
 					"kubeVersion": {
 						SchemaProps: spec.SchemaProps{
-							Description: "KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD uses the Kubernetes version of the target cluster.",
+							Description: "KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD uses the Kubernetes version of the target cluster.",
 							Type:        []string{"string"},
 							Format:      "",
 						},
 					},
 					"apiVersions": {
 						SchemaProps: spec.SchemaProps{
-							Description: "APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default, Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.",
+							Description: "APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default, Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.",
 							Type:        []string{"array"},
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
@@ -2984,12 +2984,12 @@ func schema_pkg_apis_application_v1alpha1_ClusterGenerator(ref common.ReferenceC
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "ClusterGenerator defines a generator to match against clusters registered with ArgoCD.",
+				Description: "ClusterGenerator defines a generator to match against clusters registered with Hanzo CD.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"selector": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Selector defines a label selector to match against all clusters registered with ArgoCD. Clusters today are stored as Kubernetes Secrets, thus the Secret labels will be used for matching the selector.",
+							Description: "Selector defines a label selector to match against all clusters registered with Hanzo CD. Clusters today are stored as Kubernetes Secrets, thus the Secret labels will be used for matching the selector.",
 							Default:     map[string]any{},
 							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.LabelSelector"),
 						},
@@ -3061,7 +3061,7 @@ func schema_pkg_apis_application_v1alpha1_ClusterInfo(ref common.ReferenceCallba
 					},
 					"applicationsCount": {
 						SchemaProps: spec.SchemaProps{
-							Description: "ApplicationsCount is the number of applications managed by Argo CD on the cluster",
+							Description: "ApplicationsCount is the number of applications managed by Hanzo CD on the cluster",
 							Default:     0,
 							Type:        []string{"integer"},
 							Format:      "int64",
@@ -3407,7 +3407,7 @@ func schema_pkg_apis_application_v1alpha1_DuckTypeGenerator(ref common.Reference
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "DuckType defines a generator to match against clusters registered with ArgoCD.",
+				Description: "DuckType defines a generator to match against clusters registered with Hanzo CD.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"configMapRef": {
@@ -5837,7 +5837,7 @@ func schema_pkg_apis_application_v1alpha1_RepoCreds(ref common.ReferenceCallback
 					},
 					"forceHttpBasicAuth": {
 						SchemaProps: spec.SchemaProps{
-							Description: "ForceHttpBasicAuth specifies whether Argo CD should attempt to force basic auth for HTTP connections",
+							Description: "ForceHttpBasicAuth specifies whether Hanzo CD should attempt to force basic auth for HTTP connections",
 							Type:        []string{"boolean"},
 							Format:      "",
 						},
@@ -6048,7 +6048,7 @@ func schema_pkg_apis_application_v1alpha1_Repository(ref common.ReferenceCallbac
 					},
 					"forceHttpBasicAuth": {
 						SchemaProps: spec.SchemaProps{
-							Description: "ForceHttpBasicAuth specifies whether Argo CD should attempt to force basic auth for HTTP connections",
+							Description: "ForceHttpBasicAuth specifies whether Hanzo CD should attempt to force basic auth for HTTP connections",
 							Type:        []string{"boolean"},
 							Format:      "",
 						},

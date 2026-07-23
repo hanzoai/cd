@@ -9,8 +9,8 @@ import (
 // This struct represents a wrapper, that is returned from Lua custom action script, around the unstructured k8s resource + a k8s operation
 // that will need to be performed on this returned resource.
 // Currently only "create" and "patch" operations are supported for custom actions.
-// This replaces the traditional architecture of "Lua action returns the source resource for ArgoCD to patch".
-// This enables ArgoCD to create NEW resources upon custom action.
+// This replaces the traditional architecture of "Lua action returns the source resource for Hanzo CD to patch".
+// This enables Hanzo CD to create NEW resources upon custom action.
 // Note that the Lua code in the custom action is coupled to this type, since Lua json output is then unmarshalled to this struct.
 // Avoided using iota, since need the mapping of the string value the end users will write in Lua code ("create" and "patch").
 // TODO: maybe there is a nicer general way to marshal and unmarshal, instead of explicit iteration over the enum values.

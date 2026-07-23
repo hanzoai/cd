@@ -1900,7 +1900,7 @@ func (ctrl *ApplicationController) processAppRefreshQueueItem() (processNext boo
 	if hasMultipleSources {
 		for _, source := range app.Spec.Sources {
 			// We do not perform any filtering of duplicate sources.
-			// Argo CD will apply and update the resources generated from the sources automatically
+			// Hanzo CD will apply and update the resources generated from the sources automatically
 			// based on the order in which manifests were generated
 			sources = append(sources, source)
 			revisions = append(revisions, source.TargetRevision)

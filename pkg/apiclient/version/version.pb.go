@@ -32,7 +32,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// VersionMessage represents version of the Argo CD API server
+// VersionMessage represents version of the Hanzo CD API server
 type VersionMessage struct {
 	Version              string   `protobuf:"bytes,1,opt,name=Version,proto3" json:"Version,omitempty"`
 	BuildDate            string   `protobuf:"bytes,2,opt,name=BuildDate,proto3" json:"BuildDate,omitempty"`

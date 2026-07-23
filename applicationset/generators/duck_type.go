@@ -24,12 +24,12 @@ import (
 
 var _ Generator = (*DuckTypeGenerator)(nil)
 
-// DuckTypeGenerator generates Applications for some or all clusters registered with ArgoCD.
+// DuckTypeGenerator generates Applications for some or all clusters registered with Hanzo CD.
 type DuckTypeGenerator struct {
 	ctx             context.Context
 	dynClient       dynamic.Interface
 	clientset       kubernetes.Interface
-	namespace       string // namespace is the Argo CD namespace
+	namespace       string // namespace is the Hanzo CD namespace
 	clusterInformer *settings.ClusterInformer
 }
 
@@ -206,16 +206,16 @@ func findCluster(clustersFromArgoCD []utils.ClusterSpecifier, cluster any, match
 	}
 
 	strMatchValue := fmt.Sprintf("%v", matchValue)
-	log.WithField(matchKey, strMatchValue).Debug("validate against ArgoCD")
+	log.WithField(matchKey, strMatchValue).Debug("validate against Hanzo CD")
 
 	for _, argoCluster := range clustersFromArgoCD {
 		if argoCluster.Name == strMatchValue {
-			log.WithField(matchKey, argoCluster.Name).Info("matched cluster in ArgoCD")
+			log.WithField(matchKey, argoCluster.Name).Info("matched cluster in Hanzo CD")
 			return &argoCluster
 		}
 	}
 
-	log.WithField(matchKey, strMatchValue).Warning("unmatched cluster in ArgoCD")
+	log.WithField(matchKey, strMatchValue).Warning("unmatched cluster in Hanzo CD")
 	return nil
 }
 

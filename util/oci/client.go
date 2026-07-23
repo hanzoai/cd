@@ -507,7 +507,7 @@ func fileExists(filePath string) (bool, error) {
 }
 
 // TODO: A content layer could in theory be something that is not a compressed file, e.g a single yaml file or like.
-// While IMO the utility in the context of Argo CD is limited, I'd at least like to make it known here and add an extensibility
+// While IMO the utility in the context of Hanzo CD is limited, I'd at least like to make it known here and add an extensibility
 // point for it in case we decide to loosen the current requirements.
 func isContentLayer(mediaType string) bool {
 	return isCompressedLayer(mediaType)

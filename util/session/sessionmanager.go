@@ -127,7 +127,7 @@ func getLoginFailureWindow() time.Duration {
 	return time.Duration(env.ParseNumFromEnv(envLoginFailureWindowSeconds, defaultFailureWindow, 0, math.MaxInt32))
 }
 
-// NewSessionManager creates a new session manager from Argo CD settings
+// NewSessionManager creates a new session manager from Hanzo CD settings
 func NewSessionManager(settingsMgr *settings.SettingsManager, projectsLister v1alpha1.AppProjectNamespaceLister, dexServerAddr string, dexTLSConfig *dex.DexTLSConfig, storage UserStateStorage) *SessionManager {
 	s := SessionManager{
 		settingsMgr:                   settingsMgr,
@@ -212,7 +212,7 @@ func (mgr *SessionManager) signClaims(claims jwt.Claims) (string, error) {
 	return token.SignedString(settings.ServerSignature)
 }
 
-// GetSubjectAccountAndCapability analyzes Argo CD account token subject and extract account name
+// GetSubjectAccountAndCapability analyzes Hanzo CD account token subject and extract account name
 // and the capability it was generated for (default capability is API Key).
 func GetSubjectAccountAndCapability(subject string) (string, settings.AccountCapability) {
 	capability := settings.AccountCapabilityApiKey
@@ -566,7 +566,7 @@ func (mgr *SessionManager) VerifyToken(ctx context.Context, tokenString string) 
 	issuer, _ := claims["iss"].(string)
 	switch issuer {
 	case SessionManagerClaimsIssuer:
-		// Argo CD signed token
+		// Hanzo CD signed token
 		return mgr.Parse(tokenString)
 	default:
 		// IDP signed token

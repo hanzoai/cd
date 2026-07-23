@@ -32,9 +32,9 @@ type CommitHydratedManifestsRequest struct {
 	// Repo contains repository information including, at minimum, the URL of the repository. Generally it will contain
 	// repo credentials.
 	Repo *v1alpha1.Repository `protobuf:"bytes,1,opt,name=repo,proto3" json:"repo,omitempty"`
-	// SyncBranch is the branch Argo CD syncs from, i.e. the hydrated branch.
+	// SyncBranch is the branch Hanzo CD syncs from, i.e. the hydrated branch.
 	SyncBranch string `protobuf:"bytes,2,opt,name=syncBranch,proto3" json:"syncBranch,omitempty"`
-	// TargetBranch is the branch Argo CD is committing to, i.e. the branch that will be updated.
+	// TargetBranch is the branch Hanzo CD is committing to, i.e. the branch that will be updated.
 	TargetBranch string `protobuf:"bytes,3,opt,name=targetBranch,proto3" json:"targetBranch,omitempty"`
 	// DrySha is the commit SHA from the dry branch, i.e. pre-rendered manifest branch.
 	DrySha string `protobuf:"bytes,4,opt,name=drySha,proto3" json:"drySha,omitempty"`
@@ -44,7 +44,7 @@ type CommitHydratedManifestsRequest struct {
 	Paths []*PathDetails `protobuf:"bytes,6,rep,name=paths,proto3" json:"paths,omitempty"`
 	// DryCommitMetadata contains metadata about the DRY commit, such as the author and committer.
 	DryCommitMetadata *v1alpha1.RevisionMetadata `protobuf:"bytes,7,opt,name=dryCommitMetadata,proto3" json:"dryCommitMetadata,omitempty"`
-	// AuthorName is the author name to use for the commit. If empty, defaults to "Argo CD".
+	// AuthorName is the author name to use for the commit. If empty, defaults to "Hanzo CD".
 	AuthorName string `protobuf:"bytes,8,opt,name=authorName,proto3" json:"authorName,omitempty"`
 	// AuthorEmail is the author email to use for the commit. If empty, defaults to "argo-cd@example.com".
 	AuthorEmail string `protobuf:"bytes,9,opt,name=authorEmail,proto3" json:"authorEmail,omitempty"`
