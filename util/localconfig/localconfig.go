@@ -289,11 +289,11 @@ func DefaultConfigDir() (string, error) {
 
 	// Manually configured XDG config home
 	if xdgConfigHome := os.Getenv("XDG_CONFIG_HOME"); xdgConfigHome != "" {
-		return path.Join(xdgConfigHome, "argocd"), nil
+		return path.Join(xdgConfigHome, "hanzocd"), nil
 	}
 
 	// XDG config home fallback
-	return path.Join(homeDir, ".config", "argocd"), nil
+	return path.Join(homeDir, ".config", "hanzocd"), nil
 }
 
 func getHomeDir() (string, error) {

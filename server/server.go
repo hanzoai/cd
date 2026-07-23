@@ -1412,7 +1412,7 @@ func newRedirectServer(port int, rootPath string) *http.Server {
 // registerDownloadHandlers registers HTTP handlers to support downloads directly from the API server
 // (e.g. argocd CLI)
 func registerDownloadHandlers(mux *http.ServeMux, base string) {
-	linuxPath, err := exec.LookPath("argocd")
+	linuxPath, err := exec.LookPath("hanzocd")
 	if err != nil {
 		log.Warnf("argocd not in PATH")
 	} else {
