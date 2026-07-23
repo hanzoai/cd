@@ -169,7 +169,7 @@ func NewCommand() *cobra.Command {
 				Cache:                  cacheOpt,
 				HealthProbeBindAddress: probeBindAddr,
 				LeaderElection:         enableLeaderElection,
-				LeaderElectionID:       "58ac56fa.applicationsets.deploy.hanzo.ai",
+				LeaderElectionID:       "58ac56fa.applicationsets.apps.hanzo.ai",
 				Client: ctrlclient.Options{
 					DryRun: &dryRun,
 				},

@@ -3,14 +3,14 @@ package v1alpha1
 const (
 	// AnnotationKeyRefresh is the annotation key which indicates that app needs to be refreshed. Removed by application controller after app is refreshed.
 	// Might take values 'normal'/'hard'. Value 'hard' means manifest cache and target cluster state cache should be invalidated before refresh.
-	AnnotationKeyRefresh string = "deploy.hanzo.ai/refresh"
+	AnnotationKeyRefresh string = "apps.hanzo.ai/refresh"
 	// AnnotationKeyHydrate is the annotation key which indicates that app needs to be hydrated. Removed by application controller after app is hydrated.
-	AnnotationKeyHydrate string = "deploy.hanzo.ai/hydrate"
+	AnnotationKeyHydrate string = "apps.hanzo.ai/hydrate"
 	// AnnotationKeyManifestGeneratePaths is an annotation that contains a list of semicolon-separated paths in the
 	// manifests repository that affects the manifest generation. Paths might be either relative or absolute. The
 	// absolute path means an absolute path within the repository and the relative path is relative to the application
 	// source path within the repository.
-	AnnotationKeyManifestGeneratePaths = "deploy.hanzo.ai/manifest-generate-paths"
+	AnnotationKeyManifestGeneratePaths = "apps.hanzo.ai/manifest-generate-paths"
 	// AnnotationKeyManagedByURL contains the URL of the Hanzo CD instance managing the application
-	AnnotationKeyManagedByURL = "deploy.hanzo.ai/managed-by-url"
+	AnnotationKeyManagedByURL = "apps.hanzo.ai/managed-by-url"
 )

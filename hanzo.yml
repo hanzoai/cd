@@ -19,8 +19,8 @@ test:
 
 # BUILD-ONLY for the hard-fork cutover: no `deploy:` block. The live `hanzo-cd`
 # namespace reconciles the whole Hanzo fleet (ArgoCD IS the deploy mechanism
-# for everything else), so the prod cutover — deploy.hanzo.ai CRDs + image swap
-# + re-homing every live Application from argoproj.io → deploy.hanzo.ai — is a
+# for everything else), so the prod cutover — apps.hanzo.ai CRDs + image swap
+# + re-homing every live Application from argoproj.io → apps.hanzo.ai — is a
 # deliberate, separately-greenlit action, never an auto-deploy on merge. See
 # universe: infra/k8s/hanzo-cd/ for the prepared-but-HELD swap. (Same
 # controlled build-only-first pattern as hanzoai/cms.)

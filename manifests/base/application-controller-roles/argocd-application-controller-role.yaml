@@ -17,7 +17,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - deploy.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applications
   - applicationsets

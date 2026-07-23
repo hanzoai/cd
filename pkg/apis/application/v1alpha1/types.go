@@ -2150,7 +2150,7 @@ func (t *ApplicationTree) GetSummary(app *Application) ApplicationSummary {
 		for _, image := range node.Images {
 			imagesSet[image] = true
 		}
-		if node.Group == "deploy.hanzo.ai" && node.Kind == "Application" {
+		if node.Group == "apps.hanzo.ai" && node.Kind == "Application" {
 			appOfApps = true
 		}
 	}
