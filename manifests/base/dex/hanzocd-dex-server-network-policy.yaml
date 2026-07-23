@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: dex-server
+  name: hanzocd-dex-server-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-dex-server
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: hanzocd-server
+      ports:
+        - protocol: TCP
+          port: 5556
+        - protocol: TCP
+          port: 5557
+    - from:
+        - namespaceSelector: { }
+      ports:
+        - port: 5558
+          protocol: TCP

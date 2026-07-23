@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - ../application-controller-roles
-- argocd-application-controller-service.yaml
-- argocd-application-controller-statefulset.yaml
-- argocd-application-controller-deployment.yaml
+- hanzocd-application-controller-service.yaml
+- hanzocd-application-controller-statefulset.yaml
+- hanzocd-application-controller-deployment.yaml
 
