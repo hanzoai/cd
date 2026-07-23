@@ -49,12 +49,12 @@ func NewLoginCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 	)
 	command := &cobra.Command{
 		Use:   "login SERVER",
-		Short: "Log in to Argo CD",
-		Long:  "Log in to Argo CD",
-		Example: `# Login to Argo CD using a username and password
+		Short: "Log in to Hanzo CD",
+		Long:  "Log in to Hanzo CD",
+		Example: `# Login to Hanzo CD using a username and password
 argocd login cd.argoproj.io
 
-# Login to Argo CD using SSO
+# Login to Hanzo CD using SSO
 argocd login cd.argoproj.io --sso
 
 # Configure direct access using Kubernetes API server

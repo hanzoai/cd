@@ -46,7 +46,7 @@ func constructLogoutURL(logoutURL, token, logoutRedirectURL string) string {
 	return logoutRedirectURLPattern.ReplaceAllString(constructedLogoutURL, logoutRedirectURL)
 }
 
-// ServeHTTP is the logout handler for ArgoCD and constructs OIDC logout URL and redirects to it for OIDC issued sessions,
+// ServeHTTP is the logout handler for Hanzo CD and constructs OIDC logout URL and redirects to it for OIDC issued sessions,
 // and redirects user to '/login' for argocd issued sessions
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var tokenString string
@@ -60,7 +60,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	argoURL, err := argoCDSettings.ArgoURLForRequest(r)
 	if err != nil {
-		log.Warnf("unable to find ArgoCD URL from config: %v", err)
+		log.Warnf("unable to find Hanzo CD URL from config: %v", err)
 	}
 	if argoURL == "" {
 		// golang does not provide any easy way to determine scheme of current request
@@ -75,11 +75,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	tokenString, err = httputil.JoinCookies(common.AuthCookieName, cookies)
 	// Build message safely: only include err when non-nil
 	if err != nil {
-		http.Error(w, "Failed to retrieve ArgoCD auth token: "+err.Error(), http.StatusBadRequest)
+		http.Error(w, "Failed to retrieve Hanzo CD auth token: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 	if tokenString == "" {
-		http.Error(w, "Failed to retrieve ArgoCD auth token", http.StatusBadRequest)
+		http.Error(w, "Failed to retrieve Hanzo CD auth token", http.StatusBadRequest)
 		return
 	}
 

@@ -23,13 +23,13 @@ func NewContextCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 		Use:     "context [CONTEXT]",
 		Aliases: []string{"ctx"},
 		Short:   "Switch between contexts",
-		Example: `# List Argo CD Contexts
+		Example: `# List Hanzo CD Contexts
 argocd context
 
-# Switch Argo CD context
+# Switch Hanzo CD context
 argocd context cd.argoproj.io
 
-# Delete Argo CD context
+# Delete Hanzo CD context
 argocd context cd.argoproj.io --delete`,
 		Run: func(c *cobra.Command, args []string) {
 			localCfg, err := localconfig.ReadLocalConfig(clientOpts.ConfigPath)

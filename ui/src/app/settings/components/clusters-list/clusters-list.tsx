@@ -131,7 +131,7 @@ export const ClustersList = () => {
                         <i className='fa fa-info-circle' />
                         <span>
                             Refer to CLI{' '}
-                            <a href='https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-management/#adding-a-cluster' target='_blank' rel='noopener noreferrer'>
+                            <a href='https://docs.hanzo.ai/en/stable/operator-manual/cluster-management/#adding-a-cluster' target='_blank' rel='noopener noreferrer'>
                                 <i className='fa fa-external-link-alt' /> Documentation
                             </a>{' '}
                             for adding clusters.

@@ -39,7 +39,7 @@ import (
 )
 
 const (
-	// JWTTokenSubFormat format of the JWT token subject that Argo CD vends out.
+	// JWTTokenSubFormat format of the JWT token subject that Hanzo CD vends out.
 	JWTTokenSubFormat = "proj:%s:%s"
 )
 

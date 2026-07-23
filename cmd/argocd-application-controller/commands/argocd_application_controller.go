@@ -102,8 +102,8 @@ func NewCommand() *cobra.Command {
 	)
 	command := cobra.Command{
 		Use:               common.CommandApplicationController,
-		Short:             "Run ArgoCD Application Controller",
-		Long:              "ArgoCD application controller is a Kubernetes controller that continuously monitors running applications and compares the current, live state against the desired target state (as specified in the repo). This command runs Application Controller in the foreground.  It can be configured by following options.",
+		Short:             "Run Hanzo CD Application Controller",
+		Long:              "Hanzo CD application controller is a Kubernetes controller that continuously monitors running applications and compares the current, live state against the desired target state (as specified in the repo). This command runs Application Controller in the foreground.  It can be configured by following options.",
 		DisableAutoGenTag: true,
 		RunE: func(c *cobra.Command, _ []string) error {
 			ctx, cancel := context.WithCancel(c.Context())
@@ -113,7 +113,7 @@ func NewCommand() *cobra.Command {
 			namespace, _, err := clientConfig.Namespace()
 			errors.CheckError(err)
 			vers.LogStartupInfo(
-				"ArgoCD Application Controller",
+				"Hanzo CD Application Controller",
 				map[string]any{
 					"namespace": namespace,
 				},
@@ -307,7 +307,7 @@ func NewCommand() *cobra.Command {
 	command.Flags().BoolVar(&serverSideDiff, "server-side-diff-enabled", env.ParseBoolFromEnv(common.EnvServerSideDiff, false), "Feature flag to enable ServerSide diff. Default (\"false\")")
 	command.Flags().DurationVar(&ignoreNormalizerOpts.JQExecutionTimeout, "ignore-normalizer-jq-execution-timeout-seconds", env.ParseDurationFromEnv("ARGOCD_IGNORE_NORMALIZER_JQ_TIMEOUT", 0*time.Second, 0, math.MaxInt64), "Set ignore normalizer JQ execution timeout")
 	// argocd k8s event logging flag
-	command.Flags().StringSliceVar(&enableK8sEvent, "enable-k8s-event", env.StringsFromEnv("ARGOCD_ENABLE_K8S_EVENT", argo.DefaultEnableEventList(), ","), "Enable ArgoCD to use k8s event. For disabling all events, set the value as `none`. (e.g --enable-k8s-event=none), For enabling specific events, set the value as `event reason`. (e.g --enable-k8s-event=StatusRefreshed,ResourceCreated)")
+	command.Flags().StringSliceVar(&enableK8sEvent, "enable-k8s-event", env.StringsFromEnv("ARGOCD_ENABLE_K8S_EVENT", argo.DefaultEnableEventList(), ","), "Enable Hanzo CD to use k8s event. For disabling all events, set the value as `none`. (e.g --enable-k8s-event=none), For enabling specific events, set the value as `event reason`. (e.g --enable-k8s-event=StatusRefreshed,ResourceCreated)")
 	command.Flags().BoolVar(&hydratorEnabled, "hydrator-enabled", env.ParseBoolFromEnv("ARGOCD_HYDRATOR_ENABLED", false), "Feature flag to enable Hydrator. Default (\"false\")")
 	repoServerClientTLSConfigSrc = tls.AddClientTLSFlagsToCmdWithPrefix(&command, "APPLICATION_CONTROLLER")
 	cacheSource = appstatecache.AddCacheFlagsToCmd(&command, cacheutil.Options{

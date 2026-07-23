@@ -2290,9 +2290,9 @@ func (s *Server) Rollback(ctx context.Context, rollbackReq *application.Applicat
 	}
 	if deploymentInfo.Source.IsZero() && deploymentInfo.Sources.IsZero() {
 		// Since source type was introduced to history starting with v0.12, and is now required for
-		// rollback, we cannot support rollback to revisions deployed using Argo CD v0.11 or below
+		// rollback, we cannot support rollback to revisions deployed using Hanzo CD v0.11 or below
 		// As multi source doesn't use app.Source, we need to check to the Sources length
-		return nil, status.Errorf(codes.FailedPrecondition, "cannot rollback to revision deployed with Argo CD v0.11 or lower. sync to revision instead.")
+		return nil, status.Errorf(codes.FailedPrecondition, "cannot rollback to revision deployed with Hanzo CD v0.11 or lower. sync to revision instead.")
 	}
 
 	var syncOptions v1alpha1.SyncOptions
@@ -2988,7 +2988,7 @@ func (s *Server) ServerSideDiff(ctx context.Context, q *application.ApplicationS
 
 	argoSettings, err := s.settingsMgr.GetSettings()
 	if err != nil {
-		return nil, fmt.Errorf("error getting ArgoCD settings: %w", err)
+		return nil, fmt.Errorf("error getting Hanzo CD settings: %w", err)
 	}
 
 	resourceOverrides, err := s.settingsMgr.GetResourceOverrides()

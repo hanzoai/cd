@@ -39,7 +39,7 @@ export function isValidURL(url: string): boolean {
     }
 }
 
-// managed-by-url is expected to mostly if not always point to another Argo CD instance URL,
+// managed-by-url is expected to mostly if not always point to another Hanzo CD instance URL,
 // so we only consider http/https valid for click-through behavior.
 export function isValidManagedByURL(url: string): boolean {
     try {

@@ -183,7 +183,7 @@ func init() {
 	settings_util.ConfigureGoClientFeatures()
 }
 
-// ArgoCDServer is the API server for Argo CD
+// ArgoCDServer is the API server for Hanzo CD
 type ArgoCDServer struct {
 	ArgoCDServerOpts
 	ApplicationSetOpts
@@ -203,7 +203,7 @@ type ArgoCDServer struct {
 	appsetLister    applisters.ApplicationSetLister
 	db              db.ArgoDB
 
-	// stopCh is the channel which when closed, will shutdown the Argo CD server
+	// stopCh is the channel which when closed, will shutdown the Hanzo CD server
 	stopCh             chan os.Signal
 	userStateStorage   util_session.UserStateStorage
 	indexDataInit      gosync.Once
@@ -267,14 +267,14 @@ type ApplicationSetOpts struct {
 // GracefulRestartSignal implements a signal to be used for a graceful restart trigger.
 type GracefulRestartSignal struct{}
 
-// HTTPMetricsRegistry exposes operations to update http metrics in the Argo CD
+// HTTPMetricsRegistry exposes operations to update http metrics in the Hanzo CD
 // API server.
 type HTTPMetricsRegistry interface {
 	// IncExtensionRequestCounter will increase the request counter for the given
 	// extension with the given status.
 	IncExtensionRequestCounter(extension string, status int)
 	// ObserveExtensionRequestDuration will register the request roundtrip duration
-	// between Argo CD API Server and the extension backend service for the given
+	// between Hanzo CD API Server and the extension backend service for the given
 	// extension.
 	ObserveExtensionRequestDuration(extension string, duration time.Duration)
 }
@@ -308,7 +308,7 @@ func initializeDefaultProject(opts ArgoCDServerOpts) error {
 	return err
 }
 
-// NewServer returns a new instance of the Argo CD API server
+// NewServer returns a new instance of the Hanzo CD API server
 func NewServer(ctx context.Context, opts ArgoCDServerOpts, appsetOpts ApplicationSetOpts) *ArgoCDServer {
 	settingsMgr := settings_util.NewSettingsManager(ctx, opts.KubeClientset, opts.Namespace)
 	settings, err := settingsMgr.InitializeSettings(opts.Insecure)
@@ -500,7 +500,7 @@ func (server *ArgoCDServer) logInClusterWarnings() error {
 		}
 		if !inClusterEnabled {
 			for _, clusterName := range inClusterNames {
-				log.Warnf("cluster %q uses in-cluster server address but it's disabled in Argo CD settings", clusterName)
+				log.Warnf("cluster %q uses in-cluster server address but it's disabled in Hanzo CD settings", clusterName)
 			}
 		}
 	}
@@ -1201,7 +1201,7 @@ func (server *ArgoCDServer) newHTTPServer(ctx context.Context, port int, grpcWeb
 	}
 	// withTracingHandler is a middleware that extracts OpenTelemetry trace context from HTTP headers
 	// and injects it into the request context. This enables trace context propagation from HTTP clients
-	// to gRPC services, allowing for better distributed tracing across the ArgoCD server.
+	// to gRPC services, allowing for better distributed tracing across the Hanzo CD server.
 	withTracingHandler := func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			propagator := otel.GetTextMapPropagator()
@@ -1480,7 +1480,7 @@ func (server *ArgoCDServer) newStaticAssetsHandler() func(http.ResponseWriter, *
 			w.Header().Set("Content-Security-Policy", server.ContentSecurityPolicy)
 		}
 		w.Header().Set("X-XSS-Protection", "1")
-		// Prevent search engines from indexing the Argo CD UI.
+		// Prevent search engines from indexing the Hanzo CD UI.
 		w.Header().Set("X-Robots-Tag", "noindex, nofollow")
 
 		// serve index.html for non file requests to support HTML5 History API

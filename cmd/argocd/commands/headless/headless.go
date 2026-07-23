@@ -172,7 +172,7 @@ func testAPI(ctx context.Context, clientOpts *apiclient.ClientOptions) error {
 	return nil
 }
 
-// MaybeStartLocalServer allows executing command in a headless mode. If we're in core mode, starts the Argo CD API
+// MaybeStartLocalServer allows executing command in a headless mode. If we're in core mode, starts the Hanzo CD API
 // server on the fly and changes provided client options to use started API server port.
 //
 // If the clientOpts enables core mode, but the local config does not have core mode enabled, this function will

@@ -58,16 +58,16 @@ func NewClusterCommand(clientOpts *argocdclient.ClientOptions, pathOpts *clientc
 		Example: `  # List all known clusters in JSON format:
   argocd cluster list -o json
 
-  # Add a target cluster configuration to ArgoCD. The context must exist in your kubectl config:
+  # Add a target cluster configuration to Hanzo CD. The context must exist in your kubectl config:
   argocd cluster add example-cluster
 
   # Get specific details about a cluster in plain text (wide) format:
   argocd cluster get example-cluster -o wide
 
-  # Remove a target cluster context from ArgoCD
+  # Remove a target cluster context from Hanzo CD
   argocd cluster rm example-cluster
 
-  # Set a target cluster context from ArgoCD
+  # Set a target cluster context from Hanzo CD
   argocd cluster set CLUSTER_NAME --name new-cluster-name --namespace '*'
   argocd cluster set CLUSTER_NAME --name new-cluster-name --namespace namespace-one --namespace namespace-two`,
 	}
@@ -167,7 +167,7 @@ func NewClusterAddCommand(clientOpts *argocdclient.ClientOptions, pathOpts *clie
 				contextName = clusterOpts.Name
 			}
 			clst := cmdutil.NewCluster(contextName, clusterOpts.Namespaces, clusterOpts.ClusterResources, conf, managerBearerToken, awsAuthConf, execProviderConf, labelsMap, annotationsMap)
-			// If --server-proxy-url was explicitly provided, override the proxy that the ArgoCD server will use to
+			// If --server-proxy-url was explicitly provided, override the proxy that the Hanzo CD server will use to
 			// reach this cluster.  An explicit empty string means "no proxy", which is the common case when the local
 			// machine needs a proxy but the two clusters can reach each other directly.
 			err = applyServerProxyOverride(c.Flags().Changed("server-proxy-url"), clusterOpts.ServerProxyURL, clst)
@@ -208,7 +208,7 @@ func NewClusterAddCommand(clientOpts *argocdclient.ClientOptions, pathOpts *clie
 	command.Flags().StringArrayVar(&labels, "label", nil, "Set metadata labels (e.g. --label key=value)")
 	command.Flags().StringArrayVar(&annotations, "annotation", nil, "Set metadata annotations (e.g. --annotation key=value)")
 	command.Flags().StringVar(&clusterOpts.ProxyUrl, "proxy-url", "", "use proxy to connect cluster")
-	command.Flags().StringVar(&clusterOpts.ServerProxyURL, "server-proxy-url", "", "use a different proxy URL (or \"\" for no proxy) for the ArgoCD server to connect to the cluster; if omitted the value from --proxy-url or the kubeconfig is used")
+	command.Flags().StringVar(&clusterOpts.ServerProxyURL, "server-proxy-url", "", "use a different proxy URL (or \"\" for no proxy) for the Hanzo CD server to connect to the cluster; if omitted the value from --proxy-url or the kubeconfig is used")
 	cmdutil.AddClusterFlags(command, &clusterOpts)
 	return command
 }
@@ -558,7 +558,7 @@ argocd cluster list -o json --server <ARGOCD_SERVER_ADDRESS>
 # List Clusters in YAML Format
 argocd cluster list -o yaml --server <ARGOCD_SERVER_ADDRESS>
 
-# List Clusters that have been added to your Argo CD 
+# List Clusters that have been added to your Hanzo CD 
 argocd cluster list -o server <ARGOCD_SERVER_ADDRESS>
 
 `,

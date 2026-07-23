@@ -72,10 +72,10 @@ func NewNotificationsCommand() *cobra.Command {
 			}
 			argocdService, err = service.NewArgoCDService(kubernetes.NewForConfigOrDie(k8sCfg), dynamicClient, ns, repoClientset)
 			if err != nil {
-				log.Fatalf("Failed to initialize Argo CD service: %v", err)
+				log.Fatalf("Failed to initialize Hanzo CD service: %v", err)
 			}
 		})
-	toolsCommand.PersistentFlags().StringVar(&argocdRepoServer, "argocd-repo-server", common.DefaultRepoServerAddr, "Argo CD repo server address")
+	toolsCommand.PersistentFlags().StringVar(&argocdRepoServer, "argocd-repo-server", common.DefaultRepoServerAddr, "Hanzo CD repo server address")
 	toolsCommand.PersistentFlags().BoolVar(&argocdRepoServerPlaintext, "argocd-repo-server-plaintext", false, "Use a plaintext client (non-TLS) to connect to repository server")
 	toolsCommand.PersistentFlags().BoolVar(&argocdRepoServerStrictTLS, "argocd-repo-server-strict-tls", false, "Perform strict validation of TLS certificates when connecting to repo server")
 	if err := toolsCommand.PersistentFlags().MarkDeprecated("argocd-repo-server-strict-tls", "use --argocd-repo-server-ca-cert-path instead"); err != nil {

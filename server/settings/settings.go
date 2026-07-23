@@ -37,7 +37,7 @@ func NewServer(mgr *settings.SettingsManager, repoClient apiclient.Clientset, au
 	return &Server{mgr: mgr, repoClient: repoClient, authenticator: authenticator, disableAuth: disableAuth, appsInAnyNamespaceEnabled: appsInAnyNamespaceEnabled, hydratorEnabled: hydratorEnabled, syncWithReplaceAllowed: syncWithReplaceAllowed}
 }
 
-// Get returns Argo CD settings
+// Get returns Hanzo CD settings
 func (s *Server) Get(ctx context.Context, _ *settingspkg.SettingsQuery) (*settingspkg.Settings, error) {
 	resourceOverrides, err := s.mgr.GetResourceOverrides()
 	if err != nil {

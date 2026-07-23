@@ -28,8 +28,8 @@ import (
 func NewCommand() *cobra.Command {
 	command := &cobra.Command{
 		Use:               common.CommandDex,
-		Short:             "argocd-dex tools used by Argo CD",
-		Long:              "argocd-dex has internal utility tools used by Argo CD",
+		Short:             "argocd-dex tools used by Hanzo CD",
+		Long:              "argocd-dex has internal utility tools used by Hanzo CD",
 		DisableAutoGenTag: true,
 		Run: func(c *cobra.Command, args []string) {
 			c.HelpFunc()(c, args)
@@ -48,7 +48,7 @@ func NewRunDexCommand() *cobra.Command {
 	)
 	command := cobra.Command{
 		Use:   "rundex",
-		Short: "Runs dex generating a config using settings from the Argo CD configmap and secret",
+		Short: "Runs dex generating a config using settings from the Hanzo CD configmap and secret",
 		RunE: func(c *cobra.Command, _ []string) error {
 			ctx := c.Context()
 
@@ -56,7 +56,7 @@ func NewRunDexCommand() *cobra.Command {
 			namespace, _, err := clientConfig.Namespace()
 			errors.CheckError(err)
 			vers.LogStartupInfo(
-				"ArgoCD Dex Server",
+				"Hanzo CD Dex Server",
 				map[string]any{
 					"namespace": namespace,
 				},
@@ -155,7 +155,7 @@ func NewGenDexConfigCommand() *cobra.Command {
 	)
 	command := cobra.Command{
 		Use:   "gendexcfg",
-		Short: "Generates a dex config from Argo CD settings",
+		Short: "Generates a dex config from Hanzo CD settings",
 		RunE: func(c *cobra.Command, _ []string) error {
 			ctx := c.Context()
 

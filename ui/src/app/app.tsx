@@ -265,7 +265,7 @@ export class App extends React.Component<
 
         // argo-ui's AppContext requires a `router`, but this provider sits above <Router> so there is no
         // route match yet — supply the current location with an empty match. The only fields argo-ui actually
-        // reads off this context are `apis` (DataLoader) and `router` (NavBar, unused in Argo CD).
+        // reads off this context are `apis` (DataLoader) and `router` (NavBar, unused in Hanzo CD).
         const appContext: AppContext = {
             history,
             apis: {popup: this.popupManager, notifications: this.notificationsManager},

@@ -3,7 +3,7 @@ option go_package = "github.com/hanzoai/deploy/pkg/apiclient/settings";
 
 // Settings Service
 //
-// Settings Service API retrieves Argo CD settings
+// Settings Service API retrieves Hanzo CD settings
 package cluster;
 
 import "gogoproto/gogo.proto";
@@ -11,7 +11,7 @@ import "google/api/annotations.proto";
 import "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1/generated.proto";
 import "github.com/hanzoai/deploy/server/settings/oidc/claims.proto";
 
-// SettingsQuery is a query for Argo CD settings
+// SettingsQuery is a query for Hanzo CD settings
 message SettingsQuery {
 }
 
@@ -97,12 +97,12 @@ message OIDCConfig {
 // SettingsService
 service SettingsService {
 
-    // Get returns Argo CD settings
+    // Get returns Hanzo CD settings
     rpc Get(SettingsQuery) returns (Settings) {
         option (google.api.http).get = "/api/v1/settings";
     }
 
-    // Get returns Argo CD plugins
+    // Get returns Hanzo CD plugins
     rpc GetPlugins(SettingsQuery) returns (SettingsPluginsResponse) {
         option (google.api.http).get = "/api/v1/settings/plugins";
     }

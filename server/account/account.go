@@ -48,7 +48,7 @@ func (s *Server) UpdatePassword(ctx context.Context, q *account.UpdatePasswordRe
 	}
 
 	// check for permission is user is trying to change someone else's password
-	// assuming user is trying to update someone else if username is different or issuer is not Argo CD
+	// assuming user is trying to update someone else if username is different or issuer is not Hanzo CD
 	issuer := session.Iss(ctx)
 	if updatedUsername != username || issuer != session.SessionManagerClaimsIssuer {
 		if err := s.enf.EnforceErr(ctx.Value("claims"), rbac.ResourceAccounts, rbac.ActionUpdate, q.Name); err != nil {

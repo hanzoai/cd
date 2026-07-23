@@ -7,7 +7,7 @@ import (
 )
 
 // K8sEventListToAPIEventList converts a Kubernetes EventList into the typed
-// Argo CD events API representation. A nil input is mapped to an empty list so
+// Hanzo CD events API representation. A nil input is mapped to an empty list so
 // callers can return the result directly without a nil-check.
 func K8sEventListToAPIEventList(in *corev1.EventList) *eventspb.EventList {
 	if in == nil {

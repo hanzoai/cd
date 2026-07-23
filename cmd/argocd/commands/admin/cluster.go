@@ -51,7 +51,7 @@ argocd admin cluster generate-spec my-cluster -o yaml
 #Generate a kubeconfig for a cluster named "my-cluster" and display it in the console
 argocd admin cluster kubeconfig my-cluster
 
-#Print information namespaces which Argo CD manages in each cluster
+#Print information namespaces which Hanzo CD manages in each cluster
 argocd admin cluster namespaces my-cluster `,
 		Run: func(c *cobra.Command, args []string) {
 			c.HelpFunc()(c, args)
@@ -74,7 +74,7 @@ type ClusterWithInfo struct {
 	v1alpha1.Cluster
 	// Shard holds controller shard number that handles the cluster
 	Shard int
-	// Namespaces holds list of namespaces managed by Argo CD in the cluster
+	// Namespaces holds list of namespaces managed by Hanzo CD in the cluster
 	Namespaces []string
 }
 
@@ -310,7 +310,7 @@ func NewClusterNamespacesCommand() *cobra.Command {
 	var clientConfig clientcmd.ClientConfig
 	command := cobra.Command{
 		Use:   "namespaces",
-		Short: "Print information namespaces which Argo CD manages in each cluster.",
+		Short: "Print information namespaces which Hanzo CD manages in each cluster.",
 		Run: func(cmd *cobra.Command, _ []string) {
 			ctx := cmd.Context()
 
@@ -605,7 +605,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			clientConfig := clientcmd.NewDefaultClientConfig(*cfgAccess, &overrides)
 			conf, err := clientConfig.ClientConfig()
 			errors.CheckError(err)
-			// Seed a minimal in-memory Argo CD environment so settings retrieval succeeds
+			// Seed a minimal in-memory Hanzo CD environment so settings retrieval succeeds
 			argoCDCM := &corev1.ConfigMap{
 				TypeMeta: metav1.TypeMeta{Kind: "ConfigMap", APIVersion: "v1"},
 				ObjectMeta: metav1.ObjectMeta{

@@ -39,7 +39,7 @@ func NewServer(mgr *sessionmgr.SessionManager, settingsMgr *settings.SettingsMan
 	return &Server{mgr, settingsMgr, authenticator, policyEnf, rateLimiter}
 }
 
-// Create generates a JWT token signed by Argo CD intended for web/CLI logins of the admin user
+// Create generates a JWT token signed by Hanzo CD intended for web/CLI logins of the admin user
 // using username/password
 func (s *Server) Create(_ context.Context, q *session.SessionCreateRequest) (*session.SessionResponse, error) {
 	if s.limitLoginAttempts != nil {

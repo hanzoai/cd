@@ -29,14 +29,14 @@ func NewCommand() *cobra.Command {
 	)
 	command := cobra.Command{
 		Use:               common.CommandCMPServer,
-		Short:             "Run ArgoCD ConfigManagementPlugin Server",
-		Long:              "ArgoCD ConfigManagementPlugin Server is an internal service which runs as sidecar container in reposerver deployment. The following configuration options are available:",
+		Short:             "Run Hanzo CD ConfigManagementPlugin Server",
+		Long:              "Hanzo CD ConfigManagementPlugin Server is an internal service which runs as sidecar container in reposerver deployment. The following configuration options are available:",
 		DisableAutoGenTag: true,
 		RunE: func(c *cobra.Command, _ []string) error {
 			ctx := c.Context()
 
 			vers := common.GetVersion()
-			vers.LogStartupInfo("ArgoCD ConfigManagementPlugin Server", nil)
+			vers.LogStartupInfo("Hanzo CD ConfigManagementPlugin Server", nil)
 
 			cli.SetLogFormat(cmdutil.LogFormat)
 			cli.SetLogLevel(cmdutil.LogLevel)

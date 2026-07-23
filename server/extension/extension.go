@@ -56,7 +56,7 @@ const (
 	HeaderArgoCDProjectName = "Argocd-Project-Name"
 
 	// HeaderArgoCDTargetClusterURL defines the target cluster URL
-	// that the Argo CD application is associated with. This header
+	// that the Hanzo CD application is associated with. This header
 	// will be populated by the extension proxy and passed to the
 	// configured backend service. If this header is passed by
 	// the client, its value will be overridden by the extension
@@ -67,7 +67,7 @@ const (
 	HeaderArgoCDTargetClusterURL = "Argocd-Target-Cluster-URL"
 
 	// HeaderArgoCDTargetClusterName defines the target cluster name
-	// that the Argo CD application is associated with. This header
+	// that the Hanzo CD application is associated with. This header
 	// will be populated by the extension proxy and passed to the
 	// configured backend service. If this header is passed by
 	// the client, its value will be overridden by the extension
@@ -75,28 +75,28 @@ const (
 	HeaderArgoCDTargetClusterName = "Argocd-Target-Cluster-Name"
 
 	// HeaderArgoCDUsername is the header name that defines the username of the logged
-	// in user authenticated by Argo CD.
+	// in user authenticated by Hanzo CD.
 	HeaderArgoCDUsername = "Argocd-Username"
 
 	// HeaderArgoCDUserId is the header name that defines the internal user id of the logged
-	// in user authenticated by Argo CD.
+	// in user authenticated by Hanzo CD.
 	HeaderArgoCDUserId = "Argocd-User-Id"
 
 	// HeaderArgoCDGroups is the header name that provides the 'groups'
-	// claim from the users authenticated in Argo CD.
+	// claim from the users authenticated in Hanzo CD.
 	HeaderArgoCDGroups = "Argocd-User-Groups"
 )
 
 // RequestResources defines the authorization scope for
 // an incoming request to a given extension. This struct
-// is populated from pre-defined Argo CD headers.
+// is populated from pre-defined Hanzo CD headers.
 type RequestResources struct {
 	ApplicationName      string
 	ApplicationNamespace string
 	ProjectName          string
 }
 
-// ValidateHeaders will validate the pre-defined Argo CD
+// ValidateHeaders will validate the pre-defined Hanzo CD
 // request headers for extensions and extract the resources
 // information populating and returning a RequestResources
 // object.
@@ -145,7 +145,7 @@ func getAppName(appHeader string) (string, string, error) {
 }
 
 // ExtensionConfigs defines the configurations for all extensions
-// retrieved from Argo CD configmap (argocd-cm).
+// retrieved from Hanzo CD configmap (argocd-cm).
 type ExtensionConfigs struct {
 	Extensions []ExtensionConfig `yaml:"extensions"`
 }
@@ -160,7 +160,7 @@ type ExtensionConfig struct {
 
 // BackendConfig defines the backend service configurations that will
 // be used by an specific extension. An extension can have multiple services
-// associated. This is necessary when Argo CD is managing applications in
+// associated. This is necessary when Hanzo CD is managing applications in
 // external clusters. In this case, each cluster may have its own backend
 // service.
 type BackendConfig struct {
@@ -190,7 +190,7 @@ type Header struct {
 	// a header is provided.
 	Name string `yaml:"name"`
 	// Value defines the value of the header. The actual value can be
-	// provided as verbatim or as a reference to an Argo CD secret key.
+	// provided as verbatim or as a reference to an Hanzo CD secret key.
 	// In order to provide it as a reference, it is necessary to prefix
 	// it with a dollar sign.
 	// Example:
@@ -208,7 +208,7 @@ type ClusterConfig struct {
 	Name string `yaml:"name"`
 }
 
-// ProxyConfig allows configuring connection behaviour between Argo CD
+// ProxyConfig allows configuring connection behaviour between Hanzo CD
 // API Server and the backend service.
 type ProxyConfig struct {
 	// ConnectionTimeout is the maximum amount of time a dial to
@@ -234,7 +234,7 @@ type ProxyConfig struct {
 	MaxIdleConnections int `yaml:"maxIdleConnections"`
 }
 
-// SettingsGetter defines the contract to retrieve Argo CD Settings.
+// SettingsGetter defines the contract to retrieve Hanzo CD Settings.
 type SettingsGetter interface {
 	Get() (*settings.ArgoCDSettings, error)
 }
@@ -251,12 +251,12 @@ func NewDefaultSettingsGetter(mgr *settings.SettingsManager) *DefaultSettingsGet
 	}
 }
 
-// Get will retrieve the Argo CD settings.
+// Get will retrieve the Hanzo CD settings.
 func (s *DefaultSettingsGetter) Get() (*settings.ArgoCDSettings, error) {
 	return s.settingsMgr.GetSettings()
 }
 
-// ProjectGetter defines the contract to retrieve Argo CD Project.
+// ProjectGetter defines the contract to retrieve Hanzo CD Project.
 type ProjectGetter interface {
 	Get(name string) (*v1alpha1.AppProject, error)
 	GetClusters(ctx context.Context, project string) ([]*v1alpha1.Cluster, error)
@@ -362,14 +362,14 @@ type Manager struct {
 	userGetter  UserGetter
 }
 
-// ExtensionMetricsRegistry exposes operations to update http metrics in the Argo CD
+// ExtensionMetricsRegistry exposes operations to update http metrics in the Hanzo CD
 // API server.
 type ExtensionMetricsRegistry interface {
 	// IncExtensionRequestCounter will increase the request counter for the given
 	// extension with the given status.
 	IncExtensionRequestCounter(extension string, status int)
 	// ObserveExtensionRequestDuration will register the request roundtrip duration
-	// between Argo CD API Server and the extension backend service for the given
+	// between Hanzo CD API Server and the extension backend service for the given
 	// extension.
 	ObserveExtensionRequestDuration(extension string, duration time.Duration)
 }
@@ -390,7 +390,7 @@ func NewManager(log *log.Entry, namespace string, sg SettingsGetter, ag Applicat
 
 // ExtensionRegistry is an in memory registry that contains contains all
 // proxies for all extensions. The key is the extension name defined in
-// the Argo CD configmap.
+// the Hanzo CD configmap.
 type ExtensionRegistry map[string]ProxyRegistry
 
 // ProxyRegistry is an in memory registry that contains all proxies for a
@@ -826,13 +826,13 @@ func registerMetrics(extName string, metrics httpsnoop.Metrics, extensionMetrics
 }
 
 // prepareRequest is responsible for cleaning the incoming request URL removing
-// the Argo CD extension API section from it. It provides additional information to
+// the Hanzo CD extension API section from it. It provides additional information to
 // the backend service appending them in the outgoing request headers. The appended
 // headers are:
 //   - Control plane namespace
 //   - Cluster destination name
 //   - Cluster destination server
-//   - Argo CD authenticated username
+//   - Hanzo CD authenticated username
 func prepareRequest(r *http.Request, namespace string, extName string, app *v1alpha1.Application, userId string, username string, groups []string) {
 	r.URL.Path = strings.TrimPrefix(r.URL.Path, fmt.Sprintf("%s/%s", URLPrefix, extName))
 	r.Header.Set(HeaderArgoCDNamespace, namespace)

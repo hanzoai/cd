@@ -57,12 +57,12 @@ func NewAdminCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 
 	command := &cobra.Command{
 		Use:               "admin",
-		Short:             "Contains a set of commands useful for Argo CD administrators and requires direct Kubernetes access",
+		Short:             "Contains a set of commands useful for Hanzo CD administrators and requires direct Kubernetes access",
 		DisableAutoGenTag: true,
 		Run: func(c *cobra.Command, args []string) {
 			c.HelpFunc()(c, args)
 		},
-		Example: `# Access the Argo CD web UI
+		Example: `# Access the Hanzo CD web UI
 $ argocd admin dashboard
 
 # Reset the initial admin password
@@ -100,7 +100,7 @@ func newArgoCDClientsets(config *rest.Config, namespace string) *argoCDClientset
 	}
 }
 
-// isArgoCDSecret returns whether or not the given secret is a part of Argo CD configuration
+// isArgoCDSecret returns whether or not the given secret is a part of Hanzo CD configuration
 // (e.g. argocd-secret, repo credentials, or cluster credentials)
 func isArgoCDSecret(un unstructured.Unstructured) bool {
 	secretName := un.GetName()

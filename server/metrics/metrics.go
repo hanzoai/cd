@@ -50,7 +50,7 @@ var (
 	extensionRequestDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Name:    "argocd_proxy_extension_request_duration_seconds",
-			Help:    "Request duration in seconds between the Argo CD API server and the extension backend.",
+			Help:    "Request duration in seconds between the Hanzo CD API server and the extension backend.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2, 5, 10},
 		},
 		[]string{"extension"},
@@ -58,14 +58,14 @@ var (
 	loginRequestCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "argocd_login_request_total",
-			Help: "Number of login requests to the Argo CD API server.",
+			Help: "Number of login requests to the Hanzo CD API server.",
 		},
 		[]string{"status"},
 	)
 	argoVersion = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "argocd_info",
-			Help: "ArgoCD version information",
+			Help: "Hanzo CD version information",
 		},
 		[]string{"version"},
 	)

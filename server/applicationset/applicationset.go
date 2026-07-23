@@ -537,7 +537,7 @@ func (s *Server) validateAppSet(appset *v1alpha1.ApplicationSet) (string, error)
 	projectName := appset.Spec.Template.Spec.Project
 
 	if strings.Contains(projectName, "{{") {
-		return "", errors.New("the Argo CD API does not currently support creating ApplicationSets with templated `project` fields")
+		return "", errors.New("the Hanzo CD API does not currently support creating ApplicationSets with templated `project` fields")
 	}
 
 	if err := appsetutils.CheckInvalidGenerators(appset); err != nil {

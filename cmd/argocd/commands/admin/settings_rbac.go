@@ -153,7 +153,7 @@ argocd admin settings rbac can some:role create application 'default/app' --poli
 
 # If --policy-file is not given, the ConfigMap 'argocd-rbac-cm' from K8s is
 # used. You need to specify the argocd namespace, and make sure that your
-# current Kubernetes context is pointing to the cluster Argo CD is running in
+# current Kubernetes context is pointing to the cluster Hanzo CD is running in
 argocd admin settings rbac can some:role create application 'default/app' --namespace argocd
 
 # You can override a possibly configured default role

@@ -36,12 +36,12 @@ func NewCommand() *cobra.Command {
 	)
 	command := &cobra.Command{
 		Use:   common.CommandCommitServer,
-		Short: "Run Argo CD Commit Server",
-		Long:  "Argo CD Commit Server is an internal service which commits and pushes hydrated manifests to git. This command runs Commit Server in the foreground.",
+		Short: "Run Hanzo CD Commit Server",
+		Long:  "Hanzo CD Commit Server is an internal service which commits and pushes hydrated manifests to git. This command runs Commit Server in the foreground.",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			vers := common.GetVersion()
 			vers.LogStartupInfo(
-				"Argo CD Commit Server",
+				"Hanzo CD Commit Server",
 				map[string]any{
 					"port": listenPort,
 				},

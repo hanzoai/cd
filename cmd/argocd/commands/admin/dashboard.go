@@ -48,7 +48,7 @@ func (ds *dashboard) Run(ctx context.Context, config *DashboardConfig) error {
 	if err != nil {
 		return fmt.Errorf("could not start dashboard: %w", err)
 	}
-	fmt.Printf("Argo CD UI is available at http://%s:%d\n", config.Address, config.Port)
+	fmt.Printf("Hanzo CD UI is available at http://%s:%d\n", config.Address, config.Port)
 	<-ctx.Done()
 	stop() // unregister the signal handler as soon as we receive a signal
 	println("signal received, shutting down dashboard")
@@ -63,18 +63,18 @@ func NewDashboardCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command 
 	config := &DashboardConfig{ClientOpts: clientOpts}
 	cmd := &cobra.Command{
 		Use:   "dashboard",
-		Short: "Starts Argo CD Web UI locally",
+		Short: "Starts Hanzo CD Web UI locally",
 		Run: func(cmd *cobra.Command, _ []string) {
 			config.Context = initialize.RetrieveContextIfChanged(cmd.Flag("context"))
 			errors.CheckError(NewDashboard().Run(cmd.Context(), config))
 		},
-		Example: `# Start the Argo CD Web UI locally on the default port and address
+		Example: `# Start the Hanzo CD Web UI locally on the default port and address
 $ argocd admin dashboard
 
-# Start the Argo CD Web UI locally on a custom port and address
+# Start the Hanzo CD Web UI locally on a custom port and address
 $ argocd admin dashboard --port 8080 --address 127.0.0.1
 
-# Start the Argo CD Web UI with GZip compression
+# Start the Hanzo CD Web UI with GZip compression
 $ argocd admin dashboard --redis-compress gzip
   `,
 	}

@@ -108,7 +108,7 @@ func NewCommand() *cobra.Command {
 	)
 	command := &cobra.Command{
 		Use:               common.CommandServer,
-		Short:             "Run the ArgoCD API server",
+		Short:             "Run the Hanzo CD API server",
 		Long:              "The API server is a gRPC/REST server which exposes the API consumed by the Web UI, CLI, and CI/CD systems.  This command runs API server in the foreground.  It can be configured by following options.",
 		DisableAutoGenTag: true,
 		Run: func(c *cobra.Command, _ []string) {
@@ -118,7 +118,7 @@ func NewCommand() *cobra.Command {
 			namespace, _, err := clientConfig.Namespace()
 			errors.CheckError(err)
 			vers.LogStartupInfo(
-				"ArgoCD API Server",
+				"Hanzo CD API Server",
 				map[string]any{
 					"namespace": namespace,
 					"port":      listenPort,
@@ -296,10 +296,10 @@ func NewCommand() *cobra.Command {
 			}
 		},
 		Example: templates.Examples(`
-			# Start the Argo CD API server with default settings
+			# Start the Hanzo CD API server with default settings
 			$ argocd-server
 
-			# Start the Argo CD API server on a custom port and enable tracing
+			# Start the Hanzo CD API server on a custom port and enable tracing
 			$ argocd-server --port 8888 --otlp-address localhost:4317
 		`),
 	}
@@ -307,8 +307,8 @@ func NewCommand() *cobra.Command {
 	clientConfig = cli.AddKubectlFlagsToCmd(command)
 	command.Flags().BoolVar(&insecure, "insecure", env.ParseBoolFromEnv("ARGOCD_SERVER_INSECURE", false), "Run server without TLS")
 	command.Flags().StringVar(&staticAssetsDir, "staticassets", env.StringFromEnv("ARGOCD_SERVER_STATIC_ASSETS", "/shared/app"), "Directory path that contains additional static assets")
-	command.Flags().StringVar(&baseHRef, "basehref", env.StringFromEnv("ARGOCD_SERVER_BASEHREF", "/"), "Value for base href in index.html. Used if Argo CD is running behind reverse proxy under subpath different from /")
-	command.Flags().StringVar(&rootPath, "rootpath", env.StringFromEnv("ARGOCD_SERVER_ROOTPATH", ""), "Used if Argo CD is running behind reverse proxy under subpath different from /")
+	command.Flags().StringVar(&baseHRef, "basehref", env.StringFromEnv("ARGOCD_SERVER_BASEHREF", "/"), "Value for base href in index.html. Used if Hanzo CD is running behind reverse proxy under subpath different from /")
+	command.Flags().StringVar(&rootPath, "rootpath", env.StringFromEnv("ARGOCD_SERVER_ROOTPATH", ""), "Used if Hanzo CD is running behind reverse proxy under subpath different from /")
 	command.Flags().StringVar(&cmdutil.LogFormat, "logformat", env.StringFromEnv("ARGOCD_SERVER_LOGFORMAT", "json"), "Set the logging format. One of: json|text")
 	command.Flags().StringVar(&cmdutil.LogLevel, "loglevel", env.StringFromEnv("ARGOCD_SERVER_LOG_LEVEL", "info"), "Set the logging level. One of: debug|info|warn|error")
 	command.Flags().IntVar(&glogLevel, "gloglevel", 0, "Set the glog logging level")
@@ -340,7 +340,7 @@ func NewCommand() *cobra.Command {
 	command.Flags().IntVar(&webhookParallelism, "webhook-parallelism-limit", env.ParseNumFromEnv("ARGOCD_SERVER_WEBHOOK_PARALLELISM_LIMIT", 50, 1, 1000), "Number of webhook requests processed concurrently")
 	command.Flags().IntVar(&globCacheSize, "glob-cache-size", env.ParseNumFromEnv("ARGOCD_SERVER_GLOB_CACHE_SIZE", utilglob.DefaultGlobCacheSize, 1, math.MaxInt32), "Maximum number of compiled glob patterns to cache for RBAC evaluation")
 	command.Flags().IntVar(&webhookRefreshWorkers, "webhook-refresh-workers", env.ParseNumFromEnv("ARGOCD_SERVER_WEBHOOK_REFRESH_WORKERS", 20, 1, 1000), "Number of webhook refresh requests processed concurrently")
-	command.Flags().StringSliceVar(&enableK8sEvent, "enable-k8s-event", env.StringsFromEnv("ARGOCD_ENABLE_K8S_EVENT", argo.DefaultEnableEventList(), ","), "Enable ArgoCD to use k8s event. For disabling all events, set the value as `none`. (e.g --enable-k8s-event=none), For enabling specific events, set the value as `event reason`. (e.g --enable-k8s-event=StatusRefreshed,ResourceCreated)")
+	command.Flags().StringSliceVar(&enableK8sEvent, "enable-k8s-event", env.StringsFromEnv("ARGOCD_ENABLE_K8S_EVENT", argo.DefaultEnableEventList(), ","), "Enable Hanzo CD to use k8s event. For disabling all events, set the value as `none`. (e.g --enable-k8s-event=none), For enabling specific events, set the value as `event reason`. (e.g --enable-k8s-event=StatusRefreshed,ResourceCreated)")
 	command.Flags().BoolVar(&hydratorEnabled, "hydrator-enabled", env.ParseBoolFromEnv("ARGOCD_HYDRATOR_ENABLED", false), "Feature flag to enable Hydrator. Default (\"false\")")
 	command.Flags().BoolVar(&syncWithReplaceAllowed, "sync-with-replace-allowed", env.ParseBoolFromEnv("ARGOCD_SYNC_WITH_REPLACE_ALLOWED", true), "Whether to allow users to select replace for syncs from UI/CLI")
 

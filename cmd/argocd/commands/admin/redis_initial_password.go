@@ -34,7 +34,7 @@ func generateRandomPassword() (string, error) {
 	return initialPassword, nil
 }
 
-// NewRedisInitialPasswordCommand defines a new command to ensure Argo CD Redis password secret exists.
+// NewRedisInitialPasswordCommand defines a new command to ensure Hanzo CD Redis password secret exists.
 func NewRedisInitialPasswordCommand() *cobra.Command {
 	var clientConfig clientcmd.ClientConfig
 	command := cobra.Command{
@@ -78,7 +78,7 @@ func NewRedisInitialPasswordCommand() *cobra.Command {
 				errors.CheckError(err)
 			}
 
-			fmt.Printf("Argo CD Redis secret state confirmed: secret name %s.\n", redisInitialCredentials)
+			fmt.Printf("Hanzo CD Redis secret state confirmed: secret name %s.\n", redisInitialCredentials)
 			secret, err = kubeClientset.CoreV1().Secrets(namespace).Get(context.Background(), redisInitialCredentials, metav1.GetOptions{})
 			errors.CheckError(err)
 

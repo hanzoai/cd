@@ -4203,7 +4203,7 @@
         "tags": [
           "SettingsService"
         ],
-        "summary": "Get returns Argo CD settings",
+        "summary": "Get returns Hanzo CD settings",
         "operationId": "SettingsService_Get",
         "responses": {
           "200": {
@@ -4226,7 +4226,7 @@
         "tags": [
           "SettingsService"
         ],
-        "summary": "Get returns Argo CD plugins",
+        "summary": "Get returns Hanzo CD plugins",
         "operationId": "SettingsService_GetPlugins",
         "responses": {
           "200": {
@@ -5538,7 +5538,7 @@
           "$ref": "#/definitions/v1alpha1HealthStatus"
         },
         "hook": {
-          "description": "Hook is true if the resource is used as a lifecycle hook in an Argo CD application.",
+          "description": "Hook is true if the resource is used as a lifecycle hook in an Hanzo CD application.",
           "type": "boolean"
         },
         "kind": {
@@ -5812,7 +5812,7 @@
       }
     },
     "eventsEvent": {
-      "description": "Event mirrors corev1.Event and exposes the fields consumed by the Argo CD\nAPI and UI. Event is a report of an event somewhere in the cluster. Events\nhave a limited retention time and triggers and messages may evolve with\ntime. Event consumers should not rely on the timing of an event with a\ngiven Reason reflecting a consistent underlying trigger, or the continued\nexistence of events with that Reason. Events should be treated as\ninformative, best-effort, supplemental data.",
+      "description": "Event mirrors corev1.Event and exposes the fields consumed by the Hanzo CD\nAPI and UI. Event is a report of an event somewhere in the cluster. Events\nhave a limited retention time and triggers and messages may evolve with\ntime. Event consumers should not rely on the timing of an event with a\ngiven Reason reflecting a consistent underlying trigger, or the continued\nexistence of events with that Reason. Events should be treated as\ninformative, best-effort, supplemental data.",
       "type": "object",
       "properties": {
         "action": {
@@ -5871,7 +5871,7 @@
       }
     },
     "eventsEventList": {
-      "description": "EventList is a list of Argo CD Event messages. It mirrors corev1.EventList\nfield-for-field but is defined in Argo CD's apiclient package to avoid\npulling Kubernetes protobuf types into the public gRPC surface.",
+      "description": "EventList is a list of Hanzo CD Event messages. It mirrors corev1.EventList\nfield-for-field but is defined in Hanzo CD's apiclient package to avoid\npulling Kubernetes protobuf types into the public gRPC surface.",
       "type": "object",
       "properties": {
         "items": {
@@ -7551,7 +7551,7 @@
     },
     "v1alpha1ApplicationSetTemplateMeta": {
       "type": "object",
-      "title": "ApplicationSetTemplateMeta represents the Argo CD application fields that may\nbe used for Applications generated from the ApplicationSet (based on metav1.ObjectMeta)",
+      "title": "ApplicationSetTemplateMeta represents the Hanzo CD application fields that may\nbe used for Applications generated from the ApplicationSet (based on metav1.ObjectMeta)",
       "properties": {
         "annotations": {
           "type": "object",
@@ -7677,7 +7677,7 @@
       "title": "ApplicationSourceHelm holds helm specific options\n+protobuf.options.(gogoproto.goproto_stringer)=false",
       "properties": {
         "apiVersions": {
-          "description": "APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,\nArgo CD uses the API versions of the target cluster. The format is [group/]version/kind.",
+          "description": "APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,\nHanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.",
           "type": "array",
           "items": {
             "type": "string"
@@ -7695,7 +7695,7 @@
           "title": "IgnoreMissingValueFiles prevents helm template from failing when valueFiles do not exist locally by not appending them to helm template --values"
         },
         "kubeVersion": {
-          "description": "KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD\nuses the Kubernetes version of the target cluster.",
+          "description": "KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD\nuses the Kubernetes version of the target cluster.",
           "type": "string"
         },
         "namespace": {
@@ -7781,7 +7781,7 @@
       "title": "ApplicationSourceKustomize holds options specific to an Application source specific to Kustomize",
       "properties": {
         "apiVersions": {
-          "description": "APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,\nArgo CD uses the API versions of the target cluster. The format is [group/]version/kind.",
+          "description": "APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,\nHanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.",
           "type": "array",
           "items": {
             "type": "string"
@@ -7832,7 +7832,7 @@
           }
         },
         "kubeVersion": {
-          "description": "KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD\nuses the Kubernetes version of the target cluster.",
+          "description": "KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD\nuses the Kubernetes version of the target cluster.",
           "type": "string"
         },
         "labelIncludeTemplates": {
@@ -8063,7 +8063,7 @@
       }
     },
     "v1alpha1ApplicationTree": {
-      "description": "ApplicationTree represents the hierarchical structure of resources associated with an Argo CD application.",
+      "description": "ApplicationTree represents the hierarchical structure of resources associated with an Hanzo CD application.",
       "type": "object",
       "properties": {
         "hosts": {
@@ -8294,7 +8294,7 @@
       }
     },
     "v1alpha1ClusterGenerator": {
-      "description": "ClusterGenerator defines a generator to match against clusters registered with ArgoCD.",
+      "description": "ClusterGenerator defines a generator to match against clusters registered with Hanzo CD.",
       "type": "object",
       "properties": {
         "flatList": {
@@ -8330,7 +8330,7 @@
         "applicationsCount": {
           "type": "integer",
           "format": "int64",
-          "title": "ApplicationsCount is the number of applications managed by Argo CD on the cluster"
+          "title": "ApplicationsCount is the number of applications managed by Hanzo CD on the cluster"
         },
         "cacheInfo": {
           "$ref": "#/definitions/v1alpha1ClusterCacheInfo"
@@ -8527,7 +8527,7 @@
       }
     },
     "v1alpha1DuckTypeGenerator": {
-      "description": "DuckType defines a generator to match against clusters registered with ArgoCD.",
+      "description": "DuckType defines a generator to match against clusters registered with Hanzo CD.",
       "type": "object",
       "properties": {
         "configMapRef": {
@@ -9630,7 +9630,7 @@
         },
         "forceHttpBasicAuth": {
           "type": "boolean",
-          "title": "ForceHttpBasicAuth specifies whether Argo CD should attempt to force basic auth for HTTP connections"
+          "title": "ForceHttpBasicAuth specifies whether Hanzo CD should attempt to force basic auth for HTTP connections"
         },
         "gcpServiceAccountKey": {
           "type": "string",
@@ -9757,7 +9757,7 @@
         },
         "forceHttpBasicAuth": {
           "type": "boolean",
-          "title": "ForceHttpBasicAuth specifies whether Argo CD should attempt to force basic auth for HTTP connections"
+          "title": "ForceHttpBasicAuth specifies whether Hanzo CD should attempt to force basic auth for HTTP connections"
         },
         "gcpServiceAccountKey": {
           "type": "string",
@@ -9949,7 +9949,7 @@
       }
     },
     "v1alpha1ResourceDiff": {
-      "description": "ResourceDiff holds the diff between a live and target resource object in Argo CD.\nIt is used to compare the desired state (from Git/Helm) with the actual state in the cluster.",
+      "description": "ResourceDiff holds the diff between a live and target resource object in Hanzo CD.\nIt is used to compare the desired state (from Git/Helm) with the actual state in the cluster.",
       "type": "object",
       "properties": {
         "diff": {
@@ -9989,7 +9989,7 @@
           "type": "string"
         },
         "predictedLiveState": {
-          "description": "PredictedLiveState contains the JSON-serialized resource state that Argo CD predicts based on the\ncombination of the normalized live state and the desired target state.",
+          "description": "PredictedLiveState contains the JSON-serialized resource state that Hanzo CD predicts based on the\ncombination of the normalized live state and the desired target state.",
           "type": "string"
         },
         "resourceVersion": {
@@ -11124,7 +11124,7 @@
     },
     "versionVersionMessage": {
       "type": "object",
-      "title": "VersionMessage represents version of the Argo CD API server",
+      "title": "VersionMessage represents version of the Hanzo CD API server",
       "properties": {
         "BuildDate": {
           "type": "string"

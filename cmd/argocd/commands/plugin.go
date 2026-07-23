@@ -33,7 +33,7 @@ func NewDefaultPluginHandler() *DefaultPluginHandler {
 }
 
 // HandleCommandExecutionError processes the error returned from executing the command.
-// It handles both standard Argo CD commands and plugin commands. We don't require returning
+// It handles both standard Hanzo CD commands and plugin commands. We don't require returning
 // an error, but we are doing it to cover various test scenarios.
 func (h *DefaultPluginHandler) HandleCommandExecutionError(err error, isArgocdCLI bool, args []string) (msg string, retErr error) {
 	// the log level needs to be setup manually here since the initConfig()
@@ -48,7 +48,7 @@ func (h *DefaultPluginHandler) HandleCommandExecutionError(err error, isArgocdCL
 	if isArgocdCLI && strings.Contains(err.Error(), "unknown command") {
 		pluginPath, pluginErr := h.handlePluginCommand(args[1:])
 		// IMP: If a plugin doesn't exist, the returned path will be empty along with nil error
-		// This means the command is neither a normal Argo CD Command nor a plugin.
+		// This means the command is neither a normal Hanzo CD Command nor a plugin.
 		if pluginErr != nil {
 			// If plugin handling fails, report the plugin error and exit
 			return fmt.Sprintf("Error: %v\n", pluginErr), pluginErr

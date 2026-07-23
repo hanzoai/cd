@@ -229,7 +229,7 @@ $ argocd completion powershell > $HOME\Documents\PowerShell\argocd_completion.ps
 
 Add the following lines to your powershell profile
 
-$ # ArgoCD tab completion
+$ # Hanzo CD tab completion
 if (Test-Path "$HOME\Documents\PowerShell\argocd_completion.ps1") {
     . "$HOME\Documents\PowerShell\argocd_completion.ps1"
 }

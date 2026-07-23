@@ -217,7 +217,7 @@ func getAppProj(app *unstructured.Unstructured, appProjInformer cache.SharedInde
 	return proj
 }
 
-// Checks if the application SyncStatus has been refreshed by Argo CD after an operation has completed
+// Checks if the application SyncStatus has been refreshed by Hanzo CD after an operation has completed
 func isAppSyncStatusRefreshed(app *unstructured.Unstructured, logEntry *log.Entry) bool {
 	_, ok, err := unstructured.NestedMap(app.Object, "status", "operationState")
 	if !ok || err != nil {

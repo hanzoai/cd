@@ -66,7 +66,7 @@ export const Sidebar = (props: SidebarProps) => {
                             </div>
                         </div>
                     )}
-                    <img onClick={() => context.history.push('/')} title={'Go to start page'} src='assets/images/logo.png' alt='Argo' className='sidebar__logo__character' />{' '}
+                    <img onClick={() => context.history.push('/')} title={'Go to start page'} src='assets/images/hanzo-logo-white.svg' alt='Hanzo CD' className='sidebar__logo__character' />{' '}
                 </div>
 
                 <nav aria-label='Main'>

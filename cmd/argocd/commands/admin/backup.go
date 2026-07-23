@@ -29,7 +29,7 @@ import (
 	secutil "github.com/hanzoai/deploy/util/security"
 )
 
-// NewExportCommand defines a new command for exporting Kubernetes and Argo CD resources.
+// NewExportCommand defines a new command for exporting Kubernetes and Hanzo CD resources.
 func NewExportCommand() *cobra.Command {
 	var (
 		clientConfig             clientcmd.ClientConfig
@@ -39,7 +39,7 @@ func NewExportCommand() *cobra.Command {
 	)
 	command := cobra.Command{
 		Use:   "export",
-		Short: "Export all Argo CD data to stdout (default) or a file",
+		Short: "Export all Hanzo CD data to stdout (default) or a file",
 		Run: func(c *cobra.Command, _ []string) {
 			ctx := c.Context()
 
@@ -139,13 +139,13 @@ func NewExportCommand() *cobra.Command {
 
 	clientConfig = cli.AddKubectlFlagsToCmd(&command)
 	command.Flags().StringVarP(&out, "out", "o", "-", "Output to the specified file instead of stdout")
-	command.Flags().StringSliceVarP(&applicationNamespaces, "application-namespaces", "", []string{}, fmt.Sprintf("Comma-separated list of namespace globs to export applications from, in addition to the control plane namespace (Argo CD namespace). "+
+	command.Flags().StringSliceVarP(&applicationNamespaces, "application-namespaces", "", []string{}, fmt.Sprintf("Comma-separated list of namespace globs to export applications from, in addition to the control plane namespace (Hanzo CD namespace). "+
 		"By default, all applications from the control plane namespace are always exported. "+
 		"If this flag is provided, applications from the specified namespaces are exported along with the control plane namespace. "+
 		"If not specified, the value from '%s' in %s is used (if defined in the ConfigMap). "+
 		"If the ConfigMap value is not set, only applications from the control plane namespace are exported.",
 		applicationNamespacesCmdParamsKey, common.ArgoCDCmdParamsConfigMapName))
-	command.Flags().StringSliceVarP(&applicationsetNamespaces, "applicationset-namespaces", "", []string{}, fmt.Sprintf("Comma-separated list of namespace globs to export ApplicationSets from, in addition to the control plane namespace (Argo CD namespace). "+
+	command.Flags().StringSliceVarP(&applicationsetNamespaces, "applicationset-namespaces", "", []string{}, fmt.Sprintf("Comma-separated list of namespace globs to export ApplicationSets from, in addition to the control plane namespace (Hanzo CD namespace). "+
 		"By default, all ApplicationSets from the control plane namespace are always exported. "+
 		"If this flag is provided, ApplicationSets from the specified namespaces are exported along with the control plane namespace. "+
 		"If not specified, the value from '%s' in %s is used (if defined in the ConfigMap). "+
@@ -154,7 +154,7 @@ func NewExportCommand() *cobra.Command {
 	return &command
 }
 
-// NewImportCommand defines a new command for exporting Kubernetes and Argo CD resources.
+// NewImportCommand defines a new command for exporting Kubernetes and Hanzo CD resources.
 func NewImportCommand() *cobra.Command {
 	var (
 		clientConfig             clientcmd.ClientConfig
@@ -171,7 +171,7 @@ func NewImportCommand() *cobra.Command {
 	)
 	command := cobra.Command{
 		Use:   "import SOURCE",
-		Short: "Import Argo CD data from stdin (specify `-') or a file",
+		Short: "Import Hanzo CD data from stdin (specify `-') or a file",
 		Run: func(c *cobra.Command, args []string) {
 			ctx := c.Context()
 
@@ -270,7 +270,7 @@ func NewImportCommand() *cobra.Command {
 			errors.CheckError(err)
 			for _, bakObj := range backupObjects {
 				gvk := bakObj.GroupVersionKind()
-				// For objects without namespace, assume they belong in ArgoCD namespace
+				// For objects without namespace, assume they belong in Hanzo CD namespace
 				if bakObj.GetNamespace() == "" {
 					bakObj.SetNamespace(namespace)
 				}
@@ -434,8 +434,8 @@ func NewImportCommand() *cobra.Command {
 	command.Flags().BoolVar(&verbose, "verbose", false, "Verbose output (versus only changed output)")
 	command.Flags().BoolVar(&stopOperation, "stop-operation", false, "Stop any existing operations")
 	command.Flags().StringVarP(&skipResourcesWithLabel, "skip-resources-with-label", "", "", "Skip importing resources based on the label e.g. '--skip-resources-with-label my-label/example.io=true'")
-	command.Flags().StringSliceVarP(&applicationNamespaces, "application-namespaces", "", []string{}, fmt.Sprintf("Comma separated list of namespace globs to which import of applications is allowed. If not provided, value from '%s' in %s will be used. If it's not defined, only applications without an explicit namespace will be imported to the Argo CD namespace", applicationNamespacesCmdParamsKey, common.ArgoCDCmdParamsConfigMapName))
-	command.Flags().StringSliceVarP(&applicationsetNamespaces, "applicationset-namespaces", "", []string{}, fmt.Sprintf("Comma separated list of namespace globs which import of applicationsets is allowed. If not provided, value from '%s' in %s will be used. If it's not defined, only applicationsets without an explicit namespace will be imported to the Argo CD namespace", applicationsetNamespacesCmdParamsKey, common.ArgoCDCmdParamsConfigMapName))
+	command.Flags().StringSliceVarP(&applicationNamespaces, "application-namespaces", "", []string{}, fmt.Sprintf("Comma separated list of namespace globs to which import of applications is allowed. If not provided, value from '%s' in %s will be used. If it's not defined, only applications without an explicit namespace will be imported to the Hanzo CD namespace", applicationNamespacesCmdParamsKey, common.ArgoCDCmdParamsConfigMapName))
+	command.Flags().StringSliceVarP(&applicationsetNamespaces, "applicationset-namespaces", "", []string{}, fmt.Sprintf("Comma separated list of namespace globs which import of applicationsets is allowed. If not provided, value from '%s' in %s will be used. If it's not defined, only applicationsets without an explicit namespace will be imported to the Hanzo CD namespace", applicationsetNamespacesCmdParamsKey, common.ArgoCDCmdParamsConfigMapName))
 	command.PersistentFlags().BoolVar(&promptsEnabled, "prompts-enabled", localconfig.GetPromptsEnabled(true), "Force optional interactive prompts to be enabled or disabled, overriding local configuration. If not specified, the local configuration value will be used, which is false by default.")
 	return &command
 }

@@ -37,7 +37,7 @@ export const Help = () => {
                                     <div className='columns large-4 small-6'>
                                         <div className='help-box'>
                                             <p>New to Hanzo CD?</p>
-                                            <a className='user-info-panel-buttons argo-button argo-button--base' href='https://argo-cd.readthedocs.io'>
+                                            <a className='user-info-panel-buttons argo-button argo-button--base' href='https://docs.hanzo.ai'>
                                                 Read the docs
                                             </a>
                                         </div>
