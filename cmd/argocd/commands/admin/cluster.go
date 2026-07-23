@@ -612,7 +612,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: ArgoCDNamespace,
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 			}
@@ -622,7 +622,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 					Name:      common.ArgoCDSecretName,
 					Namespace: ArgoCDNamespace,
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{

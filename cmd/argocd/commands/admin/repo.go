@@ -177,7 +177,7 @@ func NewGenRepoSpecCommand() *cobra.Command {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: ArgoCDNamespace,
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 			}

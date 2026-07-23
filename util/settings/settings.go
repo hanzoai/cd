@@ -538,7 +538,7 @@ const (
 	// externalServerTLSSecretName defines the name of the external secret holding the server's TLS certificate
 	externalServerTLSSecretName = "argocd-server-tls"
 	// partOfArgoCDSelector holds label selector that should be applied to config maps and secrets used to manage Argo CD
-	partOfArgoCDSelector = "app.kubernetes.io/part-of=argocd"
+	partOfArgoCDSelector = "app.kubernetes.io/part-of=hanzocd"
 	// settingsPasswordPatternKey is the key to configure user password regular expression
 	settingsPasswordPatternKey = "passwordPattern"
 	// inClusterEnabledKey is the key to configure whether to allow in-cluster server address
@@ -1416,12 +1416,12 @@ func isRepositorySecret(obj any) bool {
 	return false
 }
 
-// isSettingsObject reports whether obj carries app.kubernetes.io/part-of=argocd,
+// isSettingsObject reports whether obj carries app.kubernetes.io/part-of=hanzocd,
 // the label that identifies secrets and configmaps that participate in ArgoCD's
 // settings system (OIDC config, webhook secrets, $secretName:key template references).
 // Unknown types return false (fail-closed).
 func isSettingsObject(obj any) bool {
-	settingsSelector := labels.SelectorFromSet(labels.Set{"app.kubernetes.io/part-of": "argocd"})
+	settingsSelector := labels.SelectorFromSet(labels.Set{"app.kubernetes.io/part-of": "hanzocd"})
 	if s, ok := obj.(metav1.Object); ok {
 		return settingsSelector.Matches(labels.Set(s.GetLabels()))
 	}
@@ -1518,7 +1518,7 @@ func (mgr *SettingsManager) clusterSecretEventHandler() cache.ResourceEventHandl
 
 // settingsNotificationEventHandler returns the informer event handlers that notify
 // settings subscribers (via tryNotify) of changes. It is guarded by isSettingsObject so
-// that only changes to app.kubernetes.io/part-of=argocd objects (the documented contract
+// that only changes to app.kubernetes.io/part-of=hanzocd objects (the documented contract
 // for secrets/configmaps that participate in ArgoCD settings) trigger a full
 // GetSettings() reload. AddFunc only notifies for objects created after now, and
 // UpdateFunc only when the resource version actually changed; this prevents spurious
@@ -1567,10 +1567,10 @@ func (mgr *SettingsManager) initialize(ctx context.Context) error {
 		log.Error(err)
 	}
 
-	// ConfigMap informer: filtered to app.kubernetes.io/part-of=argocd (see tweakConfigMap).
+	// ConfigMap informer: filtered to app.kubernetes.io/part-of=hanzocd (see tweakConfigMap).
 	// Only argocd-cm carries settings that affect project cache validity: the "globalProjects"
 	// key controls which AppProjects are treated as global (merged into virtual projects via
-	// GetGlobalProjectsSettings). Other part-of=argocd configmaps (argocd-rbac-cm, etc.) have
+	// GetGlobalProjectsSettings). Other part-of=hanzocd configmaps (argocd-rbac-cm, etc.) have
 	// no path into project cache construction and don't need to trigger invalidation.
 	_, err = cmInformer.AddEventHandler(mgr.argoCDConfigMapEventHandler())
 	if err != nil {
