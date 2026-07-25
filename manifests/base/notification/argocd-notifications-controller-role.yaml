@@ -8,7 +8,7 @@ metadata:
   name: argocd-notifications-controller
 rules:
 - apiGroups:
-  - apps.hanzo.ai
+  - cd.hanzo.ai
   resources:
   - applications
   - appprojects
