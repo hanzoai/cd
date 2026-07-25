@@ -21,7 +21,7 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - apps.hanzo.ai
+  - cd.hanzo.ai
   resources:
   - applications
   - appprojects
