@@ -81,7 +81,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - apps.hanzo.ai
+  - cd.hanzo.ai
   resources:
   - applications
   - applicationsets
@@ -120,7 +120,7 @@ metadata:
   name: hanzocd-applicationset-controller
 rules:
 - apiGroups:
-  - apps.hanzo.ai
+  - cd.hanzo.ai
   resources:
   - applications
   - applicationsets
@@ -134,7 +134,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - apps.hanzo.ai
+  - cd.hanzo.ai
   resources:
   - appprojects
   verbs:
@@ -142,7 +142,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - apps.hanzo.ai
+  - cd.hanzo.ai
   resources:
   - applicationsets/status
   verbs:
@@ -177,7 +177,7 @@ rules:
 - apiGroups:
   - coordination.k8s.io
   resourceNames:
-  - 58ac56fa.applicationsets.apps.hanzo.ai
+  - 58ac56fa.applicationsets.cd.hanzo.ai
   resources:
   - leases
   verbs:
@@ -214,7 +214,7 @@ metadata:
   name: hanzocd-notifications-controller
 rules:
 - apiGroups:
-  - apps.hanzo.ai
+  - cd.hanzo.ai
   resources:
   - applications
   - appprojects
@@ -296,7 +296,7 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - apps.hanzo.ai
+  - cd.hanzo.ai
   resources:
   - applications
   - appprojects
@@ -428,11 +428,11 @@ data:
   resource.customizations.ignoreResourceUpdates.all: |
     jsonPointers:
       - /status
-  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
+  resource.customizations.ignoreResourceUpdates.cd.hanzo.ai_Application: |
     jqPathExpressions:
       - '.metadata.annotations."notified.notifications.argoproj.io"'
-      - '.metadata.annotations."apps.hanzo.ai/refresh"'
-      - '.metadata.annotations."apps.hanzo.ai/hydrate"'
+      - '.metadata.annotations."cd.hanzo.ai/refresh"'
+      - '.metadata.annotations."cd.hanzo.ai/hydrate"'
       - '.operation'
   resource.customizations.ignoreResourceUpdates.apps_ReplicaSet: |
     jqPathExpressions:
