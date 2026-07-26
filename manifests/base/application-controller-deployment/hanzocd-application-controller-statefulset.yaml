@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hanzocd-application-controller
+spec:
+  replicas: 0
+  template:
+    spec:
+      containers:
+      - name: hanzocd-application-controller
+        args:
+        - /usr/local/bin/hanzocd-application-controller
+        env:
+        - name: ARGOCD_CONTROLLER_REPLICAS
+          value: "0"

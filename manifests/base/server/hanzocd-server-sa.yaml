@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+  name: hanzocd-server

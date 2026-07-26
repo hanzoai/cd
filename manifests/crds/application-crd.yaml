@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app.kubernetes.io/name: applications.cd.hanzo.ai
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: hanzocd
   name: applications.cd.hanzo.ai
 spec:
   group: cd.hanzo.ai

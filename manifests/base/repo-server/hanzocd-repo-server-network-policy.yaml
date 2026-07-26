@@ -1,0 +1,35 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-repo-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: repo-server
+  name: hanzocd-repo-server-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-repo-server
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: hanzocd-server
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: hanzocd-application-controller
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: hanzocd-notifications-controller
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: hanzocd-applicationset-controller
+      ports:
+        - protocol: TCP
+          port: 8081
+    - from:
+        - namespaceSelector: { }
+      ports:
+        - port: 8084

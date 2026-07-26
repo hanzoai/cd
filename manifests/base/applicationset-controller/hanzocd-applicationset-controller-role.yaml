@@ -1,0 +1,77 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: applicationset-controller
+  name: hanzocd-applicationset-controller
+rules:
+  - apiGroups:
+      - cd.hanzo.ai
+    resources:
+      - applications
+      - applicationsets
+      - applicationsets/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - cd.hanzo.ai
+    resources:
+      - appprojects
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - cd.hanzo.ai
+    resources:
+      - applicationsets/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - get
+      - list
+      - patch
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+  # hanzocd-applicationset-controller leader election rules
+  # Create with resourceNames fails, so use a separate rule for the lease creation
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - create
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    resourceNames:
+      # Defined in `cmd/argocd-applicationset-controller/commands/applicationset_controller.go`
+      - 58ac56fa.applicationsets.cd.hanzo.ai
+    verbs:
+      - get
+      - update
+      - create

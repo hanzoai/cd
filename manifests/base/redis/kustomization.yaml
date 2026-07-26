@@ -2,12 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - argocd-redis-deployment.yaml
-  - argocd-redis-sa.yaml
-  - argocd-redis-service.yaml
-  - argocd-redis-network-policy.yaml
-  - argocd-redis-role.yaml
-  - argocd-redis-rolebinding.yaml
+  - hanzocd-redis-deployment.yaml
+  - hanzocd-redis-sa.yaml
+  - hanzocd-redis-service.yaml
+  - hanzocd-redis-network-policy.yaml
+  - hanzocd-redis-role.yaml
+  - hanzocd-redis-rolebinding.yaml
 
 images:
   - name: redis

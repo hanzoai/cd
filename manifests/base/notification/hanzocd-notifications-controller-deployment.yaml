@@ -1,0 +1,136 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: notifications-controller
+    app.kubernetes.io/name: hanzocd-notifications-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-controller
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-notifications-controller
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-notifications-controller
+    spec:
+      volumes:
+        - name: tls-certs
+          configMap:
+            name: hanzocd-tls-certs-cm
+        - name: hanzocd-repo-server-tls
+          secret:
+            secretName: hanzocd-repo-server-tls
+            optional: true
+            items:
+            - key: tls.crt
+              path: tls.crt
+            - key: tls.key
+              path: tls.key
+            - key: ca.crt
+              path: ca.crt
+        - name: hanzocd-repo-server-mtls
+          secret:
+            secretName: hanzocd-repo-server-mtls
+            optional: true
+            items:
+            - key: client.crt
+              path: client.crt
+            - key: client.key
+              path: client.key
+            - key: server-ca.crt
+              path: server-ca.crt
+      containers:
+        - args:
+            - /usr/local/bin/hanzocd-notifications
+          env:
+            - name: ARGOCD_NOTIFICATIONS_CONTROLLER_LOGFORMAT
+              valueFrom:
+                configMapKeyRef:
+                  key: notificationscontroller.log.format
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: ARGOCD_NOTIFICATIONS_CONTROLLER_LOGLEVEL
+              valueFrom:
+                configMapKeyRef:
+                  key: notificationscontroller.log.level
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: ARGOCD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT
+              valueFrom:
+                configMapKeyRef:
+                  key: notificationscontroller.processors.count
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: log.format.timestamp
+                  optional: true
+            - name: ARGOCD_APPLICATION_NAMESPACES
+              valueFrom:
+                configMapKeyRef:
+                  key: application.namespaces
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: ARGOCD_NOTIFICATION_CONTROLLER_SELF_SERVICE_NOTIFICATION_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  key: notificationscontroller.selfservice.enabled
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_PLAINTEXT
+              valueFrom:
+                configMapKeyRef:
+                  key: notificationscontroller.repo.server.plaintext
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CA_CERT_PATH
+              valueFrom:
+                configMapKeyRef:
+                  key: notificationscontroller.repo.server.ca.cert.path
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
+              valueFrom:
+                configMapKeyRef:
+                  key: notificationscontroller.repo.server.client.cert.path
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
+              valueFrom:
+                configMapKeyRef:
+                  key: notificationscontroller.repo.server.client.cert.key.path
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+          workingDir: /app
+          livenessProbe:
+            tcpSocket:
+              port: 9001
+          image: ghcr.io/hanzoai/deploy:latest
+          imagePullPolicy: Always
+          name: hanzocd-notifications-controller
+          volumeMounts:
+            - name: tls-certs
+              mountPath: /app/config/tls
+            - name: hanzocd-repo-server-tls
+              mountPath: /app/config/reposerver/tls
+            - name: hanzocd-repo-server-mtls
+              mountPath: /app/config/reposerver/mtls
+          securityContext:
+            capabilities:
+              drop:
+              - ALL
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+      serviceAccountName: hanzocd-notifications-controller
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      nodeSelector:
+        kubernetes.io/os: linux

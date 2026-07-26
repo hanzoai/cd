@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-commit-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: commit-server
+  name: hanzocd-commit-server
+spec:
+  ports:
+  - name: server
+    protocol: TCP
+    port: 8086
+    targetPort: 8086
+  - name: metrics
+    protocol: TCP
+    port: 8087
+    targetPort: 8087
+  selector:
+    app.kubernetes.io/name: hanzocd-commit-server

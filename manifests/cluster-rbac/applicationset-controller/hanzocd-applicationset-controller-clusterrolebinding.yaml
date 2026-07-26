@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: applicationset-controller
+  name: hanzocd-applicationset-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: hanzocd-applicationset-controller
+subjects:
+- kind: ServiceAccount
+  name: hanzocd-applicationset-controller
+  namespace: argocd

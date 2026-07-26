@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hanzocd-rbac-cm
+  labels:
+    app.kubernetes.io/name: hanzocd-rbac-cm
+    app.kubernetes.io/part-of: hanzocd

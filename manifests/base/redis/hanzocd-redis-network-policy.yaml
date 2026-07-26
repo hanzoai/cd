@@ -1,0 +1,28 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: redis
+  name: hanzocd-redis-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-redis
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-repo-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-application-controller
+    ports:
+    - protocol: TCP
+      port: 6379

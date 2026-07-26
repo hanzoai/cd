@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: redis
+  name: hanzocd-redis
+spec:
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: 6379
+  selector:
+    app.kubernetes.io/name: hanzocd-redis

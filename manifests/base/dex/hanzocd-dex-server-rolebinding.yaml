@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: dex-server
+  name: hanzocd-dex-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hanzocd-dex-server
+subjects:
+- kind: ServiceAccount
+  name: hanzocd-dex-server
