@@ -2,11 +2,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   labels:
-    app.kubernetes.io/name: applications.apps.hanzo.ai
+    app.kubernetes.io/name: applications.cd.hanzo.ai
     app.kubernetes.io/part-of: hanzocd
-  name: applications.apps.hanzo.ai
+  name: applications.cd.hanzo.ai
 spec:
-  group: apps.hanzo.ai
+  group: cd.hanzo.ai
   names:
     kind: Application
     listKind: ApplicationList
