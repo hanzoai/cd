@@ -3,6 +3,6 @@ kind: Kustomization
 
 resources:
 - ../application-controller-roles
-- argocd-application-controller-statefulset.yaml
-- argocd-metrics.yaml
-- argocd-application-controller-network-policy.yaml
+- hanzocd-application-controller-statefulset.yaml
+- hanzocd-metrics.yaml
+- hanzocd-application-controller-network-policy.yaml

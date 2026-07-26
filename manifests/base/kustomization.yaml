@@ -3,8 +3,8 @@ kind: Kustomization
 
 
 images:
-- name: quay.io/argoproj/argocd
-  newName: quay.io/argoproj/argocd
+- name: ghcr.io/hanzoai/deploy
+  newName: ghcr.io/hanzoai/deploy
   newTag: latest
 resources:
 - ./application-controller

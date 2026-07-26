@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: redis
+  name: hanzocd-redis
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-redis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-redis
+    spec:
+      initContainers:
+        - command:
+            - argocd
+            - admin
+            - redis-initial-password
+          image: ghcr.io/hanzoai/deploy:latest
+          imagePullPolicy: IfNotPresent
+          name: secret-init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: hanzocd-redis        
+      containers:
+      - name: redis
+        image: redis:8.6.4-alpine
+        imagePullPolicy: Always
+        args:
+        - "--save"
+        - ""
+        - "--appendonly"
+        - "no"
+        - --requirepass $(REDIS_PASSWORD)
+        env:
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: auth
+                name: hanzocd-redis
+        ports:
+        - containerPort: 6379
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: hanzocd-redis
+              topologyKey: kubernetes.io/hostname
+          - weight: 5
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/part-of: hanzocd
+              topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        kubernetes.io/os: linux
