@@ -1,0 +1,44 @@
+Hanzo CD
+Copyright (c) Hanzo AI, Inc.
+
+Forked from https://github.com/argoproj/argo-cd.
+
+This product includes software from Argo CD
+(https://github.com/argoproj/argo-cd), licensed under Apache-2.0:
+
+    Copyright 2017-2018 The Argo Authors
+
+Upstream Argo CD ships no NOTICE file (only LICENSE); there are no
+Apache-2.0 Section 4(d) attributions to propagate from upstream. LICENSE in
+this repository is upstream's Apache-2.0 text, retained verbatim and
+unmodified.
+
+The overwhelming majority of this repository is upstream Argo CD source,
+authored by The Argo Authors and its contributors, who retain their
+copyright. Hanzo AI, Inc. claims copyright only in the changes it authored.
+
+This product also includes software from third-party Go modules imported at
+their upstream paths. Their copyright notices are preserved within those
+modules, and the upstream projects retain their respective rights.
+
+DEVIATIONS
+Changes made by Hanzo AI, Inc. relative to upstream Argo CD, per Apache-2.0
+Section 4(b):
+
+- Repackaged from the Go module github.com/argoproj/argo-cd/v3 to
+  github.com/hanzoai/deploy, and the embedded engine module from
+  github.com/argoproj/argo-cd/gitops-engine to
+  github.com/hanzoai/deploy/gitops-engine. Behaviour is unchanged by the
+  rename.
+
+- Custom resource API group renamed from argoproj.io to cd.hanzo.ai, and the
+  objects in manifests/ from argocd-* to hanzocd-*. The CLI and server
+  binaries are named hanzocd.
+
+- Served surfaces are white-labelled to Hanzo CD: product name, brand marks
+  (ui/src/assets/images/hanzo-*.svg) and the monochrome colour skin
+  (ui/src/assets/hanzo-cd.css). Upstream prose in docs/ keeps Argo CD's name
+  and URLs, which is what attribution requires.
+
+- Container images are built by Hanzo CI and published to ghcr.io/hanzoai,
+  rather than quay.io/argoproj/argocd.
