@@ -1,0 +1,26 @@
+# hanzoai/deploy-ui-embed — the Hanzo CD UI bundle as a versioned artifact.
+#
+# Builds the UI once into an image whose rootfs is just the bundle at /dist, so
+# a consumer does `FROM ghcr.io/hanzoai/deploy-ui-embed:<ver> AS deployui` +
+# `COPY --from=deployui /dist/ <its go:embed dir>/` instead of re-running yarn on
+# every one of its own releases. The UI changes far less often than its
+# consumers ship, which turns their rebuild into a registry pull. Same idiom as
+# ghcr.io/hanzoai/console-embed.
+#
+# The main image (./Dockerfile) still bundles this UI for hanzocd-server; this
+# is an additional artifact, not a replacement.
+#
+# Node image tracks the argocd-ui stage in ./Dockerfile — same builder, one
+# version to bump.
+FROM --platform=$BUILDPLATFORM docker.io/library/node:24.17.0@sha256:032e78d7e54e352129831743737e3a83171d9cc5b5896f411649c597ce0b11ea AS build
+WORKDIR /src
+COPY ui/package.json ui/yarn.lock ./
+RUN yarn install --network-timeout 200000 && yarn cache clean
+COPY ui/ .
+# Fail hard on a placeholder bundle: the build must emit a real index.html.
+RUN NODE_ENV=production NODE_ONLINE_ENV=online NODE_OPTIONS=--max_old_space_size=8192 yarn build \
+    && [ -s dist/app/index.html ] \
+    && echo ">> Hanzo CD embed: $(wc -c < dist/app/index.html)-byte index.html, $(du -sh dist/app | cut -f1)"
+
+FROM scratch
+COPY --from=build /src/dist/app/ /dist/
