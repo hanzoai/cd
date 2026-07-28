@@ -37,5 +37,5 @@ const (
 
 func getDefaultRequeueAfter() time.Duration {
 	// Default is 3 minutes, min is 1 second, max is 1 year
-	return env.ParseDurationFromEnv("ARGOCD_APPLICATIONSET_CONTROLLER_REQUEUE_AFTER", DefaultRequeueAfter, 1*time.Second, 8760*time.Hour)
+	return env.ParseDurationFromEnv("CD_APPLICATIONSET_CONTROLLER_REQUEUE_AFTER", DefaultRequeueAfter, 1*time.Second, 8760*time.Hour)
 }

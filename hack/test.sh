@@ -14,13 +14,13 @@ DIST_DIR=${DIST_DIR:-dist}
 # Add DIST_DIR to PATH so binaries installed for argo are found first
 export PATH="${DIST_DIR}:${PATH}"
 
-if test "${ARGOCD_TEST_PARALLELISM:-}" != ""; then
-	TEST_FLAGS="$TEST_FLAGS -p $ARGOCD_TEST_PARALLELISM"
+if test "${CD_TEST_PARALLELISM:-}" != ""; then
+	TEST_FLAGS="$TEST_FLAGS -p $CD_TEST_PARALLELISM"
 fi
-if test "${ARGOCD_TEST_PARALLEL:-}" != ""; then
-	TEST_FLAGS="$TEST_FLAGS -parallel $ARGOCD_TEST_PARALLEL"
+if test "${CD_TEST_PARALLEL:-}" != ""; then
+	TEST_FLAGS="$TEST_FLAGS -parallel $CD_TEST_PARALLEL"
 fi
-if test "${ARGOCD_TEST_VERBOSE:-}" != ""; then
+if test "${CD_TEST_VERBOSE:-}" != ""; then
 	TEST_FLAGS="$TEST_FLAGS -v"
 fi
 

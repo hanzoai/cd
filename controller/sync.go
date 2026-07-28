@@ -44,7 +44,7 @@ import (
 const (
 	// EnvVarSyncWaveDelay is an environment variable which controls the delay in seconds between
 	// each sync-wave
-	EnvVarSyncWaveDelay = "ARGOCD_SYNC_WAVE_DELAY"
+	EnvVarSyncWaveDelay = "CD_SYNC_WAVE_DELAY"
 )
 
 func (m *appStateManager) getOpenAPISchema(server *v1alpha1.Cluster) (openapi.Resources, error) {

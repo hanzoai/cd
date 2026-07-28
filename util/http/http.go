@@ -24,8 +24,8 @@ const (
 	// limit size of the resp to 512KB
 	respReadLimit       = int64(524288)
 	retryWaitMax        = time.Duration(10) * time.Second
-	EnvRetryMax         = "ARGOCD_K8SCLIENT_RETRY_MAX"
-	EnvRetryBaseBackoff = "ARGOCD_K8SCLIENT_RETRY_BASE_BACKOFF"
+	EnvRetryMax         = "CD_K8SCLIENT_RETRY_MAX"
+	EnvRetryBaseBackoff = "CD_K8SCLIENT_RETRY_BASE_BACKOFF"
 )
 
 // max number of chunks a cookie can be broken into. To be compatible with

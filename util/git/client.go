@@ -302,15 +302,15 @@ func NewClientExt(rawRepoURL string, root string, creds Creds, insecure bool, en
 	return client, nil
 }
 
-var gitClientTimeout = env.ParseDurationFromEnv("ARGOCD_GIT_REQUEST_TIMEOUT", 15*time.Second, 0, math.MaxInt64)
+var gitClientTimeout = env.ParseDurationFromEnv("CD_GIT_REQUEST_TIMEOUT", 15*time.Second, 0, math.MaxInt64)
 
 // gitCleanupGracePeriod is the minimum age a temporary pack file must reach
 // before cleanupOrphanedTempPackfiles will remove it. A fetch is killed at
-// ARGOCD_EXEC_TIMEOUT (plus the fatal-timeout grace), so twice that comfortably
+// CD_EXEC_TIMEOUT (plus the fatal-timeout grace), so twice that comfortably
 // exceeds the longest a fetch can be in flight; anything older cannot belong to
 // a live fetch (for example a concurrent fetch from another repo-server replica
 // sharing an RWX cache volume).
-var gitCleanupGracePeriod = 2 * env.ParseDurationFromEnv("ARGOCD_EXEC_TIMEOUT", 90*time.Second, 0, math.MaxInt64)
+var gitCleanupGracePeriod = 2 * env.ParseDurationFromEnv("CD_EXEC_TIMEOUT", 90*time.Second, 0, math.MaxInt64)
 
 // Returns a HTTP client object suitable for go-git to use using the following
 // pattern:

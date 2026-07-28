@@ -46,7 +46,7 @@ func TestKustomizeBuild(t *testing.T) {
 	namespace := "custom-namespace"
 	kustomize := NewKustomizeApp(appPath, appPath, git.NopCreds{}, "", "", "", "")
 	env := &v1alpha1.Env{
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_NAME", Value: "argo-cd-tests"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: "argo-cd-tests"},
 	}
 	kustomizeSource := v1alpha1.ApplicationSourceKustomize{
 		NamePrefix: namePrefix,
@@ -54,11 +54,11 @@ func TestKustomizeBuild(t *testing.T) {
 		Images:     v1alpha1.KustomizeImages{"nginx:1.15.5"},
 		CommonLabels: map[string]string{
 			"app.kubernetes.io/managed-by": "argo-cd",
-			"app.kubernetes.io/part-of":    "${ARGOCD_APP_NAME}",
+			"app.kubernetes.io/part-of":    "${CD_APP_NAME}",
 		},
 		CommonAnnotations: map[string]string{
 			"app.kubernetes.io/managed-by": "argo-cd",
-			"app.kubernetes.io/part-of":    "${ARGOCD_APP_NAME}",
+			"app.kubernetes.io/part-of":    "${CD_APP_NAME}",
 		},
 		Namespace:                 namespace,
 		CommonAnnotationsEnvsubst: true,
@@ -202,7 +202,7 @@ func TestKustomizeBuildForceCommonLabels(t *testing.T) {
 				ForceCommonLabels: true,
 				CommonLabels: map[string]string{
 					"foo":  "edited",
-					"test": "${ARGOCD_APP_NAME}",
+					"test": "${CD_APP_NAME}",
 				},
 			},
 			ExpectedLabels: map[string]string{
@@ -212,7 +212,7 @@ func TestKustomizeBuildForceCommonLabels(t *testing.T) {
 			},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -228,7 +228,7 @@ func TestKustomizeBuildForceCommonLabels(t *testing.T) {
 			ExpectErr: true,
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -267,7 +267,7 @@ func TestKustomizeBuildForceCommonAnnotations(t *testing.T) {
 				CommonAnnotations: map[string]string{
 					"one":   "edited",
 					"two":   "${test}",
-					"three": "$ARGOCD_APP_NAME",
+					"three": "$CD_APP_NAME",
 				},
 				CommonAnnotationsEnvsubst: false,
 			},
@@ -275,11 +275,11 @@ func TestKustomizeBuildForceCommonAnnotations(t *testing.T) {
 				"baz":   "quux",
 				"one":   "edited",
 				"two":   "${test}",
-				"three": "$ARGOCD_APP_NAME",
+				"three": "$CD_APP_NAME",
 			},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -291,7 +291,7 @@ func TestKustomizeBuildForceCommonAnnotations(t *testing.T) {
 				CommonAnnotations: map[string]string{
 					"one":   "edited",
 					"two":   "${test}",
-					"three": "$ARGOCD_APP_NAME",
+					"three": "$CD_APP_NAME",
 				},
 				CommonAnnotationsEnvsubst: true,
 			},
@@ -303,7 +303,7 @@ func TestKustomizeBuildForceCommonAnnotations(t *testing.T) {
 			},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -320,7 +320,7 @@ func TestKustomizeBuildForceCommonAnnotations(t *testing.T) {
 			ExpectErr: true,
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -367,7 +367,7 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			ExpectedTemplateLabels: map[string]string{"app": "nginx"},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -386,7 +386,7 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			ExpectedTemplateLabels: map[string]string{"app": "nginx"},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -405,7 +405,7 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			ExpectedTemplateLabels: map[string]string{"app": "nginx", "foo": "bar"},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -425,7 +425,7 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			ExpectedTemplateLabels: map[string]string{"app": "nginx", "managed-by": "argocd"},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
-					Name:  "ARGOCD_APP_NAME",
+					Name:  "CD_APP_NAME",
 					Value: "argo-cd-tests",
 				},
 			},
@@ -470,7 +470,7 @@ func TestKustomizeCustomVersion(t *testing.T) {
 		Version: "special",
 	}
 	env := &v1alpha1.Env{
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_NAME", Value: "argo-cd-tests"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: "argo-cd-tests"},
 	}
 	objs, images, _, err := kustomize.Build(&kustomizeSource, nil, env, nil)
 	require.NoError(t, err)
@@ -481,7 +481,7 @@ func TestKustomizeCustomVersion(t *testing.T) {
 
 	content, err := os.ReadFile(envOutputFile)
 	require.NoError(t, err)
-	assert.Equal(t, "ARGOCD_APP_NAME=argo-cd-tests\n", string(content))
+	assert.Equal(t, "CD_APP_NAME=argo-cd-tests\n", string(content))
 }
 
 func TestKustomizeBuildComponents(t *testing.T) {

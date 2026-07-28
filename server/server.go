@@ -138,8 +138,8 @@ import (
 )
 
 const (
-	maxConcurrentLoginRequestsCountEnv = "ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT"
-	replicasCountEnv                   = "ARGOCD_API_SERVER_REPLICAS"
+	maxConcurrentLoginRequestsCountEnv = "CD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT"
+	replicasCountEnv                   = "CD_API_SERVER_REPLICAS"
 	renewTokenKey                      = "renew-token"
 )
 

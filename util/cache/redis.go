@@ -29,7 +29,7 @@ var (
 
 const (
 	// envRedisKeyPrefix is an env variable name which stores the prefix for redis keys
-	envRedisKeyPrefix = "ARGOCD_REDIS_KEY_PREFIX"
+	envRedisKeyPrefix = "CD_KV_KEY_PREFIX"
 )
 
 func CompressionTypeFromString(s string) (RedisCompressionType, error) {

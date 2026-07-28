@@ -562,7 +562,7 @@ When hydration fails, the application remains in the `Failed` phase and the erro
 
 > [!NOTE]
 > After a failed hydration, the controller waits about **2 minutes** before automatically retrying
-> unattended hydration. That interval matches `ARGOCD_RECONCILIATION_TIMEOUT` (the application
+> unattended hydration. That interval matches `CD_RECONCILIATION_TIMEOUT` (the application
 > controller `--app-resync` period, default **120s**).
 >
 > You do not need to wait for that cooldown when:

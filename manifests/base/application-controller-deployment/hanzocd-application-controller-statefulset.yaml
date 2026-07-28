@@ -11,5 +11,5 @@ spec:
         args:
         - /usr/local/bin/hanzocd-application-controller
         env:
-        - name: ARGOCD_CONTROLLER_REPLICAS
+        - name: CD_CONTROLLER_REPLICAS
           value: "0"

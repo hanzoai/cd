@@ -33,7 +33,7 @@ Current implementation of sharding uses StatefulSet for the application controll
 Any change done to the StatefulSet would cause all the child pods to restart in a serial fashion. This makes scaling up/down of the application controller slow as even existing healthy instances need to be restarted as well.
 Scaling up or down happens one at a time. If there are 10 instances and if scaled to 20, then the scaling happens one at a time, causing considerable delay for the scaling to complete.
 
-Each shard replica knows about the total number of available shards by evaluating the environment variable ARGOCD_CONTROLLER_REPLICAS, which needs to be kept up-to-date with the actual number of available replicas (shards). If the number of replicas does not equal the number set in ARGOCD_CONTROLLER_REPLICAS, sharding will not work as intended, leading to both, unused and overused replicas. As this environment variable is set on the StatefulSet and propagated to the pods, all the pods in the StatefulSet need to be restarted in order to pick up the new number of total shards.
+Each shard replica knows about the total number of available shards by evaluating the environment variable CD_CONTROLLER_REPLICAS, which needs to be kept up-to-date with the actual number of available replicas (shards). If the number of replicas does not equal the number set in CD_CONTROLLER_REPLICAS, sharding will not work as intended, leading to both, unused and overused replicas. As this environment variable is set on the StatefulSet and propagated to the pods, all the pods in the StatefulSet need to be restarted in order to pick up the new number of total shards.
 
 The current sharding mechanism relies on predictable pod names for the application controller to determine which shard a given replica should impersonate, e.g. the first replica of the StatefulSet (argocd-application-controller-0) will be the first shard, the second replica (argocd-application-controller-1) will be the second and so forth. 
 
@@ -62,7 +62,7 @@ Stateless applications scale horizontally very easily as compared to stateful ap
 
 Inorder to be able to accurately know which shards are being managed by which application-controller, especially in scenarios of redistribution of load, addition/removal of `application controller`, etc., we would need to have a mechanism to assign clusters to the shards. 
 
-In most scenarios, the service account used by the application controller has read access to all the resources in the cluster. Thus, instead of setting the environment variable ARGOCD_CONTROLLER_REPLICAS representing the number of replicas, the number of replicas can be read directly from the number of healthy replicas of the application controller deployment.
+In most scenarios, the service account used by the application controller has read access to all the resources in the cluster. Thus, instead of setting the environment variable CD_CONTROLLER_REPLICAS representing the number of replicas, the number of replicas can be read directly from the number of healthy replicas of the application controller deployment.
 
 For other scenarios, some users install controller with only `argocd-application-controller-role` role and use it to manage remote clusters only. In this case, we would need to update the `argocd-application-controller-role` role and allow controller inspect it's own deployment and find out the number of replicas.
 

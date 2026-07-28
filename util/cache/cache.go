@@ -23,19 +23,19 @@ import (
 
 const (
 	// envRedisPassword is an env variable name which stores redis password
-	envRedisPassword = "REDIS_PASSWORD"
+	envRedisPassword = "KV_PASSWORD"
 	// envRedisUsername is an env variable name which stores redis username (for acl setup)
-	envRedisUsername = "REDIS_USERNAME"
+	envRedisUsername = "KV_USERNAME"
 	// envRedisRetryCount is an env variable name which stores redis retry count
-	envRedisRetryCount = "REDIS_RETRY_COUNT"
+	envRedisRetryCount = "KV_RETRY_COUNT"
 	// defaultRedisRetryCount holds default number of retries
 	defaultRedisRetryCount = 3
 	// envRedisSentinelPassword is an env variable name which stores redis sentinel password
-	envRedisSentinelPassword = "REDIS_SENTINEL_PASSWORD"
+	envRedisSentinelPassword = "KV_SENTINEL_PASSWORD"
 	// envRedisSentinelUsername is an env variable name which stores redis sentinel username
-	envRedisSentinelUsername = "REDIS_SENTINEL_USERNAME"
+	envRedisSentinelUsername = "KV_SENTINEL_USERNAME"
 	// envRedisCredsFilePath is an env variable name which stores path to redis credentials file
-	envRedisCredsDirPath = "REDIS_CREDS_DIR_PATH"
+	envRedisCredsDirPath = "KV_CREDS_DIR_PATH"
 )
 
 const (
@@ -166,7 +166,7 @@ func loadRedisCreds(mountPath string, opt Options) (username, password, sentinel
 	password = os.Getenv(envRedisPassword)
 	sentinelUsername = os.Getenv(envRedisSentinelUsername)
 	sentinelPassword = os.Getenv(envRedisSentinelPassword)
-	// If a flag prefix is set, prefer prefixed env vars to allow component-specific overrides (e.g., REPOSERVER_REDIS_PASSWORD).
+	// If a flag prefix is set, prefer prefixed env vars to allow component-specific overrides (e.g., REPOSERVER_KV_PASSWORD).
 	if opt.FlagPrefix != "" {
 		pref := opt.getEnvPrefix()
 		if val := os.Getenv(pref + envRedisUsername); val != "" {
@@ -222,7 +222,7 @@ func AddCacheFlagsToCmd(cmd *cobra.Command, opts ...Options) func() (*Cache, err
 	opt := mergeOptions(opts...)
 	var defaultCacheExpiration time.Duration
 
-	cmd.Flags().StringVar(&redisAddress, opt.FlagPrefix+"redis", env.StringFromEnv(opt.getEnvPrefix()+"REDIS_SERVER", ""), "Redis server hostname and port (e.g. argocd-redis:6379). ")
+	cmd.Flags().StringVar(&redisAddress, opt.FlagPrefix+"redis", env.StringFromEnv(opt.getEnvPrefix()+"KV_SERVER", ""), "Redis server hostname and port (e.g. argocd-redis:6379). ")
 	redisAddressSrc := getFlagVal(cmd, opt, "redis", cmd.Flags().GetString)
 	cmd.Flags().IntVar(&redisDB, opt.FlagPrefix+"redisdb", env.ParseNumFromEnv(opt.getEnvPrefix()+"REDISDB", 0, 0, math.MaxInt32), "Redis database.")
 	redisDBSrc := getFlagVal(cmd, opt, "redisdb", cmd.Flags().GetInt)
@@ -230,7 +230,7 @@ func AddCacheFlagsToCmd(cmd *cobra.Command, opts ...Options) func() (*Cache, err
 		&sentinelAddresses,
 		opt.FlagPrefix+"sentinel",
 		env.StringsFromEnv(
-			opt.getEnvPrefix()+"REDIS_SENTINEL_HOSTS",
+			opt.getEnvPrefix()+"KV_SENTINEL_HOSTS",
 			[]string{},
 			",",
 		),
@@ -242,13 +242,13 @@ func AddCacheFlagsToCmd(cmd *cobra.Command, opts ...Options) func() (*Cache, err
 		&sentinelMaster,
 		opt.FlagPrefix+"sentinelmaster",
 		env.StringFromEnv(
-			opt.getEnvPrefix()+"REDIS_SENTINEL_MASTER",
+			opt.getEnvPrefix()+"KV_SENTINEL_MASTER",
 			"master",
 		),
 		"Redis sentinel master group name.",
 	)
 	sentinelMasterSrc := getFlagVal(cmd, opt, "sentinelmaster", cmd.Flags().GetString)
-	cmd.Flags().DurationVar(&defaultCacheExpiration, opt.FlagPrefix+"default-cache-expiration", env.ParseDurationFromEnv("ARGOCD_DEFAULT_CACHE_EXPIRATION", 24*time.Hour, 0, math.MaxInt64), "Cache expiration default")
+	cmd.Flags().DurationVar(&defaultCacheExpiration, opt.FlagPrefix+"default-cache-expiration", env.ParseDurationFromEnv("CD_DEFAULT_CACHE_EXPIRATION", 24*time.Hour, 0, math.MaxInt64), "Cache expiration default")
 	defaultCacheExpirationSrc := getFlagVal(cmd, opt, "default-cache-expiration", cmd.Flags().GetDuration)
 	cmd.Flags().BoolVar(&redisUseTLS, opt.FlagPrefix+"redis-use-tls", false, "Use TLS when connecting to Redis. ")
 	redisUseTLSSrc := getFlagVal(cmd, opt, "redis-use-tls", cmd.Flags().GetBool)
@@ -260,7 +260,7 @@ func AddCacheFlagsToCmd(cmd *cobra.Command, opts ...Options) func() (*Cache, err
 	insecureRedisSrc := getFlagVal(cmd, opt, "redis-insecure-skip-tls-verify", cmd.Flags().GetBool)
 	cmd.Flags().StringVar(&redisCACertificate, opt.FlagPrefix+"redis-ca-certificate", "", "Path to Redis server CA certificate (e.g. /etc/certs/redis/ca.crt). If not specified, system trusted CAs will be used for server certificate validation.")
 	redisCACertificateSrc := getFlagVal(cmd, opt, "redis-ca-certificate", cmd.Flags().GetString)
-	cmd.Flags().StringVar(&compressionStr, opt.FlagPrefix+CLIFlagRedisCompress, env.StringFromEnv(opt.getEnvPrefix()+"REDIS_COMPRESSION", string(RedisCompressionGZip)), "Enable compression for data sent to Redis with the required compression algorithm. (possible values: gzip, none)")
+	cmd.Flags().StringVar(&compressionStr, opt.FlagPrefix+CLIFlagRedisCompress, env.StringFromEnv(opt.getEnvPrefix()+"KV_COMPRESSION", string(RedisCompressionGZip)), "Enable compression for data sent to Redis with the required compression algorithm. (possible values: gzip, none)")
 	compressionStrSrc := getFlagVal(cmd, opt, CLIFlagRedisCompress, cmd.Flags().GetString)
 	return func() (*Cache, error) {
 		redisAddress := redisAddressSrc()

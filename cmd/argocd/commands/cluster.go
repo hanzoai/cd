@@ -550,16 +550,16 @@ func NewClusterListCommand(clientOpts *argocdclient.ClientOptions) *cobra.Comman
 argocd cluster list
 
 # List Cluster via specifying the server
-argocd cluster list --server <ARGOCD_SERVER_ADDRESS>
+argocd cluster list --server <CD_SERVER_ADDRESS>
 
 # List Clusters in JSON Format
-argocd cluster list -o json --server <ARGOCD_SERVER_ADDRESS>
+argocd cluster list -o json --server <CD_SERVER_ADDRESS>
 
 # List Clusters in YAML Format
-argocd cluster list -o yaml --server <ARGOCD_SERVER_ADDRESS>
+argocd cluster list -o yaml --server <CD_SERVER_ADDRESS>
 
 # List Clusters that have been added to your Hanzo CD 
-argocd cluster list -o server <ARGOCD_SERVER_ADDRESS>
+argocd cluster list -o server <CD_SERVER_ADDRESS>
 
 `,
 	}

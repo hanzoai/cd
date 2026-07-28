@@ -79,7 +79,7 @@ func GetEnvWithDefault(envName, defaultValue string) string {
 // TestNamespace returns the namespace where Argo CD E2E test instance will be
 // running in.
 func TestNamespace() string {
-	return GetEnvWithDefault("ARGOCD_E2E_NAMESPACE", ArgoCDNamespace)
+	return GetEnvWithDefault("CD_E2E_NAMESPACE", ArgoCDNamespace)
 }
 
 // GetE2EFixtureK8sClient initializes the Kubernetes clients (if needed), and returns the most recently initialized value.

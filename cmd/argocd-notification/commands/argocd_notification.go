@@ -167,19 +167,19 @@ func NewCommand() *cobra.Command {
 		},
 	}
 	clientConfig = cli.AddKubectlFlagsToCmd(&command)
-	command.Flags().IntVar(&processorsCount, "processors-count", env.ParseNumFromEnv("ARGOCD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT", 1, 1, math.MaxInt32), "Processors count.")
+	command.Flags().IntVar(&processorsCount, "processors-count", env.ParseNumFromEnv("CD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT", 1, 1, math.MaxInt32), "Processors count.")
 	command.Flags().StringVar(&appLabelSelector, "app-label-selector", "", "App label selector.")
-	command.Flags().StringVar(&logLevel, "loglevel", env.StringFromEnv("ARGOCD_NOTIFICATIONS_CONTROLLER_LOGLEVEL", "info"), "Set the logging level. One of: debug|info|warn|error")
-	command.Flags().StringVar(&logFormat, "logformat", env.StringFromEnv("ARGOCD_NOTIFICATIONS_CONTROLLER_LOGFORMAT", "json"), "Set the logging format. One of: json|text")
+	command.Flags().StringVar(&logLevel, "loglevel", env.StringFromEnv("CD_NOTIFICATIONS_CONTROLLER_LOGLEVEL", "info"), "Set the logging level. One of: debug|info|warn|error")
+	command.Flags().StringVar(&logFormat, "logformat", env.StringFromEnv("CD_NOTIFICATIONS_CONTROLLER_LOGFORMAT", "json"), "Set the logging format. One of: json|text")
 	command.Flags().IntVar(&metricsPort, "metrics-port", defaultMetricsPort, "Metrics port")
 	command.Flags().StringVar(&argocdRepoServer, "argocd-repo-server", common.DefaultRepoServerAddr, "Hanzo CD repo server address")
-	command.Flags().BoolVar(&argocdRepoServerPlaintext, "argocd-repo-server-plaintext", env.ParseBoolFromEnv("ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_PLAINTEXT", false), "Use a plaintext client (non-TLS) to connect to repository server")
+	command.Flags().BoolVar(&argocdRepoServerPlaintext, "argocd-repo-server-plaintext", env.ParseBoolFromEnv("CD_NOTIFICATION_CONTROLLER_REPO_SERVER_PLAINTEXT", false), "Use a plaintext client (non-TLS) to connect to repository server")
 	command.Flags().BoolVar(&argocdRepoServerStrictTLS, "argocd-repo-server-strict-tls", false, "Perform strict validation of TLS certificates when connecting to repo server")
 	errors.CheckError(command.Flags().MarkDeprecated("argocd-repo-server-strict-tls", "use --argocd-repo-server-ca-cert-path instead"))
 	command.Flags().StringVar(&configMapName, "config-map-name", "argocd-notifications-cm", "Set notifications ConfigMap name")
 	command.Flags().StringVar(&secretName, "secret-name", "argocd-notifications-secret", "Set notifications Secret name")
-	command.Flags().StringSliceVar(&applicationNamespaces, "application-namespaces", env.StringsFromEnv("ARGOCD_APPLICATION_NAMESPACES", []string{}, ","), "List of additional namespaces that this controller should send notifications for")
-	command.Flags().BoolVar(&selfServiceNotificationEnabled, "self-service-notification-enabled", env.ParseBoolFromEnv("ARGOCD_NOTIFICATION_CONTROLLER_SELF_SERVICE_NOTIFICATION_ENABLED", false), "Allows the Hanzo CD notification controller to pull notification config from the namespace that the resource is in. This is useful for self-service notification.")
+	command.Flags().StringSliceVar(&applicationNamespaces, "application-namespaces", env.StringsFromEnv("CD_APPLICATION_NAMESPACES", []string{}, ","), "List of additional namespaces that this controller should send notifications for")
+	command.Flags().BoolVar(&selfServiceNotificationEnabled, "self-service-notification-enabled", env.ParseBoolFromEnv("CD_NOTIFICATION_CONTROLLER_SELF_SERVICE_NOTIFICATION_ENABLED", false), "Allows the Hanzo CD notification controller to pull notification config from the namespace that the resource is in. This is useful for self-service notification.")
 	repoServerClientTLSConfigSrc = tls.AddClientTLSFlagsToCmdWithPrefix(&command, "NOTIFICATION_CONTROLLER")
 	return &command
 }

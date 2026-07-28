@@ -1326,7 +1326,7 @@ func TestGenerateHelmWithEnvVars(t *testing.T) {
 		ApplicationSource: &v1alpha1.ApplicationSource{
 			Path: ".",
 			Helm: &v1alpha1.ApplicationSourceHelm{
-				ValueFiles: []string{"values-$ARGOCD_APP_NAME.yaml"},
+				ValueFiles: []string{"values-$CD_APP_NAME.yaml"},
 			},
 		},
 		ProjectName:        "something",
@@ -2083,15 +2083,15 @@ func TestGetSignatureVerificationResult(t *testing.T) {
 
 func Test_newEnv(t *testing.T) {
 	assert.Equal(t, &v1alpha1.Env{
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_NAME", Value: "my-app-name"},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_NAMESPACE", Value: "my-namespace"},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_PROJECT_NAME", Value: "my-project-name"},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_REVISION", Value: "my-revision"},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_REVISION_SHORT", Value: "my-revi"},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_REVISION_SHORT_8", Value: "my-revis"},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_REPO_URL", Value: "https://github.com/my-org/my-repo"},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_PATH", Value: "my-path"},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_TARGET_REVISION", Value: "my-target-revision"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: "my-app-name"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAMESPACE", Value: "my-namespace"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_PROJECT_NAME", Value: "my-project-name"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_REVISION", Value: "my-revision"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_REVISION_SHORT", Value: "my-revi"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_REVISION_SHORT_8", Value: "my-revis"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_REPO_URL", Value: "https://github.com/my-org/my-repo"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_PATH", Value: "my-path"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_TARGET_REVISION", Value: "my-target-revision"},
 	}, newEnv(&apiclient.ManifestRequest{
 		AppName:     "my-app-name",
 		Namespace:   "my-namespace",
@@ -5759,7 +5759,7 @@ func Test_GenerateManifests_Commands(t *testing.T) {
 						{
 							Name: "test-param-name",
 							// Use build env var to test substitution.
-							Value:       "test-value-$ARGOCD_APP_NAME",
+							Value:       "test-value-$CD_APP_NAME",
 							ForceString: true,
 						},
 						{
@@ -5876,7 +5876,7 @@ images:
 					APIVersions: []string{"v1", "v2"},
 					CommonAnnotations: map[string]string{
 						// Use build env var to test substitution.
-						"test": "annotation-$ARGOCD_APP_NAME",
+						"test": "annotation-$CD_APP_NAME",
 					},
 					CommonAnnotationsEnvsubst: true,
 					CommonLabels: map[string]string{

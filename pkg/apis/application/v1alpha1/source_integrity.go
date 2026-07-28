@@ -41,7 +41,7 @@ var (
 // SourceIntegrityGitPolicyGPG verifies that the commit(s) are both correctly signed by a key in the repo-server keyring,
 // and that they are signed by one of the key listed in Keys.
 //
-// This policy can be deactivated through the ARGOCD_GPG_ENABLED environment variable.
+// This policy can be deactivated through the CD_GPG_ENABLED environment variable.
 //
 // Note the listing of problematic commits/signatures reported when "strict" mode validation fails may not be complete.
 // This means that a user that has addressed all problems reported by source integrity check can run into
