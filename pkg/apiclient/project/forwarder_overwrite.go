@@ -1,7 +1,7 @@
 package project
 
 import (
-	"github.com/argoproj/pkg/v2/grpc/http"
+	"github.com/hanzoai/deploy/util/vendored/grpc-http"
 )
 
 func init() {

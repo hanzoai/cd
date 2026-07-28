@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
-	"github.com/argoproj/pkg/v2/sync"
+	"github.com/hanzoai/deploy/util/vendored/sync"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"

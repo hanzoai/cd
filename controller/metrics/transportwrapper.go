@@ -3,7 +3,7 @@ package metrics
 import (
 	"strconv"
 
-	"github.com/argoproj/pkg/v2/kubeclientmetrics"
+	"github.com/hanzoai/deploy/util/vendored/kubeclientmetrics"
 	"k8s.io/client-go/rest"
 
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"

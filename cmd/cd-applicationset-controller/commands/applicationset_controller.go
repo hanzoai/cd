@@ -10,7 +10,7 @@ import (
 
 	"github.com/hanzoai/deploy/applicationset/progressivesync"
 
-	"github.com/argoproj/pkg/v2/stats"
+	"github.com/hanzoai/deploy/util/vendored/stats"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 

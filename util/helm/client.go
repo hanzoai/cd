@@ -20,7 +20,7 @@ import (
 
 	executil "github.com/hanzoai/deploy/util/exec"
 
-	"github.com/argoproj/pkg/v2/sync"
+	"github.com/hanzoai/deploy/util/vendored/sync"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"oras.land/oras-go/v2/registry/remote"

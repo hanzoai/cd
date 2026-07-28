@@ -21,7 +21,7 @@ import (
 	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/kubetest"
-	"github.com/argoproj/pkg/v2/sync"
+	"github.com/hanzoai/deploy/util/vendored/sync"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
