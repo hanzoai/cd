@@ -6,7 +6,7 @@ metadata:
   - finalizer.stackinstall.crossplane.io
   generation: 1
   labels:
-    argocd.argoproj.io/instance: crossplane-cloudscale
+    apps.hanzo.ai/instance: crossplane-cloudscale
     name: stack-cloudscale
   name: stack-cloudscale
   namespace: syn-crossplane

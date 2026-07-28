@@ -199,7 +199,7 @@ spec:
         - clusters:
             selector:
               matchLabels:
-                argocd.argoproj.io/secret-type: cluster
+                apps.hanzo.ai/secret-type: cluster
 ```
 
 * Likewise, tough to get full expressive power of YAML, due to support for arrays of generators:

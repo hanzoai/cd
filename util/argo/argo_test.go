@@ -23,6 +23,8 @@ import (
 
 	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 
+	argocommon "github.com/hanzoai/deploy/common"
+
 	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
 	"github.com/hanzoai/deploy/pkg/client/informers/externalversions/application/v1alpha1"
@@ -1446,10 +1448,10 @@ func TestGetGlobalProjects(t *testing.T) {
 
 		cm := corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "argocd-cm",
+				Name:      argocommon.ArgoCDConfigMapName,
 				Namespace: test.FakeArgoCDNamespace,
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string]string{

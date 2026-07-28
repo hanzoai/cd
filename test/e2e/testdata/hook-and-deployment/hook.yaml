@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: my-hook
   annotations:
-    argocd.argoproj.io/hook: Sync
+    apps.hanzo.ai/hook: Sync
 spec:
   template:
     spec:

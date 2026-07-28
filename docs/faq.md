@@ -133,7 +133,7 @@ to all manifest generators.
 
 ## I've configured [cluster secret](./operator-manual/declarative-setup.md#clusters) but it does not show up in CLI/UI, how do I fix it?
 
-Check if cluster secret has `argocd.argoproj.io/secret-type: cluster` label. If secret has the label but the cluster is
+Check if cluster secret has `apps.hanzo.ai/secret-type: cluster` label. If secret has the label but the cluster is
 still not visible then make sure it might be a permission issue. Try to list clusters using `admin` user
 (e.g. `argocd login --username admin && argocd cluster list`).
 
@@ -162,7 +162,7 @@ Kustomize common labels feature.
 
 Argo CD automatically sets the `app.kubernetes.io/instance` label and uses it to determine which resources form the app.
 If the tool does this too, this causes confusion. You can change this label by setting
-the `application.instanceLabelKey` value in the `argocd-cm`. We recommend that you use `argocd.argoproj.io/instance`.
+the `application.instanceLabelKey` value in the `argocd-cm`. We recommend that you use `apps.hanzo.ai/instance`.
 
 > [!NOTE]
 > When you make this change your applications will become out of sync and will need re-syncing.

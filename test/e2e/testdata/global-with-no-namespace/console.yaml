@@ -4,7 +4,7 @@ kind: Console
 metadata:
   name: cluster
   annotations:
-    argocd.argoproj.io/sync-options: Prune=false
+    apps.hanzo.ai/sync-options: Prune=false
 spec:
   authentication:
     logoutRedirect: "https://google.com"

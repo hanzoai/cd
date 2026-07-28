@@ -221,7 +221,7 @@ metadata:
   name: helm-private-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: helm
   url: contoso.azurecr.io/charts
@@ -235,7 +235,7 @@ metadata:
   name: git-private-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://contoso@dev.azure.com/my-projectcollection/my-project/_git/my-repo

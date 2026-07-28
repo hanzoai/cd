@@ -190,7 +190,7 @@ func TestTransForm(t *testing.T) {
 			},
 			expected: []map[string]any{{
 				"metadata.annotations.foo.argoproj.io":           "production",
-				"metadata.labels.argocd.argoproj.io/secret-type": "cluster",
+				"metadata.labels.apps.hanzo.ai/secret-type": "cluster",
 				"metadata.labels.environment":                    "production",
 				"metadata.labels.org":                            "bar",
 				"name":                                           "production_01/west",
@@ -206,7 +206,7 @@ func TestTransForm(t *testing.T) {
 			},
 			expected: []map[string]any{{
 				"metadata.annotations.foo.argoproj.io":           "production",
-				"metadata.labels.argocd.argoproj.io/secret-type": "cluster",
+				"metadata.labels.apps.hanzo.ai/secret-type": "cluster",
 				"metadata.labels.environment":                    "production",
 				"metadata.labels.org":                            "bar",
 				"name":                                           "some-really-long-server-url",
@@ -268,7 +268,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"argocd.argoproj.io/secret-type": "cluster",
+						"apps.hanzo.ai/secret-type": "cluster",
 						"environment":                    "production",
 						"org":                            "bar",
 					},
@@ -290,7 +290,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"argocd.argoproj.io/secret-type": "cluster",
+						"apps.hanzo.ai/secret-type": "cluster",
 						"environment":                    "staging",
 						"org":                            "foo",
 					},
@@ -322,7 +322,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"argocd.argoproj.io/secret-type": "cluster",
+							"apps.hanzo.ai/secret-type": "cluster",
 							"environment":                    "production",
 							"org":                            "bar",
 						},
@@ -338,7 +338,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"argocd.argoproj.io/secret-type": "cluster",
+							"apps.hanzo.ai/secret-type": "cluster",
 							"environment":                    "production",
 							"org":                            "bar",
 						},
@@ -359,7 +359,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 		{
 			name: "slash key in label",
 			selector: &metav1.LabelSelector{
-				MatchLabels: map[string]string{"metadata.labels.argocd.argoproj.io/secret-type": "cluster"},
+				MatchLabels: map[string]string{"metadata.labels.apps.hanzo.ai/secret-type": "cluster"},
 			},
 			expected: []map[string]any{
 				{
@@ -369,7 +369,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"argocd.argoproj.io/secret-type": "cluster",
+							"apps.hanzo.ai/secret-type": "cluster",
 							"environment":                    "staging",
 							"org":                            "foo",
 						},
@@ -385,7 +385,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"argocd.argoproj.io/secret-type": "cluster",
+							"apps.hanzo.ai/secret-type": "cluster",
 							"environment":                    "production",
 							"org":                            "bar",
 						},
@@ -401,7 +401,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"argocd.argoproj.io/secret-type": "cluster",
+							"apps.hanzo.ai/secret-type": "cluster",
 							"environment":                    "production",
 							"org":                            "bar",
 						},
@@ -425,7 +425,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"argocd.argoproj.io/secret-type": "cluster",
+						"apps.hanzo.ai/secret-type": "cluster",
 						"environment":                    "staging",
 						"org":                            "foo",
 					},
@@ -493,7 +493,7 @@ func getMockClusterGenerator() Generator {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"environment":                    "staging",
 					"org":                            "foo",
 				},
@@ -517,7 +517,7 @@ func getMockClusterGenerator() Generator {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"environment":                    "production",
 					"org":                            "bar",
 				},
@@ -541,7 +541,7 @@ func getMockClusterGenerator() Generator {
 				Name:      "some-really-long-server-url",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"environment":                    "production",
 					"org":                            "bar",
 				},
@@ -621,7 +621,7 @@ func TestInterpolateGenerator(t *testing.T) {
 		Clusters: &argov1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"path-basename":                  "{{path.basename}}",
 					"path-zero":                      "{{path[0]}}",
 					"path-full":                      "{{path}}",
@@ -675,7 +675,7 @@ func TestInterpolateGenerator_go(t *testing.T) {
 		Clusters: &argov1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"path-basename":                  "{{base .path.path}}",
 					"path-zero":                      "{{index .path.segments 0}}",
 					"path-full":                      "{{.path.path}}",

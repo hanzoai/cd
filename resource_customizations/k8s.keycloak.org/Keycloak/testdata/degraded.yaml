@@ -2,8 +2,8 @@ apiVersion: k8s.keycloak.org/v2alpha1
 kind: Keycloak
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '2'
-    argocd.argoproj.io/tracking-id: foobar-keycloak:k8s.keycloak.org/Keycloak:foo/keycloak
+    apps.hanzo.ai/sync-wave: '2'
+    apps.hanzo.ai/tracking-id: foobar-keycloak:k8s.keycloak.org/Keycloak:foo/keycloak
   creationTimestamp: '2024-10-07T09:06:33Z'
   generation: 4
   name: keycloak

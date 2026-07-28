@@ -113,7 +113,7 @@ kind: ArgoCDExtension
 metadata:
   name: my-cool-extension
   finalizers:
-    - extensions-finalizer.argocd.argoproj.io
+    - extensions-finalizer.apps.hanzo.ai
 spec:
   sources:
     - git:

@@ -2150,7 +2150,7 @@ func (t *ApplicationTree) GetSummary(app *Application) ApplicationSummary {
 		for _, image := range node.Images {
 			imagesSet[image] = true
 		}
-		if node.Group == "apps.hanzo.ai" && node.Kind == "Application" {
+		if node.Group == SchemeGroupVersion.Group && node.Kind == ApplicationSchemaGroupVersionKind.Kind {
 			appOfApps = true
 		}
 	}
@@ -4153,7 +4153,7 @@ func (app *Application) RBACName(defaultNS string) string {
 }
 
 // GetAnnotation returns the value of the specified annotation if it exists,
-// e.g., a.GetAnnotation("argocd.argoproj.io/manifest-generate-paths").
+// e.g., a.GetAnnotation("apps.hanzo.ai/manifest-generate-paths").
 // If the annotation does not exist, it returns an empty string.
 func (app *Application) GetAnnotation(annotation string) string {
 	v, exists := app.Annotations[annotation]

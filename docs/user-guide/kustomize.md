@@ -75,7 +75,7 @@ metadata:
   name: kustomize-inline-guestbook
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   destination:
     namespace: test1

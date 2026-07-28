@@ -2112,7 +2112,7 @@ func TestClientSideApplyMigration(t *testing.T) {
 		// Add custom manager annotation if specified
 		if customManager != "" {
 			app.Annotations = map[string]string{
-				"argocd.argoproj.io/client-side-apply-migration-manager": customManager,
+				"apps.hanzo.ai/client-side-apply-migration-manager": customManager,
 			}
 		}
 

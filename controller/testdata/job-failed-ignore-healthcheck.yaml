@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
-    argocd.argoproj.io/ignore-healthcheck: "true"
+    apps.hanzo.ai/ignore-healthcheck: "true"
   labels:
     job-name: fail
   name: fail

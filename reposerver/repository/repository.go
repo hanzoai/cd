@@ -1736,7 +1736,7 @@ func WithCMPTarExcludedGlobs(excludedGlobs []string) GenerateManifestOpt {
 }
 
 // WithCMPUseManifestGeneratePaths enables or disables the use of the
-// 'argocd.argoproj.io/manifest-generate-paths' annotation for manifest generation instead of transmit the whole repository.
+// 'apps.hanzo.ai/manifest-generate-paths' annotation for manifest generation instead of transmit the whole repository.
 func WithCMPUseManifestGeneratePaths(enabled bool) GenerateManifestOpt {
 	return func(o *generateManifestOpt) {
 		o.cmpUseManifestGeneratePaths = enabled

@@ -181,7 +181,7 @@ behaviour (client-side).
 
 #### [UC-3]: As a user, I would like enable SSA at the resource level so only a single manifest is applied server-side
 
-Leverage the existing `argocd.argoproj.io/sync-options` annotation allowing the
+Leverage the existing `apps.hanzo.ai/sync-options` annotation allowing the
 `ServerSideApply=true` to be informed at the resource level. Must not impact
 other sync-options informed in the annotation (make sure this annotation
 supports providing multiple options).

@@ -34,7 +34,7 @@ kubectl delete app APPNAME
 To perform a cascade delete set the finalizer, e.g. using `kubectl patch`:
 
 ```bash
-kubectl patch app APPNAME  -p '{"metadata": {"finalizers": ["resources-finalizer.argocd.argoproj.io"]}}' --type merge
+kubectl patch app APPNAME  -p '{"metadata": {"finalizers": ["resources-finalizer.apps.hanzo.ai"]}}' --type merge
 kubectl delete app APPNAME
 ```
 
@@ -44,9 +44,9 @@ kubectl delete app APPNAME
 metadata:
   finalizers:
     # The default behaviour is foreground cascading deletion
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
     # Alternatively, you can use background cascading deletion
-    # - resources-finalizer.argocd.argoproj.io/background
+    # - resources-finalizer.apps.hanzo.ai/background
 ```
 
 When deleting an Application with this finalizer, the Argo CD application controller will perform a cascading delete of the Application's resources.
@@ -54,7 +54,7 @@ When deleting an Application with this finalizer, the Argo CD application contro
 Adding the finalizer enables cascading deletes when implementing [the App of Apps pattern](../operator-manual/cluster-bootstrapping.md#cascading-deletion).
 
 The default propagation policy for cascading deletion is [foreground cascading deletion](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#foreground-deletion).
-Argo CD performs [background cascading deletion](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#background-deletion) when `resources-finalizer.argocd.argoproj.io/background` is set.
+Argo CD performs [background cascading deletion](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#background-deletion) when `resources-finalizer.apps.hanzo.ai/background` is set.
 
 When you invoke `argocd app delete` with `--cascade`, the finalizer is added automatically.
 You can set the propagation policy with `--propagation-policy <foreground|background>`.
@@ -128,7 +128,7 @@ When deleting an application through the UI, you can choose from three propagati
 > **Important for Non-Cascading Deletes**
 >
 > When you select **Non-Cascading**, Argo CD will:
-> - Remove the `resources-finalizer.argocd.argoproj.io` finalizer from the Application
+> - Remove the `resources-finalizer.apps.hanzo.ai` finalizer from the Application
 > - Delete only the Application resource
 > - Leave all managed resources (Pods, Services, Deployments, etc.) running in the cluster
 >

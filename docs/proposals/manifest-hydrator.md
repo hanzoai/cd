@@ -512,7 +512,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   labels:
-    argocd.argoproj.io/secret-type: repository-write
+    apps.hanzo.ai/secret-type: repository-write
 stringData:
   url: 'https://github.com/argoproj/argocd-example-apps'
   githubAppID: '123456'

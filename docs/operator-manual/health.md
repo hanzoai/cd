@@ -291,14 +291,14 @@ App (healthy)
 ```
 ## Ignoring Child Resource Health Check in Applications
 
-To ignore the health check of an immediate child resource within an Application, set the annotation `argocd.argoproj.io/ignore-healthcheck` to `true`. For example:
+To ignore the health check of an immediate child resource within an Application, set the annotation `apps.hanzo.ai/ignore-healthcheck` to `true`. For example:
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    argocd.argoproj.io/ignore-healthcheck: "true"
+    apps.hanzo.ai/ignore-healthcheck: "true"
 ```
 
 By doing this, the health status of the Deployment will not affect the health of its parent Application.

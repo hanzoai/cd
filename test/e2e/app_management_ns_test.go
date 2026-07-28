@@ -1190,7 +1190,7 @@ func TestNamespacedPermissionWithScopedRepo(t *testing.T) {
 		SetTrackingMethod("annotation").
 		SetAppNamespace(fixture.AppNamespace()).
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1226,7 +1226,7 @@ func TestNamespacedPermissionDeniedWithScopedRepo(t *testing.T) {
 		SetAppNamespace(fixture.AppNamespace()).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		IgnoreErrors().
 		CreateApp().
 		Then().
@@ -1240,7 +1240,7 @@ func TestNamespacedSyncOptionPruneFalse(t *testing.T) {
 		SetTrackingMethod("annotation").
 		SetAppNamespace(fixture.AppNamespace()).
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1274,7 +1274,7 @@ func TestNamespacedSyncOptionValidateFalse(t *testing.T) {
 		// client error. K8s API changed error message w/ 1.25, so for now, we need to check both
 		Expect(ErrorRegex("error validating data|of type int32", "")).
 		When().
-		PatchFile("deployment.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Validate=false"}}]`).
+		PatchFile("deployment.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Validate=false"}}]`).
 		Sync().
 		Then().
 		// server error
@@ -1289,7 +1289,7 @@ func TestNamespacedCompareOptionIgnoreExtraneous(t *testing.T) {
 		SetAppNamespace(fixture.AppNamespace()).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/compare-options": "IgnoreExtraneous"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/compare-options": "IgnoreExtraneous"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1827,12 +1827,12 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 			assert.Empty(t, app.Status.Conditions)
 
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "argocd.argoproj.io/tracking-id")
-			delete(ns.Annotations, "argocd.argoproj.io/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
 
 			assert.Equal(t, map[string]string{"foo": "bar"}, ns.Labels)
-			assert.Equal(t, map[string]string{"bar": "bat", "argocd.argoproj.io/sync-options": "ServerSideApply=true"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"bar": "bat", "apps.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"foo": "bar"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Labels)
 			assert.Equal(t, map[string]string{"bar": "bat"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		})).
@@ -1849,12 +1849,12 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		Expect(Success("")).
 		Expect(Namespace(updatedNamespace, func(app *Application, ns *corev1.Namespace) {
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "argocd.argoproj.io/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
-			delete(ns.Annotations, "argocd.argoproj.io/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 
 			assert.Equal(t, map[string]string{"new": "label"}, ns.Labels)
-			assert.Equal(t, map[string]string{"bar": "bat", "argocd.argoproj.io/sync-options": "ServerSideApply=true"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"bar": "bat", "apps.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"new": "label"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Labels)
 			assert.Equal(t, map[string]string{"bar": "bat"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		})).
@@ -1868,12 +1868,12 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		Expect(Success("")).
 		Expect(Namespace(updatedNamespace, func(app *Application, ns *corev1.Namespace) {
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "argocd.argoproj.io/tracking-id")
-			delete(ns.Annotations, "argocd.argoproj.io/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
 
 			assert.Equal(t, map[string]string{"new": "label"}, ns.Labels)
-			assert.Equal(t, map[string]string{"new": "custom-annotation", "argocd.argoproj.io/sync-options": "ServerSideApply=true"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"new": "custom-annotation", "apps.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"new": "label"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Labels)
 			assert.Equal(t, map[string]string{"new": "custom-annotation"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		}))
@@ -1919,9 +1919,9 @@ func TestNamespacedNamespaceAutoCreationWithMetadataAndNsManifest(t *testing.T) 
 		Expect(Success("")).
 		Expect(Namespace(namespace, func(_ *Application, ns *corev1.Namespace) {
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "argocd.argoproj.io/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
 			delete(ns.Labels, "kubectl.kubernetes.io/last-applied-configuration")
-			delete(ns.Annotations, "argocd.argoproj.io/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
 
 			// The application namespace manifest takes precedence over what is in managedNamespaceMetadata
@@ -2003,12 +2003,12 @@ metadata:
 			assert.Empty(t, app.Status.Conditions)
 
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "argocd.argoproj.io/tracking-id")
-			delete(ns.Annotations, "argocd.argoproj.io/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
 
 			assert.Equal(t, map[string]string{"foo": "bar"}, ns.Labels)
-			assert.Equal(t, map[string]string{"argocd.argoproj.io/sync-options": "ServerSideApply=true", "bar": "bat"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"apps.hanzo.ai/sync-options": "ServerSideApply=true", "bar": "bat"}, ns.Annotations)
 		})).
 		When().
 		And(func() {
@@ -2022,12 +2022,12 @@ metadata:
 			assert.Empty(t, app.Status.Conditions)
 
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "argocd.argoproj.io/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
-			delete(ns.Annotations, "argocd.argoproj.io/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 
 			assert.Equal(t, map[string]string{"foo": "bar"}, ns.Labels)
-			assert.Equal(t, map[string]string{"argocd.argoproj.io/sync-options": "ServerSideApply=true", "something": "hmm", "bar": "bat"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"apps.hanzo.ai/sync-options": "ServerSideApply=true", "something": "hmm", "bar": "bat"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"something": "hmm", "bar": "bat"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		})).
 		When().
@@ -2042,12 +2042,12 @@ metadata:
 			assert.Empty(t, app.Status.Conditions)
 
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "argocd.argoproj.io/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
-			delete(ns.Annotations, "argocd.argoproj.io/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 
 			assert.Equal(t, map[string]string{"foo": "bar"}, ns.Labels)
-			assert.Equal(t, map[string]string{"argocd.argoproj.io/sync-options": "ServerSideApply=true", "bar": "bat"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"apps.hanzo.ai/sync-options": "ServerSideApply=true", "bar": "bat"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"bar": "bat"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		})).
 		Expect(OperationPhaseIs(OperationSucceeded)).Expect(ResourceHealthWithNamespaceIs("Deployment", "guestbook-ui", updatedNamespace, health.HealthStatusHealthy)).
@@ -2061,7 +2061,7 @@ func TestNamespacedFailedSyncWithRetry(t *testing.T) {
 		SetTrackingMethod("annotation").
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PreSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PreSync"}}]`).
 		// make hook fail
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command", "value": ["false"]}]`).
 		CreateApp().
@@ -2098,7 +2098,7 @@ func TestNamespacedCreateFromPartialFile(t *testing.T) {
   annotations:
     annotations.local/from-file: file
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.apps.hanzo.ai
 spec:
   syncPolicy:
     automated:
@@ -2277,7 +2277,7 @@ func TestNamespacedSyncOptionReplace(t *testing.T) {
 		SetTrackingMethod("annotation").
 		Path("config-map").
 		When().
-		PatchFile("config-map.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Replace=true"}}]`).
+		PatchFile("config-map.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Replace=true"}}]`).
 		CreateApp().
 		Sync().
 		Then().

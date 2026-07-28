@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `argocd.argoproj.io/managed-by-url` annotation allows an Application resource to specify which Argo CD instance manages it. This is useful when you have multiple Argo CD instances and need application links in the UI to point to the correct managing instance.
+The `apps.hanzo.ai/managed-by-url` annotation allows an Application resource to specify which Argo CD instance manages it. This is useful when you have multiple Argo CD instances and need application links in the UI to point to the correct managing instance.
 
 ## Use Case
 
@@ -58,7 +58,7 @@ metadata:
   name: child-app
   namespace: namespace-b
   annotations:
-    argocd.argoproj.io/managed-by-url: "http://localhost:8081" # replace with actual secondary ArgoCD URL in real setup
+    apps.hanzo.ai/managed-by-url: "http://localhost:8081" # replace with actual secondary ArgoCD URL in real setup
 spec:
   project: default
   source:
@@ -87,7 +87,7 @@ When viewing the parent Application in the primary instance's UI:
 
 | Field | Value |
 |-------|-------|
-| **Annotation** | `argocd.argoproj.io/managed-by-url` |
+| **Annotation** | `apps.hanzo.ai/managed-by-url` |
 | **Target** | Application |
 | **Value** | Valid HTTP(S) URL |
 | **Required** | No |

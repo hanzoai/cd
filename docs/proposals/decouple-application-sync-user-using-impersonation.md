@@ -91,7 +91,7 @@ metadata:
   name: my-project
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -237,7 +237,7 @@ metadata:
   name: my-project
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -300,7 +300,7 @@ metadata:
   name: my-project
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -378,7 +378,7 @@ metadata:
   name: my-project
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -453,7 +453,7 @@ metadata:
   name: my-project
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -543,7 +543,7 @@ metadata:
   name: my-project
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos

@@ -7,7 +7,7 @@ metadata:
   name: my-private-https-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   url: https://github.com/argoproj/argocd-example-apps
   password: my-password
@@ -24,7 +24,7 @@ metadata:
   name: my-private-ssh-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   url: ssh://git@github.com/argoproj/argocd-example-apps
   sshPrivateKey: |
@@ -40,7 +40,7 @@ metadata:
   name: istio-helm-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   url: https://storage.googleapis.com/istio-prerelease/daily-build/master-latest-daily/charts
   name: istio.io
@@ -53,7 +53,7 @@ metadata:
   name: private-helm-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   url: https://my-private-chart-repo.internal
   name: private-repo
@@ -67,7 +67,7 @@ metadata:
   name: private-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   url: https://github.com/argoproj/private-repo
 ---
@@ -77,7 +77,7 @@ metadata:
   name: aci-private-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: helm
   url: contoso.azurecr.io/charts
@@ -91,7 +91,7 @@ metadata:
   name: private-oci-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   username: my-username
   password: my-password

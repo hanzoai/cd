@@ -88,7 +88,7 @@ var unsortedTasks = syncTasks{
 			Object: map[string]any{
 				"metadata": map[string]any{
 					"annotations": map[string]any{
-						"argocd.argoproj.io/sync-wave": "1",
+						"apps.hanzo.ai/sync-wave": "1",
 					},
 				},
 			},
@@ -117,7 +117,7 @@ var unsortedTasks = syncTasks{
 			Object: map[string]any{
 				"metadata": map[string]any{
 					"annotations": map[string]any{
-						"argocd.argoproj.io/sync-wave": "-1",
+						"apps.hanzo.ai/sync-wave": "-1",
 					},
 				},
 			},
@@ -157,7 +157,7 @@ var sortedTasks = syncTasks{
 			Object: map[string]any{
 				"metadata": map[string]any{
 					"annotations": map[string]any{
-						"argocd.argoproj.io/sync-wave": "-1",
+						"apps.hanzo.ai/sync-wave": "-1",
 					},
 				},
 			},
@@ -225,7 +225,7 @@ var sortedTasks = syncTasks{
 			Object: map[string]any{
 				"metadata": map[string]any{
 					"annotations": map[string]any{
-						"argocd.argoproj.io/sync-wave": "1",
+						"apps.hanzo.ai/sync-wave": "1",
 					},
 				},
 			},
@@ -272,7 +272,7 @@ var unnamedTasks = syncTasks{
 			Object: map[string]any{
 				"metadata": map[string]any{
 					"annotations": map[string]any{
-						"argocd.argoproj.io/sync-wave": "-1",
+						"apps.hanzo.ai/sync-wave": "-1",
 					},
 				},
 			},
@@ -322,7 +322,7 @@ var unnamedTasks = syncTasks{
 			Object: map[string]any{
 				"metadata": map[string]any{
 					"annotations": map[string]any{
-						"argocd.argoproj.io/sync-wave": "1",
+						"apps.hanzo.ai/sync-wave": "1",
 					},
 				},
 			},
@@ -400,7 +400,7 @@ func TestSyncTasksSort_NamespaceAndObjectInNamespace(t *testing.T) {
 				"metadata": map[string]any{
 					"name": "myNamespace1",
 					"annotations": map[string]string{
-						"argocd.argoproj.io/sync-wave": "1",
+						"apps.hanzo.ai/sync-wave": "1",
 					},
 				},
 			},
@@ -413,7 +413,7 @@ func TestSyncTasksSort_NamespaceAndObjectInNamespace(t *testing.T) {
 				"metadata": map[string]any{
 					"name": "myNamespace2",
 					"annotations": map[string]string{
-						"argocd.argoproj.io/sync-wave": "2",
+						"apps.hanzo.ai/sync-wave": "2",
 					},
 				},
 			},

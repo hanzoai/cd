@@ -2036,7 +2036,7 @@ export const podRequests = {
  * @returns The managed-by-url value or null if not present
  */
 export function getManagedByURL(app: any): string | null {
-    return app?.metadata?.annotations?.['argocd.argoproj.io/managed-by-url'] || null;
+    return app?.metadata?.annotations?.['apps.hanzo.ai/managed-by-url'] || null;
 }
 
 /**

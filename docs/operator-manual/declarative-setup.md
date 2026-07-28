@@ -80,12 +80,12 @@ spec:
 ```
 
 > [!WARNING]
-> Without the `resources-finalizer.argocd.argoproj.io` finalizer, deleting an application will not delete the resources it manages. To perform a cascading delete, you must add the finalizer. See [App Deletion](../user-guide/app_deletion.md#about-the-deletion-finalizer).
+> Without the `resources-finalizer.apps.hanzo.ai` finalizer, deleting an application will not delete the resources it manages. To perform a cascading delete, you must add the finalizer. See [App Deletion](../user-guide/app_deletion.md#about-the-deletion-finalizer).
 
 ```yaml
 metadata:
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 ```
 
 ### App of Apps
@@ -122,7 +122,7 @@ metadata:
   namespace: argocd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -197,7 +197,7 @@ metadata:
   name: private-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/private-repo
@@ -215,7 +215,7 @@ metadata:
   name: private-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: git@github.com:argoproj/my-private-repository.git
@@ -234,7 +234,7 @@ metadata:
   name: github-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/my-private-repository
@@ -251,7 +251,7 @@ metadata:
   name: github-enterprise-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://ghe.example.com/argoproj/my-private-repository
@@ -272,7 +272,7 @@ metadata:
   name: github-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://source.developers.google.com/p/my-google-project/r/my-repo
@@ -307,7 +307,7 @@ metadata:
   name: service-principal-for-azure-public-cloud
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo
@@ -321,7 +321,7 @@ metadata:
   name: service-principal-for-azure-other-cloud
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo
@@ -342,7 +342,7 @@ metadata:
   name: first-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/private-repo
@@ -353,7 +353,7 @@ metadata:
   name: second-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/other-private-repo
@@ -364,7 +364,7 @@ metadata:
   name: private-repo-creds
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repo-creds
+    apps.hanzo.ai/secret-type: repo-creds
 stringData:
   type: git
   url: https://github.com/argoproj
@@ -529,7 +529,7 @@ metadata:
   name: private-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/private-repo
@@ -544,7 +544,7 @@ A note on noProxy: Argo CD uses exec to interact with different tools such as he
 ## Clusters
 
 Cluster credentials are stored in secrets same as repositories or repository credentials. Each secret must have label
-`argocd.argoproj.io/secret-type: cluster`.
+`apps.hanzo.ai/secret-type: cluster`.
 
 The secret data can include the following fields:
 
@@ -615,7 +615,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -633,7 +633,7 @@ stringData:
 ### Skipping Cluster Reconciliation
 
 You can prevent the application controller from reconciling all apps targeting a cluster by annotating its
-secret with `argocd.argoproj.io/skip-reconcile: "true"`. This uses the same annotation as
+secret with `apps.hanzo.ai/skip-reconcile: "true"`. This uses the same annotation as
 [Skip Application Reconcile](../user-guide/skip_reconcile.md), but applied at the cluster level.
 
 The cluster remains visible in API responses (`argocd cluster list`), but the controller treats it as unmanaged.
@@ -644,9 +644,9 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
   annotations:
-    argocd.argoproj.io/skip-reconcile: "true"
+    apps.hanzo.ai/skip-reconcile: "true"
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -664,13 +664,13 @@ stringData:
 To skip an existing cluster:
 
 ```bash
-kubectl -n argocd annotate secret mycluster-secret argocd.argoproj.io/skip-reconcile=true
+kubectl -n argocd annotate secret mycluster-secret apps.hanzo.ai/skip-reconcile=true
 ```
 
 To resume reconciliation:
 
 ```bash
-kubectl -n argocd annotate secret mycluster-secret argocd.argoproj.io/skip-reconcile-
+kubectl -n argocd annotate secret mycluster-secret apps.hanzo.ai/skip-reconcile-
 ```
 
 ### EKS
@@ -683,7 +683,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: "eks-cluster-name-for-argo"
@@ -1014,7 +1014,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster
@@ -1061,7 +1061,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: "mycluster.com"
@@ -1139,7 +1139,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1204,7 +1204,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1239,7 +1239,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1319,7 +1319,7 @@ metadata:
   name: argo-helm
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   name: argo
   url: https://argoproj.github.io/argo-helm
@@ -1339,7 +1339,7 @@ metadata:
   name: oci-helm-chart
   namespace: oci-helm-chart
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   name: oci-helm-chart
   url: myregistry.example.com

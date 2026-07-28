@@ -37,7 +37,7 @@ func TestGenerateParamsForDuckType(t *testing.T) {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"environment":                    "staging",
 					"org":                            "foo",
 				},
@@ -61,7 +61,7 @@ func TestGenerateParamsForDuckType(t *testing.T) {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"environment":                    "production",
 					"org":                            "bar",
 				},
@@ -369,7 +369,7 @@ func TestGenerateParamsForDuckTypeGoTemplate(t *testing.T) {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"environment":                    "staging",
 					"org":                            "foo",
 				},
@@ -393,7 +393,7 @@ func TestGenerateParamsForDuckTypeGoTemplate(t *testing.T) {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 					"environment":                    "production",
 					"org":                            "bar",
 				},

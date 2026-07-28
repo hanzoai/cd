@@ -86,7 +86,7 @@ func TestSyncWithCreateNamespaceAndDryRunError(t *testing.T) {
 }
 
 // TestSyncOptionsValidateFalse verifies we can disable validation during kubectl apply, using the
-// 'argocd.argoproj.io/sync-options: Validate=false' sync option
+// 'apps.hanzo.ai/sync-options: Validate=false' sync option
 func TestSyncOptionsValidateFalse(t *testing.T) {
 	Given(t).
 		Path("sync-options-validate-false").
@@ -100,7 +100,7 @@ func TestSyncOptionsValidateFalse(t *testing.T) {
 	// Expect(SyncStatusIs(SyncStatusCodeOutOfSync))
 }
 
-// TestSyncOptionsValidateTrue verifies when 'argocd.argoproj.io/sync-options: Validate=false' is
+// TestSyncOptionsValidateTrue verifies when 'apps.hanzo.ai/sync-options: Validate=false' is
 // not present, then validation is performed and we fail during the apply
 func TestSyncOptionsValidateTrue(t *testing.T) {
 	// k3s does not validate at all, so this test does not work
@@ -186,7 +186,7 @@ func TestSyncWithSkipHook(t *testing.T) {
 		Expect(SyncStatusIs(SyncStatusCodeSynced)).
 		// app should remain synced when app has skipped annotation even if git change detected
 		When().
-		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "argocd.argoproj.io/hook": "Skip" }}]`).
+		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "apps.hanzo.ai/hook": "Skip" }}]`).
 		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "replace", "path": "/spec/replicas", "value": 1 }]`).
 		Refresh(RefreshTypeNormal).
 		Then().
@@ -219,7 +219,7 @@ func TestSyncWithForceReplace(t *testing.T) {
 		// and does not get stuck in terminating state
 		When().
 		PatchFile("guestbook-ui-deployment.yaml", fmt.Sprintf(`[{ "op": "add", "path": "/metadata/finalizers", "value": [%q]}]`, TestFinalizer)).
-		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "argocd.argoproj.io/sync-options": "Force=true,Replace=true" }}]`).
+		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "apps.hanzo.ai/sync-options": "Force=true,Replace=true" }}]`).
 		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/spec/selector/matchLabels/env", "value": "e2e" }, { "op": "add", "path": "/spec/template/metadata/labels/env", "value": "e2e" }]`).
 		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "replace", "path": "/spec/replicas", "value": 2 }]`).
 		Refresh(RefreshTypeNormal).

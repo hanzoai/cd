@@ -29,7 +29,7 @@ metadata:
   name: argocd-example-apps
   labels:
     # Note that this is "repository-push" instead of "repository". The same secret should never be used for both push and pull access.
-    argocd.argoproj.io/secret-type: repository-push
+    apps.hanzo.ai/secret-type: repository-push
 type: Opaque
 stringData:
   url: https://github.com/argoproj/argocd-example-apps.git

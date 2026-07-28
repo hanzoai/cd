@@ -135,9 +135,9 @@ k8s_resource(
 k8s_resource(
     new_name='cluster-resources',
     objects=[
-        'applications.argoproj.io:customresourcedefinition',
-        'applicationsets.argoproj.io:customresourcedefinition',
-        'appprojects.argoproj.io:customresourcedefinition',
+        'applications.apps.hanzo.ai:customresourcedefinition',
+        'applicationsets.apps.hanzo.ai:customresourcedefinition',
+        'appprojects.apps.hanzo.ai:customresourcedefinition',
         'argocd:namespace'
     ]
 )

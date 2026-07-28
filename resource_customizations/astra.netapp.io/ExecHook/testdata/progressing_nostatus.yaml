@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: "2024-04-25T14:17:52Z"
   generation: 3
   labels:
-    argocd.argoproj.io/instance: ghost-demo
+    apps.hanzo.ai/instance: ghost-demo
   name: pre-snapshot
   namespace: astra-connector
   resourceVersion: "11342335"

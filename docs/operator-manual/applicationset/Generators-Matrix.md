@@ -51,7 +51,7 @@ spec:
           - clusters:
               selector:
                 matchLabels:
-                  argocd.argoproj.io/secret-type: cluster
+                  apps.hanzo.ai/secret-type: cluster
   template:
     metadata:
       name: '{{.path.basename}}-{{.name}}'
@@ -135,7 +135,7 @@ spec:
           - clusters:
               selector:
                 matchLabels:
-                  argocd.argoproj.io/secret-type: cluster
+                  apps.hanzo.ai/secret-type: cluster
                   kubernetes.io/environment: '{{.path.basename}}'
   template:
     metadata:
@@ -395,7 +395,7 @@ For example, the below example would be invalid (cluster-generator must come aft
               - clusters:
                   selector:
                     matchLabels:
-                      argocd.argoproj.io/secret-type: cluster
+                      apps.hanzo.ai/secret-type: cluster
                       kubernetes.io/environment: '{{.path.basename}}' # {{.path.basename}} is produced by git-files generator
               # git generator, 'child' #2
               - git:
@@ -412,7 +412,7 @@ For example, the below example would be invalid (cluster-generator must come aft
               - clusters:
                   selector:
                     matchLabels:
-                      argocd.argoproj.io/secret-type: cluster
+                      apps.hanzo.ai/secret-type: cluster
                       kubernetes.io/environment: '{{.path.basename}}' # {{.path.basename}} is produced by git-files generator
               # git generator, 'child' #2
               - git:

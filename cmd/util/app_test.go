@@ -457,7 +457,7 @@ metadata:
   name: sth1
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   destination:
     namespace: sth
@@ -478,7 +478,7 @@ metadata:
   name: sth2
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.apps.hanzo.ai
 spec:
   destination:
     namespace: sth

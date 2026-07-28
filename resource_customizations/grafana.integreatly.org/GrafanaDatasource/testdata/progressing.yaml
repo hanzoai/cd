@@ -2,8 +2,8 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '3'
-    argocd.argoproj.io/tracking-id: foobar-admin:grafana.integreatly.org/GrafanaDatasource:foo/cluster-local
+    apps.hanzo.ai/sync-wave: '3'
+    apps.hanzo.ai/tracking-id: foobar-admin:grafana.integreatly.org/GrafanaDatasource:foo/cluster-local
   name: cluster-local
   namespace: foo
 spec:

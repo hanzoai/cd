@@ -312,7 +312,7 @@ data:
 kind: Secret
 metadata:
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
   name: some-secret
   namespace: ` + test.FakeArgoCDNamespace + `
 type: Opaque
@@ -481,7 +481,7 @@ var fakePreDeleteHook = `
       "app.kubernetes.io/instance": "my-app"
     },
     "annotations": {
-      "argocd.argoproj.io/hook": "PreDelete"
+      "apps.hanzo.ai/hook": "PreDelete"
     }
   },
   "spec": {
@@ -512,8 +512,8 @@ var fakePostDeleteHook = `
       "app.kubernetes.io/instance": "my-app"
     },
     "annotations": {
-      "argocd.argoproj.io/hook": "PostDelete",
-      "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"
+      "apps.hanzo.ai/hook": "PostDelete",
+      "apps.hanzo.ai/hook-delete-policy": "HookSucceeded"
     }
   },
   "spec": {
@@ -548,8 +548,8 @@ var fakeServiceAccount = `
     "name": "hook-serviceaccount",
     "namespace": "default",
     "annotations": {
-      "argocd.argoproj.io/hook": "PostDelete",
-      "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "apps.hanzo.ai/hook": "PostDelete",
+      "apps.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   }
 }
@@ -563,8 +563,8 @@ var fakeRole = `
     "name": "hook-role",
     "namespace": "default",
     "annotations": {
-      "argocd.argoproj.io/hook": "PostDelete",
-      "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "apps.hanzo.ai/hook": "PostDelete",
+      "apps.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   },
   "rules": [
@@ -585,8 +585,8 @@ var fakeRoleBinding = `
     "name": "hook-rolebinding",
     "namespace": "default",
     "annotations": {
-      "argocd.argoproj.io/hook": "PostDelete",
-      "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "apps.hanzo.ai/hook": "PostDelete",
+      "apps.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   },
   "roleRef": {
@@ -3687,7 +3687,7 @@ func Test_syncDeleteOption(t *testing.T) {
 	})
 	t.Run("with delete set to false object is retained", func(t *testing.T) {
 		cmObj := kube.MustToUnstructured(&cm)
-		cmObj.SetAnnotations(map[string]string{"argocd.argoproj.io/sync-options": "Delete=false"})
+		cmObj.SetAnnotations(map[string]string{"apps.hanzo.ai/sync-options": "Delete=false"})
 		assert.False(t, ctrl.shouldBeDeleted(app, cmObj))
 	})
 	t.Run("with delete set to false object is retained", func(t *testing.T) {
@@ -3707,7 +3707,7 @@ func Test_syncDeleteOption(t *testing.T) {
 		newApp := app.DeepCopy()
 		newApp.Spec.SyncPolicy.SyncOptions = []string{"Delete=false"}
 		cmObj := kube.MustToUnstructured(&cm)
-		cmObj.SetAnnotations(map[string]string{"argocd.argoproj.io/sync-options": "Delete=foo"})
+		cmObj.SetAnnotations(map[string]string{"apps.hanzo.ai/sync-options": "Delete=foo"})
 		assert.True(t, ctrl.shouldBeDeleted(newApp, cmObj))
 	})
 }

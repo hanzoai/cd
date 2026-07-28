@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/version: 0.3.11
-    argocd.argoproj.io/instance: test
+    apps.hanzo.ai/instance: test
     cluster.x-k8s.io/cluster-name: test
   name: test-md-0
   namespace: test

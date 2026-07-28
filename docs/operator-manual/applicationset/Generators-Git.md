@@ -451,9 +451,9 @@ You can customize this interval per ApplicationSet using
 > Git generator might not see files or directories from new commits
 > until the previous cache entry expires.
 > 
-## The `argocd.argoproj.io/application-set-refresh` Annotation
+## The `apps.hanzo.ai/application-set-refresh` Annotation
 
-Setting the `argocd.argoproj.io/application-set-refresh` annotation
+Setting the `apps.hanzo.ai/application-set-refresh` annotation
 (to any value) triggers an ApplicationSet refresh. This annotation
 forces the Git provider to resolve Git references directly, bypassing
 the Revision Cache. The ApplicationSet controller removes this

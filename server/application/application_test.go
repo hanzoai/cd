@@ -835,7 +835,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.Get(adminCtx, &application.ApplicationQuery{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.Get(adminCtx, &application.ApplicationQuery{Name: new("doest-not-exist"), Project: []string{"test"}})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("GetManifests", func(t *testing.T) {
@@ -846,7 +846,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.GetManifests(adminCtx, &application.ApplicationManifestQuery{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.GetManifests(adminCtx, &application.ApplicationManifestQuery{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("ListResourceEvents", func(t *testing.T) {
@@ -857,7 +857,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.ListResourceEvents(adminCtx, &application.ApplicationResourceEventsQuery{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.ListResourceEvents(adminCtx, &application.ApplicationResourceEventsQuery{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("UpdateSpec", func(t *testing.T) {
@@ -880,7 +880,7 @@ func TestNoAppEnumeration(t *testing.T) {
 			Destination: v1alpha1.ApplicationDestination{Namespace: "default", Server: "https://cluster-api.example.com"},
 			Source:      &v1alpha1.ApplicationSource{RepoURL: "https://some-fake-source", Path: "."},
 		}})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("Patch", func(t *testing.T) {
@@ -891,7 +891,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.Patch(adminCtx, &application.ApplicationPatchRequest{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.Patch(adminCtx, &application.ApplicationPatchRequest{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("GetResource", func(t *testing.T) {
@@ -902,7 +902,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.GetResource(adminCtx, &application.ApplicationResourceRequest{Name: new("doest-not-exist"), ResourceName: new("test"), Group: new("apps"), Kind: new("Deployment"), Namespace: new("test")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.GetResource(adminCtx, &application.ApplicationResourceRequest{Name: new("doest-not-exist"), Project: new("test"), ResourceName: new("test"), Group: new("apps"), Kind: new("Deployment"), Namespace: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("PatchResource", func(t *testing.T) {
@@ -915,7 +915,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.PatchResource(adminCtx, &application.ApplicationResourcePatchRequest{Name: new("doest-not-exist"), ResourceName: new("test"), Group: new("apps"), Kind: new("Deployment"), Namespace: new("test"), Patch: new(`[{"op": "replace", "path": "/spec/replicas", "value": 3}]`)})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.PatchResource(adminCtx, &application.ApplicationResourcePatchRequest{Name: new("doest-not-exist"), Project: new("test"), ResourceName: new("test"), Group: new("apps"), Kind: new("Deployment"), Namespace: new("test"), Patch: new(`[{"op": "replace", "path": "/spec/replicas", "value": 3}]`)})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("DeleteResource", func(t *testing.T) {
@@ -926,7 +926,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.DeleteResource(adminCtx, &application.ApplicationResourceDeleteRequest{Name: new("doest-not-exist"), ResourceName: new("test"), Group: new("apps"), Kind: new("Deployment"), Namespace: new("test")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.DeleteResource(adminCtx, &application.ApplicationResourceDeleteRequest{Name: new("doest-not-exist"), Project: new("test"), ResourceName: new("test"), Group: new("apps"), Kind: new("Deployment"), Namespace: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("ResourceTree", func(t *testing.T) {
@@ -937,7 +937,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.ResourceTree(adminCtx, &application.ResourcesQuery{ApplicationName: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.ResourceTree(adminCtx, &application.ResourcesQuery{ApplicationName: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("RevisionMetadata", func(t *testing.T) {
@@ -950,7 +950,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.RevisionMetadata(adminCtx, &application.RevisionMetadataQuery{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.RevisionMetadata(adminCtx, &application.RevisionMetadataQuery{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("RevisionChartDetails", func(t *testing.T) {
@@ -961,7 +961,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.RevisionChartDetails(adminCtx, &application.RevisionMetadataQuery{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.RevisionChartDetails(adminCtx, &application.RevisionMetadataQuery{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("ManagedResources", func(t *testing.T) {
@@ -972,7 +972,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.ManagedResources(adminCtx, &application.ResourcesQuery{ApplicationName: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.ManagedResources(adminCtx, &application.ResourcesQuery{ApplicationName: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("Sync", func(t *testing.T) {
@@ -983,7 +983,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.Sync(adminCtx, &application.ApplicationSyncRequest{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.Sync(adminCtx, &application.ApplicationSyncRequest{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("TerminateOperation", func(t *testing.T) {
@@ -997,7 +997,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.TerminateOperation(adminCtx, &application.OperationTerminateRequest{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.TerminateOperation(adminCtx, &application.OperationTerminateRequest{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("Rollback", func(t *testing.T) {
@@ -1011,7 +1011,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.Rollback(adminCtx, &application.ApplicationRollbackRequest{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.Rollback(adminCtx, &application.ApplicationRollbackRequest{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("ListResourceActions", func(t *testing.T) {
@@ -1024,7 +1024,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.ListResourceActions(adminCtx, &application.ApplicationResourceRequest{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.ListResourceActions(adminCtx, &application.ApplicationResourceRequest{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	//nolint:staticcheck // SA1019: RunResourceAction is deprecated, but we still need to support it for backward compatibility.
@@ -1038,7 +1038,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.RunResourceAction(adminCtx, &application.ResourceActionRunRequest{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.RunResourceAction(adminCtx, &application.ResourceActionRunRequest{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("RunResourceActionV2", func(t *testing.T) {
@@ -1051,7 +1051,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.RunResourceActionV2(adminCtx, &application.ResourceActionRunRequestV2{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.RunResourceActionV2(adminCtx, &application.ResourceActionRunRequestV2{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("GetApplicationSyncWindows", func(t *testing.T) {
@@ -1062,7 +1062,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.GetApplicationSyncWindows(adminCtx, &application.ApplicationSyncWindowsQuery{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.GetApplicationSyncWindows(adminCtx, &application.ApplicationSyncWindowsQuery{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("GetManifestsWithFiles", func(t *testing.T) {
@@ -1073,7 +1073,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		err = appServer.GetManifestsWithFiles(&TestServerStream{ctx: adminCtx, appName: "does-not-exist"})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		err = appServer.GetManifestsWithFiles(&TestServerStream{ctx: adminCtx, appName: "does-not-exist", project: "test"})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("WatchResourceTree", func(t *testing.T) {
@@ -1084,7 +1084,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		err = appServer.WatchResourceTree(&application.ResourcesQuery{ApplicationName: new("does-not-exist")}, &TestResourceTreeServer{ctx: adminCtx})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		err = appServer.WatchResourceTree(&application.ResourcesQuery{ApplicationName: new("does-not-exist"), Project: new("test")}, &TestResourceTreeServer{ctx: adminCtx})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("PodLogs", func(t *testing.T) {
@@ -1095,7 +1095,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		err = appServer.PodLogs(&application.ApplicationPodLogsQuery{Name: new("does-not-exist")}, &TestPodLogsServer{ctx: adminCtx})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		err = appServer.PodLogs(&application.ApplicationPodLogsQuery{Name: new("does-not-exist"), Project: new("test")}, &TestPodLogsServer{ctx: adminCtx})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("ListLinks", func(t *testing.T) {
@@ -1106,7 +1106,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.ListLinks(adminCtx, &application.ListAppLinksRequest{Name: new("does-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.ListLinks(adminCtx, &application.ListAppLinksRequest{Name: new("does-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	t.Run("ListResourceLinks", func(t *testing.T) {
@@ -1117,7 +1117,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.ListResourceLinks(adminCtx, &application.ApplicationResourceRequest{Name: new("does-not-exist"), ResourceName: new("test"), Group: new("apps"), Kind: new("Deployment"), Namespace: new("test")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.ListResourceLinks(adminCtx, &application.ApplicationResourceRequest{Name: new("does-not-exist"), ResourceName: new("test"), Group: new("apps"), Kind: new("Deployment"), Namespace: new("test"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"does-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 
 	// Do this last so other stuff doesn't fail.
@@ -1129,7 +1129,7 @@ func TestNoAppEnumeration(t *testing.T) {
 		_, err = appServer.Delete(adminCtx, &application.ApplicationDeleteRequest{Name: new("doest-not-exist")})
 		require.EqualError(t, err, common.PermissionDeniedAPIError.Error(), "error message must be _only_ the permission error, to avoid leaking information about app existence")
 		_, err = appServer.Delete(adminCtx, &application.ApplicationDeleteRequest{Name: new("doest-not-exist"), Project: new("test")})
-		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.argoproj.io \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
+		assert.EqualError(t, err, "rpc error: code = NotFound desc = applications.apps.hanzo.ai \"doest-not-exist\" not found", "when the request specifies a project, we can return the standard k8s error message")
 	})
 }
 

@@ -804,7 +804,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "argocd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "deploy",
+						"apps.hanzo.ai/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -829,7 +829,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "argocd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "manifests",
+						"apps.hanzo.ai/manifest-generate-paths": "manifests",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -854,7 +854,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "argocd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "manifests;dev/deploy;other/path",
+						"apps.hanzo.ai/manifest-generate-paths": "manifests;dev/deploy;other/path",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -906,7 +906,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "argocd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "components",
+						"apps.hanzo.ai/manifest-generate-paths": "components",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -988,7 +988,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "argocd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "deploy",
+						"apps.hanzo.ai/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1017,7 +1017,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "argocd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "deploy",
+						"apps.hanzo.ai/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1046,7 +1046,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "argocd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "deploy",
+						"apps.hanzo.ai/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1683,7 +1683,7 @@ func verifyAnnotations(t *testing.T, patchData []byte, expectRefresh bool, expec
 	require.True(t, hasAnnotations, "patch should have annotations")
 
 	// Check refresh annotation
-	refreshValue, hasRefresh := annotations["argocd.argoproj.io/refresh"]
+	refreshValue, hasRefresh := annotations["apps.hanzo.ai/refresh"]
 	if expectRefresh {
 		assert.True(t, hasRefresh, "should have refresh annotation")
 		assert.Equal(t, "normal", refreshValue, "refresh annotation should be 'normal'")
@@ -1692,7 +1692,7 @@ func verifyAnnotations(t *testing.T, patchData []byte, expectRefresh bool, expec
 	}
 
 	// Check hydrate annotation
-	hydrateValue, hasHydrate := annotations["argocd.argoproj.io/hydrate"]
+	hydrateValue, hasHydrate := annotations["apps.hanzo.ai/hydrate"]
 	if expectHydrate {
 		assert.True(t, hasHydrate, "should have hydrate annotation")
 		assert.Equal(t, "normal", hydrateValue, "hydrate annotation should be 'normal'")
