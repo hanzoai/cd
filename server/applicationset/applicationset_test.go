@@ -8,7 +8,7 @@ import (
 	cr_fake "sigs.k8s.io/controller-runtime/pkg/client/fake"
 
 	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	"github.com/argoproj/pkg/v2/sync"
+	"github.com/hanzoai/deploy/util/vendored/sync"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"

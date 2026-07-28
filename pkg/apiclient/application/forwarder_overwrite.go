@@ -9,7 +9,7 @@ import (
 
 	"github.com/hanzoai/deploy/util/kube"
 
-	"github.com/argoproj/pkg/v2/grpc/http"
+	"github.com/hanzoai/deploy/util/vendored/grpc-http"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	//nolint:staticcheck

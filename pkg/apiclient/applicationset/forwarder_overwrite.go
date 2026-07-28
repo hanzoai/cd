@@ -3,7 +3,7 @@ package applicationset
 import (
 	"errors"
 
-	"github.com/argoproj/pkg/v2/grpc/http"
+	"github.com/hanzoai/deploy/util/vendored/grpc-http"
 
 	//nolint:staticcheck
 	"github.com/golang/protobuf/proto"
