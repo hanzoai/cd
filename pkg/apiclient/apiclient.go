@@ -45,7 +45,7 @@ import (
 	settingspkg "github.com/hanzoai/deploy/pkg/apiclient/settings"
 	versionpkg "github.com/hanzoai/deploy/pkg/apiclient/version"
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/env"
 	grpc_util "github.com/hanzoai/deploy/util/grpc"
 	http_util "github.com/hanzoai/deploy/util/http"
@@ -810,7 +810,7 @@ func (c *client) NewAccountClientOrDie() (io.Closer, accountpkg.AccountServiceCl
 func (c *client) WatchApplicationSetWithRetry(ctx context.Context, appSetName, _ string) chan *v1alpha1.ApplicationSetWatchEvent {
 	appSetEventCh := make(chan *v1alpha1.ApplicationSetWatchEvent)
 	cancelled := false
-	appSetName, appSetNs := argo.ParseFromQualifiedName(appSetName, "")
+	appSetName, appSetNs := cd.ParseFromQualifiedName(appSetName, "")
 	go func() {
 		defer close(appSetEventCh)
 		for !cancelled {
@@ -853,7 +853,7 @@ func (c *client) WatchApplicationSetWithRetry(ctx context.Context, appSetName, _
 func (c *client) WatchApplicationWithRetry(ctx context.Context, appName string, revision string) chan *v1alpha1.ApplicationWatchEvent {
 	appEventsCh := make(chan *v1alpha1.ApplicationWatchEvent)
 	cancelled := false
-	appName, appNs := argo.ParseFromQualifiedName(appName, "")
+	appName, appNs := cd.ParseFromQualifiedName(appName, "")
 	go func() {
 		defer close(appEventsCh)
 		for !cancelled {

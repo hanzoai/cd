@@ -10,7 +10,7 @@ import (
 
 	"github.com/hanzoai/deploy/util/notification/k8s"
 
-	service "github.com/hanzoai/deploy/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/cd"
 
 	argocert "github.com/hanzoai/deploy/util/cert"
 
@@ -65,7 +65,7 @@ type notificationController struct {
 func NewController(
 	k8sClient kubernetes.Interface,
 	client dynamic.Interface,
-	argocdService service.Service,
+	cdService service.Service,
 	namespace string,
 	applicationNamespaces []string,
 	appLabelSelector string,
@@ -92,7 +92,7 @@ func NewController(
 	}
 	secretInformer := k8s.NewSecretInformer(k8sClient, notificationConfigNamespace, secretName)
 	configMapInformer := k8s.NewConfigMapInformer(k8sClient, notificationConfigNamespace, configMapName)
-	apiFactory := api.NewFactory(settings.GetFactorySettings(argocdService, secretName, configMapName, selfServiceNotificationEnabled), namespace, secretInformer, configMapInformer)
+	apiFactory := api.NewFactory(settings.GetFactorySettings(cdService, secretName, configMapName, selfServiceNotificationEnabled), namespace, secretInformer, configMapInformer)
 
 	res := &notificationController{
 		secretInformer:    secretInformer,
@@ -180,7 +180,7 @@ func newInformer(resClient dynamic.ResourceInterface, controllerNamespace string
 }
 
 func (c *notificationController) Init(ctx context.Context) error {
-	// resolve certificates using injected "argocd-tls-certs-cm" ConfigMap
+	// resolve certificates using injected "cd-tls-certs-cm" ConfigMap
 	httputil.SetCertResolver(argocert.GetCertificateForConnect)
 
 	go c.appInformer.Run(ctx.Done())

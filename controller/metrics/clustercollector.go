@@ -24,31 +24,31 @@ var (
 	descClusterLabels *prometheus.Desc
 
 	descClusterInfo = prometheus.NewDesc(
-		"argocd_cluster_info",
+		"cd_cluster_info",
 		"Information about cluster.",
 		append(descClusterDefaultLabels, "k8s_version", "name"),
 		nil,
 	)
 	descClusterCacheResources = prometheus.NewDesc(
-		"argocd_cluster_api_resource_objects",
+		"cd_cluster_api_resource_objects",
 		"Number of k8s resource objects in the cache.",
 		descClusterDefaultLabels,
 		nil,
 	)
 	descClusterAPIs = prometheus.NewDesc(
-		"argocd_cluster_api_resources",
+		"cd_cluster_api_resources",
 		"Number of monitored kubernetes API resources.",
 		descClusterDefaultLabels,
 		nil,
 	)
 	descClusterCacheAgeSeconds = prometheus.NewDesc(
-		"argocd_cluster_cache_age_seconds",
+		"cd_cluster_cache_age_seconds",
 		"Cluster cache age in seconds.",
 		descClusterDefaultLabels,
 		nil,
 	)
 	descClusterConnectionStatus = prometheus.NewDesc(
-		"argocd_cluster_connection_status",
+		"cd_cluster_connection_status",
 		"The k8s cluster current connection status.",
 		append(descClusterDefaultLabels, "k8s_version"),
 		nil,
@@ -79,7 +79,7 @@ func NewClusterCollector(ctx context.Context, source HasClustersInfo, clusterLis
 	if len(clusterLabels) > 0 {
 		normalizedClusterLabels := metricsutil.NormalizeLabels("label", clusterLabels)
 		descClusterLabels = prometheus.NewDesc(
-			"argocd_cluster_labels",
+			"cd_cluster_labels",
 			"Argo Cluster labels converted to Prometheus labels",
 			append(append(descClusterDefaultLabels, "name"), normalizedClusterLabels...),
 			nil,

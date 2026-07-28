@@ -269,6 +269,6 @@ func (cg *ClusterGenerator) Clean(opts *util.GenerateOpts) error {
 
 	secrets := cg.clientSet.CoreV1().Secrets(opts.Namespace)
 	return secrets.DeleteCollection(context.TODO(), metav1.DeleteOptions{}, metav1.ListOptions{
-		LabelSelector: "app.kubernetes.io/generated-by=argocd-generator",
+		LabelSelector: "app.kubernetes.io/generated-by=cd-generator",
 	})
 }

@@ -14,37 +14,37 @@ import (
 
 	"github.com/hanzoai/deploy/util/notification/expression"
 
-	service "github.com/hanzoai/deploy/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/cd"
 )
 
-func GetFactorySettings(argocdService service.Service, secretName, configMapName string, selfServiceNotificationEnabled bool) api.Settings {
+func GetFactorySettings(cdService service.Service, secretName, configMapName string, selfServiceNotificationEnabled bool) api.Settings {
 	return api.Settings{
 		SecretName:    secretName,
 		ConfigMapName: configMapName,
 		InitGetVars: func(cfg *api.Config, configMap *corev1.ConfigMap, secret *corev1.Secret) (api.GetVars, error) {
 			if selfServiceNotificationEnabled {
-				return initGetVarsWithoutSecret(argocdService, cfg, configMap, secret)
+				return initGetVarsWithoutSecret(cdService, cfg, configMap, secret)
 			}
-			return initGetVars(argocdService, cfg, configMap, secret)
+			return initGetVars(cdService, cfg, configMap, secret)
 		},
 	}
 }
 
-// GetFactorySettingsForCLI allows the initialization of argocdService to be deferred until it is used, when InitGetVars is called.
+// GetFactorySettingsForCLI allows the initialization of cdService to be deferred until it is used, when InitGetVars is called.
 func GetFactorySettingsForCLI(serviceGetter func() service.Service, secretName, configMapName string, selfServiceNotificationEnabled bool) api.Settings {
 	return api.Settings{
 		SecretName:    secretName,
 		ConfigMapName: configMapName,
 		InitGetVars: func(cfg *api.Config, configMap *corev1.ConfigMap, secret *corev1.Secret) (api.GetVars, error) {
-			argocdService := serviceGetter()
-			if argocdService == nil {
-				return nil, errors.New("argocdService is not initialized")
+			cdService := serviceGetter()
+			if cdService == nil {
+				return nil, errors.New("cdService is not initialized")
 			}
 
 			if selfServiceNotificationEnabled {
-				return initGetVarsWithoutSecret(argocdService, cfg, configMap, secret)
+				return initGetVarsWithoutSecret(cdService, cfg, configMap, secret)
 			}
-			return initGetVars(argocdService, cfg, configMap, secret)
+			return initGetVars(cdService, cfg, configMap, secret)
 		},
 	}
 }
@@ -62,7 +62,7 @@ func getContext(cfg *api.Config, configMap *corev1.ConfigMap, secret *corev1.Sec
 	return context, nil
 }
 
-func initGetVarsWithoutSecret(argocdService service.Service, cfg *api.Config, configMap *corev1.ConfigMap, secret *corev1.Secret) (api.GetVars, error) {
+func initGetVarsWithoutSecret(cdService service.Service, cfg *api.Config, configMap *corev1.ConfigMap, secret *corev1.Secret) (api.GetVars, error) {
 	context, err := getContext(cfg, configMap, secret)
 	if err != nil {
 		return nil, err
@@ -75,17 +75,17 @@ func initGetVarsWithoutSecret(argocdService service.Service, cfg *api.Config, co
 		}
 
 		// Add AppProject to template variables
-		if appProject := getAppProjectForTemplate(argocdService, obj); appProject != nil {
+		if appProject := getAppProjectForTemplate(cdService, obj); appProject != nil {
 			vars["appProject"] = appProject
 		} else {
 			vars["appProject"] = map[string]any{}
 		}
 
-		return expression.Spawn(&unstructured.Unstructured{Object: obj}, argocdService, vars)
+		return expression.Spawn(&unstructured.Unstructured{Object: obj}, cdService, vars)
 	}, nil
 }
 
-func initGetVars(argocdService service.Service, cfg *api.Config, configMap *corev1.ConfigMap, secret *corev1.Secret) (api.GetVars, error) {
+func initGetVars(cdService service.Service, cfg *api.Config, configMap *corev1.ConfigMap, secret *corev1.Secret) (api.GetVars, error) {
 	context, err := getContext(cfg, configMap, secret)
 	if err != nil {
 		return nil, err
@@ -99,19 +99,19 @@ func initGetVars(argocdService service.Service, cfg *api.Config, configMap *core
 		}
 
 		// Add AppProject to template variables
-		if appProject := getAppProjectForTemplate(argocdService, obj); appProject != nil {
+		if appProject := getAppProjectForTemplate(cdService, obj); appProject != nil {
 			vars["appProject"] = appProject
 		} else {
 			vars["appProject"] = map[string]any{}
 		}
 
-		return expression.Spawn(&unstructured.Unstructured{Object: obj}, argocdService, vars)
+		return expression.Spawn(&unstructured.Unstructured{Object: obj}, cdService, vars)
 	}, nil
 }
 
 // getAppProjectForTemplate retrieves the AppProject as an unstructured object for an Application object
 // Returns nil if the project cannot be found or an error occurs
-func getAppProjectForTemplate(argocdService service.Service, obj map[string]any) map[string]any {
+func getAppProjectForTemplate(cdService service.Service, obj map[string]any) map[string]any {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -141,7 +141,7 @@ func getAppProjectForTemplate(argocdService service.Service, obj map[string]any)
 	appName, _ := metadata["name"].(string)
 
 	// Fetch the AppProject
-	appProjectObj, err := argocdService.GetAppProject(ctx, projectName, namespace)
+	appProjectObj, err := cdService.GetAppProject(ctx, projectName, namespace)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"app":       appName,

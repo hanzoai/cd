@@ -53,7 +53,7 @@ func (s *Server) Create(_ context.Context, q *session.SessionCreateRequest) (*se
 
 	if q.Token != "" {
 		s.mgr.IncLoginRequestCounter(failure)
-		return nil, status.Errorf(codes.Unauthenticated, "token-based session creation no longer supported. please upgrade argocd cli to v0.7+")
+		return nil, status.Errorf(codes.Unauthenticated, "token-based session creation no longer supported. please upgrade cd cli to v0.7+")
 	}
 	if q.Username == "" || q.Password == "" {
 		s.mgr.IncLoginRequestCounter(failure)

@@ -21,7 +21,7 @@ import (
 
 	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/rbac"
 	"github.com/hanzoai/deploy/util/security"
@@ -60,7 +60,7 @@ func NewHandler(appLister applisters.ApplicationLister, namespace string, enable
 }
 
 func (s *terminalHandler) getApplicationClusterRawConfig(ctx context.Context, a *appv1.Application) (*rest.Config, error) {
-	destCluster, err := argo.GetDestinationCluster(ctx, a.Spec.Destination, s.db)
+	destCluster, err := cd.GetDestinationCluster(ctx, a.Spec.Destination, s.db)
 	if err != nil {
 		return nil, err
 	}
@@ -77,13 +77,13 @@ type GetSettingsFunc func() (*settings.ArgoCDSettings, error)
 // feature is enabled before invoking the main handler
 func (s *terminalHandler) WithFeatureFlagMiddleware(getSettings GetSettingsFunc) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		argocdSettings, err := getSettings()
+		cdSettings, err := getSettings()
 		if err != nil {
 			log.Errorf("error executing WithFeatureFlagMiddleware: error getting settings: %s", err)
 			http.Error(w, "Failed to get settings", http.StatusBadRequest)
 			return
 		}
-		if !argocdSettings.ExecEnabled {
+		if !cdSettings.ExecEnabled {
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -107,27 +107,27 @@ func (s *terminalHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	appNamespace := q.Get("appNamespace")
 
-	if !argo.IsValidPodName(podName) {
+	if !cd.IsValidPodName(podName) {
 		http.Error(w, "Pod name is not valid", http.StatusBadRequest)
 		return
 	}
-	if !argo.IsValidContainerName(container) {
+	if !cd.IsValidContainerName(container) {
 		http.Error(w, "Container name is not valid", http.StatusBadRequest)
 		return
 	}
-	if !argo.IsValidAppName(app) {
+	if !cd.IsValidAppName(app) {
 		http.Error(w, "App name is not valid", http.StatusBadRequest)
 		return
 	}
-	if !argo.IsValidProjectName(project) {
+	if !cd.IsValidProjectName(project) {
 		http.Error(w, "Project name is not valid", http.StatusBadRequest)
 		return
 	}
-	if !argo.IsValidNamespaceName(namespace) {
+	if !cd.IsValidNamespaceName(namespace) {
 		http.Error(w, "Namespace name is not valid", http.StatusBadRequest)
 		return
 	}
-	if !argo.IsValidNamespaceName(appNamespace) {
+	if !cd.IsValidNamespaceName(appNamespace) {
 		http.Error(w, "App namespace name is not valid", http.StatusBadRequest)
 		return
 	}

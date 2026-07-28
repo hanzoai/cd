@@ -23,10 +23,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v1/repos/test-argocd/pr-test/pulls?limit=0&page=1&state=open":
+		case "/api/v1/repos/test-cd/pr-test/pulls?limit=0&page=1&state=open":
 			_, err := io.WriteString(w, `[{
 				"id": 50721,
-				"url": "https://gitea.com/test-argocd/pr-test/pulls/1",
+				"url": "https://gitea.com/test-cd/pr-test/pulls/1",
 				"number": 1,
 				"user": {
 					"id": 4476,
@@ -59,9 +59,9 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"state": "open",
 				"is_locked": false,
 				"comments": 0,
-				"html_url": "https://gitea.com/test-argocd/pr-test/pulls/1",
-				"diff_url": "https://gitea.com/test-argocd/pr-test/pulls/1.diff",
-				"patch_url": "https://gitea.com/test-argocd/pr-test/pulls/1.patch",
+				"html_url": "https://gitea.com/test-cd/pr-test/pulls/1",
+				"diff_url": "https://gitea.com/test-cd/pr-test/pulls/1.diff",
+				"patch_url": "https://gitea.com/test-cd/pr-test/pulls/1.patch",
 				"mergeable": true,
 				"merged": false,
 				"merged_at": null,
@@ -76,7 +76,7 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 						"id": 21618,
 						"owner": {
 							"id": 31480,
-							"login": "test-argocd",
+							"login": "test-cd",
 							"full_name": "",
 							"email": "",
 							"avatar_url": "https://gitea.com/avatars/22d1b1d3f61abf95951c4a958731d848",
@@ -94,10 +94,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 							"followers_count": 0,
 							"following_count": 0,
 							"starred_repos_count": 0,
-							"username": "test-argocd"
+							"username": "test-cd"
 						},
 						"name": "pr-test",
-						"full_name": "test-argocd/pr-test",
+						"full_name": "test-cd/pr-test",
 						"description": "",
 						"empty": false,
 						"private": false,
@@ -107,10 +107,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 						"mirror": false,
 						"size": 28,
 						"language": "",
-						"languages_url": "https://gitea.com/api/v1/repos/test-argocd/pr-test/languages",
-						"html_url": "https://gitea.com/test-argocd/pr-test",
-						"ssh_url": "git@gitea.com:test-argocd/pr-test.git",
-						"clone_url": "https://gitea.com/test-argocd/pr-test.git",
+						"languages_url": "https://gitea.com/api/v1/repos/test-cd/pr-test/languages",
+						"html_url": "https://gitea.com/test-cd/pr-test",
+						"ssh_url": "git@gitea.com:test-cd/pr-test.git",
+						"clone_url": "https://gitea.com/test-cd/pr-test.git",
 						"original_url": "",
 						"website": "",
 						"stars_count": 0,
@@ -159,7 +159,7 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 						"id": 21618,
 						"owner": {
 							"id": 31480,
-							"login": "test-argocd",
+							"login": "test-cd",
 							"full_name": "",
 							"email": "",
 							"avatar_url": "https://gitea.com/avatars/22d1b1d3f61abf95951c4a958731d848",
@@ -177,10 +177,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 							"followers_count": 0,
 							"following_count": 0,
 							"starred_repos_count": 0,
-							"username": "test-argocd"
+							"username": "test-cd"
 						},
 						"name": "pr-test",
-						"full_name": "test-argocd/pr-test",
+						"full_name": "test-cd/pr-test",
 						"description": "",
 						"empty": false,
 						"private": false,
@@ -190,10 +190,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 						"mirror": false,
 						"size": 28,
 						"language": "",
-						"languages_url": "https://gitea.com/api/v1/repos/test-argocd/pr-test/languages",
-						"html_url": "https://gitea.com/test-argocd/pr-test",
-						"ssh_url": "git@gitea.com:test-argocd/pr-test.git",
-						"clone_url": "https://gitea.com/test-argocd/pr-test.git",
+						"languages_url": "https://gitea.com/api/v1/repos/test-cd/pr-test/languages",
+						"html_url": "https://gitea.com/test-cd/pr-test",
+						"ssh_url": "git@gitea.com:test-cd/pr-test.git",
+						"clone_url": "https://gitea.com/test-cd/pr-test.git",
 						"original_url": "",
 						"website": "",
 						"stars_count": 0,
@@ -301,7 +301,7 @@ func TestGiteaList(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		giteaMockHandler(t)(w, r)
 	}))
-	host, err := NewGiteaService("", ts.URL, "test-argocd", "pr-test", []string{"label1"}, false, "", "")
+	host, err := NewGiteaService("", ts.URL, "test-cd", "pr-test", []string{"label1"}, false, "", "")
 	require.NoError(t, err)
 	prs, err := host.List(t.Context())
 	require.NoError(t, err)

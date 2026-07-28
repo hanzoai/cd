@@ -37,7 +37,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{},
 			},
@@ -51,7 +51,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -69,7 +69,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -106,7 +106,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -152,7 +152,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -233,7 +233,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -296,7 +296,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -361,7 +361,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -398,7 +398,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -444,7 +444,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -496,7 +496,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -558,7 +558,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -639,7 +639,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -703,7 +703,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -775,7 +775,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "app-matches-multiple-steps",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -847,7 +847,7 @@ func TestBuildAppDependencyList(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "invalid-match-expression",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -937,7 +937,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -963,7 +963,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1009,7 +1009,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1044,7 +1044,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1080,7 +1080,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1140,7 +1140,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1187,7 +1187,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1234,7 +1234,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1281,7 +1281,7 @@ func TestGetAppsToSync(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1618,7 +1618,7 @@ func TestPerformReverseDeletionStaleCache(t *testing.T) {
 	require.NoError(t, v1alpha1.AddToScheme(scheme))
 
 	appSet := v1alpha1.ApplicationSet{
-		ObjectMeta: metav1.ObjectMeta{Name: "appset", Namespace: "argocd"},
+		ObjectMeta: metav1.ObjectMeta{Name: "appset", Namespace: "cd"},
 		Spec: v1alpha1.ApplicationSetSpec{
 			Strategy: &v1alpha1.ApplicationSetStrategy{
 				Type:          "RollingSync",
@@ -1635,7 +1635,7 @@ func TestPerformReverseDeletionStaleCache(t *testing.T) {
 
 	newApp := func(name, stage string) v1alpha1.Application {
 		return v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "argocd", Labels: map[string]string{"stage": stage}},
+			ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "cd", Labels: map[string]string{"stage": stage}},
 		}
 	}
 	// currentApps mirrors what getCurrentApplications() returns from the stale cache: both apps

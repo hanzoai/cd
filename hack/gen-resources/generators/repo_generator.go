@@ -93,11 +93,11 @@ func (rg *RepoGenerator) Generate(opts *util.GenerateOpts) error {
 				GenerateName: "repo-",
 				Namespace:    opts.Namespace,
 				Labels: map[string]string{
-					"app.kubernetes.io/generated-by": "argocd-generator",
-					"argocd.argoproj.io/secret-type": "repository",
+					"app.kubernetes.io/generated-by": "cd-generator",
+					"cd.argoproj.io/secret-type": "repository",
 				},
 				Annotations: map[string]string{
-					"managed-by": "argocd.argoproj.io",
+					"managed-by": "cd.argoproj.io",
 				},
 			},
 			Data: map[string][]byte{
@@ -120,6 +120,6 @@ func (rg *RepoGenerator) Clean(opts *util.GenerateOpts) error {
 	log.Print("Clean repos")
 	secrets := rg.clientSet.CoreV1().Secrets(opts.Namespace)
 	return secrets.DeleteCollection(context.TODO(), metav1.DeleteOptions{}, metav1.ListOptions{
-		LabelSelector: "app.kubernetes.io/generated-by=argocd-generator",
+		LabelSelector: "app.kubernetes.io/generated-by=cd-generator",
 	})
 }

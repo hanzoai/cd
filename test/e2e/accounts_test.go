@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/hanzoai/deploy/cmd/argocd/commands/headless"
+	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
 	"github.com/hanzoai/deploy/pkg/apiclient/account"
 	"github.com/hanzoai/deploy/pkg/apiclient/session"
 	. "github.com/hanzoai/deploy/test/e2e/fixture"

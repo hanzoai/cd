@@ -43,17 +43,17 @@ func newTestAccountServerExt(t *testing.T, ctx context.Context, enforceFn rbac.C
 	require.NoError(t, err)
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      "cd-cm",
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string]string{},
 	}
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      "cd-secret",
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -91,7 +91,7 @@ func ssoAdminContext(ctx context.Context, iat time.Time) context.Context {
 	//nolint:staticcheck
 	return context.WithValue(ctx, "claims", &jwt.RegisteredClaims{
 		Subject:  "admin",
-		Issuer:   "https://myargocdhost.com/api/dex",
+		Issuer:   "https://mycdhost.com/api/dex",
 		IssuedAt: jwt.NewNumericDate(iat),
 	})
 }

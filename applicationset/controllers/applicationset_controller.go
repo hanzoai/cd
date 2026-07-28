@@ -57,16 +57,16 @@ import (
 	"github.com/hanzoai/deploy/util/settings"
 
 	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	argoutil "github.com/hanzoai/deploy/util/argo"
-	"github.com/hanzoai/deploy/util/argo/normalizers"
+	argoutil "github.com/hanzoai/deploy/util/cd"
+	"github.com/hanzoai/deploy/util/cd/normalizers"
 
 	"github.com/hanzoai/deploy/pkg/apis/application"
 )
 
 const (
-	// Rather than importing the whole argocd-notifications controller, just copying the const here
-	//   https://github.com/argoproj-labs/argocd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/subscriptions.go#L12
-	//   https://github.com/argoproj-labs/argocd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/state.go#L17
+	// Rather than importing the whole cd-notifications controller, just copying the const here
+	//   https://github.com/argoproj-labs/cd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/subscriptions.go#L12
+	//   https://github.com/argoproj-labs/cd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/state.go#L17
 	NotifiedAnnotationKey             = "notified.notifications.argoproj.io"
 	ReconcileRequeueOnValidationError = time.Minute * 3
 	ReverseDeletionOrder              = "Reverse"

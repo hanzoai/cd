@@ -664,7 +664,7 @@ entries: {}
 
 		// Verify User-Agent was set and contains expected components
 		assert.NotEmpty(t, receivedUserAgent, "User-Agent header should be set")
-		assert.Contains(t, receivedUserAgent, "argocd-repo-server", "User-Agent should contain 'argocd-repo-server'")
+		assert.Contains(t, receivedUserAgent, "cd-repo-server", "User-Agent should contain 'cd-repo-server'")
 		t.Logf("User-Agent sent: %s", receivedUserAgent)
 	})
 
@@ -769,7 +769,7 @@ entries: {}
 		require.NoError(t, err)
 
 		// Verify default User-Agent was used
-		assert.Contains(t, receivedUserAgent, "argocd-repo-server", "Should use default User-Agent format")
+		assert.Contains(t, receivedUserAgent, "cd-repo-server", "Should use default User-Agent format")
 		t.Logf("Default User-Agent sent: %s", receivedUserAgent)
 	})
 }

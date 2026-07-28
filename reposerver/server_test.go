@@ -160,7 +160,7 @@ func newTestServer(t *testing.T, clientCAPath string, disableTLS bool) (*reposer
 		10*time.Second,
 	)
 
-	askPassServer := askpass.NewServer(filepath.Join(t.TempDir(), "argocd-askpass.sock"))
+	askPassServer := askpass.NewServer(filepath.Join(t.TempDir(), "cd-askpass.sock"))
 
 	return reposerver.NewServer(
 		metricsServer,

@@ -213,7 +213,7 @@ func TestDeepLinks(t *testing.T) {
 // TestManagedByURLAnnotation tests the managed-by-url annotation logic
 func TestManagedByURLAnnotation(t *testing.T) {
 	t.Run("application with managed-by-url annotation", func(t *testing.T) {
-		managedByURL := "https://argocd-instance-b.example.com"
+		managedByURL := "https://cd-instance-b.example.com"
 
 		// Create an application with managed-by-url annotation
 		app := &v1alpha1.Application{
@@ -304,7 +304,7 @@ func TestManagedByURLAnnotation(t *testing.T) {
 	})
 
 	t.Run("application with managed-by-url and other annotations", func(t *testing.T) {
-		managedByURL := "https://argocd-instance-b.example.com"
+		managedByURL := "https://cd-instance-b.example.com"
 
 		// Create an application with managed-by-url and other annotations
 		app := &v1alpha1.Application{
@@ -312,8 +312,8 @@ func TestManagedByURLAnnotation(t *testing.T) {
 				Name: "test-app",
 				Annotations: map[string]string{
 					v1alpha1.AnnotationKeyManagedByURL: managedByURL,
-					"argocd.argoproj.io/deep-link-1":   "https://grafana.example.com/d/argo/argo-cd-application-dashboard",
-					"argocd.argoproj.io/deep-link-2":   "https://kibana.example.com/app/kibana#/discover",
+					"cd.argoproj.io/deep-link-1":   "https://grafana.example.com/d/argo/argo-cd-application-dashboard",
+					"cd.argoproj.io/deep-link-2":   "https://kibana.example.com/app/kibana#/discover",
 				},
 			},
 		}

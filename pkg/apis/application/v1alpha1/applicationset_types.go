@@ -177,7 +177,7 @@ func (a *ApplicationSetResourceIgnoreDifferences) ToApplicationResourceIgnoreDif
 	}
 }
 
-// ApplicationSetTemplate represents argocd ApplicationSpec
+// ApplicationSetTemplate represents cd ApplicationSpec
 type ApplicationSetTemplate struct {
 	ApplicationSetTemplateMeta `json:"metadata" protobuf:"bytes,1,name=metadata"`
 	Spec                       ApplicationSpec `json:"spec" protobuf:"bytes,2,name=spec"`

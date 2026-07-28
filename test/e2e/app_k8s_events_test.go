@@ -13,7 +13,7 @@ import (
 	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
 )
 
-// resource.includeEventLabelKeys keys set in argocd-cm
+// resource.includeEventLabelKeys keys set in cd-cm
 func TestLabelsOnAppK8sEvents(t *testing.T) {
 	expectedLabels := map[string]string{"app": "test", "environment": "dev"}
 
@@ -42,7 +42,7 @@ func TestLabelsOnAppK8sEvents(t *testing.T) {
 		})
 }
 
-// resource.includeEventLabelKeys keys not set in argocd-cm
+// resource.includeEventLabelKeys keys not set in cd-cm
 func TestNoLabelsOnAppK8sEvents(t *testing.T) {
 	Given(t).
 		Timeout(60).

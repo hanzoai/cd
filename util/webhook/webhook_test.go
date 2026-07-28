@@ -106,7 +106,7 @@ func NewMockHandlerForBitbucketCallback(reactor *reactorDef, applicationNamespac
 	mockDB.EXPECT().ListRepositories(mock.Anything).Return(
 		[]*v1alpha1.Repository{
 			{
-				Repo:     "https://bitbucket.org/test/argocd-examples-pub.git",
+				Repo:     "https://bitbucket.org/test/cd-examples-pub.git",
 				Username: "test",
 				Password: "test",
 			},
@@ -116,7 +116,7 @@ func NewMockHandlerForBitbucketCallback(reactor *reactorDef, applicationNamespac
 				Password: "test",
 			},
 			{
-				Repo:          "git@bitbucket.org:test/argocd-examples-pub.git",
+				Repo:          "git@bitbucket.org:test/cd-examples-pub.git",
 				SSHPrivateKey: "test-ssh-key",
 			},
 		}, nil)
@@ -161,7 +161,7 @@ func newMockHandler(reactor *reactorDef, applicationNamespaces []string, maxPayl
 		appClientset.AddReactor(reactor.verb, reactor.resource, reactor.reaction)
 	}
 	cacheClient := cacheutil.NewCache(cacheutil.NewInMemoryCache(1 * time.Hour))
-	return NewHandler("argocd", applicationNamespaces, 10, 10, appClientset, &fakeAppsLister{clientset: appClientset}, argoSettings, &fakeSettingsSrc{}, cache.NewCache(
+	return NewHandler("cd", applicationNamespaces, 10, 10, appClientset, &fakeAppsLister{clientset: appClientset}, argoSettings, &fakeSettingsSrc{}, cache.NewCache(
 		cacheClient,
 		1*time.Minute,
 		1*time.Minute,
@@ -219,7 +219,7 @@ func TestGitHubCommitEvent_AppsInOtherNamespaces(t *testing.T) {
 		&v1alpha1.Application{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "app-to-refresh-in-default-namespace",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: v1alpha1.ApplicationSpec{
 				Sources: v1alpha1.ApplicationSources{
@@ -292,7 +292,7 @@ func TestGitHubCommitEvent_AppsInOtherNamespaces(t *testing.T) {
 	assert.Contains(t, logMessages, "Requested app 'app-to-refresh-in-globbed-namespace' refresh")
 	assert.NotContains(t, logMessages, "Requested app 'app-to-ignore' refresh")
 
-	assert.Contains(t, patchedApps, types.NamespacedName{Name: "app-to-refresh-in-default-namespace", Namespace: "argocd"})
+	assert.Contains(t, patchedApps, types.NamespacedName{Name: "app-to-refresh-in-default-namespace", Namespace: "cd"})
 	assert.Contains(t, patchedApps, types.NamespacedName{Name: "app-to-refresh-in-exact-match-namespace", Namespace: "end-to-end-tests"})
 	assert.Contains(t, patchedApps, types.NamespacedName{Name: "app-to-refresh-in-globbed-namespace", Namespace: "app-team-two"})
 	assert.NotContains(t, patchedApps, types.NamespacedName{Name: "app-to-ignore", Namespace: "kube-system"})
@@ -780,7 +780,7 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					Sources: v1alpha1.ApplicationSources{
@@ -802,9 +802,9 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "deploy",
+						"cd.argoproj.io/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -827,9 +827,9 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "manifests",
+						"cd.argoproj.io/manifest-generate-paths": "manifests",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -852,9 +852,9 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "manifests;dev/deploy;other/path",
+						"cd.argoproj.io/manifest-generate-paths": "manifests;dev/deploy;other/path",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -877,7 +877,7 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					Sources: v1alpha1.ApplicationSources{
@@ -904,9 +904,9 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "components",
+						"cd.argoproj.io/manifest-generate-paths": "components",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -934,7 +934,7 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					SourceHydrator: &v1alpha1.SourceHydrator{
@@ -960,7 +960,7 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					SourceHydrator: &v1alpha1.SourceHydrator{
@@ -986,9 +986,9 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "deploy",
+						"cd.argoproj.io/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1015,9 +1015,9 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "deploy",
+						"cd.argoproj.io/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1044,9 +1044,9 @@ func TestHandleEvent(t *testing.T) {
 			app: &v1alpha1.Application{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test-app",
-					Namespace: "argocd",
+					Namespace: "cd",
 					Annotations: map[string]string{
-						"argocd.argoproj.io/manifest-generate-paths": "deploy",
+						"cd.argoproj.io/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1146,7 +1146,7 @@ func TestHandleEvent(t *testing.T) {
 			appClientset.AddReactor("patch", "applications", reaction)
 
 			h := NewHandler(
-				"argocd",
+				"cd",
 				[]string{},
 				10,
 				1,
@@ -1387,16 +1387,16 @@ func TestLookupRepository(t *testing.T) {
 	defer cancel()
 	h := NewMockHandlerForBitbucketCallback(nil, []string{})
 	data := []string{
-		"https://bitbucket.org/test/argocd-examples-pub.git",
-		"https://bitbucket.org/test/argocd-examples-pub",
-		"https://BITBUCKET.org/test/argocd-examples-pub",
-		"https://BITBUCKET.org/test/argocd-examples-pub.git",
-		"\thttps://bitbucket.org/test/argocd-examples-pub\n",
-		"\thttps://bitbucket.org/test/argocd-examples-pub.git\n",
-		"git@BITBUCKET.org:test/argocd-examples-pub",
-		"git@BITBUCKET.org:test/argocd-examples-pub.git",
-		"git@bitbucket.org:test/argocd-examples-pub",
-		"git@bitbucket.org:test/argocd-examples-pub.git",
+		"https://bitbucket.org/test/cd-examples-pub.git",
+		"https://bitbucket.org/test/cd-examples-pub",
+		"https://BITBUCKET.org/test/cd-examples-pub",
+		"https://BITBUCKET.org/test/cd-examples-pub.git",
+		"\thttps://bitbucket.org/test/cd-examples-pub\n",
+		"\thttps://bitbucket.org/test/cd-examples-pub.git\n",
+		"git@BITBUCKET.org:test/cd-examples-pub",
+		"git@BITBUCKET.org:test/cd-examples-pub.git",
+		"git@bitbucket.org:test/cd-examples-pub",
+		"git@bitbucket.org:test/cd-examples-pub.git",
 	}
 	for _, url := range data {
 		repository, err := h.lookupRepository(mockCtx, url)
@@ -1406,7 +1406,7 @@ func TestLookupRepository(t *testing.T) {
 		require.True(t, repository.Username == "test" || repository.SSHPrivateKey == "test-ssh-key")
 	}
 	// when no matching repository is found, then it should return nil error and nil repository
-	repository, err := h.lookupRepository(t.Context(), "https://bitbucket.org/test/argocd-examples-not-found.git")
+	repository, err := h.lookupRepository(t.Context(), "https://bitbucket.org/test/cd-examples-not-found.git")
 	require.NoError(t, err)
 	require.Nil(t, repository)
 }
@@ -1593,7 +1593,7 @@ func TestIsHeadTouched(t *testing.T) {
 // getRepositoryResponderFn return a httpmock responder function to mock a get repository api call to bitbucket server
 func getRepositoryResponderFn() func(req *http.Request) (*http.Response, error) {
 	return func(_ *http.Request) (*http.Response, error) {
-		// sample response: https://api.bitbucket.org/2.0/repositories/anandjoseph/argocd-examples-pub
+		// sample response: https://api.bitbucket.org/2.0/repositories/anandjoseph/cd-examples-pub
 		repository := &bb.Repository{
 			Type:        "repository",
 			Full_name:   "test-owner/test-repo",
@@ -1616,7 +1616,7 @@ func getRepositoryResponderFn() func(req *http.Request) (*http.Response, error) 
 // getDiffstatResponderFn return a httpmock responder function to mock a diffstat api call to bitbucket server
 func getDiffstatResponderFn() func(req *http.Request) (*http.Response, error) {
 	return func(_ *http.Request) (*http.Response, error) {
-		// sample response : https://api.bitbucket.org/2.0/repositories/anandjoseph/argocd-examples-pub/diffstat/3a53cee247fc820fbae0a9cf463a6f4a18369f90..3d0965f36fcc07e88130b2d5c917a37c2876c484
+		// sample response : https://api.bitbucket.org/2.0/repositories/anandjoseph/cd-examples-pub/diffstat/3a53cee247fc820fbae0a9cf463a6f4a18369f90..3d0965f36fcc07e88130b2d5c917a37c2876c484
 		diffStatRes := &bb.DiffStatRes{
 			Page:    1,
 			Size:    1,
@@ -1683,7 +1683,7 @@ func verifyAnnotations(t *testing.T, patchData []byte, expectRefresh bool, expec
 	require.True(t, hasAnnotations, "patch should have annotations")
 
 	// Check refresh annotation
-	refreshValue, hasRefresh := annotations["argocd.argoproj.io/refresh"]
+	refreshValue, hasRefresh := annotations["cd.argoproj.io/refresh"]
 	if expectRefresh {
 		assert.True(t, hasRefresh, "should have refresh annotation")
 		assert.Equal(t, "normal", refreshValue, "refresh annotation should be 'normal'")
@@ -1692,7 +1692,7 @@ func verifyAnnotations(t *testing.T, patchData []byte, expectRefresh bool, expec
 	}
 
 	// Check hydrate annotation
-	hydrateValue, hasHydrate := annotations["argocd.argoproj.io/hydrate"]
+	hydrateValue, hasHydrate := annotations["cd.argoproj.io/hydrate"]
 	if expectHydrate {
 		assert.True(t, hasHydrate, "should have hydrate annotation")
 		assert.Equal(t, "normal", hydrateValue, "hydrate annotation should be 'normal'")
@@ -1728,7 +1728,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 	app := v1alpha1.Application{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "test-app",
-			Namespace: "argocd",
+			Namespace: "cd",
 		},
 		Spec: v1alpha1.ApplicationSpec{
 			Source: &v1alpha1.ApplicationSource{
@@ -1757,7 +1757,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 
 		cacheClient := cacheutil.NewCache(cacheutil.NewInMemoryCache(1 * time.Hour))
 		h := NewHandler(
-			"argocd",
+			"cd",
 			[]string{},
 			10,
 			5,
@@ -1775,7 +1775,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 
 		req := &appRefreshRequest{
 			appName:      "test-app",
-			appNamespace: "argocd",
+			appNamespace: "cd",
 			hydrateType:  nil,
 		}
 
@@ -1797,7 +1797,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 		appClientset := appclientset.NewSimpleClientset(&app)
 		cacheClient := cacheutil.NewCache(cacheutil.NewInMemoryCache(1 * time.Hour))
 		h := NewHandler(
-			"argocd",
+			"cd",
 			[]string{},
 			10,
 			5,
@@ -1815,7 +1815,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 
 		req := &appRefreshRequest{
 			appName:      "test-app",
-			appNamespace: "argocd",
+			appNamespace: "cd",
 			hydrateType:  nil,
 		}
 
@@ -1832,7 +1832,7 @@ func TestProcessAppRefresh(t *testing.T) {
 	app := v1alpha1.Application{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "test-app",
-			Namespace: "argocd",
+			Namespace: "cd",
 		},
 		Spec: v1alpha1.ApplicationSpec{
 			Source: &v1alpha1.ApplicationSource{
@@ -1849,7 +1849,7 @@ func TestProcessAppRefresh(t *testing.T) {
 		h := NewMockHandler(nil, []string{}, &app)
 		req := &appRefreshRequest{
 			appName:      "test-app",
-			appNamespace: "argocd",
+			appNamespace: "cd",
 			hydrateType:  nil,
 		}
 
@@ -1867,7 +1867,7 @@ func TestProcessAppRefresh(t *testing.T) {
 		h := NewMockHandler(nil, []string{}, &app)
 		req := &appRefreshRequest{
 			appName:      "test-app",
-			appNamespace: "argocd",
+			appNamespace: "cd",
 			hydrateType:  &hydrateType,
 		}
 

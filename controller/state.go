@@ -42,9 +42,9 @@ import (
 	"github.com/hanzoai/deploy/reposerver/apiclient"
 	applog "github.com/hanzoai/deploy/util/app/log"
 	"github.com/hanzoai/deploy/util/app/path"
-	"github.com/hanzoai/deploy/util/argo"
-	argodiff "github.com/hanzoai/deploy/util/argo/diff"
-	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/cd"
+	argodiff "github.com/hanzoai/deploy/util/cd/diff"
+	"github.com/hanzoai/deploy/util/cd/normalizers"
 	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/git"
@@ -58,7 +58,7 @@ var ErrCompareStateRepo = errors.New("failed to get repo objects")
 
 var tracer = otel.Tracer("github.com/hanzoai/deploy/controller")
 
-// setAppTraceAttrs sets the standard argocd.app.* span attributes (plus any extra attributes)
+// setAppTraceAttrs sets the standard cd.app.* span attributes (plus any extra attributes)
 // on span. It is a no-op when the span is not recording, so callers on hot reconcile paths do
 // not allocate attribute slices when tracing is disabled.
 func setAppTraceAttrs(span oteltrace.Span, app *v1alpha1.Application, extra ...attribute.KeyValue) {
@@ -66,9 +66,9 @@ func setAppTraceAttrs(span oteltrace.Span, app *v1alpha1.Application, extra ...a
 		return
 	}
 	span.SetAttributes(append([]attribute.KeyValue{
-		attribute.String("argocd.app.name", app.Name),
-		attribute.String("argocd.app.namespace", app.Namespace),
-		attribute.String("argocd.app.project", app.Spec.GetProject()),
+		attribute.String("cd.app.name", app.Name),
+		attribute.String("cd.app.namespace", app.Namespace),
+		attribute.String("cd.app.project", app.Spec.GetProject()),
 	}, extra...)...)
 }
 
@@ -141,7 +141,7 @@ type appStateManager struct {
 	cache                 *appstatecache.Cache
 	namespace             string
 	statusRefreshTimeout  time.Duration
-	resourceTracking      argo.ResourceTracking
+	resourceTracking      cd.ResourceTracking
 	persistResourceHealth bool
 	repoErrorCache        goSync.Map
 	repoErrorGracePeriod  time.Duration
@@ -170,7 +170,7 @@ func (m *appStateManager) EvaluateAppRevisionsChanges(ctx context.Context, app *
 		return false, nil, fmt.Errorf("failed to get installation ID: %w", err)
 	}
 
-	destCluster, err := argo.GetDestinationCluster(ctx, app.Spec.Destination, m.db)
+	destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, m.db)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to get destination cluster: %w", err)
 	}
@@ -183,7 +183,7 @@ func (m *appStateManager) EvaluateAppRevisionsChanges(ctx context.Context, app *
 		if err != nil {
 			return false, nil, fmt.Errorf("failed to get cluster version for cluster %q: %w", destCluster.Server, err)
 		}
-		apiVersions = argo.APIResourcesToStrings(apiResources, true)
+		apiVersions = cd.APIResourcesToStrings(apiResources, true)
 	}
 
 	conn, repoClient, err := m.repoClientset.NewRepoServerClient()
@@ -192,14 +192,14 @@ func (m *appStateManager) EvaluateAppRevisionsChanges(ctx context.Context, app *
 	}
 	defer utilio.Close(conn)
 
-	refSources, err := argo.GetRefSources(ctx, sources, app.Spec.Project, m.db.GetRepository, revisions)
+	refSources, err := cd.GetRefSources(ctx, sources, app.Spec.Project, m.db.GetRepository, revisions)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to get ref sources: %w", err)
 	}
 
 	var syncedRefSources v1alpha1.RefTargetRevisionMapping
 	if app.Spec.HasMultipleSources() {
-		syncedRefSources = argo.GetSyncedRefSources(refSources, sources, app.Status.Sync.Revisions)
+		syncedRefSources = cd.GetSyncedRefSources(refSources, sources, app.Status.Sync.Revisions)
 	}
 
 	resolvedRevisions := make([]string, 0, len(sources))
@@ -236,7 +236,7 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to list Helm repositories: %w", err)
 	}
-	permittedHelmRepos, err := argo.GetPermittedRepos(proj, helmRepos)
+	permittedHelmRepos, err := cd.GetPermittedRepos(proj, helmRepos)
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to get permitted Helm repositories for project %q: %w", proj.Name, err)
 	}
@@ -245,7 +245,7 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to list OCI repositories: %w", err)
 	}
-	permittedOCIRepos, err := argo.GetPermittedRepos(proj, ociRepos)
+	permittedOCIRepos, err := cd.GetPermittedRepos(proj, ociRepos)
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to get permitted OCI repositories for project %q: %w", proj.Name, err)
 	}
@@ -255,7 +255,7 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to get Helm credentials: %w", err)
 	}
-	permittedHelmCredentials, err := argo.GetPermittedReposCredentials(proj, helmRepositoryCredentials)
+	permittedHelmCredentials, err := cd.GetPermittedReposCredentials(proj, helmRepositoryCredentials)
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to get permitted Helm credentials for project %q: %w", proj.Name, err)
 	}
@@ -264,7 +264,7 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to get OCI credentials: %w", err)
 	}
-	permittedOCICredentials, err := argo.GetPermittedReposCredentials(proj, ociRepositoryCredentials)
+	permittedOCICredentials, err := cd.GetPermittedReposCredentials(proj, ociRepositoryCredentials)
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to get permitted OCI credentials for project %q: %w", proj.Name, err)
 	}
@@ -295,7 +295,7 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 		return nil, nil, false, fmt.Errorf("failed to get installation ID: %w", err)
 	}
 
-	destCluster, err := argo.GetDestinationCluster(ctx, app.Spec.Destination, m.db)
+	destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, m.db)
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to get destination cluster: %w", err)
 	}
@@ -309,7 +309,7 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 		if err != nil {
 			return nil, nil, false, fmt.Errorf("failed to get cluster version for cluster %q: %w", destCluster.Server, err)
 		}
-		apiVersions = argo.APIResourcesToStrings(apiResources, true)
+		apiVersions = cd.APIResourcesToStrings(apiResources, true)
 	}
 	conn, repoClient, err := m.repoClientset.NewRepoServerClient()
 	if err != nil {
@@ -323,14 +323,14 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 	// Store the map of all sources having ref field into a map for applications with sources field
 	// If it's for a rollback process, the refSources[*].targetRevision fields are the desired
 	// revisions for the rollback
-	refSources, err := argo.GetRefSources(ctx, sources, app.Spec.Project, m.db.GetRepository, revisions)
+	refSources, err := cd.GetRefSources(ctx, sources, app.Spec.Project, m.db.GetRepository, revisions)
 	if err != nil {
 		return nil, nil, false, fmt.Errorf("failed to get ref sources: %w", err)
 	}
 
 	var syncedRefSources v1alpha1.RefTargetRevisionMapping
 	if app.Spec.HasMultipleSources() {
-		syncedRefSources = argo.GetSyncedRefSources(refSources, sources, app.Status.Sync.Revisions)
+		syncedRefSources = cd.GetSyncedRefSources(refSources, sources, app.Status.Sync.Revisions)
 	}
 
 	revisionsMayHaveChanges := false
@@ -347,10 +347,10 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 		srcCtx, srcSpan := tracer.Start(ctx, "controller.GetRepoObjs.source")
 		if srcSpan.IsRecording() {
 			srcSpan.SetAttributes(
-				attribute.Int("argocd.source.index", i),
-				attribute.String("argocd.source.name", source.Name),
-				attribute.String("argocd.source.repo_url", git.SanitizeRepoURL(source.RepoURL)),
-				attribute.String("argocd.revision", revision),
+				attribute.Int("cd.source.index", i),
+				attribute.String("cd.source.name", source.Name),
+				attribute.String("cd.source.repo_url", git.SanitizeRepoURL(source.RepoURL)),
+				attribute.String("cd.revision", revision),
 			)
 		}
 		if err := func() (retErr error) {
@@ -369,7 +369,7 @@ func (m *appStateManager) GetRepoObjs(ctx context.Context, app *v1alpha1.Applica
 			// Use the resolved revision from evaluateRevisionChanges
 			revision = resolvedRevision
 			revisions[i] = resolvedRevision
-			srcSpan.SetAttributes(attribute.String("argocd.resolved_revision", revision))
+			srcSpan.SetAttributes(attribute.String("cd.resolved_revision", revision))
 
 			appNamespace := app.Spec.Destination.Namespace
 
@@ -717,7 +717,7 @@ func (m *appStateManager) CompareAppState(ctx context.Context, app *v1alpha1.App
 	failedToLoadObjs := false
 	conditions := make([]v1alpha1.ApplicationCondition, 0)
 
-	destCluster, err := argo.GetDestinationCluster(ctx, app.Spec.Destination, m.db)
+	destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, m.db)
 	if err != nil {
 		return nil, err
 	}
@@ -962,7 +962,7 @@ func (m *appStateManager) CompareAppState(ctx context.Context, app *v1alpha1.App
 	}
 
 	// it is necessary to ignore the error at this point to avoid creating duplicated
-	// application conditions as argo.StateDiffs will validate this diffConfig again.
+	// application conditions as cd.StateDiffs will validate this diffConfig again.
 	diffConfig, _ := diffConfigBuilder.Build()
 
 	// Scope the diff span with a closure so it ends even if StateDiffs panics, while keeping
@@ -1311,7 +1311,7 @@ func NewAppStateManager(
 	metricsServer *metrics.MetricsServer,
 	cache *appstatecache.Cache,
 	statusRefreshTimeout time.Duration,
-	resourceTracking argo.ResourceTracking,
+	resourceTracking cd.ResourceTracking,
 	persistResourceHealth bool,
 	repoErrorGracePeriod time.Duration,
 	serverSideDiff bool,
@@ -1364,9 +1364,9 @@ func (m *appStateManager) isSelfReferencedObj(live, config *unstructured.Unstruc
 	//     when it should be:
 	//        ingress-app:networking.k8s.io/Ingress:default/some-ingress
 	// More details in: https://github.com/argoproj/argo-cd/pull/11012
-	var aiv argo.AppInstanceValue
+	var aiv cd.AppInstanceValue
 	if config != nil {
-		aiv = argo.UnstructuredToAppInstanceValue(config, appName, "")
+		aiv = cd.UnstructuredToAppInstanceValue(config, appName, "")
 		return isSelfReferencedObj(live, aiv)
 	}
 
@@ -1387,7 +1387,7 @@ func (m *appStateManager) isSelfReferencedObj(live, config *unstructured.Unstruc
 // the given object. It returns false when the ID doesn't match. This sometimes
 // happens when a tracking label or annotation gets accidentally copied to a
 // different resource.
-func isSelfReferencedObj(obj *unstructured.Unstructured, aiv argo.AppInstanceValue) bool {
+func isSelfReferencedObj(obj *unstructured.Unstructured, aiv cd.AppInstanceValue) bool {
 	return (obj.GetNamespace() == aiv.Namespace || obj.GetNamespace() == "") &&
 		obj.GetName() == aiv.Name &&
 		obj.GetObjectKind().GroupVersionKind().Group == aiv.Group &&

@@ -1490,7 +1490,7 @@ func schema_pkg_apis_application_v1alpha1_ApplicationSetTemplate(ref common.Refe
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "ApplicationSetTemplate represents argocd ApplicationSpec",
+				Description: "ApplicationSetTemplate represents cd ApplicationSpec",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"metadata": {

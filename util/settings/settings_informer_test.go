@@ -19,7 +19,7 @@ import (
 func newChangeTrackingManager(t *testing.T) (*SettingsManager, <-chan struct{}) {
 	t.Helper()
 	fired := make(chan struct{}, 16)
-	mgr := NewSettingsManager(t.Context(), fake.NewClientset(), "argocd", WithRepoOrClusterChangedHandler(func() {
+	mgr := NewSettingsManager(t.Context(), fake.NewClientset(), "cd", WithRepoOrClusterChangedHandler(func() {
 		fired <- struct{}{}
 	}))
 	return mgr, fired
@@ -44,19 +44,19 @@ func assertNotFired(t *testing.T, ch <-chan struct{}) {
 }
 
 func argoCDConfigMap() *corev1.ConfigMap {
-	return &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: common.ArgoCDConfigMapName, Namespace: "argocd"}}
+	return &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: common.ArgoCDConfigMapName, Namespace: "cd"}}
 }
 
 func repositorySecret() *corev1.Secret {
 	return &corev1.Secret{ObjectMeta: metav1.ObjectMeta{
 		Name:      "repo-secret",
-		Namespace: "argocd",
+		Namespace: "cd",
 		Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 	}}
 }
 
 func TestArgoCDConfigMapEventHandler(t *testing.T) {
-	t.Run("add/update/delete of argocd-cm triggers a change", func(t *testing.T) {
+	t.Run("add/update/delete of cd-cm triggers a change", func(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
 		h := mgr.argoCDConfigMapEventHandler()
 
@@ -74,18 +74,18 @@ func TestArgoCDConfigMapEventHandler(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
 		h := mgr.argoCDConfigMapEventHandler()
 
-		other := &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: "argocd-rbac-cm", Namespace: "argocd"}}
+		other := &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: "cd-rbac-cm", Namespace: "cd"}}
 		h.OnAdd(other, false)
 		h.OnUpdate(other, other)
 		h.OnDelete(other)
 		assertNotFired(t, fired)
 	})
 
-	t.Run("delete unwraps a tombstone wrapping argocd-cm", func(t *testing.T) {
+	t.Run("delete unwraps a tombstone wrapping cd-cm", func(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
 		h := mgr.argoCDConfigMapEventHandler()
 
-		h.OnDelete(cache.DeletedFinalStateUnknown{Key: "argocd/argocd-cm", Obj: argoCDConfigMap()})
+		h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/cd-cm", Obj: argoCDConfigMap()})
 		waitFired(t, fired)
 	})
 
@@ -94,7 +94,7 @@ func TestArgoCDConfigMapEventHandler(t *testing.T) {
 		h := mgr.argoCDConfigMapEventHandler()
 
 		assert.NotPanics(t, func() {
-			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "argocd/gone", Obj: nil})
+			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/gone", Obj: nil})
 			h.OnDelete("not-a-configmap")
 			h.OnAdd("not-a-configmap", false)
 		})
@@ -121,7 +121,7 @@ func TestRepositorySecretEventHandler(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
 		h := mgr.repositorySecretEventHandler()
 
-		plain := &corev1.Secret{ObjectMeta: metav1.ObjectMeta{Name: "plain", Namespace: "argocd"}}
+		plain := &corev1.Secret{ObjectMeta: metav1.ObjectMeta{Name: "plain", Namespace: "cd"}}
 		h.OnAdd(plain, false)
 		h.OnUpdate(plain, plain)
 		h.OnDelete(plain)
@@ -132,7 +132,7 @@ func TestRepositorySecretEventHandler(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
 		h := mgr.repositorySecretEventHandler()
 
-		h.OnDelete(cache.DeletedFinalStateUnknown{Key: "argocd/repo-secret", Obj: repositorySecret()})
+		h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/repo-secret", Obj: repositorySecret()})
 		waitFired(t, fired)
 	})
 
@@ -141,8 +141,8 @@ func TestRepositorySecretEventHandler(t *testing.T) {
 		h := mgr.repositorySecretEventHandler()
 
 		assert.NotPanics(t, func() {
-			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "argocd/cm", Obj: &corev1.ConfigMap{}})
-			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "argocd/gone", Obj: nil})
+			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/cm", Obj: &corev1.ConfigMap{}})
+			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/gone", Obj: nil})
 			h.OnAdd("not-a-secret", false)
 		})
 		assertNotFired(t, fired)
@@ -158,7 +158,7 @@ func TestClusterSecretEventHandler(t *testing.T) {
 
 		secret := &corev1.Secret{ObjectMeta: metav1.ObjectMeta{
 			Name:      "cluster-secret",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
 		}}
 
@@ -177,7 +177,7 @@ func TestClusterSecretEventHandler(t *testing.T) {
 		h := mgr.clusterSecretEventHandler()
 
 		assert.NotPanics(t, func() {
-			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "argocd/gone", Obj: nil})
+			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/gone", Obj: nil})
 		})
 		waitFired(t, fired)
 	})
@@ -187,9 +187,9 @@ func TestSettingsNotificationEventHandler(t *testing.T) {
 	const partOfLabel = "app.kubernetes.io/part-of"
 	settingsObject := func(creation time.Time, resourceVersion string) *corev1.Secret {
 		return &corev1.Secret{ObjectMeta: metav1.ObjectMeta{
-			Name:              "argocd-secret",
-			Namespace:         "argocd",
-			Labels:            map[string]string{partOfLabel: "argocd"},
+			Name:              "cd-secret",
+			Namespace:         "cd",
+			Labels:            map[string]string{partOfLabel: "cd"},
 			CreationTimestamp: metav1.NewTime(creation),
 			ResourceVersion:   resourceVersion,
 		}}

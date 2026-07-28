@@ -1,0 +1,363 @@
+package commands
+
+import (
+	"context"
+	"fmt"
+	"math"
+	"runtime/debug"
+	"strings"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+	"k8s.io/apimachinery/pkg/runtime"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+
+	"github.com/argoproj/pkg/v2/stats"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+	"k8s.io/client-go/dynamic"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	cmdutil "github.com/hanzoai/deploy/cmd/util"
+	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
+	"github.com/hanzoai/deploy/reposerver/apiclient"
+	reposervercache "github.com/hanzoai/deploy/reposerver/cache"
+	"github.com/hanzoai/deploy/server"
+	servercache "github.com/hanzoai/deploy/server/cache"
+	"github.com/hanzoai/deploy/util/cd"
+	cacheutil "github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/deploy/util/dex"
+	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/deploy/util/errors"
+	utilglob "github.com/hanzoai/deploy/util/glob"
+	"github.com/hanzoai/deploy/util/kube"
+	"github.com/hanzoai/deploy/util/templates"
+	"github.com/hanzoai/deploy/util/tls"
+	traceutil "github.com/hanzoai/deploy/util/trace"
+)
+
+const (
+	failureRetryCountEnv              = "CD_K8S_RETRY_COUNT"
+	failureRetryPeriodMilliSecondsEnv = "CD_K8S_RETRY_DURATION_MILLISECONDS"
+)
+
+var (
+	failureRetryCount              = env.ParseNumFromEnv(failureRetryCountEnv, 0, 0, 10)
+	failureRetryPeriodMilliSeconds = env.ParseNumFromEnv(failureRetryPeriodMilliSecondsEnv, 100, 0, 1000)
+	gitSubmoduleEnabled            = env.ParseBoolFromEnv(common.EnvGitSubmoduleEnabled, true)
+)
+
+// NewCommand returns a new instance of an cd command
+func NewCommand() *cobra.Command {
+	var (
+		redisClient              *redis.Client
+		insecure                 bool
+		listenHost               string
+		listenPort               int
+		metricsHost              string
+		metricsPort              int
+		otlpAddress              string
+		otlpInsecure             bool
+		otlpHeaders              map[string]string
+		otlpAttrs                []string
+		otlpSampleRatio          float64
+		glogLevel                int
+		clientConfig             clientcmd.ClientConfig
+		repoServerTimeoutSeconds int
+		baseHRef                 string
+		rootPath                 string
+		repoServerAddress        string
+		dexServerAddress         string
+		disableAuth              bool
+		contentTypes             string
+		enableGZip               bool
+		tlsConfigCustomizerSrc   func() (tls.ConfigCustomizer, error)
+		cacheSrc                 func() (*servercache.Cache, error)
+		repoServerCacheSrc       func() (*reposervercache.Cache, error)
+		frameOptions             string
+		contentSecurityPolicy    string
+		repoServerPlaintext      bool
+		repoServerStrictTLS      bool
+		dexServerPlaintext       bool
+		dexServerStrictTLS       bool
+		staticAssetsDir          string
+		applicationNamespaces    []string
+		enableProxyExtension     bool
+		webhookParallelism       int
+		globCacheSize            int
+		webhookRefreshWorkers    int
+		hydratorEnabled          bool
+		syncWithReplaceAllowed   bool
+
+		// ApplicationSet
+		enableNewGitFileGlobbing bool
+		scmRootCAPath            string
+		allowedScmProviders      []string
+		enableScmProviders       bool
+		enableGitHubAPIMetrics   bool
+
+		// cd k8s event logging flag
+		enableK8sEvent []string
+
+		repoServerClientTLSConfigSrc func() (tls.Configuration, error)
+	)
+	command := &cobra.Command{
+		Use:               common.CommandServer,
+		Short:             "Run the Hanzo CD API server",
+		Long:              "The API server is a gRPC/REST server which exposes the API consumed by the Web UI, CLI, and CI/CD systems.  This command runs API server in the foreground.  It can be configured by following options.",
+		DisableAutoGenTag: true,
+		Run: func(c *cobra.Command, _ []string) {
+			ctx := c.Context()
+
+			vers := common.GetVersion()
+			namespace, _, err := clientConfig.Namespace()
+			errors.CheckError(err)
+			vers.LogStartupInfo(
+				"Hanzo CD API Server",
+				map[string]any{
+					"namespace": namespace,
+					"port":      listenPort,
+				},
+			)
+
+			cli.SetLogFormat(cmdutil.LogFormat)
+			cli.SetLogLevel(cmdutil.LogLevel)
+			cli.SetGLogLevel(glogLevel)
+			utilglob.SetCacheSize(globCacheSize)
+
+			// Recover from panic and log the error using the configured logger instead of the default.
+			defer func() {
+				if r := recover(); r != nil {
+					log.WithField("trace", string(debug.Stack())).Fatal("Recovered from panic: ", r)
+				}
+			}()
+
+			config, err := clientConfig.ClientConfig()
+			errors.CheckError(err)
+			errors.CheckError(v1alpha1.SetK8SConfigDefaults(config))
+
+			tlsConfigCustomizer, err := tlsConfigCustomizerSrc()
+			errors.CheckError(err)
+			cache, err := cacheSrc()
+			errors.CheckError(err)
+			repoServerCache, err := repoServerCacheSrc()
+			errors.CheckError(err)
+
+			kubeclientset := kubernetes.NewForConfigOrDie(config)
+
+			appclientsetConfig, err := clientConfig.ClientConfig()
+			errors.CheckError(err)
+			errors.CheckError(v1alpha1.SetK8SConfigDefaults(appclientsetConfig))
+			config.UserAgent = fmt.Sprintf("cd-server/%s (%s)", vers.Version, vers.Platform)
+
+			if failureRetryCount > 0 {
+				appclientsetConfig = kube.AddFailureRetryWrapper(appclientsetConfig, failureRetryCount, failureRetryPeriodMilliSeconds)
+			}
+			appClientSet := appclientset.NewForConfigOrDie(appclientsetConfig)
+			tlsConfig, err := repoServerClientTLSConfigSrc()
+			errors.CheckError(err)
+			tlsConfig.DisableTLS = repoServerPlaintext
+			tlsConfig.StrictValidation = tlsConfig.StrictValidation || repoServerStrictTLS
+
+			dynamicClient := dynamic.NewForConfigOrDie(config)
+
+			scheme := runtime.NewScheme()
+			_ = clientgoscheme.AddToScheme(scheme)
+			_ = v1alpha1.AddToScheme(scheme)
+
+			controllerClient, err := client.New(config, client.Options{Scheme: scheme})
+			errors.CheckError(err)
+			controllerClient = client.NewDryRunClient(controllerClient)
+			controllerClient = client.NewNamespacedClient(controllerClient, namespace)
+
+			// Load CA information to use for validating connections to the repository server, if strict TLS validation
+			// was requested.
+			// Skip loading the embedded cert if the operator already provided anδ explicit CA via --repo-server-ca-cert;
+			// that pool takes precedence.
+			if !repoServerPlaintext && repoServerStrictTLS && tlsConfig.Certificates == nil {
+				pool, err := tls.LoadX509CertPool(
+					env.StringFromEnv(common.EnvAppConfigPath, common.DefaultAppConfigPath)+"/server/tls/tls.crt",
+					env.StringFromEnv(common.EnvAppConfigPath, common.DefaultAppConfigPath)+"/server/tls/ca.crt",
+				)
+				if err != nil {
+					log.Fatalf("%v", err)
+				}
+				tlsConfig.Certificates = pool
+			}
+
+			dexTLSConfig := &dex.DexTLSConfig{
+				DisableTLS:       dexServerPlaintext,
+				StrictValidation: dexServerStrictTLS,
+			}
+
+			if !dexServerPlaintext && dexServerStrictTLS {
+				pool, err := tls.LoadX509CertPool(
+					env.StringFromEnv(common.EnvAppConfigPath, common.DefaultAppConfigPath) + "/dex/tls/ca.crt",
+				)
+				if err != nil {
+					log.Fatalf("%v", err)
+				}
+				dexTLSConfig.RootCAs = pool
+				cert, err := tls.LoadX509Cert(
+					env.StringFromEnv(common.EnvAppConfigPath, common.DefaultAppConfigPath) + "/dex/tls/tls.crt",
+				)
+				if err != nil {
+					log.Fatalf("%v", err)
+				}
+				dexTLSConfig.Certificate = cert.Raw
+			}
+
+			repoclientset := apiclient.NewRepoServerClientset(repoServerAddress, repoServerTimeoutSeconds, tlsConfig)
+			if rootPath != "" {
+				if baseHRef != "" && baseHRef != rootPath {
+					log.Warnf("--basehref and --rootpath had conflict: basehref: %s rootpath: %s", baseHRef, rootPath)
+				}
+				baseHRef = rootPath
+			}
+
+			var contentTypesList []string
+			if contentTypes != "" {
+				contentTypesList = strings.Split(contentTypes, ";")
+			}
+
+			argoCDOpts := server.ArgoCDServerOpts{
+				Insecure:                insecure,
+				ListenPort:              listenPort,
+				ListenHost:              listenHost,
+				MetricsPort:             metricsPort,
+				MetricsHost:             metricsHost,
+				Namespace:               namespace,
+				BaseHRef:                baseHRef,
+				RootPath:                rootPath,
+				DynamicClientset:        dynamicClient,
+				KubeControllerClientset: controllerClient,
+				KubeClientset:           kubeclientset,
+				AppClientset:            appClientSet,
+				RepoClientset:           repoclientset,
+				DexServerAddr:           dexServerAddress,
+				DexTLSConfig:            dexTLSConfig,
+				DisableAuth:             disableAuth,
+				ContentTypes:            contentTypesList,
+				EnableGZip:              enableGZip,
+				TLSConfigCustomizer:     tlsConfigCustomizer,
+				Cache:                   cache,
+				RepoServerCache:         repoServerCache,
+				XFrameOptions:           frameOptions,
+				ContentSecurityPolicy:   contentSecurityPolicy,
+				RedisClient:             redisClient,
+				StaticAssetsDir:         staticAssetsDir,
+				ApplicationNamespaces:   applicationNamespaces,
+				EnableProxyExtension:    enableProxyExtension,
+				WebhookParallelism:      webhookParallelism,
+				WebhookRefreshWorkers:   webhookRefreshWorkers,
+				EnableK8sEvent:          enableK8sEvent,
+				HydratorEnabled:         hydratorEnabled,
+				SyncWithReplaceAllowed:  syncWithReplaceAllowed,
+			}
+
+			appsetOpts := server.ApplicationSetOpts{
+				GitSubmoduleEnabled:      gitSubmoduleEnabled,
+				EnableNewGitFileGlobbing: enableNewGitFileGlobbing,
+				ScmRootCAPath:            scmRootCAPath,
+				AllowedScmProviders:      allowedScmProviders,
+				EnableScmProviders:       enableScmProviders,
+				EnableGitHubAPIMetrics:   enableGitHubAPIMetrics,
+			}
+
+			stats.RegisterStackDumper()
+			stats.StartStatsTicker(10 * time.Minute)
+			stats.RegisterHeapDumper("memprofile")
+			cd := server.NewServer(ctx, argoCDOpts, appsetOpts)
+			cd.Init(ctx)
+			for {
+				var closer func()
+				serverCtx, cancel := context.WithCancel(ctx)
+				lns, err := cd.Listen()
+				errors.CheckError(err)
+				if otlpAddress != "" {
+					closer, err = traceutil.InitTracer(serverCtx, "cd-server", otlpAddress, otlpInsecure, otlpHeaders, otlpAttrs, otlpSampleRatio)
+					if err != nil {
+						log.Fatalf("failed to initialize tracing: %v", err)
+					}
+				}
+				cd.Run(serverCtx, lns)
+				if closer != nil {
+					closer()
+				}
+				cancel()
+				if cd.TerminateRequested() {
+					break
+				}
+			}
+		},
+		Example: templates.Examples(`
+			# Start the Hanzo CD API server with default settings
+			$ cd-server
+
+			# Start the Hanzo CD API server on a custom port and enable tracing
+			$ cd-server --port 8888 --otlp-address localhost:4317
+		`),
+	}
+
+	clientConfig = cli.AddKubectlFlagsToCmd(command)
+	command.Flags().BoolVar(&insecure, "insecure", env.ParseBoolFromEnv("CD_SERVER_INSECURE", false), "Run server without TLS")
+	command.Flags().StringVar(&staticAssetsDir, "staticassets", env.StringFromEnv("CD_SERVER_STATIC_ASSETS", "/shared/app"), "Directory path that contains additional static assets")
+	command.Flags().StringVar(&baseHRef, "basehref", env.StringFromEnv("CD_SERVER_BASEHREF", "/"), "Value for base href in index.html. Used if Hanzo CD is running behind reverse proxy under subpath different from /")
+	command.Flags().StringVar(&rootPath, "rootpath", env.StringFromEnv("CD_SERVER_ROOTPATH", ""), "Used if Hanzo CD is running behind reverse proxy under subpath different from /")
+	command.Flags().StringVar(&cmdutil.LogFormat, "logformat", env.StringFromEnv("CD_SERVER_LOGFORMAT", "json"), "Set the logging format. One of: json|text")
+	command.Flags().StringVar(&cmdutil.LogLevel, "loglevel", env.StringFromEnv("CD_SERVER_LOG_LEVEL", "info"), "Set the logging level. One of: debug|info|warn|error")
+	command.Flags().IntVar(&glogLevel, "gloglevel", 0, "Set the glog logging level")
+	command.Flags().StringVar(&repoServerAddress, "repo-server", env.StringFromEnv("CD_SERVER_REPO_SERVER", common.DefaultRepoServerAddr), "Repo server address")
+	command.Flags().StringVar(&dexServerAddress, "dex-server", env.StringFromEnv("CD_SERVER_DEX_SERVER", common.DefaultDexServerAddr), "Dex server address")
+	command.Flags().BoolVar(&disableAuth, "disable-auth", env.ParseBoolFromEnv("CD_SERVER_DISABLE_AUTH", false), "Disable client authentication")
+	command.Flags().StringVar(&contentTypes, "api-content-types", env.StringFromEnv("CD_API_CONTENT_TYPES", "application/json", env.StringFromEnvOpts{AllowEmpty: true}), "Semicolon separated list of allowed content types for non GET api requests. Any content type is allowed if empty.")
+	command.Flags().BoolVar(&enableGZip, "enable-gzip", env.ParseBoolFromEnv("CD_SERVER_ENABLE_GZIP", true), "Enable GZIP compression")
+	command.AddCommand(cli.NewVersionCmd(common.CommandServer))
+	command.Flags().StringVar(&listenHost, "address", env.StringFromEnv("CD_SERVER_LISTEN_ADDRESS", common.DefaultAddressAPIServer), "Listen on given address")
+	command.Flags().IntVar(&listenPort, "port", common.DefaultPortAPIServer, "Listen on given port")
+	command.Flags().StringVar(&metricsHost, env.StringFromEnv("CD_SERVER_METRICS_LISTEN_ADDRESS", "metrics-address"), common.DefaultAddressAPIServerMetrics, "Listen for metrics on given address")
+	command.Flags().IntVar(&metricsPort, "metrics-port", common.DefaultPortArgoCDAPIServerMetrics, "Start metrics on given port")
+	command.Flags().StringVar(&otlpAddress, "otlp-address", env.StringFromEnv("CD_SERVER_OTLP_ADDRESS", ""), "OpenTelemetry collector address to send traces to")
+	command.Flags().BoolVar(&otlpInsecure, "otlp-insecure", env.ParseBoolFromEnv("CD_SERVER_OTLP_INSECURE", true), "OpenTelemetry collector insecure mode")
+	command.Flags().StringToStringVar(&otlpHeaders, "otlp-headers", env.ParseStringToStringFromEnv("CD_SERVER_OTLP_HEADERS", map[string]string{}, ","), "List of OpenTelemetry collector extra headers sent with traces, headers are comma-separated key-value pairs(e.g. key1=value1,key2=value2)")
+	command.Flags().StringSliceVar(&otlpAttrs, "otlp-attrs", env.StringsFromEnv("CD_SERVER_OTLP_ATTRS", []string{}, ","), "List of OpenTelemetry collector extra attrs when send traces, each attribute is separated by a colon(e.g. key:value)")
+	cli.BoundedFloat64Var(command.Flags(), &otlpSampleRatio, "otlp-sample-ratio", env.ParseFloat64FromEnv("CD_SERVER_OTLP_SAMPLE_RATIO", 1.0, 0.0, 1.0), 0.0, 1.0, "Fraction of traces to sample, from 0.0 (none) to 1.0 (all). Parent-based, so downstream services honor the upstream sampling decision")
+	command.Flags().IntVar(&repoServerTimeoutSeconds, "repo-server-timeout-seconds", env.ParseNumFromEnv("CD_SERVER_REPO_SERVER_TIMEOUT_SECONDS", 60, 0, math.MaxInt64), "Repo server RPC call timeout seconds.")
+	command.Flags().StringVar(&frameOptions, "x-frame-options", env.StringFromEnv("CD_SERVER_X_FRAME_OPTIONS", "sameorigin"), "Set X-Frame-Options header in HTTP responses to `value`. To disable, set to \"\".")
+	command.Flags().StringVar(&contentSecurityPolicy, "content-security-policy", env.StringFromEnv("CD_SERVER_CONTENT_SECURITY_POLICY", "frame-ancestors 'self';"), "Set Content-Security-Policy header in HTTP responses to `value`. To disable, set to \"\".")
+	command.Flags().BoolVar(&repoServerPlaintext, "repo-server-plaintext", env.ParseBoolFromEnv("CD_SERVER_REPO_SERVER_PLAINTEXT", false), "Use a plaintext client (non-TLS) to connect to repository server")
+	command.Flags().BoolVar(&repoServerStrictTLS, "repo-server-strict-tls", env.ParseBoolFromEnv("CD_SERVER_REPO_SERVER_STRICT_TLS", false), "Perform strict validation of TLS certificates when connecting to repo server")
+	errors.CheckError(command.Flags().MarkDeprecated("repo-server-strict-tls", "use --repo-server-ca-cert-path instead"))
+	command.Flags().BoolVar(&dexServerPlaintext, "dex-server-plaintext", env.ParseBoolFromEnv("CD_SERVER_DEX_SERVER_PLAINTEXT", false), "Use a plaintext client (non-TLS) to connect to dex server")
+	command.Flags().BoolVar(&dexServerStrictTLS, "dex-server-strict-tls", env.ParseBoolFromEnv("CD_SERVER_DEX_SERVER_STRICT_TLS", false), "Perform strict validation of TLS certificates when connecting to dex server")
+	command.Flags().StringSliceVar(&applicationNamespaces, "application-namespaces", env.StringsFromEnv("CD_APPLICATION_NAMESPACES", []string{}, ","), "List of additional namespaces where application resources can be managed in")
+	command.Flags().BoolVar(&enableProxyExtension, "enable-proxy-extension", env.ParseBoolFromEnv("CD_SERVER_ENABLE_PROXY_EXTENSION", false), "Enable Proxy Extension feature")
+	command.Flags().IntVar(&webhookParallelism, "webhook-parallelism-limit", env.ParseNumFromEnv("CD_SERVER_WEBHOOK_PARALLELISM_LIMIT", 50, 1, 1000), "Number of webhook requests processed concurrently")
+	command.Flags().IntVar(&globCacheSize, "glob-cache-size", env.ParseNumFromEnv("CD_SERVER_GLOB_CACHE_SIZE", utilglob.DefaultGlobCacheSize, 1, math.MaxInt32), "Maximum number of compiled glob patterns to cache for RBAC evaluation")
+	command.Flags().IntVar(&webhookRefreshWorkers, "webhook-refresh-workers", env.ParseNumFromEnv("CD_SERVER_WEBHOOK_REFRESH_WORKERS", 20, 1, 1000), "Number of webhook refresh requests processed concurrently")
+	command.Flags().StringSliceVar(&enableK8sEvent, "enable-k8s-event", env.StringsFromEnv("CD_ENABLE_K8S_EVENT", cd.DefaultEnableEventList(), ","), "Enable Hanzo CD to use k8s event. For disabling all events, set the value as `none`. (e.g --enable-k8s-event=none), For enabling specific events, set the value as `event reason`. (e.g --enable-k8s-event=StatusRefreshed,ResourceCreated)")
+	command.Flags().BoolVar(&hydratorEnabled, "hydrator-enabled", env.ParseBoolFromEnv("CD_HYDRATOR_ENABLED", false), "Feature flag to enable Hydrator. Default (\"false\")")
+	command.Flags().BoolVar(&syncWithReplaceAllowed, "sync-with-replace-allowed", env.ParseBoolFromEnv("CD_SYNC_WITH_REPLACE_ALLOWED", true), "Whether to allow users to select replace for syncs from UI/CLI")
+
+	// Flags related to the applicationSet component.
+	command.Flags().StringVar(&scmRootCAPath, "appset-scm-root-ca-path", env.StringFromEnv("CD_APPLICATIONSET_CONTROLLER_SCM_ROOT_CA_PATH", ""), "Provide Root CA Path for self-signed TLS Certificates")
+	command.Flags().BoolVar(&enableScmProviders, "appset-enable-scm-providers", env.ParseBoolFromEnv("CD_APPLICATIONSET_CONTROLLER_ENABLE_SCM_PROVIDERS", true), "Enable retrieving information from SCM providers, used by the SCM and PR generators (Default: true)")
+	command.Flags().StringSliceVar(&allowedScmProviders, "appset-allowed-scm-providers", env.StringsFromEnv("CD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS", []string{}, ","), "The list of allowed custom SCM provider API URLs. This restriction does not apply to SCM or PR generators which do not accept a custom API URL. (Default: Empty = all)")
+	command.Flags().BoolVar(&enableNewGitFileGlobbing, "appset-enable-new-git-file-globbing", env.ParseBoolFromEnv("CD_APPLICATIONSET_CONTROLLER_ENABLE_NEW_GIT_FILE_GLOBBING", false), "Enable new globbing in Git files generator.")
+	command.Flags().BoolVar(&enableGitHubAPIMetrics, "appset-enable-github-api-metrics", env.ParseBoolFromEnv("CD_APPLICATIONSET_CONTROLLER_ENABLE_GITHUB_API_METRICS", false), "Enable GitHub API metrics for generators that use the GitHub API")
+
+	repoServerClientTLSConfigSrc = tls.AddClientTLSFlagsToCmdWithPrefix(command, "SERVER")
+	tlsConfigCustomizerSrc = tls.AddTLSFlagsToCmd(command)
+	cacheSrc = servercache.AddCacheFlagsToCmd(command, cacheutil.Options{
+		OnClientCreated: func(client *redis.Client) {
+			redisClient = client
+		},
+	})
+	repoServerCacheSrc = reposervercache.AddCacheFlagsToCmd(command, cacheutil.Options{FlagPrefix: "repo-server-"})
+	return command
+}

@@ -21,7 +21,7 @@ import (
 	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
 	"github.com/hanzoai/deploy/reposerver/apiclient"
 	servercache "github.com/hanzoai/deploy/server/cache"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/errors"
 	"github.com/hanzoai/deploy/util/git"
@@ -342,7 +342,7 @@ func (s *Server) GetAppDetails(ctx context.Context, q *repositorypkg.RepoAppDeta
 	if err := s.enf.EnforceErr(claims, rbac.ResourceRepositories, rbac.ActionGet, createRBACObject(repo.Project, repo.Repo)); err != nil {
 		return nil, err
 	}
-	appName, appNs := argo.ParseFromQualifiedName(q.AppName, s.settings.GetNamespace())
+	appName, appNs := cd.ParseFromQualifiedName(q.AppName, s.settings.GetNamespace())
 	app, err := s.appLister.Applications(appNs).Get(appName)
 	appRBACObj := createRBACObject(q.AppProject, q.AppName)
 	// ensure caller has read privileges to app
@@ -391,7 +391,7 @@ func (s *Server) GetAppDetails(ctx context.Context, q *repositorypkg.RepoAppDeta
 	refSources := make(v1alpha1.RefTargetRevisionMapping)
 	if app != nil && app.Spec.HasMultipleSources() {
 		// Store the map of all sources having ref field into a map for applications with sources field
-		refSources, err = argo.GetRefSources(ctx, app.Spec.Sources, q.AppProject, s.db.GetRepository, []string{})
+		refSources, err = cd.GetRefSources(ctx, app.Spec.Sources, q.AppProject, s.db.GetRepository, []string{})
 		if err != nil {
 			return nil, fmt.Errorf("failed to get ref sources: %w", err)
 		}
@@ -482,7 +482,7 @@ func (s *Server) CreateRepository(ctx context.Context, q *repositorypkg.RepoCrea
 			r.Project = q.Repo.Project
 			return s.db.UpdateRepository(ctx, r)
 		default:
-			return nil, status.Error(codes.InvalidArgument, argo.GenerateSpecIsDifferentErrorMessage("repository", existing, r))
+			return nil, status.Error(codes.InvalidArgument, cd.GenerateSpecIsDifferentErrorMessage("repository", existing, r))
 		}
 	}
 	if err != nil {
@@ -527,7 +527,7 @@ func (s *Server) CreateWriteRepository(ctx context.Context, q *repositorypkg.Rep
 		case q.Upsert:
 			return s.db.UpdateWriteRepository(ctx, q.Repo)
 		default:
-			return nil, status.Error(codes.InvalidArgument, argo.GenerateSpecIsDifferentErrorMessage("write repository", existing, q.Repo))
+			return nil, status.Error(codes.InvalidArgument, cd.GenerateSpecIsDifferentErrorMessage("write repository", existing, q.Repo))
 		}
 	}
 	if err != nil {
@@ -786,7 +786,7 @@ func (s *Server) testRepo(ctx context.Context, repo *v1alpha1.Repository) error 
 }
 
 func (s *Server) isRepoPermittedInProject(ctx context.Context, repo string, projName string) error {
-	proj, err := argo.GetAppProjectByName(ctx, projName, applisters.NewAppProjectLister(s.projLister.GetIndexer()), s.namespace, s.settings, s.db)
+	proj, err := cd.GetAppProjectByName(ctx, projName, applisters.NewAppProjectLister(s.projLister.GetIndexer()), s.namespace, s.settings, s.db)
 	if err != nil {
 		return err
 	}

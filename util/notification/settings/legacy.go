@@ -185,7 +185,7 @@ func ApplyLegacyConfig(cfg *api.Config, context map[string]string, cm *corev1.Co
 }
 
 const (
-	annotationKey = "recipients.argocd-notifications.argoproj.io"
+	annotationKey = "recipients.cd-notifications.argoproj.io"
 )
 
 func GetLegacyDestinations(annotations map[string]string, defaultTriggers []string, serviceDefaultTriggers map[string][]string) services.Destinations {

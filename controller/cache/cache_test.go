@@ -46,7 +46,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: data,
@@ -56,7 +56,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 			Name:      common.ArgoCDSecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string][]byte{},
@@ -174,7 +174,7 @@ func TestHandleDeleteEvent_CacheDeadlock(t *testing.T) {
 	db := &dbmocks.ArgoDB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1)
 	fakeClient := fake.NewClientset()
-	settingsMgr := argosettings.NewSettingsManager(t.Context(), fakeClient, "argocd")
+	settingsMgr := argosettings.NewSettingsManager(t.Context(), fakeClient, "cd")
 	gitopsEngineClusterCache := &mocks.ClusterCache{}
 	clustersCache := liveStateCache{
 		clusters: map[string]cache.ClusterCache{
@@ -755,27 +755,27 @@ func TestShouldHashManifest(t *testing.T) {
 			want:    false,
 		},
 		{
-			name:        "argocd.argoproj.io/ignore-resource-updates=true",
+			name:        "cd.argoproj.io/ignore-resource-updates=true",
 			appName:     "",
 			gvk:         schema.GroupVersionKind{Group: application.Group, Kind: "kind1"},
 			un:          &unstructured.Unstructured{},
-			annotations: map[string]string{"argocd.argoproj.io/ignore-resource-updates": "true"},
+			annotations: map[string]string{"cd.argoproj.io/ignore-resource-updates": "true"},
 			want:        true,
 		},
 		{
-			name:        "argocd.argoproj.io/ignore-resource-updates=invalid",
+			name:        "cd.argoproj.io/ignore-resource-updates=invalid",
 			appName:     "",
 			gvk:         schema.GroupVersionKind{Group: application.Group, Kind: "kind1"},
 			un:          &unstructured.Unstructured{},
-			annotations: map[string]string{"argocd.argoproj.io/ignore-resource-updates": "invalid"},
+			annotations: map[string]string{"cd.argoproj.io/ignore-resource-updates": "invalid"},
 			want:        false,
 		},
 		{
-			name:        "argocd.argoproj.io/ignore-resource-updates=false",
+			name:        "cd.argoproj.io/ignore-resource-updates=false",
 			appName:     "",
 			gvk:         schema.GroupVersionKind{Group: application.Group, Kind: "kind1"},
 			un:          &unstructured.Unstructured{},
-			annotations: map[string]string{"argocd.argoproj.io/ignore-resource-updates": "false"},
+			annotations: map[string]string{"cd.argoproj.io/ignore-resource-updates": "false"},
 			want:        false,
 		},
 	}

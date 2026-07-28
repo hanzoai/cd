@@ -5,7 +5,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	service "github.com/hanzoai/deploy/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/cd"
 
 	"github.com/hanzoai/deploy/util/notification/expression/repo"
 	"github.com/hanzoai/deploy/util/notification/expression/strings"
@@ -24,13 +24,13 @@ func register(namespace string, entry map[string]any) {
 	helpers[namespace] = entry
 }
 
-func Spawn(app *unstructured.Unstructured, argocdService service.Service, vars map[string]any) map[string]any {
+func Spawn(app *unstructured.Unstructured, cdService service.Service, vars map[string]any) map[string]any {
 	clone := make(map[string]any)
 	for k := range vars {
 		clone[k] = vars[k]
 	}
 	maps.Copy(clone, helpers)
-	clone["repo"] = repo.NewExprs(argocdService, app)
+	clone["repo"] = repo.NewExprs(cdService, app)
 
 	return clone
 }

@@ -112,7 +112,7 @@ func (a *Actions) WithDirectOIDC() *Actions {
 	// issuer URL. If we shut it down, subsequent tests would start a new
 	// server on a different port, causing issuer mismatch errors.
 
-	// Configure oidc.config in argocd-cm pointing to the mock OIDC server
+	// Configure oidc.config in cd-cm pointing to the mock OIDC server
 	oidcConfig := fmt.Sprintf("name: Mock OIDC\nissuer: %s\nclientID: %s\nclientSecret: %s\n",
 		m.Issuer(), m.Config().ClientID, m.Config().ClientSecret)
 
@@ -129,7 +129,7 @@ func (a *Actions) WithDirectOIDC() *Actions {
 	return a
 }
 
-// Login creates a new session as admin using the argocd CLI login command.
+// Login creates a new session as admin using the cd CLI login command.
 // Each token name gets its own isolated config file so multiple sessions
 // can coexist without interfering with each other.
 func (a *Actions) Login(tokenName string) *Actions {
@@ -158,7 +158,7 @@ func (a *Actions) Login(tokenName string) *Actions {
 	return a
 }
 
-// Logout revokes the named token using the argocd CLI logout command.
+// Logout revokes the named token using the cd CLI logout command.
 // This triggers the full CLI logout flow including server-side token revocation.
 func (a *Actions) Logout(tokenName string) *Actions {
 	a.context.T().Helper()
@@ -237,7 +237,7 @@ func (a *Actions) LoginWithSSO(tokenName string) *Actions {
 	return a
 }
 
-// runCli executes an argocd CLI command using the named token and records
+// runCli executes an cd CLI command using the named token and records
 // the output and error for assertion in Then().
 func (a *Actions) runCli(tokenName string, args ...string) {
 	a.context.T().Helper()
@@ -248,21 +248,21 @@ func (a *Actions) runCli(tokenName string, args ...string) {
 	a.lastOutput, a.lastError = fixture.RunCliWithToken(token, args...)
 }
 
-// GetUserInfo calls "argocd account get-user-info" using the named token.
+// GetUserInfo calls "cd account get-user-info" using the named token.
 func (a *Actions) GetUserInfo(tokenName string) *Actions {
 	a.context.T().Helper()
 	a.runCli(tokenName, "account", "get-user-info", "--grpc-web")
 	return a
 }
 
-// ListProjects calls "argocd proj list" using the named token.
+// ListProjects calls "cd proj list" using the named token.
 func (a *Actions) ListProjects(tokenName string) *Actions {
 	a.context.T().Helper()
 	a.runCli(tokenName, "proj", "list", "--grpc-web")
 	return a
 }
 
-// ListApplications calls "argocd app list" using the named token.
+// ListApplications calls "cd app list" using the named token.
 func (a *Actions) ListApplications(tokenName string) *Actions {
 	a.context.T().Helper()
 	a.runCli(tokenName, "app", "list", "--grpc-web")
@@ -270,14 +270,14 @@ func (a *Actions) ListApplications(tokenName string) *Actions {
 	return a
 }
 
-// ListRepositories calls "argocd repo list" using the named token.
+// ListRepositories calls "cd repo list" using the named token.
 func (a *Actions) ListRepositories(tokenName string) *Actions {
 	a.context.T().Helper()
 	a.runCli(tokenName, "repo", "list", "--grpc-web")
 	return a
 }
 
-// ListAccounts calls "argocd account list" using the named token.
+// ListAccounts calls "cd account list" using the named token.
 func (a *Actions) ListAccounts(tokenName string) *Actions {
 	a.context.T().Helper()
 	a.runCli(tokenName, "account", "list")

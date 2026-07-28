@@ -37,7 +37,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type ApplicationSetGetQuery struct {
 	// the applicationsets's name
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The application set namespace. Default empty is argocd control plane namespace
+	// The application set namespace. Default empty is cd control plane namespace
 	AppsetNamespace      string   `protobuf:"bytes,2,opt,name=appsetNamespace,proto3" json:"appsetNamespace,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -96,7 +96,7 @@ type ApplicationSetListQuery struct {
 	Projects []string `protobuf:"bytes,1,rep,name=projects,proto3" json:"projects,omitempty"`
 	// the selector to restrict returned list to applications only with matched labels
 	Selector string `protobuf:"bytes,2,opt,name=selector,proto3" json:"selector,omitempty"`
-	// The application set namespace. Default empty is argocd control plane namespace
+	// The application set namespace. Default empty is cd control plane namespace
 	AppsetNamespace      string   `protobuf:"bytes,3,opt,name=appsetNamespace,proto3" json:"appsetNamespace,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -357,7 +357,7 @@ func (m *ApplicationSetCreateRequest) GetDryRun() bool {
 
 type ApplicationSetDeleteRequest struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The application set namespace. Default empty is argocd control plane namespace
+	// The application set namespace. Default empty is cd control plane namespace
 	AppsetNamespace      string   `protobuf:"bytes,2,opt,name=appsetNamespace,proto3" json:"appsetNamespace,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -413,7 +413,7 @@ func (m *ApplicationSetDeleteRequest) GetAppsetNamespace() string {
 
 type ApplicationSetTreeQuery struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The application set namespace. Default empty is argocd control plane namespace
+	// The application set namespace. Default empty is cd control plane namespace
 	AppsetNamespace      string   `protobuf:"bytes,2,opt,name=appsetNamespace,proto3" json:"appsetNamespace,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`

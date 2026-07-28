@@ -400,7 +400,7 @@ func TestValidHostnames(t *testing.T) {
 		"localhost":                          true,
 		"localhost.localdomain":              true,
 		"foo.example.com":                    true,
-		"argocd-server.svc.kubernetes.local": true,
+		"cd-server.svc.kubernetes.local": true,
 		"localhost.":                         true,
 		"github.com.":                        true,
 		"foo_bar.example.com":                true,
@@ -428,7 +428,7 @@ func TestValidFQDNs(t *testing.T) {
 		"localhost":                          false,
 		"localhost.localdomain":              false,
 		"foo.example.com.":                   true,
-		"argocd-server.svc.kubernetes.local": false,
+		"cd-server.svc.kubernetes.local": false,
 		"localhost.":                         true,
 		"github.com.":                        true,
 		"localhost..":                        false,
@@ -492,7 +492,7 @@ func TestGetSSHKnownHostsDataPath(t *testing.T) {
 func TestGetCertificateForConnect(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		temppath := t.TempDir()
-		cert, err := os.ReadFile("../../test/fixture/certs/argocd-test-server.crt")
+		cert, err := os.ReadFile("../../test/fixture/certs/cd-test-server.crt")
 		if err != nil {
 			panic(err)
 		}
@@ -531,7 +531,7 @@ func TestGetCertificateForConnect(t *testing.T) {
 func TestGetCertBundlePathForRepository(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		temppath := t.TempDir()
-		cert, err := os.ReadFile("../../test/fixture/certs/argocd-test-server.crt")
+		cert, err := os.ReadFile("../../test/fixture/certs/cd-test-server.crt")
 		if err != nil {
 			panic(err)
 		}

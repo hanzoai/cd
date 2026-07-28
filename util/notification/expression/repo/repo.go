@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	service "github.com/hanzoai/deploy/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/cd"
 
 	"github.com/hanzoai/deploy/util/notification/expression/shared"
 
@@ -34,19 +34,19 @@ func getApplication(obj *unstructured.Unstructured) (*v1alpha1.Application, erro
 	return application, nil
 }
 
-func getAppDetails(un *unstructured.Unstructured, argocdService service.Service) (*shared.AppDetail, error) {
+func getAppDetails(un *unstructured.Unstructured, cdService service.Service) (*shared.AppDetail, error) {
 	app, err := getApplication(un)
 	if err != nil {
 		return nil, err
 	}
-	appDetail, err := argocdService.GetAppDetails(context.Background(), app)
+	appDetail, err := cdService.GetAppDetails(context.Background(), app)
 	if err != nil {
 		return nil, err
 	}
 	return appDetail, nil
 }
 
-func getCommitMetadata(commitSHA string, app *unstructured.Unstructured, argocdService service.Service) (*shared.CommitMetadata, error) {
+func getCommitMetadata(commitSHA string, app *unstructured.Unstructured, cdService service.Service) (*shared.CommitMetadata, error) {
 	repoURL, ok, err := unstructured.NestedString(app.Object, "spec", "source", "repoURL")
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func getCommitMetadata(commitSHA string, app *unstructured.Unstructured, argocdS
 		panic(errors.New("failed to get application project"))
 	}
 
-	meta, err := argocdService.GetCommitMetadata(context.Background(), repoURL, commitSHA, project)
+	meta, err := cdService.GetCommitMetadata(context.Background(), repoURL, commitSHA, project)
 	if err != nil {
 		return nil, err
 	}
@@ -93,13 +93,13 @@ func repoURLToHTTPS(rawURL string) string {
 	return parsed.String()
 }
 
-func NewExprs(argocdService service.Service, app *unstructured.Unstructured) map[string]any {
+func NewExprs(cdService service.Service, app *unstructured.Unstructured) map[string]any {
 	return map[string]any{
 		"RepoURLToHTTPS":    repoURLToHTTPS,
 		"FullNameByRepoURL": FullNameByRepoURL,
 		"QueryEscape":       url.QueryEscape,
 		"GetCommitMetadata": func(commitSHA string) any {
-			meta, err := getCommitMetadata(commitSHA, app, argocdService)
+			meta, err := getCommitMetadata(commitSHA, app, cdService)
 			if err != nil {
 				panic(err)
 			}
@@ -107,7 +107,7 @@ func NewExprs(argocdService service.Service, app *unstructured.Unstructured) map
 			return *meta
 		},
 		"GetAppDetails": func() any {
-			appDetails, err := getAppDetails(app, argocdService)
+			appDetails, err := getAppDetails(app, cdService)
 			if err != nil {
 				panic(err)
 			}

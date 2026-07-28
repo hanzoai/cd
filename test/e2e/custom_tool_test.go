@@ -36,7 +36,7 @@ func TestCustomToolWithGitCreds(t *testing.T) {
 		And(func(_ *Application) {
 			output, err := fixture.Run("", "kubectl", "-n", ctx.DeploymentNamespace(), "get", "cm", ctx.AppName(), "-o", "jsonpath={.metadata.annotations.GitAskpass}")
 			require.NoError(t, err)
-			assert.Equal(t, "argocd", output)
+			assert.Equal(t, "cd", output)
 		})
 }
 
@@ -62,7 +62,7 @@ func TestCustomToolWithGitCredsTemplate(t *testing.T) {
 		And(func(_ *Application) {
 			output, err := fixture.Run("", "kubectl", "-n", ctx.DeploymentNamespace(), "get", "cm", ctx.AppName(), "-o", "jsonpath={.metadata.annotations.GitAskpass}")
 			require.NoError(t, err)
-			assert.Equal(t, "argocd", output)
+			assert.Equal(t, "cd", output)
 		}).
 		And(func(_ *Application) {
 			output, err := fixture.Run("", "kubectl", "-n", ctx.DeploymentNamespace(), "get", "cm", ctx.AppName(), "-o", "jsonpath={.metadata.annotations.GitUsername}")

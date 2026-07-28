@@ -12,7 +12,7 @@ import (
 )
 
 func Test_newNamespaceFilterTransform(t *testing.T) {
-	const serverNS = "argocd"
+	const serverNS = "cd"
 
 	app := func(ns string) *v1alpha1.Application {
 		return &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Name: "app", Namespace: ns}}

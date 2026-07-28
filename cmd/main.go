@@ -9,17 +9,17 @@ import (
 	"github.com/spf13/cobra"
 	"k8s.io/klog/v2"
 
-	appcontroller "github.com/hanzoai/deploy/cmd/argocd-application-controller/commands"
-	applicationset "github.com/hanzoai/deploy/cmd/argocd-applicationset-controller/commands"
-	cmpserver "github.com/hanzoai/deploy/cmd/argocd-cmp-server/commands"
-	commitserver "github.com/hanzoai/deploy/cmd/argocd-commit-server/commands"
-	dex "github.com/hanzoai/deploy/cmd/argocd-dex/commands"
-	gitaskpass "github.com/hanzoai/deploy/cmd/argocd-git-ask-pass/commands"
-	k8sauth "github.com/hanzoai/deploy/cmd/argocd-k8s-auth/commands"
-	notification "github.com/hanzoai/deploy/cmd/argocd-notification/commands"
-	reposerver "github.com/hanzoai/deploy/cmd/argocd-repo-server/commands"
-	apiserver "github.com/hanzoai/deploy/cmd/argocd-server/commands"
-	cli "github.com/hanzoai/deploy/cmd/argocd/commands"
+	appcontroller "github.com/hanzoai/deploy/cmd/cd-application-controller/commands"
+	applicationset "github.com/hanzoai/deploy/cmd/cd-applicationset-controller/commands"
+	cmpserver "github.com/hanzoai/deploy/cmd/cd-cmp-server/commands"
+	commitserver "github.com/hanzoai/deploy/cmd/cd-commit-server/commands"
+	dex "github.com/hanzoai/deploy/cmd/cd-dex/commands"
+	gitaskpass "github.com/hanzoai/deploy/cmd/cd-git-ask-pass/commands"
+	k8sauth "github.com/hanzoai/deploy/cmd/cd-k8s-auth/commands"
+	notification "github.com/hanzoai/deploy/cmd/cd-notification/commands"
+	reposerver "github.com/hanzoai/deploy/cmd/cd-repo-server/commands"
+	apiserver "github.com/hanzoai/deploy/cmd/cd-server/commands"
+	cli "github.com/hanzoai/deploy/cmd/cd/commands"
 	"github.com/hanzoai/deploy/common"
 	"github.com/hanzoai/deploy/util/log"
 )
@@ -71,7 +71,7 @@ func main() {
 		command = k8sauth.NewCommand()
 		isArgocdCLI = true
 	default:
-		// "argocd-linux-amd64", "argocd-darwin-amd64", "argocd-windows-amd64.exe" are also valid binary names
+		// "cd-linux-amd64", "cd-darwin-amd64", "cd-windows-amd64.exe" are also valid binary names
 		command = cli.NewCommand()
 		isArgocdCLI = true
 	}
@@ -86,7 +86,7 @@ func main() {
 
 	err := command.Execute()
 	// if an error is present, try to look for various scenarios
-	// such as if the error is from the execution of a normal argocd command,
+	// such as if the error is from the execution of a normal cd command,
 	// unknown command error or any other.
 	if err != nil {
 		errMsg, pluginErr := cli.NewDefaultPluginHandler().HandleCommandExecutionError(err, isArgocdCLI, os.Args)

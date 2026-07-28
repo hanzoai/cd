@@ -37,8 +37,8 @@ var importMatch = regexp.MustCompile(`^gpg: key ([A-Z0-9]+): public key "([^"]+)
 
 // This is the recipe for automatic key generation, passed to gpg --batch --gen-key
 // for initializing our keyring with a trustdb. A new private key will be generated each
-// time argocd-server starts, so it's transient and is not used for anything except for
-// creating the trustdb in a specific argocd-repo-server pod.
+// time cd-server starts, so it's transient and is not used for anything except for
+// creating the trustdb in a specific cd-repo-server pod.
 var batchKeyCreateRecipe = `%no-protection
 %transient-key
 Key-Type: RSA
@@ -52,7 +52,7 @@ Expire-Date: 6m
 `
 
 // Canary marker for GNUPGHOME created by Hanzo CD
-const canaryMarkerFilename = ".argocd-generated"
+const canaryMarkerFilename = ".cd-generated"
 
 type PGPKeyID string
 

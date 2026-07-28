@@ -35,13 +35,13 @@ type ExternalNamespace string
 const (
 	// ArgoCDNamespace is the namespace into which Argo CD and ApplicationSet controller are deployed,
 	// and in which Application resources should be created.
-	ArgoCDNamespace = "argocd-e2e"
+	ArgoCDNamespace = "cd-e2e"
 
 	// ArgoCDExternalNamespace is an external namespace to test additional namespaces
-	ArgoCDExternalNamespace ExternalNamespace = "argocd-e2e-external"
+	ArgoCDExternalNamespace ExternalNamespace = "cd-e2e-external"
 
 	// ArgoCDExternalNamespace2 is an external namespace to test additional namespaces
-	ArgoCDExternalNamespace2 ExternalNamespace = "argocd-e2e-external-2"
+	ArgoCDExternalNamespace2 ExternalNamespace = "cd-e2e-external-2"
 
 	// ApplicationsResourcesNamespace is the namespace into which temporary resources (such as Deployments/Pods/etc)
 	// can be deployed, such as using it as the target namespace in an Application resource.
@@ -117,14 +117,14 @@ func EnsureCleanState(t *testing.T) {
 
 	fixture.RunFunctionsInParallelAndCheckErrors(t, []func() error{
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repository
+			// kubectl delete secrets -l cd.argoproj.io/secret-type=repository
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepository})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repo-creds
+			// kubectl delete secrets -l cd.argoproj.io/secret-type=repo-creds
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
@@ -139,19 +139,19 @@ func EnsureCleanState(t *testing.T) {
 			return nil
 		},
 		func() error {
-			// Clean up ApplicationSets in argocd-e2e-external namespace (don't delete the namespace itself as it's shared)
+			// Clean up ApplicationSets in cd-e2e-external namespace (don't delete the namespace itself as it's shared)
 			return fixtureClient.ExternalAppSetClientsets[ArgoCDExternalNamespace].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
-			// Clean up ApplicationSets in argocd-e2e-external-2 namespace (don't delete the namespace itself as it's shared)
+			// Clean up ApplicationSets in cd-e2e-external-2 namespace (don't delete the namespace itself as it's shared)
 			return fixtureClient.ExternalAppSetClientsets[ArgoCDExternalNamespace2].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
-			// Clean up Applications in argocd-e2e-external namespace
+			// Clean up Applications in cd-e2e-external namespace
 			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(ArgoCDExternalNamespace)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
-			// Clean up Applications in argocd-e2e-external-2 namespace
+			// Clean up Applications in cd-e2e-external-2 namespace
 			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(ArgoCDExternalNamespace2)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		// delete resources
@@ -257,7 +257,7 @@ func waitForExpectedClusterState(t *testing.T) error {
 	}
 
 	// Wait up to 120 seconds for namespace to not exist
-	// Note: We only check ApplicationsResourcesNamespace - the external namespaces (argocd-e2e-external*)
+	// Note: We only check ApplicationsResourcesNamespace - the external namespaces (cd-e2e-external*)
 	// are shared infrastructure and persist throughout the test suite
 	for _, namespace := range []string{string(ApplicationsResourcesNamespace)} {
 		// Wait up to 120 seconds for namespace to not exist

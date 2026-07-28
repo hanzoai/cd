@@ -41,18 +41,18 @@ import (
 const testNamespace = "default"
 
 var (
-	argocdCM = corev1.ConfigMap{
+	cdCM = corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-cm",
+			Name:      "cd-cm",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 	}
-	argocdSecret = corev1.Secret{
+	cdSecret = corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      "cd-secret",
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -98,7 +98,7 @@ var (
 		EnableLFS:      false,
 		EnableOCI:      false,
 		Proxy:          "test",
-		Project:        "argocd",
+		Project:        "cd",
 		InheritedCreds: true,
 	}
 	guestbookApp = &appsv1.Application{
@@ -255,7 +255,7 @@ func Test_createRBACObject(t *testing.T) {
 }
 
 func TestRepositoryServer(t *testing.T) {
-	kubeclientset := fake.NewSimpleClientset(&argocdCM, &argocdSecret)
+	kubeclientset := fake.NewSimpleClientset(&cdCM, &cdSecret)
 	settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
 	enforcer := newEnforcer(kubeclientset)
 	appLister, projInformer := newAppAndProjLister(defaultProj)
@@ -506,7 +506,7 @@ func TestRepositoryServer(t *testing.T) {
 
 		url := "https://test"
 		db := &dbmocks.ArgoDB{}
-		db.EXPECT().GetRepository(mock.Anything, url, "argocd").Return(nil, nil)
+		db.EXPECT().GetRepository(mock.Anything, url, "cd").Return(nil, nil)
 		db.EXPECT().ListHelmRepositories(mock.Anything).Return(nil, nil)
 		db.EXPECT().ListRepositories(mock.Anything).Return([]*appsv1.Repository{&fakeRepo, &fakeRepo}, nil)
 
@@ -518,7 +518,7 @@ func TestRepositoryServer(t *testing.T) {
 }
 
 func TestRepositoryServerListApps(t *testing.T) {
-	kubeclientset := fake.NewSimpleClientset(&argocdCM, &argocdSecret)
+	kubeclientset := fake.NewSimpleClientset(&cdCM, &cdSecret)
 	settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
 
 	t.Run("Test_WithoutAppCreateUpdatePrivileges", func(t *testing.T) {
@@ -605,7 +605,7 @@ func TestRepositoryServerListApps(t *testing.T) {
 }
 
 func TestRepositoryServerGetAppDetails(t *testing.T) {
-	kubeclientset := fake.NewSimpleClientset(&argocdCM, &argocdSecret)
+	kubeclientset := fake.NewSimpleClientset(&cdCM, &cdSecret)
 	settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
 
 	t.Run("Test_WithoutRepoReadPrivileges", func(t *testing.T) {
@@ -1144,7 +1144,7 @@ func TestDeleteRepository(t *testing.T) {
 		"invalid": "git clone https://bitbucket.org/workspace/repo.git",
 	}
 
-	kubeclientset := fake.NewSimpleClientset(&argocdCM, &argocdSecret)
+	kubeclientset := fake.NewSimpleClientset(&cdCM, &cdSecret)
 	settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
 
 	for name, repo := range repositories {
