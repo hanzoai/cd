@@ -26,7 +26,7 @@ type Repos interface {
 	GetDirectories(ctx context.Context, repoURL, revision, project string, noRevisionCache bool, sourceIntegrity *v1alpha1.SourceIntegrity) ([]string, error)
 }
 
-func NewArgoCDService(db db.ArgoDB, submoduleEnabled bool, repoClientset apiclient.Clientset, newFileGlobbingEnabled bool) Repos {
+func NewArgoCDService(db db.DB, submoduleEnabled bool, repoClientset apiclient.Clientset, newFileGlobbingEnabled bool) Repos {
 	return &argoCDService{
 		getRepository:          db.GetRepository,
 		submoduleEnabled:       submoduleEnabled,

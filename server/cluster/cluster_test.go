@@ -154,7 +154,7 @@ func TestUpdateCluster_RejectInvalidParams(t *testing.T) {
 		},
 	}
 
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 
 	clusters := []appv1.Cluster{
 		{
@@ -222,7 +222,7 @@ p, role:test, clusters, *, allowed-project/*, allow`)
 }
 
 func TestGetCluster_UrlEncodedName(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 
 	mockCluster := appv1.Cluster{
 		Name:       "test/ing",
@@ -252,7 +252,7 @@ func TestGetCluster_UrlEncodedName(t *testing.T) {
 }
 
 func TestGetCluster_NameWithUrlEncodingButShouldNotBeUnescaped(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 
 	mockCluster := appv1.Cluster{
 		Name:       "test%2fing",
@@ -318,7 +318,7 @@ func TestGetCluster_CannotSetCADataAndInsecureTrue(t *testing.T) {
 }
 
 func TestUpdateCluster_NoFieldsPaths(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	var updated *appv1.Cluster
 
 	clusters := []appv1.Cluster{
@@ -356,7 +356,7 @@ func TestUpdateCluster_NoFieldsPaths(t *testing.T) {
 }
 
 func TestUpdateCluster_FieldsPathSet(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	var updated *appv1.Cluster
 	db.EXPECT().GetCluster(mock.Anything, "https://127.0.0.1").Return(&appv1.Cluster{
 		Name:       "minikube",
@@ -587,7 +587,7 @@ func getClientset(config map[string]string, ns string, objects ...runtime.Object
 func TestListCluster(t *testing.T) {
 	t.Parallel()
 
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 
 	fooCluster := appv1.Cluster{
 		Name:       "foo",
@@ -697,7 +697,7 @@ func TestListCluster(t *testing.T) {
 
 func TestGetClusterAndVerifyAccess(t *testing.T) {
 	t.Run("GetClusterAndVerifyAccess - No Cluster", func(t *testing.T) {
-		db := &dbmocks.ArgoDB{}
+		db := &dbmocks.DB{}
 
 		mockCluster := appv1.Cluster{
 			Name:       "test/ing",
@@ -723,7 +723,7 @@ func TestGetClusterAndVerifyAccess(t *testing.T) {
 	})
 
 	t.Run("GetClusterAndVerifyAccess - Permissions Denied", func(t *testing.T) {
-		db := &dbmocks.ArgoDB{}
+		db := &dbmocks.DB{}
 
 		mockCluster := appv1.Cluster{
 			Name:       "test/ing",
@@ -750,7 +750,7 @@ func TestGetClusterAndVerifyAccess(t *testing.T) {
 }
 
 func TestNoClusterEnumeration(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 
 	mockCluster := appv1.Cluster{
 		Name:       "test/ing",

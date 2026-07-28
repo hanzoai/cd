@@ -142,7 +142,7 @@ type ApplicationController struct {
 	selfHealTimeout               time.Duration
 	selfHealBackoff               *wait.Backoff
 	syncTimeout                   time.Duration
-	db                            db.ArgoDB
+	db                            db.DB
 	settingsMgr                   *settings_util.SettingsManager
 	refreshRequestedApps          map[string]CompareWith
 	refreshRequestedAppsMutex     *sync.Mutex

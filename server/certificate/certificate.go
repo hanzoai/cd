@@ -11,12 +11,12 @@ import (
 
 // Server provides a Certificate service
 type Server struct {
-	db  db.ArgoDB
+	db  db.DB
 	enf *rbac.Enforcer
 }
 
 // NewServer returns a new instance of the Certificate service
-func NewServer(db db.ArgoDB, enf *rbac.Enforcer) *Server {
+func NewServer(db db.DB, enf *rbac.Enforcer) *Server {
 	return &Server{
 		db:  db,
 		enf: enf,

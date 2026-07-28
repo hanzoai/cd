@@ -187,7 +187,7 @@ type ResourceInfo struct {
 }
 
 func NewLiveStateCache(
-	db db.ArgoDB,
+	db db.DB,
 	appInformer cache.SharedIndexInformer,
 	settingsMgr *settings.SettingsManager,
 	metricsServer *metrics.MetricsServer,
@@ -220,7 +220,7 @@ type cacheSettings struct {
 }
 
 type liveStateCache struct {
-	db                   db.ArgoDB
+	db                   db.DB
 	appInformer          cache.SharedIndexInformer
 	onObjectUpdated      ObjectUpdatedHandler
 	settingsMgr          *settings.SettingsManager
