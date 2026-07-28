@@ -18,7 +18,7 @@ import (
 func TestBackupExportImport(t *testing.T) {
 	var exportRawOutput string
 	ctx := Given(t)
-	// Create application in argocd namespace
+	// Create application in cd namespace
 	appctx := appfixture.GivenWithSameState(ctx)
 
 	var appTestNamespace Application
@@ -61,7 +61,7 @@ func TestBackupExportImport(t *testing.T) {
 		}).
 		AndExportedResources(func(exportResources *ExportedResources, err error) {
 			require.NoError(t, err, "export format not valid")
-			assert.True(t, exportResources.HasResource(kube.NewResourceKey("", "ConfigMap", "", "argocd-cm")), "argocd-cm not found in export")
+			assert.True(t, exportResources.HasResource(kube.NewResourceKey("", "ConfigMap", "", "cd-cm")), "cd-cm not found in export")
 			assert.True(t, exportResources.HasResource(kube.NewResourceKey(ApplicationSchemaGroupVersionKind.Group, ApplicationSchemaGroupVersionKind.Kind, "", appTestNamespace.GetName())), "test namespace application not in export")
 			assert.True(t, exportResources.HasResource(kube.NewResourceKey(ApplicationSchemaGroupVersionKind.Group, ApplicationSchemaGroupVersionKind.Kind, appOtherNamespace.GetNamespace(), appOtherNamespace.GetName())), "app namespace application not in export")
 		})

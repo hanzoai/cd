@@ -56,7 +56,7 @@ func NewTestState(t *testing.T) *TestState {
 		id:                  fmt.Sprintf("%s-%s", t.Name(), shortId),
 		shortId:             shortId,
 		name:                DnsFriendly(t.Name(), "-"+shortId),
-		deploymentNamespace: DnsFriendly("argocd-e2e-"+t.Name(), "-"+shortId),
+		deploymentNamespace: DnsFriendly("cd-e2e-"+t.Name(), "-"+shortId),
 	}
 }
 

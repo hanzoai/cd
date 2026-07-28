@@ -553,7 +553,7 @@ func AddClientTLSFlagsToCmdWithPrefix(cmd *cobra.Command, prefix string) func() 
 // repo-server liveness probe self-connection.
 func GenerateHealthCheckClientCert() (*tls.Certificate, error) {
 	return GenerateX509KeyPair(CertOptions{
-		Hosts:        []string{"argocd-repo-server-healthcheck"},
+		Hosts:        []string{"cd-repo-server-healthcheck"},
 		Organization: "Hanzo CD Health Check",
 		IsCA:         true, // self-signed CA so it can be added to ClientCAs pool directly
 		ECDSACurve:   "P256",

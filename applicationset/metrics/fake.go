@@ -8,7 +8,7 @@ import (
 func NewFakeAppsetMetrics() *ApplicationsetMetrics {
 	reconcileHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "argocd_appset_reconcile",
+			Name: "cd_appset_reconcile",
 			Help: "Application reconciliation performance in seconds.",
 			// Buckets can be set later on after observing median time
 		},

@@ -21,7 +21,7 @@ func TestRender(t *testing.T) {
 		{
 			name: "author and multiple references",
 			metadata: HydratorCommitMetadata{
-				RepoURL: "https://github.com/test/argocd-example-apps",
+				RepoURL: "https://github.com/test/cd-example-apps",
 				DrySHA:  "3ff41cc5247197a6caf50216c4c76cc29d78a97d",
 				Author:  "test <test@test.com>",
 				Date:    metav1.Now().String(),
@@ -30,7 +30,7 @@ func TestRender(t *testing.T) {
 						Commit: &v1alpha1.CommitMetadata{
 							Author:  "ref test <ref-test@test.com>",
 							Subject: "test",
-							RepoURL: "https://github.com/test/argocd-example-apps",
+							RepoURL: "https://github.com/test/cd-example-apps",
 							SHA:     "3ff41cc5247197a6caf50216c4c76cc29d78a97c",
 						},
 					},
@@ -38,7 +38,7 @@ func TestRender(t *testing.T) {
 						Commit: &v1alpha1.CommitMetadata{
 							Author:  "ref test 2 <ref-test-2@test.com>",
 							Subject: "test 2",
-							RepoURL: "https://github.com/test/argocd-example-apps",
+							RepoURL: "https://github.com/test/cd-example-apps",
 							SHA:     "abc12345678912345678912345678912345678912",
 						},
 					},
@@ -58,7 +58,7 @@ Co-authored-by: test <test@test.com>
 		{
 			name: "no references",
 			metadata: HydratorCommitMetadata{
-				RepoURL: "https://github.com/test/argocd-example-apps",
+				RepoURL: "https://github.com/test/cd-example-apps",
 				DrySHA:  "3ff41cc5247197a6caf50216c4c76cc29d78a97d",
 				Author:  "test <test@test.com>",
 				Date:    metav1.Now().String(),
@@ -75,7 +75,7 @@ Co-authored-by: test <test@test.com>
 		{
 			name: "no body",
 			metadata: HydratorCommitMetadata{
-				RepoURL: "https://github.com/test/argocd-example-apps",
+				RepoURL: "https://github.com/test/cd-example-apps",
 				DrySHA:  "3ff41cc5247197a6caf50216c4c76cc29d78a97d",
 				Author:  "test <test@test.com>",
 				Date:    metav1.Now().String(),

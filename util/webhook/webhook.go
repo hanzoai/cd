@@ -38,7 +38,7 @@ import (
 	"github.com/hanzoai/deploy/reposerver/cache"
 	servercache "github.com/hanzoai/deploy/server/cache"
 	"github.com/hanzoai/deploy/util/app/path"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/git"
 	"github.com/hanzoai/deploy/util/glob"
@@ -63,17 +63,17 @@ const panicMsgServer = "panic while processing api-server webhook event"
 var (
 	webhookManifestCacheWarmDisabled = os.Getenv("CD_WEBHOOK_MANIFEST_CACHE_WARM_DISABLED") == "true"
 	webhookRequestsTotal             = promauto.NewCounterVec(prometheus.CounterOpts{
-		Name: "argocd_webhook_requests_total",
+		Name: "cd_webhook_requests_total",
 		Help: "Number of webhook requests received by repo.",
 	}, []string{"repo"})
 
 	webhookStoreCacheAttemptsTotal = promauto.NewCounterVec(prometheus.CounterOpts{
-		Name: "argocd_webhook_store_cache_attempts_total",
+		Name: "cd_webhook_store_cache_attempts_total",
 		Help: "Number of attempts to store previously cached manifests triggered by a webhook event.",
 	}, []string{"repo", "successful"})
 
 	webhookHandlersInFlight = promauto.NewGauge(prometheus.GaugeOpts{
-		Name: "argocd_webhook_handlers_in_flight",
+		Name: "cd_webhook_handlers_in_flight",
 		Help: "Number of webhook HandleEvent calls currently in progress.",
 	})
 )
@@ -216,7 +216,7 @@ func (a *ArgoCDWebhookHandler) startRefreshWorkers(count int) {
 // processAppRefresh processes a single app refresh request
 func (a *ArgoCDWebhookHandler) processAppRefresh(req *appRefreshRequest) {
 	namespacedAppInterface := a.appClientset.ArgoprojV1alpha1().Applications(req.appNamespace)
-	_, err := argo.RefreshApp(namespacedAppInterface, req.appName, v1alpha1.RefreshTypeNormal, req.hydrateType)
+	_, err := cd.RefreshApp(namespacedAppInterface, req.appName, v1alpha1.RefreshTypeNormal, req.hydrateType)
 	if err != nil {
 		if req.hydrateType != nil {
 			log.Warnf("Failed to hydrate app '%s' for controller reprocessing: %v", req.appName, err)
@@ -304,7 +304,7 @@ func (a *ArgoCDWebhookHandler) affectedRevisionInfo(payloadIf any) (webURLs []st
 		touchedHead = true
 
 		// Get DiffSet only for authenticated webhooks.
-		// when WebhookBitbucketUUID is set in argocd-secret, then the payload must be signed and
+		// when WebhookBitbucketUUID is set in cd-secret, then the payload must be signed and
 		// signature is validated before payload is parsed.
 		if a.settings.GetWebhookBitbucketUUID() != "" {
 			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -584,7 +584,7 @@ func getURLRegex(originalURL string, regexpFormat string) (*regexp.Regexp, error
 }
 
 func (a *ArgoCDWebhookHandler) storePreviouslyCachedManifests(app *v1alpha1.Application, change changeInfo, trackingMethod string, appInstanceLabelKey string, installationID string, source v1alpha1.ApplicationSource) error {
-	destCluster, err := argo.GetDestinationCluster(context.Background(), app.Spec.Destination, a.db)
+	destCluster, err := cd.GetDestinationCluster(context.Background(), app.Spec.Destination, a.db)
 	if err != nil {
 		return fmt.Errorf("error validating destination: %w", err)
 	}
@@ -602,7 +602,7 @@ func (a *ArgoCDWebhookHandler) storePreviouslyCachedManifests(app *v1alpha1.Appl
 		sources = append(sources, app.Spec.GetSource())
 	}
 
-	refSources, err := argo.GetRefSources(context.Background(), sources, app.Spec.Project, a.db.GetRepository, []string{})
+	refSources, err := cd.GetRefSources(context.Background(), sources, app.Spec.Project, a.db.GetRepository, []string{})
 	if err != nil {
 		return fmt.Errorf("error getting ref sources: %w", err)
 	}

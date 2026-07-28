@@ -75,13 +75,13 @@ func (a *Actions) CLILogin() *Actions {
 
 func (a *Actions) SessionToken() *Actions {
 	a.context.T().Helper()
-	a.lastOutput, a.lastError = fixture.Run("", "../../dist/argocd", "account", "session-token", "--config", a.context.GetConfigPath())
+	a.lastOutput, a.lastError = fixture.Run("", "../../dist/cd", "account", "session-token", "--config", a.context.GetConfigPath())
 	return a
 }
 
 func (a *Actions) SessionTokenJSON() *Actions {
 	a.context.T().Helper()
-	a.lastOutput, a.lastError = fixture.Run("", "../../dist/argocd", "account", "session-token", "-o", "json", "--config", a.context.GetConfigPath())
+	a.lastOutput, a.lastError = fixture.Run("", "../../dist/cd", "account", "session-token", "-o", "json", "--config", a.context.GetConfigPath())
 	return a
 }
 
@@ -96,7 +96,7 @@ func (a *Actions) Then() *Consequences {
 	return &Consequences{a.context, a}
 }
 
-// CLILogin performs a CLI-based login using argocd login command with a custom config path.
+// CLILogin performs a CLI-based login using cd login command with a custom config path.
 // This properly establishes the context in the config file with server, user, and context information.
 // Use this when you need to test CLI commands that rely on the local config file.
 func CLILogin(t *testing.T, username, password, configPath string) {
@@ -113,7 +113,7 @@ func CLILogin(t *testing.T, username, password, configPath string) {
 		args = append(args, "--plaintext")
 	}
 
-	loginOutput, err := fixture.Run("", "../../dist/argocd", args...)
+	loginOutput, err := fixture.Run("", "../../dist/cd", args...)
 	require.NoError(t, err, "Login should succeed")
 	assert.Contains(t, loginOutput, "logged in successfully")
 }

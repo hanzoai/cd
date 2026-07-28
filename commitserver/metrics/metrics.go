@@ -50,7 +50,7 @@ func NewMetricsServer() *Server {
 
 	commitPendingRequestsGauge := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "argocd_commitserver_commit_pending_request_total",
+			Name: "cd_commitserver_commit_pending_request_total",
 			Help: "Number of pending commit requests",
 		},
 		[]string{"repo"},
@@ -59,7 +59,7 @@ func NewMetricsServer() *Server {
 
 	gitRequestCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_commitserver_git_request_total",
+			Name: "cd_commitserver_git_request_total",
 			Help: "Number of git requests performed by repo server",
 		},
 		[]string{"repo", "request_type"},
@@ -68,7 +68,7 @@ func NewMetricsServer() *Server {
 
 	gitRequestHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_commitserver_git_request_duration_seconds",
+			Name:    "cd_commitserver_git_request_duration_seconds",
 			Help:    "Git requests duration seconds.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2, 4, 10, 20},
 		},
@@ -78,7 +78,7 @@ func NewMetricsServer() *Server {
 
 	commitRequestHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_commitserver_commit_request_duration_seconds",
+			Name:    "cd_commitserver_commit_request_duration_seconds",
 			Help:    "Commit request duration seconds.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2, 4, 10, 20},
 		},
@@ -88,7 +88,7 @@ func NewMetricsServer() *Server {
 
 	userInfoRequestHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_commitserver_userinfo_request_duration_seconds",
+			Name:    "cd_commitserver_userinfo_request_duration_seconds",
 			Help:    "Userinfo request duration seconds.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2, 4, 10, 20},
 		},
@@ -98,7 +98,7 @@ func NewMetricsServer() *Server {
 
 	commitRequestCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_commitserver_commit_request_total",
+			Name: "cd_commitserver_commit_request_total",
 			Help: "Number of commit requests performed handled",
 		},
 		[]string{"repo", "response_type"},

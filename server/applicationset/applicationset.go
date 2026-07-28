@@ -40,7 +40,7 @@ import (
 	repoapiclient "github.com/hanzoai/deploy/reposerver/apiclient"
 	"github.com/hanzoai/deploy/server/broadcast"
 	applog "github.com/hanzoai/deploy/util/app/log"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/collections"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/github_app"
@@ -64,7 +64,7 @@ type Server struct {
 	appsetInformer           cache.SharedIndexInformer
 	appsetLister             applisters.ApplicationSetLister
 	appSetBroadcaster        broadcast.Broadcaster[v1alpha1.ApplicationSetWatchEvent]
-	auditLogger              *argo.AuditLogger
+	auditLogger              *cd.AuditLogger
 	projectLock              sync.KeyLock
 	enabledNamespaces        []string
 	clusterInformer          *settings.ClusterInformer
@@ -218,7 +218,7 @@ func NewServer(
 		appsetLister:             appsetLister,
 		appSetBroadcaster:        appSetBroadcaster,
 		projectLock:              projectLock,
-		auditLogger:              argo.NewAuditLogger(kubeclientset, namespace, "argocd-server", enableK8sEvent),
+		auditLogger:              cd.NewAuditLogger(kubeclientset, namespace, "cd-server", enableK8sEvent),
 		enabledNamespaces:        enabledNamespaces,
 		clusterInformer:          clusterInformer,
 		GitSubmoduleEnabled:      gitSubmoduleEnabled,
@@ -267,7 +267,7 @@ func (s *Server) List(ctx context.Context, q *applicationset.ApplicationSetListQ
 		}
 	}
 
-	newItems = argo.FilterAppSetsByProjects(newItems, q.Projects)
+	newItems = cd.FilterAppSetsByProjects(newItems, q.Projects)
 
 	// Sort found applicationsets by name
 	sort.Slice(newItems, func(i, j int) bool {
@@ -327,7 +327,7 @@ func (s *Server) Create(ctx context.Context, q *applicationset.ApplicationSetCre
 
 	created, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).Create(ctx, appset, metav1.CreateOptions{})
 	if err == nil {
-		s.logAppSetEvent(ctx, created, argo.EventReasonResourceCreated, "created ApplicationSet")
+		s.logAppSetEvent(ctx, created, cd.EventReasonResourceCreated, "created ApplicationSet")
 		s.waitSync(created)
 		return created, nil
 	}
@@ -405,7 +405,7 @@ func (s *Server) updateAppSet(ctx context.Context, appset *v1alpha1.ApplicationS
 		appset.Finalizers = newAppset.Finalizers
 		res, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(appset.Namespace).Update(ctx, appset, metav1.UpdateOptions{})
 		if err == nil {
-			s.logAppSetEvent(ctx, appset, argo.EventReasonResourceUpdated, "updated ApplicationSets spec")
+			s.logAppSetEvent(ctx, appset, cd.EventReasonResourceUpdated, "updated ApplicationSets spec")
 			s.waitSync(res)
 			return res, nil
 		}
@@ -440,7 +440,7 @@ func (s *Server) Delete(ctx context.Context, q *applicationset.ApplicationSetDel
 	if err != nil {
 		return nil, fmt.Errorf("error deleting ApplicationSets: %w", err)
 	}
-	s.logAppSetEvent(ctx, appset, argo.EventReasonResourceDeleted, "deleted ApplicationSets")
+	s.logAppSetEvent(ctx, appset, cd.EventReasonResourceDeleted, "deleted ApplicationSets")
 	return &applicationset.ApplicationSetResponse{}, nil
 }
 
@@ -597,7 +597,7 @@ func (s *Server) waitSync(appset *v1alpha1.ApplicationSet) {
 }
 
 func (s *Server) logAppSetEvent(ctx context.Context, a *v1alpha1.ApplicationSet, reason string, action string) {
-	eventInfo := argo.EventInfo{Type: corev1.EventTypeNormal, Reason: reason}
+	eventInfo := cd.EventInfo{Type: corev1.EventTypeNormal, Reason: reason}
 	user := session.Username(ctx)
 	if user == "" {
 		user = "Unknown user"

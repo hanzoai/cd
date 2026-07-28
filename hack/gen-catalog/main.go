@@ -22,7 +22,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/cmd/argocd/commands/admin"
+	"github.com/hanzoai/deploy/cmd/cd/commands/admin"
 )
 
 func main() {
@@ -51,7 +51,7 @@ func newCatalogCommand() *cobra.Command {
 					APIVersion: "v1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
-					Name: "argocd-notifications-cm",
+					Name: "cd-notifications-cm",
 				},
 				Data: make(map[string]string),
 			}
@@ -122,7 +122,7 @@ func generateBuiltInTriggersDocs(out io.Writer, triggers map[string][]triggers.C
 	_, _ = fmt.Fprintln(out, "## Getting Started")
 	_, _ = fmt.Fprintln(out, "* Install Triggers and Templates from the catalog")
 	_, _ = fmt.Fprintln(out, "  ```bash")
-	_, _ = fmt.Fprintln(out, "  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml")
+	_, _ = fmt.Fprintln(out, "  kubectl apply -n cd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml")
 	_, _ = fmt.Fprintln(out, "  ```")
 
 	_, _ = fmt.Fprintln(out, "## Triggers")
@@ -166,7 +166,7 @@ func generateBuiltInTriggersDocs(out io.Writer, triggers map[string][]triggers.C
 
 func generateCommandsDocs(out io.Writer) error {
 	// create parents so that CommandPath() is correctly resolved
-	mainCmd := &cobra.Command{Use: "argocd"}
+	mainCmd := &cobra.Command{Use: "cd"}
 	adminCmd := &cobra.Command{Use: "admin"}
 	toolCmd := admin.NewNotificationsCommand()
 	adminCmd.AddCommand(toolCmd)

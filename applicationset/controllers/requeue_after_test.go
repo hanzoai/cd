@@ -58,17 +58,17 @@ func TestRequeueAfter(t *testing.T) {
 	}
 	fakeDynClient := dynfake.NewSimpleDynamicClientWithCustomListKinds(runtime.NewScheme(), gvrToListKind, duckType)
 	scmConfig := generators.NewSCMConfig("", []string{""}, true, true, nil, true)
-	clusterInformer, err := settings.NewClusterInformer(appClientset, "argocd")
+	clusterInformer, err := settings.NewClusterInformer(appClientset, "cd")
 	require.NoError(t, err)
 
 	defer startAndSyncInformer(t, clusterInformer)()
 
 	terminalGenerators := map[string]generators.Generator{
 		"List":                    generators.NewListGenerator(),
-		"Clusters":                generators.NewClusterGenerator(k8sClient, "argocd"),
+		"Clusters":                generators.NewClusterGenerator(k8sClient, "cd"),
 		"Git":                     generators.NewGitGenerator(mockServer, "namespace"),
 		"SCMProvider":             generators.NewSCMProviderGenerator(fake.NewClientBuilder().WithObjects(&corev1.Secret{}).Build(), scmConfig),
-		"ClusterDecisionResource": generators.NewDuckTypeGenerator(ctx, fakeDynClient, appClientset, "argocd", clusterInformer),
+		"ClusterDecisionResource": generators.NewDuckTypeGenerator(ctx, fakeDynClient, appClientset, "cd", clusterInformer),
 		"PullRequest":             generators.NewPullRequestGenerator(k8sClient, scmConfig),
 	}
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -113,7 +113,7 @@ func (s *Server) CreateRepositoryCredentials(ctx context.Context, q *repocredspk
 		case q.Upsert:
 			return s.UpdateRepositoryCredentials(ctx, &repocredspkg.RepoCredsUpdateRequest{Creds: r})
 		default:
-			return nil, status.Error(codes.InvalidArgument, argo.GenerateSpecIsDifferentErrorMessage("repository credentials", existing, r))
+			return nil, status.Error(codes.InvalidArgument, cd.GenerateSpecIsDifferentErrorMessage("repository credentials", existing, r))
 		}
 	}
 	return &appsv1.RepoCreds{URL: r.URL}, err
@@ -148,7 +148,7 @@ func (s *Server) CreateWriteRepositoryCredentials(ctx context.Context, q *repocr
 		case q.Upsert:
 			return s.UpdateWriteRepositoryCredentials(ctx, &repocredspkg.RepoCredsUpdateRequest{Creds: r})
 		default:
-			return nil, status.Error(codes.InvalidArgument, argo.GenerateSpecIsDifferentErrorMessage("repository credentials", existing, r))
+			return nil, status.Error(codes.InvalidArgument, cd.GenerateSpecIsDifferentErrorMessage("repository credentials", existing, r))
 		}
 	}
 	return &appsv1.RepoCreds{URL: r.URL}, err

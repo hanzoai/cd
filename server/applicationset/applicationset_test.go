@@ -26,7 +26,7 @@ import (
 	appinformer "github.com/hanzoai/deploy/pkg/client/informers/externalversions"
 	"github.com/hanzoai/deploy/server/rbacpolicy"
 	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/assets"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/rbac"
@@ -38,7 +38,7 @@ const (
 	fakeRepoURL   = "https://git.com/repo.git"
 )
 
-var testEnableEventList []string = argo.DefaultEnableEventList()
+var testEnableEventList []string = cd.DefaultEnableEventList()
 
 func fakeRepo() *appsv1.Repository {
 	return &appsv1.Repository{
@@ -80,7 +80,7 @@ func newTestNamespacedAppSetServer(t *testing.T, objects ...client.Object) *Serv
 		_ = enf.SetBuiltinPolicy(assets.BuiltinPolicyCSV)
 		enf.SetDefaultRole("role:admin")
 	}
-	scopedNamespaces := "argocd"
+	scopedNamespaces := "cd"
 	server, _ := newTestAppSetServerWithEnforcerConfigure(t, f, scopedNamespaces, objects...)
 	return server
 }
@@ -90,14 +90,14 @@ func newTestAppSetServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforce
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-cm",
+			Name:      "cd-cm",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      "cd-secret",
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -359,7 +359,7 @@ func TestListAppSetsInDefaultNSWithLabels(t *testing.T) {
 }
 
 // This test covers https://github.com/argoproj/argo-cd/issues/15429
-// If the namespace isn't provided during listing action, argocd's
+// If the namespace isn't provided during listing action, cd's
 // default namespace must be used and not all the namespaces
 func TestListAppSetsWithoutNamespace(t *testing.T) {
 	testNamespace := "test-namespace"

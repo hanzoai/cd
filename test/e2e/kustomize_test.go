@@ -146,7 +146,7 @@ func TestKustomizeBuildOptionsLoadRestrictor(t *testing.T) {
 	Given(t).
 		Path(guestbookPath).
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "argocd-cm",
+			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "cd-cm",
 				"-n", fixture.TestNamespace(),
 				"-p", `{ "data": { "kustomize.buildOptions": "--load-restrictor LoadRestrictionsNone" } }`))
 		}).
@@ -160,7 +160,7 @@ func TestKustomizeBuildOptionsLoadRestrictor(t *testing.T) {
 		Expect(SyncStatusIs(SyncStatusCodeSynced)).
 		Given().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "argocd-cm",
+			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "cd-cm",
 				"-n", fixture.TestNamespace(),
 				"-p", `{ "data": { "kustomize.buildOptions": "" } }`))
 		})
@@ -294,7 +294,7 @@ func TestKustomizeKubeVersion(t *testing.T) {
 	ctx := Given(t)
 	ctx.Path("kustomize-kube-version").
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "argocd-cm",
+			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "cd-cm",
 				"-n", fixture.TestNamespace(),
 				"-p", `{ "data": { "kustomize.buildOptions": "--enable-helm" } }`))
 		}).
@@ -325,7 +325,7 @@ func TestKustomizeApiVersions(t *testing.T) {
 	ctx := Given(t)
 	ctx.Path("kustomize-api-versions").
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "argocd-cm",
+			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "cd-cm",
 				"-n", fixture.TestNamespace(),
 				"-p", `{ "data": { "kustomize.buildOptions": "--enable-helm" } }`))
 		}).
@@ -357,7 +357,7 @@ func TestKustomizeNamespaceOverride(t *testing.T) {
 	Given(t).
 		Path("kustomize-kube-version").
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "argocd-cm",
+			errors.NewHandler(t).FailOnErr(fixture.Run("", "kubectl", "patch", "cm", "cd-cm",
 				"-n", fixture.TestNamespace(),
 				"-p", `{ "data": { "kustomize.buildOptions": "--enable-helm" } }`))
 		}).

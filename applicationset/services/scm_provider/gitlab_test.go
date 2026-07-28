@@ -22,14 +22,14 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		switch r.RequestURI {
 		case "/api/v4":
-		case "/api/v4/groups/test-argocd-proton/projects?include_subgroups=false&per_page=100", "/api/v4/groups/test-argocd-proton/projects?include_subgroups=false&per_page=100&topic=&with_shared=false", "/api/v4/groups/test-argocd-proton/projects?archived=false&include_subgroups=false&per_page=100", "/api/v4/groups/test-argocd-proton/projects?archived=false&include_subgroups=false&per_page=100&topic=&with_shared=false":
+		case "/api/v4/groups/test-cd-proton/projects?include_subgroups=false&per_page=100", "/api/v4/groups/test-cd-proton/projects?include_subgroups=false&per_page=100&topic=&with_shared=false", "/api/v4/groups/test-cd-proton/projects?archived=false&include_subgroups=false&per_page=100", "/api/v4/groups/test-cd-proton/projects?archived=false&include_subgroups=false&per_page=100&topic=&with_shared=false":
 			_, err := io.WriteString(w, `[{
 				"id": 27084533,
 				"description": "",
-				"name": "argocd",
-				"name_with_namespace": "test argocd proton / argocd",
-				"path": "argocd",
-				"path_with_namespace": "test-argocd-proton/argocd",
+				"name": "cd",
+				"name_with_namespace": "test cd proton / cd",
+				"path": "cd",
+				"path_with_namespace": "test-cd-proton/cd",
 				"created_at": "2021-06-01T17:30:44.724Z",
 				"default_branch": "master",
 				"tag_list": [
@@ -38,9 +38,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"topics": [
 					"test-topic"
 				],
-				"ssh_url_to_repo": "git@gitlab.com:test-argocd-proton/argocd.git",
-				"http_url_to_repo": "https://gitlab.com/test-argocd-proton/argocd.git",
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd",
+				"ssh_url_to_repo": "git@gitlab.com:test-cd-proton/cd.git",
+				"http_url_to_repo": "https://gitlab.com/test-cd-proton/cd.git",
+				"web_url": "https://gitlab.com/test-cd-proton/cd",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -48,15 +48,15 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"last_activity_at": "2021-06-04T08:19:51.656Z",
 				"namespace": {
 					"id": 12258515,
-					"name": "test argocd proton",
-					"path": "test-argocd-proton",
+					"name": "test cd proton",
+					"path": "test-cd-proton",
 					"kind": "gro* Connection #0 to host gitlab.com left intact up ",
-					"full_path ": "test - argocd - proton ",
+					"full_path ": "test - cd - proton ",
 					"parent_id ": null,
 					"avatar_url ": null,
-					"web_url ": "https: //gitlab.com/groups/test-argocd-proton"
+					"web_url ": "https: //gitlab.com/groups/test-cd-proton"
 				},
-				"container_registry_image_prefix": "registry.gitlab.com/test-argocd-proton/argocd",
+				"container_registry_image_prefix": "registry.gitlab.com/test-cd-proton/cd",
 				"_links": {
 					"self": "https://gitlab.com/api/v4/projects/27084533",
 					"issues": "https://gitlab.com/api/v4/projects/27084533/issues",
@@ -149,21 +149,21 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v4/groups/test-argocd-proton/projects?archived=true&include_subgroups=false&per_page=100", "/api/v4/groups/test-argocd-proton/projects?archived=true&include_subgroups=false&per_page=100&topic=&with_shared=false":
+		case "/api/v4/groups/test-cd-proton/projects?archived=true&include_subgroups=false&per_page=100", "/api/v4/groups/test-cd-proton/projects?archived=true&include_subgroups=false&per_page=100&topic=&with_shared=false":
 			_, err := io.WriteString(w, `[{
 				"id": 27084533,
 				"description": "",
-				"name": "argocd",
-				"name_with_namespace": "test argocd proton / argocd",
-				"path": "argocd",
-				"path_with_namespace": "test-argocd-proton/argocd",
+				"name": "cd",
+				"name_with_namespace": "test cd proton / cd",
+				"path": "cd",
+				"path_with_namespace": "test-cd-proton/cd",
 				"created_at": "2021-06-01T17:30:44.724Z",
 				"default_branch": "master",
 				"tag_list": [],
 				"topics": [],
-				"ssh_url_to_repo": "git@gitlab.com:test-argocd-proton/argocd.git",
-				"http_url_to_repo": "https://gitlab.com/test-argocd-proton/argocd.git",
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd",
+				"ssh_url_to_repo": "git@gitlab.com:test-cd-proton/cd.git",
+				"http_url_to_repo": "https://gitlab.com/test-cd-proton/cd.git",
+				"web_url": "https://gitlab.com/test-cd-proton/cd",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -171,15 +171,15 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"last_activity_at": "2021-06-04T08:19:51.656Z",
 				"namespace": {
 					"id": 12258515,
-					"name": "test argocd proton",
-					"path": "test-argocd-proton",
+					"name": "test cd proton",
+					"path": "test-cd-proton",
 					"kind": "gro* Connection #0 to host gitlab.com left intact up ",
-					"full_path ": "test - argocd - proton ",
+					"full_path ": "test - cd - proton ",
 					"parent_id ": null,
 					"avatar_url ": null,
-					"web_url ": "https: //gitlab.com/groups/test-argocd-proton"
+					"web_url ": "https: //gitlab.com/groups/test-cd-proton"
 				},
-				"container_registry_image_prefix": "registry.gitlab.com/test-argocd-proton/argocd",
+				"container_registry_image_prefix": "registry.gitlab.com/test-cd-proton/cd",
 				"_links": {
 					"self": "https://gitlab.com/api/v4/projects/27084533",
 					"issues": "https://gitlab.com/api/v4/projects/27084533/issues",
@@ -273,9 +273,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"id": 56522142,
 				"description": "",
 				"name": "another-repo",
-				"name_with_namespace": "test argocd proton / another-repo",
+				"name_with_namespace": "test cd proton / another-repo",
 				"path": "another-repo",
-				"path_with_namespace": "test-argocd-proton/another-repo",
+				"path_with_namespace": "test-cd-proton/another-repo",
 				"created_at": "2022-09-13T12:10:14.722Z",
 				"default_branch": "master",
 				"tag_list": [
@@ -284,9 +284,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"topics": [
 					"test-topic"
 				],
-				"ssh_url_to_repo": "git@gitlab.com:test-argocd-proton/another-repo.git",
-				"http_url_to_repo": "https://gitlab.com/test-argocd-proton/another-repo.git",
-				"web_url": "https://gitlab.com/test-argocd-proton/another-repo",
+				"ssh_url_to_repo": "git@gitlab.com:test-cd-proton/another-repo.git",
+				"http_url_to_repo": "https://gitlab.com/test-cd-proton/another-repo.git",
+				"web_url": "https://gitlab.com/test-cd-proton/another-repo",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -294,15 +294,15 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"last_activity_at": "2021-06-04T08:19:51.656Z",
 				"namespace": {
 					"id": 12258515,
-					"name": "test argocd proton",
-					"path": "test-argocd-proton",
+					"name": "test cd proton",
+					"path": "test-cd-proton",
 					"kind": "gro* Connection #0 to host gitlab.com left intact up ",
-					"full_path ": "test - argocd - proton ",
+					"full_path ": "test - cd - proton ",
 					"parent_id ": null,
 					"avatar_url ": null,
-					"web_url ": "https: //gitlab.com/groups/test-argocd-proton"
+					"web_url ": "https: //gitlab.com/groups/test-cd-proton"
 				},
-				"container_registry_image_prefix": "registry.gitlab.com/test-argocd-proton/another-repo",
+				"container_registry_image_prefix": "registry.gitlab.com/test-cd-proton/another-repo",
 				"_links": {
 					"self": "https://gitlab.com/api/v4/projects/56522142",
 					"issues": "https://gitlab.com/api/v4/projects/56522142/issues",
@@ -395,14 +395,14 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v4/groups/test-argocd-proton/projects?include_subgroups=true&per_page=100&topic=&with_shared=false":
+		case "/api/v4/groups/test-cd-proton/projects?include_subgroups=true&per_page=100&topic=&with_shared=false":
 			_, err := io.WriteString(w, `[{
 				"id": 27084533,
 				"description": "",
-				"name": "argocd",
-				"name_with_namespace": "test argocd proton / argocd",
-				"path": "argocd",
-				"path_with_namespace": "test-argocd-proton/argocd",
+				"name": "cd",
+				"name_with_namespace": "test cd proton / cd",
+				"path": "cd",
+				"path_with_namespace": "test-cd-proton/cd",
 				"created_at": "2021-06-01T17:30:44.724Z",
 				"default_branch": "master",
 				"tag_list": [
@@ -413,9 +413,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"test-topic",
 					"specific-topic"
 				],
-				"ssh_url_to_repo": "git@gitlab.com:test-argocd-proton/argocd.git",
-				"http_url_to_repo": "https://gitlab.com/test-argocd-proton/argocd.git",
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd",
+				"ssh_url_to_repo": "git@gitlab.com:test-cd-proton/cd.git",
+				"http_url_to_repo": "https://gitlab.com/test-cd-proton/cd.git",
+				"web_url": "https://gitlab.com/test-cd-proton/cd",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -423,15 +423,15 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"last_activity_at": "2021-06-04T08:19:51.656Z",
 				"namespace": {
 					"id": 12258515,
-					"name": "test argocd proton",
-					"path": "test-argocd-proton",
+					"name": "test cd proton",
+					"path": "test-cd-proton",
 					"kind": "gro* Connection #0 to host gitlab.com left intact up ",
-					"full_path ": "test - argocd - proton ",
+					"full_path ": "test - cd - proton ",
 					"parent_id ": null,
 					"avatar_url ": null,
-					"web_url ": "https: //gitlab.com/groups/test-argocd-proton"
+					"web_url ": "https: //gitlab.com/groups/test-cd-proton"
 				},
-				"container_registry_image_prefix": "registry.gitlab.com/test-argocd-proton/argocd",
+				"container_registry_image_prefix": "registry.gitlab.com/test-cd-proton/cd",
 				"_links": {
 					"self": "https://gitlab.com/api/v4/projects/27084533",
 					"issues": "https://gitlab.com/api/v4/projects/27084533/issues",
@@ -524,10 +524,10 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			{
 				"id": 27084538,
 				"description": "This is a Project from a Subgroup",
-				"name": "argocd-subgroup",
-				"name_with_namespace": "test argocd proton / subgroup / argocd-subgroup",
-				"path": "argocd-subgroup",
-				"path_with_namespace": "test-argocd-proton/subgroup/argocd-subgroup",
+				"name": "cd-subgroup",
+				"name_with_namespace": "test cd proton / subgroup / cd-subgroup",
+				"path": "cd-subgroup",
+				"path_with_namespace": "test-cd-proton/subgroup/cd-subgroup",
 				"created_at": "2021-06-01T17:30:44.724Z",
 				"default_branch": "master",
 				"tag_list": [
@@ -536,9 +536,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"topics": [
 					"test-topic"
 				],
-				"ssh_url_to_repo": "git@gitlab.com:test-argocd-proton/subgroup/argocd-subgroup.git",
-				"http_url_to_repo": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup.git",
-				"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup",
+				"ssh_url_to_repo": "git@gitlab.com:test-cd-proton/subgroup/cd-subgroup.git",
+				"http_url_to_repo": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup.git",
+				"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -549,12 +549,12 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"name": "subgroup",
 					"path": "subgroup",
 					"kind": "group ",
-					"full_path ": "test-argocd-proton/subgroup",
+					"full_path ": "test-cd-proton/subgroup",
 					"parent_id ": 12258515,
 					"avatar_url ": null,
-					"web_url ": "https: //gitlab.com/groups/test-argocd-proton/subgroup"
+					"web_url ": "https: //gitlab.com/groups/test-cd-proton/subgroup"
 				},
-				"container_registry_image_prefix": "registry.gitlab.com/test-argocd-proton/subgroup/argocd",
+				"container_registry_image_prefix": "registry.gitlab.com/test-cd-proton/subgroup/cd",
 				"_links": {
 					"self": "https://gitlab.com/api/v4/projects/27084538",
 					"issues": "https://gitlab.com/api/v4/projects/27084538/issues",
@@ -648,14 +648,14 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v4/groups/test-argocd-proton/projects?include_subgroups=false&per_page=100&topic=specific-topic&with_shared=false":
+		case "/api/v4/groups/test-cd-proton/projects?include_subgroups=false&per_page=100&topic=specific-topic&with_shared=false":
 			_, err := io.WriteString(w, `[{
 				"id": 27084533,
 				"description": "",
-				"name": "argocd",
-				"name_with_namespace": "test argocd proton / argocd",
-				"path": "argocd",
-				"path_with_namespace": "test-argocd-proton/argocd",
+				"name": "cd",
+				"name_with_namespace": "test cd proton / cd",
+				"path": "cd",
+				"path_with_namespace": "test-cd-proton/cd",
 				"created_at": "2021-06-01T17:30:44.724Z",
 				"default_branch": "master",
 				"tag_list": [
@@ -666,9 +666,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"test-topic",
 					"specific-topic"
 				],
-				"ssh_url_to_repo": "git@gitlab.com:test-argocd-proton/argocd.git",
-				"http_url_to_repo": "https://gitlab.com/test-argocd-proton/argocd.git",
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd",
+				"ssh_url_to_repo": "git@gitlab.com:test-cd-proton/cd.git",
+				"http_url_to_repo": "https://gitlab.com/test-cd-proton/cd.git",
+				"web_url": "https://gitlab.com/test-cd-proton/cd",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -676,15 +676,15 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"last_activity_at": "2021-06-04T08:19:51.656Z",
 				"namespace": {
 					"id": 12258515,
-					"name": "test argocd proton",
-					"path": "test-argocd-proton",
+					"name": "test cd proton",
+					"path": "test-cd-proton",
 					"kind": "gro* Connection #0 to host gitlab.com left intact up ",
-					"full_path ": "test - argocd - proton ",
+					"full_path ": "test - cd - proton ",
 					"parent_id ": null,
 					"avatar_url ": null,
-					"web_url ": "https: //gitlab.com/groups/test-argocd-proton"
+					"web_url ": "https: //gitlab.com/groups/test-cd-proton"
 				},
-				"container_registry_image_prefix": "registry.gitlab.com/test-argocd-proton/argocd",
+				"container_registry_image_prefix": "registry.gitlab.com/test-cd-proton/cd",
 				"_links": {
 					"self": "https://gitlab.com/api/v4/projects/27084533",
 					"issues": "https://gitlab.com/api/v4/projects/27084533/issues",
@@ -778,14 +778,14 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v4/groups/test-argocd-proton/projects?include_subgroups=true&per_page=100&topic=&with_shared=true":
+		case "/api/v4/groups/test-cd-proton/projects?include_subgroups=true&per_page=100&topic=&with_shared=true":
 			_, err := io.WriteString(w, `[{
 				"id": 27084533,
 				"description": "",
-				"name": "argocd",
-				"name_with_namespace": "test argocd proton / argocd",
-				"path": "argocd",
-				"path_with_namespace": "test-argocd-proton/argocd",
+				"name": "cd",
+				"name_with_namespace": "test cd proton / cd",
+				"path": "cd",
+				"path_with_namespace": "test-cd-proton/cd",
 				"created_at": "2021-06-01T17:30:44.724Z",
 				"default_branch": "master",
 				"tag_list": [
@@ -794,9 +794,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"topics": [
 					"test-topic"
 				],
-				"ssh_url_to_repo": "git@gitlab.com:test-argocd-proton/argocd.git",
-				"http_url_to_repo": "https://gitlab.com/test-argocd-proton/argocd.git",
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd",
+				"ssh_url_to_repo": "git@gitlab.com:test-cd-proton/cd.git",
+				"http_url_to_repo": "https://gitlab.com/test-cd-proton/cd.git",
+				"web_url": "https://gitlab.com/test-cd-proton/cd",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -804,15 +804,15 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"last_activity_at": "2021-06-04T08:19:51.656Z",
 				"namespace": {
 					"id": 12258515,
-					"name": "test argocd proton",
-					"path": "test-argocd-proton",
+					"name": "test cd proton",
+					"path": "test-cd-proton",
 					"kind": "gro* Connection #0 to host gitlab.com left intact up ",
-					"full_path ": "test - argocd - proton ",
+					"full_path ": "test - cd - proton ",
 					"parent_id ": null,
 					"avatar_url ": null,
-					"web_url ": "https: //gitlab.com/groups/test-argocd-proton"
+					"web_url ": "https: //gitlab.com/groups/test-cd-proton"
 				},
-				"container_registry_image_prefix": "registry.gitlab.com/test-argocd-proton/argocd",
+				"container_registry_image_prefix": "registry.gitlab.com/test-cd-proton/cd",
 				"_links": {
 					"self": "https://gitlab.com/api/v4/projects/27084533",
 					"issues": "https://gitlab.com/api/v4/projects/27084533/issues",
@@ -905,10 +905,10 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			{
 				"id": 27084534,
 				"description": "This is a Shared Project",
-				"name": "shared-argocd",
-				"name_with_namespace": "shared project to test argocd proton / argocd",
-				"path": "shared-argocd",
-				"path_with_namespace": "test-shared-argocd-proton/shared-argocd",
+				"name": "shared-cd",
+				"name_with_namespace": "shared project to test cd proton / cd",
+				"path": "shared-cd",
+				"path_with_namespace": "test-shared-cd-proton/shared-cd",
 				"created_at": "2021-06-11T17:30:44.724Z",
 				"default_branch": "master",
 				"tag_list": [
@@ -917,9 +917,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"topics": [
 					"test-topic"
 				],
-				"ssh_url_to_repo": "git@gitlab.com:test-shared-argocd-proton/shared-argocd.git",
-				"http_url_to_repo": "https://gitlab.com/test-shared-argocd-proton/shared-argocd.git",
-				"web_url": "https://gitlab.com/test-shared-argocd-proton/shared-argocd",
+				"ssh_url_to_repo": "git@gitlab.com:test-shared-cd-proton/shared-cd.git",
+				"http_url_to_repo": "https://gitlab.com/test-shared-cd-proton/shared-cd.git",
+				"web_url": "https://gitlab.com/test-shared-cd-proton/shared-cd",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -927,15 +927,15 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"last_activity_at": "2021-06-04T08:19:51.656Z",
 				"namespace": {
 					"id": 12258518,
-					"name": "test shared argocd proton",
-					"path": "test-shared-argocd-proton",
+					"name": "test shared cd proton",
+					"path": "test-shared-cd-proton",
 					"kind": "group",
-					"full_path ": "test-shared-argocd-proton",
+					"full_path ": "test-shared-cd-proton",
 					"parent_id ": null,
 					"avatar_url ": null,
-					"web_url ": "https: //gitlab.com/groups/test-shared-argocd-proton"
+					"web_url ": "https: //gitlab.com/groups/test-shared-cd-proton"
 				},
-				"container_registry_image_prefix": "registry.gitlab.com/test-shared-argocd-proton/shared-argocd",
+				"container_registry_image_prefix": "registry.gitlab.com/test-shared-cd-proton/shared-cd",
 				"_links": {
 					"self": "https://gitlab.com/api/v4/projects/27084534",
 					"issues": "https://gitlab.com/api/v4/projects/27084534/issues",
@@ -996,8 +996,8 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"shared_with_groups": [
 					{
 						"group_id": 12258515,
-						"group_name": "test-argocd-proton",
-						"group_full_path": "test-shared-argocd-proton",
+						"group_name": "test-cd-proton",
+						"group_full_path": "test-shared-cd-proton",
 						"group_access_level": 30,
 						"expires_at": null
 					}
@@ -1045,7 +1045,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"created_at": "2021-06-04T08:24:44.000+00:00",
 					"parent_ids": ["3c9d50be1ef949ad28674e238c7e12a17b1e9706", "56482e001731640b4123cf177e51c696f08a3005"],
 					"title": "Merge branch 'pipeline-1317911429' into 'master'",
-					"message": "Merge branch 'pipeline-1317911429' into 'master'\n\n[testapp-ci] manifests/demo/test-app.yaml: release v1.1.0\n\nSee merge request test-argocd-proton/argocd!3",
+					"message": "Merge branch 'pipeline-1317911429' into 'master'\n\n[testapp-ci] manifests/demo/test-app.yaml: release v1.1.0\n\nSee merge request test-cd-proton/cd!3",
 					"author_name": "Martin Vozník",
 					"author_email": "martin@voznik.cz",
 					"authored_date": "2021-06-04T08:24:44.000+00:00",
@@ -1053,7 +1053,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "martin@voznik.cz",
 					"committed_date": "2021-06-04T08:24:44.000+00:00",
 					"trailers": {},
-					"web_url": "https://gitlab.com/test-argocd-proton/argocd/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
+					"web_url": "https://gitlab.com/test-cd-proton/cd/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
 				},
 				"merged": false,
 				"protected": true,
@@ -1061,7 +1061,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": true,
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd/-/tree/master"
+				"web_url": "https://gitlab.com/test-cd-proton/cd/-/tree/master"
 			}`)
 			if err != nil {
 				t.Fail()
@@ -1075,7 +1075,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"created_at": "2023-08-04T08:14:14.000+00:00",
 					"parent_ids": ["5d9d50be1ef949ad28674e238c7e12a17b1e9706", "99482e001731640b4123cf177e51c696f08a3005"],
 					"title": "Merge branch 'pipeline-4547911429' into 'master'",
-					"message": "Merge branch 'pipeline-4547911429' into 'master'\n\n[testapp-ci] manifests/demo/test-app.yaml: release v1.2.0\n\nSee merge request test-argocd-proton/argocd!3",
+					"message": "Merge branch 'pipeline-4547911429' into 'master'\n\n[testapp-ci] manifests/demo/test-app.yaml: release v1.2.0\n\nSee merge request test-cd-proton/cd!3",
 					"author_name": "Martin Vozník",
 					"author_email": "martin@voznik.cz",
 					"authored_date": "2023-08-04T08:14:14.000+00:00",
@@ -1083,7 +1083,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "martin@voznik.cz",
 					"committed_date": "2023-08-04T08:14:14.000+00:00",
 					"trailers": {},
-					"web_url": "https://gitlab.com/test-argocd-proton/argocd/-/commit/9998d7999fc99dd0fd578650b58b244fc63f6b53"
+					"web_url": "https://gitlab.com/test-cd-proton/cd/-/commit/9998d7999fc99dd0fd578650b58b244fc63f6b53"
 				},
 				"merged": false,
 				"protected": true,
@@ -1091,7 +1091,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": true,
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd/-/tree/master"
+				"web_url": "https://gitlab.com/test-cd-proton/cd/-/tree/master"
 			}`)
 			if err != nil {
 				t.Fail()
@@ -1113,7 +1113,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "martin@voznik.cz",
 					"committed_date": "2021-06-04T08:24:44.000+00:00",
 					"trailers": null,
-					"web_url": "https://gitlab.com/test-argocd-proton/argocd/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
+					"web_url": "https://gitlab.com/test-cd-proton/cd/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
 				},
 				"merged": false,
 				"protected": true,
@@ -1121,7 +1121,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": true,
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd/-/tree/master"
+				"web_url": "https://gitlab.com/test-cd-proton/cd/-/tree/master"
 			}, {
 				"name": "pipeline-1310077506",
 				"commit": {
@@ -1138,7 +1138,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "mvoznik+cicd@protonmail.com",
 					"committed_date": "2021-06-01T18:39:59.000+00:00",
 					"trailers": null,
-					"web_url": "https://gitlab.com/test-argocd-proton/argocd/-/commit/0f92540e5f396ba960adea4ed0aa905baf3f73d1"
+					"web_url": "https://gitlab.com/test-cd-proton/cd/-/commit/0f92540e5f396ba960adea4ed0aa905baf3f73d1"
 				},
 				"merged": false,
 				"protected": false,
@@ -1146,7 +1146,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": false,
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd/-/tree/pipeline-1310077506"
+				"web_url": "https://gitlab.com/test-cd-proton/cd/-/tree/pipeline-1310077506"
 			}]`)
 			if err != nil {
 				t.Fail()
@@ -1168,7 +1168,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "martin@voznik.cz",
 					"committed_date": "2021-06-04T08:24:44.000+00:00",
 					"trailers": null,
-					"web_url": "https://gitlab.com/test-shared-argocd-proton/shared-argocd/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
+					"web_url": "https://gitlab.com/test-shared-cd-proton/shared-cd/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
 				},
 				"merged": false,
 				"protected": true,
@@ -1176,7 +1176,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": true,
-				"web_url": "https://gitlab.com/test-shared-argocd-proton/shared-argocd/-/tree/master"
+				"web_url": "https://gitlab.com/test-shared-cd-proton/shared-cd/-/tree/master"
 			}, {
 				"name": "pipeline-2310077506",
 				"commit": {
@@ -1193,7 +1193,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "mvoznik+cicd@protonmail.com",
 					"committed_date": "2021-06-01T18:39:59.000+00:00",
 					"trailers": null,
-					"web_url": "https://gitlab.com/test-shared-argocd-proton/shared-argocd/-/commit/0f92540e5f396ba960adea4ed0aa905baf3f73d1"
+					"web_url": "https://gitlab.com/test-shared-cd-proton/shared-cd/-/commit/0f92540e5f396ba960adea4ed0aa905baf3f73d1"
 				},
 				"merged": false,
 				"protected": false,
@@ -1201,7 +1201,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": false,
-				"web_url": "https://gitlab.com/test-shared-argocd-proton/shared-argocd/-/tree/pipeline-1310077506"
+				"web_url": "https://gitlab.com/test-shared-cd-proton/shared-cd/-/tree/pipeline-1310077506"
 			}]`)
 			if err != nil {
 				t.Fail()
@@ -1223,7 +1223,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "martin@voznik.cz",
 					"committed_date": "2021-06-04T08:24:44.000+00:00",
 					"trailers": null,
-					"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
+					"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
 				},
 				"merged": false,
 				"protected": true,
@@ -1231,7 +1231,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": true,
-				"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup/-/tree/master"
+				"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup/-/tree/master"
 			}, {
 				"name": "pipeline-2310077506",
 				"commit": {
@@ -1248,7 +1248,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "mvoznik+cicd@protonmail.com",
 					"committed_date": "2021-06-01T18:39:59.000+00:00",
 					"trailers": null,
-					"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup/-/commit/0f92540e5f396ba960adea4ed0aa905baf3f73d1"
+					"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup/-/commit/0f92540e5f396ba960adea4ed0aa905baf3f73d1"
 				},
 				"merged": false,
 				"protected": false,
@@ -1256,7 +1256,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": false,
-				"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup/-/tree/pipeline-1310077506"
+				"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup/-/tree/pipeline-1310077506"
 			}]`)
 			if err != nil {
 				t.Fail()
@@ -1278,7 +1278,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "martin@voznik.cz",
 					"committed_date": "2021-06-04T08:24:44.000+00:00",
 					"trailers": null,
-					"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
+					"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup/-/commit/8898d7999fc99dd0fd578650b58b244fc63f6b53"
 				},
 				"merged": false,
 				"protected": true,
@@ -1286,7 +1286,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": true,
-				"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup/-/tree/master"
+				"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup/-/tree/master"
 			}, {
 				"name": "pipeline-2310077506",
 				"commit": {
@@ -1303,7 +1303,7 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"committer_email": "mvoznik+cicd@protonmail.com",
 					"committed_date": "2021-06-01T18:39:59.000+00:00",
 					"trailers": null,
-					"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup/-/commit/0f92540e5f396ba960adea4ed0aa905baf3f73d1"
+					"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup/-/commit/0f92540e5f396ba960adea4ed0aa905baf3f73d1"
 				},
 				"merged": false,
 				"protected": false,
@@ -1311,19 +1311,19 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"developers_can_merge": false,
 				"can_push": false,
 				"default": false,
-				"web_url": "https://gitlab.com/test-argocd-proton/subgroup/argocd-subgroup/-/tree/pipeline-1310077506"
+				"web_url": "https://gitlab.com/test-cd-proton/subgroup/cd-subgroup/-/tree/pipeline-1310077506"
 			}]`)
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v4/projects/test-argocd-proton%2Fargocd":
+		case "/api/v4/projects/test-cd-proton%2Fcd":
 			_, err := io.WriteString(w, `{
 				"id": 27084533,
 				"description": "",
-				"name": "argocd",
-				"name_with_namespace": "test argocd proton / argocd",
-				"path": "argocd",
-				"path_with_namespace": "test-argocd-proton/argocd",
+				"name": "cd",
+				"name_with_namespace": "test cd proton / cd",
+				"path": "cd",
+				"path_with_namespace": "test-cd-proton/cd",
 				"created_at": "2021-06-01T17:30:44.724Z",
 				"default_branch": "master",
 				"tag_list": [
@@ -1332,9 +1332,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"topics": [
 					"test-topic"
 				],
-				"ssh_url_to_repo": "git@gitlab.com:test-argocd-proton/argocd.git",
-				"http_url_to_repo": "https://gitlab.com/test-argocd-proton/argocd.git",
-				"web_url": "https://gitlab.com/test-argocd-proton/argocd",
+				"ssh_url_to_repo": "git@gitlab.com:test-cd-proton/cd.git",
+				"http_url_to_repo": "https://gitlab.com/test-cd-proton/cd.git",
+				"web_url": "https://gitlab.com/test-cd-proton/cd",
 				"readme_url": null,
 				"avatar_url": null,
 				"forks_count": 0,
@@ -1342,35 +1342,35 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"last_activity_at": "2021-06-04T08:19:51.656Z",
 				"namespace": {
 					"id": 12258515,
-					"name": "test argocd proton",
-					"path": "test-argocd-proton",
+					"name": "test cd proton",
+					"path": "test-cd-proton",
 					"kind": "group",
-					"full_path": "test-argocd-proton",
+					"full_path": "test-cd-proton",
 					"parent_id": null,
 					"avatar_url": null,
-					"web_url": "https://gitlab.com/groups/test-argocd-proton"
+					"web_url": "https://gitlab.com/groups/test-cd-proton"
 				}
 			}`)
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v4/projects/27084533/repository/tree?path=argocd&ref=master":
-			_, err := io.WriteString(w, `[{"id":"ca14f2a3718159c74572a5325fb4bfb0662a2d3e","name":"ingress.yaml","type":"blob","path":"argocd/ingress.yaml","mode":"100644"},{"id":"de2a53a73b1550b3e0f4d37ea0a6d878bf9c5096","name":"install.yaml","type":"blob","path":"argocd/install.yaml","mode":"100644"}]`)
+		case "/api/v4/projects/27084533/repository/tree?path=cd&ref=master":
+			_, err := io.WriteString(w, `[{"id":"ca14f2a3718159c74572a5325fb4bfb0662a2d3e","name":"ingress.yaml","type":"blob","path":"cd/ingress.yaml","mode":"100644"},{"id":"de2a53a73b1550b3e0f4d37ea0a6d878bf9c5096","name":"install.yaml","type":"blob","path":"cd/install.yaml","mode":"100644"}]`)
 			if err != nil {
 				t.Fail()
 			}
 		case "/api/v4/projects/27084533/repository/tree?path=.&ref=master":
-			_, err := io.WriteString(w, `[{"id":"f2bf99fa8f7a27df9c43d2dffc8c8cd747f3181a","name":"argocd","type":"tree","path":"argocd","mode":"040000"},{"id":"68a3125232e01c1583a6a6299534ce10c5e7dd83","name":"manifests","type":"tree","path":"manifests","mode":"040000"}]`)
+			_, err := io.WriteString(w, `[{"id":"f2bf99fa8f7a27df9c43d2dffc8c8cd747f3181a","name":"cd","type":"tree","path":"cd","mode":"040000"},{"id":"68a3125232e01c1583a6a6299534ce10c5e7dd83","name":"manifests","type":"tree","path":"manifests","mode":"040000"}]`)
 			if err != nil {
 				t.Fail()
 			}
 			// Recent versions of the Gitlab API (v17.7+) listTree return 404 not only when a file doesn't exist, but also
 			// when a path is to a file instead of a directory. Code was refactored to explicitly search for file then
 			// search for directory, catching 404 errors as "file not found".
-		case "/api/v4/projects/27084533/repository/files/argocd?ref=master":
+		case "/api/v4/projects/27084533/repository/files/cd?ref=master":
 			w.WriteHeader(http.StatusNotFound)
-		case "/api/v4/projects/27084533/repository/files/argocd%2Finstall%2Eyaml?ref=master":
-			_, err := io.WriteString(w, `{"file_name":"install.yaml","file_path":"argocd/install.yaml","size":0,"encoding":"base64","content_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","ref":"main","blob_id":"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391","commit_id":"6d4c0f9d34534ccc73aa3f3180b25e2aebe630eb","last_commit_id":"b50eb63f9c0e09bfdb070db26fd32c7210291f52","execute_filemode":false,"content":""}`)
+		case "/api/v4/projects/27084533/repository/files/cd%2Finstall%2Eyaml?ref=master":
+			_, err := io.WriteString(w, `{"file_name":"install.yaml","file_path":"cd/install.yaml","size":0,"encoding":"base64","content_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","ref":"main","blob_id":"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391","commit_id":"6d4c0f9d34534ccc73aa3f3180b25e2aebe630eb","last_commit_id":"b50eb63f9c0e09bfdb070db26fd32c7210291f52","execute_filemode":false,"content":""}`)
 			if err != nil {
 				t.Fail()
 			}
@@ -1378,9 +1378,9 @@ func gitlabMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			w.WriteHeader(http.StatusNotFound)
 		case "/api/v4/projects/27084533/repository/tree?path=notathing&ref=master":
 			w.WriteHeader(http.StatusNotFound)
-		case "/api/v4/projects/27084533/repository/files/argocd%2Fnotathing%2Eyaml?ref=master":
+		case "/api/v4/projects/27084533/repository/files/cd%2Fnotathing%2Eyaml?ref=master":
 			w.WriteHeader(http.StatusNotFound)
-		case "/api/v4/projects/27084533/repository/tree?path=argocd%2Fnotathing.yaml&ref=master":
+		case "/api/v4/projects/27084533/repository/tree?path=cd%2Fnotathing.yaml&ref=master":
 			w.WriteHeader(http.StatusNotFound)
 		case "/api/v4/projects/27084533/repository/files/notathing%2Fnotathing%2Eyaml?ref=master":
 			w.WriteHeader(http.StatusNotFound)
@@ -1420,9 +1420,9 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/argocd.git",
+					URL:          "git@gitlab.com:test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{"test-topic"},
@@ -1440,9 +1440,9 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/argocd.git",
+					URL:          "git@gitlab.com:test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{"test-topic"},
@@ -1460,9 +1460,9 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "https://gitlab.com/test-argocd-proton/argocd.git",
+					URL:          "https://gitlab.com/test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{"test-topic"},
@@ -1484,9 +1484,9 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/argocd.git",
+					URL:          "git@gitlab.com:test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{"test-topic"},
@@ -1508,9 +1508,9 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/argocd.git",
+					URL:          "git@gitlab.com:test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{"test-topic"},
@@ -1529,18 +1529,18 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/argocd.git",
+					URL:          "git@gitlab.com:test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{"test-topic", "specific-topic"},
 				},
 				{
 					Organization: "",
-					Repository:   "argocd-subgroup",
+					Repository:   "cd-subgroup",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/subgroup/argocd-subgroup.git",
+					URL:          "git@gitlab.com:test-cd-proton/subgroup/cd-subgroup.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b58",
 					RepositoryId: int64(27084538),
 					Labels:       []string{"test-topic"},
@@ -1559,18 +1559,18 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/argocd.git",
+					URL:          "git@gitlab.com:test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{"test-topic"},
 				},
 				{
 					Organization: "",
-					Repository:   "shared-argocd",
+					Repository:   "shared-cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-shared-argocd-proton/shared-argocd.git",
+					URL:          "git@gitlab.com:test-shared-cd-proton/shared-cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084534),
 					Labels:       []string{"test-topic"},
@@ -1589,9 +1589,9 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/argocd.git",
+					URL:          "git@gitlab.com:test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{"test-topic", "specific-topic"},
@@ -1609,9 +1609,9 @@ func TestGitlabListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "",
-					Repository:   "argocd",
+					Repository:   "cd",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/argocd.git",
+					URL:          "git@gitlab.com:test-cd-proton/cd.git",
 					SHA:          "8898d7999fc99dd0fd578650b58b244fc63f6b53",
 					RepositoryId: int64(27084533),
 					Labels:       []string{},
@@ -1620,7 +1620,7 @@ func TestGitlabListRepos(t *testing.T) {
 					Organization: "",
 					Repository:   "another-repo",
 					Branch:       "master",
-					URL:          "git@gitlab.com:test-argocd-proton/another-repo.git",
+					URL:          "git@gitlab.com:test-cd-proton/another-repo.git",
 					SHA:          "8898d8889fc99dd0fd578650b58b244fc63f6b58",
 					RepositoryId: int64(56522142),
 					Labels:       []string{"test-topic"},
@@ -1634,7 +1634,7 @@ func TestGitlabListRepos(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			t.Parallel()
-			provider, _ := NewGitlabProvider("test-argocd-proton", "", ts.URL, c.allBranches, c.includeSubgroups, c.includeSharedProjects, c.includeArchivedRepos, c.insecure, "", c.topic, nil, "", "")
+			provider, _ := NewGitlabProvider("test-cd-proton", "", ts.URL, c.allBranches, c.includeSubgroups, c.includeSharedProjects, c.includeArchivedRepos, c.insecure, "", c.topic, nil, "", "")
 			rawRepos, err := ListRepos(t.Context(), provider, c.filters, c.proto)
 			if c.hasError {
 				require.Error(t, err)
@@ -1672,10 +1672,10 @@ func TestGitlabHasPath(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gitlabMockHandler(t)(w, r)
 	}))
-	host, _ := NewGitlabProvider("test-argocd-proton", "", ts.URL, false, true, true, false, false, "", "", nil, "", "")
+	host, _ := NewGitlabProvider("test-cd-proton", "", ts.URL, false, true, true, false, false, "", "", nil, "", "")
 	repo := &Repository{
-		Organization: "test-argocd-proton",
-		Repository:   "argocd",
+		Organization: "test-cd-proton",
+		Repository:   "cd",
 		Branch:       "master",
 	}
 
@@ -1685,12 +1685,12 @@ func TestGitlabHasPath(t *testing.T) {
 	}{
 		{
 			name:   "directory exists",
-			path:   "argocd",
+			path:   "cd",
 			exists: true,
 		},
 		{
 			name:   "file exists",
-			path:   "argocd/install.yaml",
+			path:   "cd/install.yaml",
 			exists: true,
 		},
 		{
@@ -1700,7 +1700,7 @@ func TestGitlabHasPath(t *testing.T) {
 		},
 		{
 			name:   "file does not exist",
-			path:   "argocd/notathing.yaml",
+			path:   "cd/notathing.yaml",
 			exists: false,
 		},
 		{
@@ -1730,7 +1730,7 @@ func TestGitlabGetBranches(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gitlabMockHandler(t)(w, r)
 	}))
-	host, _ := NewGitlabProvider("test-argocd-proton", "", ts.URL, false, true, true, false, false, "", "", nil, "", "")
+	host, _ := NewGitlabProvider("test-cd-proton", "", ts.URL, false, true, true, false, false, "", "", nil, "", "")
 
 	repo := &Repository{
 		RepositoryId: int64(27084533),
@@ -1810,7 +1810,7 @@ func TestGetBranchesTLS(t *testing.T) {
 				}
 			}
 
-			host, err := NewGitlabProvider("test-argocd-proton", "", ts.URL, false, true, true, false, test.tlsInsecure, "", "", certs, "", "")
+			host, err := NewGitlabProvider("test-cd-proton", "", ts.URL, false, true, true, false, test.tlsInsecure, "", "", certs, "", "")
 			require.NoError(t, err)
 			repo := &Repository{
 				RepositoryId: int64(27084533),

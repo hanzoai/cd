@@ -463,7 +463,7 @@ type Help struct {
 	ChatUrl string `protobuf:"bytes,1,opt,name=chatUrl,proto3" json:"chatUrl,omitempty"`
 	// the text for getting chat help, defaults to "Chat now!"
 	ChatText string `protobuf:"bytes,2,opt,name=chatText,proto3" json:"chatText,omitempty"`
-	// the URLs for downloading argocd binaries
+	// the URLs for downloading cd binaries
 	BinaryUrls           map[string]string `protobuf:"bytes,3,rep,name=binaryUrls,proto3" json:"binaryUrls,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`

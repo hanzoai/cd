@@ -110,7 +110,7 @@ func newCommand() *cobra.Command {
 		},
 	}
 	clientConfig = cli.AddKubectlFlagsToCmd(&command)
-	command.Flags().StringArrayVar(&configMaps, "configmap", nil, "Config Map name and corresponding path. E.g. argocd-ssh-known-hosts-cm=/tmp/argocd/ssh")
+	command.Flags().StringArrayVar(&configMaps, "configmap", nil, "Config Map name and corresponding path. E.g. cd-ssh-known-hosts-cm=/tmp/cd/ssh")
 	return &command
 }
 

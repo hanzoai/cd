@@ -95,7 +95,7 @@ func TestCreateSyncsCache(t *testing.T) {
 	c, store := newClient(t)
 
 	app := &application.Application{
-		ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "argocd"},
+		ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "cd"},
 	}
 	require.NoError(t, c.Create(t.Context(), app))
 
@@ -107,7 +107,7 @@ func TestUpdateSyncsCache(t *testing.T) {
 	app := &application.Application{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "test",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels:    map[string]string{"foo": "bar"},
 		},
 	}
@@ -127,7 +127,7 @@ func TestDeleteSyncsCache(t *testing.T) {
 	app := &application.Application{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "test",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels:    map[string]string{"foo": "bar"},
 		},
 	}
@@ -148,7 +148,7 @@ func TestDeleteEvictsStaleCacheOnNotFound(t *testing.T) {
 
 	// Seed the store with a ghost app, but leave the fake API client empty so Delete 404s.
 	app := &application.Application{
-		ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "argocd"},
+		ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "cd"},
 	}
 	c, store := newClient(t)
 	require.NoError(t, store.Add(app))
@@ -166,7 +166,7 @@ func TestNewClientDoesNotCrashWithMultiNamespaceCache(_ *testing.T) {
 func TestPatchNotFoundEvictsFromCache(t *testing.T) {
 	t.Parallel()
 	app := &application.Application{
-		ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "argocd"},
+		ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "cd"},
 	}
 	c, store := newClient(t, withObjects(app))
 
@@ -182,7 +182,7 @@ func TestPatchNotFoundEvictsFromCache(t *testing.T) {
 func TestUpdateNotFoundEvictsFromCache(t *testing.T) {
 	t.Parallel()
 	app := &application.Application{
-		ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "argocd"},
+		ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "cd"},
 	}
 	c, store := newClient(t, withObjects(app))
 
@@ -199,7 +199,7 @@ func TestExecAndSyncCacheNotFoundSkipsNonApplication(t *testing.T) {
 	t.Parallel()
 	c, store := newClient(t)
 	notFound := apierrors.NewNotFound(schema.GroupResource{}, "x")
-	got := c.execAndSyncCache(t.Context(), func() error { return notFound }, &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: "x", Namespace: "argocd"}}, false)
+	got := c.execAndSyncCache(t.Context(), func() error { return notFound }, &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: "x", Namespace: "cd"}}, false)
 	require.Error(t, got)
 	require.True(t, apierrors.IsNotFound(got))
 	require.Empty(t, store.List())
@@ -210,7 +210,7 @@ func TestExecAndSyncCacheNotFoundHandlesGetStoreError(t *testing.T) {
 	c, _ := newClient(t, withGetNSCache(func(_ context.Context, _ client.Object) (ctrlcache.Cache, error) {
 		return nil, errors.New("no cache")
 	}))
-	app := &application.Application{ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "argocd"}}
+	app := &application.Application{ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "cd"}}
 	notFound := apierrors.NewNotFound(schema.GroupResource{}, "test")
 	require.NotPanics(t, func() {
 		_ = c.execAndSyncCache(t.Context(), func() error { return notFound }, app, false)
@@ -227,8 +227,8 @@ func (e *errDeleteStore) Delete(_ any) error {
 
 func TestExecAndSyncCacheNotFoundHandlesDeleteError(t *testing.T) {
 	t.Parallel()
-	c, _ := newClient(t, withStoresByNs(map[string]k8scache.Store{"argocd": &errDeleteStore{}}))
-	app := &application.Application{ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "argocd"}}
+	c, _ := newClient(t, withStoresByNs(map[string]k8scache.Store{"cd": &errDeleteStore{}}))
+	app := &application.Application{ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "cd"}}
 	notFound := apierrors.NewNotFound(schema.GroupResource{}, "test")
 	require.NotPanics(t, func() {
 		_ = c.execAndSyncCache(t.Context(), func() error { return notFound }, app, false)

@@ -376,12 +376,12 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			TestData: kustomization7,
 			KustomizeSource: v1alpha1.ApplicationSourceKustomize{
 				CommonLabels: map[string]string{
-					"managed-by": "argocd",
+					"managed-by": "cd",
 				},
 				LabelWithoutSelector: true,
 				ForceCommonLabels:    true,
 			},
-			ExpectedMetadataLabels: map[string]string{"app": "nginx", "managed-by": "argocd"},
+			ExpectedMetadataLabels: map[string]string{"app": "nginx", "managed-by": "cd"},
 			ExpectedSelectorLabels: map[string]string{"app": "nginx"},
 			ExpectedTemplateLabels: map[string]string{"app": "nginx"},
 			Env: &v1alpha1.Env{
@@ -414,15 +414,15 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			TestData: kustomization7,
 			KustomizeSource: v1alpha1.ApplicationSourceKustomize{
 				CommonLabels: map[string]string{
-					"managed-by": "argocd",
+					"managed-by": "cd",
 				},
 				LabelWithoutSelector:  true,
 				LabelIncludeTemplates: true,
 				ForceCommonLabels:     true,
 			},
-			ExpectedMetadataLabels: map[string]string{"app": "nginx", "managed-by": "argocd"},
+			ExpectedMetadataLabels: map[string]string{"app": "nginx", "managed-by": "cd"},
 			ExpectedSelectorLabels: map[string]string{"app": "nginx"},
-			ExpectedTemplateLabels: map[string]string{"app": "nginx", "managed-by": "argocd"},
+			ExpectedTemplateLabels: map[string]string{"app": "nginx", "managed-by": "cd"},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",

@@ -509,7 +509,7 @@ func TestRotateAuth(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "argocd-manager-token-tj79r",
+				Name:      "cd-manager-token-tj79r",
 				Namespace: "kube-system",
 			},
 			Data: map[string][]byte{
@@ -518,13 +518,13 @@ func TestRotateAuth(t *testing.T) {
 		},
 		&corev1.ServiceAccount{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "argocd-manager",
+				Name:      "cd-manager",
 				Namespace: "kube-system",
 			},
 			Secrets: []corev1.ObjectReference{
 				{
 					Kind: "Secret",
-					Name: "argocd-manager-token-tj79r",
+					Name: "cd-manager-token-tj79r",
 				},
 			},
 		})
@@ -563,7 +563,7 @@ func TestRotateAuth(t *testing.T) {
 func getClientset(config map[string]string, ns string, objects ...runtime.Object) *fake.Clientset {
 	secret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      "cd-secret",
 			Namespace: ns,
 		},
 		Data: map[string][]byte{
@@ -573,10 +573,10 @@ func getClientset(config map[string]string, ns string, objects ...runtime.Object
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      "cd-cm",
 			Namespace: ns,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: config,

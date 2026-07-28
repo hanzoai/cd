@@ -26,8 +26,8 @@ import (
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/deploy/reposerver/apiclient"
 	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/argo/diff"
-	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/cd/diff"
+	"github.com/hanzoai/deploy/util/cd/normalizers"
 	"github.com/hanzoai/deploy/util/settings"
 )
 
@@ -309,7 +309,7 @@ func TestAppStateManager_SyncAppState(t *testing.T) {
 
 		// then
 		assert.Equal(t, synccommon.OperationFailed, opState.Phase)
-		assert.Contains(t, opState.Message, "ConfigMap/configmap1 is part of applications fake-argocd-ns/my-app and guestbook")
+		assert.Contains(t, opState.Message, "ConfigMap/configmap1 is part of applications fake-cd-ns/my-app and guestbook")
 	})
 }
 
@@ -1133,7 +1133,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 	setup := func(destinationServiceAccounts []v1alpha1.ApplicationDestinationServiceAccount, destinationNamespace, destinationServerURL, applicationNamespace string) *fixture {
 		project := &v1alpha1.AppProject{
 			ObjectMeta: metav1.ObjectMeta{
-				Namespace: "argocd-ns",
+				Namespace: "cd-ns",
 				Name:      "testProj",
 			},
 			Spec: v1alpha1.AppProjectSpec{
@@ -1170,7 +1170,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		destinationServiceAccounts := []v1alpha1.ApplicationDestinationServiceAccount{}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := ""
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1192,7 +1192,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1231,7 +1231,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1270,7 +1270,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1304,7 +1304,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1338,7 +1338,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := ""
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1365,8 +1365,8 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := ""
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
-		expectedSA := "system:serviceaccount:argocd-ns:test-sa"
+		applicationNamespace := "cd-ns"
+		expectedSA := "system:serviceaccount:cd-ns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
 		// when
@@ -1399,7 +1399,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1423,7 +1423,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := ""
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1457,7 +1457,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:myns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1480,7 +1480,7 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1510,7 +1510,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 	setup := func(destinationServiceAccounts []v1alpha1.ApplicationDestinationServiceAccount, destinationNamespace, destinationServerURL, applicationNamespace string) *fixture {
 		project := &v1alpha1.AppProject{
 			ObjectMeta: metav1.ObjectMeta{
-				Namespace: "argocd-ns",
+				Namespace: "cd-ns",
 				Name:      "testProj",
 			},
 			Spec: v1alpha1.AppProjectSpec{
@@ -1568,7 +1568,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1607,7 +1607,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1641,7 +1641,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1675,7 +1675,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://xyz.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := ""
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1709,7 +1709,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://localhost:6443"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1733,7 +1733,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := ""
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1767,7 +1767,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://abc.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:myns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -1790,7 +1790,7 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 		}
 		destinationNamespace := "testns"
 		destinationServerURL := "https://kubernetes.svc.local"
-		applicationNamespace := "argocd-ns"
+		applicationNamespace := "cd-ns"
 		expectedSA := "system:serviceaccount:testns:test-sa"
 
 		f := setup(destinationServiceAccounts, destinationNamespace, destinationServerURL, applicationNamespace)
@@ -2112,7 +2112,7 @@ func TestClientSideApplyMigration(t *testing.T) {
 		// Add custom manager annotation if specified
 		if customManager != "" {
 			app.Annotations = map[string]string{
-				"argocd.argoproj.io/client-side-apply-migration-manager": customManager,
+				"cd.argoproj.io/client-side-apply-migration-manager": customManager,
 			}
 		}
 
@@ -2227,7 +2227,7 @@ func TestValidateSyncPermissions(t *testing.T) {
 	project := &v1alpha1.AppProject{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "test-project",
-			Namespace: "argocd",
+			Namespace: "cd",
 		},
 		Spec: v1alpha1.AppProjectSpec{
 			Destinations: []v1alpha1.ApplicationDestination{
@@ -2270,7 +2270,7 @@ func TestValidateSyncPermissions(t *testing.T) {
 		projectWithDenyList := &v1alpha1.AppProject{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "restricted-project",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: v1alpha1.AppProjectSpec{
 				Destinations: []v1alpha1.ApplicationDestination{
@@ -2306,7 +2306,7 @@ func TestValidateSyncPermissions(t *testing.T) {
 		projectWithClusterResources := &v1alpha1.AppProject{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "test-project",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: v1alpha1.AppProjectSpec{
 				Destinations: []v1alpha1.ApplicationDestination{

@@ -9,7 +9,7 @@ import (
 	"github.com/hanzoai/deploy/controller/hydrator/types"
 	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/deploy/reposerver/apiclient"
-	argoutil "github.com/hanzoai/deploy/util/argo"
+	argoutil "github.com/hanzoai/deploy/util/cd"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"

@@ -41,7 +41,7 @@ const (
 var errScriptDoesNotExist = errors.New("built-in script does not exist")
 
 // compiledScriptCacheSize bounds the number of compiled Lua scripts retained in memory.
-// The working set (embedded built-in scripts plus a small number of argocd-cm customizations)
+// The working set (embedded built-in scripts plus a small number of cd-cm customizations)
 // is well under this, so eviction is only a safety valve against pathological churn.
 const compiledScriptCacheSize = 1024
 
@@ -52,7 +52,7 @@ var (
 	scriptCacheEnabled = true
 	// compiledScripts is a process-wide, content-addressed cache of compiled Lua scripts.
 	// The cache key is the raw script source, so any change to a script (for example, an
-	// edited argocd-cm customization) is a distinct key and a cache miss - no explicit
+	// edited cd-cm customization) is a distinct key and a cache miss - no explicit
 	// invalidation is required. A bounded size caps memory under pathological churn.
 	compiledScripts = newCompiledScriptCache()
 )
@@ -60,7 +60,7 @@ var (
 // compiledScriptCache is a bounded, content-addressed cache of compiled Lua scripts.
 // A gopher-lua FunctionProto is immutable and safe to reuse across LStates, so a single
 // compiled proto can back any number of concurrent executions. The working set (embedded
-// built-in scripts plus a small number of argocd-cm customizations) is finite and stable, so
+// built-in scripts plus a small number of cd-cm customizations) is finite and stable, so
 // LRU eviction is only a safety valve against unbounded growth, not a hot-path concern.
 //
 // It is backed by github.com/golang/groupcache/lru. That cache's Get promotes the accessed

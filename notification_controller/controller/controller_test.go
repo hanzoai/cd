@@ -175,7 +175,7 @@ func TestCheckAppNotInAdditionalNamespaces(t *testing.T) {
 			"spec": map[string]any{},
 		},
 	}
-	namespace := "argocd"
+	namespace := "cd"
 	var applicationNamespaces []string
 	applicationNamespaces = append(applicationNamespaces, "namespace1")
 	applicationNamespaces = append(applicationNamespaces, "namespace2")

@@ -173,7 +173,7 @@ data:
 		})
 }
 
-// make sure that hooks do not appear in "argocd app diff"
+// make sure that hooks do not appear in "cd app diff"
 func TestHookDiff(t *testing.T) {
 	ctx := Given(t)
 	ctx.
@@ -274,9 +274,9 @@ func TestHelmRepoDiffLocal(t *testing.T) {
 			errors.NewHandler(t).FailOnErr(fixture.Run("", "helm", "repo", "add", "custom-repo", fixture.GetEnvWithDefault("CD_E2E_HELM_SERVICE", fixture.RepoURL(fixture.RepoURLTypeHelm)),
 				"--username", fixture.GitUsername,
 				"--password", fixture.GitPassword,
-				"--cert-file", "../fixture/certs/argocd-test-client.crt",
-				"--key-file", "../fixture/certs/argocd-test-client.key",
-				"--ca-file", "../fixture/certs/argocd-test-ca.crt",
+				"--cert-file", "../fixture/certs/cd-test-client.crt",
+				"--key-file", "../fixture/certs/cd-test-client.key",
+				"--ca-file", "../fixture/certs/cd-test-ca.crt",
 			))
 			diffOutput, err := fixture.RunCli("app", "diff", ctx.AppQualifiedName(), "--local", appPath, "--server-side-generate", "--exit-code=false")
 			require.NoError(t, err)

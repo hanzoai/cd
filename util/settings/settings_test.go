@@ -34,7 +34,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: data,
@@ -44,7 +44,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 			Name:      common.ArgoCDSecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string][]byte{},
@@ -59,13 +59,13 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 }
 
 func TestDocumentedArgoCDConfigMapIsValid(t *testing.T) {
-	var argocdCM *corev1.ConfigMap
+	var cdCM *corev1.ConfigMap
 	settings := ArgoCDSettings{}
-	data, err := os.ReadFile("../../docs/operator-manual/argocd-cm.yaml")
+	data, err := os.ReadFile("../../docs/operator-manual/cd-cm.yaml")
 	require.NoError(t, err)
-	err = yaml.Unmarshal(data, &argocdCM)
+	err = yaml.Unmarshal(data, &cdCM)
 	require.NoError(t, err)
-	updateSettingsFromConfigMap(&settings, argocdCM)
+	updateSettingsFromConfigMap(&settings, cdCM)
 }
 
 func TestGetConfigMapByName(t *testing.T) {
@@ -193,7 +193,7 @@ func TestGetSettings_InClusterIsEnabledWithMissingServerSecretKey(t *testing.T) 
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{},
@@ -203,7 +203,7 @@ func TestGetSettings_InClusterIsEnabledWithMissingServerSecretKey(t *testing.T) 
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -937,7 +937,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: nil,
@@ -947,7 +947,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
@@ -967,7 +967,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string]string{
@@ -979,7 +979,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
@@ -999,7 +999,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string]string{
@@ -1011,7 +1011,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1134,7 +1134,7 @@ userInfoBaseURL: "://users.example.com"
 						Name:      common.ArgoCDConfigMapName,
 						Namespace: "default",
 						Labels: map[string]string{
-							"app.kubernetes.io/part-of": "argocd",
+							"app.kubernetes.io/part-of": "cd",
 						},
 					},
 					Data: tc.configMapData,
@@ -1144,7 +1144,7 @@ userInfoBaseURL: "://users.example.com"
 						Name:      common.ArgoCDSecretName,
 						Namespace: "default",
 						Labels: map[string]string{
-							"app.kubernetes.io/part-of": "argocd",
+							"app.kubernetes.io/part-of": "cd",
 						},
 					},
 					Data: map[string][]byte{
@@ -1163,8 +1163,8 @@ func TestRedirectURL(t *testing.T) {
 	cases := map[string][]string{
 		"https://localhost:4000":         {"https://localhost:4000/auth/callback", "https://localhost:4000/api/dex/callback"},
 		"https://localhost:4000/":        {"https://localhost:4000/auth/callback", "https://localhost:4000/api/dex/callback"},
-		"https://localhost:4000/argocd":  {"https://localhost:4000/argocd/auth/callback", "https://localhost:4000/argocd/api/dex/callback"},
-		"https://localhost:4000/argocd/": {"https://localhost:4000/argocd/auth/callback", "https://localhost:4000/argocd/api/dex/callback"},
+		"https://localhost:4000/cd":  {"https://localhost:4000/cd/auth/callback", "https://localhost:4000/cd/api/dex/callback"},
+		"https://localhost:4000/cd/": {"https://localhost:4000/cd/auth/callback", "https://localhost:4000/cd/api/dex/callback"},
 	}
 	for given, expected := range cases {
 		settings := ArgoCDSettings{URL: given}
@@ -1206,7 +1206,7 @@ func TestGetOIDCSecretTrim(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{
@@ -1218,7 +1218,7 @@ func TestGetOIDCSecretTrim(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -1252,7 +1252,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string]string{
@@ -1264,7 +1264,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1278,8 +1278,8 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
-					"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.crt")),
-					"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.key")),
+					"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.crt")),
+					"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.key")),
 				},
 			},
 		)
@@ -1291,14 +1291,14 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		assert.Contains(t, getCNFromCertificate(settings.Certificate), "localhost")
 	})
 
-	t.Run("Valid external TLS secret overrides argocd-secret", func(t *testing.T) {
+	t.Run("Valid external TLS secret overrides cd-secret", func(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string]string{
@@ -1310,14 +1310,14 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
 					"admin.password":   nil,
 					"server.secretkey": nil,
-					"tls.crt":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-e2e-server.crt")),
-					"tls.key":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-e2e-server.key")),
+					"tls.crt":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-e2e-server.crt")),
+					"tls.key":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-e2e-server.key")),
 				},
 			},
 			&corev1.Secret{
@@ -1326,8 +1326,8 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
-					"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.crt")),
-					"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.key")),
+					"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.crt")),
+					"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.key")),
 				},
 			},
 		)
@@ -1345,7 +1345,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string]string{
@@ -1357,7 +1357,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1387,7 +1387,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 		}
@@ -1397,7 +1397,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				Namespace:       "default",
 				ResourceVersion: "1",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -1411,8 +1411,8 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				ResourceVersion: "1",
 			},
 			Data: map[string][]byte{
-				"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.crt")),
-				"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.key")),
+				"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.crt")),
+				"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.key")),
 			},
 		}
 
@@ -1445,7 +1445,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 		}
@@ -1455,7 +1455,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				Namespace:       "default",
 				ResourceVersion: "1",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -1469,8 +1469,8 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				ResourceVersion: "1",
 			},
 			Data: map[string][]byte{
-				"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.crt")),
-				"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.key")),
+				"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.crt")),
+				"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.key")),
 			},
 		}
 
@@ -1515,7 +1515,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 			},
@@ -1525,13 +1525,13 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Namespace:       "default",
 					ResourceVersion: "1",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
 					"server.secretkey": nil,
-					"tls.crt":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-e2e-server.crt")),
-					"tls.key":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-e2e-server.key")),
+					"tls.crt":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-e2e-server.crt")),
+					"tls.key":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-e2e-server.key")),
 				},
 			},
 		)
@@ -1541,7 +1541,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		// should have internal cert at this point
 		assert.NotNil(t, settings.Certificate)
 		assert.False(t, settings.CertificateIsExternal)
-		assert.Equal(t, "argocd-e2e-server", getCNFromCertificate(settings.Certificate))
+		assert.Equal(t, "cd-e2e-server", getCNFromCertificate(settings.Certificate))
 
 		externalTLSSecret := &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
@@ -1550,8 +1550,8 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				ResourceVersion: "1",
 			},
 			Data: map[string][]byte{
-				"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.crt")),
-				"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.key")),
+				"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.crt")),
+				"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.key")),
 			},
 		}
 		_, err = kubeClient.CoreV1().Secrets("default").Create(t.Context(), externalTLSSecret, metav1.CreateOptions{})
@@ -1574,7 +1574,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 			},
@@ -1584,13 +1584,13 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Namespace:       "default",
 					ResourceVersion: "1",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
 					"server.secretkey": nil,
-					"tls.crt":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-e2e-server.crt")),
-					"tls.key":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-e2e-server.key")),
+					"tls.crt":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-e2e-server.crt")),
+					"tls.key":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-e2e-server.key")),
 				},
 			},
 			&corev1.Secret{
@@ -1600,8 +1600,8 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					ResourceVersion: "1",
 				},
 				Data: map[string][]byte{
-					"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.crt")),
-					"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-test-server.key")),
+					"tls.crt": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.crt")),
+					"tls.key": []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-test-server.key")),
 				},
 			},
 		)
@@ -1624,7 +1624,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		// should now have an internal cert
 		assert.NotNil(t, settings.Certificate)
 		assert.False(t, settings.CertificateIsExternal)
-		assert.Equal(t, "argocd-e2e-server", getCNFromCertificate(settings.Certificate))
+		assert.Equal(t, "cd-e2e-server", getCNFromCertificate(settings.Certificate))
 	})
 	t.Run("No external TLS secret", func(t *testing.T) {
 		kubeClient := fake.NewClientset(
@@ -1633,7 +1633,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string]string{
@@ -1645,14 +1645,14 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
 					"admin.password":   nil,
 					"server.secretkey": nil,
-					"tls.crt":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-e2e-server.crt")),
-					"tls.key":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/argocd-e2e-server.key")),
+					"tls.crt":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-e2e-server.crt")),
+					"tls.key":          []byte(testutil.MustLoadFileToString("../../test/fixture/certs/cd-e2e-server.key")),
 				},
 			},
 		)
@@ -1661,7 +1661,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		require.NoError(t, err)
 		assert.False(t, settings.CertificateIsExternal)
 		assert.NotNil(t, settings.Certificate)
-		assert.Contains(t, getCNFromCertificate(settings.Certificate), "argocd-e2e-server")
+		assert.Contains(t, getCNFromCertificate(settings.Certificate), "cd-e2e-server")
 	})
 }
 
@@ -1704,12 +1704,12 @@ requestedIDTokenClaims: {"groups": {"essential": true}}`,
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: data,
 	}
-	argocdSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDSecretName,
 			Namespace: "default",
@@ -1725,7 +1725,7 @@ requestedIDTokenClaims: {"groups": {"essential": true}}`,
 			Name:      "ext",
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string][]byte{
@@ -1734,7 +1734,7 @@ requestedIDTokenClaims: {"groups": {"essential": true}}`,
 			"webhook.github.secret": []byte("mywebhooksecret"),
 		},
 	}
-	kubeClient := fake.NewClientset(cm, secret, argocdSecret)
+	kubeClient := fake.NewClientset(cm, secret, cdSecret)
 	settingsManager := NewSettingsManager(t.Context(), kubeClient, "default")
 
 	settings, err := settingsManager.GetSettings()
@@ -1776,12 +1776,12 @@ func TestGetEnableManifestGeneration(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: tc.data,
 			}
-			argocdSecret := &corev1.Secret{
+			cdSecret := &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
@@ -1792,7 +1792,7 @@ func TestGetEnableManifestGeneration(t *testing.T) {
 				},
 			}
 
-			kubeClient := fake.NewClientset(cm, argocdSecret)
+			kubeClient := fake.NewClientset(cm, cdSecret)
 			settingsManager := NewSettingsManager(t.Context(), kubeClient, "default")
 
 			enableManifestGeneration, err := settingsManager.GetEnabledSourceTypes()
@@ -1834,12 +1834,12 @@ func TestGetHelmSettings(t *testing.T) {
 					Name:      common.ArgoCDConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: tc.data,
 			}
-			argocdSecret := &corev1.Secret{
+			cdSecret := &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
@@ -1854,14 +1854,14 @@ func TestGetHelmSettings(t *testing.T) {
 					Name:      "acme",
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "cd",
 					},
 				},
 				Data: map[string][]byte{
 					"clientSecret": []byte("deadbeef"),
 				},
 			}
-			kubeClient := fake.NewClientset(cm, secret, argocdSecret)
+			kubeClient := fake.NewClientset(cm, secret, cdSecret)
 			settingsManager := NewSettingsManager(t.Context(), kubeClient, "default")
 
 			helmSettings, err := settingsManager.GetHelmSettings()
@@ -2327,24 +2327,24 @@ func TestAzureUserGroupOverageClaimCacheExpiration(t *testing.T) {
 }
 
 func TestIsImpersonationEnabled(t *testing.T) {
-	// When there is no argocd-cm itself,
+	// When there is no cd-cm itself,
 	// Then IsImpersonationEnabled() must return false (default value) and an error with appropriate error message.
 	kubeClient := fake.NewClientset()
 	settingsManager := NewSettingsManager(t.Context(), kubeClient, "default")
 	featureFlag, err := settingsManager.IsImpersonationEnabled()
 	require.False(t, featureFlag,
-		"with no argocd-cm config map, IsImpersonationEnabled() must return false (default value)")
-	require.ErrorContains(t, err, "configmap \"argocd-cm\" not found",
-		"with no argocd-cm config map, IsImpersonationEnabled() must return an error")
+		"with no cd-cm config map, IsImpersonationEnabled() must return false (default value)")
+	require.ErrorContains(t, err, "configmap \"cd-cm\" not found",
+		"with no cd-cm config map, IsImpersonationEnabled() must return an error")
 
-	// When there is no impersonation feature flag present in the argocd-cm,
+	// When there is no impersonation feature flag present in the cd-cm,
 	// Then IsImpersonationEnabled() must return false (default value) and nil error.
 	_, settingsManager = fixtures(t.Context(), map[string]string{})
 	featureFlag, err = settingsManager.IsImpersonationEnabled()
 	require.False(t, featureFlag,
-		"with empty argocd-cm config map, IsImpersonationEnabled() must return false (default value)")
+		"with empty cd-cm config map, IsImpersonationEnabled() must return false (default value)")
 	require.NoError(t, err,
-		"with empty argocd-cm config map, IsImpersonationEnabled() must not return any error")
+		"with empty cd-cm config map, IsImpersonationEnabled() must not return any error")
 
 	// When user disables the feature explicitly,
 	// Then IsImpersonationEnabled() must return false and nil error.
@@ -2353,9 +2353,9 @@ func TestIsImpersonationEnabled(t *testing.T) {
 	})
 	featureFlag, err = settingsManager.IsImpersonationEnabled()
 	require.False(t, featureFlag,
-		"when user enables the flag in argocd-cm config map, IsImpersonationEnabled() must return user set value")
+		"when user enables the flag in cd-cm config map, IsImpersonationEnabled() must return user set value")
 	require.NoError(t, err,
-		"when user enables the flag in argocd-cm config map, IsImpersonationEnabled() must not return any error")
+		"when user enables the flag in cd-cm config map, IsImpersonationEnabled() must not return any error")
 
 	// When user enables the feature explicitly,
 	// Then IsImpersonationEnabled() must return true and nil error.
@@ -2364,30 +2364,30 @@ func TestIsImpersonationEnabled(t *testing.T) {
 	})
 	featureFlag, err = settingsManager.IsImpersonationEnabled()
 	require.True(t, featureFlag,
-		"when user enables the flag in argocd-cm config map, IsImpersonationEnabled() must return user set value")
+		"when user enables the flag in cd-cm config map, IsImpersonationEnabled() must return user set value")
 	require.NoError(t, err,
-		"when user enables the flag in argocd-cm config map, IsImpersonationEnabled() must not return any error")
+		"when user enables the flag in cd-cm config map, IsImpersonationEnabled() must not return any error")
 }
 
 func TestIsImpersonationEnforced(t *testing.T) {
-	// When there is no argocd-cm itself,
+	// When there is no cd-cm itself,
 	// Then IsImpersonationEnforced() must return true (default value) and an error with appropriate error message.
 	kubeClient := fake.NewClientset()
 	settingsManager := NewSettingsManager(t.Context(), kubeClient, "default")
 	enforced, err := settingsManager.IsImpersonationEnforced()
 	require.True(t, enforced,
-		"with no argocd-cm config map, IsImpersonationEnforced() must return true (default value)")
-	require.ErrorContains(t, err, "configmap \"argocd-cm\" not found",
-		"with no argocd-cm config map, IsImpersonationEnforced() must return an error")
+		"with no cd-cm config map, IsImpersonationEnforced() must return true (default value)")
+	require.ErrorContains(t, err, "configmap \"cd-cm\" not found",
+		"with no cd-cm config map, IsImpersonationEnforced() must return an error")
 
-	// When there is no enforcement flag present in the argocd-cm,
+	// When there is no enforcement flag present in the cd-cm,
 	// Then IsImpersonationEnforced() must return true (default value) and nil error.
 	_, settingsManager = fixtures(t.Context(), map[string]string{})
 	enforced, err = settingsManager.IsImpersonationEnforced()
 	require.True(t, enforced,
-		"with empty argocd-cm config map, IsImpersonationEnforced() must return true (default value)")
+		"with empty cd-cm config map, IsImpersonationEnforced() must return true (default value)")
 	require.NoError(t, err,
-		"with empty argocd-cm config map, IsImpersonationEnforced() must not return any error")
+		"with empty cd-cm config map, IsImpersonationEnforced() must not return any error")
 
 	// When user disables enforcement explicitly,
 	// Then IsImpersonationEnforced() must return false and nil error.
@@ -2396,9 +2396,9 @@ func TestIsImpersonationEnforced(t *testing.T) {
 	})
 	enforced, err = settingsManager.IsImpersonationEnforced()
 	require.False(t, enforced,
-		"when user disables enforcement in argocd-cm config map, IsImpersonationEnforced() must return false")
+		"when user disables enforcement in cd-cm config map, IsImpersonationEnforced() must return false")
 	require.NoError(t, err,
-		"when user disables enforcement in argocd-cm config map, IsImpersonationEnforced() must not return any error")
+		"when user disables enforcement in cd-cm config map, IsImpersonationEnforced() must not return any error")
 
 	// When user enables enforcement explicitly,
 	// Then IsImpersonationEnforced() must return true and nil error.
@@ -2407,9 +2407,9 @@ func TestIsImpersonationEnforced(t *testing.T) {
 	})
 	enforced, err = settingsManager.IsImpersonationEnforced()
 	require.True(t, enforced,
-		"when user enables enforcement in argocd-cm config map, IsImpersonationEnforced() must return true")
+		"when user enables enforcement in cd-cm config map, IsImpersonationEnforced() must return true")
 	require.NoError(t, err,
-		"when user enables enforcement in argocd-cm config map, IsImpersonationEnforced() must not return any error")
+		"when user enables enforcement in cd-cm config map, IsImpersonationEnforced() must not return any error")
 
 	// When user sets enforcement to an invalid value,
 	// Then IsImpersonationEnforced() must return true (default value) and nil error.
@@ -2418,30 +2418,30 @@ func TestIsImpersonationEnforced(t *testing.T) {
 	})
 	enforced, err = settingsManager.IsImpersonationEnforced()
 	require.True(t, enforced,
-		"when user specify invalid value for enforcement in argocd-cm config map, IsImpersonationEnforced() must return true (default value)")
+		"when user specify invalid value for enforcement in cd-cm config map, IsImpersonationEnforced() must return true (default value)")
 	require.NoError(t, err,
-		"when user specify invalid value for enforcement in argocd-cm config map, IsImpersonationEnforced() must not return any error")
+		"when user specify invalid value for enforcement in cd-cm config map, IsImpersonationEnforced() must not return any error")
 }
 
 func TestIsInClusterEnabled(t *testing.T) {
-	// When there is no argocd-cm itself,
+	// When there is no cd-cm itself,
 	// Then IsInClusterEnabled() must return true (default value) and an error with appropriate error message.
 	kubeClient := fake.NewClientset()
 	settingsManager := NewSettingsManager(t.Context(), kubeClient, "default")
 	enabled, err := settingsManager.IsInClusterEnabled()
 	require.True(t, enabled,
-		"with no argocd-cm config map, IsInClusterEnabled() must return true (default value)")
-	require.ErrorContains(t, err, "configmap \"argocd-cm\" not found",
-		"with no argocd-cm config map, IsInClusterEnabled() must return an error")
+		"with no cd-cm config map, IsInClusterEnabled() must return true (default value)")
+	require.ErrorContains(t, err, "configmap \"cd-cm\" not found",
+		"with no cd-cm config map, IsInClusterEnabled() must return an error")
 
-	// When there is no in-cluster flag present in the argocd-cm,
+	// When there is no in-cluster flag present in the cd-cm,
 	// Then IsInClusterEnabled() must return true (default value) and nil error.
 	_, settingsManager = fixtures(t.Context(), map[string]string{})
 	enabled, err = settingsManager.IsInClusterEnabled()
 	require.True(t, enabled,
-		"with empty argocd-cm config map, IsInClusterEnabled() must return true (default value)")
+		"with empty cd-cm config map, IsInClusterEnabled() must return true (default value)")
 	require.NoError(t, err,
-		"with empty argocd-cm config map, IsInClusterEnabled() must not return any error")
+		"with empty cd-cm config map, IsInClusterEnabled() must not return any error")
 
 	// When user disables in-cluster explicitly,
 	// Then IsInClusterEnabled() must return false and nil error.
@@ -2450,9 +2450,9 @@ func TestIsInClusterEnabled(t *testing.T) {
 	})
 	enabled, err = settingsManager.IsInClusterEnabled()
 	require.False(t, enabled,
-		"when user sets the flag to false in argocd-cm config map, IsInClusterEnabled() must return false")
+		"when user sets the flag to false in cd-cm config map, IsInClusterEnabled() must return false")
 	require.NoError(t, err,
-		"when user sets the flag to false in argocd-cm config map, IsInClusterEnabled() must not return any error")
+		"when user sets the flag to false in cd-cm config map, IsInClusterEnabled() must not return any error")
 
 	// When user enables in-cluster explicitly,
 	// Then IsInClusterEnabled() must return true and nil error.
@@ -2461,32 +2461,32 @@ func TestIsInClusterEnabled(t *testing.T) {
 	})
 	enabled, err = settingsManager.IsInClusterEnabled()
 	require.True(t, enabled,
-		"when user sets the flag to true in argocd-cm config map, IsInClusterEnabled() must return true")
+		"when user sets the flag to true in cd-cm config map, IsInClusterEnabled() must return true")
 	require.NoError(t, err,
-		"when user sets the flag to true in argocd-cm config map, IsInClusterEnabled() must not return any error")
+		"when user sets the flag to true in cd-cm config map, IsInClusterEnabled() must not return any error")
 }
 
 func TestRequireOverridePrivilegeForRevisionSyncNoConfigMap(t *testing.T) {
-	// When there is no argocd-cm itself,
+	// When there is no cd-cm itself,
 	// Then RequireOverridePrivilegeForRevisionSync() must return false (default value) and an error with appropriate error message.
 	kubeClient := fake.NewClientset()
 	settingsManager := NewSettingsManager(t.Context(), kubeClient, "default")
 	featureFlag, err := settingsManager.RequireOverridePrivilegeForRevisionSync()
 	require.False(t, featureFlag,
-		"with no argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must return false (default value)")
-	require.ErrorContains(t, err, "configmap \"argocd-cm\" not found",
-		"with no argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must return an error")
+		"with no cd-cm config map, RequireOverridePrivilegeForRevisionSync() must return false (default value)")
+	require.ErrorContains(t, err, "configmap \"cd-cm\" not found",
+		"with no cd-cm config map, RequireOverridePrivilegeForRevisionSync() must return an error")
 }
 
 func TestRequireOverridePrivilegeForRevisionSyncEmptyConfigMap(t *testing.T) {
-	// When there is no feature flag present in the argocd-cm,
+	// When there is no feature flag present in the cd-cm,
 	// Then RequireOverridePrivilegeForRevisionSync() must return false (default value) and nil error.
 	_, settingsManager := fixtures(t.Context(), map[string]string{})
 	featureFlag, err := settingsManager.RequireOverridePrivilegeForRevisionSync()
 	require.False(t, featureFlag,
-		"with empty argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must return false (default value)")
+		"with empty cd-cm config map, RequireOverridePrivilegeForRevisionSync() must return false (default value)")
 	require.NoError(t, err,
-		"with empty argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must not return any error")
+		"with empty cd-cm config map, RequireOverridePrivilegeForRevisionSync() must not return any error")
 }
 
 func TestRequireOverridePrivilegeForRevisionSyncFalse(t *testing.T) {
@@ -2497,9 +2497,9 @@ func TestRequireOverridePrivilegeForRevisionSyncFalse(t *testing.T) {
 	})
 	featureFlag, err := settingsManager.RequireOverridePrivilegeForRevisionSync()
 	require.False(t, featureFlag,
-		"when user disables the flag in argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must return user set value")
+		"when user disables the flag in cd-cm config map, RequireOverridePrivilegeForRevisionSync() must return user set value")
 	require.NoError(t, err,
-		"when user disables the flag in argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must not return any error")
+		"when user disables the flag in cd-cm config map, RequireOverridePrivilegeForRevisionSync() must not return any error")
 }
 
 func TestRequireOverridePrivilegeForRevisionSyncTrue(t *testing.T) {
@@ -2510,9 +2510,9 @@ func TestRequireOverridePrivilegeForRevisionSyncTrue(t *testing.T) {
 	})
 	featureFlag, err := settingsManager.RequireOverridePrivilegeForRevisionSync()
 	require.True(t, featureFlag,
-		"when user enables the flag in argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must return user set value")
+		"when user enables the flag in cd-cm config map, RequireOverridePrivilegeForRevisionSync() must return user set value")
 	require.NoError(t, err,
-		"when user enables the flag in argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must not return any error")
+		"when user enables the flag in cd-cm config map, RequireOverridePrivilegeForRevisionSync() must not return any error")
 }
 
 func TestRequireOverridePrivilegeForRevisionSyncParseError(t *testing.T) {
@@ -2523,9 +2523,9 @@ func TestRequireOverridePrivilegeForRevisionSyncParseError(t *testing.T) {
 	})
 	featureFlag, err := settingsManager.RequireOverridePrivilegeForRevisionSync()
 	require.False(t, featureFlag,
-		"when user set the flag to unparseable value in argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must return false (default value)")
+		"when user set the flag to unparseable value in cd-cm config map, RequireOverridePrivilegeForRevisionSync() must return false (default value)")
 	require.ErrorContains(t, err, "invalid syntax",
-		"when user set the flag to unparseable value in argocd-cm config map, RequireOverridePrivilegeForRevisionSync() must return an error")
+		"when user set the flag to unparseable value in cd-cm config map, RequireOverridePrivilegeForRevisionSync() must return an error")
 }
 
 func TestSettingsManager_GetHideSecretAnnotations(t *testing.T) {
@@ -2634,7 +2634,7 @@ func TestSecretsInformerExcludesClusterSecrets(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 	}
@@ -2643,7 +2643,7 @@ func TestSecretsInformerExcludesClusterSecrets(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string][]byte{},
@@ -2759,9 +2759,9 @@ func TestIsSettingsObject(t *testing.T) {
 		expected bool
 	}{
 		{
-			name: "secret with part-of=argocd matches",
+			name: "secret with part-of=cd matches",
 			obj: &corev1.Secret{ObjectMeta: metav1.ObjectMeta{
-				Labels: map[string]string{"app.kubernetes.io/part-of": "argocd"},
+				Labels: map[string]string{"app.kubernetes.io/part-of": "cd"},
 			}},
 			expected: true,
 		},
@@ -2778,9 +2778,9 @@ func TestIsSettingsObject(t *testing.T) {
 			expected: false,
 		},
 		{
-			name: "configmap with part-of=argocd matches",
+			name: "configmap with part-of=cd matches",
 			obj: &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{
-				Labels: map[string]string{"app.kubernetes.io/part-of": "argocd"},
+				Labels: map[string]string{"app.kubernetes.io/part-of": "cd"},
 			}},
 			expected: true,
 		},
@@ -2805,7 +2805,7 @@ func TestIsArgoCDConfigMap(t *testing.T) {
 		expected bool
 	}{
 		{
-			name: "argocd-cm matches",
+			name: "cd-cm matches",
 			obj: &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{
 				Name: common.ArgoCDConfigMapName,
 			}},
@@ -2839,7 +2839,7 @@ func TestGettersRaceWithResyncInformers(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: "default",
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
 		Data: map[string]string{},
 	}
@@ -2848,7 +2848,7 @@ func TestGettersRaceWithResyncInformers(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 				common.LabelKeySecretType:   common.LabelValueSecretTypeRepository,
 			},
 		},
@@ -2861,7 +2861,7 @@ func TestGettersRaceWithResyncInformers(t *testing.T) {
 			Name:      "cluster-secret",
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 				common.LabelKeySecretType:   common.LabelValueSecretTypeCluster,
 			},
 		},

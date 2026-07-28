@@ -19,13 +19,13 @@ import (
 var (
 	redisRequestCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_redis_request_total",
+			Name: "cd_redis_request_total",
 		},
 		[]string{"initiator", "failed"},
 	)
 	redisRequestHistogram = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_redis_request_duration",
+			Name:    "cd_redis_request_duration",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2},
 		},
 		[]string{"initiator"},
@@ -92,7 +92,7 @@ func TestRedisSetCache(t *testing.T) {
 }
 
 func TestRedisSetCacheWithPrefix(t *testing.T) {
-	prefix := "argocd-dev:"
+	prefix := "cd-dev:"
 	t.Setenv("CD_KV_KEY_PREFIX", prefix)
 	mr, err := miniredis.Run()
 	if err != nil {

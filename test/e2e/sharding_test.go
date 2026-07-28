@@ -85,7 +85,7 @@ func TestShardsReconcileAssignedApps(t *testing.T) {
 // createClusterSecretWithShard creates a cluster secret and assigns it to a shard
 func createClusterSecretWithShard(ctx *Context, shard int, ns string) string {
 	// Create a ServiceAccount, role, and role binding to be used for a bearer token
-	serviceAccountName := DnsFriendly("argocd-e2e", "-shard-"+strconv.Itoa(shard)+"-sa-"+ctx.ShortID())
+	serviceAccountName := DnsFriendly("cd-e2e", "-shard-"+strconv.Itoa(shard)+"-sa-"+ctx.ShortID())
 	err := clusterauth.CreateServiceAccount(KubeClientset, serviceAccountName, ns)
 	require.NoError(ctx.T(), err)
 

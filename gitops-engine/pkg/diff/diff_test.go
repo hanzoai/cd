@@ -47,7 +47,7 @@ func printDiff(ctx context.Context, result *DiffResult) (string, error) {
 
 // printDiffInternal prints a diff between two unstructured objects using an external diff utility and returns the output.
 func printDiffInternal(ctx context.Context, name string, live *unstructured.Unstructured, target *unstructured.Unstructured) ([]byte, error) {
-	tempDir, err := os.MkdirTemp("", "argocd-diff")
+	tempDir, err := os.MkdirTemp("", "cd-diff")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create temp directory: %w", err)
 	}
@@ -344,9 +344,9 @@ var demoConfig = `
   "kind": "ServiceAccount",
   "metadata": {
     "labels": {
-      "app.kubernetes.io/instance": "argocd-demo"
+      "app.kubernetes.io/instance": "cd-demo"
     },
-    "name": "argocd-application-controller"
+    "name": "cd-application-controller"
   }
 }
 `
@@ -357,21 +357,21 @@ var demoLive = `
   "kind": "ServiceAccount",
   "metadata": {
     "annotations": {
-      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"ServiceAccount\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/instance\":\"argocd-demo\"},\"name\":\"argocd-application-controller\",\"namespace\":\"argocd-demo\"}}\n"
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"ServiceAccount\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/instance\":\"cd-demo\"},\"name\":\"cd-application-controller\",\"namespace\":\"cd-demo\"}}\n"
     },
     "creationTimestamp": "2018-04-16T22:08:57Z",
     "labels": {
-      "app.kubernetes.io/instance": "argocd-demo"
+      "app.kubernetes.io/instance": "cd-demo"
     },
-    "name": "argocd-application-controller",
-    "namespace": "argocd-demo",
+    "name": "cd-application-controller",
+    "namespace": "cd-demo",
     "resourceVersion": "7584502",
-    "selfLink": "/api/v1/namespaces/argocd-demo/serviceaccounts/argocd-application-controller",
+    "selfLink": "/api/v1/namespaces/cd-demo/serviceaccounts/cd-application-controller",
     "uid": "c22bb2b4-41c2-11e8-978a-028445d52ec8"
   },
   "secrets": [
     {
-      "name": "argocd-application-controller-token-kfxct"
+      "name": "cd-application-controller-token-kfxct"
     }
   ]
 }
@@ -588,7 +588,7 @@ metadata:
   creationTimestamp: 2018-07-17 09:17:05 UTC
   name: my-foo
   resourceVersion: '10308211'
-  selfLink: "/apis/rbac.authorization.k8s.io/v1/clusterroles/argocd-manager-role"
+  selfLink: "/apis/rbac.authorization.k8s.io/v1/clusterroles/cd-manager-role"
   uid: 2c3d5405-89a2-11e8-aff0-42010a8a0fc6
 spec:
   foo: bar
@@ -624,9 +624,9 @@ kind: Secret
 metadata:
   creationTimestamp: 2018-11-19T11:30:40Z
   name: my-secret
-  namespace: argocd
+  namespace: cd
   resourceVersion: "25848035"
-  selfLink: /api/v1/namespaces/argocd/secrets/my-secret
+  selfLink: /api/v1/namespaces/cd/secrets/my-secret
   uid: 8b4a2766-ebee-11e8-93c0-42010a8a0013
 type: Opaque
 data:
@@ -670,9 +670,9 @@ kind: Secret
 metadata:
   creationTimestamp: 2018-11-19T11:30:40Z
   name: my-secret
-  namespace: argocd
+  namespace: cd
   resourceVersion: "25848035"
-  selfLink: /api/v1/namespaces/argocd/secrets/my-secret
+  selfLink: /api/v1/namespaces/cd/secrets/my-secret
   uid: 8b4a2766-ebee-11e8-93c0-42010a8a0013
 type: Opaque
 data:
@@ -771,7 +771,7 @@ func buildGVKParser(t *testing.T) *managedfields.GvkParser {
 func TestStructuredMergeDiff(t *testing.T) {
 	buildParams := func(live, config *unstructured.Unstructured) *SMDParams {
 		gvkParser := buildGVKParser(t)
-		manager := "argocd-controller"
+		manager := "cd-controller"
 		return &SMDParams{
 			config:    config,
 			live:      live,
@@ -889,7 +889,7 @@ func TestStructuredMergeDiff(t *testing.T) {
 func TestServerSideDiff(t *testing.T) {
 	buildOpts := func(predictedLive string) []Option {
 		gvkParser := buildGVKParser(t)
-		manager := "argocd-controller"
+		manager := "cd-controller"
 		dryRunner := mocks.NewServerSideDryRunner(t)
 
 		dryRunner.EXPECT().Run(mock.Anything, mock.AnythingOfType("*unstructured.Unstructured"), manager).
@@ -1176,7 +1176,7 @@ func TestServerSideDiff(t *testing.T) {
 				"name": "my-deploy",
 				"namespace": "default",
 				"resourceVersion": "99999",
-				"managedFields": [{"manager":"argocd-controller","operation":"Apply","fieldsType":"FieldsV1","fieldsV1":{"f:spec":{"f:replicas":{}}}}]
+				"managedFields": [{"manager":"cd-controller","operation":"Apply","fieldsType":"FieldsV1","fieldsV1":{"f:spec":{"f:replicas":{}}}}]
 			},
 			"spec": {"replicas": 1}
 		}`
@@ -1187,7 +1187,7 @@ func TestServerSideDiff(t *testing.T) {
 				"name": "my-deploy",
 				"namespace": "default",
 				"resourceVersion": "12345",
-				"managedFields": [{"manager":"argocd-controller","operation":"Apply","fieldsType":"FieldsV1","fieldsV1":{"f:spec":{"f:replicas":{}}}}]
+				"managedFields": [{"manager":"cd-controller","operation":"Apply","fieldsType":"FieldsV1","fieldsV1":{"f:spec":{"f:replicas":{}}}}]
 			},
 			"spec": {"replicas": 1}
 		}`)
@@ -2257,7 +2257,7 @@ metadata:
     fieldsV1:
       f:spec:
         f:metrics: {}
-    manager: argocd-controller
+    manager: cd-controller
     operation: Apply
     time: "2024-01-02T00:00:00Z"
 spec:
@@ -2277,7 +2277,7 @@ spec:
 `)
 
 	// Identical config and live should not be modified
-	result, err := StructuredMergeDiff(config, live, gvkParser, "argocd-controller")
+	result, err := StructuredMergeDiff(config, live, gvkParser, "cd-controller")
 	require.NoError(t, err)
 	assert.NotNil(t, result)
 	assert.False(t, result.Modified, "identical config and live should not show as modified")
@@ -2332,7 +2332,7 @@ metadata:
     fieldsV1:
       f:spec:
         f:metrics: {}
-    manager: argocd-controller
+    manager: cd-controller
     operation: Apply
     time: "2024-01-02T00:00:00Z"
 spec:
@@ -2351,7 +2351,7 @@ spec:
         averageUtilization: 50
 `)
 
-	result, err := StructuredMergeDiff(config, live, gvkParser, "argocd-controller")
+	result, err := StructuredMergeDiff(config, live, gvkParser, "cd-controller")
 	require.NoError(t, err)
 	assert.NotNil(t, result)
 	assert.True(t, result.Modified, "different config and live should show as modified")

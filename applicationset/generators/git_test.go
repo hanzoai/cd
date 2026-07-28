@@ -2434,7 +2434,7 @@ func TestGitGenerator_GenerateParams(t *testing.T) {
 				TypeMeta: metav1.TypeMeta{},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "project",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 			},
 			appset: v1alpha1.ApplicationSet{
@@ -2513,7 +2513,7 @@ func TestGitGenerator_GenerateParams(t *testing.T) {
 
 			argoCDServiceMock.EXPECT().GetDirectories(mock.Anything, mock.Anything, mock.Anything, project, mock.Anything, mock.Anything).Return(testCase.repoApps, testCase.repoPathsError)
 		}
-		gitGenerator := NewGitGenerator(argoCDServiceMock, "argocd")
+		gitGenerator := NewGitGenerator(argoCDServiceMock, "cd")
 
 		scheme := runtime.NewScheme()
 		err := v1alpha1.AddToScheme(scheme)

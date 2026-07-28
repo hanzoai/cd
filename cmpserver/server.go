@@ -89,7 +89,7 @@ func (a *ArgoCDCMPServer) Run() {
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(context.Background(), "unix", config.Address())
 	errors.CheckError(err)
-	log.Infof("argocd-cmp-server %s serving on %s", common.GetVersion(), listener.Addr())
+	log.Infof("cd-cmp-server %s serving on %s", common.GetVersion(), listener.Addr())
 
 	signal.Notify(a.stopCh, syscall.SIGINT, syscall.SIGTERM)
 	go a.Shutdown(config.Address())

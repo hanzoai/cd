@@ -13,20 +13,20 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func GenerateDexConfigYAML(argocdSettings *settings.ArgoCDSettings, disableTLS bool) ([]byte, error) {
-	if !argocdSettings.IsDexConfigured() {
+func GenerateDexConfigYAML(cdSettings *settings.ArgoCDSettings, disableTLS bool) ([]byte, error) {
+	if !cdSettings.IsDexConfigured() {
 		return nil, nil
 	}
-	redirectURL, err := argocdSettings.RedirectURL()
+	redirectURL, err := cdSettings.RedirectURL()
 	if err != nil {
 		return nil, fmt.Errorf("failed to infer redirect url from config: %w", err)
 	}
 	var dexCfg map[string]any
-	err = yaml.Unmarshal([]byte(argocdSettings.DexConfig), &dexCfg)
+	err = yaml.Unmarshal([]byte(cdSettings.DexConfig), &dexCfg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal dex.config from configmap: %w", err)
 	}
-	dexCfg["issuer"] = argocdSettings.IssuerURL()
+	dexCfg["issuer"] = cdSettings.IssuerURL()
 	dexCfg["storage"] = map[string]any{
 		"type": "memory",
 	}
@@ -73,14 +73,14 @@ func GenerateDexConfigYAML(argocdSettings *settings.ArgoCDSettings, disableTLS b
 		}
 	}
 
-	additionalRedirectURLs, err := argocdSettings.RedirectAdditionalURLs()
+	additionalRedirectURLs, err := cdSettings.RedirectAdditionalURLs()
 	if err != nil {
 		return nil, fmt.Errorf("failed to infer additional redirect urls from config: %w", err)
 	}
 	argoCDStaticClient := map[string]any{
 		"id":           common.ArgoCDClientAppID,
 		"name":         common.ArgoCDClientAppName,
-		"secret":       argocdSettings.DexOAuth2ClientSecret(),
+		"secret":       cdSettings.DexOAuth2ClientSecret(),
 		"redirectURIs": append([]string{redirectURL}, additionalRedirectURLs...),
 	}
 	argoCDPKCEStaticClient := map[string]any{
@@ -108,7 +108,7 @@ func GenerateDexConfigYAML(argocdSettings *settings.ArgoCDSettings, disableTLS b
 		dexCfg["staticClients"] = []any{argoCDStaticClient, argoCDCLIStaticClient, argoCDPKCEStaticClient}
 	}
 
-	dexRedirectURL, err := argocdSettings.DexRedirectURL()
+	dexRedirectURL, err := cdSettings.DexRedirectURL()
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,7 @@ func GenerateDexConfigYAML(argocdSettings *settings.ArgoCDSettings, disableTLS b
 		connectors[i] = connector
 	}
 	dexCfg["connectors"] = connectors
-	dexCfg = settings.ReplaceMapSecrets(dexCfg, argocdSettings.Secrets)
+	dexCfg = settings.ReplaceMapSecrets(dexCfg, cdSettings.Secrets)
 
 	if escapedConnectors, ok := dexCfg["connectors"].([]any); ok {
 		for i, connectorIf := range escapedConnectors {
@@ -143,7 +143,7 @@ func GenerateDexConfigYAML(argocdSettings *settings.ArgoCDSettings, disableTLS b
 				continue
 			}
 			if connectorCfg, ok := connector["config"].(map[string]any); ok {
-				connector["config"] = settings.EscapeDollarSignsInConnectorConfig(connectorCfg, argocdSettings.Secrets)
+				connector["config"] = settings.EscapeDollarSignsInConnectorConfig(connectorCfg, cdSettings.Secrets)
 				escapedConnectors[i] = connector
 			}
 		}

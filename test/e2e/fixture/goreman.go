@@ -28,7 +28,7 @@ const (
 	ApplicationSetControllerProcName = "applicationset-controller"
 	NotificationServerProcName       = "notification"
 	procfileBinary                   = "goreman"
-	e2eEnvVariableFilePath           = "/tmp/argocd-e2e-env"
+	e2eEnvVariableFilePath           = "/tmp/cd-e2e-env"
 )
 
 // StartProcess allows you to start a procress that is not running

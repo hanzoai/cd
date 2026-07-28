@@ -20,7 +20,7 @@ import (
 
 	"github.com/hanzoai/deploy/common"
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/cd/normalizers"
 	"github.com/hanzoai/deploy/util/resource"
 	"github.com/hanzoai/deploy/util/settings"
 )

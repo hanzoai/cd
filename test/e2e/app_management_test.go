@@ -32,7 +32,7 @@ import (
 	clusterFixture "github.com/hanzoai/deploy/test/e2e/fixture/cluster"
 	projectFixture "github.com/hanzoai/deploy/test/e2e/fixture/project"
 	repoFixture "github.com/hanzoai/deploy/test/e2e/fixture/repos"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/errors"
 	utilio "github.com/hanzoai/deploy/util/io"
 	"github.com/hanzoai/deploy/util/settings"
@@ -170,7 +170,7 @@ func TestAppCreation(t *testing.T) {
 			assert.Equal(t, ctx.DeploymentNamespace(), app.Spec.Destination.Namespace)
 			assert.Equal(t, KubernetesInternalAPIServerAddr, app.Spec.Destination.Server)
 		}).
-		Expect(Event(argo.EventReasonResourceCreated, "create")).
+		Expect(Event(cd.EventReasonResourceCreated, "create")).
 		And(func(_ *Application) {
 			// app should be listed
 			output, err := fixture.RunCli("app", "list")
@@ -215,7 +215,7 @@ func TestAppCreationWithoutForceUpdate(t *testing.T) {
 			assert.Equal(t, ctx.DeploymentNamespace(), app.Spec.Destination.Namespace)
 			assert.Equal(t, "in-cluster", app.Spec.Destination.Name)
 		}).
-		Expect(Event(argo.EventReasonResourceCreated, "create")).
+		Expect(Event(cd.EventReasonResourceCreated, "create")).
 		And(func(_ *Application) {
 			// app should be listed
 			output, err := fixture.RunCli("app", "list")
@@ -506,7 +506,7 @@ func TestAppDeletion(t *testing.T) {
 		Delete(true).
 		Then().
 		Expect(DoesNotExist()).
-		Expect(Event(argo.EventReasonResourceDeleted, "delete"))
+		Expect(Event(cd.EventReasonResourceDeleted, "delete"))
 
 	output, err := fixture.RunCli("app", "list")
 	require.NoError(t, err)
@@ -554,7 +554,7 @@ func TestTrackAppStateAndSyncApp(t *testing.T) {
 		Expect(HealthIs(health.HealthStatusHealthy)).
 		Expect(Success(fmt.Sprintf("Service     %s  guestbook-ui  Synced ", ctx.DeploymentNamespace()))).
 		Expect(Success(fmt.Sprintf("apps   Deployment  %s  guestbook-ui  Synced", ctx.DeploymentNamespace()))).
-		Expect(Event(argo.EventReasonResourceUpdated, "sync")).
+		Expect(Event(cd.EventReasonResourceUpdated, "sync")).
 		And(func(app *Application) {
 			assert.NotNil(t, app.Status.OperationState.SyncResult)
 		})
@@ -593,7 +593,7 @@ func TestAppRollbackSuccessful(t *testing.T) {
 			_, err = fixture.RunCli("app", "rollback", app.Name, "1")
 			require.NoError(t, err)
 		}).
-		Expect(Event(argo.EventReasonOperationStarted, "rollback")).
+		Expect(Event(cd.EventReasonOperationStarted, "rollback")).
 		Expect(SyncStatusIs(SyncStatusCodeSynced)).
 		And(func(app *Application) {
 			assert.Equal(t, SyncStatusCodeSynced, app.Status.Sync.Status)
@@ -1036,7 +1036,7 @@ func TestLocalManifestSync(t *testing.T) {
 		And(func(app *Application) {
 			res, _ := fixture.RunCli("app", "manifests", app.Name)
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/argocd-e2e-container:0.2")
+			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
 		}).
 		Given().
 		LocalPath(guestbookPathLocal).
@@ -1047,7 +1047,7 @@ func TestLocalManifestSync(t *testing.T) {
 		And(func(app *Application) {
 			res, _ := fixture.RunCli("app", "manifests", app.Name)
 			assert.Contains(t, res, "containerPort: 81")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/argocd-e2e-container:0.3")
+			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.3")
 		}).
 		Given().
 		LocalPath("").
@@ -1058,7 +1058,7 @@ func TestLocalManifestSync(t *testing.T) {
 		And(func(app *Application) {
 			res, _ := fixture.RunCli("app", "manifests", app.Name)
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/argocd-e2e-container:0.2")
+			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
 		})
 }
 
@@ -1246,7 +1246,7 @@ func TestPermissions(t *testing.T) {
 		And(func(app *Application) {
 			closer, cdClient := fixture.ArgoCDClientset.NewApplicationClientOrDie()
 			defer utilio.Close(closer)
-			appName, appNs := argo.ParseFromQualifiedName(app.Name, "")
+			appName, appNs := cd.ParseFromQualifiedName(app.Name, "")
 			fmt.Printf("APP NAME: %s\n", appName)
 			tree, err := cdClient.ResourceTree(t.Context(), &applicationpkg.ResourcesQuery{ApplicationName: &appName, AppNamespace: &appNs})
 			require.NoError(t, err)
@@ -1290,7 +1290,7 @@ func TestPermissionWithScopedRepo(t *testing.T) {
 		RepoURLType(fixture.RepoURLTypeFile).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/sync-options": "Prune=false"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1323,7 +1323,7 @@ func TestPermissionDeniedWithScopedRepo(t *testing.T) {
 		RepoURLType(fixture.RepoURLTypeFile).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/sync-options": "Prune=false"}}]`).
 		IgnoreErrors().
 		CreateApp().
 		Then().
@@ -1347,7 +1347,7 @@ func TestPermissionDeniedWithNegatedNamespace(t *testing.T) {
 		RepoURLType(fixture.RepoURLTypeFile).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/sync-options": "Prune=false"}}]`).
 		IgnoreErrors().
 		CreateApp().
 		Then().
@@ -1371,7 +1371,7 @@ func TestPermissionDeniedWithNegatedServer(t *testing.T) {
 		RepoURLType(fixture.RepoURLTypeFile).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/sync-options": "Prune=false"}}]`).
 		IgnoreErrors().
 		CreateApp().
 		Then().
@@ -1383,7 +1383,7 @@ func TestSyncOptionPruneFalseResourceLevel(t *testing.T) {
 	Given(t).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/sync-options": "Prune=false"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1435,7 +1435,7 @@ func TestSyncOptionPruneFalseResourceOverride(t *testing.T) {
 			"path": "/spec/syncPolicy",
 			"value": { "syncOptions": ["Prune=true"] }
 			}]`).
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/sync-options": "Prune=false"}}]`).
 		Sync().
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded)).
@@ -1466,7 +1466,7 @@ func TestSyncOptionValidateFalse(t *testing.T) {
 		// client error. K8s API changed error message w/ 1.25, so for now, we need to check both
 		Expect(ErrorRegex("error validating data|of type int32", "")).
 		When().
-		PatchFile("deployment.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Validate=false"}}]`).
+		PatchFile("deployment.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/sync-options": "Validate=false"}}]`).
 		Sync().
 		Then().
 		// server error
@@ -1479,7 +1479,7 @@ func TestCompareOptionIgnoreExtraneous(t *testing.T) {
 		Prune(false).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/compare-options": "IgnoreExtraneous"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/compare-options": "IgnoreExtraneous"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1867,7 +1867,7 @@ func TestSyncWithRetryAndRefreshEnabled(t *testing.T) {
 		}))
 }
 
-// Given: argocd app create does not provide --dest-namespace
+// Given: cd app create does not provide --dest-namespace
 //
 //	Manifest contains resource console which does not require namespace
 //
@@ -1885,7 +1885,7 @@ func TestCreateAppWithNoNameSpaceForGlobalResource(t *testing.T) {
 		})
 }
 
-// Given: argocd app create does not provide --dest-namespace
+// Given: cd app create does not provide --dest-namespace
 //
 //	Manifest contains resource deployment, and service which requires namespace
 //	Deployment and service do not have namespace in manifest
@@ -1908,7 +1908,7 @@ func TestCreateAppWithNoNameSpaceWhenRequired(t *testing.T) {
 		})
 }
 
-// Given: argocd app create does not provide --dest-namespace
+// Given: cd app create does not provide --dest-namespace
 //
 //	Manifest contains resource deployment, and service which requires namespace
 //	Some deployment and service has namespace in manifest
@@ -2055,7 +2055,7 @@ func TestFailedSyncWithRetry(t *testing.T) {
 	Given(t).
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PreSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"cd.argoproj.io/hook": "PreSync"}}]`).
 		// make hook fail
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command", "value": ["false"]}]`).
 		CreateApp().
@@ -2089,7 +2089,7 @@ func TestCreateFromPartialFile(t *testing.T) {
   annotations:
     annotations.local/from-file: file
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.cd.argoproj.io
 spec:
   syncPolicy:
     automated:
@@ -2258,7 +2258,7 @@ func TestSyncOptionReplace(t *testing.T) {
 	Given(t).
 		Path("config-map").
 		When().
-		PatchFile("config-map.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Replace=true"}}]`).
+		PatchFile("config-map.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.argoproj.io/sync-options": "Replace=true"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -2489,7 +2489,7 @@ func TestSwitchTrackingLabel(t *testing.T) {
 		Expect(HealthIs(health.HealthStatusHealthy)).
 		When().
 		// Change tracking label
-		SetTrackingLabel("argocd.tracking").
+		SetTrackingLabel("cd.tracking").
 		Sync().
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded)).
@@ -2503,7 +2503,7 @@ func TestSwitchTrackingLabel(t *testing.T) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "other-configmap",
 					Labels: map[string]string{
-						"argocd.tracking": ctx.GetName(),
+						"cd.tracking": ctx.GetName(),
 					},
 				},
 			}, metav1.CreateOptions{}))
@@ -2683,7 +2683,7 @@ kind: ConfigMap
 metadata:
   name: other-map
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    cd.argoproj.io/sync-wave: "1"
 data:
   foo2: bar2`).
 		AddFile("yet-another-configmap.yaml", `
@@ -2692,7 +2692,7 @@ kind: ConfigMap
 metadata:
   name: yet-another-map
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    cd.argoproj.io/sync-wave: "2"
 data:
   foo3: bar3`).
 		PatchFile("kustomization.yaml", `[{"op": "add", "path": "/resources/-", "value": "other-configmap.yaml"}, {"op": "add", "path": "/resources/-", "value": "yet-another-configmap.yaml"}]`).
@@ -2773,7 +2773,7 @@ func TestDeletionConfirmation(t *testing.T) {
 		Path(guestbookPath).
 		Async(true).
 		When().
-		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "argocd.argoproj.io/sync-options": "Delete=confirm" }}]`).
+		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "cd.argoproj.io/sync-options": "Delete=confirm" }}]`).
 		CreateApp().Sync().
 		Then().
 		ExpectConsistently(OperationPhaseIs(OperationRunning), time.Second, 5*time.Second).

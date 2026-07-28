@@ -102,7 +102,7 @@ func TestHandleRegistryEvent_RefreshMatchingApp(t *testing.T) {
 		&v1alpha1.Application{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "oci-app",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: v1alpha1.ApplicationSpec{
 				Sources: v1alpha1.ApplicationSources{
@@ -135,7 +135,7 @@ func TestHandleRegistryEvent_RepoMismatch(t *testing.T) {
 		&v1alpha1.Application{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "oci-app",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: v1alpha1.ApplicationSpec{
 				Sources: v1alpha1.ApplicationSources{
@@ -168,7 +168,7 @@ func TestHandleRegistryEvent_RevisionMismatch(t *testing.T) {
 		&v1alpha1.Application{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "oci-app",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: v1alpha1.ApplicationSpec{
 				Sources: v1alpha1.ApplicationSources{

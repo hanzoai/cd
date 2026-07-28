@@ -11,7 +11,7 @@ import (
 
 	"github.com/hanzoai/deploy/pkg/apiclient/notification"
 	"github.com/hanzoai/deploy/reposerver/apiclient/mocks"
-	service "github.com/hanzoai/deploy/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/cd"
 	"github.com/hanzoai/deploy/util/notification/k8s"
 	"github.com/hanzoai/deploy/util/notification/settings"
 
@@ -39,7 +39,7 @@ func TestNotificationServer(t *testing.T) {
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-notifications-cm",
+			Name:      "cd-notifications-cm",
 		},
 		Data: map[string]string{
 			"service.webhook.test": "url: https://test.example.com",
@@ -49,15 +49,15 @@ func TestNotificationServer(t *testing.T) {
 	},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "argocd-notifications-secret",
+				Name:      "cd-notifications-secret",
 				Namespace: testNamespace,
 			},
 			Data: map[string][]byte{},
 		})
 
 	ctx := t.Context()
-	secretInformer := k8s.NewSecretInformer(kubeclientset, testNamespace, "argocd-notifications-secret")
-	configMapInformer := k8s.NewConfigMapInformer(kubeclientset, testNamespace, "argocd-notifications-cm")
+	secretInformer := k8s.NewSecretInformer(kubeclientset, testNamespace, "cd-notifications-secret")
+	configMapInformer := k8s.NewConfigMapInformer(kubeclientset, testNamespace, "cd-notifications-cm")
 	go secretInformer.Run(ctx.Done())
 	if !k8scache.WaitForCacheSync(ctx.Done(), secretInformer.HasSynced) {
 		panic("Timed out waiting for caches to sync")
@@ -69,10 +69,10 @@ func TestNotificationServer(t *testing.T) {
 	mockRepoClient := &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}}
 
 	dynamicClient := dynamicfake.NewSimpleDynamicClient(runtime.NewScheme())
-	argocdService, err := service.NewArgoCDService(kubeclientset, dynamicClient, testNamespace, mockRepoClient)
+	cdService, err := service.NewArgoCDService(kubeclientset, dynamicClient, testNamespace, mockRepoClient)
 	require.NoError(t, err)
-	t.Cleanup(argocdService.Close)
-	apiFactory := api.NewFactory(settings.GetFactorySettings(argocdService, "argocd-notifications-secret", "argocd-notifications-cm", false), testNamespace, secretInformer, configMapInformer)
+	t.Cleanup(cdService.Close)
+	apiFactory := api.NewFactory(settings.GetFactorySettings(cdService, "cd-notifications-secret", "cd-notifications-cm", false), testNamespace, secretInformer, configMapInformer)
 
 	t.Run("TestListServices", func(t *testing.T) {
 		t.Parallel()

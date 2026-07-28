@@ -382,7 +382,7 @@ func TestLocalManifestRejectedWithSourceIntegrity(t *testing.T) {
 		And(func(app *Application) {
 			res, _ := fixture.RunCli("app", "manifests", app.Name)
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/argocd-e2e-container:0.2")
+			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
 		}).
 		Given().
 		LocalPath(guestbookPathLocal).

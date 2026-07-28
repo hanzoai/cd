@@ -33,8 +33,8 @@ import (
 	"github.com/hanzoai/deploy/controller/syncid"
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	applog "github.com/hanzoai/deploy/util/app/log"
-	"github.com/hanzoai/deploy/util/argo"
-	"github.com/hanzoai/deploy/util/argo/diff"
+	"github.com/hanzoai/deploy/util/cd"
+	"github.com/hanzoai/deploy/util/cd/diff"
 	kubeutil "github.com/hanzoai/deploy/util/kube"
 	logutils "github.com/hanzoai/deploy/util/log"
 	"github.com/hanzoai/deploy/util/lua"
@@ -187,11 +187,11 @@ func (m *appStateManager) SyncAppState(ctx context.Context, app *v1alpha1.Applic
 		v1alpha1.ApplicationConditionInvalidSpecError: true,
 	}); len(errConditions) > 0 {
 		state.Phase = common.OperationError
-		state.Message = argo.FormatAppConditions(errConditions)
+		state.Message = cd.FormatAppConditions(errConditions)
 		return
 	}
 
-	destCluster, err := argo.GetDestinationCluster(ctx, app.Spec.Destination, m.db)
+	destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, m.db)
 	if err != nil {
 		state.Phase = common.OperationError
 		state.Message = fmt.Sprintf("Failed to get destination cluster: %v", err)
@@ -342,7 +342,7 @@ func (m *appStateManager) SyncAppState(ctx context.Context, app *v1alpha1.Applic
 			return (len(syncOp.Resources) == 0 ||
 				isPostDeleteHook(target) ||
 				isPreDeleteHook(target) ||
-				argo.ContainsSyncResource(key.Name, key.Namespace, schema.GroupVersionKind{Kind: key.Kind, Group: key.Group}, syncOp.Resources)) &&
+				cd.ContainsSyncResource(key.Name, key.Namespace, schema.GroupVersionKind{Kind: key.Kind, Group: key.Group}, syncOp.Resources)) &&
 				m.isSelfReferencedObj(live, target, app.GetName(), v1alpha1.TrackingMethod(trackingMethod), installationID)
 		}),
 		sync.WithManifestValidation(!syncOp.SyncOptions.HasOption(common.SyncOptionsDisableValidation)),
@@ -400,7 +400,7 @@ func (m *appStateManager) SyncAppState(ctx context.Context, app *v1alpha1.Applic
 
 	var apiVersion []kube.APIResourceInfo
 	for _, res := range resState {
-		augmentedMsg, err := argo.AugmentSyncMsg(res, func() ([]kube.APIResourceInfo, error) {
+		augmentedMsg, err := cd.AugmentSyncMsg(res, func() ([]kube.APIResourceInfo, error) {
 			if apiVersion == nil {
 				_, apiVersion, err = m.liveStateCache.GetVersionsInfo(destCluster)
 				if err != nil {
@@ -488,7 +488,7 @@ func normalizeTargetResources(openAPISchema openapi.Resources, cr *comparisonRes
 		// values into the target that is applied during sync. `status` must be
 		// excluded from that copy: it is owned by the resource's own controller,
 		// never by the sync. Merging live `status` into the apply makes the sync
-		// field manager (ArgoCDSSAManager, "argocd-controller") a co-owner of
+		// field manager (ArgoCDSSAManager, "cd-controller") a co-owner of
 		// `status` under server-side apply. For resources without a /status
 		// subresource (e.g. argoproj.io/Application) this freezes a stale
 		// status.operationState.phase that the controller can no longer correct.

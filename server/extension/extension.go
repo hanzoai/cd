@@ -21,7 +21,7 @@ import (
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
 	"github.com/hanzoai/deploy/server/rbacpolicy"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/security"
 	"github.com/hanzoai/deploy/util/session"
@@ -115,10 +115,10 @@ func ValidateHeaders(r *http.Request) (*RequestResources, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error getting app details: %w", err)
 	}
-	if !argo.IsValidNamespaceName(appNamespace) {
+	if !cd.IsValidNamespaceName(appNamespace) {
 		return nil, errors.New("invalid value for namespace")
 	}
-	if !argo.IsValidAppName(appName) {
+	if !cd.IsValidAppName(appName) {
 		return nil, errors.New("invalid value for application name")
 	}
 
@@ -126,7 +126,7 @@ func ValidateHeaders(r *http.Request) (*RequestResources, error) {
 	if projName == "" {
 		return nil, fmt.Errorf("header %q must be provided", HeaderArgoCDProjectName)
 	}
-	if !argo.IsValidProjectName(projName) {
+	if !cd.IsValidProjectName(projName) {
 		return nil, errors.New("invalid value for project name")
 	}
 	return &RequestResources{
@@ -145,7 +145,7 @@ func getAppName(appHeader string) (string, string, error) {
 }
 
 // ExtensionConfigs defines the configurations for all extensions
-// retrieved from Hanzo CD configmap (argocd-cm).
+// retrieved from Hanzo CD configmap (cd-cm).
 type ExtensionConfigs struct {
 	Extensions []ExtensionConfig `yaml:"extensions"`
 }
@@ -194,9 +194,9 @@ type Header struct {
 	// In order to provide it as a reference, it is necessary to prefix
 	// it with a dollar sign.
 	// Example:
-	//   value: '$some.argocd.secret.key'
+	//   value: '$some.cd.secret.key'
 	// In the example above, the value will be replaced with the one from
-	// the argocd-secret with key 'some.argocd.secret.key'.
+	// the cd-secret with key 'some.cd.secret.key'.
 	Value string `yaml:"value"`
 }
 
@@ -355,7 +355,7 @@ type Manager struct {
 	settings    SettingsGetter
 	application ApplicationGetter
 	project     ProjectGetter
-	cluster     argo.ClusterGetter
+	cluster     cd.ClusterGetter
 	rbac        RbacEnforcer
 	registry    ExtensionRegistry
 	metricsReg  ExtensionMetricsRegistry
@@ -375,7 +375,7 @@ type ExtensionMetricsRegistry interface {
 }
 
 // NewManager will initialize a new manager.
-func NewManager(log *log.Entry, namespace string, sg SettingsGetter, ag ApplicationGetter, pg ProjectGetter, cg argo.ClusterGetter, rbac RbacEnforcer, ug UserGetter) *Manager {
+func NewManager(log *log.Entry, namespace string, sg SettingsGetter, ag ApplicationGetter, pg ProjectGetter, cg cd.ClusterGetter, rbac RbacEnforcer, ug UserGetter) *Manager {
 	return &Manager{
 		log:         log,
 		namespace:   namespace,
@@ -710,7 +710,7 @@ func (m *Manager) authorize(ctx context.Context, rr *RequestResources, extName s
 	if proj == nil {
 		return nil, fmt.Errorf("invalid project provided in the %q header", HeaderArgoCDProjectName)
 	}
-	destCluster, err := argo.GetDestinationCluster(ctx, app.Spec.Destination, m.cluster)
+	destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, m.cluster)
 	if err != nil {
 		return nil, fmt.Errorf("error getting destination cluster: %w", err)
 	}

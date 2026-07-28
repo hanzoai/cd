@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/util/version"
 
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/errors"
 	kubeutil "github.com/hanzoai/deploy/util/kube"
 )
@@ -39,5 +39,5 @@ func GetApiResources(t *testing.T) string { //nolint:revive //FIXME(var-naming)
 	t.Helper()
 	kubectl := kubeutil.NewKubectl()
 	resources := errors.NewHandler(t).FailOnErr(kubectl.GetAPIResources(KubeConfig, false, cache.NewNoopSettings())).([]kube.APIResourceInfo)
-	return strings.Join(argo.APIResourcesToStrings(resources, true), ",")
+	return strings.Join(cd.APIResourcesToStrings(resources, true), ",")
 }
