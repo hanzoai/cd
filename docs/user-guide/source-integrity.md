@@ -1,6 +1,6 @@
 # Overview
 
-Argo CD permits declaring criteria for application sources integrity that, when not met, will prevent an application from syncing with a `ResourceComparison` error.
+Hanzo CD permits declaring criteria for application sources integrity that, when not met, will prevent an application from syncing with a `ResourceComparison` error.
 This is useful to verify the sources have not been tampered with by an unauthorized contributor.
 
 Each Application Project can have its criteria configured in `AppProject`'s `.spec.sourceIntegrity`.
@@ -15,7 +15,7 @@ Each application can be a subject of multiple checks, and the sync will be enabl
 > Signature verification is not supported for the Application Sets populated by the git generator when they have the `project` field templated.
 
 > [!WARNING]
-> If source integrity is enforced, you will not be able to sync from local sources (i.e. `argocd app sync --local`) anymore.
+> If source integrity is enforced, you will not be able to sync from local sources (i.e. `cd app sync --local`) anymore.
 
 ## Supported methods
 

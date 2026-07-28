@@ -1,6 +1,6 @@
 # Tracking and Deployment Strategies
 
-An Argo CD application spec provides several different ways of tracking Kubernetes resource manifests.
+An Hanzo CD application spec provides several different ways of tracking Kubernetes resource manifests.
 
 In all tracking strategies, the app has the option to sync automatically. If [auto-sync](auto_sync.md)
 is configured, the new resources manifests will be applied automatically -- as soon as a difference
@@ -24,7 +24,7 @@ Helm chart versions are [Semantic Versions](https://semver.org/). As a result, y
 [Read about version ranges](https://www.telerik.com/blogs/the-mystical-magical-semver-ranges-used-by-npm-bower)
 
 > [!NOTE]
-> If you want Argo CD to include all existing prerelease version tags of a repository in the comparison logic, you explicitly have to add a prerelease `-0` suffix to the version constraint. As mentioned `*-0` will compare against prerelease versions in a repository, `*` will not. The same applies for other constraints e.g. `>=1.2.2` will **not** compare prerelease versions vs. `>=1.2.2-0` which will include prerelease versions in the comparison.
+> If you want Hanzo CD to include all existing prerelease version tags of a repository in the comparison logic, you explicitly have to add a prerelease `-0` suffix to the version constraint. As mentioned `*-0` will compare against prerelease versions in a repository, `*` will not. The same applies for other constraints e.g. `>=1.2.2` will **not** compare prerelease versions vs. `>=1.2.2-0` which will include prerelease versions in the comparison.
 
 [Read about prerelease version comparison](https://github.com/Masterminds/semver?tab=readme-ov-file#working-with-prerelease-versions)
 
@@ -43,11 +43,11 @@ For Git, all versions are Git references but tags [Semantic Versions](https://se
 
 ### HEAD / Branch Tracking
 
-If a branch name or a symbolic reference (like HEAD) is specified, Argo CD will continually compare
+If a branch name or a symbolic reference (like HEAD) is specified, Hanzo CD will continually compare
 live state against the resource manifests defined at the tip of the specified branch or the
 resolved commit of the symbolic reference.
 
-To redeploy an app, make a change to (at least) one of your manifests, commit and push to the tracked branch/symbolic reference. The change will then be detected by Argo CD.
+To redeploy an app, make a change to (at least) one of your manifests, commit and push to the tracked branch/symbolic reference. The change will then be detected by Hanzo CD.
 
 ### Tag Tracking
 
@@ -56,23 +56,23 @@ comparison. This provides some advantages over branch tracking in that a tag is 
 more stable, and less frequently updated, with some manual judgement of what constitutes a tag.
 
 To redeploy an app, the user uses Git to change the meaning of a tag by retagging it to a
-different commit SHA. Argo CD will detect the new meaning of the tag when performing the
+different commit SHA. Hanzo CD will detect the new meaning of the tag when performing the
 comparison/sync.
 
 But if you're using semantic versioning you can set the constraint in your service revision
-and Argo CD will get the latest version following the constraint rules.
+and Hanzo CD will get the latest version following the constraint rules.
 
 > [!NOTE]
 > Semver constraints (those containing `*`, `>`, `<`, `>=`, `<=`, `~`, `^`, or range expressions like `>=1.0.0 <2.0.0`) are **only matched against tags**, never branches. This is by design - semver resolution uses the list of Git tags exclusively.
 
 #### Prefixed Tags
 
-Argo CD supports hierarchical tag prefixes, allowing you to organize tags by application, environment, cluster, or any other criteria. This is particularly useful for:
+Hanzo CD supports hierarchical tag prefixes, allowing you to organize tags by application, environment, cluster, or any other criteria. This is particularly useful for:
 
 - **Monorepos** - Tag each application separately (e.g., `app1/v1.0.0`, `app2/v2.0.0`)
 - **Multi-cluster deployments** - Organize by application, cluster, and environment for use with ApplicationSet generators
 
-Set `tagPrefix` to the prefix string. Argo CD will filter tags to only those with that prefix, strip the prefix before evaluating `targetRevision` as a semver constraint, and re-add it to the resolved version.
+Set `tagPrefix` to the prefix string. Hanzo CD will filter tags to only those with that prefix, strip the prefix before evaluating `targetRevision` as a semver constraint, and re-add it to the resolved version.
 
 | Tags in repo | `tagPrefix` | `targetRevision` | Resolves to |
 |-|-|-|-|
@@ -116,14 +116,14 @@ which is pinned to a commit, is by updating the tracking revision in the applica
 commit containing the new manifests. Note that [parameter overrides](parameters.md) can still be set
 on an app which is pinned to a revision.
 
-### Handling Ambiguous Git References in Argo CD
+### Handling Ambiguous Git References in Hanzo CD
 
-When deploying applications, Argo CD relies on the `targetRevision` field to determine
+When deploying applications, Hanzo CD relies on the `targetRevision` field to determine
 which revision of the Git repository to use. This can be a branch, tag, or commit SHA.
 Sometimes, multiple Git references can have the same name (eg. a branch and a tag both named `release-1.0`).
 These ambiguous references can lead to unexpected behavior, such as constant reconciliation loops.
 
-Today, Argo CD fetches all branches and tags from the repository. If the `targetRevision` matches multiple references, Argo CD
+Today, Hanzo CD fetches all branches and tags from the repository. If the `targetRevision` matches multiple references, Hanzo CD
 attempts to resolve it and may select a different commit than expected. For example, suppose your repository has the following references:
 
 ```text
@@ -132,8 +132,8 @@ refs/tags/release-1.0  -> commit A
 ```
 
 In the above scenario, `release-1.0` refers to both a branch (pointing to commit B) and a tag (pointing to commit A). 
-If your application's `targetRevision` is set to `release-1.0`, Argo CD may resolve it to either commit A or commit B.
-If the resolved commit differs from what is currently deployed, Argo CD will continuously attempt to sync, causing constant
+If your application's `targetRevision` is set to `release-1.0`, Hanzo CD may resolve it to either commit A or commit B.
+If the resolved commit differs from what is currently deployed, Hanzo CD will continuously attempt to sync, causing constant
 reconciliation. In order to avoid this ambiguity, you can follow these best practices:
 
 1. Use fully-qualified Git references in the `targetRevision` field. For example, use `refs/heads/release-1.0` for branches

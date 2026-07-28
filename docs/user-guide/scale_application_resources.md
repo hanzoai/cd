@@ -1,9 +1,9 @@
-# Scale Resources in Argo CD UI
+# Scale Resources in Hanzo CD UI
 
-This enables users to scale resources directly from the Argo CD UI. Users will be able to increase or decrease the number of replicas (Pods) for Deployments and StatefulSets by using an input field. The feature aims to enhance user experience, especially for non-technical users, by eliminating the need to modify configuration files or use kubectl commands for scaling.
+This enables users to scale resources directly from the Hanzo CD UI. Users will be able to increase or decrease the number of replicas (Pods) for Deployments and StatefulSets by using an input field. The feature aims to enhance user experience, especially for non-technical users, by eliminating the need to modify configuration files or use kubectl commands for scaling.
 
 ## Example Usage
-1. User navigates to a Deployment or StatefulSet in any Argo CD application.
+1. User navigates to a Deployment or StatefulSet in any Hanzo CD application.
 2. User clicks on the Actions dropdown and selects "Scale".
   ![action button for scaling](../assets/scale_resources_1.png)
 3. A modal pops up showing an input field `Enter input parameters for action: scale` with the current number of Pods.
@@ -16,5 +16,5 @@ This enables users to scale resources directly from the Argo CD UI. Users will b
 > This feature will only apply to `Deployments`, and `StatefulSets`.
 
 > [!NOTE]
-> If you use HPA (Horizontal Pod Autoscaling) or enabled Argo CD auto-sync, changing the replica count in scale actions would be overwritten.
+> If you use HPA (Horizontal Pod Autoscaling) or enabled Hanzo CD auto-sync, changing the replica count in scale actions would be overwritten.
 > Ensure that invalid values (e.g., `non-numeric` characters, `negative` numbers, or values beyond the `max integer limit`) cannot be entered.

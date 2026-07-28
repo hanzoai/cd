@@ -1,6 +1,6 @@
 message: |
     {{if eq .serviceType "slack"}}:exclamation:{{end}} Application {{.app.metadata.name}} sync is 'Unknown'.
-    Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+    Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
     {{if ne .serviceType "slack"}}
     {{range $c := .app.status.conditions}}
         * {{$c.message}}
@@ -12,7 +12,7 @@ slack:
     attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#E96D76",
           "fields": [
           {
@@ -60,7 +60,7 @@ teams:
           "name":"Open Application",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
           }]
         },
         {

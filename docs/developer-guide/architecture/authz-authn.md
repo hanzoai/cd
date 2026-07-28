@@ -1,14 +1,14 @@
 # Authentication and Authorization
 
 This document describes how authentication (authn) and authorization
-(authz) are implemented in Argo CD. There is a clear distinction in
+(authz) are implemented in Hanzo CD. There is a clear distinction in
 the code base of when and how these two security concepts are
 enforced.
 
 ## Logical layers
 
 The diagram below suggests 4 different logical layers (represented by
-4 boxes: HTTP, gRPC, AuthN and AuthZ) inside Argo CD API server that
+4 boxes: HTTP, gRPC, AuthN and AuthZ) inside Hanzo CD API server that
 collaborate to provide authentication and authorization. 
 
 - **HTTP**: The HTTP layer groups the *logical elements* that
@@ -26,7 +26,7 @@ collaborate to provide authentication and authorization.
 - **AuthZ**: The AuthZ represents the layer responsible for
   authorization.
 
-![Argo CD Architecture](../../assets/argocd-arch-authn-authz.jpg)
+![Hanzo CD Architecture](../../assets/cd-arch-authn-authz.jpg)
 
 ## Logical elements
 
@@ -34,8 +34,8 @@ The logical elements (identified by numbers) can represent an object,
 a function or a component in the code base. Note that this particular
 distinction is not represented in the diagram.
 
-Incoming requests can reach Argo CD API server from the web UI as well
-as from the `argocd` CLI. The responsibility of the represented
+Incoming requests can reach Hanzo CD API server from the web UI as well
+as from the `cd` CLI. The responsibility of the represented
 elements are described below with their respective numbers:
 
 1. **Cmux**: Uses the [cmux][1] library to provide a connection
@@ -53,7 +53,7 @@ elements are described below with their respective numbers:
 
 1. **gRPC-gateway**: Uses the [grpc-gateway][2] library to translate
    internal gRPC services and expose them as a [REST API][3]. The
-   great majority of API services in Argo CD are implemented in gRPC.
+   great majority of API services in Hanzo CD are implemented in gRPC.
    The grpc-gateway makes it possible to access gRPC services from the
    web UI.
 
@@ -64,14 +64,14 @@ elements are described below with their respective numbers:
    is registered as a gRPC interceptor which will automatically
    trigger for every gRPC request.
 
-1. **Session Manager**: Is the object responsible for managing Argo CD
+1. **Session Manager**: Is the object responsible for managing Hanzo CD
    API server session. It provides the functionality to verify the
    validity of the authentication token provided in the request.
-   Depending on how Argo CD is configured it may or may not delegate
+   Depending on how Hanzo CD is configured it may or may not delegate
    to an external AuthN provider to verify the token.
 
 1. **AuthN Provider**: Describes the component that can be plugged in
-   Argo CD API server to provide the authentication functionality such
+   Hanzo CD API server to provide the authentication functionality such
    as the login and the token verification process.
 
 1. **Service Method**: represents the method implementing the business
@@ -82,9 +82,9 @@ elements are described below with their respective numbers:
 
 1. **RBAC**: Is a collection of functions to provide the capability to
    verify if the user has permission to execute a specific action in
-   Argo CD. It does so by validating the incoming request action
-   against predefined [RBAC][7] rules that can be configured in Argo CD
-   API server as well as in Argo CD `Project` CRD.
+   Hanzo CD. It does so by validating the incoming request action
+   against predefined [RBAC][7] rules that can be configured in Hanzo CD
+   API server as well as in Hanzo CD `Project` CRD.
 
 1. **Casbin**: Uses the [Casbin][5] library to enforce [RBAC][7] rules.
 

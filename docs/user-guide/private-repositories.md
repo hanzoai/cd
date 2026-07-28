@@ -3,21 +3,21 @@
 > [!NOTE]
 > Some Git hosters - notably GitLab and possibly on-premise GitLab instances as well - require you to
 > specify the `.git` suffix in the repository URL, otherwise they will send a HTTP 301 redirect to the
-> repository URL suffixed with `.git`. Argo CD will **not** follow these redirects, so you have to
+> repository URL suffixed with `.git`. Hanzo CD will **not** follow these redirects, so you have to
 > adapt your repository URL to be suffixed with `.git`.
 
 ## Credentials
 
-If application manifests are located in private repository then repository credentials have to be configured. Argo CD supports both HTTPS and SSH Git credentials.
+If application manifests are located in private repository then repository credentials have to be configured. Hanzo CD supports both HTTPS and SSH Git credentials.
 
 ### HTTPS Username And Password Credential
 
 Private repositories that require a username and password typically have a URL that start with `https://` rather than `git@` or `ssh://`. 
 
-Credentials can be configured using Argo CD CLI:
+Credentials can be configured using Hanzo CD CLI:
 
 ```bash
-argocd repo add https://github.com/argoproj/argocd-example-apps --username <username> --password <password>
+cd repo add https://github.com/argoproj/argocd-example-apps --username <username> --password <password>
 ```
 
 or UI:
@@ -55,10 +55,10 @@ Then, connect the repository using any non-empty string as username and the acce
 
 ### TLS Client Certificates for HTTPS repositories
 
-If your repository server requires you to use TLS client certificates for authentication, you can configure Argo CD repositories to make use of them. For this purpose, `--tls-client-cert-path` and `--tls-client-cert-key-path` switches to the `argocd repo add` command can be used to specify the files on your local system containing client certificate and the corresponding key, respectively:
+If your repository server requires you to use TLS client certificates for authentication, you can configure Hanzo CD repositories to make use of them. For this purpose, `--tls-client-cert-path` and `--tls-client-cert-key-path` switches to the `cd repo add` command can be used to specify the files on your local system containing client certificate and the corresponding key, respectively:
 
 ```
-argocd repo add https://repo.example.com/repo.git --tls-client-cert-path ~/mycert.crt --tls-client-cert-key-path ~/mycert.key
+cd repo add https://repo.example.com/repo.git --tls-client-cert-path ~/mycert.crt --tls-client-cert-key-path ~/mycert.key
 ```
 
 Of course, you can also use this in combination with the `--username` and `--password` switches, if your repository server should require this. The options `--tls-client-cert-path` and `--tls-client-cert-key-path` must always be specified together.
@@ -66,7 +66,7 @@ Of course, you can also use this in combination with the `--username` and `--pas
 Your TLS client certificate and corresponding key can also be configured using the UI, see instructions for adding Git repos using HTTPS.
 
 > [!NOTE]
-> Your client certificate and key data must be in PEM format, other formats (such as PKCS12) are not supported. Also make sure that your certificate's key is not password protected, otherwise it cannot be used by Argo CD.
+> Your client certificate and key data must be in PEM format, other formats (such as PKCS12) are not supported. Also make sure that your certificate's key is not password protected, otherwise it cannot be used by Hanzo CD.
 
 > [!NOTE]
 > When pasting TLS client certificate and key in the text areas in the web UI, make sure they contain no unintended line breaks or additional characters.
@@ -78,15 +78,15 @@ Private repositories that require an SSH private key have a URL that typically s
 You can configure your Git repository using SSH either using the CLI or the UI.
 
 > [!NOTE]
-> Argo CD 2.4 upgraded to OpenSSH 8.9. OpenSSH 8.8 
+> Hanzo CD 2.4 upgraded to OpenSSH 8.9. OpenSSH 8.8 
 > [dropped support for the `ssh-rsa` SHA-1 key signature algorithm](https://www.openssh.com/txt/release-8.8).
 > See the [2.3 to 2.4 upgrade guide](../operator-manual/upgrading/2.3-2.4.md) for details about testing SSH servers 
-> for compatibility with Argo CD and for working around servers that do not support newer algorithms.
+> for compatibility with Hanzo CD and for working around servers that do not support newer algorithms.
 
 Using the CLI:
 
 ```
-argocd repo add git@github.com:argoproj/argocd-example-apps.git --ssh-private-key-path ~/.ssh/id_rsa
+cd repo add git@github.com:argoproj/argocd-example-apps.git --ssh-private-key-path ~/.ssh/id_rsa
 ```
 
 Using the UI:
@@ -119,14 +119,14 @@ You can configure access to your Git repository hosted by GitHub.com or GitHub E
 Using the CLI:
 
 ```
-argocd repo add https://github.com/argoproj/argocd-example-apps.git --github-app-id 1 --github-app-installation-id 2 --github-app-private-key-path test.private-key.pem
+cd repo add https://github.com/argoproj/argocd-example-apps.git --github-app-id 1 --github-app-installation-id 2 --github-app-private-key-path test.private-key.pem
 ```
 
 > [!NOTE]
 > To add a private Git repository on GitHub Enterprise using the CLI add `--github-app-enterprise-base-url https://ghe.example.com/api/v3` flag.
 
 > [!NOTE]
-> The `--github-app-installation-id` flag is optional. If omitted, Argo CD will automatically discover the installation ID based on the repository's organization.
+> The `--github-app-installation-id` flag is optional. If omitted, Hanzo CD will automatically discover the installation ID based on the repository's organization.
 
 Using the UI:
 
@@ -157,7 +157,7 @@ You can configure access to your Git repository hosted on Google Cloud Source us
 Using the CLI:
 
 ```
-argocd repo add https://source.developers.google.com/p/my-google-cloud-project/r/my-repo --gcp-service-account-key-path service-account-key.json
+cd repo add https://source.developers.google.com/p/my-google-cloud-project/r/my-repo --gcp-service-account-key-path service-account-key.json
 ```
 
 Using the UI:
@@ -175,24 +175,24 @@ Using the UI:
 
 ### Azure Container Registry/Azure Repos using Azure Workload Identity
 
-Before using this feature, you must perform the following steps to enable workload identity configuration in Argo CD:
+Before using this feature, you must perform the following steps to enable workload identity configuration in Hanzo CD:
 
 - **Label the Pods:** Add the `azure.workload.identity/use: "true"` label to the repo-server pods.
 - **Create Federated Identity Credential:** Generate an Azure federated identity credential for the repo-server service account. Refer to the [Federated Identity Credential](https://azure.github.io/azure-workload-identity/docs/topics/federated-identity-credential.html) documentation for detailed instructions.
 - **Add Annotation to Service Account:** Add `azure.workload.identity/client-id: "$CLIENT_ID"` annotation to the repo-server service account, using the `CLIENT_ID` from the workload identity.
 - **Configure ACR Permissions:** Grant the workload identity the necessary permissions on Azure Container Registry or Azure Repos.
-- **Set ACR Token Resource Variable:** Configure the Argo CD repo server env variable `AZURE_ARM_TOKEN_RESOURCE`=https://containerregistry.azure.net so Argo CD can request valid ACR access tokens.
+- **Set ACR Token Resource Variable:** Configure the Hanzo CD repo server env variable `AZURE_ARM_TOKEN_RESOURCE`=https://containerregistry.azure.net so Hanzo CD can request valid ACR access tokens.
 
 Using CLI for Helm OCI with Azure workload identity:
 
 ```
-argocd repo add contoso.azurecr.io/charts --type helm --enable-oci --use-azure-workload-identity
+cd repo add contoso.azurecr.io/charts --type helm --enable-oci --use-azure-workload-identity
 ```
 
 Using CLI for Azure Repos with Azure workload identity:
 
 ```
-argocd repo add https://contoso@dev.azure.com/my-projectcollection/my-project/_git/my-repo --use-azure-workload-identity
+cd repo add https://contoso@dev.azure.com/my-projectcollection/my-project/_git/my-repo --use-azure-workload-identity
 ```
 
 Using the UI:
@@ -219,9 +219,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: helm-private-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: helm
   url: contoso.azurecr.io/charts
@@ -233,9 +233,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: git-private-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://contoso@dev.azure.com/my-projectcollection/my-project/_git/my-repo
@@ -254,7 +254,7 @@ You can configure access to your Git repository hosted on Azure DevOps with Serv
 Using the CLI:
 
 ```
-argocd repo add https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo --azure-service-principal-tenant-id 12345678-1234-1234-1234-123456789012 --azure-service-principal-client-id 12345678-1234-1234-1234-123456789012 --azure-service-principal-client-secret test
+cd repo add https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo --azure-service-principal-tenant-id 12345678-1234-1234-1234-123456789012 --azure-service-principal-client-id 12345678-1234-1234-1234-123456789012 --azure-service-principal-client-secret test
 ```
 
 > [!NOTE]
@@ -278,9 +278,9 @@ You can also set up credentials to serve as templates for connecting repositorie
 
 To set up a credential template using the Web UI, simply fill in all relevant credential information in the __Connect repo using SSH__ or __Connect repo using HTTPS__ dialogues (as described above), but select __Save as credential template__ instead of __Connect__ to save the credential template. Be sure to only enter the prefix URL (i.e. `https://github.com/argoproj`) instead of the complete repository URL (i.e. `https://github.com/argoproj/argocd-example-apps`) in the field __Repository URL__
 
-To manage credential templates using the CLI, use the `repocreds` sub-command, for example `argocd repocreds add https://github.com/argoproj --username youruser --password yourpass` would setup a credential template for the URL prefix `https://github.com/argoproj` using the specified username/password combination. Similar to the `repo` sub-command, you can also list and remove repository credentials using the `argocd repocreds list` and `argocd repocreds rm` commands, respectively.
+To manage credential templates using the CLI, use the `repocreds` sub-command, for example `cd repocreds add https://github.com/argoproj --username youruser --password yourpass` would setup a credential template for the URL prefix `https://github.com/argoproj` using the specified username/password combination. Similar to the `repo` sub-command, you can also list and remove repository credentials using the `cd repocreds list` and `cd repocreds rm` commands, respectively.
 
-In order for Argo CD to use a credential template for any given repository, the following conditions must be met:
+In order for Hanzo CD to use a credential template for any given repository, the following conditions must be met:
 
 * The repository must either not be configured at all, or if configured, must not contain any credential information 
 * The URL configured for a credential template (e.g. `https://github.com/argoproj`) must match as prefix for the repository URL (e.g. `https://github.com/argoproj/argocd-example-apps`). 
@@ -295,31 +295,31 @@ The following is an example CLI session, depicting repository credential set-up:
 
 ```bash
 # Try to add a private repository without specifying credentials, will fail
-$ argocd repo add https://docker-build/repos/argocd-example-apps
+$ cd repo add https://docker-build/repos/cd-example-apps
 FATA[0000] rpc error: code = Unknown desc = authentication required 
 
 # Setup a credential template for all repos under https://docker-build/repos
-$ argocd repocreds add https://docker-build/repos --username test --password test
+$ cd repocreds add https://docker-build/repos --username test --password test
 repository credentials for 'https://docker-build/repos' added
 
 # Repeat first step, add repo without specifying credentials
 # URL for template matches, will succeed
-$ argocd repo add https://docker-build/repos/argocd-example-apps
-repository 'https://docker-build/repos/argocd-example-apps' added
+$ cd repo add https://docker-build/repos/cd-example-apps
+repository 'https://docker-build/repos/cd-example-apps' added
 
 # Add another repo under https://docker-build/repos, specifying invalid creds
 # Will fail, because it will not use the template (has own creds)
-$ argocd repo add https://docker-build/repos/example-apps-part-two --username test --password invalid
+$ cd repo add https://docker-build/repos/example-apps-part-two --username test --password invalid
 FATA[0000] rpc error: code = Unknown desc = authentication required
 ```
 
 ## Self-signed & Untrusted TLS Certificates
 
-If you are connecting a repository on a HTTPS server using a self-signed certificate, or a certificate signed by a custom Certificate Authority (CA) which are not known to Argo CD, the repository will not be added due to security reasons. This is indicated by an error message such as `x509: certificate signed by unknown authority`.
+If you are connecting a repository on a HTTPS server using a self-signed certificate, or a certificate signed by a custom Certificate Authority (CA) which are not known to Hanzo CD, the repository will not be added due to security reasons. This is indicated by an error message such as `x509: certificate signed by unknown authority`.
 
-1. You can let ArgoCD connect the repository in an insecure way, without verifying the server's certificate at all. This can be accomplished by using the `--insecure-skip-server-verification` flag when adding the repository with the `argocd` CLI utility. However, this should be done only for non-production setups, as it imposes a serious security issue through possible man-in-the-middle attacks.
+1. You can let Hanzo CD connect the repository in an insecure way, without verifying the server's certificate at all. This can be accomplished by using the `--insecure-skip-server-verification` flag when adding the repository with the `cd` CLI utility. However, this should be done only for non-production setups, as it imposes a serious security issue through possible man-in-the-middle attacks.
 
-2. You can configure ArgoCD to use a custom certificate for the verification of the server's certificate using the `cert add-tls` command of the `argocd` CLI utility. This is the recommended method and suitable for production use. In order to do so, you will need the server's certificate, or the certificate of the CA used to sign the server's certificate, in PEM format.
+2. You can configure Hanzo CD to use a custom certificate for the verification of the server's certificate using the `cert add-tls` command of the `cd` CLI utility. This is the recommended method and suitable for production use. In order to do so, you will need the server's certificate, or the certificate of the CA used to sign the server's certificate, in PEM format.
 
 > [!NOTE]
 > For invalid server certificates, such as those without matching server name, or those that are expired, adding a CA certificate will not help. In this case, your only option will be to use the `--insecure-skip-server-verification` flag to connect the repository. You are strongly urged to use a valid certificate on the repository server, or to urge the server's administrator to replace the faulty certificate with a valid one.
@@ -328,51 +328,51 @@ If you are connecting a repository on a HTTPS server using a self-signed certifi
 > TLS certificates are configured on a per-server, not on a per-repository basis. If you connect multiple repositories from the same server, you only have to configure the certificates once for this server.
 
 > [!NOTE]
-> It can take up to a couple of minutes until the changes performed by the `argocd cert` command are propagated across your cluster, depending on your Kubernetes setup.
+> It can take up to a couple of minutes until the changes performed by the `cd cert` command are propagated across your cluster, depending on your Kubernetes setup.
 
 ### Managing TLS certificates using the CLI
 
-You can list all configured TLS certificates by using the `argocd cert list` command using the `--cert-type https` modifier:
+You can list all configured TLS certificates by using the `cd cert list` command using the `--cert-type https` modifier:
 
 ```bash
-$ argocd cert list --cert-type https
+$ cd cert list --cert-type https
 HOSTNAME      TYPE   SUBTYPE  FINGERPRINT/SUBJECT
-docker-build  https  rsa      CN=ArgoCD Test CA
+docker-build  https  rsa      CN=Hanzo CD Test CA
 localhost     https  rsa      CN=localhost
 ```
 
-Example for adding  a HTTPS repository to ArgoCD without verifying the server's certificate (**Caution:** This is **not** recommended for production use):
+Example for adding  a HTTPS repository to Hanzo CD without verifying the server's certificate (**Caution:** This is **not** recommended for production use):
 
 ```bash
-argocd repo add --insecure-skip-server-verification https://git.example.com/test-repo
+cd repo add --insecure-skip-server-verification https://git.example.com/test-repo
 
 ```
 
 Example for adding a CA certificate contained in file `~/myca-cert.pem` to properly verify the repository server:
 
 ```bash
-argocd cert add-tls git.example.com --from ~/myca-cert.pem
-argocd repo add https://git.example.com/test-repo
+cd cert add-tls git.example.com --from ~/myca-cert.pem
+cd repo add https://git.example.com/test-repo
 ```
 
 You can also add more than one PEM for a server by concatenating them into the input stream. This might be useful if the repository server is about to replace the server certificate, possibly with one signed by a different CA. This way, you can have the old (current) as well as the new (future) certificate co-existing. If you already have the old certificate configured, use the `--upsert` flag and add the old and the new one in a single run:
 
 ```bash
-cat cert1.pem cert2.pem | argocd cert add-tls git.example.com --upsert
+cat cert1.pem cert2.pem | cd cert add-tls git.example.com --upsert
 ```
 
 > [!NOTE]
 > To replace an existing certificate for a server, use the `--upsert` flag to the `cert add-tls` CLI command. 
 
-Finally, TLS certificates can be removed using the `argocd cert rm` command with the `--cert-type https` modifier:
+Finally, TLS certificates can be removed using the `cd cert rm` command with the `--cert-type https` modifier:
 
 ```bash
-argocd cert rm --cert-type https localhost
+cd cert rm --cert-type https localhost
 ```
 
-### Managing TLS certificates using the ArgoCD web UI
+### Managing TLS certificates using the Hanzo CD web UI
 
-It is possible to add and remove TLS certificates using the ArgoCD web UI:
+It is possible to add and remove TLS certificates using the Hanzo CD web UI:
 
 1. In the navigation pane to the left, click on "Settings" and choose "Certificates" from the settings menu
 
@@ -390,29 +390,29 @@ It is possible to add and remove TLS certificates using the ArgoCD web UI:
 
 ### Managing TLS certificates using declarative configuration
 
-You can also manage TLS certificates in a declarative, self-managed ArgoCD setup. All TLS certificates are stored in the ConfigMap object `argocd-tls-certs-cm`.
+You can also manage TLS certificates in a declarative, self-managed Hanzo CD setup. All TLS certificates are stored in the ConfigMap object `cd-tls-certs-cm`.
 Please refer to the [Operator Manual](../operator-manual/declarative-setup.md#repositories-using-self-signed-tls-certificates-or-are-signed-by-custom-ca) for more information.
 
 ## Unknown SSH Hosts
 
 If you are using a privately hosted Git service over SSH, then you have the following  options:
 
-1. You can let ArgoCD connect the repository in an insecure way, without verifying the server's SSH host key at all. This can be accomplished by using the `--insecure-skip-server-verification` flag when adding the repository with the `argocd` CLI utility. However, this should be done only for non-production setups, as it imposes a serious security issue through possible man-in-the-middle attacks.
+1. You can let Hanzo CD connect the repository in an insecure way, without verifying the server's SSH host key at all. This can be accomplished by using the `--insecure-skip-server-verification` flag when adding the repository with the `cd` CLI utility. However, this should be done only for non-production setups, as it imposes a serious security issue through possible man-in-the-middle attacks.
 
-2. You can make the server's SSH public key known to ArgoCD by using the `cert add-ssh` command of the `argocd` CLI utility. This is the recommended method and suitable for production use. In order to do so, you will need the server's SSH public host key, in the `known_hosts` format understood by `ssh`. You can get the server's public SSH host key e.g. by using the `ssh-keyscan` utility.
+2. You can make the server's SSH public key known to Hanzo CD by using the `cert add-ssh` command of the `cd` CLI utility. This is the recommended method and suitable for production use. In order to do so, you will need the server's SSH public host key, in the `known_hosts` format understood by `ssh`. You can get the server's public SSH host key e.g. by using the `ssh-keyscan` utility.
 
 > [!NOTE]
-> It can take up to a couple of minutes until the changes performed by the `argocd cert` command are propagated across your cluster, depending on your Kubernetes setup.
+> It can take up to a couple of minutes until the changes performed by the `cd cert` command are propagated across your cluster, depending on your Kubernetes setup.
 > 
 > [!NOTE]
 > When importing SSH known hosts key from a `known_hosts` file, the hostnames or IP addresses in the input data must **not** be hashed. If your `known_hosts` file contains hashed entries, it cannot be used as input source for adding SSH known hosts - neither in the CLI nor in the UI. If you absolutely wish to use hashed known hosts data, the only option will be using declarative setup (see below). Be aware that this will break CLI and UI certificate management, so it is generally not recommended.
 
 ### Managing SSH Known Hosts using the CLI
 
-You can list all configured SSH known host entries using the `argocd cert list` command with the `--cert-type ssh` modifier:
+You can list all configured SSH known host entries using the `cd cert list` command with the `--cert-type ssh` modifier:
 
 ```bash
-$ argocd cert list --cert-type ssh
+$ cd cert list --cert-type ssh
 HOSTNAME                 TYPE  SUBTYPE              FINGERPRINT/SUBJECT
 bitbucket.org            ssh   ssh-rsa              SHA256:46OSHA1Rmj8E8ERTC6xkNcmGOw9oFxYr0WF6zWW8l1E
 github.com               ssh   ssh-rsa              SHA256:uNiVztksCsDhcc0u9e8BujQXVUpKZIDTMczCvj3tD2s
@@ -423,36 +423,36 @@ ssh.dev.azure.com        ssh   ssh-rsa              SHA256:ohD8VZEXGWo6Ez8GSEJQ9
 vs-ssh.visualstudio.com  ssh   ssh-rsa              SHA256:ohD8VZEXGWo6Ez8GSEJQ9WpafgLFsOfLOtGGQCQo6Og
 ```
 
-For adding SSH known host entries, the `argocd cert add-ssh` command can be used. You can either add from a file (using the `--from <file>` modifier), or by reading `stdin` when the `--batch` modifier was specified. In both cases, input must be in `known_hosts` format as understood by the OpenSSH client.
+For adding SSH known host entries, the `cd cert add-ssh` command can be used. You can either add from a file (using the `--from <file>` modifier), or by reading `stdin` when the `--batch` modifier was specified. In both cases, input must be in `known_hosts` format as understood by the OpenSSH client.
 
-Example for adding all available SSH public host keys for a server to ArgoCD, as collected by `ssh-keyscan`:
+Example for adding all available SSH public host keys for a server to Hanzo CD, as collected by `ssh-keyscan`:
 
 ```bash
-ssh-keyscan server.example.com | argocd cert add-ssh --batch 
+ssh-keyscan server.example.com | cd cert add-ssh --batch 
 
 ```
 
-Example for importing an existing `known_hosts` file to ArgoCD:
+Example for importing an existing `known_hosts` file to Hanzo CD:
 
 ```bash
-argocd cert add-ssh --batch --from /etc/ssh/ssh_known_hosts
+cd cert add-ssh --batch --from /etc/ssh/ssh_known_hosts
 ```
 
-Finally, SSH known host entries can be removed using the `argocd cert rm` command with the `--cert-type ssh` modifier:
+Finally, SSH known host entries can be removed using the `cd cert rm` command with the `--cert-type ssh` modifier:
 
 ```bash
-argocd cert rm bitbucket.org --cert-type ssh
+cd cert rm bitbucket.org --cert-type ssh
 ```
 
 If you have multiple SSH known host entries for a given host with different key sub-types (e.g. as for gitlab.com in the example above, there are keys of sub-types `ssh-rsa`, `ssh-ed25519` and `ecdsa-sha2-nistp256`) and you want to only remove one of them, you can further narrow down the selection using the `--cert-sub-type` modifier:
 
 ```bash
-argocd cert rm gitlab.com --cert-type ssh --cert-sub-type ssh-ed25519
+cd cert rm gitlab.com --cert-type ssh --cert-sub-type ssh-ed25519
 ```
 
-### Managing SSH known hosts data using the ArgoCD web UI
+### Managing SSH known hosts data using the Hanzo CD web UI
 
-It is possible to add and remove SSH known hosts entries using the ArgoCD web UI:
+It is possible to add and remove SSH known hosts entries using the Hanzo CD web UI:
 
 1. In the navigation pane to the left, click on "Settings" and choose "Certificates" from the settings menu
 
@@ -470,7 +470,7 @@ It is possible to add and remove SSH known hosts entries using the ArgoCD web UI
 
 ### Managing SSH known hosts data using declarative setup
 
-You can also manage SSH known hosts entries in a declarative, self-managed ArgoCD setup. All SSH public host keys are stored in the ConfigMap object `argocd-ssh-known-hosts-cm`. For more details, please refer to the [Operator Manual](../operator-manual/declarative-setup.md#ssh-known-host-public-keys).
+You can also manage SSH known hosts entries in a declarative, self-managed Hanzo CD setup. All SSH public host keys are stored in the ConfigMap object `cd-ssh-known-hosts-cm`. For more details, please refer to the [Operator Manual](../operator-manual/declarative-setup.md#ssh-known-host-public-keys).
 
 ## Helm
 
@@ -478,10 +478,10 @@ Helm charts can be sourced from protected Helm repositories or OCI registries. Y
 
 Using the CLI:
 
-Specify the `--type` flag of the `argocd repo add` command:
+Specify the `--type` flag of the `cd repo add` command:
 
 ```bash
-argocd repo add https://argoproj.github.io/argo-helm --type=helm <additional-flags>
+cd repo add https://argoproj.github.io/argo-helm --type=helm <additional-flags>
 ```
 
 Using the UI:
@@ -504,10 +504,10 @@ Helm charts stored in protected OCI registries should use the steps described pr
 
 Using CLI:
 
-Specify the `--enable-oci` flag of the `argocd repo add` command:
+Specify the `--enable-oci` flag of the `cd repo add` command:
 
 ```bash
-argocd repo add registry-1.docker.io/bitnamicharts --type=helm --enable-oci=true <additional-flags>
+cd repo add registry-1.docker.io/bitnamicharts --type=helm --enable-oci=true <additional-flags>
 ```
 
 > [!NOTE]
@@ -519,23 +519,23 @@ Select the _Enable OCI_ checkbox when adding a HTTPS based _helm_ repository.
 
 ### Custom HTTP User-Agent
 
-Some Helm repository providers (like Wikimedia) require a specific User-Agent header as part of their robot access policies. Argo CD automatically sends a default User-Agent header (`argocd-repo-server/<version> (<platform>)`) for all Helm repository requests.
+Some Helm repository providers (like Wikimedia) require a specific User-Agent header as part of their robot access policies. Hanzo CD automatically sends a default User-Agent header (`cd-repo-server/<version> (<platform>)`) for all Helm repository requests.
 
-If you need to customize the User-Agent (for example, to include your organization name or contact information), set the `CD_HELM_USER_AGENT` environment variable on the `argocd-repo-server` deployment:
+If you need to customize the User-Agent (for example, to include your organization name or contact information), set the `CD_HELM_USER_AGENT` environment variable on the `cd-repo-server` deployment:
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: argocd-repo-server
+  name: cd-repo-server
 spec:
   template:
     spec:
       containers:
-      - name: argocd-repo-server
+      - name: cd-repo-server
         env:
         - name: CD_HELM_USER_AGENT
-          value: "my-org/argocd (team@example.com)"
+          value: "my-org/cd (team@example.com)"
 ```
 
 This environment variable applies globally to all Helm repository requests.

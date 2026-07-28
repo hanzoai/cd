@@ -1,4 +1,4 @@
-# Verification of Argo CD Artifacts
+# Verification of Hanzo CD Artifacts
 
 ## Prerequisites
 - cosign `v2.0.0` or higher [installation instructions](https://docs.sigstore.dev/cosign/system_config/installation/)
@@ -9,15 +9,15 @@
 ## Release Assets
 | Asset                    | Description                   |
 |--------------------------|-------------------------------|
-| argocd-darwin-amd64      | CLI Binary                    |
-| argocd-darwin-arm64      | CLI Binary                    |
-| argocd-linux_amd64       | CLI Binary                    |
-| argocd-linux_arm64       | CLI Binary                    |
-| argocd-linux_ppc64le     | CLI Binary                    |
-| argocd-linux_s390x       | CLI Binary                    |
-| argocd-windows_amd64     | CLI Binary                    |
-| argocd-cli.intoto.jsonl  | Attestation of CLI binaries   |
-| argocd-sbom.intoto.jsonl | Attestation of SBOM           |
+| cd-darwin-amd64      | CLI Binary                    |
+| cd-darwin-arm64      | CLI Binary                    |
+| cd-linux_amd64       | CLI Binary                    |
+| cd-linux_arm64       | CLI Binary                    |
+| cd-linux_ppc64le     | CLI Binary                    |
+| cd-linux_s390x       | CLI Binary                    |
+| cd-windows_amd64     | CLI Binary                    |
+| cd-cli.intoto.jsonl  | Attestation of CLI binaries   |
+| cd-sbom.intoto.jsonl | Attestation of SBOM           |
 | cli_checksums.txt        | Checksums of binaries         |
 | sbom.tar.gz              | Sbom                          |
 | sbom.tar.gz.pem          | Certificate used to sign sbom |
@@ -26,14 +26,14 @@
 ***
 ## Verification of container images
 
-Argo CD container images are signed by [cosign](https://github.com/sigstore/cosign) using identity-based ("keyless") signing and transparency. Executing the following command can be used to verify the signature of a container image:
+Hanzo CD container images are signed by [cosign](https://github.com/sigstore/cosign) using identity-based ("keyless") signing and transparency. Executing the following command can be used to verify the signature of a container image:
 
 ```bash
 cosign verify \
---certificate-identity-regexp https://github.com/argoproj/argo-cd/.github/workflows/image-reuse.yaml@refs/tags/v \
+--certificate-identity-regexp https://github.com/hanzoai/cd/.github/workflows/image-reuse.yaml@refs/tags/v \
 --certificate-oidc-issuer https://token.actions.githubusercontent.com \
 --certificate-github-workflow-repository "argoproj/argo-cd" \
-quay.io/argoproj/argocd:v2.11.3 | jq
+quay.io/argoproj/cd:v2.11.3 | jq
 ```
 The command should output the following if the container image was correctly verified:
 ```bash
@@ -56,7 +56,7 @@ The following checks were performed on each of these signatures:
       "1.3.6.1.4.1.57264.1.1": "https://token.actions.githubusercontent.com",
       "1.3.6.1.4.1.57264.1.2": "push",
       "1.3.6.1.4.1.57264.1.3": "a6ec84da0eaa519cbd91a8f016cf4050c03323b2",
-      "1.3.6.1.4.1.57264.1.4": "Publish ArgoCD Release",
+      "1.3.6.1.4.1.57264.1.4": "Publish Hanzo CD Release",
       "1.3.6.1.4.1.57264.1.5": "argoproj/argo-cd",
       "1.3.6.1.4.1.57264.1.6": "refs/tags/<version>",
       ...
@@ -73,11 +73,11 @@ Run the following command as per the [slsa-verifier documentation](https://githu
 
 ```bash
 # Get the immutable container image to prevent TOCTOU attacks https://github.com/slsa-framework/slsa-verifier#toctou-attacks
-IMAGE=quay.io/argoproj/argocd:v2.7.0
+IMAGE=quay.io/argoproj/cd:v2.7.0
 IMAGE="${IMAGE}@"$(crane digest "${IMAGE}")
 # Verify provenance, including the tag to prevent rollback attacks.
 slsa-verifier verify-image "$IMAGE" \
-    --source-uri github.com/argoproj/argo-cd \
+    --source-uri github.com/hanzoai/cd \
     --source-tag v2.7.0
 ```
 
@@ -85,7 +85,7 @@ If you only want to verify up to the major or minor version of the source reposi
 
 ```shell
 slsa-verifier verify-image "$IMAGE" \
-    --source-uri github.com/argoproj/argo-cd \
+    --source-uri github.com/hanzoai/cd \
     --source-versioned-tag v2 # Note: May use v2.7 for minor version verification.
 ```
 
@@ -93,7 +93,7 @@ The attestation payload contains a non-forgeable provenance which is base64 enco
 
 ```bash
 slsa-verifier verify-image "$IMAGE" \
-    --source-uri github.com/argoproj/argo-cd \
+    --source-uri github.com/hanzoai/cd \
     --source-tag v2.7.0 \
     --print-provenance | jq
 ```
@@ -108,42 +108,42 @@ If you prefer using cosign, follow these [instructions](https://github.com/slsa-
 
 ## Verification of CLI artifacts with SLSA attestations
 
-A single attestation (`argocd-cli.intoto.jsonl`) from each release is provided. This can be used with [slsa-verifier](https://github.com/slsa-framework/slsa-verifier#verification-for-github-builders) to verify that a CLI binary was generated using Argo CD workflows on GitHub and ensures it was cryptographically signed.
+A single attestation (`cd-cli.intoto.jsonl`) from each release is provided. This can be used with [slsa-verifier](https://github.com/slsa-framework/slsa-verifier#verification-for-github-builders) to verify that a CLI binary was generated using Hanzo CD workflows on GitHub and ensures it was cryptographically signed.
 
 ```bash
-slsa-verifier verify-artifact argocd-linux-amd64 \
-  --provenance-path argocd-cli.intoto.jsonl \
-  --source-uri github.com/argoproj/argo-cd \
+slsa-verifier verify-artifact cd-linux-amd64 \
+  --provenance-path cd-cli.intoto.jsonl \
+  --source-uri github.com/hanzoai/cd \
   --source-tag v2.7.0
 ```
 
 If you only want to verify up to the major or minor version of the source repository tag (instead of the full tag), use the `--source-versioned-tag` which performs semantic versioning verification:
 
 ```shell
-slsa-verifier verify-artifact argocd-linux-amd64 \
-  --provenance-path argocd-cli.intoto.jsonl \
-  --source-uri github.com/argoproj/argo-cd \
+slsa-verifier verify-artifact cd-linux-amd64 \
+  --provenance-path cd-cli.intoto.jsonl \
+  --source-uri github.com/hanzoai/cd \
   --source-versioned-tag v2 # Note: May use v2.7 for minor version verification.
 ```
 
 The payload is a non-forgeable provenance which is base64 encoded and can be viewed by passing the `--print-provenance` option to the commands above:
 
 ```bash
-slsa-verifier verify-artifact argocd-linux-amd64 \
-  --provenance-path argocd-cli.intoto.jsonl \
-  --source-uri github.com/argoproj/argo-cd \
+slsa-verifier verify-artifact cd-linux-amd64 \
+  --provenance-path cd-cli.intoto.jsonl \
+  --source-uri github.com/hanzoai/cd \
   --source-tag v2.7.0 \
   --print-provenance | jq
 ```
 
 ## Verification of Sbom
 
-A single attestation (`argocd-sbom.intoto.jsonl`) from each release is provided along with the sbom (`sbom.tar.gz`). This can be used with [slsa-verifier](https://github.com/slsa-framework/slsa-verifier#verification-for-github-builders) to verify that the SBOM was generated using Argo CD workflows on GitHub and ensures it was cryptographically signed.
+A single attestation (`cd-sbom.intoto.jsonl`) from each release is provided along with the sbom (`sbom.tar.gz`). This can be used with [slsa-verifier](https://github.com/slsa-framework/slsa-verifier#verification-for-github-builders) to verify that the SBOM was generated using Hanzo CD workflows on GitHub and ensures it was cryptographically signed.
 
 ```bash
 slsa-verifier verify-artifact sbom.tar.gz \
-  --provenance-path argocd-sbom.intoto.jsonl \
-  --source-uri github.com/argoproj/argo-cd \
+  --provenance-path cd-sbom.intoto.jsonl \
+  --source-uri github.com/hanzoai/cd \
   --source-tag v2.7.0
 ```
 

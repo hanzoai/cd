@@ -6,13 +6,13 @@
 > This is an [alpha](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#alpha) feature.
 > The look, behavior, and APIs it consumes may change in future releases or be removed in backwards-incompatible ways.
 
-The Argo CD Web UI includes views for ApplicationSets, with a list page, a
+The Hanzo CD Web UI includes views for ApplicationSets, with a list page, a
 resource tree, a slide-out details panel, and a preview tab that lets you see
 what Applications an ApplicationSet will generate.
 
 ApplicationSets can also be managed outside the UI through:
 
-- The CLI - `kubectl` or the `argocd appset` command
+- The CLI - `kubectl` or the `cd appset` command
 - The generated child Applications, viewed individually in the UI
 - A parent App-of-Apps, if the ApplicationSet was one of its managed resources
 
@@ -23,7 +23,7 @@ existing Applications list and shares the same filtering, search, and
 view-preferences, so it should feel familiar.
 
 You can reach it from the top-level navigation, or directly at
-`https://<your-argocd>/applicationsets`.
+`https://<your-cd>/applicationsets`.
 
 ![ApplicationSets list page](../assets/applicationset/Web-UI/applicationsets-list.png)
 
@@ -44,7 +44,7 @@ What's on the page:
 > [!TIP]
 > The page shows ApplicationSets across every namespace your user has
 > access to. RBAC is enforced exactly as on the CLI — if you can `get` an
-> ApplicationSet from `argocd appset get`, you can see it here.
+> ApplicationSet from `cd appset get`, you can see it here.
 
 ## ApplicationSet resource tree
 
@@ -90,7 +90,7 @@ as **Degraded** or **Unknown**.
 
 Clicking the ApplicationSet node (or any node on the tree) opens a
 slide-out panel from the right edge of the screen — the same pattern used
-elsewhere in Argo CD for resource details.
+elsewhere in Hanzo CD for resource details.
 
 ### Summary
 
@@ -148,7 +148,7 @@ edits. Click **Cancel** to discard local edits.
 > [!IMPORTANT]
 > Edits in the Preview tab are **never saved**. The tab is a sandbox; to
 > persist a change you must update the ApplicationSet through your normal
-> GitOps flow (or via `kubectl apply` / `argocd appset create`).
+> GitOps flow (or via `kubectl apply` / `cd appset create`).
 
 ### Permission-denied behavior
 

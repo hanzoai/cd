@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: manual-apply-app
-    applications.argoproj.io/app-name: manual-apply-app
+    applications.apps.hanzo.ai/app-name: manual-apply-app
 spec:
   replicas: 1
   selector:

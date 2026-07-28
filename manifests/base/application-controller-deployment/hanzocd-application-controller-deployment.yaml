@@ -366,14 +366,14 @@ spec:
             - ALL
           seccompProfile:
             type: RuntimeDefault
-        workingDir: /home/argocd
+        workingDir: /home/cd
         volumeMounts:
         - name: hanzocd-repo-server-tls
           mountPath: /app/config/controller/tls
         - name: hanzocd-home
-          mountPath: /home/argocd
+          mountPath: /home/cd
         - name: hanzocd-cmd-params-cm
-          mountPath: /home/argocd/params
+          mountPath: /home/cd/params
       serviceAccountName: hanzocd-application-controller
       affinity:
         podAntiAffinity:

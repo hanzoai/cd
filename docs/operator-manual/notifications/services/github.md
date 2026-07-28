@@ -23,14 +23,14 @@ The GitHub notification service changes commit status using [GitHub Apps](https:
 1. Generate a private key, and download it automatically
    ![3](https://user-images.githubusercontent.com/18019529/108397926-d4a36300-725b-11eb-83fe-74795c8c3e03.png)
 1. Install app to account
-1. Store privateKey in `argocd-notifications-secret` Secret and configure GitHub integration
-   in `argocd-notifications-cm` ConfigMap
+1. Store privateKey in `cd-notifications-secret` Secret and configure GitHub integration
+   in `cd-notifications-cm` ConfigMap
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.github: |
     appID: <app-id>
@@ -53,11 +53,11 @@ stringData:
 6. Create subscription for your GitHub integration
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.<trigger-name>.github: ""
+    notifications.apps.hanzo.ai/subscribe.<trigger-name>.github: ""
 ```
 
 ## Templates
@@ -74,12 +74,12 @@ template.app-deployed: |
     status:
       state: success
       label: "continuous-delivery/{{.app.metadata.name}}"
-      targetURL: "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+      targetURL: "{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
     deployment:
       state: success
       environment: production
       environmentURL: "https://{{.app.metadata.name}}.example.com"
-      logURL: "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+      logURL: "{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
       requiredContexts: []
       autoMerge: true
       transientEnvironment: false
@@ -87,21 +87,21 @@ template.app-deployed: |
     pullRequestComment:
       content: |
         Application {{.app.metadata.name}} is now running new version of deployments manifests.
-        See more here: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true
+        See more here: {{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true
       commentTag: "continuous-delivery/{{.app.metadata.name}}"
     checkRun:
       name: "continuous-delivery/{{.app.metadata.name}}"
-      details_url: "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+      details_url: "{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
       status: completed
       conclusion: success
       started_at: "YYYY-MM-DDTHH:MM:SSZ"
       completed_at: "YYYY-MM-DDTHH:MM:SSZ"
       output:
-        title: "Deployment of {{.app.metadata.name}} on ArgoCD"
+        title: "Deployment of {{.app.metadata.name}} on Hanzo CD"
         summary: "Application {{.app.metadata.name}} is now running new version of deployments manifests."
         text: |
           Application {{.app.metadata.name}} is now running new version of deployments manifests.
-          See more here: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true
+          See more here: {{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true
 ```
 
 **Notes**:

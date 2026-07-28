@@ -60,7 +60,7 @@ type ManifestRequest struct {
 	ProjectSourceRepos []string `protobuf:"bytes,24,rep,name=projectSourceRepos,proto3" json:"projectSourceRepos,omitempty"`
 	// This is used to surface "source not permitted" errors for Helm repositories
 	ProjectName string `protobuf:"bytes,25,opt,name=projectName,proto3" json:"projectName,omitempty"`
-	// cd.argoproj.io/manifest-generate-paths annotation value of the Application to allow optimize which resources propagated to cmpserver
+	// cd.hanzo.ai/manifest-generate-paths annotation value of the Application to allow optimize which resources propagated to cmpserver
 	AnnotationManifestGeneratePaths string `protobuf:"bytes,26,opt,name=annotationManifestGeneratePaths,proto3" json:"annotationManifestGeneratePaths,omitempty"`
 	// Holds instance installation id
 	InstallationID string `protobuf:"bytes,27,opt,name=installationID,proto3" json:"installationID,omitempty"`

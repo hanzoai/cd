@@ -1,12 +1,12 @@
-The subscription to Argo CD application events can be defined using `notifications.argoproj.io/subscribe.<trigger>.<service>: <recipient>` annotation.
-For example, the following annotation subscribes two Slack channels to notifications about every successful synchronization of the Argo CD application:
+The subscription to Hanzo CD application events can be defined using `notifications.apps.hanzo.ai/subscribe.<trigger>.<service>: <recipient>` annotation.
+For example, the following annotation subscribes two Slack channels to notifications about every successful synchronization of the Hanzo CD application:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: my-channel1;my-channel2
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my-channel1;my-channel2
 ```
 
 Annotation key consists of following parts:
@@ -15,19 +15,19 @@ Annotation key consists of following parts:
 * `slack` - notification service name
 * `my-channel1;my-channel2` - a semicolon separated list of recipients
 
-You can create subscriptions for all applications of the Argo CD project by adding the same annotation to AppProject CRD:
+You can create subscriptions for all applications of the Hanzo CD project by adding the same annotation to AppProject CRD:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: my-channel1;my-channel2
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my-channel1;my-channel2
 ```
 
 ## Default Subscriptions
 
-The subscriptions might be configured globally in the `argocd-notifications-cm` ConfigMap using `subscriptions` field. The default subscriptions
+The subscriptions might be configured globally in the `cd-notifications-cm` ConfigMap using `subscriptions` field. The default subscriptions
 are applied to all applications. The trigger and applications might be configured using the
 `triggers` and `selector` fields:
 
@@ -35,7 +35,7 @@ are applied to all applications. The trigger and applications might be configure
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   # Contains centrally managed global application subscriptions
   subscriptions: |
@@ -59,7 +59,7 @@ If you want to use webhook in subscriptions, you need to store the custom name t
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.webhook.<webhook-name>: |
     (snip)

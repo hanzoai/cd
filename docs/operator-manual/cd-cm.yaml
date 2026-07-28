@@ -1,29 +1,29 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
-  # Argo CD's externally facing base URL (optional). Required when configuring SSO
-  url: https://argo-cd-demo.argoproj.io
+  # Hanzo CD's externally facing base URL (optional). Required when configuring SSO
+  url: https://argo-cd-demo.apps.hanzo.ai
 
   # Additional externally facing base URLs (optional)
   additionalUrls: |
-    - https://argo-cd-demo2.argoproj.io
+    - https://argo-cd-demo2.apps.hanzo.ai
 
   # Enables application status badge feature
   statusbadge.enabled: "true"
 
-  # Override the Argo CD hostname root URL for both the project and the application status badges.
+  # Override the Hanzo CD hostname root URL for both the project and the application status badges.
   # Here is an example of the application status badge for the app `myapp` to see what is replaced.
   #    <statusbadge.url>api/badge?name=myapp&revision=true
   # Provide custom URL to override. You must include the trailing forward slash:
-  statusbadge.url: "https://cd-status.apps.argoproj.io/"
+  statusbadge.url: "https://cd-status.apps.apps.hanzo.ai/"
 
-  # Enables anonymous user access. The anonymous users get default role permissions specified argocd-rbac-cm.yaml.
+  # Enables anonymous user access. The anonymous users get default role permissions specified cd-rbac-cm.yaml.
   users.anonymous.enabled: "true"
   # Specifies token expiration duration
   users.session.duration: "24h"
@@ -40,7 +40,7 @@ data:
   help.chatUrl: "https://mycorp.slack.com/argo-cd"
   # the text for getting chat help, defaults to "Chat now!"
   help.chatText: "Chat now!"
-  # The URLs to download additional ArgoCD binaries (besides the Linux with current platform binary included by default)
+  # The URLs to download additional Hanzo CD binaries (besides the Linux with current platform binary included by default)
   # for different OS architectures. If provided, additional download buttons will be displayed on the help page.
   help.download.linux-amd64: "path-or-url-to-download"
   help.download.linux-arm64: "path-or-url-to-download"
@@ -51,7 +51,7 @@ data:
   help.download.windows-amd64: "path-or-url-to-download"
 
   # A dex connector configuration (optional). See SSO configuration documentation:
-  # https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/user-management/index.md#sso
+  # https://github.com/hanzoai/cd/blob/master/docs/operator-manual/user-management/index.md#sso
   # https://dexidp.io/docs/connectors/
   dex.config: |
     connectors:
@@ -116,7 +116,7 @@ data:
     - /metadata/resourceVersion
 
   # Configuration to define customizations ignoring differences during watched resource updates can be configured via split sub key.
-  resource.customizations.ignoreResourceUpdates.argoproj.io_Application: |
+  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
     jsonPointers:
     - /status
 
@@ -272,15 +272,15 @@ data:
   # Change to empty value if you want to disable remote values files altogether.
   helm.valuesFileSchemes: http, https
 
-  # The metadata.label key name where Argo CD injects the app name as a tracking label (optional).
+  # The metadata.label key name where Hanzo CD injects the app name as a tracking label (optional).
   # Tracking labels are used to determine which resources need to be deleted when pruning.
-  # If omitted, Argo CD injects the app name into the label: 'app.kubernetes.io/instance'
+  # If omitted, Hanzo CD injects the app name into the label: 'app.kubernetes.io/instance'
   application.instanceLabelKey: mycompany.com/appname
 
   # An optional comma-separated list of node labels to propagate to the application pod view.
   application.allowedNodeLabels: topology.kubernetes.io/zone,node.kubernetes.io/instance-type
 
-  # You can change the resource tracking method Argo CD uses by changing the
+  # You can change the resource tracking method Hanzo CD uses by changing the
   # setting application.resourceTrackingMethod to the desired method.
   # The following methods are available:
   # - annotation       : Uses an annotation with additional metadata for tracking instead of the label
@@ -288,7 +288,7 @@ data:
   # - label            : Uses the application.instanceLabelKey label for tracking
   application.resourceTrackingMethod: annotation
 
-  # Optional installation id. Allows to have multiple installations of Argo CD in the same cluster.
+  # Optional installation id. Allows to have multiple installations of Hanzo CD in the same cluster.
   installationID: "my-unique-id"
 
   # disables admin user. Admin is enabled by default
@@ -302,7 +302,7 @@ data:
 
   # The location of optional user-defined CSS that is loaded at runtime.
   # Local CSS Files:
-  # - If the supplied path is to a file mounted on the argocd-server container, that file should be mounted
+  # - If the supplied path is to a file mounted on the cd-server container, that file should be mounted
   #   within a subdirectory of the existing "/shared/app" directory (e.g. "/shared/app/custom").  Otherwise,
   #   the file will likely fail to be imported by the browser with an "incorrect MIME type" error.
   # - The path should be specified relative to the "/shared/app" directory; not as an absolute path.
@@ -333,13 +333,13 @@ data:
 
   # Application reconciliation timeout is the amount of time spent before Argo tries to discover if a new manifests version got
   # published to the repository. Reconciliation by timeout is disabled if timeout is set to 0. Two minutes by default with additional jitter.
-  # For the argocd-repo-server this setting defines the expiration
+  # For the cd-repo-server this setting defines the expiration
   # value for cached git revisions.
   # When set to 0, the cache expiration value will be taken from the
   # --default-cache-expiration parameter, which is 24 hours by
   # default, unless another value is set using the
   # CD_DEFAULT_CACHE_EXPIRATION variable).
-  # > Note: The argocd-repo-server deployment and the argocd-application-controller statefulset (or deployment, if
+  # > Note: The cd-repo-server deployment and the cd-application-controller statefulset (or deployment, if
   # configured) must be manually restarted after changing the setting.
   timeout.reconciliation: 120s
 
@@ -383,7 +383,7 @@ data:
   # understand the risks.
   oidc.tls.insecure.skip.verify: "false"
 
-  # Add Deep Links to ArgoCD UI
+  # Add Deep Links to Hanzo CD UI
   # sample project level links
   project.links: |
     - url: https://myaudit-system.com?project={{.metadata.name}}
@@ -469,8 +469,8 @@ data:
 
   ### SourceHydrator commit author name (optional).
   # Configures the author name for commits created by the Source Hydrator.
-  # If not specified, defaults to "Argo CD".
-  commit.author.name: "Argo CD"
+  # If not specified, defaults to "Hanzo CD".
+  commit.author.name: "Hanzo CD"
 
   ### SourceHydrator commit author email (optional).
   # Configures the author email for commits created by the Source Hydrator.

@@ -312,14 +312,14 @@ data:
 kind: Secret
 metadata:
   labels:
-    cd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
   name: some-secret
   namespace: ` + test.FakeArgoCDNamespace + `
 type: Opaque
 `
 
 var fakeApp = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   uid: "123"
@@ -360,7 +360,7 @@ status:
 `
 
 var fakeMultiSourceApp = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   uid: "123"
@@ -421,7 +421,7 @@ status:
 `
 
 var fakeAppWithDestName = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   uid: "123"
@@ -440,7 +440,7 @@ spec:
 `
 
 var fakeAppWithDestMismatch = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   uid: "123"
@@ -481,7 +481,7 @@ var fakePreDeleteHook = `
       "app.kubernetes.io/instance": "my-app"
     },
     "annotations": {
-      "cd.argoproj.io/hook": "PreDelete"
+      "cd.hanzo.ai/hook": "PreDelete"
     }
   },
   "spec": {
@@ -512,8 +512,8 @@ var fakePostDeleteHook = `
       "app.kubernetes.io/instance": "my-app"
     },
     "annotations": {
-      "cd.argoproj.io/hook": "PostDelete",
-      "cd.argoproj.io/hook-delete-policy": "HookSucceeded"
+      "cd.hanzo.ai/hook": "PostDelete",
+      "cd.hanzo.ai/hook-delete-policy": "HookSucceeded"
     }
   },
   "spec": {
@@ -548,8 +548,8 @@ var fakeServiceAccount = `
     "name": "hook-serviceaccount",
     "namespace": "default",
     "annotations": {
-      "cd.argoproj.io/hook": "PostDelete",
-      "cd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "cd.hanzo.ai/hook": "PostDelete",
+      "cd.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   }
 }
@@ -563,8 +563,8 @@ var fakeRole = `
     "name": "hook-role",
     "namespace": "default",
     "annotations": {
-      "cd.argoproj.io/hook": "PostDelete",
-      "cd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "cd.hanzo.ai/hook": "PostDelete",
+      "cd.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   },
   "rules": [
@@ -585,8 +585,8 @@ var fakeRoleBinding = `
     "name": "hook-rolebinding",
     "namespace": "default",
     "annotations": {
-      "cd.argoproj.io/hook": "PostDelete",
-      "cd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "cd.hanzo.ai/hook": "PostDelete",
+      "cd.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   },
   "roleRef": {
@@ -2889,7 +2889,7 @@ func TestProcessRequestedAppOperation_FailedNoRetries(t *testing.T) {
 	phase, _, _ := unstructured.NestedString(receivedPatch, "status", "operationState", "phase")
 	message, _, _ := unstructured.NestedString(receivedPatch, "status", "operationState", "message")
 	assert.Equal(t, string(synccommon.OperationError), phase)
-	assert.Equal(t, "Failed to load application project: error getting app project \"default\": appproject.argoproj.io \"default\" not found", message)
+	assert.Equal(t, "Failed to load application project: error getting app project \"default\": appproject.apps.hanzo.ai \"default\" not found", message)
 }
 
 func TestProcessRequestedAppOperation_InvalidDestination(t *testing.T) {
@@ -2946,7 +2946,7 @@ func TestProcessRequestedAppOperation_FailedHasRetries(t *testing.T) {
 	message, _, _ := unstructured.NestedString(receivedPatch, "status", "operationState", "message")
 	retryCount, _, _ := unstructured.NestedFloat64(receivedPatch, "status", "operationState", "retryCount")
 	assert.Equal(t, string(synccommon.OperationRunning), phase)
-	assert.Contains(t, message, "Failed to load application project: error getting app project \"invalid-project\": appproject.argoproj.io \"invalid-project\" not found. Retrying attempt #1")
+	assert.Contains(t, message, "Failed to load application project: error getting app project \"invalid-project\": appproject.apps.hanzo.ai \"invalid-project\" not found. Retrying attempt #1")
 	assert.InEpsilon(t, float64(1), retryCount, 0.0001)
 }
 
@@ -3687,7 +3687,7 @@ func Test_syncDeleteOption(t *testing.T) {
 	})
 	t.Run("with delete set to false object is retained", func(t *testing.T) {
 		cmObj := kube.MustToUnstructured(&cm)
-		cmObj.SetAnnotations(map[string]string{"cd.argoproj.io/sync-options": "Delete=false"})
+		cmObj.SetAnnotations(map[string]string{"cd.hanzo.ai/sync-options": "Delete=false"})
 		assert.False(t, ctrl.shouldBeDeleted(app, cmObj))
 	})
 	t.Run("with delete set to false object is retained", func(t *testing.T) {
@@ -3707,7 +3707,7 @@ func Test_syncDeleteOption(t *testing.T) {
 		newApp := app.DeepCopy()
 		newApp.Spec.SyncPolicy.SyncOptions = []string{"Delete=false"}
 		cmObj := kube.MustToUnstructured(&cm)
-		cmObj.SetAnnotations(map[string]string{"cd.argoproj.io/sync-options": "Delete=foo"})
+		cmObj.SetAnnotations(map[string]string{"cd.hanzo.ai/sync-options": "Delete=foo"})
 		assert.True(t, ctrl.shouldBeDeleted(newApp, cmObj))
 	})
 }

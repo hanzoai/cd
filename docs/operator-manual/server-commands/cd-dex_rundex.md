@@ -1,11 +1,11 @@
-# `argocd-dex rundex` Command Reference
+# `cd-dex rundex` Command Reference
 
-## argocd-dex rundex
+## cd-dex rundex
 
-Runs dex generating a config using settings from the Argo CD configmap and secret
+Runs dex generating a config using settings from the Hanzo CD configmap and secret
 
 ```
-argocd-dex rundex [flags]
+cd-dex rundex [flags]
 ```
 
 ### Options
@@ -39,5 +39,5 @@ argocd-dex rundex [flags]
 
 ### SEE ALSO
 
-* [argocd-dex](argocd-dex.md)	 - argocd-dex tools used by Argo CD
+* [cd-dex](cd-dex.md)	 - cd-dex tools used by Hanzo CD
 

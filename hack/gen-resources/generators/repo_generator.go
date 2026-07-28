@@ -94,10 +94,10 @@ func (rg *RepoGenerator) Generate(opts *util.GenerateOpts) error {
 				Namespace:    opts.Namespace,
 				Labels: map[string]string{
 					"app.kubernetes.io/generated-by": "cd-generator",
-					"cd.argoproj.io/secret-type": "repository",
+					"cd.hanzo.ai/secret-type": "repository",
 				},
 				Annotations: map[string]string{
-					"managed-by": "cd.argoproj.io",
+					"managed-by": "cd.hanzo.ai",
 				},
 			},
 			Data: map[string][]byte{

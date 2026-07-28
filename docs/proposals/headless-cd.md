@@ -17,7 +17,7 @@ last-updated: 2020-05-01
 
 # Neat Enhancement Idea
 
-Support "disabling" multi-tenancy features by introducing Headless Argo CD.
+Support "disabling" multi-tenancy features by introducing Headless Hanzo CD.
 
 ## Summary
 
@@ -26,77 +26,77 @@ There are two main group of GitOps users:
 * Application developers - engineers who leverages Kubernetes to run applications.
 * Cluster administrators - engineers who manage and support Kubernetes clusters for the organization.
 
-Argo CD is a perfect fit for application developers thanks to its multi-tenancy features. Instead of running a separate Argo CD instance for
+Hanzo CD is a perfect fit for application developers thanks to its multi-tenancy features. Instead of running a separate Hanzo CD instance for
 each team, it is possible to run on the instance and leverage features like SSO, RBAC, and Web user interface. However, this is not the case
-for cluster administrators. Administrators prefer to rely on Kubernetes RBAC and view SSO and Argo CD RBAC as an obstacle and security threat.
+for cluster administrators. Administrators prefer to rely on Kubernetes RBAC and view SSO and Hanzo CD RBAC as an obstacle and security threat.
 SSO, RBAC, and UI/API are totally optional and can be disabled but it requires additional configuration and learning.
 
 ## Motivation
 
-It is proposed to introduce officially supported **Headless Argo CD** that encapsulates changes required to disable multi-tenancy features
+It is proposed to introduce officially supported **Headless Hanzo CD** that encapsulates changes required to disable multi-tenancy features
 and provide a seamless experience for cluster administrators (or any other user who don't need multi-tenancy).
 
 ### Goals
 
-The goals of "Headless Argo CD" are:
+The goals of "Headless Hanzo CD" are:
 
-#### Provide an easy way to deploy Argo CD without API/UI
+#### Provide an easy way to deploy Hanzo CD without API/UI
 
 The end-user should be able to install required components using a single `kubectl apply` command without following any additional instructions.
 
-#### Provide an easy way to use and manage Headless Argo CD
+#### Provide an easy way to use and manage Headless Hanzo CD
 
-The `Headless Argo CD` should provide a simple way to view and manage Argo CD applications using CLI/UI. The access control should be enforced by
+The `Headless Hanzo CD` should provide a simple way to view and manage Hanzo CD applications using CLI/UI. The access control should be enforced by
 Kubernetes RBAC only.
 
-#### Easy transition from Headless to non-Headless Argo CD
+#### Easy transition from Headless to non-Headless Hanzo CD
 
-It is a common case when the Argo CD adopter wants to start small and then expand Argo CD to the whole organization. It should be easy
-to "upgrade" headless to full Argo CD installation.
+It is a common case when the Hanzo CD adopter wants to start small and then expand Hanzo CD to the whole organization. It should be easy
+to "upgrade" headless to full Hanzo CD installation.
 
 ### Non-Goals
 
-#### Not modified Argo CD
+#### Not modified Hanzo CD
 
-The `Headless Argo CD` is not modified Argo CD. It is Argo CD distribution that missing UI/API and CLI that provides commands for Argo CD admin.
+The `Headless Hanzo CD` is not modified Hanzo CD. It is Hanzo CD distribution that missing UI/API and CLI that provides commands for Hanzo CD admin.
 
 #### Not deprecating existing operational methods
 
-The `Headless Argo CD` is not intended to deprecate any of the existing operational methods.
+The `Headless Hanzo CD` is not intended to deprecate any of the existing operational methods.
 
 ## Proposal
 
 #### Headless Installation Manifests
 
-In order to simplify installation of Argo CD without API we need to introduce `headless/install.yaml` in the `manifests` directory.
+In order to simplify installation of Hanzo CD without API we need to introduce `headless/install.yaml` in the `manifests` directory.
 The installation manifests should include only non HA controller, repo-server, Redis components, and RBAC.
 
 #### Headless CLI
 
-Without the API server, users won't be able to take advantage of Argo CD UI and `argocd` CLI so the user experience won't be complete. To fill that gap
-we need to change the `argocd` CLI that and support talking directly to Kubernetes without requiring Argo CD API Server. The [argo-cd#6361](https://github.com/argoproj/argo-cd/pull/6361)
+Without the API server, users won't be able to take advantage of Hanzo CD UI and `cd` CLI so the user experience won't be complete. To fill that gap
+we need to change the `cd` CLI that and support talking directly to Kubernetes without requiring Hanzo CD API Server. The [argo-cd#6361](https://github.com/hanzoai/cd/pull/6361)
 demonstrates required changes:
 
-* Adds `--headless` flag to `argocd` commands
-* If the `--headless` flag is set to true then pre-run function that starts "local" Argo CD API server and points CLI to locally running instance
+* Adds `--headless` flag to `cd` commands
+* If the `--headless` flag is set to true then pre-run function that starts "local" Hanzo CD API server and points CLI to locally running instance
 * Finally on-demand port-forwards to Redis and repo server.
 
-The user should be able to store `--headless` flag in config in order to avoid specifying the flag for every command. It is proposed to use `argocd login --headless` to generate
+The user should be able to store `--headless` flag in config in order to avoid specifying the flag for every command. It is proposed to use `cd login --headless` to generate
 "headless" config.
 
 #### Local UI
 
-In addition to exposing CLI commands the PR introduces `argocd admin dashboard` command. The new command starts API server locally and exposes Argo CD UI locally.
-In order to make this possible the static assets have been embedded into Argo CD binary.
+In addition to exposing CLI commands the PR introduces `cd admin dashboard` command. The new command starts API server locally and exposes Hanzo CD UI locally.
+In order to make this possible the static assets have been embedded into Hanzo CD binary.
 
-### Merge Argo CD Util
+### Merge Hanzo CD Util
 
-The potential users of "headless" mode will benefit from `argocd-util` commands. The experience won't be smooth since they will need to switch back and forth
-between `argocd` and `argocd-util`. Given that we still have not finalized how users are supposed to get `argocd-util` binary (https://github.com/argoproj/argo-cd/issues/5307)
-it is proposed to deprecate `argocd-util` and merge in into `argocd` CLI under admin subcommand:
+The potential users of "headless" mode will benefit from `cd-util` commands. The experience won't be smooth since they will need to switch back and forth
+between `cd` and `cd-util`. Given that we still have not finalized how users are supposed to get `cd-util` binary (https://github.com/argoproj/argo-cd/issues/5307)
+it is proposed to deprecate `cd-util` and merge in into `cd` CLI under admin subcommand:
 
 ```
-argocd admin app generate-spec guestbook --repo https://github.com/argoproj/argocd-example-apps
+cd admin app generate-spec guestbook --repo https://github.com/argoproj/argocd-example-apps
 ```
 
 ### Use cases
@@ -105,15 +105,15 @@ Add a list of detailed use cases this enhancement intends to take care of.
 
 ## Use case 1:
 
-As an Argo CD administrator, I would like to manage cluster resources using Argo CD without exposing API/UI outside of the cluster.
+As an Hanzo CD administrator, I would like to manage cluster resources using Hanzo CD without exposing API/UI outside of the cluster.
 
 ## Use case 2:
 
-As an Argo CD administrator, I would like to use Argo CD CLI commands and user interface to manage Argo CD applications/settings using only `kubeconf` file and without Argo CD API access.
+As an Hanzo CD administrator, I would like to use Hanzo CD CLI commands and user interface to manage Hanzo CD applications/settings using only `kubeconf` file and without Hanzo CD API access.
 
 ### Security Considerations
 
-The Headless CLI/UI disables built-in Argo CD authentication and relies only on Kubernetes RBAC. So if the user will be able to make the same change using Headless CLI as using kubectl.
+The Headless CLI/UI disables built-in Hanzo CD authentication and relies only on Kubernetes RBAC. So if the user will be able to make the same change using Headless CLI as using kubectl.
 
 ### Risks and Mitigations
 
@@ -121,7 +121,7 @@ TBD
 
 ### Upgrade / Downgrade Strategy
 
-Switching to and from Argo CD Headless does not modify any persistent data or settings. So upgrade/downgrade should be seamless by just applying the right manifest file.
+Switching to and from Hanzo CD Headless does not modify any persistent data or settings. So upgrade/downgrade should be seamless by just applying the right manifest file.
 
 ## Drawbacks
 
@@ -129,4 +129,4 @@ Switching to and from Argo CD Headless does not modify any persistent data or se
 
 ## Alternatives
 
-* Re-invent GitOps Agent CLI experience and don't re-use Argo CD.
+* Re-invent GitOps Agent CLI experience and don't re-use Hanzo CD.

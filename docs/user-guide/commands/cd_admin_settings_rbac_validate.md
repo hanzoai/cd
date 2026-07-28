@@ -1,6 +1,6 @@
-# `argocd admin settings rbac validate` Command Reference
+# `cd admin settings rbac validate` Command Reference
 
-## argocd admin settings rbac validate
+## cd admin settings rbac validate
 
 Validate RBAC policy
 
@@ -12,7 +12,7 @@ a local file or a K8s ConfigMap in the provided namespace, and in either CSV or 
 
 
 ```
-argocd admin settings rbac validate [--policy-file POLICYFILE] [--namespace NAMESPACE] [flags]
+cd admin settings rbac validate [--policy-file POLICYFILE] [--namespace NAMESPACE] [flags]
 ```
 
 ### Examples
@@ -20,15 +20,15 @@ argocd admin settings rbac validate [--policy-file POLICYFILE] [--namespace NAME
 ```
 
 # Check whether a given policy file is valid using a local policy.csv file.
-argocd admin settings rbac validate --policy-file policy.csv
+cd admin settings rbac validate --policy-file policy.csv
 
-# Policy file can also be K8s config map with data keys like argocd-rbac-cm,
+# Policy file can also be K8s config map with data keys like cd-rbac-cm,
 # i.e. 'policy.csv' and (optionally) 'policy.default'
-argocd admin settings rbac validate --policy-file argocd-rbac-cm.yaml
+cd admin settings rbac validate --policy-file cd-rbac-cm.yaml
 
-# If --policy-file is not given, and instead --namespace is giventhe ConfigMap 'argocd-rbac-cm'
+# If --policy-file is not given, and instead --namespace is giventhe ConfigMap 'cd-rbac-cm'
 # from K8s is used.
-argocd admin settings rbac validate --namespace argocd
+cd admin settings rbac validate --namespace cd
 
 # Either --policy-file or --namespace must be given.
 
@@ -64,37 +64,37 @@ argocd admin settings rbac validate --namespace argocd
 ### Options inherited from parent commands
 
 ```
-      --argocd-cm-path string           Path to local argocd-cm.yaml file
-      --argocd-context string           The name of the Argo-CD server context to use
-      --argocd-secret-path string       Path to local argocd-secret.yaml file
+      --cd-cm-path string           Path to local cd-cm.yaml file
+      --cd-context string           The name of the Hanzo CD server context to use
+      --cd-secret-path string       Path to local cd-secret.yaml file
       --auth-token string               Authentication token; set this or the CD_AUTH_TOKEN environment variable
       --client-crt string               Client certificate file
       --client-crt-key string           Client certificate key file
-      --config string                   Path to Argo CD config (default "/home/user/.config/argocd/config")
-      --controller-name string          Name of the Argo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "argocd-application-controller")
-      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Argo CD API server
-      --grpc-web                        Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2.
-      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2. Set web root.
-  -H, --header strings                  Sets additional header to all requests made by Argo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
-      --http-retry-max int              Maximum number of retries to establish http connection to Argo CD server
+      --config string                   Path to Hanzo CD config (default "/home/user/.config/cd/config")
+      --controller-name string          Name of the Hanzo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "cd-application-controller")
+      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Hanzo CD API server
+      --grpc-web                        Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2.
+      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2. Set web root.
+  -H, --header strings                  Sets additional header to all requests made by Hanzo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
+      --http-retry-max int              Maximum number of retries to establish http connection to Hanzo CD server
       --insecure                        Skip server certificate and domain verification
       --kube-context string             Directs the command to the given kube-context
       --load-cluster-settings           Indicates that config map and secret should be loaded from cluster unless local file path is provided
       --logformat string                Set the logging format. One of: json|text (default "json")
       --loglevel string                 Set the logging level. One of: debug|info|warn|error (default "info")
       --plaintext                       Disable TLS
-      --port-forward                    Connect to a random argocd-server port using port forwarding
+      --port-forward                    Connect to a random cd-server port using port forwarding
       --port-forward-namespace string   Namespace name which should be used for port forwarding
       --prompts-enabled                 Force optional interactive prompts to be enabled or disabled, overriding local configuration. If not specified, the local configuration value will be used, which is false by default.
       --redis-compress string           Enable this if the application controller is configured with redis compression enabled. (possible values: gzip, none) (default "gzip")
-      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis-ha-haproxy")
-      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis")
-      --repo-server-name string         Name of the Argo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-repo-server")
+      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "cd-redis-ha-haproxy")
+      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "cd-redis")
+      --repo-server-name string         Name of the Hanzo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-repo-server")
       --server-crt string               Server certificate file
-      --server-name string              Name of the Argo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-server")
+      --server-name string              Name of the Hanzo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-server")
 ```
 
 ### SEE ALSO
 
-* [argocd admin settings rbac](argocd_admin_settings_rbac.md)	 - Validate and test RBAC configuration
+* [cd admin settings rbac](cd_admin_settings_rbac.md)	 - Validate and test RBAC configuration
 

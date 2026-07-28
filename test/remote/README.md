@@ -1,44 +1,44 @@
 # End-to-end tests against a real cluster
 
 Using the tools in this directory, you can run the End-to-End test suite against
-a real Argo CD workload, that is deployed to a K8s cluster, instead of running
-it against a locally running Argo CD.
+a real Hanzo CD workload, that is deployed to a K8s cluster, instead of running
+it against a locally running Hanzo CD.
 
 Since e2e tests are destructive, do **not** run it against an installation that
 you depend on.
 
 ## Preparations
 
-### Install the Argo CD you want to test
+### Install the Hanzo CD you want to test
 
-It is recommended to install in the `argocd-e2e` namespace:
+It is recommended to install in the `cd-e2e` namespace:
 
 ```shell
-kubectl create ns argocd-e2e
-kubectl -n argocd-e2e apply -f <your Argo CD installation manifests>
+kubectl create ns cd-e2e
+kubectl -n cd-e2e apply -f <your Hanzo CD installation manifests>
 ```
 
-If you're going to install Argo CD using either Argo CD Operator or OpenShift GitOps Operator, you can use this manifest to install the Argo CD instance into your namespace:
+If you're going to install Hanzo CD using either Hanzo CD Operator or OpenShift GitOps Operator, you can use this manifest to install the Hanzo CD instance into your namespace:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: ArgoCD
+apiVersion: apps.hanzo.ai/v1alpha1
+kind: Hanzo CD
 metadata:
-  name: argocd-test
-  namespace: argocd-e2e
+  name: cd-test
+  namespace: cd-e2e
 spec:
   server:
     route:
       enabled: true
 ```
 
-### Give the Argo CD the appropriate RBAC permissions
+### Give the Hanzo CD the appropriate RBAC permissions
 
 ```shell
 # If you installed to a different namespace, set accordingly
-export NAMESPACE=argocd-e2e
-# If you installed Argo CD via Operator, set accordingly
-# export CD_E2E_NAME_PREFIX=argocd-cluster
+export NAMESPACE=cd-e2e
+# If you installed Hanzo CD via Operator, set accordingly
+# export CD_E2E_NAME_PREFIX=cd-cluster
 ./test/remote/generate-permissions.sh | kubectl apply -f -
 ```
 
@@ -47,7 +47,7 @@ export NAMESPACE=argocd-e2e
 You will need to build & publish a container image that will hold the required
 testing repositories.
 
-This container image will be named `argocd-e2e-cluster`, so you will need to
+This container image will be named `cd-e2e-cluster`, so you will need to
 setup a corresponding repository for it in your registry as well.
 
 To build it, run the following. Note that kustomize is required:
@@ -76,19 +76,19 @@ to some processes running as root (this may change some day...).
 On OpenShift, you will likely need to allow privileged operations:
 
 ```shell
-oc -n argocd-e2e adm policy add-scc-to-user privileged -z default
+oc -n cd-e2e adm policy add-scc-to-user privileged -z default
 ```
 
 Then, apply the manifests for the E2E repositories workload:
 
 ```shell
-kubectl -n argocd-e2e apply -f /tmp/e2e-repositories.yaml
+kubectl -n cd-e2e apply -f /tmp/e2e-repositories.yaml
 ```
 
 Verify that the deployment was successful:
 
 ```shell
-kubectl -n argocd-e2e rollout status deployment argocd-e2e-cluster
+kubectl -n cd-e2e rollout status deployment cd-e2e-cluster
 ```
 
 ## Start the tests
@@ -98,23 +98,23 @@ kubectl -n argocd-e2e rollout status deployment argocd-e2e-cluster
 In another shell, port forward the repository to your local machine:
 
 ```shell
-kubectl -n argocd-e2e port-forward service/argocd-e2e-server 9081:9081
+kubectl -n cd-e2e port-forward service/cd-e2e-server 9081:9081
 ```
 
 ### On local cluster (e.g. K3s, microk8s, minishift)
 
-Set the server endpoint of the Argo CD API. If you are running on the same host
+Set the server endpoint of the Hanzo CD API. If you are running on the same host
 as the cluster, or the cluster IPs are routed to your host, you can use the
 following:
 
 ```shell
-export CD_SERVER=$(kubectl -n argocd-e2e get svc argocd-server -o jsonpath='{.spec.clusterIP}')
+export CD_SERVER=$(kubectl -n cd-e2e get svc cd-server -o jsonpath='{.spec.clusterIP}')
 ```
 
 Set the admin password to use:
 
 ```shell
-export CD_E2E_ADMIN_PASSWORD=$(kubectl -n argocd-e2e get secrets argocd-initial-admin-secret -o jsonpath='{.data.password}'|base64 -d)
+export CD_E2E_ADMIN_PASSWORD=$(kubectl -n cd-e2e get secrets cd-initial-admin-secret -o jsonpath='{.data.password}'|base64 -d)
 ```
 
 Run the tests
@@ -128,10 +128,10 @@ Run the tests
 In another shell, do a port-forward to the API server's service:
 
 ```shell
-kubectl -n argocd-e2e port-forward svc/argocd-server 4443:443
+kubectl -n cd-e2e port-forward svc/cd-server 4443:443
 ```
 
-Set Argo CD Server port:
+Set Hanzo CD Server port:
 
 ```shell
 export CD_SERVER=127.0.0.1:4443
@@ -140,7 +140,7 @@ export CD_SERVER=127.0.0.1:4443
 Set the admin password to use:
 
 ```shell
-export CD_E2E_ADMIN_PASSWORD=$(kubectl -n argocd-e2e get secrets argocd-initial-admin-secret -o jsonpath='{.data.password}'|base64 -d)
+export CD_E2E_ADMIN_PASSWORD=$(kubectl -n cd-e2e get secrets cd-initial-admin-secret -o jsonpath='{.data.password}'|base64 -d)
 ```
 
 Run the tests
@@ -151,29 +151,29 @@ Run the tests
 
 ### On remote OpenShift cluster
 
-You should first scale down Argo CD Operator, since it will revert changes made
+You should first scale down Hanzo CD Operator, since it will revert changes made
 during the tests instantly:
 
 ```shell
-oc -n openshift-operators scale deployment --replicas=0 argocd-operator
+oc -n openshift-operators scale deployment --replicas=0 cd-operator
 ```
 
 Set the endpoint by using the route created by the operator:
 
 ```shell
-export CD_SERVER=$(oc -n argocd-e2e get routes argocd-test-server -o jsonpath='{.spec.host}')
+export CD_SERVER=$(oc -n cd-e2e get routes cd-test-server -o jsonpath='{.spec.host}')
 ```
 
 Set the admin password, created by the operator:
 
 ```shell
-export CD_E2E_ADMIN_PASSWORD=$(oc -n argocd-e2e get secrets argocd-test-cluster -o jsonpath='{.data.admin\.password}' | base64 -d)
+export CD_E2E_ADMIN_PASSWORD=$(oc -n cd-e2e get secrets cd-test-cluster -o jsonpath='{.data.admin\.password}' | base64 -d)
 ```
 
-Set the name of the Argo CD instance as installed by the operator (below example assumes operand name of `argocd-test`):
+Set the name of the Hanzo CD instance as installed by the operator (below example assumes operand name of `cd-test`):
 
 ```shell
-export CD_E2E_NAME_PREFIX=argocd-test
+export CD_E2E_NAME_PREFIX=cd-test
 ```
 
 Run the tests with currently known failing tests disabled:
@@ -189,7 +189,7 @@ This should be run in the same shell where you set `CD_SERVER` and `CD_E2E_ADMIN
 1. Run the `go test` command through the wrapper, e.g. to run a test named `MyTestName`:
 
    ```
-   $ ./test/remote/run-e2e-remote.sh go test -v github.com/argoproj/argo-cd/test/e2e -run ^MyTestName$^
+   $ ./test/remote/run-e2e-remote.sh go test -v github.com/hanzoai/cd/test/e2e -run ^MyTestName$^
    ```
 
 
@@ -197,12 +197,12 @@ This should be run in the same shell where you set `CD_SERVER` and `CD_E2E_ADMIN
 
 Some environment variables can control the behavior of the tests:
 
-* `CD_SERVER` - the remote endpoint of the Argo CD API server to use for tests
+* `CD_SERVER` - the remote endpoint of the Hanzo CD API server to use for tests
 * `CD_E2E_ADMIN_PASSWORD` - the admin user's password to use
 * `CD_E2E_TEST_TIMEOUT` - timeout for the complete test suite, specified as duration (e.g. `2h` or `1h30m`)
 * `CD_E2E_DEFAULT_TIMEOUT` - timeout in seconds for each context operation (e.g. sync). Default `30`.
-* `CD_E2E_NAMESPACE` - the namespace where Argo CD is running in for the tests
-* `CD_E2E_NAME_PREFIX` - if your Argo CD installation has a name prefix (e.g. installed by the Operator), specify it here
+* `CD_E2E_NAMESPACE` - the namespace where Hanzo CD is running in for the tests
+* `CD_E2E_NAME_PREFIX` - if your Hanzo CD installation has a name prefix (e.g. installed by the Operator), specify it here
 
 Furthermore, you can skip various classes of tests by setting the following to true:
 
@@ -229,10 +229,10 @@ If the tests fail, just re-run above command. All tests that have been previousl
 
 ## Tear down
 
-1. Remove argocd-e2e namespace
+1. Remove cd-e2e namespace
 
    ```
-   $ kubectl delete ns argocd-e2e
+   $ kubectl delete ns cd-e2e
    ```
 
 
@@ -246,6 +246,6 @@ If the tests fail, just re-run above command. All tests that have been previousl
 
   Your port-forward is probably not setup correctly or broke (e.g. due to pod restart)
 
-* Make sure `argocd-e2e-cluster` pod is running. If you get a CrashLoopBackoff, ensure that you enabled elevated privileges as shown above
+* Make sure `cd-e2e-cluster` pod is running. If you get a CrashLoopBackoff, ensure that you enabled elevated privileges as shown above
 
 * Sometimes, you may run into a timeout especially if the cluster is very busy. In this case, you have to restart the tests. See test recording above.

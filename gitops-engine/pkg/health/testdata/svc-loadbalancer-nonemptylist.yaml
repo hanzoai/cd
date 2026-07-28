@@ -5,11 +5,11 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "600"
   creationTimestamp: 2018-06-05T23:34:58Z
   labels:
-    app.kubernetes.io/instance: argocd-cdp
-  name: argocd-server
-  namespace: argocd
+    app.kubernetes.io/instance: cd-cdp
+  name: cd-server
+  namespace: cd
   resourceVersion: "32559487"
-  selfLink: /api/v1/namespaces/argocd/services/argocd-server
+  selfLink: /api/v1/namespaces/cd/services/cd-server
   uid: 0f5885a9-6919-11e8-ad29-020124679688
 spec:
   clusterIP: 100.69.46.185
@@ -26,7 +26,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: argocd-server
+    app: cd-server
   sessionAffinity: None
   type: LoadBalancer
 status:

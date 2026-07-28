@@ -3,9 +3,9 @@ kind: Pod
 metadata:
   creationTimestamp: 2018-12-02T10:30:57Z
   name: never-ready
-  namespace: argocd
+  namespace: cd
   resourceVersion: "156420"
-  selfLink: /api/v1/namespaces/argocd/pods/never-ready
+  selfLink: /api/v1/namespaces/cd/pods/never-ready
   uid: 5aa62a14-f61d-11e8-a058-fe5f49266390
 spec:
   containers:

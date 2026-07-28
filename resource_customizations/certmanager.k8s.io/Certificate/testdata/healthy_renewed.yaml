@@ -4,20 +4,20 @@ metadata:
   creationTimestamp: '2018-11-07T00:06:12Z'
   generation: 1
   name: test-cert
-  namespace: argocd
+  namespace: cd
   resourceVersion: '64763033'
-  selfLink: /apis/certmanager.k8s.io/v1alpha1/namespaces/argocd/certificates/test-cert
+  selfLink: /apis/certmanager.k8s.io/v1alpha1/namespaces/cd/certificates/test-cert
   uid: e6cfba50-314d-11e9-be3f-42010a800011
 spec:
   acme:
     config:
       - domains:
-          - cd.apps.argoproj.io
+          - cd.apps.apps.hanzo.ai
         http01:
           ingress: http01
-  commonName: cd.apps.argoproj.io
+  commonName: cd.apps.apps.hanzo.ai
   dnsNames:
-    - cd.apps.argoproj.io
+    - cd.apps.apps.hanzo.ai
   issuerRef:
     kind: Issuer
     name: argo-cd-issuer

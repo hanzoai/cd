@@ -2,9 +2,9 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: clusterworkflowtemplates.argoproj.io
+  name: clusterworkflowtemplates.apps.hanzo.ai
 spec:
-  group: argoproj.io
+  group: apps.hanzo.ai
   names:
     kind: ClusterWorkflowTemplate
     listKind: ClusterWorkflowTemplateList
@@ -23,9 +23,9 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: cronworkflows.argoproj.io
+  name: cronworkflows.apps.hanzo.ai
 spec:
-  group: argoproj.io
+  group: apps.hanzo.ai
   names:
     kind: CronWorkflow
     listKind: CronWorkflowList
@@ -44,9 +44,9 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: workfloweventbindings.argoproj.io
+  name: workfloweventbindings.apps.hanzo.ai
 spec:
-  group: argoproj.io
+  group: apps.hanzo.ai
   names:
     kind: WorkflowEventBinding
     listKind: WorkflowEventBindingList
@@ -64,7 +64,7 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: workflows.argoproj.io
+  name: workflows.apps.hanzo.ai
 spec:
   additionalPrinterColumns:
   - JSONPath: .status.phase
@@ -76,7 +76,7 @@ spec:
     format: date-time
     name: Age
     type: date
-  group: argoproj.io
+  group: apps.hanzo.ai
   names:
     kind: Workflow
     listKind: WorkflowList
@@ -95,9 +95,9 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: workflowtemplates.argoproj.io
+  name: workflowtemplates.apps.hanzo.ai
 spec:
-  group: argoproj.io
+  group: apps.hanzo.ai
   names:
     kind: WorkflowTemplate
     listKind: WorkflowTemplateList
@@ -157,7 +157,7 @@ rules:
   - delete
   - get
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - workflows
   - workflows/finalizers
@@ -170,7 +170,7 @@ rules:
   - delete
   - create
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - workflowtemplates
   - workflowtemplates/finalizers
@@ -192,7 +192,7 @@ rules:
   verbs:
   - get
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - cronworkflows
   - cronworkflows/finalizers
@@ -266,7 +266,7 @@ rules:
   - get
   - list
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - workflows
   - workfloweventbindings

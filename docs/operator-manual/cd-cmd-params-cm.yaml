@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cmd-params-cm
+  name: cd-cmd-params-cm
   labels:
-    app.kubernetes.io/name: argocd-cmd-params-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cmd-params-cm
+    app.kubernetes.io/part-of: cd
 data:
-  # Repo server address. (default "argocd-repo-server:8081")
-  repo.server: "argocd-repo-server:8081"
+  # Repo server address. (default "cd-repo-server:8081")
+  repo.server: "cd-repo-server:8081"
 
-  # Commit server address. (default "argocd-commit-server:8086")
-  commit.server: "argocd-commit-server:8086"
+  # Commit server address. (default "cd-commit-server:8086")
+  commit.server: "cd-commit-server:8086"
 
-  # Redis server hostname and port (e.g. argocd-redis:6379)
-  redis.server: "argocd-redis:6379"
+  # Redis server hostname and port (e.g. cd-redis:6379)
+  redis.server: "cd-redis:6379"
   redis.sentinel.hosts: ""
   redis.sentinel.master: ""
   # Enable compression for data sent to Redis with the required compression algorithm. (default 'gzip')
@@ -36,7 +36,7 @@ data:
   otlp.sample.ratio: "1.0"
 
   # List of additional namespaces where applications may be created in and
-  # reconciled from. The namespace where Argo CD is installed to will always
+  # reconciled from. The namespace where Hanzo CD is installed to will always
   # be allowed.
   #
   # Feature state: Beta
@@ -73,11 +73,11 @@ data:
   # Prometheus metrics cache expiration (disabled  by default. e.g. 24h0m0s)
   controller.metrics.cache.expiration: "24h0m0s"
   # High-cardinality label/condition values can degrade Prometheus performance; use sparingly.
-  # List of Application labels added to the argocd_app_labels metric (comma separated)
+  # List of Application labels added to the cd_app_labels metric (comma separated)
   controller.metrics.application.labels: "team,env"
-  # List of Application conditions added to the argocd_app_conditions metric (comma separated)
+  # List of Application conditions added to the cd_app_conditions metric (comma separated)
   controller.metrics.application.conditions: "OrphanedResourceWarning"
-  # List of Cluster labels added to the argocd_cluster_labels metric (comma separated)
+  # List of Cluster labels added to the cd_cluster_labels metric (comma separated)
   controller.metrics.cluster.labels: "environment"
   # Specifies timeout between application self heal attempts
   controller.self.heal.timeout.seconds: "0"
@@ -118,7 +118,7 @@ data:
   # have high "churn," i.e. lots of resource modifications.
   controller.cluster.cache.batch.events.processing: "true"
   # This sets the interval at which the controller's cluster cache processes a batch of cluster events. A lower value
-  # will increase the speed at which Argo CD becomes aware of external cluster state. A higher value will reduce cluster
+  # will increase the speed at which Hanzo CD becomes aware of external cluster state. A higher value will reduce cluster
   # cache lock contention and better handle high-churn clusters.
   controller.cluster.cache.events.processing.interval: "100ms"
   # QPS (Queries Per Second) limit for K8s API client requests (default "50")
@@ -154,9 +154,9 @@ data:
   server.metrics.listen.address: "0.0.0.0"
   # Run server without TLS
   server.insecure: "false"
-  # Value for base href in index.html. Used if Argo CD is running behind reverse proxy under subpath different from / (default "/")
+  # Value for base href in index.html. Used if Hanzo CD is running behind reverse proxy under subpath different from / (default "/")
   server.basehref: "/"
-  # Used if Argo CD is running behind reverse proxy under subpath different from /
+  # Used if Hanzo CD is running behind reverse proxy under subpath different from /
   server.rootpath: ""
   # Directory path that contains additional static assets
   server.staticassets: "/shared/app"
@@ -173,7 +173,7 @@ data:
   server.glob.cache.size: "10000"
   # Number of concurrent workers processing webhook-triggered app refresh requests (default 20).
   # Increase this value when webhook events affect large numbers of applications to reduce refresh latency.
-  # Works together with webhook.refresh.jitter / webhook.refresh.jitter.threshold in argocd-cm.
+  # Works together with webhook.refresh.jitter / webhook.refresh.jitter.threshold in cd-cm.
   server.webhook.refresh.workers: "20"
   # Whether to allow sync with replace checked to go through. Resource-level annotation to replace override this setting, i.e. it's only enforced on the API server level.
   server.sync.replace.allowed: "true"
@@ -194,8 +194,8 @@ data:
   server.repo.server.client.cert.path: ""
   # Path to the client certificate key file for mTLS connections to repo server
   server.repo.server.client.cert.key.path: ""
-  # Dex server address (default "http://argocd-dex-server:5556")
-  server.dex.server: "http://argocd-dex-server:5556"
+  # Dex server address (default "http://cd-dex-server:5556")
+  server.dex.server: "http://cd-dex-server:5556"
   # Use a plaintext client (non-TLS) to connect to dex server
   server.dex.server.plaintext: "false"
   # Perform strict validation of TLS certificates when connecting to dex server
@@ -282,7 +282,7 @@ data:
   reposerver.max.combined.directory.manifests.size: '10M'
   # Paths to be excluded from the tarball streamed to plugins. Separate with ;
   reposerver.plugin.tar.exclusions: ""
-  # Enable the repo server to use the 'argocd.argoproj.io/manifest-generate-paths' annotation to guide manifest generation.
+  # Enable the repo server to use the 'cd.hanzo.ai/manifest-generate-paths' annotation to guide manifest generation.
   reposerver.plugin.use.manifest.generate.paths: "false"
   # Allow repositories to contain symlinks that leave the boundaries of the repository.
   # Changing this to "true" will not allow _all_ out-of-bounds symlinks. Those will still be blocked for things like values
@@ -304,7 +304,7 @@ data:
   reposerver.git.lsremote.parallelism.limit: "0"
   # Git requests timeout.
   reposerver.git.request.timeout: "15s"
-  # Enable builtin git configuration options that are required for correct argocd-repo-server operation (default "true")
+  # Enable builtin git configuration options that are required for correct cd-repo-server operation (default "true")
   reposerver.enable.builtin.git.config: "true"
   # Include hidden directories from Git
   reposerver.include.hidden.directories: "false"
@@ -369,7 +369,7 @@ data:
   # Enables use of the Progressive Syncs capability
   applicationsetcontroller.enable.progressive.syncs: "false"
   # A list of glob patterns specifying where to look for ApplicationSet resources. (default is only the ns where the controller is installed)
-  applicationsetcontroller.namespaces: "argocd,argocd-appsets-*"
+  applicationsetcontroller.namespaces: "cd,cd-appsets-*"
   # Path of the self-signed TLS certificate for SCM/PR Gitlab Generator
   applicationsetcontroller.scm.root.ca.path: ""
   # A comma separated list of allowed SCM providers (default "" is all SCM providers).
@@ -383,7 +383,7 @@ data:
   applicationsetcontroller.webhook.parallelism.limit: "50"
   # Override the default requeue time for the controller. (default 3m)
   applicationsetcontroller.requeue.after: "3m"
-  # Enable strict mode for tokenRef in ApplicationSet resources. When enabled, the referenced secret must have a label `argocd.argoproj.io/secret-type` with value `scm-creds`.
+  # Enable strict mode for tokenRef in ApplicationSet resources. When enabled, the referenced secret must have a label `cd.hanzo.ai/secret-type` with value `scm-creds`.
   applicationsetcontroller.enable.tokenref.strict.mode: "false"
   # Comma delimited list of annotations to preserve in generated applications
   applicationsetcontroller.global.preserved.annotations: "acme.com/annotation1,acme.com/annotation2"
@@ -427,7 +427,7 @@ data:
   # Path to the client certificate key file for mTLS connections to repo server
   applicationsetcontroller.repo.server.client.cert.key.path: ""
 
-  ## Argo CD Notifications Controller Properties
+  ## Hanzo CD Notifications Controller Properties
   # Set the logging level. One of: debug|info|warn|error (default "info")
   notificationscontroller.log.level: "info"
   # Set the logging format. One of: json|text (default "json")

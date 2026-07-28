@@ -1513,7 +1513,7 @@ func TestRepository_CopyCredentialsFrom(t *testing.T) {
 		{"SourceSSHPrivateKey", &Repository{}, &RepoCreds{SSHPrivateKey: "foo"}, Repository{SSHPrivateKey: "foo"}},
 		{"SourceTLSClientCertData", &Repository{}, &RepoCreds{TLSClientCertData: "foo"}, Repository{TLSClientCertData: "foo"}},
 		{"SourceTLSClientCertKey", &Repository{}, &RepoCreds{TLSClientCertKey: "foo"}, Repository{TLSClientCertKey: "foo"}},
-		{"SourceContainsProxy", &Repository{}, &RepoCreds{Proxy: "http://proxy.argoproj.io:3128", NoProxy: ".example.com"}, Repository{Proxy: "http://proxy.argoproj.io:3128", NoProxy: ".example.com"}},
+		{"SourceContainsProxy", &Repository{}, &RepoCreds{Proxy: "http://proxy.apps.hanzo.ai:3128", NoProxy: ".example.com"}, Repository{Proxy: "http://proxy.apps.hanzo.ai:3128", NoProxy: ".example.com"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -4315,7 +4315,7 @@ func TestGetAppOfAppSummary(t *testing.T) {
 
 	appOfAppsTree := &ApplicationTree{
 		Nodes: []ResourceNode{
-			{ResourceRef: ResourceRef{Name: "children-app", Kind: "Application", Group: "argoproj.io"}},
+			{ResourceRef: ResourceRef{Name: "children-app", Kind: "Application", Group: "apps.hanzo.ai"}},
 			{ResourceRef: ResourceRef{Name: "any-service", Kind: "Service", Group: ""}},
 		},
 	}

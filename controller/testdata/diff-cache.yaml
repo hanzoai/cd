@@ -1,24 +1,24 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd-image-updater.argoproj.io/allow-tags: any
-    argocd-image-updater.argoproj.io/ignore-tags: ""
-    argocd-image-updater.argoproj.io/image-list-disabled-hack: ""
-    argocd-image-updater.argoproj.io/update-strategy: semver
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/write-back-target: kustomization
-    argocd-notif-onDeployed.slack-disabled: ""
-    argocd-notif-onHealthDegraded.slack-disabled: ""
-    argocd-notif-onSyncFailed.slack-disabled: ""
-    argocd-notif-onSyncRunning.slack-disabled: ""
-    argocd-notif-onSyncStatusUnknown.slack-disabled: ""
-    argocd-notif-onSyncSucceeded.slack-disabled: ""
-    argocd.argoproj.io/compare-options: ServerSideDiff=true
-    argocd.argoproj.io/manifest-generate-paths: .;/chart
+    cd-image-updater.apps.hanzo.ai/allow-tags: any
+    cd-image-updater.apps.hanzo.ai/ignore-tags: ""
+    cd-image-updater.apps.hanzo.ai/image-list-disabled-hack: ""
+    cd-image-updater.apps.hanzo.ai/update-strategy: semver
+    cd-image-updater.apps.hanzo.ai/write-back-method: git
+    cd-image-updater.apps.hanzo.ai/write-back-target: kustomization
+    cd-notif-onDeployed.slack-disabled: ""
+    cd-notif-onHealthDegraded.slack-disabled: ""
+    cd-notif-onSyncFailed.slack-disabled: ""
+    cd-notif-onSyncRunning.slack-disabled: ""
+    cd-notif-onSyncStatusUnknown.slack-disabled: ""
+    cd-notif-onSyncSucceeded.slack-disabled: ""
+    cd.hanzo.ai/compare-options: ServerSideDiff=true
+    cd.hanzo.ai/manifest-generate-paths: .;/chart
   creationTimestamp: "2024-03-04T21:30:33Z"
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.cd.hanzo.ai
   generation: 263
   labels:
     cloud_provider: gcp
@@ -31,7 +31,7 @@ metadata:
   name: velero-test
   namespace: argo-cd
   ownerReferences:
-  - apiVersion: argoproj.io/v1alpha1
+  - apiVersion: apps.hanzo.ai/v1alpha1
     blockOwnerDeletion: true
     controller: true
     kind: ApplicationSet

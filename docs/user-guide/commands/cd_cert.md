@@ -1,33 +1,33 @@
-# `argocd cert` Command Reference
+# `cd cert` Command Reference
 
-## argocd cert
+## cd cert
 
 Manage repository certificates and SSH known hosts entries
 
 ```
-argocd cert [flags]
+cd cert [flags]
 ```
 
 ### Examples
 
 ```
-  # Add a TLS certificate for cd.example.com to ArgoCD cert store from a file
-  argocd cert add-tls --from ~/mycert.pem cd.example.com
+  # Add a TLS certificate for cd.example.com to Hanzo CD cert store from a file
+  cd cert add-tls --from ~/mycert.pem cd.example.com
 
-  # Add a TLS certificate for cd.example.com to ArgoCD via stdin
-  cat ~/mycert.pem | argocd cert add-tls cd.example.com
+  # Add a TLS certificate for cd.example.com to Hanzo CD via stdin
+  cat ~/mycert.pem | cd cert add-tls cd.example.com
 
-  # Add SSH known host entries for cd.example.com to ArgoCD by scanning host
-  ssh-keyscan cd.example.com | argocd cert add-ssh --batch
+  # Add SSH known host entries for cd.example.com to Hanzo CD by scanning host
+  ssh-keyscan cd.example.com | cd cert add-ssh --batch
 
   # List all known TLS certificates
-  argocd cert list --cert-type https
+  cd cert list --cert-type https
 
   # Remove all TLS certificates for cd.example.com
-  argocd cert rm --cert-type https cd.example.com
+  cd cert rm --cert-type https cd.example.com
 
   # Remove all certificates and SSH known host entries for cd.example.com
-  argocd cert rm cd.example.com
+  cd cert rm cd.example.com
 
 ```
 
@@ -51,39 +51,39 @@ argocd cert [flags]
 ### Options inherited from parent commands
 
 ```
-      --argocd-context string           The name of the Argo-CD server context to use
+      --cd-context string           The name of the Hanzo CD server context to use
       --auth-token string               Authentication token; set this or the CD_AUTH_TOKEN environment variable
       --client-crt string               Client certificate file
       --client-crt-key string           Client certificate key file
-      --config string                   Path to Argo CD config (default "/home/user/.config/argocd/config")
-      --controller-name string          Name of the Argo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "argocd-application-controller")
-      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Argo CD API server
-      --grpc-web                        Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2.
-      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2. Set web root.
-  -H, --header strings                  Sets additional header to all requests made by Argo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
-      --http-retry-max int              Maximum number of retries to establish http connection to Argo CD server
+      --config string                   Path to Hanzo CD config (default "/home/user/.config/cd/config")
+      --controller-name string          Name of the Hanzo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "cd-application-controller")
+      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Hanzo CD API server
+      --grpc-web                        Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2.
+      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2. Set web root.
+  -H, --header strings                  Sets additional header to all requests made by Hanzo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
+      --http-retry-max int              Maximum number of retries to establish http connection to Hanzo CD server
       --insecure                        Skip server certificate and domain verification
       --kube-context string             Directs the command to the given kube-context
       --logformat string                Set the logging format. One of: json|text (default "json")
       --loglevel string                 Set the logging level. One of: debug|info|warn|error (default "info")
       --plaintext                       Disable TLS
-      --port-forward                    Connect to a random argocd-server port using port forwarding
+      --port-forward                    Connect to a random cd-server port using port forwarding
       --port-forward-namespace string   Namespace name which should be used for port forwarding
       --prompts-enabled                 Force optional interactive prompts to be enabled or disabled, overriding local configuration. If not specified, the local configuration value will be used, which is false by default.
       --redis-compress string           Enable this if the application controller is configured with redis compression enabled. (possible values: gzip, none) (default "gzip")
-      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis-ha-haproxy")
-      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis")
-      --repo-server-name string         Name of the Argo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-repo-server")
-      --server string                   Argo CD server address
+      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "cd-redis-ha-haproxy")
+      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "cd-redis")
+      --repo-server-name string         Name of the Hanzo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-repo-server")
+      --server string                   Hanzo CD server address
       --server-crt string               Server certificate file
-      --server-name string              Name of the Argo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-server")
+      --server-name string              Name of the Hanzo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-server")
 ```
 
 ### SEE ALSO
 
-* [argocd](argocd.md)	 - argocd controls an Argo CD server
-* [argocd cert add-ssh](argocd_cert_add-ssh.md)	 - Add SSH known host entries for repository servers
-* [argocd cert add-tls](argocd_cert_add-tls.md)	 - Add TLS certificate data for connecting to repository server SERVERNAME
-* [argocd cert list](argocd_cert_list.md)	 - List configured certificates
-* [argocd cert rm](argocd_cert_rm.md)	 - Remove certificate of TYPE for REPOSERVER
+* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd cert add-ssh](cd_cert_add-ssh.md)	 - Add SSH known host entries for repository servers
+* [cd cert add-tls](cd_cert_add-tls.md)	 - Add TLS certificate data for connecting to repository server SERVERNAME
+* [cd cert list](cd_cert_list.md)	 - List configured certificates
+* [cd cert rm](cd_cert_rm.md)	 - Remove certificate of TYPE for REPOSERVER
 

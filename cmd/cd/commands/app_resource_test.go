@@ -19,8 +19,8 @@ func TestPrintTreeViewAppResources(t *testing.T) {
 	nodes[0].ResourceRef = v1alpha1.ResourceRef{Group: "", Version: "v1", Kind: "Pod", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5-6trpt", UID: "92c3a5fe-d13e-4ae2-b8ec-c10dd3543b28"}
 	nodes[0].ParentRefs = []v1alpha1.ResourceRef{{Group: "apps", Version: "v1", Kind: "ReplicaSet", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5", UID: "75c30dce-1b66-414f-a86c-573a74be0f40"}}
 	nodes[1].ResourceRef = v1alpha1.ResourceRef{Group: "apps", Version: "v1", Kind: "ReplicaSet", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5", UID: "75c30dce-1b66-414f-a86c-573a74be0f40"}
-	nodes[1].ParentRefs = []v1alpha1.ResourceRef{{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
-	nodes[2].ResourceRef = v1alpha1.ResourceRef{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
+	nodes[1].ParentRefs = []v1alpha1.ResourceRef{{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
+	nodes[2].ResourceRef = v1alpha1.ResourceRef{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
 	nodeMapping := make(map[string]v1alpha1.ResourceNode)
 	mapParentToChild := make(map[string][]string)
 	parentNode := make(map[string]struct{})
@@ -45,7 +45,7 @@ func TestPrintTreeViewAppResources(t *testing.T) {
 	output := buf.String()
 	t.Logf("Output:\n%s", output)
 	assert.Contains(t, output, "Rollout")
-	assert.Contains(t, output, "argoproj.io")
+	assert.Contains(t, output, "apps.hanzo.ai")
 	assert.Contains(t, output, "└─apps       ReplicaSet  sandbox-rollout-numalogic-demo  numalogic-rollout-demo-5dcd5457d5        No")
 	assert.Contains(t, output, "  └─         Pod         sandbox-rollout-numalogic-demo  numalogic-rollout-demo-5dcd5457d5-6trpt  No")
 }
@@ -53,7 +53,7 @@ func TestPrintTreeViewAppResources(t *testing.T) {
 func TestPrintTreeViewAppResourcesWithMultipleChildren(t *testing.T) {
 	var nodes [4]v1alpha1.ResourceNode
 	// Parent
-	nodes[0].ResourceRef = v1alpha1.ResourceRef{Group: "argoproj.io", Kind: "Rollout", Namespace: "ns", Name: "rollout", UID: "root"}
+	nodes[0].ResourceRef = v1alpha1.ResourceRef{Group: "apps.hanzo.ai", Kind: "Rollout", Namespace: "ns", Name: "rollout", UID: "root"}
 	// Child 1
 	nodes[1].ResourceRef = v1alpha1.ResourceRef{Group: "apps", Kind: "ReplicaSet", Namespace: "ns", Name: "rs1", UID: "rs1"}
 	nodes[1].ParentRefs = []v1alpha1.ResourceRef{{UID: "root"}}
@@ -93,8 +93,8 @@ func TestPrintTreeViewDetailedAppResources(t *testing.T) {
 	nodes[0].ResourceRef = v1alpha1.ResourceRef{Group: "", Version: "v1", Kind: "Pod", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5-6trpt", UID: "92c3a5fe-d13e-4ae2-b8ec-c10dd3543b28"}
 	nodes[0].ParentRefs = []v1alpha1.ResourceRef{{Group: "apps", Version: "v1", Kind: "ReplicaSet", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5", UID: "75c30dce-1b66-414f-a86c-573a74be0f40"}}
 	nodes[1].ResourceRef = v1alpha1.ResourceRef{Group: "apps", Version: "v1", Kind: "ReplicaSet", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5", UID: "75c30dce-1b66-414f-a86c-573a74be0f40"}
-	nodes[1].ParentRefs = []v1alpha1.ResourceRef{{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
-	nodes[2].ResourceRef = v1alpha1.ResourceRef{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
+	nodes[1].ParentRefs = []v1alpha1.ResourceRef{{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
+	nodes[2].ResourceRef = v1alpha1.ResourceRef{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
 	nodes[2].Health = &v1alpha1.HealthStatus{
 		Status:  "Degraded",
 		Message: "Readiness Gate failed",
@@ -124,7 +124,7 @@ func TestPrintTreeViewDetailedAppResources(t *testing.T) {
 	output := buf.String()
 	t.Logf("Output:\n%s", output)
 
-	assert.Contains(t, output, "argoproj.io  Rollout     sandbox-rollout-numalogic-demo  numalogic-rollout-demo                   No  <unknown>  Degraded  Readiness Gate failed")
+	assert.Contains(t, output, "apps.hanzo.ai  Rollout     sandbox-rollout-numalogic-demo  numalogic-rollout-demo                   No  <unknown>  Degraded  Readiness Gate failed")
 	assert.Contains(t, output, "└─apps       ReplicaSet  sandbox-rollout-numalogic-demo  numalogic-rollout-demo-5dcd5457d5        No")
 	assert.Contains(t, output, "  └─         Pod         sandbox-rollout-numalogic-demo  numalogic-rollout-demo-5dcd5457d5-6trpt  No")
 }

@@ -53,5 +53,5 @@ func TestAppSyncWrongVersion(t *testing.T) {
 		Get().
 		Then().
 		// Not the best error message, but good enough.
-		Expect(Success(`DoesNotExist.argoproj.io "" not found`))
+		Expect(Success(`DoesNotExist.apps.hanzo.ai "" not found`))
 }

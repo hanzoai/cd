@@ -17,7 +17,7 @@ spec:
     spec:
       initContainers:
         - command:
-            - argocd
+            - cd
             - admin
             - redis-initial-password
           image: ghcr.io/hanzoai/deploy:latest

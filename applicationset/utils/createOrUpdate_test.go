@@ -187,7 +187,7 @@ spec:
         string: https://example.com`,
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/pull/14743#issuecomment-1761954799
+			// For this use case: https://github.com/hanzoai/cd/pull/14743#issuecomment-1761954799
 			name: "ignore parameters added to a multi-source app in the cluster",
 			ignoreDifferences: v1alpha1.ApplicationSetIgnoreDifferences{
 				{JQPathExpressions: []string{`.spec.sources[] | select(.repoURL | contains("test-repo")).helm.parameters`}},

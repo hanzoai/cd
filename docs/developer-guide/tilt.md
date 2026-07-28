@@ -10,7 +10,7 @@
 
 ### Running
 1. Spin up environment by running `tilt up` in the root directory of the repo
-    * Resources will be deployed into the `argocd` namespace in the cluster that your `kubeconfig` is currently pointed to. 
+    * Resources will be deployed into the `cd` namespace in the cluster that your `kubeconfig` is currently pointed to. 
 
 2. Use `ctrl+c` to close tilt which stops watching files for changes and closes port-forwards. Everything deployed to the local cluster will be left in tact and continue to run. Run `tilt up` again to start up another session and pick up where you left off.   
 
@@ -22,25 +22,25 @@ Port forwarding is automatically setup from the cluster to localhost host for th
 
 | Deployment | API | Metrics | Webhook | Debug |
 |------------|-----|---------|---------|-------|
-| argocd-server | 8080 | 8083 | | 9345 |
-| argocd-repo-server | 8081 | 8084 | | 9346 |
-| argocd-redis | 6379 | | | |
-| argocd-applicationset-controller | | 8085 | 7000 | 9347 |
-| argocd-application-controller | | 8086 | | 9348 |
-| argocd-notifications-controller | | 8087 | | 9349 |
-| argocd-commit-server | 8089 | 8088 | | 9350 |
+| cd-server | 8080 | 8083 | | 9345 |
+| cd-repo-server | 8081 | 8084 | | 9346 |
+| cd-redis | 6379 | | | |
+| cd-applicationset-controller | | 8085 | 7000 | 9347 |
+| cd-application-controller | | 8086 | | 9348 |
+| cd-notifications-controller | | 8087 | | 9349 |
+| cd-commit-server | 8089 | 8088 | | 9350 |
 
-### Debugging ArgoCD
-Each deployed pod running ArgoCD components uses delve to expose a debug port. Tilt is configured to forward each of those ports locally to `localhost`. IDEs can attach to the corresponding application to set break points and debug code running inside the cluster. 
+### Debugging Hanzo CD
+Each deployed pod running Hanzo CD components uses delve to expose a debug port. Tilt is configured to forward each of those ports locally to `localhost`. IDEs can attach to the corresponding application to set break points and debug code running inside the cluster. 
 
 | Deployment | Debug Host Port |
 |-----------|------------|
-| argocd-server | localhost:9345 |
-| argocd-repo-server | localhost:9346 |
-| argocd-applicationset-controller | localhost:9347 |
-| argocd-application-controller | localhost:9348 |
-| argocd-notifications-controller | localhost:9349 |
-| argocd-commit-server | localhost:9350 |
+| cd-server | localhost:9345 |
+| cd-repo-server | localhost:9346 |
+| cd-applicationset-controller | localhost:9347 |
+| cd-application-controller | localhost:9348 |
+| cd-notifications-controller | localhost:9349 |
+| cd-commit-server | localhost:9350 |
 
 
 #### VS Code

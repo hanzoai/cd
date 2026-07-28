@@ -12,4 +12,4 @@ generatorOptions:
   disableNameSuffixHash: true
 
 patches:
-  - path: argocd-repo-server-deployment-patch.yaml
+  - path: cd-repo-server-deployment-patch.yaml

@@ -1,4 +1,4 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   clusterName: ""
@@ -9,7 +9,7 @@ metadata:
   name: guestbook-bluegreen
   namespace: default
   resourceVersion: "888906"
-  selfLink: /apis/argoproj.io/v1alpha1/namespaces/default/rollouts/guestbook-bluegreen
+  selfLink: /apis/apps.hanzo.ai/v1alpha1/namespaces/default/rollouts/guestbook-bluegreen
   uid: 16a1edf0-4ce6-11e9-994f-025000000001
 spec:
   minReadySeconds: 30
@@ -29,7 +29,7 @@ spec:
         app: guestbook-bluegreen
     spec:
       containers:
-      - image: quay.io/argoprojlabs/argocd-e2e-container:0.2
+      - image: quay.io/argoprojlabs/cd-e2e-container:0.2
         name: guestbook-bluegreen
         ports:
         - containerPort: 80

@@ -105,5 +105,5 @@ func TestBothHooks(t *testing.T) {
 }
 
 func example(hook string) *unstructured.Unstructured {
-	return testingutils.Annotate(testingutils.NewPod(), "cd.argoproj.io/hook", hook)
+	return testingutils.Annotate(testingutils.NewPod(), "cd.hanzo.ai/hook", hook)
 }

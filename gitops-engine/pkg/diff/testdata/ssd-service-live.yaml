@@ -23,7 +23,7 @@ metadata:
               'f:port': {}
               'f:targetPort': {}
           'f:selector': {}
-      manager: argocd-controller
+      manager: cd-controller
       operation: Apply
       time: '2023-12-18T00:34:22Z'
   name: httpbin-svc

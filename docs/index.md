@@ -1,15 +1,15 @@
 # Overview
 
 <!-- markdownlint-disable MD026 -->
-## What Is Argo CD?
+## What Is Hanzo CD?
 <!-- markdownlint-enable MD026 -->
 
-Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
+Hanzo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
 
-![Argo CD UI](assets/argocd-ui.gif)
+![Hanzo CD UI](assets/cd-ui.gif)
 
 <!-- markdownlint-disable MD026 -->
-## Why Argo CD?
+## Why Hanzo CD?
 <!-- markdownlint-enable MD026 -->
 
 Application definitions, configurations, and environments should be declarative and version controlled.
@@ -20,19 +20,19 @@ Application deployment and lifecycle management should be automated, auditable, 
 ### Quick Start
 
 ```bash
-kubectl create namespace argocd
-kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl create namespace cd
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
 The `--server-side --force-conflicts` flags are required due to CRD size limitations. See the [getting started guide](getting_started.md) for details.
 
 Follow our [getting started guide](getting_started.md). Further user oriented [documentation](user-guide/index.md)
-is provided for additional features. If you are looking to upgrade Argo CD, see the [upgrade guide](./operator-manual/upgrading/overview.md).
+is provided for additional features. If you are looking to upgrade Hanzo CD, see the [upgrade guide](./operator-manual/upgrading/overview.md).
 Developer oriented [documentation](developer-guide/index.md) is available for people interested in building third-party integrations.
 
 ## How it works
 
-Argo CD follows the **GitOps** pattern of using Git repositories as the source of truth for defining
+Hanzo CD follows the **GitOps** pattern of using Git repositories as the source of truth for defining
 the desired application state. Kubernetes manifests can be specified in several ways:
 
 * [kustomize](https://kustomize.io) applications
@@ -41,24 +41,24 @@ the desired application state. Kubernetes manifests can be specified in several 
 * Plain directory of YAML/json manifests
 * Any custom config management tool configured as a config management plugin
 
-Argo CD automates the deployment of the desired application states in the specified target environments.
+Hanzo CD automates the deployment of the desired application states in the specified target environments.
 Application deployments can track updates to branches, tags, or be pinned to a specific version of
 manifests at a Git commit. See [tracking strategies](user-guide/tracking_strategies.md) for additional
 details about the different tracking strategies available.
 
-For a quick 10 minute overview of Argo CD, check out the demo presented to the Sig Apps community
+For a quick 10 minute overview of Hanzo CD, check out the demo presented to the Sig Apps community
 meeting:
 
-[![Argo CD Overview Demo](https://img.youtube.com/vi/aWDIQMbp1cc/0.jpg)](https://youtu.be/aWDIQMbp1cc?t=1m4s)
+[![Hanzo CD Overview Demo](https://img.youtube.com/vi/aWDIQMbp1cc/0.jpg)](https://youtu.be/aWDIQMbp1cc?t=1m4s)
 
 ## Architecture
 
-![Argo CD Architecture](assets/argocd_architecture.png)
+![Hanzo CD Architecture](assets/cd_architecture.png)
 
-Argo CD is implemented as a Kubernetes controller which continuously monitors running applications
+Hanzo CD is implemented as a Kubernetes controller which continuously monitors running applications
 and compares the current, live state against the desired target state (as specified in the Git repo).
 A deployed application whose live state deviates from the target state is considered `OutOfSync`.
-Argo CD reports & visualizes the differences, while providing facilities to automatically or
+Hanzo CD reports & visualizes the differences, while providing facilities to automatically or
 manually sync the live state back to the desired target state. Any modifications made to the desired
 target state in the Git repo can be automatically applied and reflected in the specified target
 environments.
@@ -87,8 +87,8 @@ For additional details, see [architecture overview](operator-manual/architecture
 
 ## Development Status
 
-Argo CD is being actively developed by the community. [Releases](https://github.com/argoproj/argo-cd/releases) are listed on Github.
+Hanzo CD is being actively developed by the community. [Releases](https://github.com/hanzoai/cd/releases) are listed on Github.
 
 ## Adoption
 
-A growing list of organizations(https://github.com/argoproj/argo-cd/blob/master/USERS.md) have officially adopted Argo CD.
+A growing list of organizations(https://github.com/hanzoai/cd/blob/master/USERS.md) have officially adopted Hanzo CD.

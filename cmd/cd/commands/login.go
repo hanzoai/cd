@@ -52,13 +52,13 @@ func NewLoginCommand(clientOpts *cdclient.ClientOptions) *cobra.Command {
 		Short: "Log in to Hanzo CD",
 		Long:  "Log in to Hanzo CD",
 		Example: `# Login to Hanzo CD using a username and password
-cd login cd.argoproj.io
+cd login cd.hanzo.ai
 
 # Login to Hanzo CD using SSO
-cd login cd.argoproj.io --sso
+cd login cd.hanzo.ai --sso
 
 # Configure direct access using Kubernetes API server
-cd login cd.argoproj.io --core`,
+cd login cd.hanzo.ai --core`,
 		Run: func(c *cobra.Command, args []string) {
 			ctx := c.Context()
 

@@ -48,7 +48,7 @@ func TestProjectCreation(t *testing.T) {
 		"--description", "Test description",
 		"-d", "https://192.168.99.100:8443,default",
 		"-d", "https://192.168.99.100:8443,service",
-		"-s", "https://github.com/argoproj/argo-cd.git",
+		"-s", "https://github.com/hanzoai/cd.git",
 		"--orphaned-resources")
 	require.NoError(t, err)
 
@@ -64,7 +64,7 @@ func TestProjectCreation(t *testing.T) {
 	assert.Equal(t, "service", proj.Spec.Destinations[1].Namespace)
 
 	assert.Len(t, proj.Spec.SourceRepos, 1)
-	assert.Equal(t, "https://github.com/argoproj/argo-cd.git", proj.Spec.SourceRepos[0])
+	assert.Equal(t, "https://github.com/hanzoai/cd.git", proj.Spec.SourceRepos[0])
 
 	assert.NotNil(t, proj.Spec.OrphanedResources)
 	assert.False(t, proj.Spec.OrphanedResources.IsWarn())
@@ -251,10 +251,10 @@ func TestAddProjectSource(t *testing.T) {
 		t.Context(), &v1alpha1.AppProject{ObjectMeta: metav1.ObjectMeta{Name: projectName}}, metav1.CreateOptions{})
 	require.NoError(t, err, "Unable to create project")
 
-	_, err = fixture.RunCli("proj", "add-source", projectName, "https://github.com/argoproj/argo-cd.git")
+	_, err = fixture.RunCli("proj", "add-source", projectName, "https://github.com/hanzoai/cd.git")
 	require.NoError(t, err, "Unable to add project source")
 
-	_, err = fixture.RunCli("proj", "add-source", projectName, "https://github.com/argoproj/argo-cd.git")
+	_, err = fixture.RunCli("proj", "add-source", projectName, "https://github.com/hanzoai/cd.git")
 	require.NoError(t, err)
 
 	proj, err := fixture.AppClientset.ArgoprojV1alpha1().AppProjects(fixture.TestNamespace()).Get(t.Context(), projectName, metav1.GetOptions{})
@@ -262,7 +262,7 @@ func TestAddProjectSource(t *testing.T) {
 	assert.Equal(t, projectName, proj.Name)
 	assert.Len(t, proj.Spec.SourceRepos, 1)
 
-	assert.Equal(t, "https://github.com/argoproj/argo-cd.git", proj.Spec.SourceRepos[0])
+	assert.Equal(t, "https://github.com/hanzoai/cd.git", proj.Spec.SourceRepos[0])
 }
 
 func TestRemoveProjectSource(t *testing.T) {
@@ -272,17 +272,17 @@ func TestRemoveProjectSource(t *testing.T) {
 	_, err := fixture.AppClientset.ArgoprojV1alpha1().AppProjects(fixture.TestNamespace()).Create(t.Context(), &v1alpha1.AppProject{
 		ObjectMeta: metav1.ObjectMeta{Name: projectName},
 		Spec: v1alpha1.AppProjectSpec{
-			SourceRepos: []string{"https://github.com/argoproj/argo-cd.git"},
+			SourceRepos: []string{"https://github.com/hanzoai/cd.git"},
 		},
 	}, metav1.CreateOptions{})
 
 	require.NoError(t, err)
 
-	_, err = fixture.RunCli("proj", "remove-source", projectName, "https://github.com/argoproj/argo-cd.git")
+	_, err = fixture.RunCli("proj", "remove-source", projectName, "https://github.com/hanzoai/cd.git")
 
 	require.NoError(t, err)
 
-	_, err = fixture.RunCli("proj", "remove-source", projectName, "https://github.com/argoproj/argo-cd.git")
+	_, err = fixture.RunCli("proj", "remove-source", projectName, "https://github.com/hanzoai/cd.git")
 	require.NoError(t, err)
 
 	proj, err := fixture.AppClientset.ArgoprojV1alpha1().AppProjects(fixture.TestNamespace()).Get(t.Context(), projectName, metav1.GetOptions{})
@@ -451,7 +451,7 @@ func createAndConfigGlobalProject(ctx context.Context, testName string) error {
 		"--description", "Test description",
 		"-d", "https://192.168.99.100:8443,default",
 		"-d", "https://192.168.99.100:8443,service",
-		"-s", "https://github.com/argoproj/argo-cd.git",
+		"-s", "https://github.com/hanzoai/cd.git",
 		"--orphaned-resources")
 	if err != nil {
 		return err

@@ -192,7 +192,7 @@ const (
 	// LabelKeyAutoLabelClusterInfo if set to true will automatically add extra labels from the cluster info (currently it only adds a k8s version label)
 	LabelKeyAutoLabelClusterInfo = "apps.hanzo.ai/auto-label-cluster-info"
 	// LabelKeyLegacyApplicationName is the legacy label (v0.10 and below) and is superseded by 'app.kubernetes.io/instance'
-	LabelKeyLegacyApplicationName = "applications.argoproj.io/app-name"
+	LabelKeyLegacyApplicationName = "applications.apps.hanzo.ai/app-name"
 	// LabelKeySecretType contains the type of cd secret (currently: 'cluster', 'repository', 'repo-config' or 'repo-creds')
 	LabelKeySecretType = "apps.hanzo.ai/secret-type"
 	// LabelKeyClusterKubernetesVersion contains the kubernetes version of the cluster secret if it has been enabled

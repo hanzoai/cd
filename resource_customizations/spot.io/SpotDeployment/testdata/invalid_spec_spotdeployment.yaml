@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: "2020-11-13T00:22:49Z"
   generation: 3
   name: basic
-  namespace: argocd-e2e
+  namespace: cd-e2e
   resourceVersion: "181746"
   uid: 5b0926f3-30b7-4727-a76e-46c0d2617906
 spec:

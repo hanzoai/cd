@@ -20,7 +20,7 @@ last-updated: 2022-08-11
 
 ## Summary
 
-Enhance the ArgoCD ApplicationSet resource to embed a rollout strategy for a progressive application resource update after the ApplicationSet spec or Application templates are modified.
+Enhance the Hanzo CD ApplicationSet resource to embed a rollout strategy for a progressive application resource update after the ApplicationSet spec or Application templates are modified.
 Further discussion and interest has been communicated here: https://github.com/argoproj/argo-cd/issues/9437
 
 ## Motivation
@@ -53,7 +53,7 @@ Steps for the rolling update are defined by a list of matchExpression label sele
 
 Complete ApplicationSet spec example.
 ```
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
@@ -158,7 +158,7 @@ If this proposal is implemented, I believe the next logical step would be to sol
 
 Implementing progressive rollout stragies to handled changes upstream of the generated Application source could be difficult, since the applicationset controller would need to intercept the sync operation of the Application to prevent the changes from syncing automatically.
 
-Added maintenance burden on the ArgoCD team is always a risk with the addition of new features.
+Added maintenance burden on the Hanzo CD team is always a risk with the addition of new features.
 
 ### Upgrade / Downgrade Strategy
 

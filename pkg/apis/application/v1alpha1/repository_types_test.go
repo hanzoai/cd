@@ -73,12 +73,12 @@ func TestGetGitCreds(t *testing.T) {
 		{
 			name: "GitHub App credentials",
 			repo: &Repository{
-				Repo:                    "https://github.com/argoproj/argo-cd",
+				Repo:                    "https://github.com/hanzoai/cd",
 				GithubAppPrivateKey:     "github-key",
 				GithubAppId:             123,
 				GithubAppInstallationId: 456,
 			},
-			expected: git.NewGitHubAppCreds(123, 456, "github-key", "", "", "", false, "", "", nil, "https://github.com/argoproj/argo-cd"),
+			expected: git.NewGitHubAppCreds(123, 456, "github-key", "", "", "", false, "", "", nil, "https://github.com/hanzoai/cd"),
 		},
 		{
 			name: "Google Cloud credentials",
@@ -139,7 +139,7 @@ func TestGetGitCreds_GitHubApp_InstallationNotFound(t *testing.T) {
 
 func TestSanitizedRepository(t *testing.T) {
 	repo := &Repository{
-		Repo:                              "https://github.com/argoproj/argo-cd.git",
+		Repo:                              "https://github.com/hanzoai/cd.git",
 		Type:                              "git",
 		Name:                              "argo-cd",
 		Username:                          "admin",
@@ -205,7 +205,7 @@ func TestSanitizedRepository(t *testing.T) {
 func TestSanitizedRepositoryPreservesDepthZero(t *testing.T) {
 	// Depth of 0 means full clone; verify it's preserved (zero value)
 	repo := &Repository{
-		Repo:  "https://github.com/argoproj/argo-cd.git",
+		Repo:  "https://github.com/hanzoai/cd.git",
 		Depth: 0,
 	}
 

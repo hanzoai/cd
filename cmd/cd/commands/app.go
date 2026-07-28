@@ -1605,12 +1605,12 @@ func NewApplicationWaitCommand(clientOpts *cdclient.ClientOptions) *cobra.Comman
   # Wait for apps by resource
   # Resource should be formatted as GROUP:KIND:NAME. If no GROUP is specified then :KIND:NAME.
   cd app wait my-app --resource :Service:my-service
-  cd app wait my-app --resource argoproj.io:Rollout:my-rollout
+  cd app wait my-app --resource apps.hanzo.ai:Rollout:my-rollout
   cd app wait my-app --resource '!apps:Deployment:my-service'
   cd app wait my-app --resource apps:Deployment:my-service --resource :Service:my-service
   cd app wait my-app --resource '!*:Service:*'
   # Specify namespace if the application has resources with the same name in different namespaces
-  cd app wait my-app --resource argoproj.io:Rollout:my-namespace/my-rollout
+  cd app wait my-app --resource apps.hanzo.ai:Rollout:my-namespace/my-rollout
 
   # Wait for apps by label, in this example we waiting for apps that are children of another app (aka app-of-apps)
   cd app wait -l app.kubernetes.io/instance=my-app
@@ -1754,12 +1754,12 @@ func NewApplicationSyncCommand(clientOpts *cdclient.ClientOptions) *cobra.Comman
   # Sync a specific resource
   # Resource should be formatted as GROUP:KIND:NAME. If no GROUP is specified then :KIND:NAME
   cd app sync my-app --resource :Service:my-service
-  cd app sync my-app --resource argoproj.io:Rollout:my-rollout
+  cd app sync my-app --resource apps.hanzo.ai:Rollout:my-rollout
   cd app sync my-app --resource '!apps:Deployment:my-service'
   cd app sync my-app --resource apps:Deployment:my-service --resource :Service:my-service
   cd app sync my-app --resource '!*:Service:*'
   # Specify namespace if the application has resources with the same name in different namespaces
-  cd app sync my-app --resource argoproj.io:Rollout:my-namespace/my-rollout`,
+  cd app sync my-app --resource apps.hanzo.ai:Rollout:my-namespace/my-rollout`,
 		Run: func(c *cobra.Command, args []string) {
 			ctx := c.Context()
 			if len(args) == 0 && selector == "" && len(projects) == 0 {

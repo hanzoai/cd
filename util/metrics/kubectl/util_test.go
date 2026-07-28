@@ -97,13 +97,13 @@ func Test_resolveK8sRequestVerb(t *testing.T) {
 		{
 			testName: "CRD Get",
 			method:   "GET",
-			url:      "https://127.0.0.1/apis/apiextensions.k8s.io/v1/customresourcedefinitions/dummies.argoproj.io",
+			url:      "https://127.0.0.1/apis/apiextensions.k8s.io/v1/customresourcedefinitions/dummies.apps.hanzo.ai",
 			expected: "Get",
 		},
 		{
 			testName: "Resource With Periods Get",
 			method:   "GET",
-			url:      "https://127.0.0.1/apis/argoproj.io/v1alpha1/namespaces/cd/applications/my-cluster.cluster.k8s.local",
+			url:      "https://127.0.0.1/apis/apps.hanzo.ai/v1alpha1/namespaces/cd/applications/my-cluster.cluster.k8s.local",
 			expected: "Get",
 		},
 		{

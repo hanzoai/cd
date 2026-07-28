@@ -638,8 +638,8 @@ func TestExtractOrgFromRepoURL(t *testing.T) {
 		expected    string
 		expectError bool
 	}{
-		{"HTTPS URL", "https://github.com/argoproj/argo-cd", "argoproj", false},
-		{"HTTPS URL with .git", "https://github.com/argoproj/argo-cd.git", "argoproj", false},
+		{"HTTPS URL", "https://github.com/hanzoai/cd", "argoproj", false},
+		{"HTTPS URL with .git", "https://github.com/hanzoai/cd.git", "argoproj", false},
 		{"HTTPS URL with port", "https://github.com:443/argoproj/argo-cd.git", "argoproj", false},
 		{"SSH URL", "git@github.com:argoproj/argo-cd.git", "argoproj", false},
 		{"SSH URL without .git", "git@github.com:argoproj/argo-cd", "argoproj", false},

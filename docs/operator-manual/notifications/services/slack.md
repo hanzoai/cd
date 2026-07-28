@@ -14,7 +14,7 @@ The Slack notification service configuration includes following settings:
 | `insecureSkipVerify` | False        | `bool`         |                 | `true` |
 | `signingSecret`       | False        | `string`       |                 | `8f742231b10e8888abcd99yyyzzz85a5` |
 | `token`              | **True**     | `string`       | The app's OAuth access token. | `xoxb-1234567890-1234567890123-5n38u5ed63fgzqlvuyxvxcx6` |
-| `username`           | False        | `string`       | The app username. | `argocd` |
+| `username`           | False        | `string`       | The app username. | `cd` |
 | `disableUnfurl`      | False        | `bool`         | Disable slack unfurling links in messages | `true` |
 | `maxIdleConns`        | False        | `int`          | Maximum number of idle (keep-alive) connections across all hosts.                               | —                      |
 | `maxIdleConnsPerHost` | False        | `int`          | Maximum number of idle (keep-alive) connections per host.                                       | —                      |
@@ -37,7 +37,7 @@ The Slack notification service configuration includes following settings:
 
 1. Create a public or private channel, for this example `my_channel`
 1. Invite your slack bot to this channel **otherwise slack bot won't be able to deliver notifications to this channel**
-1. Store OAuth access token in `argocd-notifications-secret` secret
+1. Store OAuth access token in `cd-notifications-secret` secret
 
     ```yaml
       apiVersion: v1
@@ -48,36 +48,36 @@ The Slack notification service configuration includes following settings:
           slack-token: <OAuth-access-token>
     ```
 
-1. Define service type slack in data section of `argocd-notifications-cm` configmap:
+1. Define service type slack in data section of `cd-notifications-cm` configmap:
 
     ```yaml
       apiVersion: v1
       kind: ConfigMap
       metadata:
-        name: argocd-notifications-cm
+        name: cd-notifications-cm
       data:
         service.slack: |
           token: $slack-token
     ```
 
-1. Add annotation in application yaml file to enable notifications for specific argocd app.  The following example uses the [on-sync-succeeded trigger](../catalog.md#triggers):
+1. Add annotation in application yaml file to enable notifications for specific cd app.  The following example uses the [on-sync-succeeded trigger](../catalog.md#triggers):
 
     ```yaml
-      apiVersion: argoproj.io/v1alpha1
+      apiVersion: apps.hanzo.ai/v1alpha1
       kind: Application
       metadata:
         annotations:
-          notifications.argoproj.io/subscribe.on-sync-succeeded.slack: my_channel
+          notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my_channel
     ```
 
 1. Annotation with more than one [trigger](../catalog.md#triggers), with multiple destinations and recipients
 
     ```yaml
-      apiVersion: argoproj.io/v1alpha1
+      apiVersion: apps.hanzo.ai/v1alpha1
       kind: Application
       metadata:
         annotations:
-          notifications.argoproj.io/subscriptions: |
+          notifications.apps.hanzo.ai/subscriptions: |
             - trigger: [on-scaling-replica-set, on-rollout-updated, on-rollout-step-completed]
               destinations:
                 - service: slack
@@ -103,12 +103,12 @@ The message blocks and attachments can be specified in `blocks` and `attachments
 template.app-sync-status: |
   message: |
     Application {{.app.metadata.name}} sync is {{.app.status.sync.status}}.
-    Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+    Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
   slack:
     attachments: |
       [{
         "title": "{{.app.metadata.name}}",
-        "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+        "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
         "color": "#18be52",
         "fields": [{
           "title": "Sync Status",
@@ -130,14 +130,14 @@ If you set `username` and `icon` in template, the values set in template will be
 template.app-sync-status: |
   message: |
     Application {{.app.metadata.name}} sync is {{.app.status.sync.status}}.
-    Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+    Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
   slack:
     username: "testbot"
     icon: https://example.com/image.png
     attachments: |
       [{
         "title": "{{.app.metadata.name}}",
-        "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+        "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
         "color": "#18be52",
         "fields": [{
           "title": "Sync Status",
@@ -160,12 +160,12 @@ Furthermore, the messages can be broadcast to the channel at the specific templa
 template.app-sync-status: |
   message: |
     Application {{.app.metadata.name}} sync is {{.app.status.sync.status}}.
-    Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+    Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
   slack:
     attachments: |
       [{
         "title": "{{.app.metadata.name}}",
-        "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+        "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
         "color": "#18be52",
         "fields": [{
           "title": "Sync Status",
@@ -183,12 +183,12 @@ template.app-sync-status: |
 template.app-sync-failed: |
   message: |
     Application {{.app.metadata.name}} sync is {{.app.status.sync.status}}.
-    Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+    Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
   slack:
     attachments: |
       [{
         "title": "{{.app.metadata.name}}",
-        "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+        "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
         "color": "#ff0000",
         "fields": [{
           "title": "Sync Status",

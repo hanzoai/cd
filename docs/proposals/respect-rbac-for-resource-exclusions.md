@@ -20,22 +20,22 @@ creation-date: 2023-05-03
 
 # Enhancement Idea
 
-This is a proposal to provide the ability to configure argocd controller, to respect the current RBAC permissions 
+This is a proposal to provide the ability to configure cd controller, to respect the current RBAC permissions 
 when handling resources besides the already existing resource inclusions and exclusions.
 
 ## Summary
 
-Argo CD administrator will be able to configure in `argocd-cm`, whether to enable or disable(default) the feature where the controller will 
+Hanzo CD administrator will be able to configure in `cd-cm`, whether to enable or disable(default) the feature where the controller will 
 only monitor resources that the current service account allows it to read.
 
 ## Motivation
 
-Some users restrict the access of the argocd to specific resources using rbac and this feature will enable them to continue 
-using argocd without having to manually configure resource exclusions for all the resources that they don't want argocd to be managing.
+Some users restrict the access of the cd to specific resources using rbac and this feature will enable them to continue 
+using cd without having to manually configure resource exclusions for all the resources that they don't want cd to be managing.
 
 ## Proposal 
 
-The configuration for this will be present in the `argocd-cm`, we will add new boolean field `resource.respectRBAC` in the
+The configuration for this will be present in the `cd-cm`, we will add new boolean field `resource.respectRBAC` in the
 cm which can be set to `true` to enable this feature, by default the feature is disabled.
 
 For the implementation there are 3 proposals :
@@ -62,13 +62,13 @@ Users who are okay with an increase in kube api server calls can opt for strict 
 
 ## Security Considerations and Risks
 
-There are no particular security risks associated with this change, this proposal rather improves the argocd controller 
+There are no particular security risks associated with this change, this proposal rather improves the cd controller 
 to not access/monitor resources that it does not have permission to access.
 
 ## Upgrade / Downgrade Strategy
 
-There is no special upgrade strategy needed, all existing argocd configmaps will continue to work 
-and old configs without the `resource.respectRBAC` config will cause no change in argocd controllers behavior.
+There is no special upgrade strategy needed, all existing cd configmaps will continue to work 
+and old configs without the `resource.respectRBAC` config will cause no change in cd controllers behavior.
 
 While downgrading to older version, if the user had configured `resource.respectRBAC` previously this would be ignored completely 
-and argocd would revert to its default behavior of trying to monitor all resources.
+and cd would revert to its default behavior of trying to monitor all resources.

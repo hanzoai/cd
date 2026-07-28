@@ -1,5 +1,5 @@
 # The list generator specifies a literal list of argument values to the app spec template.
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook

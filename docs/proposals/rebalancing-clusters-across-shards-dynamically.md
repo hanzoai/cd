@@ -35,7 +35,7 @@ Scaling up or down happens one at a time. If there are 10 instances and if scale
 
 Each shard replica knows about the total number of available shards by evaluating the environment variable CD_CONTROLLER_REPLICAS, which needs to be kept up-to-date with the actual number of available replicas (shards). If the number of replicas does not equal the number set in CD_CONTROLLER_REPLICAS, sharding will not work as intended, leading to both, unused and overused replicas. As this environment variable is set on the StatefulSet and propagated to the pods, all the pods in the StatefulSet need to be restarted in order to pick up the new number of total shards.
 
-The current sharding mechanism relies on predictable pod names for the application controller to determine which shard a given replica should impersonate, e.g. the first replica of the StatefulSet (argocd-application-controller-0) will be the first shard, the second replica (argocd-application-controller-1) will be the second and so forth. 
+The current sharding mechanism relies on predictable pod names for the application controller to determine which shard a given replica should impersonate, e.g. the first replica of the StatefulSet (cd-application-controller-0) will be the first shard, the second replica (cd-application-controller-1) will be the second and so forth. 
 
 ## Motivation
 
@@ -64,7 +64,7 @@ Inorder to be able to accurately know which shards are being managed by which ap
 
 In most scenarios, the service account used by the application controller has read access to all the resources in the cluster. Thus, instead of setting the environment variable CD_CONTROLLER_REPLICAS representing the number of replicas, the number of replicas can be read directly from the number of healthy replicas of the application controller deployment.
 
-For other scenarios, some users install controller with only `argocd-application-controller-role` role and use it to manage remote clusters only. In this case, we would need to update the `argocd-application-controller-role` role and allow controller inspect it's own deployment and find out the number of replicas.
+For other scenarios, some users install controller with only `cd-application-controller-role` role and use it to manage remote clusters only. In this case, we would need to update the `cd-application-controller-role` role and allow controller inspect it's own deployment and find out the number of replicas.
 
 The application controllers will claim one of the available shards by checking which shard is not present in the ConfigMap or is assigned to an unhealthy controller. We will store the assignment list of Application Controller to Shard in ConfigMap. The mapping of Application Controller to Shard will store the below information:
 
@@ -112,12 +112,12 @@ As we are using ConfigMap, this Con get's removed. Kubernetes would give conflic
 
 * This would be a breaking change of converting StatefulSets to Deployments. Any automation done by customers which is based on the assumption that the controller is modelled as a StatefulSet would break with this change. 
 
-* ~~We would rely on Redis to store the current Application Controller to Shard mapping. In case the Redis is not available, it would not affect the regular working of ArgoCD. The dynamic distribution of clusters among healthy shards would stop working with the heartbeat process till Redis comes back up online, but the application controllers will continue managing their workloads.~~ We would not rely on Redis by using ConfigMap avoiding this issue.
+* ~~We would rely on Redis to store the current Application Controller to Shard mapping. In case the Redis is not available, it would not affect the regular working of Hanzo CD. The dynamic distribution of clusters among healthy shards would stop working with the heartbeat process till Redis comes back up online, but the application controllers will continue managing their workloads.~~ We would not rely on Redis by using ConfigMap avoiding this issue.
 
 
 ### Upgrade / Downgrade Strategy
 
-* Working ArgoCD itself should not affected. An initial restart of all the application controller pods is expected when we switch from StatefulSet to Deployment or vice-versa.
+* Working Hanzo CD itself should not affected. An initial restart of all the application controller pods is expected when we switch from StatefulSet to Deployment or vice-versa.
 
 * There would be some initial delays in the reconciliation process during the transition from StatefulSet to Deployment. If someone is not using sharding at all, they should not face any issues.
 

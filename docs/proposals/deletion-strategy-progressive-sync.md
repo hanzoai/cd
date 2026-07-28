@@ -15,11 +15,11 @@ last-updated: 2025-05-01
 
 # Deletion Strategy for Progressive Sync
 
-This proposal is building upon the ideas presented in https://github.com/argoproj/argo-cd/pull/14892 to introduce 
+This proposal is building upon the ideas presented in https://github.com/hanzoai/cd/pull/14892 to introduce 
 deletion strategy for progressive sync. While the original proposal laid the groundwork, this proposal extends to address
 some unanswered sections and changes implementation details.
 
-Introduce a new functionality of ArgoCD ProgressiveSync that will allow users to configure order 
+Introduce a new functionality of Hanzo CD ProgressiveSync that will allow users to configure order 
 of deletion for applicationSet's deployed applications. The deletion strategies can be:
 
 - AllAtOnce (current behaviour - where all applications are deleted in no particular order without waiting for an application 
@@ -41,7 +41,7 @@ can complete the ProgressiveSync feature.
 
 ## Motivation
 
-Current deletion/removal strategy which ArgoCD use works fine if there aren't any dependencies between the different applications. 
+Current deletion/removal strategy which Hanzo CD use works fine if there aren't any dependencies between the different applications. 
 However, it does not work when there are dependencies between the applications. This was noticed when some kubernetes core services 
 were deployed in specific order and to be removed in reverse order.
 
@@ -66,11 +66,11 @@ Add a list of detailed use cases this enhancement intends to take care of.
 
 #### AllAtOnce deletionStrategy:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: pricelist
-  namespace: argocd
+  namespace: cd
 spec:
   generators:
   - list:
@@ -131,11 +131,11 @@ spec:
 
 #### Reverse deletionStrategy:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: pricelist
-  namespace: argocd
+  namespace: cd
 spec:
   generators:
   - list:
@@ -195,11 +195,11 @@ spec:
 ```
 #### If custom deletionStrategy:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: pricelist
-  namespace: argocd
+  namespace: cd
 spec:
   generators:
   - list:
@@ -318,7 +318,7 @@ Already covered in Use cases
 ### Security Considerations
 
 Since no additional roles or privileges are needed to be able to delete deployed applications in a specific order, 
-so no impact on the security aspects of Argo CD workloads.
+so no impact on the security aspects of Hanzo CD workloads.
 
 
 ### Risks and Mitigations
@@ -335,7 +335,7 @@ Downgrading the controller while keeping the upgraded version of the CRD should 
 
 
 ## Drawbacks
-Slight increase in Argo CD code base complexity
+Slight increase in Hanzo CD code base complexity
 
 ## Alternatives
 TBD

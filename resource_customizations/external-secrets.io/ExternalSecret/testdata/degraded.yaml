@@ -4,9 +4,9 @@ metadata:
   creationTimestamp: '2021-11-16T21:59:33Z'
   generation: 1
   name: test-degraded
-  namespace: argocd
+  namespace: cd
   resourceVersion: '136487331'
-  selfLink: /apis/external-secrets.io/v1alpha1/namespaces/argocd/externalsecrets/test-degraded
+  selfLink: /apis/external-secrets.io/v1alpha1/namespaces/cd/externalsecrets/test-degraded
   uid: 1e754a7e-0781-4d57-932d-4651d5b19586
 spec:
   data:
@@ -42,7 +42,7 @@ spec:
         server: '{{ .url | toString }}'
       metadata:
         labels:
-          argocd.argoproj.io/secret-type: cluster
+          cd.hanzo.ai/secret-type: cluster
 status:
   conditions:
     - lastTransitionTime: '2021-11-16T21:59:34Z'

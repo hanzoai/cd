@@ -76,7 +76,7 @@ You may have a work-in-progress Pull Request to demonstrate the functioning of t
 
 ### Security Considerations
 
-* How does this proposal impact the security aspects of Argo CD workloads ?
+* How does this proposal impact the security aspects of Hanzo CD workloads ?
 * Are there any unresolved follow-ups that need to be done to make the enhancement more robust ?
 
 ### Risks and Mitigations

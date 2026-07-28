@@ -1,19 +1,19 @@
 # Deep Links
 
-Deep links allow users to quickly redirect to third-party systems, such as Splunk, Datadog, etc. from the Argo CD
+Deep links allow users to quickly redirect to third-party systems, such as Splunk, Datadog, etc. from the Hanzo CD
 user interface.
 
-Argo CD administrator will be able to configure links to third-party systems by providing 
-deep link templates configured in `argocd-cm`. The templates can be conditionally rendered and are able 
+Hanzo CD administrator will be able to configure links to third-party systems by providing 
+deep link templates configured in `cd-cm`. The templates can be conditionally rendered and are able 
 to reference different types of resources relating to where the links show up, this includes projects, applications,
 or individual resources (pods, services, etc.).
 
 ## Configuring Deep Links
 
-The configuration for Deep Links is present in `argocd-cm` as `<location>.links` fields where 
+The configuration for Deep Links is present in `cd-cm` as `<location>.links` fields where 
 `<location>` determines where it will be displayed. The possible values for `<location>` are:
 
-- `project`: all links under this field will show up in the project tab in the Argo CD UI
+- `project`: all links under this field will show up in the project tab in the Hanzo CD UI
 - `application`: all links under this field will show up in the application summary tab
 - `resource`: all links under this field will show up in the resource (deployments, pods, services, etc.) summary tab
 
@@ -48,7 +48,7 @@ The above resources are accessible in particular link categories, here's a list 
 - `application.links`: `app`/`application` and `cluster`
 - `project.links`: `project`
 
-An example `argocd-cm.yaml` file with deep links and their variations :
+An example `cd-cm.yaml` file with deep links and their variations :
 
 ```yaml
   # sample project level links

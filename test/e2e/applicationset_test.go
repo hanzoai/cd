@@ -59,7 +59,7 @@ func TestSimpleListGeneratorExternalNamespace(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Application",
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -157,7 +157,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Application",
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -181,7 +181,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 	expectedAppExternalNamespace2 := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Application",
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -338,7 +338,7 @@ func TestSimpleListGenerator(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -427,7 +427,7 @@ func TestSimpleListGeneratorGoTemplate(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -516,7 +516,7 @@ func TestRenderHelmValuesObject(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -588,7 +588,7 @@ func TestTemplatePatch(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -710,7 +710,7 @@ func TestUpdateHelmValuesObject(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -792,7 +792,7 @@ func TestSyncPolicyCreateUpdate(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Application",
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook-sync-policy-create-update",
@@ -902,7 +902,7 @@ func TestSyncPolicyCreateDelete(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Application",
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook-sync-policy-create-delete",
@@ -997,7 +997,7 @@ func TestSyncPolicyCreateOnly(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Application",
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook-sync-policy-create-only",
@@ -1126,7 +1126,7 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 					"site_admin": false
 				  },
 				  "private": false,
-				  "html_url": "https://github.com/argoproj/argo-cd",
+				  "html_url": "https://github.com/hanzoai/cd",
 				  "description": "This your first repo!",
 				  "fork": false,
 				  "url": "https://api.github.com/repos/argoproj/argo-cd",
@@ -1147,7 +1147,7 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 				  "git_commits_url": "https://api.github.com/repos/argoproj/argo-cd/git/commits{/sha}",
 				  "git_refs_url": "https://api.github.com/repos/argoproj/argo-cd/git/refs{/sha}",
 				  "git_tags_url": "https://api.github.com/repos/argoproj/argo-cd/git/tags{/sha}",
-				  "git_url": "git:github.com/argoproj/argo-cd.git",
+				  "git_url": "git:github.com/hanzoai/cd.git",
 				  "issue_comment_url": "https://api.github.com/repos/argoproj/argo-cd/issues/comments{/number}",
 				  "issue_events_url": "https://api.github.com/repos/argoproj/argo-cd/issues/events{/number}",
 				  "issues_url": "https://api.github.com/repos/argoproj/argo-cd/issues{/number}",
@@ -1167,10 +1167,10 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 				  "tags_url": "https://api.github.com/repos/argoproj/argo-cd/tags",
 				  "teams_url": "https://api.github.com/repos/argoproj/argo-cd/teams",
 				  "trees_url": "https://api.github.com/repos/argoproj/argo-cd/git/trees{/sha}",
-				  "clone_url": "https://github.com/argoproj/argo-cd.git",
+				  "clone_url": "https://github.com/hanzoai/cd.git",
 				  "mirror_url": "git:git.example.com/argoproj/argo-cd",
 				  "hooks_url": "https://api.github.com/repos/argoproj/argo-cd/hooks",
-				  "svn_url": "https://svn.github.com/argoproj/argo-cd",
+				  "svn_url": "https://svn.github.com/hanzoai/cd",
 				  "homepage": "https://github.com",
 				  "language": null,
 				  "forks_count": 9,
@@ -1308,7 +1308,7 @@ func TestSimpleSCMProviderGenerator(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "argo-cd-guestbook",
@@ -1377,7 +1377,7 @@ func TestSimpleSCMProviderGeneratorGoTemplate(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "argo-cd-guestbook",
@@ -1441,7 +1441,7 @@ func TestSCMProviderGeneratorSCMProviderNotAllowed(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "argo-cd-guestbook",
@@ -1511,7 +1511,7 @@ func TestCustomApplicationFinalizers(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -1575,7 +1575,7 @@ func TestCustomApplicationFinalizersGoTemplate(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook",
@@ -1686,7 +1686,7 @@ func TestSimpleSCMProviderGeneratorTokenRefStrictOk(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "argo-cd-guestbook",
@@ -1782,7 +1782,7 @@ func TestSimpleSCMProviderGeneratorTokenRefStrictKo(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "argo-cd-guestbook",
@@ -1885,7 +1885,7 @@ func TestSimplePullRequestGenerator(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "guestbook-1",
@@ -1960,7 +1960,7 @@ func TestSimplePullRequestGeneratorGoTemplate(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "guestbook-1",
@@ -2033,7 +2033,7 @@ func TestPullRequestGeneratorNotAllowedSCMProvider(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "guestbook-1",

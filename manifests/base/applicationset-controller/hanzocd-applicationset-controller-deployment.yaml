@@ -275,7 +275,7 @@ spec:
             - name: hanzocd-repo-server-mtls
               mountPath: /app/config/reposerver/mtls
             - name: hanzocd-cmd-params-cm
-              mountPath: /home/argocd/params
+              mountPath: /home/cd/params
           securityContext:
             capabilities:
               drop:

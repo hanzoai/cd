@@ -350,11 +350,11 @@ spec:
           mountPath: /tmp
         - mountPath: /helm-working-dir
           name: helm-working-dir
-        - mountPath: /home/argocd/cmp-server/plugins
+        - mountPath: /home/cd/cmp-server/plugins
           name: plugins
       initContainers:
       - args:
-          - /bin/cp /usr/local/bin/argocd /var/run/argocd/argocd && /bin/ln -sf /var/run/argocd/argocd /var/run/argocd/hanzocd-cmp-server
+          - /bin/cp /usr/local/bin/cd /var/run/cd/cd && /bin/ln -sf /var/run/cd/cd /var/run/cd/hanzocd-cmp-server
         command:
           - sh
           - '-c'
@@ -370,7 +370,7 @@ spec:
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
-        - mountPath: /var/run/argocd
+        - mountPath: /var/run/cd
           name: var-files
       volumes:
         - name: ssh-known-hosts

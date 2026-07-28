@@ -418,16 +418,16 @@ spec:
             - ALL
           seccompProfile:
             type: RuntimeDefault
-        workingDir: /home/argocd
+        workingDir: /home/cd
         volumeMounts:
         - name: hanzocd-repo-server-tls
           mountPath: /app/config/controller/tls
         - name: hanzocd-repo-server-mtls
           mountPath: /app/config/reposerver/mtls
         - name: hanzocd-home
-          mountPath: /home/argocd
+          mountPath: /home/cd
         - name: hanzocd-cmd-params-cm
-          mountPath: /home/argocd/params
+          mountPath: /home/cd/params
         - name: hanzocd-application-controller-tmp
           mountPath: /tmp
       serviceAccountName: hanzocd-application-controller

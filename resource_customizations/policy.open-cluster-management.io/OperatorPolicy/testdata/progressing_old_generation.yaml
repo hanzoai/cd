@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1beta1
 kind: OperatorPolicy
 metadata:
-  name: install-argocd
+  name: install-cd
   generation: 2
   namespace: local-cluster
 spec:
@@ -19,7 +19,7 @@ spec:
   severity: high
   subscription:
     channel: alpha
-    name: argocd-operator
+    name: cd-operator
     source: community-operators
     sourceNamespace: openshift-marketplace
   upgradeApproval: Automatic
@@ -57,7 +57,7 @@ status:
         apiVersion: operators.coreos.com/v1alpha1
         kind: Subscription
         metadata:
-          name: argocd-operator
+          name: cd-operator
           namespace: openshift-operators
       reason: Resource not found but should exist
-  resolvedSubscriptionLabel: argocd-operator.openshift-operators
+  resolvedSubscriptionLabel: cd-operator.openshift-operators

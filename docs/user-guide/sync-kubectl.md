@@ -1,15 +1,15 @@
 # Sync Applications with Kubectl
 
-You can use "kubectl" to ask Argo CD to synchronize applications the same way you can use the CLI or UI. Many configurations like "force", "prune", "apply" and even synchronizing a specific list of resources are equally supported. This is done by applying or patching the Argo CD application with a document that defines an "operation".
+You can use "kubectl" to ask Hanzo CD to synchronize applications the same way you can use the CLI or UI. Many configurations like "force", "prune", "apply" and even synchronizing a specific list of resources are equally supported. This is done by applying or patching the Hanzo CD application with a document that defines an "operation".
 
 This "operation" defines how a synchronization should be done and for what resources these synchronization is to be done.
 
-There are many configuration options that can be added to the "operation". Next, a few of them are explained. For more details, you can have a look at the CRD [applications.argoproj.io](https://github.com/argoproj/argo-cd/blob/master/manifests/crds/application-crd.yaml). Some of them are required, whereas others are optional.
+There are many configuration options that can be added to the "operation". Next, a few of them are explained. For more details, you can have a look at the CRD [applications.apps.hanzo.ai](https://github.com/hanzoai/cd/blob/master/manifests/crds/application-crd.yaml). Some of them are required, whereas others are optional.
 
-To ask Argo CD to synchronize all resources of a given application, we can do:
+To ask Hanzo CD to synchronize all resources of a given application, we can do:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: <app-name>
@@ -64,7 +64,7 @@ status:
 
 There are two types of synchronization strategies: "hook", which is the default value, and "apply".
 
-An "apply" sync strategy tells Argo CD to "kubectl apply", whereas a "hook" sync strategy informs Argo CD to submit any resource that's referenced in the operation. This way the synchronization of these resources will take into consideration any hook the resource has been annotated with.
+An "apply" sync strategy tells Hanzo CD to "kubectl apply", whereas a "hook" sync strategy informs Hanzo CD to submit any resource that's referenced in the operation. This way the synchronization of these resources will take into consideration any hook the resource has been annotated with.
 
 ```yaml
 operation:
@@ -100,7 +100,7 @@ operation:
 
 # Prune
 
-If you want to prune your resources before applying, you can instruct Argo CD to do so:
+If you want to prune your resources before applying, you can instruct Hanzo CD to do so:
 
 ```yaml
 operation:

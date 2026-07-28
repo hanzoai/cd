@@ -1,7 +1,7 @@
 # Resource Health
 
 ## Overview
-Argo CD provides built-in health assessment for several standard Kubernetes types, which is then
+Hanzo CD provides built-in health assessment for several standard Kubernetes types, which is then
 surfaced to the overall Application health status as a whole. The following checks are made for
 specific types of Kubernetes resources:
 
@@ -28,22 +28,22 @@ with at least one value for `hostname` or `IP`.
 
 ### Argocd App
 
-The health assessment of `argoproj.io/Application` CRD has been removed in argocd 1.8 (see [#3781](https://github.com/argoproj/argo-cd/issues/3781) for more information).
+The health assessment of `apps.hanzo.ai/Application` CRD has been removed in cd 1.8 (see [#3781](https://github.com/argoproj/argo-cd/issues/3781) for more information).
 You might need to restore it if you are using app-of-apps pattern and orchestrating synchronization using sync waves. Add the following resource customization in
-`argocd-cm` ConfigMap:
+`cd-cm` ConfigMap:
 
 ```yaml
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
-  resource.customizations.health.argoproj.io_Application: |
+  resource.customizations.health.apps.hanzo.ai_Application: |
     hs = {}
     hs.status = "Progressing"
     hs.message = ""
@@ -62,12 +62,12 @@ data:
 
 ### Preface
 
-Argo CD supports custom health checks written in [Lua](https://www.lua.org/). This is useful if you:
+Hanzo CD supports custom health checks written in [Lua](https://www.lua.org/). This is useful if you:
 
 * Are affected by known issues where your `Ingress` or `StatefulSet` resources are stuck in `Progressing` state because of bug in your resource controller.
-* Have a custom resource for which Argo CD does not have a built-in health check.
+* Have a custom resource for which Hanzo CD does not have a built-in health check.
 
-Argo CD relies on the health and status fields provided by Kubernetes CRDs. These fields are defined and maintained by the creators of each CRD, not by Argo CD. Since CRDs do not follow a consistent or standardized status format, Argo CD can only determine their health reliably when custom health checks are explicitly contributed for each CRD.
+Hanzo CD relies on the health and status fields provided by Kubernetes CRDs. These fields are defined and maintained by the creators of each CRD, not by Hanzo CD. Since CRDs do not follow a consistent or standardized status format, Hanzo CD can only determine their health reliably when custom health checks are explicitly contributed for each CRD.
 
 ### Guidelines for Writing Good Health Checks
 
@@ -77,23 +77,23 @@ CRDs do not follow a consistent or standardized status format, but in most of th
 However, for some controllers, the `status` sub-resource is complex and challenging to understand and interpret correctly. For those cases, you may want to consult the controller's docs or even code (especially where the status conditions are handled) to write the health check correctly.
 
 #### Using kstatus
-If the CRD status is in [kstatus](https://github.com/kubernetes-sigs/cli-utils/blob/master/pkg/kstatus/README.md) format, please state it as a comment in the health check (as Argo CD maintainers evaluate the usage of kstatus-based health calculation, having the knowledge about which CRDs follow this standard can help us with adoption).
+If the CRD status is in [kstatus](https://github.com/kubernetes-sigs/cli-utils/blob/master/pkg/kstatus/README.md) format, please state it as a comment in the health check (as Hanzo CD maintainers evaluate the usage of kstatus-based health calculation, having the knowledge about which CRDs follow this standard can help us with adoption).
 
 #### Using K8s observedGeneration field
-If the CRD uses the [observedGeneration](https://alenkacz.medium.com/kubernetes-operator-best-practices-implementing-observedgeneration-250728868792) field correctly and it is present in the `status` sub-resource, please use this field in the health check. Using this field in calculating the CRD health is important for preventing situations in which the health status in Argo CD may flap if Argo CD is evaluating the health status before the CRD controller finished reconciling the changed CR.   
-This is an [example](https://github.com/argoproj/argo-cd/blob/stable/resource_customizations/argoproj.io/Rollout/health.lua) of using this field in a health check.  
+If the CRD uses the [observedGeneration](https://alenkacz.medium.com/kubernetes-operator-best-practices-implementing-observedgeneration-250728868792) field correctly and it is present in the `status` sub-resource, please use this field in the health check. Using this field in calculating the CRD health is important for preventing situations in which the health status in Hanzo CD may flap if Hanzo CD is evaluating the health status before the CRD controller finished reconciling the changed CR.   
+This is an [example](https://github.com/hanzoai/cd/blob/stable/resource_customizations/apps.hanzo.ai/Rollout/health.lua) of using this field in a health check.  
 
 ### Configuring Custom Health Checks
 
 There are two ways to configure a custom health check. The next two sections describe those ways.
 
-### Way 1. Define a Custom Health Check in `argocd-cm` ConfigMap
+### Way 1. Define a Custom Health Check in `cd-cm` ConfigMap
 
 Custom health checks can be defined in
 ```yaml
   resource.customizations.health.<group>_<kind>: |
 ```
-field of `argocd-cm`. If you are using argocd-operator, this is overridden by [the argocd-operator resourceCustomizations](https://argocd-operator.readthedocs.io/en/latest/reference/argocd/#resource-customizations).
+field of `cd-cm`. If you are using cd-operator, this is overridden by [the cd-operator resourceCustomizations](https://cd-operator.readthedocs.io/en/latest/reference/cd/#resource-customizations).
 
 The following example demonstrates a health check for `cert-manager.io/Certificate`.
 
@@ -169,7 +169,7 @@ By default, health typically returns a `Progressing` status.
 
 ### Way 2. Contribute a Custom Health Check
 
-A health check can be bundled into Argo CD. Custom health check scripts are located in the `resource_customizations` directory of [https://github.com/argoproj/argo-cd](https://github.com/argoproj/argo-cd). This must have the following directory structure:
+A health check can be bundled into Hanzo CD. Custom health check scripts are located in the `resource_customizations` directory of [https://github.com/hanzoai/cd](https://github.com/hanzoai/cd). This must have the following directory structure:
 
 ```
 argo-cd
@@ -195,11 +195,11 @@ For the files you add in `testdata` folder - please make sure those are full K8s
 For the cases when the `status` sub-resource is complex and you had to consult the controller docs/code in order to write the health check, please provide a comment with a link - to the controller docs/code that you based the health check on - in the `health.lua` file.
 
 > [!IMPORTANT]
-> Argo CD maintainers do not have the full expertise on the different CRDs and their health conditions, so in cases of complex `status` conditions, the Argo CD maintainers may ask you to reach out to the CRD maintainers to help review the health check PR. 
+> Hanzo CD maintainers do not have the full expertise on the different CRDs and their health conditions, so in cases of complex `status` conditions, the Hanzo CD maintainers may ask you to reach out to the CRD maintainers to help review the health check PR. 
 
 To test the implemented custom health checks, run `go test -v ./util/lua/`.
 
-The [PR#1139](https://github.com/argoproj/argo-cd/pull/1139) is an example of Cert Manager CRDs custom health check.
+The [PR#1139](https://github.com/hanzoai/cd/pull/1139) is an example of Cert Manager CRDs custom health check.
 
 #### Wildcard Support for Built-in Health Checks
 
@@ -232,7 +232,7 @@ only treat a path as a wildcard if it contains a `_` character, but this may cha
 
 ## Overriding Go-Based Health Checks
 
-Health checks for some resources were [hardcoded as Go code](https://github.com/argoproj/argo-cd/tree/master/gitops-engine/pkg/health) 
+Health checks for some resources were [hardcoded as Go code](https://github.com/hanzoai/cd/tree/master/gitops-engine/pkg/health) 
 because Lua support was introduced later. Also, the logic of health checks for some resources were too complex, so it 
 was easier to implement it in Go.
 
@@ -249,7 +249,7 @@ The following resources have Go-based health checks:
 * apps/Deployment
 * apps/ReplicaSet
 * apps/StatefulSet
-* argoproj.io/Workflow
+* apps.hanzo.ai/Workflow
 * autoscaling/HorizontalPodAutoscaler
 * batch/Job
 * extensions/Ingress
@@ -257,7 +257,7 @@ The following resources have Go-based health checks:
 
 ## Health Checks
 
-Argo CD App health is inferred from the health of its immediate child resources as represented in the application source.  
+Hanzo CD App health is inferred from the health of its immediate child resources as represented in the application source.  
 The App health will be the **worst health of its immediate child resources**, based on the following priority (from most to least healthy):  
 **Healthy, Suspended, Progressing, Missing, Degraded, Unknown.**  
 For example, if an App has a Missing resource and a Degraded resource, the App's health will be **Degraded**.
@@ -291,14 +291,14 @@ App (healthy)
 ```
 ## Ignoring Child Resource Health Check in Applications
 
-To ignore the health check of an immediate child resource within an Application, set the annotation `argocd.argoproj.io/ignore-healthcheck` to `true`. For example:
+To ignore the health check of an immediate child resource within an Application, set the annotation `cd.hanzo.ai/ignore-healthcheck` to `true`. For example:
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    argocd.argoproj.io/ignore-healthcheck: "true"
+    cd.hanzo.ai/ignore-healthcheck: "true"
 ```
 
 By doing this, the health status of the Deployment will not affect the health of its parent Application.

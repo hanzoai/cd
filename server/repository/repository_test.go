@@ -63,7 +63,7 @@ var (
 	defaultProj = &appsv1.AppProject{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.AppProjectKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "default",
@@ -78,7 +78,7 @@ var (
 	defaultProjNoSources = &appsv1.AppProject{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.AppProjectKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "default",
@@ -104,7 +104,7 @@ var (
 	guestbookApp = &appsv1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "guestbook",
@@ -139,7 +139,7 @@ var (
 	multiSourceApp001        = &appsv1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      multiSourceApp001AppName,
@@ -190,7 +190,7 @@ var (
 	multiSourceApp002        = &appsv1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      multiSourceApp002AppName,

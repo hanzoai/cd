@@ -84,7 +84,7 @@ on the state. The colours are as follows. `Red: sync denied`, `Orange: manual al
 To display the sync state using the CLI:
 
 ```bash
-argocd app get APP
+cd app get APP
 ```
 
 Which will return the sync state and any matching windows.
@@ -108,7 +108,7 @@ Health Status:      Healthy
 Windows can be created using the CLI:
 
 ```bash
-argocd proj windows add PROJECT \
+cd proj windows add PROJECT \
     --kind allow \
     --schedule "0 22 * * *" \
     --duration 1h \
@@ -119,7 +119,7 @@ To create a window with sync overrun enabled (allowing in-progress syncs to cont
 
 ```bash
 # Allow window with overrun - syncs can continue after window ends
-argocd proj windows add PROJECT \
+cd proj windows add PROJECT \
     --kind allow \
     --schedule "0 9 * * *" \
     --duration 8h \
@@ -127,7 +127,7 @@ argocd proj windows add PROJECT \
     --sync-overrun
 
 # Deny window with overrun - in-progress syncs can continue during deny window
-argocd proj windows add PROJECT \
+cd proj windows add PROJECT \
     --kind deny \
     --schedule "0 22 * * *" \
     --duration 1h \
@@ -138,7 +138,7 @@ argocd proj windows add PROJECT \
 Alternatively, they can be created directly in the `AppProject` manifest:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: default
@@ -175,31 +175,31 @@ In order to perform a sync when syncs are being prevented by a window, you can c
 using the CLI, UI or directly in the `AppProject` manifest:
 
 ```bash
-argocd proj windows enable-manual-sync PROJECT ID
+cd proj windows enable-manual-sync PROJECT ID
 ```
 
 To disable:
 
 ```bash
-argocd proj windows disable-manual-sync PROJECT ID
+cd proj windows disable-manual-sync PROJECT ID
 ```
 
 Similarly, you can enable or disable sync overrun for existing windows:
 
 ```bash
-argocd proj windows enable-sync-overrun PROJECT ID
+cd proj windows enable-sync-overrun PROJECT ID
 ```
 
 To disable:
 
 ```bash
-argocd proj windows disable-sync-overrun PROJECT ID
+cd proj windows disable-sync-overrun PROJECT ID
 ```
 
 Windows can be listed using the CLI or viewed in the UI:
 
 ```bash
-argocd proj windows list PROJECT
+cd proj windows list PROJECT
 ```
 
 ```bash
@@ -215,5 +215,5 @@ require the update to contain all of the required values. For example if updatin
 contains default and kube-system then the new value would have to include those in the list. 
 
 ```bash
-argocd proj windows update PROJECT ID --namespaces default,kube-system,prod1
+cd proj windows update PROJECT ID --namespaces default,kube-system,prod1
 ```

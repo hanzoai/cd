@@ -23,17 +23,17 @@ This proposal introduces an evolution to the existing GnuPG commit verification 
 
 ## Summary
 
-Argo CD has had a feature to verify OpenPGP signatures on Git commits using GnuPG for a while.
+Hanzo CD has had a feature to verify OpenPGP signatures on Git commits using GnuPG for a while.
 However, this feature is limited and in some ways may behave unexpectedly.
-Argo CD would ever only verify the signature on the commit that's pointed to by the `HEAD` of the `Application`'s resolved `targetRevision`.
+Hanzo CD would ever only verify the signature on the commit that's pointed to by the `HEAD` of the `Application`'s resolved `targetRevision`.
 
-Source verification policies are an evolution of the legacy signature verification in Argo CD.
+Source verification policies are an evolution of the legacy signature verification in Hanzo CD.
 It brings new verification modes, the possibility of treating multiple sources in an Application with different strictness.
 It also sets the foundation to implement more verification methods in the future that are not gpg, nor git specific.
 
 ## Motivation
 
-As a deployment tool, Argo CD sits in a prominent spot to enforce secure supply chain requirements.
+As a deployment tool, Hanzo CD sits in a prominent spot to enforce secure supply chain requirements.
 The cryptographic verification of sources and artifacts becomes more and more important to organizations and is heavily regulated in some fields.
 
 Verifying the `HEAD` commit before syncing is not a sufficient level of verification for many organizations and individuals anymore.
@@ -59,11 +59,11 @@ Especially with the advent of multi-source applications, the current approach of
 
 ### Use cases
 
-1. As an Argo CD user, I need to **ensure that my applications only sync if every single commit in my source repository has been cryptographically signed** by a trusted contributor.
+1. As an Hanzo CD user, I need to **ensure that my applications only sync if every single commit in my source repository has been cryptographically signed** by a trusted contributor.
     - This effectively prevents unsigned/untrusted commits in the git history.
-1. As an Argo CD user, I need to apply a **different level of trust to different source repositories**, especially with multi-source applications.
+1. As an Hanzo CD user, I need to apply a **different level of trust to different source repositories**, especially with multi-source applications.
     - Permitting different source repositories to have a different signing policy, and their flexible evolution in time (gradually introduce signing to multiple repositories, for example).
-1. As an Argo CD admin, I need to restrict **distinct sets of contributors in different repositories**.
+1. As an Hanzo CD admin, I need to restrict **distinct sets of contributors in different repositories**.
     - Rather than trusting all the contributors in all project's repositories. This becomes another line of defense in the event of a key compromise.
 
 ## Source verification policy
@@ -71,7 +71,7 @@ Especially with the advent of multi-source applications, the current approach of
 ### Overview
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 spec:
   sourceIntegrity:
@@ -101,7 +101,7 @@ It will use GnuPG to verify PGP signatures on commits in Git.
 
 Using this method, the list of allowed signers is a list of PGP key IDs.
 Commits signed by keys other than those specified in the list of allowed signers will not verify successfully.
-In addition to the key IDs to be listed as allowed signers, the keys themselves need to be imported into Argo CD as well using existing mechanisms.
+In addition to the key IDs to be listed as allowed signers, the keys themselves need to be imported into Hanzo CD as well using existing mechanisms.
 
 The `mode` defines how thorough the GPG verification is:
 
@@ -111,7 +111,7 @@ The `mode` defines how thorough the GPG verification is:
 
 `keys` lists the set of key IDs to trust for signed commits
 If a commit in the repository is signed by an ID not specified in the list of trusted signers, the verification will fail.
-If no trusted keys are configured, all signers from `argocd-gpg-keys-cm` ConfigMap are trusted.
+If no trusted keys are configured, all signers from `cd-gpg-keys-cm` ConfigMap are trusted.
 
 ### Verification modes explained
 
@@ -155,7 +155,7 @@ Only one policy is applied per source repository, and therefore the order of def
 
 Note that a multi-source application can have its source repositories validated based on different SVPs each.
 
-Argo CD will select the first policy that matches a repository source URL, and will ignore any other policies that follow.
+Hanzo CD will select the first policy that matches a repository source URL, and will ignore any other policies that follow.
 Policies are being evaluated top-down, so your more specific policies must come before the more broad ones.
 
 As an example, consider you want to verify that all commits across all repositories you source from `github.com` have a valid signature from GitHub's web signing key.
@@ -163,11 +163,11 @@ However, on a specific repository, you want to have a different policy, using `s
 You would set up the more specific policy first, and then the broad one:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: gpg
-  namespace: argocd
+  namespace: cd
 spec:
   sourceIntegrity:
     git:
@@ -189,7 +189,7 @@ spec:
 
 If the policies had been defined in the opposite order, the specific policy for `https://github.com/example/super-secure` would never match, because that repository URL is already matched by the other policy's `https://github.com/*` pattern, thus that policy would be applied.
 
-There needs to be a visual indicator in Argo CD CLI and UI, pointing out project repositories that do not perform GPG verification.
+There needs to be a visual indicator in Hanzo CD CLI and UI, pointing out project repositories that do not perform GPG verification.
 This is to provide an administrator with feedback on the repository matching evaluation.
 
 ### Security Considerations
@@ -199,22 +199,22 @@ Implementing this proposal would significantly increase resilience against breac
 - An unauthorized contributor has commit access.
 - Signing key was compromised.
 
-When someone compromises a developer's credentials as well as signature keys, the adversaries can force Argo CD to trust their commits only in those repositories, where the compromised keys had been added, but not elsewhere.
+When someone compromises a developer's credentials as well as signature keys, the adversaries can force Hanzo CD to trust their commits only in those repositories, where the compromised keys had been added, but not elsewhere.
 
 ### Upgrade / Downgrade Strategy
 
 #### Upgrade
 
 Upgrade will be seamless.
-When Argo CD detects the prior configuration for Git commit verification (i.e. `.spec.signatureKeys` is populated in the `AppProject`), the new implementation will behave like the current one.
+When Hanzo CD detects the prior configuration for Git commit verification (i.e. `.spec.signatureKeys` is populated in the `AppProject`), the new implementation will behave like the current one.
 
 Internally, this will create a single verification policy similar to the one illustrated earlier taking the keys from `.spec.signatureKeys`.
 
 If a user wants to migrate from the current implementation to the new source verification policies, they will first have to remove `.spec.signatureKeys` and can then go ahead and define desired policies in `.spec.sourceIntegrity.git.policies`.
 
-To achieve the legacy Argo CD verification behavior in a project, use the following config:
+To achieve the legacy Hanzo CD verification behavior in a project, use the following config:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 spec:
   sourceIntegrity:
@@ -233,11 +233,11 @@ spec:
 
 At downgrade time, people will have to reconfigure `.spec.signatureKeys` into any AppProject where it has been removed and remove `.spec.sourceIntegrity.git.policies` at the same time.
 
-Unless the user motivation for the downgrade is a bug in Argo CD implementation, moving the mode to `head` or `none` (depending on what they are downgrading to) is sufficient.
+Unless the user motivation for the downgrade is a bug in Hanzo CD implementation, moving the mode to `head` or `none` (depending on what they are downgrading to) is sufficient.
 
 ## Drawbacks
 
-* Configuring source verification policies adds some complexity to both Argo CD implementation and used configuration.
+* Configuring source verification policies adds some complexity to both Hanzo CD implementation and used configuration.
 * Configuring or implementing those incorrectly can be a source of security incidents.
 
 ## Alternatives
@@ -259,7 +259,7 @@ Can be done selectively based on source integrity criteria applicability (Git/OC
    
    However, this would be a breaking change, as currently the type of entry in `sourceRepos` is just `string`, and it would have to become a complex type.
    
-We might want to consider moving `sourceIntegrity` into either of those places with the next major Argo CD release.
+We might want to consider moving `sourceIntegrity` into either of those places with the next major Hanzo CD release.
 
 ### Dealing with unsigned commits in the history using `strict` verification mode
 
@@ -290,7 +290,7 @@ In fact, it does not harm UX *and* improves security with:
 #### Git history *sealing* for strict verification mode
 
 A sealing commit is a gpg signed commit that works as a "seal of approval" attesting that all its ancestor commits were either signed by a trusted key, or reviewed and trusted by the commit author.
-Argo CD verifying gpg signatures would then progress only as far back in the history as the most recent "seal" commits in each individual ancestral branch.
+Hanzo CD verifying gpg signatures would then progress only as far back in the history as the most recent "seal" commits in each individual ancestral branch.
 
 In practice, a commiter reviews all commits that are not signed or signed with untrusted keys from the previous "seal" and creates a (possibly empty) commit with a custom trailer.
 Such commits can have the following organization level semantics:
@@ -300,7 +300,7 @@ Such commits can have the following organization level semantics:
 - "I am removing the GPG key of Bob. All his previous commits are trusted, but no new ones will be. Happy retirement, Bob!"
 - "I am replacing my old key with a new one. Trust my commit signed with the old one before this commit, trust my new one from now on."
 
-To make a "seal" commit, run `git commit --signoff --gpg-sign --trailer="Argocd-gpg-seal: <justification>"` and push to branch pulled by Argo CD.
+To make a "seal" commit, run `git commit --signoff --gpg-sign --trailer="Argocd-gpg-seal: <justification>"` and push to branch pulled by Hanzo CD.
 The advantage is the exact same procedure deals with all the identified situations of unsigned or untrusted commits in the history, eliminating the room for eventual rebasing mistakes that would jeopardize security or correctness.
 It is possible to introduce tooling to help identify all previous "seal" commits and all the untrusted commits made since then, so the administrator knows exactly what are they "seal-signing".
 
@@ -358,12 +358,12 @@ o
 
 #### Comparison with the original `progressive` mode
 
-The "seal-signing" is inspired by the original mode that verified commits from `targetRevision` to a commit of last successful Argo CD Application sync.
+The "seal-signing" is inspired by the original mode that verified commits from `targetRevision` to a commit of last successful Hanzo CD Application sync.
 They both verify the history backwards only until a certain point, from which it is considered inherently trusted.
 
-The non-trivial N:M mapping between repositories and Applications (or even Argo CD instances) was a cause of a number of corner cases identified in the original proposal.
+The non-trivial N:M mapping between repositories and Applications (or even Hanzo CD instances) was a cause of a number of corner cases identified in the original proposal.
 
-Seal-signing marks the point(s) from where not to verify commits *inside* the repository itself, and thus is making sure that all Argo CD instances and their applications have a consistent view of what they are, regardless of application removal from Argo CD, Argo CD migration, etc.
+Seal-signing marks the point(s) from where not to verify commits *inside* the repository itself, and thus is making sure that all Hanzo CD instances and their applications have a consistent view of what they are, regardless of application removal from Hanzo CD, Hanzo CD migration, etc.
 
 Both approaches, in fact, work as an optimization mechanism by limiting the number of commits to verify.
 For sealing, a commiter needs to add a seal commit manually even if there are no unsigned changes to speed things up.

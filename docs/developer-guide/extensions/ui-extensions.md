@@ -1,7 +1,7 @@
 # UI Extensions
 
-Argo CD web user interface can be extended with additional UI elements. Extensions should be delivered as a javascript file
-in the `argocd-server` Pods that are placed in the `/tmp/extensions` directory and starts with `extension` prefix ( matches to `^extension(.*)\.js$` regex ).
+Hanzo CD web user interface can be extended with additional UI elements. Extensions should be delivered as a javascript file
+in the `cd-server` Pods that are placed in the `/tmp/extensions` directory and starts with `extension` prefix ( matches to `^extension(.*)\.js$` regex ).
 
 ```
 /tmp/extensions
@@ -25,7 +25,7 @@ externals: {
 
 ## Resource Tab Extensions
 
-Resource Tab extensions is an extension that provides an additional tab for the resource sliding panel at the Argo CD Application details page.
+Resource Tab extensions is an extension that provides an additional tab for the resource sliding panel at the Hanzo CD Application details page.
 
 The resource tab extension should be registered using the `extensionsAPI.registerResourceExtension` method:
 
@@ -35,11 +35,11 @@ registerResourceExtension(component: ExtensionComponent, group: string, kind: st
 
 - `component: ExtensionComponent` is a React component that receives the following properties:
 
-  - application: Application - Argo CD Application resource;
+  - application: Application - Hanzo CD Application resource;
   - resource: State - the Kubernetes resource object;
   - tree: ApplicationTree - includes list of all resources that comprise the application;
 
-  See properties interfaces in [models.ts](https://github.com/argoproj/argo-cd/blob/master/ui/src/app/shared/models.ts)
+  See properties interfaces in [models.ts](https://github.com/hanzoai/cd/blob/master/ui/src/app/shared/models.ts)
 
 - `group: string` - the glob expression that matches the group of the resource; note: use globstar (`**`) to match all groups including empty string;
 - `kind: string` - the glob expression that matches the kind of the resource;
@@ -65,7 +65,7 @@ Below is an example of a resource tab extension:
 
 ## System Level Extensions
 
-Argo CD allows you to add new items to the sidebar that will be displayed as a new page with a custom component when clicked. The system level extension should be registered using the `extensionsAPI.registerSystemLevelExtension` method:
+Hanzo CD allows you to add new items to the sidebar that will be displayed as a new page with a custom component when clicked. The system level extension should be registered using the `extensionsAPI.registerSystemLevelExtension` method:
 
 ```typescript
 registerSystemLevelExtension(component: ExtensionComponent, title: string, options: {icon?: string})
@@ -93,12 +93,12 @@ Below is an example of a simple system level extension:
 
 ## Application Tab Extensions
 
-Since the Argo CD Application is a Kubernetes resource, application tabs can be the same as any other resource tab.
-Make sure to use 'argoproj.io'/'Application' as group/kind and an extension will be used to render the application-level tab.
+Since the Hanzo CD Application is a Kubernetes resource, application tabs can be the same as any other resource tab.
+Make sure to use 'apps.hanzo.ai'/'Application' as group/kind and an extension will be used to render the application-level tab.
 
 ## Application Status Panel Extensions
 
-The status panel is the bar at the top of the application view where the sync status is displayed. Argo CD allows you to add new items to the status panel of an application. The extension should be registered using the `extensionsAPI.registerStatusPanelExtension` method:
+The status panel is the bar at the top of the application view where the sync status is displayed. Hanzo CD allows you to add new items to the status panel of an application. The extension should be registered using the `extensionsAPI.registerStatusPanelExtension` method:
 
 ```typescript
 registerStatusPanelExtension(component: StatusPanelExtensionComponent, title: string, id: string, flyout?: ExtensionComponent)
@@ -159,7 +159,7 @@ Below is an example of an extension using the flyout widget:
 
 ## Top Bar Action Menu Extensions
 
-The top bar panel is the action menu at the top of the application view where the action buttons are displayed like Details, Sync, Refresh. Argo CD allows you to add new button to the top bar action menu of an application.
+The top bar panel is the action menu at the top of the application view where the action buttons are displayed like Details, Sync, Refresh. Hanzo CD allows you to add new button to the top bar action menu of an application.
 When the extension button is clicked, the custom widget will be rendered in a flyout panel.
 
 The extension should be registered using the `extensionsAPI.registerTopBarActionMenuExt` method:

@@ -21,7 +21,7 @@ Another `slugify` function has been added which, by default, sanitizes and smart
 #### Usage example
 
 ```
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: test-appset
@@ -57,7 +57,7 @@ possible with Go text templates:
 - Templating a boolean field.
 
         ::yaml
-        apiVersion: argoproj.io/v1alpha1
+        apiVersion: apps.hanzo.ai/v1alpha1
         kind: ApplicationSet
         spec:
           goTemplate: true
@@ -71,7 +71,7 @@ possible with Go text templates:
 - Templating an object field:
 
         ::yaml
-        apiVersion: argoproj.io/v1alpha1
+        apiVersion: apps.hanzo.ai/v1alpha1
         kind: ApplicationSet
         spec:
           goTemplate: true
@@ -83,7 +83,7 @@ possible with Go text templates:
 - Using control keywords across fields:
 
         ::yaml
-        apiVersion: argoproj.io/v1alpha1
+        apiVersion: apps.hanzo.ai/v1alpha1
         kind: ApplicationSet
         spec:
           goTemplate: true
@@ -103,7 +103,7 @@ possible with Go text templates:
 - Signature verification is not supported for the templated `project` field when using the Git generator.
 
         ::yaml
-        apiVersion: argoproj.io/v1alpha1
+        apiVersion: apps.hanzo.ai/v1alpha1
         kind: ApplicationSet
         spec:
           goTemplate: true
@@ -143,14 +143,14 @@ generators' templating:
 Here is an example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons
 spec:
   generators:
   - git:
-      repoURL: https://github.com/argoproj/argo-cd.git
+      repoURL: https://github.com/hanzoai/cd.git
       revision: HEAD
       directories:
       - path: applicationset/examples/git-generator-directory/cluster-addons/*
@@ -160,7 +160,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: '{{path}}'
       destination:
@@ -171,7 +171,7 @@ spec:
 becomes
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons
@@ -180,7 +180,7 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-      repoURL: https://github.com/argoproj/argo-cd.git
+      repoURL: https://github.com/hanzoai/cd.git
       revision: HEAD
       directories:
       - path: applicationset/examples/git-generator-directory/cluster-addons/*
@@ -190,7 +190,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:
@@ -230,7 +230,7 @@ ApplicationSet controller provides:
 This example shows basic string parameter substitution.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
@@ -266,7 +266,7 @@ For some generators, a parameter of a certain name might not always be populated
 or the git files generator). In these cases, you can use a Go template to provide a fallback value.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
@@ -287,7 +287,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: applicationset/examples/list-generator/guestbook/{{.cluster}}
       destination:

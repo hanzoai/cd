@@ -214,7 +214,7 @@ func (a *Actions) Create(appSet v1alpha1.ApplicationSet) *Actions {
 
 	fixtureClient := utils.GetE2EFixtureK8sClient(a.context.T())
 
-	appSet.APIVersion = "argoproj.io/v1alpha1"
+	appSet.APIVersion = "apps.hanzo.ai/v1alpha1"
 	appSet.Kind = "ApplicationSet"
 
 	var appSetClientSet dynamic.ResourceInterface

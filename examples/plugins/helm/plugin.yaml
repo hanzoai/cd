@@ -1,11 +1,11 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: simple-helm-cmp
 spec:
   version: v1.0
   generate:
-    command: [sh, /var/run/argocd/helm-plugin/generate.sh]
+    command: [sh, /var/run/cd/helm-plugin/generate.sh]
   discover:
     fileName: "./values.yaml"
   parameters:
@@ -14,4 +14,4 @@ spec:
         title: VALUES FILES
         collectionType: array
     dynamic:
-      command: [sh, /var/run/argocd/helm-plugin/get-parameters.sh]
+      command: [sh, /var/run/cd/helm-plugin/get-parameters.sh]

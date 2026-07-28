@@ -1,14 +1,14 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-      repoURL: https://github.com/argoproj/argo-cd.git
+      repoURL: https://github.com/hanzoai/cd.git
       revision: HEAD
       directories:
       - path: applicationset/examples/git-generator-directory/cluster-addons/*
@@ -18,7 +18,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:

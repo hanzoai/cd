@@ -1,14 +1,14 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    rollout.argoproj.io/revision: "2"
+    rollout.apps.hanzo.ai/revision: "2"
   creationTimestamp: "2020-11-13T08:37:51Z"
   generation: 3
   name: bluegreen
-  namespace: argocd-e2e
+  namespace: cd-e2e
   resourceVersion: "202207"
-  selfLink: /apis/argoproj.io/v1alpha1/namespaces/argocd-e2e/rollouts/bluegreen
+  selfLink: /apis/apps.hanzo.ai/v1alpha1/namespaces/cd-e2e/rollouts/bluegreen
   uid: 39d30e1e-5e0e-460a-a217-fa21215f1d1f
 spec:
   replicas: 3

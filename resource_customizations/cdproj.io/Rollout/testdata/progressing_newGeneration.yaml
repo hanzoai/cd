@@ -1,12 +1,12 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   creationTimestamp: "2020-11-13T00:44:55Z"
   generation: 2
   name: basic
-  namespace: argocd-e2e
+  namespace: cd-e2e
   resourceVersion: "182108"
-  selfLink: /apis/argoproj.io/v1alpha1/namespaces/argocd-e2e/rollouts/basic
+  selfLink: /apis/apps.hanzo.ai/v1alpha1/namespaces/cd-e2e/rollouts/basic
   uid: 34e4bbfc-222c-4968-bd60-2b30ae81110d
 spec:
   replicas: 1

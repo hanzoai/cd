@@ -1,6 +1,6 @@
-# Argo CD Maintainers
+# Hanzo CD Maintainers
 
-This document lists the maintainers of the Argo CD project.
+This document lists the maintainers of the Hanzo CD project.
 
 ## Maintainers
 

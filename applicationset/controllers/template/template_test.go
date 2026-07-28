@@ -82,7 +82,7 @@ func TestGenerateApplications(t *testing.T) {
 			},
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 		}
 

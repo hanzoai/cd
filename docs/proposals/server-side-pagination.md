@@ -15,7 +15,7 @@ last-updated: 2024-02-14
 
 # Introduce Server Side Pagination for Applications List and Watch APIs
 
-Improve Argo CD performance by introducing server side pagination for Applications List and Watch APIs.
+Improve Hanzo CD performance by introducing server side pagination for Applications List and Watch APIs.
 
 ## Open Questions [optional]
 
@@ -25,13 +25,13 @@ design.
 
 ## Summary
 
-The Argo CD API server currently returns all applications in a single response. This can be a performance
+The Hanzo CD API server currently returns all applications in a single response. This can be a performance
 bottleneck when there are a large number of applications. This proposal is to introduce server side pagination
 for the Applications List and Watch APIs.
 
 ## Motivation
 
-The main motivation for this proposal it to improve the Argo CD UI responsiveness when there are a large number
+The main motivation for this proposal it to improve the Hanzo CD UI responsiveness when there are a large number
 of applications. The API server memory usage increases with the number of applications however this is not critical
 and can be mitigated by increasing memory limits for the API server deployment. The UI however becomes unresponsive
 even on a powerful machine when the number of applications increases 2000. The server side pagination will allow
@@ -41,9 +41,9 @@ to reduce amount of data returned by the API server and improve the UI responsiv
 
 * Support server side pagination for Applications List and Watch APIs
 
-* Leverage pagination in the Argo CD UI to improve responsiveness
+* Leverage pagination in the Hanzo CD UI to improve responsiveness
 
-* Leverage pagination in the Argo CD CLI to improve performance and reduce load on the API server
+* Leverage pagination in the Hanzo CD CLI to improve performance and reduce load on the API server
 
 ### Non-Goals
 
@@ -55,7 +55,7 @@ to reduce amount of data returned by the API server and improve the UI responsiv
 **Pagination Cursor**
 
 It is proposed to add `offset` and `limit` fields for pagination support in Application List API.
-The Watch API is a bit more complex. Both Argo CD user interface and CLI are relying on the Watch API to display real time updates of Argo CD applications.
+The Watch API is a bit more complex. Both Hanzo CD user interface and CLI are relying on the Watch API to display real time updates of Hanzo CD applications.
 The Watch API currently supports filtering by a project and an application name. In order to effectively
 implement server side pagination for the Watch API we cannot rely on the order of the applications returned by the API server. Instead of
 relying on the order it is proposed to rely on the application name and use it as a cursor for pagination. Both the Applications List and Watch
@@ -103,11 +103,11 @@ message ApplicationQuery {
 }
 ```
 
-The Argo CD UI should be updated to populate fields in the List and Watch API requests instead of performing filtering on the client side.
+The Hanzo CD UI should be updated to populate fields in the List and Watch API requests instead of performing filtering on the client side.
 
 **Applications Stats**
 
-The Argo CD UI displays the breakdown of the applications by the sync status, health status etc. Stats numbers are calculated on the client side
+The Hanzo CD UI displays the breakdown of the applications by the sync status, health status etc. Stats numbers are calculated on the client side
 and rely on the full list of applications returned by the API server. The server side pagination will break the stats calculation. The proposal is to
 intoduce a new `stats` field to the Applications List API response. The field will contain the breakdown of the applications by various statuses.
 
@@ -130,22 +130,22 @@ type ApplicationListStats struct {
 ```
 
 The `stats` filter should be populated with information about all applications returned by the API server even when single page is loaded.
-The Argo CD UI should be updated to use the stats returned by the API server instead of calculating the stats on the client side.
+The Hanzo CD UI should be updated to use the stats returned by the API server instead of calculating the stats on the client side.
 
-**Argo CD CLI**
+**Hanzo CD CLI**
 
-The Argo CD CLI should be updated to support server side pagination. The `argocd app list` command should be updated to support `--offset` and `--limit` flags.
+The Hanzo CD CLI should be updated to support server side pagination. The `cd app list` command should be updated to support `--offset` and `--limit` flags.
 If the `--offset` and `--limit` flags are not specified the CLI should use pagination to load all applications in batches of 500 applications.
 
 ### Use cases
 
 Add a list of detailed use cases this enhancement intends to take care of.
 
-#### User Server Side Pagination in Argo CD User Interface to improve responsiveness:
+#### User Server Side Pagination in Hanzo CD User Interface to improve responsiveness:
 As a user, I would like to be able to navigate through the list of applications using the pagination controls.
 
-#### User Server Side Pagination in Argo CD CLI to reduce load on the API server:
-As a user, I would like to use Argo CD CLI to list applications while leveraging the pagination without overloading the API server.
+#### User Server Side Pagination in Hanzo CD CLI to reduce load on the API server:
+As a user, I would like to use Hanzo CD CLI to list applications while leveraging the pagination without overloading the API server.
 
 ### Implementation Details/Notes/Constraints [optional]
 
@@ -175,13 +175,13 @@ The proposal does not introduce any breaking changes. The API server should grac
 
 * **Lack of profiling data**: We currently lack full end-to-end profiling data about the performance of the list UI to confirm how much pagination would improve performance
 * **Inability to use k8s pagination**: our UI offers features like sorting by app name, which Kubernetes does not support; so Argo will need to load the full list from Kubernetes regardless of Argo-side pagination
-* **Complex Implementation**: a [couple](https://github.com/argoproj/argo-cd/pull/22444) [attempts](https://github.com/argoproj/argo-cd/pull/25097) to implement the feature have failed due to high complexity and unexpected edge cases
+* **Complex Implementation**: a [couple](https://github.com/hanzoai/cd/pull/22444) [attempts](https://github.com/hanzoai/cd/pull/25097) to implement the feature have failed due to high complexity and unexpected edge cases
 
 ## Alternatives
 
 * **Improve frontend performance**:
-  * **Upgrade to React 19**: [will provide](https://github.com/argoproj/argo-cd/pull/27091) immediate performance benefits and unlock new profiling tooling to investigate bottlenecks
-  * **Improve RBAC evaluation**: one of the slow parts of listing apps is evaluating RBAC for each app, and we can improve that by doing things like [caching compiled glob patterns](https://github.com/argoproj/argo-cd/pull/25759)
-* **Reduce list payload**: some data sent to the UI is unnecessary and [can be eliminated](https://github.com/argoproj/argo-cd/pull/25451) relatively easily
+  * **Upgrade to React 19**: [will provide](https://github.com/hanzoai/cd/pull/27091) immediate performance benefits and unlock new profiling tooling to investigate bottlenecks
+  * **Improve RBAC evaluation**: one of the slow parts of listing apps is evaluating RBAC for each app, and we can improve that by doing things like [caching compiled glob patterns](https://github.com/hanzoai/cd/pull/25759)
+* **Reduce list payload**: some data sent to the UI is unnecessary and [can be eliminated](https://github.com/hanzoai/cd/pull/25451) relatively easily
 
 ****

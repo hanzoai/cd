@@ -31,8 +31,8 @@ func NewLogoutCommand(clientOpts *cdclient.ClientOptions) *cobra.Command {
 # This can be helpful for security reasons or when you want to switch between different Hanzo CD contexts or accounts.
 cd logout CONTEXT
 
-# Logout from a specific context named 'cd.argoproj.io'
-cd logout cd.argoproj.io
+# Logout from a specific context named 'cd.hanzo.ai'
+cd logout cd.hanzo.ai
 `,
 		Run: func(c *cobra.Command, args []string) {
 			if len(args) == 0 {

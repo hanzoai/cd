@@ -1440,7 +1440,7 @@ func TestNewNormalizeTargetManifestsProvider(t *testing.T) {
 		// Verify tracking annotation was re-applied with correct (empty) namespace
 		annotations := result[0].GetAnnotations()
 		assert.NotNil(t, annotations)
-		trackingID, ok := annotations["cd.argoproj.io/tracking-id"]
+		trackingID, ok := annotations["cd.hanzo.ai/tracking-id"]
 		assert.True(t, ok, "tracking annotation should be present")
 		// Tracking ID format: app-name:group/kind:namespace/name (namespace should be empty for cluster-scoped)
 		assert.Contains(t, trackingID, "ClusterRole:")

@@ -7,7 +7,7 @@
 #  3. The outer matrix generator takes the cartesian product of the 3 union and the 4 inner matrix parameter sets to
 #     make 3*4=12 final parameter sets.
 #  4. The 12 final parameter sets are evaluated against the top-level template to generate 12 Applications.
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: matrix-and-union-in-matrix
@@ -61,7 +61,7 @@ spec:
     spec:
       project: '{{.values.project}}'
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:

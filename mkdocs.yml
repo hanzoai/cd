@@ -108,7 +108,7 @@ nav:
     - Installations: operator-manual/applicationset/Getting-Started.md
     - Use Cases: operator-manual/applicationset/Use-Cases.md
     - Security: operator-manual/applicationset/Security.md
-    - How ApplicationSet controller interacts with Argo CD: operator-manual/applicationset/Argo-CD-Integration.md
+    - How ApplicationSet controller interacts with Hanzo CD: operator-manual/applicationset/Hanzo CD-Integration.md
     - ApplicationSet Web UI: operator-manual/applicationset/Web-UI.md
     - Generators:
       - operator-manual/applicationset/Generators.md
@@ -132,10 +132,10 @@ nav:
     - ApplicationSet Specification Reference: operator-manual/applicationset/applicationset-specification.md
     - ApplicationSet in any namespace: operator-manual/applicationset/Appset-Any-Namespace.md
   - Server Configuration Parameters:
-    - operator-manual/server-commands/argocd-server.md
-    - operator-manual/server-commands/argocd-application-controller.md
-    - operator-manual/server-commands/argocd-repo-server.md
-    - operator-manual/server-commands/argocd-dex.md
+    - operator-manual/server-commands/cd-server.md
+    - operator-manual/server-commands/cd-application-controller.md
+    - operator-manual/server-commands/cd-repo-server.md
+    - operator-manual/server-commands/cd-dex.md
     - operator-manual/server-commands/additional-configuration-method.md
   - Upgrading:
     - operator-manual/upgrading/overview.md
@@ -217,7 +217,7 @@ nav:
   - user-guide/application-notice.md
   - Notification subscriptions: user-guide/subscriptions.md
   - user-guide/annotations-and-labels.md
-  - Command Reference: user-guide/commands/argocd.md
+  - Command Reference: user-guide/commands/cd.md
   - Application Specification Reference: user-guide/application-specification.md
 - Developer Guide:
   - developer-guide/index.md

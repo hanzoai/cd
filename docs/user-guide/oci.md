@@ -2,16 +2,16 @@
 
 ## Declarative
 
-Argo CD supports using OCI (Open Container Initiative) images as an application source. 
+Hanzo CD supports using OCI (Open Container Initiative) images as an application source. 
 You can install applications using OCI images through the UI, or in the declarative GitOps way.  
 Here is an example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-custom-image
-  namespace: argocd
+  namespace: cd
 spec:
   project: default
   source:
@@ -26,7 +26,7 @@ spec:
 Another example using a public OCI helm chart:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: nginx
@@ -56,13 +56,13 @@ the path should always be set to `.`.
 if there is a need to have credentials for a OCI repository, a repository credential of type *oci needs to be created.
 ```shell
   # Add a private HTTPS OCI repository named 'stable'
-  argocd repo add oci://registry-1.docker.io/bitnamicharts/nginx --type oci --name stable --username test --password test 
+  cd repo add oci://registry-1.docker.io/bitnamicharts/nginx --type oci --name stable --username test --password test 
 ```
 
 In the case of Helm repositories there is another way to use OCI credentials with Helm
 ```shell
   # Add a private HTTPS OCI Helm repository named 'stable'
-  argocd repo add registry-1.docker.io/bitnamicharts/nginx --type helm --name stable --username test --password test --enable-oci
+  cd repo add registry-1.docker.io/bitnamicharts/nginx --type helm --name stable --username test --password test --enable-oci
 ```
 
 > [!NOTE]
@@ -70,11 +70,11 @@ In the case of Helm repositories there is another way to use OCI credentials wit
 > Also the path should be removed from the repository URL and should be defined instead in the `path` attribute.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-custom-image
-  namespace: argocd
+  namespace: cd
 spec:
   project: default
   source:
@@ -94,8 +94,8 @@ spec:
 First off, you'll need to have a repository that is OCI-compliant. As an example, DockerHub, ECR, GHCR and GCR all fit 
 the bill.
 
-Secondly, Argo CD expects an OCI image to contain a single layer. It also expects an OCI image to have a media type which 
-is accepted by the Argo CD repository server. By default, Argo CD accepts one of the following media types for the image 
+Secondly, Hanzo CD expects an OCI image to contain a single layer. It also expects an OCI image to have a media type which 
+is accepted by the Hanzo CD repository server. By default, Hanzo CD accepts one of the following media types for the image 
 layer:
 
 * `application/vnd.oci.image.layer.v1.tar+gzip`
@@ -104,7 +104,7 @@ layer:
 Custom media types can be configured by setting the `CD_REPO_SERVER_OCI_LAYER_MEDIA_TYPES` environment variable 
 in the repo-server deployment.
 
-To create an OCI artifact compatible with Argo CD, there are a multitude of tools to choose from. For this example we'll
+To create an OCI artifact compatible with Hanzo CD, there are a multitude of tools to choose from. For this example we'll
 use [ORAS](https://oras.land/). Navigate to the directory where your manifests are located and run `oras push`.
 
 ```shell
@@ -131,12 +131,12 @@ oras push <registry-url>/guestbook:latest archive.tar.gz:application/vnd.oci.ima
 
 ## OCI Metadata Annotations
 
-Argo CD can display standard OCI metadata annotations, providing additional context and information about your OCI 
-images directly in the Argo CD UI.
+Hanzo CD can display standard OCI metadata annotations, providing additional context and information about your OCI 
+images directly in the Hanzo CD UI.
 
 ### Supported Annotations
 
-Argo CD recognizes and displays the following standard OCI annotations:
+Hanzo CD recognizes and displays the following standard OCI annotations:
 
 * `org.opencontainers.image.title`
 * `org.opencontainers.image.description`
@@ -147,7 +147,7 @@ Argo CD recognizes and displays the following standard OCI annotations:
 * `org.opencontainers.image.authors`
 * `org.opencontainers.image.created`
 
-Using the previous example with ORAS, we can set annotations which Argo CD can make use of:
+Using the previous example with ORAS, we can set annotations which Hanzo CD can make use of:
 
 ```shell
 oras push -a "org.opencontainers.image.authors=some author" \

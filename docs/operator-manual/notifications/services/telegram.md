@@ -2,13 +2,13 @@
 
 1. Get an API token using [@Botfather](https://t.me/Botfather).
 2. Store token in `<secret-name>` Secret and configure telegram integration
-in `argocd-notifications-cm` ConfigMap:
+in `cd-notifications-cm` ConfigMap:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.telegram: |
     token: $telegram-token
@@ -19,26 +19,26 @@ data:
 5. Use this channel `username` (public channel) or `chatID` (private channel) in the subscription for your Telegram integration:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.telegram: username
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: username
 ```
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.telegram: -1000000000000
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: -1000000000000
 ```
 
 If your private chat contains threads, you can optionally specify a thread id by separating it with a `|`:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.telegram: -1000000000000|2
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: -1000000000000|2
 ```

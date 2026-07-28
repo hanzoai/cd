@@ -1,13 +1,13 @@
 # Resource Actions
 
 ## Overview
-Argo CD allows operators to define custom actions which users can perform on specific resource types. This is used internally to provide actions like `restart` for a `DaemonSet`, or `retry` for an Argo Rollout.
+Hanzo CD allows operators to define custom actions which users can perform on specific resource types. This is used internally to provide actions like `restart` for a `DaemonSet`, or `retry` for an Argo Rollout.
 
 Operators can add actions to custom resources in form of a Lua script and expand those capabilities.
 
 ## Built-in Actions
 
-The following are actions that are built-in to Argo CD. Each action name links to its Lua script definition:
+The following are actions that are built-in to Hanzo CD. Each action name links to its Lua script definition:
 
 {!docs/operator-manual/resource_actions_builtin.md!}
 
@@ -15,14 +15,14 @@ See the [RBAC documentation](rbac.md#the-action-action) for information on how t
 
 ## Custom Resource Actions
 
-Argo CD supports custom resource actions written in [Lua](https://www.lua.org/). This is useful if you:
+Hanzo CD supports custom resource actions written in [Lua](https://www.lua.org/). This is useful if you:
 
-* Have a custom resource for which Argo CD does not provide any built-in actions.
+* Have a custom resource for which Hanzo CD does not provide any built-in actions.
 * Have a commonly performed manual task that might be error prone if executed by users via `kubectl`
 
 The resource actions act on a single object.
 
-You can define your own custom resource actions in the `argocd-cm` ConfigMap.
+You can define your own custom resource actions in the `cd-cm` ConfigMap.
 
 ### Custom Resource Action Types
 
@@ -41,9 +41,9 @@ Creating new resources is possible, by specifying a "create" operation for each 
 One of the returned resources can be the modified source object, with a "patch" operation, if needed.   
 See the definition examples below.
 
-### Define a Custom Resource Action in `argocd-cm` ConfigMap
+### Define a Custom Resource Action in `cd-cm` ConfigMap
 
-Custom resource actions can be defined in `resource.customizations.actions.<group_kind>` field of `argocd-cm`. Following example demonstrates a set of custom actions for `CronJob` resources, each such action returns the modified CronJob. 
+Custom resource actions can be defined in `resource.customizations.actions.<group_kind>` field of `cd-cm`. Following example demonstrates a set of custom actions for `CronJob` resources, each such action returns the modified CronJob. 
 The customizations key is in the format of `resource.customizations.actions.<apiGroup_Kind>`.
 
 ```yaml
@@ -80,9 +80,9 @@ The `discovery.lua` script must return a table where the key name represents the
 
 Each action name must be represented in the list of `definitions` with an accompanying `action.lua` script to control the resource modifications. The `obj` is a global variable which contains the resource. Each action script returns an optionally modified version of the resource. In this example, we are simply setting `.spec.suspend` to either `true` or `false`.
 
-By default, defining a resource action customization will override any built-in action for this resource kind. As of Argo CD version 2.13.0, if you want to retain the built-in actions, you can set the `mergeBuiltinActions` key to `true`. Your custom actions will have precedence over the built-in actions.
+By default, defining a resource action customization will override any built-in action for this resource kind. As of Hanzo CD version 2.13.0, if you want to retain the built-in actions, you can set the `mergeBuiltinActions` key to `true`. Your custom actions will have precedence over the built-in actions.
 ```yaml        
-resource.customizations.actions.argoproj.io_Rollout: |
+resource.customizations.actions.apps.hanzo.ai_Rollout: |
   mergeBuiltinActions: true
   discovery.lua: |
     actions = {}
@@ -97,7 +97,7 @@ resource.customizations.actions.argoproj.io_Rollout: |
 #### Creating new resources with a custom action
 
 > [!IMPORTANT]
-> Creating resources via the Argo CD UI is an intentional, strategic departure from GitOps principles. We recommend 
+> Creating resources via the Hanzo CD UI is an intentional, strategic departure from GitOps principles. We recommend 
 > that you use this feature sparingly and only for resources that are not part of the desired state of the 
 > application.
 
@@ -126,7 +126,7 @@ job.metadata.ownerReferences[1] = ownerRef
 ##### Creating independent child resources with a custom action
 
 If the new resource is independent of the source resource, the default behavior of such new resource is that it is not known by the App of the source resource (as it is not part of the desired state and does not have an `ownerReference`).  
-To make the App aware of the new resource, the `app.kubernetes.io/instance` label (or other ArgoCD tracking label, if configured) must be set on the resource.   
+To make the App aware of the new resource, the `app.kubernetes.io/instance` label (or other Hanzo CD tracking label, if configured) must be set on the resource.   
 It can be copied from the source resource, like this:
 
 ```lua
@@ -144,19 +144,19 @@ To keep the resource, set `Prune=false` annotation on the resource, with this Lu
 ```lua
 -- ...
 newObj.metadata.annotations = {}
-newObj.metadata.annotations["argocd.argoproj.io/sync-options"] = "Prune=false"
+newObj.metadata.annotations["cd.hanzo.ai/sync-options"] = "Prune=false"
 -- ...
 ```
 
 (If setting `Prune=false` behavior, the resource will not be deleted upon the deletion of the App, and will require a manual cleanup).
 
-The resource and the App will now appear out of sync - which is the expected ArgoCD behavior upon creating a resource that is not part of the desired state.
+The resource and the App will now appear out of sync - which is the expected Hanzo CD behavior upon creating a resource that is not part of the desired state.
 
 If you wish to treat such an App as a synced one, add the following resource annotation in Lua code:
 
 ```lua
 -- ...
-newObj.metadata.annotations["argocd.argoproj.io/compare-options"] = "IgnoreExtraneous"
+newObj.metadata.annotations["cd.hanzo.ai/compare-options"] = "IgnoreExtraneous"
 -- ...
 ```
 
@@ -179,13 +179,13 @@ resource.customizations.actions.ConfigMap: |
       cm1.metadata.name = "cm1"
       cm1.metadata.namespace = obj.metadata.namespace
       cm1.metadata.labels = {}
-      -- Copy ArgoCD tracking label so that the resource is recognized by the App
+      -- Copy Hanzo CD tracking label so that the resource is recognized by the App
       cm1.metadata.labels["app.kubernetes.io/instance"] = obj.metadata.labels["app.kubernetes.io/instance"]
       cm1.metadata.annotations = {}
       -- For Apps with auto-prune, set the prune false on the resource, so it does not get deleted
-      cm1.metadata.annotations["argocd.argoproj.io/sync-options"] = "Prune=false"	  
+      cm1.metadata.annotations["cd.hanzo.ai/sync-options"] = "Prune=false"	  
       -- Keep the App synced even though it has a resource that is not in Git
-      cm1.metadata.annotations["argocd.argoproj.io/compare-options"] = "IgnoreExtraneous"		  
+      cm1.metadata.annotations["cd.hanzo.ai/compare-options"] = "IgnoreExtraneous"		  
       cm1.data = {}
       cm1.data.myKey1 = "myValue1"
       impactedResource1 = {}
@@ -227,7 +227,7 @@ return actions
 You can define parameters for your custom actions. The parameters are defined in the `parameters` key of the action discovery definition.
 
 <!-- Link directly to the script for people reading the docs in GitHub where embedding doesn't work. -->
-See the [Deployment actions discovery script](https://github.com/argoproj/argo-cd/blob/master/resource_customizations/apps/Deployment/actions/discovery.lua):
+See the [Deployment actions discovery script](https://github.com/hanzoai/cd/blob/master/resource_customizations/apps/Deployment/actions/discovery.lua):
 
 <!-- Embed the actual script so ReadTheDocs always has an up-to-date example. -->
 ```lua
@@ -238,7 +238,7 @@ The [resource scale actions](../user-guide/scale_application_resources.md) docum
 
 ## Contributing a Custom Resource Action
 
-A resource action can be bundled into Argo CD. Custom resource action scripts are located in the `resource_customizations` directory of [https://github.com/argoproj/argo-cd](https://github.com/argoproj/argo-cd). Each contributed custom action needs to have a Lua script for discovery and a Lua script for the actual action logic. It also needs to have testdata and expected K8s resource manifests, which represent the outcome of performing the action.
+A resource action can be bundled into Hanzo CD. Custom resource action scripts are located in the `resource_customizations` directory of [https://github.com/hanzoai/cd](https://github.com/hanzoai/cd). Each contributed custom action needs to have a Lua script for discovery and a Lua script for the actual action logic. It also needs to have testdata and expected K8s resource manifests, which represent the outcome of performing the action.
 
 The following directory structure must be respected:
 
@@ -256,7 +256,7 @@ argo-cd
 ```
 It is required to provide both discovery tests and action tests for your custom action.
 
-Example of a [complete custom action](https://github.com/argoproj/argo-cd/tree/master/resource_customizations/argoproj.io/AnalysisRun/actions) called `terminate` for AnalysisRun.
+Example of a [complete custom action](https://github.com/hanzoai/cd/tree/master/resource_customizations/apps.hanzo.ai/AnalysisRun/actions) called `terminate` for AnalysisRun.
 
 
 Example of `action_test.yaml` file content with `discoveryTests` and `actionTests`:

@@ -19,7 +19,7 @@ func TestIsHookOfType(t *testing.T) {
 		{
 			name:     "ArgoCD PreDelete hook",
 			hookType: PreDeleteHookType,
-			annot:    map[string]string{"cd.argoproj.io/hook": "PreDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expected: true,
 		},
 		{
@@ -31,7 +31,7 @@ func TestIsHookOfType(t *testing.T) {
 		{
 			name:     "ArgoCD PostDelete hook",
 			hookType: PostDeleteHookType,
-			annot:    map[string]string{"cd.argoproj.io/hook": "PostDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: true,
 		},
 		{
@@ -49,7 +49,7 @@ func TestIsHookOfType(t *testing.T) {
 		{
 			name:     "Wrong hook type",
 			hookType: PreDeleteHookType,
-			annot:    map[string]string{"cd.argoproj.io/hook": "PostDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: false,
 		},
 		{
@@ -78,17 +78,17 @@ func TestIsHook(t *testing.T) {
 	}{
 		{
 			name:     "ArgoCD PreDelete hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PreDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expected: true,
 		},
 		{
 			name:     "ArgoCD PostDelete hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PostDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: true,
 		},
 		{
 			name:     "ArgoCD PreSync hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PreSync"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PreSync"},
 			expected: true,
 		},
 		{
@@ -116,7 +116,7 @@ func TestIsPreDeleteHook(t *testing.T) {
 	}{
 		{
 			name:     "ArgoCD PreDelete hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PreDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expected: true,
 		},
 		{
@@ -126,7 +126,7 @@ func TestIsPreDeleteHook(t *testing.T) {
 		},
 		{
 			name:     "ArgoCD PostDelete hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PostDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: false,
 		},
 		{
@@ -136,7 +136,7 @@ func TestIsPreDeleteHook(t *testing.T) {
 		},
 		{
 			name:     "ArgoCD PostDelete & PreDelete hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PostDelete,PreDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete,PreDelete"},
 			expected: true,
 		},
 	}
@@ -159,7 +159,7 @@ func TestIsPostDeleteHook(t *testing.T) {
 	}{
 		{
 			name:     "ArgoCD PostDelete hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PostDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: true,
 		},
 		{
@@ -169,12 +169,12 @@ func TestIsPostDeleteHook(t *testing.T) {
 		},
 		{
 			name:     "ArgoCD PreDelete hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PreDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expected: false,
 		},
 		{
 			name:     "ArgoCD PostDelete & PreDelete hook",
-			annot:    map[string]string{"cd.argoproj.io/hook": "PostDelete,PreDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete,PreDelete"},
 			expected: true,
 		},
 		{
@@ -213,7 +213,7 @@ func TestPartitionTargetObjsForSync(t *testing.T) {
 		{
 			name: "PostSync with PreDelete and PostDelete in same annotation stays in sync set",
 			in: []*unstructured.Unstructured{
-				newObj("combined", map[string]string{"cd.argoproj.io/hook": "PostSync,PreDelete,PostDelete"}),
+				newObj("combined", map[string]string{"cd.hanzo.ai/hook": "PostSync,PreDelete,PostDelete"}),
 			},
 			wantNames:      []string{"combined"},
 			wantPreDelete:  true,
@@ -222,7 +222,7 @@ func TestPartitionTargetObjsForSync(t *testing.T) {
 		{
 			name: "PreDelete-only manifest excluded from sync",
 			in: []*unstructured.Unstructured{
-				newObj("pre-del", map[string]string{"cd.argoproj.io/hook": "PreDelete"}),
+				newObj("pre-del", map[string]string{"cd.hanzo.ai/hook": "PreDelete"}),
 			},
 			wantNames:      nil,
 			wantPreDelete:  true,
@@ -231,7 +231,7 @@ func TestPartitionTargetObjsForSync(t *testing.T) {
 		{
 			name: "PostDelete-only manifest excluded from sync",
 			in: []*unstructured.Unstructured{
-				newObj("post-del", map[string]string{"cd.argoproj.io/hook": "PostDelete"}),
+				newObj("post-del", map[string]string{"cd.hanzo.ai/hook": "PostDelete"}),
 			},
 			wantNames:      nil,
 			wantPreDelete:  false,
@@ -297,7 +297,7 @@ func TestMultiHookOfType(t *testing.T) {
 		{
 			name:     "ArgoCD PreDelete &  PostDelete hook",
 			hookType: []HookType{PreDeleteHookType, PostDeleteHookType},
-			annot:    map[string]string{"cd.argoproj.io/hook": "PreDelete,PostDelete"},
+			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete,PostDelete"},
 			expected: true,
 		},
 	}
@@ -336,7 +336,7 @@ func TestExecuteHooksAlreadyExistsLogic(t *testing.T) {
 		{
 			name:          "PreDelete (cd): Not in cluster - should be created",
 			hookType:      []HookType{PreDeleteHookType},
-			targetAnnot:   map[string]string{"cd.argoproj.io/hook": "PreDelete"},
+			targetAnnot:   map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			liveAnnot:     nil,
 			expectCreated: true,
 		},
@@ -350,8 +350,8 @@ func TestExecuteHooksAlreadyExistsLogic(t *testing.T) {
 		{
 			name:          "PreDelete (cd): Already exists - should be skipped",
 			hookType:      []HookType{PreDeleteHookType},
-			targetAnnot:   map[string]string{"cd.argoproj.io/hook": "PreDelete"},
-			liveAnnot:     map[string]string{"cd.argoproj.io/hook": "PreDelete"},
+			targetAnnot:   map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
+			liveAnnot:     map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expectCreated: false,
 		},
 		{
@@ -364,22 +364,22 @@ func TestExecuteHooksAlreadyExistsLogic(t *testing.T) {
 		{
 			name:          "PreDelete (helm+cd): One of two already exists - should be skipped",
 			hookType:      []HookType{PreDeleteHookType},
-			targetAnnot:   map[string]string{"helm.sh/hook": "pre-delete", "cd.argoproj.io/hook": "PreDelete"},
+			targetAnnot:   map[string]string{"helm.sh/hook": "pre-delete", "cd.hanzo.ai/hook": "PreDelete"},
 			liveAnnot:     map[string]string{"helm.sh/hook": "pre-delete"},
 			expectCreated: false,
 		},
 		{
 			name:          "PreDelete (helm+cd): One of two already exists - should be skipped",
 			hookType:      []HookType{PreDeleteHookType},
-			targetAnnot:   map[string]string{"helm.sh/hook": "pre-delete", "cd.argoproj.io/hook": "PreDelete"},
-			liveAnnot:     map[string]string{"cd.argoproj.io/hook": "PreDelete"},
+			targetAnnot:   map[string]string{"helm.sh/hook": "pre-delete", "cd.hanzo.ai/hook": "PreDelete"},
+			liveAnnot:     map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expectCreated: false,
 		},
 		//  POST DELETE TESTS
 		{
 			name:          "PostDelete (cd): Not in cluster - should be created",
 			hookType:      []HookType{PostDeleteHookType},
-			targetAnnot:   map[string]string{"cd.argoproj.io/hook": "PostDelete"},
+			targetAnnot:   map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			liveAnnot:     nil,
 			expectCreated: true,
 		},
@@ -393,8 +393,8 @@ func TestExecuteHooksAlreadyExistsLogic(t *testing.T) {
 		{
 			name:          "PostDelete (cd): Already exists - should be skipped",
 			hookType:      []HookType{PostDeleteHookType},
-			targetAnnot:   map[string]string{"cd.argoproj.io/hook": "PostDelete"},
-			liveAnnot:     map[string]string{"cd.argoproj.io/hook": "PostDelete"},
+			targetAnnot:   map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
+			liveAnnot:     map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expectCreated: false,
 		},
 		{
@@ -407,30 +407,30 @@ func TestExecuteHooksAlreadyExistsLogic(t *testing.T) {
 		{
 			name:          "PostDelete (helm+cd): Already exists - should be skipped",
 			hookType:      []HookType{PostDeleteHookType},
-			targetAnnot:   map[string]string{"helm.sh/hook": "post-delete", "cd.argoproj.io/hook": "PostDelete"},
-			liveAnnot:     map[string]string{"helm.sh/hook": "post-delete", "cd.argoproj.io/hook": "PostDelete"},
+			targetAnnot:   map[string]string{"helm.sh/hook": "post-delete", "cd.hanzo.ai/hook": "PostDelete"},
+			liveAnnot:     map[string]string{"helm.sh/hook": "post-delete", "cd.hanzo.ai/hook": "PostDelete"},
 			expectCreated: false,
 		},
 		{
 			name:          "PostDelete (helm+cd): One of two already exists - should be skipped",
 			hookType:      []HookType{PostDeleteHookType},
-			targetAnnot:   map[string]string{"helm.sh/hook": "post-delete", "cd.argoproj.io/hook": "PostDelete"},
+			targetAnnot:   map[string]string{"helm.sh/hook": "post-delete", "cd.hanzo.ai/hook": "PostDelete"},
 			liveAnnot:     map[string]string{"helm.sh/hook": "post-delete"},
 			expectCreated: false,
 		},
 		{
 			name:          "PostDelete (helm+cd): One of two already exists - should be skipped",
 			hookType:      []HookType{PostDeleteHookType},
-			targetAnnot:   map[string]string{"helm.sh/hook": "post-delete", "cd.argoproj.io/hook": "PostDelete"},
-			liveAnnot:     map[string]string{"cd.argoproj.io/hook": "PostDelete"},
+			targetAnnot:   map[string]string{"helm.sh/hook": "post-delete", "cd.hanzo.ai/hook": "PostDelete"},
+			liveAnnot:     map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expectCreated: false,
 		},
 		//  MULTI HOOK TESTS - SKIP LOGIC
 		{
 			name:          "Multi-hook (cd): Target is (Pre,Post), Cluster has (Pre,Post) - should be skipped",
 			hookType:      []HookType{PreDeleteHookType, PostDeleteHookType},
-			targetAnnot:   map[string]string{"cd.argoproj.io/hook": "PreDelete,PostDelete"},
-			liveAnnot:     map[string]string{"cd.argoproj.io/hook": "PreDelete,PostDelete"},
+			targetAnnot:   map[string]string{"cd.hanzo.ai/hook": "PreDelete,PostDelete"},
+			liveAnnot:     map[string]string{"cd.hanzo.ai/hook": "PreDelete,PostDelete"},
 			expectCreated: false,
 		},
 		{

@@ -1,35 +1,35 @@
 # Overview
 
-Once installed Argo CD has one built-in `admin` user that has full access to the system. It is recommended to use `admin` user only
+Once installed Hanzo CD has one built-in `admin` user that has full access to the system. It is recommended to use `admin` user only
 for initial configuration and then switch to local users or configure SSO integration.
 
 ## Local users/accounts
 
 The local users/accounts feature serves two main use-cases:
 
-* Auth tokens for Argo CD management automation. It is possible to configure an API account with limited permissions and generate an authentication token.
+* Auth tokens for Hanzo CD management automation. It is possible to configure an API account with limited permissions and generate an authentication token.
 Such token can be used to automatically create applications, projects etc.
 * Additional users for a very small team where use of SSO integration might be considered an overkill. The local users don't provide advanced features such as groups,
 login history etc. So if you need such features it is strongly recommended to use SSO.
 
 > [!NOTE]
-> When you create local users, each of those users will need additional [RBAC rules](../rbac.md) set up, otherwise they will fall back to the default policy specified by `policy.default` field of the `argocd-rbac-cm` ConfigMap.
+> When you create local users, each of those users will need additional [RBAC rules](../rbac.md) set up, otherwise they will fall back to the default policy specified by `policy.default` field of the `cd-rbac-cm` ConfigMap.
 
 The maximum length of a local account's username is 32.
 
 ### Create new user
 
-New users should be defined in `argocd-cm` ConfigMap:
+New users should be defined in `cd-cm` ConfigMap:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
   # add an additional local user with apiKey and login capabilities
   #   apiKey - allows generating API keys
@@ -46,20 +46,20 @@ Each user might have two capabilities:
 
 ### Delete user
 
-In order to delete a user, you must remove the corresponding entry defined in the `argocd-cm` ConfigMap:
+In order to delete a user, you must remove the corresponding entry defined in the `cd-cm` ConfigMap:
 
 Example:
 
 ```bash
-kubectl patch -n argocd cm argocd-cm --type='json' -p='[{"op": "remove", "path": "/data/accounts.alice"}]'
+kubectl patch -n cd cm cd-cm --type='json' -p='[{"op": "remove", "path": "/data/accounts.alice"}]'
 ```
 
-It is recommended to also remove the password entry in the `argocd-secret` Secret:
+It is recommended to also remove the password entry in the `cd-secret` Secret:
 
 Example:
 
 ```bash
-kubectl patch -n argocd secrets argocd-secret --type='json' -p='[{"op": "remove", "path": "/data/accounts.alice.password"}]'
+kubectl patch -n cd secrets cd-secret --type='json' -p='[{"op": "remove", "path": "/data/accounts.alice.password"}]'
 ```
 
 ### Disable admin user
@@ -70,33 +70,33 @@ As soon as additional users are created it is recommended to disable `admin` use
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
   admin.enabled: "false"
 ```
 
 ### Manage users
 
-The Argo CD CLI provides set of commands to set user password and generate tokens.
+The Hanzo CD CLI provides set of commands to set user password and generate tokens.
 
 * Get full users list
 ```bash
-argocd account list
+cd account list
 ```
 
 * Get specific user details
 ```bash
-argocd account get --account <username>
+cd account get --account <username>
 ```
 
 * Set user password
 ```bash
 # if you are managing users as the admin user, <current-user-password> should be the current admin password.
-argocd account update-password \
+cd account update-password \
   --account <name> \
   --current-password <current-user-password> \
   --new-password <new-user-password>
@@ -104,16 +104,16 @@ argocd account update-password \
 
 * Generate auth token
 ```bash
-# if flag --account is omitted then Argo CD generates token for current user
-argocd account generate-token --account <username>
+# if flag --account is omitted then Hanzo CD generates token for current user
+cd account generate-token --account <username>
 ```
 
 ### Failed logins rate limiting
 
-Argo CD rejects login attempts after too many failed in order to prevent password brute-forcing.
+Hanzo CD rejects login attempts after too many failed in order to prevent password brute-forcing.
 The following environments variables are available to control throttling settings:
 
-* `CD_SESSION_FAILURE_MAX_FAIL_COUNT`: Maximum number of failed logins before Argo CD starts
+* `CD_SESSION_FAILURE_MAX_FAIL_COUNT`: Maximum number of failed logins before Hanzo CD starts
 rejecting login attempts. Default: 5.
 
 * `CD_SESSION_FAILURE_WINDOW_SECONDS`: Number of seconds for the failure window.
@@ -142,37 +142,37 @@ There are two ways that SSO can be configured:
 
 ## Dex
 
-Argo CD embeds and bundles [Dex](https://github.com/dexidp/dex) as part of its installation, for the
+Hanzo CD embeds and bundles [Dex](https://github.com/dexidp/dex) as part of its installation, for the
 purpose of delegating authentication to an external identity provider. Multiple types of identity
-providers are supported (OIDC, SAML, LDAP, GitHub, etc...). SSO configuration of Argo CD requires
-editing the `argocd-cm` ConfigMap with
+providers are supported (OIDC, SAML, LDAP, GitHub, etc...). SSO configuration of Hanzo CD requires
+editing the `cd-cm` ConfigMap with
 [Dex connector](https://dexidp.io/docs/connectors/) settings.
 
-This document describes how to configure Argo CD SSO using GitHub (OAuth2) as an example, but the
+This document describes how to configure Hanzo CD SSO using GitHub (OAuth2) as an example, but the
 steps should be similar for other identity providers.
 
 ### 1. Register the application in the identity provider
 
 In GitHub, register a new application. The callback address should be the `/api/dex/callback`
-endpoint of your Argo CD URL (e.g. `https://argocd.example.com/api/dex/callback`).
+endpoint of your Hanzo CD URL (e.g. `https://cd.example.com/api/dex/callback`).
 
 ![Register OAuth App](../../assets/register-app.png "Register OAuth App")
 
 After registering the app, you will receive an OAuth2 client ID and secret. These values will be
-inputted into the Argo CD configmap.
+inputted into the Hanzo CD configmap.
 
 ![OAuth2 Client Config](../../assets/oauth2-config.png "OAuth2 Client Config")
 
-### 2. Configure Argo CD for SSO
+### 2. Configure Hanzo CD for SSO
 
-Edit the argocd-cm configmap:
+Edit the cd-cm configmap:
 
 ```bash
-kubectl edit configmap argocd-cm -n argocd
+kubectl edit configmap cd-cm -n cd
 ```
 
-* In the `url` key, input the base URL of Argo CD. In this example, it is `https://argocd.example.com`
-* (Optional): If Argo CD should be accessible via multiple base URLs you may
+* In the `url` key, input the base URL of Hanzo CD. In this example, it is `https://cd.example.com`
+* (Optional): If Hanzo CD should be accessible via multiple base URLs you may
   specify any additional base URLs via the `additionalUrls` key.
 * In the `dex.config` key, add the `github` connector to the `connectors` sub field. See Dex's
   [GitHub connector](https://github.com/dexidp/website/blob/main/content/docs/connectors/github.md)
@@ -180,11 +180,11 @@ kubectl edit configmap argocd-cm -n argocd
   clientSecret generated in Step 1.
 * You will very likely want to restrict logins to one or more GitHub organization. In the
   `connectors.config.orgs` list, add one or more GitHub organizations. Any member of the org will
-  then be able to login to Argo CD to perform management tasks.
+  then be able to login to Hanzo CD to perform management tasks.
 
 ```yaml
 data:
-  url: https://argocd.example.com
+  url: https://cd.example.com
 
   dex.config: |
     connectors:
@@ -215,18 +215,18 @@ After saving, the changes should take effect automatically.
 NOTES:
 
 * There is no need to set `redirectURI` in the `connectors.config` as shown in the dex documentation.
-  Argo CD will automatically use the correct `redirectURI` for any OAuth2 connectors, to match the
-  correct external callback URL (e.g. `https://argocd.example.com/api/dex/callback`)
-* By default, `Secret` keys such as `dex.acme.clientSecret` will be looked up in `argocd-secret`. If you want to use another secret, (`some_K8S_secret` in the example above), it *must* have the label `app.kubernetes.io/part-of: argocd`.
+  Hanzo CD will automatically use the correct `redirectURI` for any OAuth2 connectors, to match the
+  correct external callback URL (e.g. `https://cd.example.com/api/dex/callback`)
+* By default, `Secret` keys such as `dex.acme.clientSecret` will be looked up in `cd-secret`. If you want to use another secret, (`some_K8S_secret` in the example above), it *must* have the label `app.kubernetes.io/part-of: cd`.
 
 ## OIDC Configuration with DEX
 
-Dex can be used for OIDC authentication instead of ArgoCD directly. This provides a separate set of
+Dex can be used for OIDC authentication instead of Hanzo CD directly. This provides a separate set of
 features such as fetching information from the `UserInfo` endpoint and
 [federated tokens](https://dexidp.io/docs/custom-scopes-claims-clients/#cross-client-trust-and-authorized-party)
 
 ### Configuration:
-* In the `argocd-cm` ConfigMap add the `OIDC` connector to the `connectors` sub field inside `dex.config`.
+* In the `cd-cm` ConfigMap add the `OIDC` connector to the `connectors` sub field inside `dex.config`.
 See Dex's [OIDC connect documentation](https://dexidp.io/docs/connectors/oidc/) to see what other
 configuration options might be useful. We're going to be using a minimal configuration here.
 * The issuer URL should be where Dex talks to the OIDC provider. There would normally be a
@@ -236,7 +236,7 @@ e.g. https://accounts.google.com/.well-known/openid-configuration
 
 ```yaml
 data:
-  url: "https://argocd.example.com"
+  url: "https://cd.example.com"
   dex.config: |
     connectors:
       # OIDC
@@ -250,7 +250,7 @@ data:
 ```
 
 > [!NOTE]
-> Argo CD's OIDC token refresh (see `refreshTokenThreshold` in [Existing OIDC Provider](#existing-oidc-provider))
+> Hanzo CD's OIDC token refresh (see `refreshTokenThreshold` in [Existing OIDC Provider](#existing-oidc-provider))
 > does not apply to Dex's embedded web login flow. Once a Dex-issued ID token expires, the user
 > must log in again, regardless of `refreshTokenThreshold` being set.
 
@@ -263,7 +263,7 @@ time and support to refresh group information more dynamically can be tracked he
 
 ```yaml
 data:
-  url: "https://argocd.example.com"
+  url: "https://cd.example.com"
   dex.config: |
     connectors:
       # OIDC
@@ -293,7 +293,7 @@ must be set to true.
 
 ```yaml
 data:
-  url: "https://argocd.example.com"
+  url: "https://cd.example.com"
   dex.config: |
     connectors:
       # OIDC
@@ -314,12 +314,12 @@ data:
 
 ## Existing OIDC Provider
 
-To configure Argo CD to delegate authentication to your existing OIDC provider, add the OAuth2
-configuration to the `argocd-cm` ConfigMap under the `oidc.config` key:
+To configure Hanzo CD to delegate authentication to your existing OIDC provider, add the OAuth2
+configuration to the `cd-cm` ConfigMap under the `oidc.config` key:
 
 ```yaml
 data:
-  url: https://argocd.example.com
+  url: https://cd.example.com
 
   oidc.config: |
     name: Okta
@@ -337,7 +337,7 @@ data:
 
     # Optional. If false, tokens without an audience will always fail validation. If true, tokens without an audience 
     # will always pass validation.
-    # Defaults to true for Argo CD < 2.6.0. Defaults to false for Argo CD >= 2.6.0.
+    # Defaults to true for Hanzo CD < 2.6.0. Defaults to false for Hanzo CD >= 2.6.0.
     skipAudienceCheckWhenTokenHasNoAudience: true
 
     # Optional set of OIDC scopes to request. If omitted, defaults to: ["openid", "profile", "email", "groups"]
@@ -347,17 +347,17 @@ data:
     requestedIDTokenClaims: {"groups": {"essential": true}}
 
     # Some OIDC providers require a separate clientID for different callback URLs.
-    # For example, if configuring Argo CD with self-hosted Dex, you will need a separate client ID
+    # For example, if configuring Hanzo CD with self-hosted Dex, you will need a separate client ID
     # for the 'localhost' (CLI) client to Dex. This field is optional. If omitted, the CLI will
-    # use the same clientID as the Argo CD server
+    # use the same clientID as the Hanzo CD server
     cliClientID: vvvvwwwwxxxxyyyyzzzz
 
     # PKCE is an OIDC extension to prevent authorization code interception attacks.
-    # Make sure the identity provider supports it and that it is activated for Argo CD OIDC client.
+    # Make sure the identity provider supports it and that it is activated for Hanzo CD OIDC client.
     # Default is false.
     enablePKCEAuthentication: true
 
-    # Optional. Argo CD uses this threshold to refresh an OIDC ID token before it expires, using the
+    # Optional. Hanzo CD uses this threshold to refresh an OIDC ID token before it expires, using the
     # cached refresh token, so the session isn't interrupted. Must be shorter than the ID
     # token's lifetime, or a new token will be requested on every request.
     # Default is 0s.
@@ -365,8 +365,8 @@ data:
 ```
 
 > [!NOTE]
-> The callback address should be the /auth/callback endpoint of your Argo CD URL
-> (e.g. https://argocd.example.com/auth/callback).
+> The callback address should be the /auth/callback endpoint of your Hanzo CD URL
+> (e.g. https://cd.example.com/auth/callback).
 
 ### Requesting additional ID token claims
 
@@ -376,7 +376,7 @@ Not all OIDC providers support a special `groups` scope. E.g. Okta, OneLogin and
 Other OIDC providers might be able to return a claim with group membership if explicitly requested to do so.
 Individual claims can be requested with `requestedIDTokenClaims`, see
 [OpenID Connect Claims Parameter](https://connect2id.com/products/server/docs/guides/requesting-openid-claims#claims-parameter)
-for details. The Argo CD configuration for claims is as follows:
+for details. The Hanzo CD configuration for claims is as follows:
 
 ```yaml
   oidc.config: |
@@ -402,7 +402,7 @@ For a simple case this can be:
 
 ### Retrieving group claims when not in the token
 
-Some OIDC providers don't return the group information for a user in the ID token, even if explicitly requested using the `requestedIDTokenClaims` setting (Okta for example). They instead provide the groups on the user info endpoint. With the following config, Argo CD queries the user info endpoint during login for groups information of a user:
+Some OIDC providers don't return the group information for a user in the ID token, even if explicitly requested using the `requestedIDTokenClaims` setting (Okta for example). They instead provide the groups on the user info endpoint. With the following config, Hanzo CD queries the user info endpoint during login for groups information of a user:
 
 ```yaml
 oidc.config: |
@@ -412,7 +412,7 @@ oidc.config: |
     userInfoCacheExpiration: "5m"
 ```
 
-**Note: If you omit the `userInfoCacheExpiration` setting or if it's greater than the expiration of the ID token, the argocd-server will cache group information as long as the ID token is valid!**
+**Note: If you omit the `userInfoCacheExpiration` setting or if it's greater than the expiration of the ID token, the cd-server will cache group information as long as the ID token is valid!**
 
 ### Configuring a custom logout URL for your OIDC provider
 
@@ -429,25 +429,25 @@ any active session post logout, you can do so by specifying it as follows:
     requestedIDTokenClaims: {"groups": {"essential": true}}
     logoutURL: https://example-OIDC-provider.example.com/logout?id_token_hint={{token}}
 ```
-By default, this would take the user to their OIDC provider's login page after logout. If you also wish to redirect the user back to Argo CD after logout, you can specify the logout URL as follows:
+By default, this would take the user to their OIDC provider's login page after logout. If you also wish to redirect the user back to Hanzo CD after logout, you can specify the logout URL as follows:
 
 ```yaml
 ...
     logoutURL: https://example-OIDC-provider.example.com/logout?id_token_hint={{token}}&post_logout_redirect_uri={{logoutRedirectURL}}
 ```
 
-You are not required to specify a logoutRedirectURL as this is automatically generated by ArgoCD as your base ArgoCD url + Rootpath
+You are not required to specify a logoutRedirectURL as this is automatically generated by Hanzo CD as your base Hanzo CD url + Rootpath
 
 > [!NOTE]
-> The post logout redirect URI may need to be whitelisted against your OIDC provider's client settings for ArgoCD.
+> The post logout redirect URI may need to be whitelisted against your OIDC provider's client settings for Hanzo CD.
 
 ### Token Revocation and Session Management
 
-Argo CD implements server-side token revocation to enhance security when users log out. This is particularly important for SSO configurations using Dex or other OIDC providers.
+Hanzo CD implements server-side token revocation to enhance security when users log out. This is particularly important for SSO configurations using Dex or other OIDC providers.
 
 #### How Token Revocation Works
 
-When a user logs out (either via the UI or CLI using `argocd logout`), Argo CD:
+When a user logs out (either via the UI or CLI using `cd logout`), Hanzo CD:
 
 1. **Invalidates the token on the server**: The token is added to a revocation list stored in Redis
 2. **Removes the token locally**: The token is removed from the local configuration
@@ -460,12 +460,12 @@ Revoked tokens cannot be used for API calls, even if they haven't expired yet. T
 
 #### Graceful Degradation
 
-The `argocd logout` command will gracefully handle scenarios where the server is unreachable:
+The `cd logout` command will gracefully handle scenarios where the server is unreachable:
 
 ```bash
-$ argocd logout my-argocd-server
+$ cd logout my-cd-server
 WARN[0000] Failed to invalidate token on server: connection refused. Proceeding with local logout.
-Logged out from 'my-argocd-server'
+Logged out from 'my-cd-server'
 ```
 
 This allows users to logout locally even if the server is down, though the token will not be revoked server-side until it expires naturally.
@@ -474,7 +474,7 @@ This allows users to logout locally even if the server is down, though the token
 
 1.**Use short-lived tokens**: Configure reasonable token expiration times in the OIDC provider to limit the window of exposure
 2.**Enable logout URLs**: Configure `logoutURL` in `oidc.config` for your OIDC provider to ensure SSO sessions are also terminated
-3.**Monitor token usage**: Use Argo CD's audit logging to track token creation and revocation events
+3.**Monitor token usage**: Use Hanzo CD's audit logging to track token creation and revocation events
 
 ### Configuring a custom root CA certificate for communicating with the OIDC provider
 
@@ -497,25 +497,25 @@ Add a `rootCA` to your `oidc.config` which contains the PEM encoded root certifi
 
 ### Sensitive Data and SSO Client Secrets
 
-`argocd-secret` can be used to store sensitive data which can be referenced by ArgoCD. Values starting with `$` in configmaps are interpreted as follows:
+`cd-secret` can be used to store sensitive data which can be referenced by Hanzo CD. Values starting with `$` in configmaps are interpreted as follows:
 
 - If value has the form: `$<secret>:a.key.in.k8s.secret`, look for a k8s secret with the name `<secret>` (minus the `$`), and read its value. 
-- Otherwise, look for a key in the k8s secret named `argocd-secret`. 
+- Otherwise, look for a key in the k8s secret named `cd-secret`. 
 
 #### Example
 
 SSO `clientSecret` can thus be stored as a Kubernetes secret with the following manifests
 
-`argocd-secret`:
+`cd-secret`:
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argocd-secret
-  namespace: argocd
+  name: cd-secret
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-secret
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-secret
+    app.kubernetes.io/part-of: cd
 type: Opaque
 data:
   ...
@@ -525,35 +525,35 @@ data:
   ...
 ```
 
-`argocd-cm`:
+`cd-cm`:
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
   ...
   oidc.config: |
     name: Auth0
     clientID: aabbccddeeff00112233
 
-    # Reference key in argocd-secret
+    # Reference key in cd-secret
     clientSecret: $oidc.auth0.clientSecret
   ...
 ```
 
 #### Alternative
 
-If you want to store sensitive data in **another** Kubernetes `Secret`, instead of `argocd-secret`. ArgoCD knows to check the keys under `data` in your Kubernetes `Secret` for a corresponding key whenever a value in a configmap or secret starts with `$`, then your Kubernetes `Secret` name and `:` (colon).
+If you want to store sensitive data in **another** Kubernetes `Secret`, instead of `cd-secret`. Hanzo CD knows to check the keys under `data` in your Kubernetes `Secret` for a corresponding key whenever a value in a configmap or secret starts with `$`, then your Kubernetes `Secret` name and `:` (colon).
 
 Syntax: `$<k8s_secret_name>:<a_key_in_that_k8s_secret>`
 
 > [!NOTE]
-> Secret must have label `app.kubernetes.io/part-of: argocd`
+> Secret must have label `app.kubernetes.io/part-of: cd`
 
 ##### Example
 
@@ -563,9 +563,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: another-secret
-  namespace: argocd
+  namespace: cd
   labels:
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: cd
 type: Opaque
 data:
   ...
@@ -575,22 +575,22 @@ data:
   ...
 ```
 
-`argocd-cm`:
+`cd-cm`:
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
   ...
   oidc.config: |
     name: Auth0
     clientID: aabbccddeeff00112233
-    # Reference key in another-secret (and not argocd-secret)
+    # Reference key in another-secret (and not cd-secret)
     clientSecret: $another-secret:oidc.auth0.clientSecret  # Mind the ':'
   ...
 ```
@@ -603,11 +603,11 @@ configuration, when getting the OIDC provider's keys, and  when exchanging an au
 token as part of an OIDC login flow.
 
 Disabling certificate verification might make sense if:
-* You are using the bundled Dex instance **and** your Argo CD instance has TLS configured with a self-signed certificate
+* You are using the bundled Dex instance **and** your Hanzo CD instance has TLS configured with a self-signed certificate
   **and** you understand and accept the risks of skipping OIDC provider cert verification.
 * You are using an external OIDC provider **and** that provider uses an invalid certificate **and** you cannot solve
   the problem by setting `oidcConfig.rootCA` **and** you understand and accept the risks of skipping OIDC provider cert 
   verification.
 
 If either of those two applies, then you can disable OIDC provider certificate verification by setting
-`oidc.tls.insecure.skip.verify` to `"true"` in the `argocd-cm` ConfigMap.
+`oidc.tls.insecure.skip.verify` to `"true"` in the `cd-cm` ConfigMap.

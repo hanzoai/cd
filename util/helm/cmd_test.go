@@ -50,10 +50,10 @@ func TestNewCmd_helmInvalidVersion(t *testing.T) {
 
 func TestNewCmd_withProxy(t *testing.T) {
 	t.Parallel()
-	cmd, err := NewCmd(".", "", "https://proxy:8888", ".argoproj.io")
+	cmd, err := NewCmd(".", "", "https://proxy:8888", ".apps.hanzo.ai")
 	require.NoError(t, err)
 	assert.Equal(t, "https://proxy:8888", cmd.proxy)
-	assert.Equal(t, ".argoproj.io", cmd.noProxy)
+	assert.Equal(t, ".apps.hanzo.ai", cmd.noProxy)
 }
 
 func TestRegistryLogin(t *testing.T) {

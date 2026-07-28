@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   name: crontabs.stable.example.com
   labels:
-    e2e.argoproj.io: "true"
+    e2e.apps.hanzo.ai: "true"
 spec:
   conversion:
     strategy: None

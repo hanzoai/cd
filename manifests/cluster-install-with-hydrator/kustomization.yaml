@@ -5,7 +5,7 @@ resources:
 patches:
   - target:
       kind: ConfigMap
-      name: argocd-cmd-params-cm
+      name: cd-cmd-params-cm
     patch: |-
       - op: add
         path: /data

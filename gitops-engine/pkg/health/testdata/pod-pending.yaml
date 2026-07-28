@@ -3,9 +3,9 @@ kind: Pod
 metadata:
   creationTimestamp: 2018-12-02T10:16:04Z
   name: image-pull-backoff
-  namespace: argocd
+  namespace: cd
   resourceVersion: "155333"
-  selfLink: /api/v1/namespaces/argocd/pods/image-pull-backoff
+  selfLink: /api/v1/namespaces/cd/pods/image-pull-backoff
   uid: 46c1e8de-f61b-11e8-a057-fe5f49266390
 spec:
   containers:

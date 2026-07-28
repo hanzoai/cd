@@ -28,7 +28,7 @@ stringData:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.pagerdutyv2: |
     serviceKeys:
@@ -43,7 +43,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   template.rollout-aborted: |
     message: Rollout {{.rollout.metadata.name}} is aborted.
@@ -61,7 +61,7 @@ The parameters for the PagerDuty configuration in the template generally match w
 * `component` - Component of the source machine that is responsible for the event.
 * `group` - Logical grouping of components of a service.
 * `class` - The class/type of the event.
-* `url` - The URL that should be used for the link "View in ArgoCD" in PagerDuty.
+* `url` - The URL that should be used for the link "View in Hanzo CD" in PagerDuty.
 * `dedupKey` - A string used by PagerDuty to deduplicate and correlate events. Events with the same `dedupKey` will be grouped into the same incident. If omitted, PagerDuty will create a new incident for each event.
 
 
@@ -72,9 +72,9 @@ The `timestamp` and `custom_details` parameters are not currently supported.
 Annotation sample for PagerDuty notifications:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-rollout-aborted.pagerdutyv2: "<serviceID for PagerDuty>"
+    notifications.apps.hanzo.ai/subscribe.on-rollout-aborted.pagerdutyv2: "<serviceID for PagerDuty>"
 ```
