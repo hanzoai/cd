@@ -11,9 +11,9 @@ data:
     spec:
       version: v1.0
       init:
-        command: [sh , -c, 'echo "params: $ARGOCD_APP_PARAMETERS"']
+        command: [sh , -c, 'echo "params: $CD_APP_PARAMETERS"']
       generate:
-        command: [jq, -n, '{"kind": "ConfigMap", "apiVersion": "v1", "metadata": { "name": env.ARGOCD_APP_NAME, "namespace": env.ARGOCD_APP_NAMESPACE, "annotations": {"test": "annotation test", "KubeVersion": env.KUBE_VERSION }}, "data": { "params": env.ARGOCD_APP_PARAMETERS } }']
+        command: [jq, -n, '{"kind": "ConfigMap", "apiVersion": "v1", "metadata": { "name": env.CD_APP_NAME, "namespace": env.CD_APP_NAMESPACE, "annotations": {"test": "annotation test", "KubeVersion": env.KUBE_VERSION }}, "data": { "params": env.CD_APP_PARAMETERS } }']
       discover:
         fileName: "./subdir/s*.yaml"
       parameters:

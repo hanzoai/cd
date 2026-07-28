@@ -215,7 +215,7 @@ func TestSyncComparisonError(t *testing.T) {
 	opState := &v1alpha1.OperationState{Operation: v1alpha1.Operation{
 		Sync: &v1alpha1.SyncOperation{},
 	}}
-	t.Setenv("ARGOCD_GPG_ENABLED", "true")
+	t.Setenv("CD_GPG_ENABLED", "true")
 	ctrl.appStateManager.SyncAppState(t.Context(), app, defaultProject, opState)
 
 	conditions := app.Status.GetConditions(map[v1alpha1.ApplicationConditionType]bool{v1alpha1.ApplicationConditionComparisonError: true})

@@ -57,9 +57,9 @@ deploy:
       DEX_TOKEN=$(echo "$DEX_TOKEN_RESPONSE" | jq -r .access_token)
       
       # Use with ArgoCD CLI
-      export ARGOCD_SERVER="argocd.example.com" 
-      export ARGOCD_OPTS="--grpc-web"
-      export ARGOCD_AUTH_TOKEN="$DEX_TOKEN"
+      export CD_SERVER="argocd.example.com" 
+      export CD_OPTS="--grpc-web"
+      export CD_AUTH_TOKEN="$DEX_TOKEN"
       argocd version
       argocd account get-user-info
       argocd app list

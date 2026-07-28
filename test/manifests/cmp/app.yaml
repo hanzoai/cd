@@ -12,7 +12,7 @@ spec:
         - name: FOO
           value: bar
         - name: REV
-          value: test-$ARGOCD_APP_REVISION
+          value: test-$CD_APP_REVISION
       parameters:
         - name: array-param
           array:

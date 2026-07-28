@@ -42,11 +42,11 @@ func AddCustomCACert(t *testing.T) {
 }
 
 // AddCustomSSHKnownHostsKeys adds SSH known hosts data to the Argo CD server
-// being tested against. The env ARGOCD_E2E_SSH_KNOWN_HOSTS lets you specify
+// being tested against. The env CD_E2E_SSH_KNOWN_HOSTS lets you specify
 // an optional path to the known hosts file, instead of using the default one.
 func AddCustomSSHKnownHostsKeys(t *testing.T) {
 	t.Helper()
-	source := os.Getenv("ARGOCD_E2E_SSH_KNOWN_HOSTS")
+	source := os.Getenv("CD_E2E_SSH_KNOWN_HOSTS")
 	if source == "" {
 		source = "../fixture/testrepos/ssh_known_hosts"
 	}

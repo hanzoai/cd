@@ -52,8 +52,8 @@ To enable mTLS on the `argocd-repo-server`, provide a client CA certificate. Whe
 
 ### Environment variables
 
-* `ARGOCD_REPO_SERVER_CLIENT_CA_PATH`: Equivalent to `--client-ca-path`. Defaults to `/app/config/reposerver/mtls/client-ca.crt`.
-* `ARGOCD_REPO_SERVER_DISABLE_TLS`: Equivalent to `--disable-tls`.
+* `CD_REPO_SERVER_CLIENT_CA_PATH`: Equivalent to `--client-ca-path`. Defaults to `/app/config/reposerver/mtls/client-ca.crt`.
+* `CD_REPO_SERVER_DISABLE_TLS`: Equivalent to `--disable-tls`.
 
 ### Server certificate location (repo-server)
 
@@ -242,7 +242,7 @@ After deploying:
 ## Troubleshooting
 
 - Error: `--client-ca-path cannot be used when --disable-tls is enabled`
-  - Remove `--disable-tls` (or unset `ARGOCD_REPO_SERVER_DISABLE_TLS`) when enabling mTLS.
+  - Remove `--disable-tls` (or unset `CD_REPO_SERVER_DISABLE_TLS`) when enabling mTLS.
 - One of `--repo-server-client-cert-path` / `--repo-server-client-cert-key-path` missing
   - Provide both flags (or the corresponding environment variables) together.
 - Custom CA for repo-server server certificate

@@ -24,7 +24,7 @@ func TestNewCommand_DisableTLSFlag(t *testing.T) {
 }
 
 func TestNewCommand_DisableTLSAndClientCAPathAreMutuallyExclusive(t *testing.T) {
-	t.Setenv("ARGOCD_EXEC_TIMEOUT", "1ms")
+	t.Setenv("CD_EXEC_TIMEOUT", "1ms")
 
 	cmd := NewCommand()
 	cmd.SetArgs([]string{"--disable-tls", "--client-ca-path", "/tmp/client-ca.crt"})
@@ -87,9 +87,9 @@ func TestBuildHealthCheckTLSConfig_MutatingReturnedCertDoesNotAffectSource(t *te
 }
 
 // TestNewCommand_OTLPHeadersFlagUsesEnv proves the otlp-headers flag default is wired to the
-// canonical ARGOCD_REPO_SERVER_OTLP_HEADERS environment variable.
+// canonical CD_REPO_SERVER_OTLP_HEADERS environment variable.
 func TestNewCommand_OTLPHeadersFlagUsesEnv(t *testing.T) {
-	t.Setenv("ARGOCD_REPO_SERVER_OTLP_HEADERS", "traceparent=abc123")
+	t.Setenv("CD_REPO_SERVER_OTLP_HEADERS", "traceparent=abc123")
 
 	cmd := NewCommand()
 

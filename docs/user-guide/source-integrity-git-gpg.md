@@ -326,7 +326,7 @@ for signature verification. After you have modified your project, click
 ### Disabling the feature
 
 The GnuPG feature can be completely disabled if desired. In order to disable it,
-set the environment variable `ARGOCD_GPG_ENABLED` to `false` for the pod
+set the environment variable `CD_GPG_ENABLED` to `false` for the pod
 templates of the `argocd-server`, `argocd-repo-server`, `argocd-application-controller`
 and `argocd-applicationset-controller` deployment manifests.
 

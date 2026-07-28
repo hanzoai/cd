@@ -601,7 +601,7 @@ disableCompression: boolean
 > [!IMPORTANT]
 > When `namespaces` is set, Argo CD will perform a separate list/watch operation for each namespace. This can cause
 > the Application controller to exceed the maximum number of idle connections allowed for the Kubernetes API server.
-> To resolve this issue, you can increase the `ARGOCD_K8S_CLIENT_MAX_IDLE_CONNECTIONS` environment variable in the
+> To resolve this issue, you can increase the `CD_K8S_CLIENT_MAX_IDLE_CONNECTIONS` environment variable in the
 > Application controller.
 
 > [!IMPORTANT]

@@ -225,7 +225,7 @@ argocd proj role create-token PROJECT ROLE-NAME
 argocd proj role delete-token PROJECT ROLE-NAME ISSUED-AT
 ```
 
-Since the JWT tokens aren't stored in Argo CD, they can only be retrieved when they are created. A user can leverage them in the cli by either passing them in using the `--auth-token` flag or setting the ARGOCD_AUTH_TOKEN environment variable. The JWT tokens can be used until they expire or are revoked.  The JWT tokens can be created with or without an expiration.  By default, the cli creates them without an expirations date.  Even if a token has not expired, it cannot be used if the token has been revoked.
+Since the JWT tokens aren't stored in Argo CD, they can only be retrieved when they are created. A user can leverage them in the cli by either passing them in using the `--auth-token` flag or setting the CD_AUTH_TOKEN environment variable. The JWT tokens can be used until they expire or are revoked.  The JWT tokens can be created with or without an expiration.  By default, the cli creates them without an expirations date.  Even if a token has not expired, it cannot be used if the token has been revoked.
 
 Below is an example of leveraging a JWT token to access a guestbook application.  It makes the assumption that the user already has a project named myproject and an application called guestbook-default.
 

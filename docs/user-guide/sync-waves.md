@@ -108,7 +108,7 @@ When a sync operation takes place, Argo CD will:
 1. Order all resources according to their wave (lowest to highest)
 2. Apply the resources according to the resulting sequence
 
-There is currently a delay between each sync wave in order to give other controllers a chance to react to the spec change that was just applied. This also prevents Argo CD from assessing resource health too quickly (against the stale object), causing hooks to fire prematurely. The current delay between each sync wave is 2 seconds and can be configured via the environment variable ARGOCD_SYNC_WAVE_DELAY.
+There is currently a delay between each sync wave in order to give other controllers a chance to react to the spec change that was just applied. This also prevents Argo CD from assessing resource health too quickly (against the stale object), causing hooks to fire prematurely. The current delay between each sync wave is 2 seconds and can be configured via the environment variable CD_SYNC_WAVE_DELAY.
 
 
 

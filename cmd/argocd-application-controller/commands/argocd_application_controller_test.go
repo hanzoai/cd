@@ -23,9 +23,9 @@ func TestNewCommand_HydrationProcessorsFlag(t *testing.T) {
 // default from their environment variables, so they can be configured through
 // argocd-cmd-params-cm like the other controller parameters.
 func TestNewCommand_MetricsFlagsFromEnv(t *testing.T) {
-	t.Setenv("ARGOCD_APPLICATION_CONTROLLER_METRICS_APPLICATION_LABELS", "team,env")
-	t.Setenv("ARGOCD_APPLICATION_CONTROLLER_METRICS_APPLICATION_CONDITIONS", "OrphanedResourceWarning")
-	t.Setenv("ARGOCD_APPLICATION_CONTROLLER_METRICS_CLUSTER_LABELS", "environment")
+	t.Setenv("CD_APPLICATION_CONTROLLER_METRICS_APPLICATION_LABELS", "team,env")
+	t.Setenv("CD_APPLICATION_CONTROLLER_METRICS_APPLICATION_CONDITIONS", "OrphanedResourceWarning")
+	t.Setenv("CD_APPLICATION_CONTROLLER_METRICS_CLUSTER_LABELS", "environment")
 
 	cmd := NewCommand()
 

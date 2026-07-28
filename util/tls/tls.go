@@ -196,9 +196,9 @@ func AddTLSFlagsToCmdWithPrefix(cmd *cobra.Command, prefix string) func() (Confi
 		envPrefix = strings.ReplaceAll(strings.ToUpper(prefix), "-", "_") + "_"
 		prefix = prefix + "-"
 	}
-	cmd.Flags().StringVar(&minVersionStr, prefix+"tlsminversion", env.StringFromEnv("ARGOCD_"+envPrefix+"TLS_MIN_VERSION", DefaultTLSMinVersion), "The minimum SSL/TLS version that is acceptable (one of: 1.0|1.1|1.2|1.3)")
-	cmd.Flags().StringVar(&maxVersionStr, prefix+"tlsmaxversion", env.StringFromEnv("ARGOCD_"+envPrefix+"TLS_MAX_VERSION", DefaultTLSMaxVersion), "The maximum SSL/TLS version that is acceptable (one of: 1.0|1.1|1.2|1.3)")
-	cmd.Flags().StringVar(&tlsCiphersStr, prefix+"tlsciphers", env.StringFromEnv("ARGOCD_"+envPrefix+"TLS_CIPHERS", DefaultTLSCipherSuite), "The list of acceptable ciphers to be used when establishing TLS connections. Use 'list' to list available ciphers.")
+	cmd.Flags().StringVar(&minVersionStr, prefix+"tlsminversion", env.StringFromEnv("CD_"+envPrefix+"TLS_MIN_VERSION", DefaultTLSMinVersion), "The minimum SSL/TLS version that is acceptable (one of: 1.0|1.1|1.2|1.3)")
+	cmd.Flags().StringVar(&maxVersionStr, prefix+"tlsmaxversion", env.StringFromEnv("CD_"+envPrefix+"TLS_MAX_VERSION", DefaultTLSMaxVersion), "The maximum SSL/TLS version that is acceptable (one of: 1.0|1.1|1.2|1.3)")
+	cmd.Flags().StringVar(&tlsCiphersStr, prefix+"tlsciphers", env.StringFromEnv("CD_"+envPrefix+"TLS_CIPHERS", DefaultTLSCipherSuite), "The list of acceptable ciphers to be used when establishing TLS connections. Use 'list' to list available ciphers.")
 
 	return func() (ConfigCustomizer, error) {
 		return getTLSConfigCustomizer(minVersionStr, maxVersionStr, tlsCiphersStr)
@@ -519,9 +519,9 @@ func AddClientTLSFlagsToCmdWithPrefix(cmd *cobra.Command, prefix string) func() 
 		envPrefix = strings.ReplaceAll(strings.ToUpper(prefix), "-", "_") + "_"
 	}
 
-	cmd.Flags().StringVar(&repoServerCACert, "repo-server-ca-cert-path", env.StringFromEnv("ARGOCD_"+envPrefix+"REPO_SERVER_CA_CERT_PATH", ""), "Path to the repo-server CA certificate file")
-	cmd.Flags().StringVar(&tlsConfig.ClientCertFile, "repo-server-client-cert-path", env.StringFromEnv("ARGOCD_"+envPrefix+"REPO_SERVER_CLIENT_CERT_PATH", "/app/config/reposerver/mtls/client.crt"), "Path to the client certificate file for mTLS. Defaults to the auto-mounted Secret path; mTLS client cert is skipped if the file does not exist.")
-	cmd.Flags().StringVar(&tlsConfig.ClientCertKeyFile, "repo-server-client-cert-key-path", env.StringFromEnv("ARGOCD_"+envPrefix+"REPO_SERVER_CLIENT_CERT_KEY_PATH", "/app/config/reposerver/mtls/client.key"), "Path to the client certificate key file for mTLS. Defaults to the auto-mounted Secret path; mTLS client cert is skipped if the file does not exist.")
+	cmd.Flags().StringVar(&repoServerCACert, "repo-server-ca-cert-path", env.StringFromEnv("CD_"+envPrefix+"REPO_SERVER_CA_CERT_PATH", ""), "Path to the repo-server CA certificate file")
+	cmd.Flags().StringVar(&tlsConfig.ClientCertFile, "repo-server-client-cert-path", env.StringFromEnv("CD_"+envPrefix+"REPO_SERVER_CLIENT_CERT_PATH", "/app/config/reposerver/mtls/client.crt"), "Path to the client certificate file for mTLS. Defaults to the auto-mounted Secret path; mTLS client cert is skipped if the file does not exist.")
+	cmd.Flags().StringVar(&tlsConfig.ClientCertKeyFile, "repo-server-client-cert-key-path", env.StringFromEnv("CD_"+envPrefix+"REPO_SERVER_CLIENT_CERT_KEY_PATH", "/app/config/reposerver/mtls/client.key"), "Path to the client certificate key file for mTLS. Defaults to the auto-mounted Secret path; mTLS client cert is skipped if the file does not exist.")
 
 	return func() (Configuration, error) {
 		config := tlsConfig

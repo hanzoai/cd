@@ -395,7 +395,7 @@ Both bundled Helm and Kustomize binaries have been upgraded to the latest versio
 - feat: Allow selecting application on detail page (#8176)
 - feat: Bundle applicationset-controller with argocd (#8148)
 - feat: Enable specifying root ca for oidc (#6712)
-- feat: Expose ARGOCD_APP_NAME to the `kustomize build` command (#8096)
+- feat: Expose CD_APP_NAME to the `kustomize build` command (#8096)
 - feat: Ignore differences owned by trusted managers from managedFields (#7869)
 - feat: New sync option to use ignore diff configs during sync (#8078)
 - feat: Provide address flag for admin dashboard command (#8095)
@@ -1158,7 +1158,7 @@ In addition to new features and enhancements, we’ve fixed more than 50 bugs an
 - fix: application details page crash when app is deleted (#4229)
 - fix: api-server unnecessary normalize projects on every start (#4219)
 - fix: load only project names in UI (#4217)
-- fix: Re-create already initialized ARGOCD_GNUPGHOME on startup (#4214) (#4223)
+- fix: Re-create already initialized CD_GNUPGHOME on startup (#4214) (#4223)
 - fix: Add openshift as a dex connector type which requires a redirectURI (#4222)
 - fix: Replace status.observedAt with redis pub/sub channels for resource tree updates (#1340) (#4208)
 - fix: cache inconsistency of child resources (#4053) (#4202)
@@ -1282,7 +1282,7 @@ use cases, such as bootstrapping a Kubernetes cluster, or decentralized manageme
 
 ## v1.5.7 (2020-06-09)
 
-The 1.5.7 patch release resolves issue #3719 . The ARGOCD_ENABLE_LEGACY_DIFF=true should be added to argocd-application-controller deployment.
+The 1.5.7 patch release resolves issue #3719 . The CD_ENABLE_LEGACY_DIFF=true should be added to argocd-application-controller deployment.
 
 - fix: application with EnvoyFilter causes high memory/CPU usage (#3719)
 
@@ -1417,7 +1417,7 @@ Following enhancement were implemented in addition to Helm 3:
 
  The Argo CD controller Prometheus metrics have been reworked to enable a richer Grafana dashboard.
  The improved dashboard is available at [examples/dashboard.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard.json).
- You can set `ARGOCD_LEGACY_CONTROLLER_METRICS=true` environment variable and use [examples/dashboard-legacy.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard-legacy.json)
+ You can set `CD_LEGACY_CONTROLLER_METRICS=true` environment variable and use [examples/dashboard-legacy.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard-legacy.json)
  to keep using old dashboard.
 
 #### Local accounts
@@ -1442,7 +1442,7 @@ in the release details page as well as on the Argo CD Help page.
 #### Breaking Changes
 
 The `argocd_app_sync_status`, `argocd_app_health_status` and `argocd_app_created_time` prometheus metrics are deprecated in favor of additional labels
-to `argocd_app_info` metric. The deprecated labels are still available can be re-enabled using `ARGOCD_LEGACY_CONTROLLER_METRICS=true` environment variable.
+to `argocd_app_info` metric. The deprecated labels are still available can be re-enabled using `CD_LEGACY_CONTROLLER_METRICS=true` environment variable.
 The legacy example Grafana dashboard is available at [examples/dashboard-legacy.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard-legacy.json). 
 
 ####  Known issues
@@ -2488,7 +2488,7 @@ which have a dependency to external helm repositories.
 
 * An older Argo CD CLI (v0.10 and below) will not be compatible with Argo CD v0.11. To keep
   CI pipelines in sync with the API server, it is recommended to have pipelines download the CLI
-  directly from the API server https://${ARGOCD_SERVER}/download/argocd-linux-amd64 during the CI
+  directly from the API server https://${CD_SERVER}/download/argocd-linux-amd64 during the CI
   pipeline.
 
 ### Changes since v0.10:

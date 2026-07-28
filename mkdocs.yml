@@ -259,8 +259,8 @@ nav:
 plugins:
 - search
 - gh-admonitions
-repo_url: https://github.com/argoproj/argo-cd
-site_name: Argo CD - Declarative GitOps CD for Kubernetes
+repo_url: https://github.com/hanzoai/cd
+site_name: Hanzo CD — Declarative GitOps for Kubernetes
 site_url: !ENV READTHEDOCS_CANONICAL_URL
 strict: true
 theme:

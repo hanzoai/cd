@@ -181,7 +181,7 @@ During each polling cycle, Argo CD checks whether your tracked repositories have
 - Applications with auto-sync enabled will automatically sync to match the new state.
 - Applications without auto-sync will simply be marked as OutOfSync in the UI.
 
-Setting `timeout.reconciliation` to 0 completely disables automatic polling. In that case, Argo CD will only detect changes when triggered through webhooks or a manual refresh. When setting it to 0, it may also be required to configure ARGOCD_DEFAULT_CACHE_EXPIRATION.
+Setting `timeout.reconciliation` to 0 completely disables automatic polling. In that case, Argo CD will only detect changes when triggered through webhooks or a manual refresh. When setting it to 0, it may also be required to configure CD_DEFAULT_CACHE_EXPIRATION.
 However, setting this value to 0 is not recommended for several reasons such as failure of webhooks due to network issues, misconfiguration etc. If you are using webhooks and are interested in improving Argo CD performance / resource consumption, you can set `timeout.reconciliation` to a lower-frequency interval to reduce the frequency of explicit polling, for example `15m`, `1h` or other interval that is appropriate for your case. 
 
 ## Why is my ArgoCD application `Out Of Sync` when there are no actual changes to the resource limits (or other fields with unit values)?
@@ -343,12 +343,12 @@ If for some reason authenticated Redis does not work for you and you want to use
 
         - kubectl delete deployment argocd-redis
 
-4. Remove environment variable `REDIS_PASSWORD` from the following manifests:
+4. Remove environment variable `KV_PASSWORD` from the following manifests:
     * Deployment: argocd-repo-server
     * Deployment: argocd-server
     * StatefulSet: argocd-application-controller
 
-5. If you have configured file-based Redis credentials using the `REDIS_CREDS_DIR_PATH` environment variable, remove this environment variable and delete the corresponding volume and volumeMount entries that mount the credentials directory from the following manifests:
+5. If you have configured file-based Redis credentials using the `KV_CREDS_DIR_PATH` environment variable, remove this environment variable and delete the corresponding volume and volumeMount entries that mount the credentials directory from the following manifests:
     * Deployment: argocd-repo-server
     * Deployment: argocd-server
     * StatefulSet: argocd-application-controller
@@ -357,20 +357,20 @@ If for some reason authenticated Redis does not work for you and you want to use
 The Redis password is stored in Kubernetes secret `argocd-redis` with key `auth` in the namespace where Argo CD is installed.
 You can config your secret provider to generate Kubernetes secret accordingly.
 
-### Using file-based Redis credentials via `REDIS_CREDS_DIR_PATH`
+### Using file-based Redis credentials via `KV_CREDS_DIR_PATH`
 
 Argo CD components support reading Redis credentials from files mounted at a specified path inside the container.
 
-When the environment variable `REDIS_CREDS_DIR_PATH` is specified, it takes precedence and Argo CD components that require redis connectivity ( application-controller, repo-server and server) loads the redis credentials from the files located in the specified directory path and ignores any values set in the  environment variables
+When the environment variable `KV_CREDS_DIR_PATH` is specified, it takes precedence and Argo CD components that require redis connectivity ( application-controller, repo-server and server) loads the redis credentials from the files located in the specified directory path and ignores any values set in the  environment variables
 
-Expected files when using `REDIS_CREDS_DIR_PATH`:
+Expected files when using `KV_CREDS_DIR_PATH`:
 
 - `auth`: Redis password (mandatory)
 - `auth_username`: Redis username
 - `sentinel_auth`: Redis Sentinel password
 - `sentinel_username`: Redis Sentinel username
 
-You can store these keys in a Kubernetes Secret and mount it into each Argo CD component that needs Redis access. Then point `REDIS_CREDS_DIR_PATH` to the mount directory.
+You can store these keys in a Kubernetes Secret and mount it into each Argo CD component that needs Redis access. Then point `KV_CREDS_DIR_PATH` to the mount directory.
 
 Example Secret:
 
@@ -396,7 +396,7 @@ spec:
     - name: argocd-server
       image: quay.io/argoproj/argocd:<version>
       env:
-      - name: REDIS_CREDS_DIR_PATH
+      - name: KV_CREDS_DIR_PATH
         value: "/var/run/secrets/redis"
         volumeMounts:
         - name: redis-creds
@@ -473,7 +473,7 @@ Error: grpc: error while marshaling: string field contains invalid UTF-8
 This issue typically affects pods that reference Kubernetes secrets via environment variables, e.g. 
 ```yaml
 env:
-  - name: REDIS_PASSWORD
+  - name: KV_PASSWORD
     valueFrom:
       secretKeyRef:
         name: argocd-redis

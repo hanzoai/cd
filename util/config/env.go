@@ -23,7 +23,7 @@ func init() {
 func LoadFlags() error {
 	flags = make(map[string]string)
 
-	opts, err := shellquote.Split(os.Getenv("ARGOCD_OPTS"))
+	opts, err := shellquote.Split(os.Getenv("CD_OPTS"))
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func LoadFlags() error {
 			flags[key] = opt
 			key = ""
 		default:
-			return errors.New("ARGOCD_OPTS invalid at '" + opt + "'")
+			return errors.New("CD_OPTS invalid at '" + opt + "'")
 		}
 	}
 	if key != "" {

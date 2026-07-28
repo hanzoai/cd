@@ -224,7 +224,7 @@ All the following `argocd_github_api_*` metrics can be enabled upon setting `app
 
 Metrics about API Server API request and response activity (request totals, response codes, etc...).
 Scraped at the `argocd-server-metrics:8083/metrics` endpoint.
-For GRPC metrics to show up environment variable ARGOCD_ENABLE_GRPC_TIME_HISTOGRAM must be set to true. 
+For GRPC metrics to show up environment variable CD_ENABLE_GRPC_TIME_HISTOGRAM must be set to true. 
 
 | Metric                                            |   Type    | Description                                                                        
 |---------------------------------------------------|:---------:|---------------------------------------------------------------------------------------------|
@@ -266,7 +266,7 @@ For GRPC metrics to show up environment variable ARGOCD_ENABLE_GRPC_TIME_HISTOGR
 ## Repo Server Metrics
 
 Metrics about the Repo Server. The gRPC metrics are not exposed by default.  Metrics can be enabled using
-`ARGOCD_ENABLE_GRPC_TIME_HISTOGRAM=true` environment variable.  
+`CD_ENABLE_GRPC_TIME_HISTOGRAM=true` environment variable.  
 Scraped at the `argocd-repo-server:8084/metrics` endpoint.
 
 

@@ -7,7 +7,7 @@ spec:
   init:
     command: [ks, version]
   generate:
-    command: [sh, -c, "ks show $ARGOCD_APP_ENV"]
+    command: [sh, -c, "ks show $CD_APP_ENV"]
   discover:
     find:
       glob: "**/*/main.jsonnet"

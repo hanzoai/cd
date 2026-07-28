@@ -592,7 +592,7 @@ spec:
        - /argocd
        name: argocd-server
        env:
-       - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
+       - name: CD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
          value: "0"
 ```
 

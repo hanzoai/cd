@@ -1094,7 +1094,7 @@ func (p ApplicationSourcePluginParameters) IsZero() bool {
 }
 
 // Environ builds a list of environment variables to represent parameters sent to a plugin from the Application
-// manifest. Parameters are represented as one large stringified JSON array (under `ARGOCD_APP_PARAMETERS`). They're
+// manifest. Parameters are represented as one large stringified JSON array (under `CD_APP_PARAMETERS`). They're
 // also represented as individual environment variables, each variable's key being an escaped version of the parameter's
 // name.
 func (p ApplicationSourcePluginParameters) Environ() ([]string, error) {
@@ -1102,7 +1102,7 @@ func (p ApplicationSourcePluginParameters) Environ() ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal plugin parameters: %w", err)
 	}
-	jsonParam := "ARGOCD_APP_PARAMETERS=" + string(out)
+	jsonParam := "CD_APP_PARAMETERS=" + string(out)
 
 	env := []string{jsonParam}
 
