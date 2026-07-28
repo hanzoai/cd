@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"os"
 	"sort"
 	"strings"
@@ -11,26 +10,11 @@ import (
 	"gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/argoproj/notifications-engine/pkg/docs"
 )
 
 func main() {
-	generateNotificationsDocs()
 }
 
-func generateNotificationsDocs() {
-	_ = os.RemoveAll("./docs/operator-manual/notifications/services")
-	_ = os.MkdirAll("./docs/operator-manual/notifications/services", 0o755)
-	files, err := docs.CopyServicesDocs("./docs/operator-manual/notifications/services")
-	if err != nil {
-		log.Fatal(err)
-	}
-	if files != nil {
-		if e := updateMkDocsNav("Operator Manual", "Notifications", "Notification Services", files); e != nil {
-			log.Fatal(e)
-		}
-	}
-}
 
 func updateMkDocsNav(parent string, child string, subchild string, files []string) error {
 	trimPrefixes(files, "docs/")
