@@ -521,7 +521,7 @@ Select the _Enable OCI_ checkbox when adding a HTTPS based _helm_ repository.
 
 Some Helm repository providers (like Wikimedia) require a specific User-Agent header as part of their robot access policies. Argo CD automatically sends a default User-Agent header (`argocd-repo-server/<version> (<platform>)`) for all Helm repository requests.
 
-If you need to customize the User-Agent (for example, to include your organization name or contact information), set the `ARGOCD_HELM_USER_AGENT` environment variable on the `argocd-repo-server` deployment:
+If you need to customize the User-Agent (for example, to include your organization name or contact information), set the `CD_HELM_USER_AGENT` environment variable on the `argocd-repo-server` deployment:
 
 ```yaml
 apiVersion: apps/v1
@@ -534,7 +534,7 @@ spec:
       containers:
       - name: argocd-repo-server
         env:
-        - name: ARGOCD_HELM_USER_AGENT
+        - name: CD_HELM_USER_AGENT
           value: "my-org/argocd (team@example.com)"
 ```
 
@@ -542,7 +542,7 @@ This environment variable applies globally to all Helm repository requests.
 
 ## Git Submodules
 
-Submodules are supported and will be picked up automatically. If the submodule repository requires authentication then the credentials will need to match the credentials of the parent repository. Set ARGOCD_GIT_MODULES_ENABLED=false to disable submodule support
+Submodules are supported and will be picked up automatically. If the submodule repository requires authentication then the credentials will need to match the credentials of the parent repository. Set CD_GIT_MODULES_ENABLED=false to disable submodule support
 
 ## Declarative Configuration
 

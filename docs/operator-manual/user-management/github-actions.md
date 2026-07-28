@@ -107,9 +107,9 @@ jobs:
 
       - name: Use CLI in some commands
         env:
-          ARGOCD_AUTH_TOKEN: ${{ steps.idtoken.outputs.dex-token }}
-          ARGOCD_SERVER: argocd.example.com
-          ARGOCD_OPTS: --grpc-web
+          CD_AUTH_TOKEN: ${{ steps.idtoken.outputs.dex-token }}
+          CD_SERVER: argocd.example.com
+          CD_OPTS: --grpc-web
         run: |
           set -x
           argocd version

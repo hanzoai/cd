@@ -22,7 +22,7 @@ The `Procfile` is used by Goreman when running Argo CD locally with the local to
 
 Example for `api-server` configuration in `Procfile`:
 ``` text
-api-server: [ "$BIN_MODE" = 'true' ] && COMMAND=./dist/argocd || COMMAND='go run ./cmd/main.go' && sh -c "GOCOVERDIR=${ARGOCD_COVERAGE_DIR:-/tmp/coverage/api-server} FORCE_LOG_COLORS=1 ARGOCD_FAKE_IN_CLUSTER=true ARGOCD_TLS_DATA_PATH=${ARGOCD_TLS_DATA_PATH:-/tmp/argocd-local/tls} ARGOCD_SSH_DATA_PATH=${ARGOCD_SSH_DATA_PATH:-/tmp/argocd-local/ssh} ARGOCD_BINARY_NAME=argocd-server $COMMAND --loglevel debug --redis localhost:${ARGOCD_E2E_REDIS_PORT:-6379} --disable-auth=${ARGOCD_E2E_DISABLE_AUTH:-'true'} --insecure --dex-server http://localhost:${ARGOCD_E2E_DEX_PORT:-5556} --repo-server localhost:${ARGOCD_E2E_REPOSERVER_PORT:-8081} --port ${ARGOCD_E2E_APISERVER_PORT:-8080} --otlp-address=${ARGOCD_OTLP_ADDRESS} --application-namespaces=${ARGOCD_APPLICATION_NAMESPACES:-''} --hydrator-enabled=${ARGOCD_HYDRATOR_ENABLED:='false'}"
+api-server: [ "$BIN_MODE" = 'true' ] && COMMAND=./dist/argocd || COMMAND='go run ./cmd/main.go' && sh -c "GOCOVERDIR=${CD_COVERAGE_DIR:-/tmp/coverage/api-server} FORCE_LOG_COLORS=1 CD_FAKE_IN_CLUSTER=true CD_TLS_DATA_PATH=${CD_TLS_DATA_PATH:-/tmp/argocd-local/tls} CD_SSH_DATA_PATH=${CD_SSH_DATA_PATH:-/tmp/argocd-local/ssh} CD_BINARY_NAME=argocd-server $COMMAND --loglevel debug --redis localhost:${CD_E2E_KV_PORT:-6379} --disable-auth=${CD_E2E_DISABLE_AUTH:-'true'} --insecure --dex-server http://localhost:${CD_E2E_DEX_PORT:-5556} --repo-server localhost:${CD_E2E_REPOSERVER_PORT:-8081} --port ${CD_E2E_APISERVER_PORT:-8080} --otlp-address=${CD_OTLP_ADDRESS} --application-namespaces=${CD_APPLICATION_NAMESPACES:-''} --hydrator-enabled=${CD_HYDRATOR_ENABLED:='false'}"
 ```
 This configuration example will be used as the basis for the next steps.
 
@@ -35,20 +35,20 @@ You can keep them in `.env` file and then have the IDE launch configuration poin
 
 Example for an `api-server.env` file:
 ``` bash
-ARGOCD_BINARY_NAME=argocd-server
-ARGOCD_FAKE_IN_CLUSTER=true
-ARGOCD_GNUPGHOME=/tmp/argocd-local/gpg/keys
-ARGOCD_GPG_DATA_PATH=/tmp/argocd-local/gpg/source
-ARGOCD_GPG_ENABLED=false
-ARGOCD_LOG_FORMAT_ENABLE_FULL_TIMESTAMP=1
-ARGOCD_SSH_DATA_PATH=/tmp/argocd-local/ssh
-ARGOCD_TLS_DATA_PATH=/tmp/argocd-local/tls
-ARGOCD_TRACING_ENABLED=1
+CD_BINARY_NAME=argocd-server
+CD_FAKE_IN_CLUSTER=true
+CD_GNUPGHOME=/tmp/argocd-local/gpg/keys
+CD_GPG_DATA_PATH=/tmp/argocd-local/gpg/source
+CD_GPG_ENABLED=false
+CD_LOG_FORMAT_ENABLE_FULL_TIMESTAMP=1
+CD_SSH_DATA_PATH=/tmp/argocd-local/ssh
+CD_TLS_DATA_PATH=/tmp/argocd-local/tls
+CD_TRACING_ENABLED=1
 FORCE_LOG_COLORS=1
 KUBECONFIG=/Users/<YOUR_USERNAME>/.kube/config # Must be an absolute full path
 ... 
 # and so on, for example: when you test the app-in-any-namespace feature, 
-# you'll need to add ARGOCD_APPLICATION_NAMESPACES to this list 
+# you'll need to add CD_APPLICATION_NAMESPACES to this list 
 # only for testing this functionality and remove it afterwards.
 ```
 
@@ -125,10 +125,10 @@ Below are the different options.
 `make start-local` runs all the components by default, but it is also possible to run it with a whitelist of components, enabling the separation we need.
 
 So for the case of debugging the `api-server`, run:
-`make start-local ARGOCD_START="notification applicationset-controller repo-server redis dex controller ui"` 
+`make start-local CD_START="notification applicationset-controller repo-server redis dex controller ui"` 
 
 > [!NOTE]
-> By default, the api-server in this configuration runs with auth disabled. If you need to test argo cd auth-related functionality, run `export ARGOCD_E2E_DISABLE_AUTH='false' && make start-local`
+> By default, the api-server in this configuration runs with auth disabled. If you need to test argo cd auth-related functionality, run `export CD_E2E_DISABLE_AUTH='false' && make start-local`
 #### Run with "make run"
 `make run` runs all the components by default, but it is also possible to run it with a blacklist of components, enabling the separation we need.
 

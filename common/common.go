@@ -257,94 +257,94 @@ const (
 // Environment variables for tuning and debugging Argo CD
 const (
 	// EnvVarSSODebug is an environment variable to enable additional OAuth debugging in the API server
-	EnvVarSSODebug = "ARGOCD_SSO_DEBUG"
+	EnvVarSSODebug = "CD_SSO_DEBUG"
 	// EnvVarRBACDebug is an environment variable to enable additional RBAC debugging in the API server
-	EnvVarRBACDebug = "ARGOCD_RBAC_DEBUG"
+	EnvVarRBACDebug = "CD_RBAC_DEBUG"
 	// EnvVarSSHDataPath overrides the location where SSH known hosts for repo access data is stored
-	EnvVarSSHDataPath = "ARGOCD_SSH_DATA_PATH"
+	EnvVarSSHDataPath = "CD_SSH_DATA_PATH"
 	// EnvVarTLSDataPath overrides the location where TLS certificate for repo access data is stored
-	EnvVarTLSDataPath = "ARGOCD_TLS_DATA_PATH"
+	EnvVarTLSDataPath = "CD_TLS_DATA_PATH"
 	// EnvGitAttemptsCount specifies number of git remote operations attempts count
-	EnvGitAttemptsCount = "ARGOCD_GIT_ATTEMPTS_COUNT"
+	EnvGitAttemptsCount = "CD_GIT_ATTEMPTS_COUNT"
 	// EnvGitRetryMaxDuration specifies max duration of git remote operation retry
-	EnvGitRetryMaxDuration = "ARGOCD_GIT_RETRY_MAX_DURATION"
+	EnvGitRetryMaxDuration = "CD_GIT_RETRY_MAX_DURATION"
 	// EnvGitRetryDuration specifies duration of git remote operation retry
-	EnvGitRetryDuration = "ARGOCD_GIT_RETRY_DURATION"
+	EnvGitRetryDuration = "CD_GIT_RETRY_DURATION"
 	// EnvGitRetryFactor specifies factor of git remote operation retry
-	EnvGitRetryFactor = "ARGOCD_GIT_RETRY_FACTOR"
+	EnvGitRetryFactor = "CD_GIT_RETRY_FACTOR"
 	// EnvGitSubmoduleEnabled overrides git submodule support, true by default
-	EnvGitSubmoduleEnabled = "ARGOCD_GIT_MODULES_ENABLED"
+	EnvGitSubmoduleEnabled = "CD_GIT_MODULES_ENABLED"
 	// EnvHelmUserAgent specifies the User-Agent header for Helm repository requests
-	EnvHelmUserAgent = "ARGOCD_HELM_USER_AGENT"
+	EnvHelmUserAgent = "CD_HELM_USER_AGENT"
 	// EnvGnuPGHome is the path to ArgoCD's GnuPG keyring for signature verification
-	EnvGnuPGHome = "ARGOCD_GNUPGHOME"
+	EnvGnuPGHome = "CD_GNUPGHOME"
 	// EnvWatchAPIBufferSize is the buffer size used to transfer K8S watch events to watch API consumer
-	EnvWatchAPIBufferSize = "ARGOCD_WATCH_API_BUFFER_SIZE"
+	EnvWatchAPIBufferSize = "CD_WATCH_API_BUFFER_SIZE"
 	// EnvPauseGenerationAfterFailedAttempts will pause manifest generation after the specified number of failed generation attempts
-	EnvPauseGenerationAfterFailedAttempts = "ARGOCD_PAUSE_GEN_AFTER_FAILED_ATTEMPTS"
+	EnvPauseGenerationAfterFailedAttempts = "CD_PAUSE_GEN_AFTER_FAILED_ATTEMPTS"
 	// EnvPauseGenerationMinutes pauses manifest generation for the specified number of minutes, after sufficient manifest generation failures
-	EnvPauseGenerationMinutes = "ARGOCD_PAUSE_GEN_MINUTES"
+	EnvPauseGenerationMinutes = "CD_PAUSE_GEN_MINUTES"
 	// EnvPauseGenerationRequests pauses manifest generation for the specified number of requests, after sufficient manifest generation failures
-	EnvPauseGenerationRequests = "ARGOCD_PAUSE_GEN_REQUESTS"
+	EnvPauseGenerationRequests = "CD_PAUSE_GEN_REQUESTS"
 	// EnvControllerReplicas is the number of controller replicas
-	EnvControllerReplicas = "ARGOCD_CONTROLLER_REPLICAS"
+	EnvControllerReplicas = "CD_CONTROLLER_REPLICAS"
 	// EnvControllerHeartbeatTime will update the heartbeat for application controller to claim shard
-	EnvControllerHeartbeatTime = "ARGOCD_CONTROLLER_HEARTBEAT_TIME"
+	EnvControllerHeartbeatTime = "CD_CONTROLLER_HEARTBEAT_TIME"
 	// EnvControllerShard is the shard number that should be handled by controller
-	EnvControllerShard = "ARGOCD_CONTROLLER_SHARD"
+	EnvControllerShard = "CD_CONTROLLER_SHARD"
 	// EnvControllerShardingAlgorithm is the distribution sharding algorithm to be used: legacy or round-robin
-	EnvControllerShardingAlgorithm = "ARGOCD_CONTROLLER_SHARDING_ALGORITHM"
+	EnvControllerShardingAlgorithm = "CD_CONTROLLER_SHARDING_ALGORITHM"
 	// EnvEnableDynamicClusterDistribution enables dynamic sharding (ALPHA)
-	EnvEnableDynamicClusterDistribution = "ARGOCD_ENABLE_DYNAMIC_CLUSTER_DISTRIBUTION"
+	EnvEnableDynamicClusterDistribution = "CD_ENABLE_DYNAMIC_CLUSTER_DISTRIBUTION"
 	// EnvEnableGRPCTimeHistogramEnv enables gRPC metrics collection
-	EnvEnableGRPCTimeHistogramEnv = "ARGOCD_ENABLE_GRPC_TIME_HISTOGRAM"
+	EnvEnableGRPCTimeHistogramEnv = "CD_ENABLE_GRPC_TIME_HISTOGRAM"
 	// EnvGithubAppCredsExpirationDuration controls the caching of Github app credentials. This value is in minutes (default: 60)
-	EnvGithubAppCredsExpirationDuration = "ARGOCD_GITHUB_APP_CREDS_EXPIRATION_DURATION"
+	EnvGithubAppCredsExpirationDuration = "CD_GITHUB_APP_CREDS_EXPIRATION_DURATION"
 	// EnvAzureServicePrincipalCredsExpirationDuration controls the caching of Azure service principal credentials. This value is in minutes (default: 59). Any value greater than 59 will be set to 59 minutes
-	EnvAzureServicePrincipalCredsExpirationDuration = "ARGOCD_AZURE_SERVICE_PRINCIPAL_CREDS_EXPIRATION_DURATION"
+	EnvAzureServicePrincipalCredsExpirationDuration = "CD_AZURE_SERVICE_PRINCIPAL_CREDS_EXPIRATION_DURATION"
 	// EnvHelmIndexCacheDuration controls how the helm repository index file is cached for (default: 0)
-	EnvHelmIndexCacheDuration = "ARGOCD_HELM_INDEX_CACHE_DURATION"
+	EnvHelmIndexCacheDuration = "CD_HELM_INDEX_CACHE_DURATION"
 	// EnvAppConfigPath allows to override the configuration path for repo server
-	EnvAppConfigPath = "ARGOCD_APP_CONF_PATH"
+	EnvAppConfigPath = "CD_APP_CONF_PATH"
 	// EnvAuthToken is the environment variable name for the auth token used by the CLI
-	EnvAuthToken = "ARGOCD_AUTH_TOKEN"
+	EnvAuthToken = "CD_AUTH_TOKEN"
 	// EnvLogFormat log format that is defined by `--logformat` option
-	EnvLogFormat = "ARGOCD_LOG_FORMAT"
+	EnvLogFormat = "CD_LOG_FORMAT"
 	// EnvLogLevel log level that is defined by `--loglevel` option
-	EnvLogLevel = "ARGOCD_LOG_LEVEL"
+	EnvLogLevel = "CD_LOG_LEVEL"
 	// EnvLogFormatEnableFullTimestamp enables the FullTimestamp option in logs
-	EnvLogFormatEnableFullTimestamp = "ARGOCD_LOG_FORMAT_ENABLE_FULL_TIMESTAMP"
+	EnvLogFormatEnableFullTimestamp = "CD_LOG_FORMAT_ENABLE_FULL_TIMESTAMP"
 	// EnvLogFormatTimestamp is the timestamp format used in logs
-	EnvLogFormatTimestamp = "ARGOCD_LOG_FORMAT_TIMESTAMP"
+	EnvLogFormatTimestamp = "CD_LOG_FORMAT_TIMESTAMP"
 	// EnvMaxCookieNumber max number of chunks a cookie can be broken into
-	EnvMaxCookieNumber = "ARGOCD_MAX_COOKIE_NUMBER"
+	EnvMaxCookieNumber = "CD_MAX_COOKIE_NUMBER"
 	// EnvPluginSockFilePath allows to override the pluginSockFilePath for repo server and cmp server
-	EnvPluginSockFilePath = "ARGOCD_PLUGINSOCKFILEPATH"
+	EnvPluginSockFilePath = "CD_PLUGINSOCKFILEPATH"
 	// EnvCMPChunkSize defines the chunk size in bytes used when sending files to the cmp server
-	EnvCMPChunkSize = "ARGOCD_CMP_CHUNK_SIZE"
+	EnvCMPChunkSize = "CD_CMP_CHUNK_SIZE"
 	// EnvCMPWorkDir defines the full path of the work directory used by the CMP server
-	EnvCMPWorkDir = "ARGOCD_CMP_WORKDIR"
+	EnvCMPWorkDir = "CD_CMP_WORKDIR"
 	// EnvGPGDataPath overrides the location where GPG keyring for signature verification is stored
-	EnvGPGDataPath = "ARGOCD_GPG_DATA_PATH"
+	EnvGPGDataPath = "CD_GPG_DATA_PATH"
 	// EnvServer is the server address of the Argo CD API server.
-	EnvServer = "ARGOCD_SERVER"
+	EnvServer = "CD_SERVER"
 	// EnvServerName is the name of the Argo CD server component, as specified by the value under the LabelKeyAppName label key.
-	EnvServerName = "ARGOCD_SERVER_NAME"
+	EnvServerName = "CD_SERVER_NAME"
 	// EnvRepoServerName is the name of the Argo CD repo server component, as specified by the value under the LabelKeyAppName label key.
-	EnvRepoServerName = "ARGOCD_REPO_SERVER_NAME"
+	EnvRepoServerName = "CD_REPO_SERVER_NAME"
 	// EnvAppControllerName is the name of the Argo CD application controller component, as specified by the value under the LabelKeyAppName label key.
-	EnvAppControllerName = "ARGOCD_APPLICATION_CONTROLLER_NAME"
+	EnvAppControllerName = "CD_APPLICATION_CONTROLLER_NAME"
 	// EnvRedisName is the name of the Argo CD redis component, as specified by the value under the LabelKeyAppName label key.
-	EnvRedisName = "ARGOCD_REDIS_NAME"
+	EnvRedisName = "CD_KV_NAME"
 	// EnvRedisHaProxyName is the name of the Argo CD Redis HA proxy component, as specified by the value under the LabelKeyAppName label key.
-	EnvRedisHaProxyName = "ARGOCD_REDIS_HAPROXY_NAME"
+	EnvRedisHaProxyName = "CD_KV_HAPROXY_NAME"
 	// EnvGRPCKeepAliveMin defines the GRPCKeepAliveEnforcementMinimum, used in the grpc.KeepaliveEnforcementPolicy. Expects a "Duration" format (e.g. 10s).
-	EnvGRPCKeepAliveMin = "ARGOCD_GRPC_KEEP_ALIVE_MIN"
+	EnvGRPCKeepAliveMin = "CD_GRPC_KEEP_ALIVE_MIN"
 	// EnvServerSideDiff defines the env var used to enable ServerSide Diff feature.
 	// If defined, value must be "true" or "false".
-	EnvServerSideDiff = "ARGOCD_APPLICATION_CONTROLLER_SERVER_SIDE_DIFF"
+	EnvServerSideDiff = "CD_APPLICATION_CONTROLLER_SERVER_SIDE_DIFF"
 	// EnvGRPCMaxSizeMB is the environment variable to look for a max GRPC message size
-	EnvGRPCMaxSizeMB = "ARGOCD_GRPC_MAX_SIZE_MB"
+	EnvGRPCMaxSizeMB = "CD_GRPC_MAX_SIZE_MB"
 )
 
 // Config Management Plugin related constants

@@ -55,10 +55,10 @@ const tsxRule = reactCompiler
       };
 
 const proxyConf = {
-    target: process.env.ARGOCD_API_URL || 'http://localhost:8080',
+    target: process.env.CD_API_URL || 'http://localhost:8080',
     secure: false,
     // Rewrite Host header when proxying to a remote API server (e.g. a hosted Argo CD instance).
-    changeOrigin: !!process.env.ARGOCD_API_URL
+    changeOrigin: !!process.env.CD_API_URL
 };
 
 const config = {
@@ -177,7 +177,7 @@ const config = {
             disableDotRule: true
         },
         port: 4000,
-        host: process.env.ARGOCD_E2E_JS_HOST || 'localhost',
+        host: process.env.CD_E2E_JS_HOST || 'localhost',
         client: {
             overlay: {
                 errors: true,
@@ -201,7 +201,7 @@ const config = {
             },
             {
                 context: ['/terminal'],
-                target: process.env.ARGOCD_API_URL || 'ws://localhost:8080',
+                target: process.env.CD_API_URL || 'ws://localhost:8080',
                 ws: true,
             }
         ]

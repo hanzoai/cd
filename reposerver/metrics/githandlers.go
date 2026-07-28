@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	lsRemoteParallelismLimit          = env.ParseInt64FromEnv("ARGOCD_GIT_LS_REMOTE_PARALLELISM_LIMIT", 0, 0, math.MaxInt64)
+	lsRemoteParallelismLimit          = env.ParseInt64FromEnv("CD_GIT_LS_REMOTE_PARALLELISM_LIMIT", 0, 0, math.MaxInt64)
 	lsRemoteParallelismLimitSemaphore *semaphore.Weighted
 )
 

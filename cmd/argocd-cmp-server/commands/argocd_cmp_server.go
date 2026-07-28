@@ -85,13 +85,13 @@ func NewCommand() *cobra.Command {
 		},
 	}
 
-	command.Flags().StringVar(&cmdutil.LogFormat, "logformat", env.StringFromEnv("ARGOCD_CMP_SERVER_LOGFORMAT", "json"), "Set the logging format. One of: json|text")
-	command.Flags().StringVar(&cmdutil.LogLevel, "loglevel", env.StringFromEnv("ARGOCD_CMP_SERVER_LOGLEVEL", "info"), "Set the logging level. One of: trace|debug|info|warn|error")
+	command.Flags().StringVar(&cmdutil.LogFormat, "logformat", env.StringFromEnv("CD_CMP_SERVER_LOGFORMAT", "json"), "Set the logging format. One of: json|text")
+	command.Flags().StringVar(&cmdutil.LogLevel, "loglevel", env.StringFromEnv("CD_CMP_SERVER_LOGLEVEL", "info"), "Set the logging level. One of: trace|debug|info|warn|error")
 	command.Flags().StringVar(&configFilePath, "config-dir-path", common.DefaultPluginConfigFilePath, "Config management plugin configuration file location, Default is '/home/argocd/cmp-server/config/'")
-	command.Flags().StringVar(&otlpAddress, "otlp-address", env.StringFromEnv("ARGOCD_CMP_SERVER_OTLP_ADDRESS", ""), "OpenTelemetry collector address to send traces to")
-	command.Flags().BoolVar(&otlpInsecure, "otlp-insecure", env.ParseBoolFromEnv("ARGOCD_CMP_SERVER_OTLP_INSECURE", true), "OpenTelemetry collector insecure mode")
-	command.Flags().StringToStringVar(&otlpHeaders, "otlp-headers", env.ParseStringToStringFromEnv("ARGOCD_CMP_SERVER_OTLP_HEADERS", map[string]string{}, ","), "List of OpenTelemetry collector extra headers sent with traces, headers are comma-separated key-value pairs(e.g. key1=value1,key2=value2)")
-	command.Flags().StringSliceVar(&otlpAttrs, "otlp-attrs", env.StringsFromEnv("ARGOCD_CMP_SERVER_OTLP_ATTRS", []string{}, ","), "List of OpenTelemetry collector extra attrs when send traces, each attribute is separated by a colon(e.g. key:value)")
-	cli.BoundedFloat64Var(command.Flags(), &otlpSampleRatio, "otlp-sample-ratio", env.ParseFloat64FromEnv("ARGOCD_CMP_SERVER_OTLP_SAMPLE_RATIO", 1.0, 0.0, 1.0), 0.0, 1.0, "Fraction of traces to sample, from 0.0 (none) to 1.0 (all). Parent-based, so downstream services honor the upstream sampling decision")
+	command.Flags().StringVar(&otlpAddress, "otlp-address", env.StringFromEnv("CD_CMP_SERVER_OTLP_ADDRESS", ""), "OpenTelemetry collector address to send traces to")
+	command.Flags().BoolVar(&otlpInsecure, "otlp-insecure", env.ParseBoolFromEnv("CD_CMP_SERVER_OTLP_INSECURE", true), "OpenTelemetry collector insecure mode")
+	command.Flags().StringToStringVar(&otlpHeaders, "otlp-headers", env.ParseStringToStringFromEnv("CD_CMP_SERVER_OTLP_HEADERS", map[string]string{}, ","), "List of OpenTelemetry collector extra headers sent with traces, headers are comma-separated key-value pairs(e.g. key1=value1,key2=value2)")
+	command.Flags().StringSliceVar(&otlpAttrs, "otlp-attrs", env.StringsFromEnv("CD_CMP_SERVER_OTLP_ATTRS", []string{}, ","), "List of OpenTelemetry collector extra attrs when send traces, each attribute is separated by a colon(e.g. key:value)")
+	cli.BoundedFloat64Var(command.Flags(), &otlpSampleRatio, "otlp-sample-ratio", env.ParseFloat64FromEnv("CD_CMP_SERVER_OTLP_SAMPLE_RATIO", 1.0, 0.0, 1.0), 0.0, 1.0, "Fraction of traces to sample, from 0.0 (none) to 1.0 (all). Parent-based, so downstream services honor the upstream sampling decision")
 	return &command
 }

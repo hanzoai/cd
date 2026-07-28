@@ -41,14 +41,14 @@ LABEL org.opencontainers.image.source="https://github.com/argoproj/argo-cd"
 
 USER root
 
-ENV ARGOCD_USER_ID=999 \
+ENV CD_USER_ID=999 \
     DEBIAN_FRONTEND=noninteractive
 
 # renovate: datasource=deb depName=git registryUrl=https://archive.ubuntu.com/ubuntu?suite=resolute&components=main,security&binaryArch=amd64
 ARG GIT_APT_VERSION=1:2.53.0-1ubuntu1
 
-RUN groupadd -g $ARGOCD_USER_ID argocd && \
-    useradd -r -u $ARGOCD_USER_ID -g argocd argocd && \
+RUN groupadd -g $CD_USER_ID argocd && \
+    useradd -r -u $CD_USER_ID -g argocd argocd && \
     mkdir -p /home/argocd && \
     chown argocd:0 /home/argocd && \
     chmod g=u /home/argocd && \
@@ -93,7 +93,7 @@ ENV USER=argocd
 # See https://github.com/argoproj/argo-cd/issues/24991
 ENV GRPC_ENABLE_TXT_SERVICE_CONFIG=false
 
-USER $ARGOCD_USER_ID
+USER $CD_USER_ID
 WORKDIR /home/argocd
 
 ####################################################################################################
@@ -164,4 +164,4 @@ RUN ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-server && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-k8s-auth && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-commit-server
 
-USER $ARGOCD_USER_ID
+USER $CD_USER_ID

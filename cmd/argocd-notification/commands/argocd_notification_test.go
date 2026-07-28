@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewCommandProcessorsCountDefault(t *testing.T) {
-	t.Setenv("ARGOCD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT", "4")
+	t.Setenv("CD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT", "4")
 
 	cmd := NewCommand()
 
@@ -18,7 +18,7 @@ func TestNewCommandProcessorsCountDefault(t *testing.T) {
 }
 
 func TestNewCommandProcessorsCountInvalidEnvFallsBackToDefault(t *testing.T) {
-	t.Setenv("ARGOCD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT", "0")
+	t.Setenv("CD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT", "0")
 
 	cmd := NewCommand()
 

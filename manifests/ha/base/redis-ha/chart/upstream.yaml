@@ -76,15 +76,15 @@ data:
     MASTER=''
     MASTER_GROUP="argocd"
     QUORUM="2"
-    REDIS_CONF=/data/conf/redis.conf
-    REDIS_PORT=6379
-    REDIS_TLS_PORT=
+    KV_CONF=/data/conf/redis.conf
+    KV_PORT=6379
+    KV_TLS_PORT=
     SENTINEL_CONF=/data/conf/sentinel.conf
     SENTINEL_TLS_PORT=
     SERVICE=argocd-redis-ha
     NAMESPACE="argocd"
     SENTINEL_TLS_REPLICATION_ENABLED=false
-    REDIS_TLS_REPLICATION_ENABLED=false
+    KV_TLS_REPLICATION_ENABLED=false
     RESOLVE_HOSTNAMES=false
     ANNOUNCE_HOSTNAMES=false
 
@@ -143,11 +143,11 @@ data:
         echo "  sentinel id (${MY_SENTINEL_ID}), sentinel grp (${MASTER_GROUP}), quorum (${QUORUM})"
         sed -i "1s/^/sentinel myid ${MY_SENTINEL_ID}\\n/" "${SENTINEL_CONF}"
         if [ "$SENTINEL_TLS_REPLICATION_ENABLED" = true ]; then
-            echo "  redis master (${1}:${REDIS_TLS_PORT})"
-            sed -i "2s/^/sentinel monitor ${MASTER_GROUP} ${1} ${REDIS_TLS_PORT} ${QUORUM} \\n/" "${SENTINEL_CONF}"
+            echo "  redis master (${1}:${KV_TLS_PORT})"
+            sed -i "2s/^/sentinel monitor ${MASTER_GROUP} ${1} ${KV_TLS_PORT} ${QUORUM} \\n/" "${SENTINEL_CONF}"
         else
-            echo "  redis master (${1}:${REDIS_PORT})"
-            sed -i "2s/^/sentinel monitor ${MASTER_GROUP} ${1} ${REDIS_PORT} ${QUORUM} \\n/" "${SENTINEL_CONF}"
+            echo "  redis master (${1}:${KV_PORT})"
+            sed -i "2s/^/sentinel monitor ${MASTER_GROUP} ${1} ${KV_PORT} ${QUORUM} \\n/" "${SENTINEL_CONF}"
         fi
         echo "sentinel announce-ip ${ANNOUNCE_IP}" >> ${SENTINEL_CONF}
         if [ "$SENTINEL_PORT" -eq 0 ]; then
@@ -161,22 +161,22 @@ data:
 
     redis_update() {
         echo "Updating redis config.."
-        if [ "$REDIS_TLS_REPLICATION_ENABLED" = true ]; then
-            echo "  we are slave of redis master (${1}:${REDIS_TLS_PORT})"
-            echo "slaveof ${1} ${REDIS_TLS_PORT}" >> "${REDIS_CONF}"
-            echo "slave-announce-port ${REDIS_TLS_PORT}" >> ${REDIS_CONF}
+        if [ "$KV_TLS_REPLICATION_ENABLED" = true ]; then
+            echo "  we are slave of redis master (${1}:${KV_TLS_PORT})"
+            echo "slaveof ${1} ${KV_TLS_PORT}" >> "${KV_CONF}"
+            echo "slave-announce-port ${KV_TLS_PORT}" >> ${KV_CONF}
         else
-            echo "  we are slave of redis master (${1}:${REDIS_PORT})"
-            echo "slaveof ${1} ${REDIS_PORT}" >> "${REDIS_CONF}"
-            echo "slave-announce-port ${REDIS_PORT}" >> ${REDIS_CONF}
+            echo "  we are slave of redis master (${1}:${KV_PORT})"
+            echo "slaveof ${1} ${KV_PORT}" >> "${KV_CONF}"
+            echo "slave-announce-port ${KV_PORT}" >> ${KV_CONF}
         fi
-        echo "slave-announce-ip ${ANNOUNCE_IP}" >> ${REDIS_CONF}
+        echo "slave-announce-ip ${ANNOUNCE_IP}" >> ${KV_CONF}
     }
 
     copy_config() {
         echo "Copying default redis config.."
-        echo "  to '${REDIS_CONF}'"
-        cp /readonly-config/redis.conf "${REDIS_CONF}"
+        echo "  to '${KV_CONF}'"
+        cp /readonly-config/redis.conf "${KV_CONF}"
         echo "Copying default sentinel config.."
         echo "  to '${SENTINEL_CONF}'"
         cp /readonly-config/sentinel.conf "${SENTINEL_CONF}"
@@ -191,7 +191,7 @@ data:
             redis_update "${ANNOUNCE_IP}"
             sentinel_update "${ANNOUNCE_IP}"
             echo "  make sure ${ANNOUNCE_IP} is not a slave (slaveof no one)"
-            sed -i "s/^.*slaveof.*//" "${REDIS_CONF}"
+            sed -i "s/^.*slaveof.*//" "${KV_CONF}"
         else
             if [ "$RESOLVE_HOSTNAMES" = true ]; then
                 echo "Getting redis master hostname.."
@@ -217,10 +217,10 @@ data:
 
     redis_ping() {
     set +e
-        if [ "$REDIS_PORT" -eq 0 ]; then
-            redis-cli -h "${MASTER}" -a "${AUTH}" --no-auth-warning -p "${REDIS_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key ping
+        if [ "$KV_PORT" -eq 0 ]; then
+            redis-cli -h "${MASTER}" -a "${AUTH}" --no-auth-warning -p "${KV_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key ping
         else
-            redis-cli -h "${MASTER}" -a "${AUTH}" --no-auth-warning -p "${REDIS_PORT}" ping
+            redis-cli -h "${MASTER}" -a "${AUTH}" --no-auth-warning -p "${KV_PORT}" ping
         fi
     set -e
     }
@@ -242,10 +242,10 @@ data:
 
     find_master() {
         echo "Verifying redis master.."
-        if [ "$REDIS_PORT" -eq 0 ]; then
-            echo "  ping (${MASTER}:${REDIS_TLS_PORT})"
+        if [ "$KV_PORT" -eq 0 ]; then
+            echo "  ping (${MASTER}:${KV_TLS_PORT})"
         else
-            echo "  ping (${MASTER}:${REDIS_PORT})"
+            echo "  ping (${MASTER}:${KV_PORT})"
         fi
         if [ "$(redis_ping_retry 3)" != "PONG" ]; then
             echo "  $(date) Can't ping redis master (${MASTER})"
@@ -298,7 +298,7 @@ data:
     redis_ro_update() {
         echo "Updating read-only redis config.."
         echo "  redis.conf set 'replica-priority 0'"
-        echo "replica-priority 0" >> ${REDIS_CONF}
+        echo "replica-priority 0" >> ${KV_CONF}
     }
 
     getent_hosts() {
@@ -347,7 +347,7 @@ data:
     if [ "${AUTH:-}" ]; then
         echo "Setting redis auth values.."
         ESCAPED_AUTH=$(echo "${AUTH}" | sed -e 's/[\/&]/\\&/g');
-        sed -i "s/replace-default-auth/${ESCAPED_AUTH}/" "${REDIS_CONF}" "${SENTINEL_CONF}"
+        sed -i "s/replace-default-auth/${ESCAPED_AUTH}/" "${KV_CONF}" "${SENTINEL_CONF}"
     fi
 
     if [ "${SENTINELAUTH:-}" ]; then
@@ -366,20 +366,20 @@ data:
     MASTER=''
     MASTER_GROUP="argocd"
     QUORUM="2"
-    REDIS_CONF=/data/conf/redis.conf
-    REDIS_PORT=6379
-    REDIS_TLS_PORT=
+    KV_CONF=/data/conf/redis.conf
+    KV_PORT=6379
+    KV_TLS_PORT=
     SENTINEL_CONF=/data/conf/sentinel.conf
     SENTINEL_TLS_PORT=
     SERVICE=argocd-redis-ha
     NAMESPACE="argocd"
     SENTINEL_TLS_REPLICATION_ENABLED=false
-    REDIS_TLS_REPLICATION_ENABLED=false
+    KV_TLS_REPLICATION_ENABLED=false
     RESOLVE_HOSTNAMES=false
     ANNOUNCE_HOSTNAMES=false
 
     ROLE=''
-    REDIS_MASTER=''
+    KV_MASTER=''
 
     set -eu
     sentinel_get_master() {
@@ -436,11 +436,11 @@ data:
         echo "  sentinel id (${MY_SENTINEL_ID}), sentinel grp (${MASTER_GROUP}), quorum (${QUORUM})"
         sed -i "1s/^/sentinel myid ${MY_SENTINEL_ID}\\n/" "${SENTINEL_CONF}"
         if [ "$SENTINEL_TLS_REPLICATION_ENABLED" = true ]; then
-            echo "  redis master (${1}:${REDIS_TLS_PORT})"
-            sed -i "2s/^/sentinel monitor ${MASTER_GROUP} ${1} ${REDIS_TLS_PORT} ${QUORUM} \\n/" "${SENTINEL_CONF}"
+            echo "  redis master (${1}:${KV_TLS_PORT})"
+            sed -i "2s/^/sentinel monitor ${MASTER_GROUP} ${1} ${KV_TLS_PORT} ${QUORUM} \\n/" "${SENTINEL_CONF}"
         else
-            echo "  redis master (${1}:${REDIS_PORT})"
-            sed -i "2s/^/sentinel monitor ${MASTER_GROUP} ${1} ${REDIS_PORT} ${QUORUM} \\n/" "${SENTINEL_CONF}"
+            echo "  redis master (${1}:${KV_PORT})"
+            sed -i "2s/^/sentinel monitor ${MASTER_GROUP} ${1} ${KV_PORT} ${QUORUM} \\n/" "${SENTINEL_CONF}"
         fi
         echo "sentinel announce-ip ${ANNOUNCE_IP}" >> ${SENTINEL_CONF}
         if [ "$SENTINEL_PORT" -eq 0 ]; then
@@ -454,22 +454,22 @@ data:
 
     redis_update() {
         echo "Updating redis config.."
-        if [ "$REDIS_TLS_REPLICATION_ENABLED" = true ]; then
-            echo "  we are slave of redis master (${1}:${REDIS_TLS_PORT})"
-            echo "slaveof ${1} ${REDIS_TLS_PORT}" >> "${REDIS_CONF}"
-            echo "slave-announce-port ${REDIS_TLS_PORT}" >> ${REDIS_CONF}
+        if [ "$KV_TLS_REPLICATION_ENABLED" = true ]; then
+            echo "  we are slave of redis master (${1}:${KV_TLS_PORT})"
+            echo "slaveof ${1} ${KV_TLS_PORT}" >> "${KV_CONF}"
+            echo "slave-announce-port ${KV_TLS_PORT}" >> ${KV_CONF}
         else
-            echo "  we are slave of redis master (${1}:${REDIS_PORT})"
-            echo "slaveof ${1} ${REDIS_PORT}" >> "${REDIS_CONF}"
-            echo "slave-announce-port ${REDIS_PORT}" >> ${REDIS_CONF}
+            echo "  we are slave of redis master (${1}:${KV_PORT})"
+            echo "slaveof ${1} ${KV_PORT}" >> "${KV_CONF}"
+            echo "slave-announce-port ${KV_PORT}" >> ${KV_CONF}
         fi
-        echo "slave-announce-ip ${ANNOUNCE_IP}" >> ${REDIS_CONF}
+        echo "slave-announce-ip ${ANNOUNCE_IP}" >> ${KV_CONF}
     }
 
     copy_config() {
         echo "Copying default redis config.."
-        echo "  to '${REDIS_CONF}'"
-        cp /readonly-config/redis.conf "${REDIS_CONF}"
+        echo "  to '${KV_CONF}'"
+        cp /readonly-config/redis.conf "${KV_CONF}"
         echo "Copying default sentinel config.."
         echo "  to '${SENTINEL_CONF}'"
         cp /readonly-config/sentinel.conf "${SENTINEL_CONF}"
@@ -484,7 +484,7 @@ data:
             redis_update "${ANNOUNCE_IP}"
             sentinel_update "${ANNOUNCE_IP}"
             echo "  make sure ${ANNOUNCE_IP} is not a slave (slaveof no one)"
-            sed -i "s/^.*slaveof.*//" "${REDIS_CONF}"
+            sed -i "s/^.*slaveof.*//" "${KV_CONF}"
         else
             if [ "$RESOLVE_HOSTNAMES" = true ]; then
                 echo "Getting redis master hostname.."
@@ -510,10 +510,10 @@ data:
 
     redis_ping() {
     set +e
-        if [ "$REDIS_PORT" -eq 0 ]; then
-            redis-cli -h "${MASTER}" -a "${AUTH}" --no-auth-warning -p "${REDIS_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key ping
+        if [ "$KV_PORT" -eq 0 ]; then
+            redis-cli -h "${MASTER}" -a "${AUTH}" --no-auth-warning -p "${KV_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key ping
         else
-            redis-cli -h "${MASTER}" -a "${AUTH}" --no-auth-warning -p "${REDIS_PORT}" ping
+            redis-cli -h "${MASTER}" -a "${AUTH}" --no-auth-warning -p "${KV_PORT}" ping
         fi
     set -e
     }
@@ -535,10 +535,10 @@ data:
 
     find_master() {
         echo "Verifying redis master.."
-        if [ "$REDIS_PORT" -eq 0 ]; then
-            echo "  ping (${MASTER}:${REDIS_TLS_PORT})"
+        if [ "$KV_PORT" -eq 0 ]; then
+            echo "  ping (${MASTER}:${KV_TLS_PORT})"
         else
-            echo "  ping (${MASTER}:${REDIS_PORT})"
+            echo "  ping (${MASTER}:${KV_PORT})"
         fi
         if [ "$(redis_ping_retry 3)" != "PONG" ]; then
             echo "  $(date) Can't ping redis master (${MASTER})"
@@ -591,7 +591,7 @@ data:
     redis_ro_update() {
         echo "Updating read-only redis config.."
         echo "  redis.conf set 'replica-priority 0'"
-        echo "replica-priority 0" >> ${REDIS_CONF}
+        echo "replica-priority 0" >> ${KV_CONF}
     }
 
     getent_hosts() {
@@ -620,20 +620,20 @@ data:
 
     redis_role() {
     set +e
-        if [ "$REDIS_PORT" -eq 0 ]; then
-            ROLE=$(redis-cli  -a "${AUTH}" --no-auth-warning -p "${REDIS_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key info | grep role | sed 's/role://' | sed 's/\r//')
+        if [ "$KV_PORT" -eq 0 ]; then
+            ROLE=$(redis-cli  -a "${AUTH}" --no-auth-warning -p "${KV_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key info | grep role | sed 's/role://' | sed 's/\r//')
         else
-            ROLE=$(redis-cli  -a "${AUTH}" --no-auth-warning -p "${REDIS_PORT}" info | grep role | sed 's/role://' | sed 's/\r//')
+            ROLE=$(redis-cli  -a "${AUTH}" --no-auth-warning -p "${KV_PORT}" info | grep role | sed 's/role://' | sed 's/\r//')
         fi
     set -e
     }
 
     identify_redis_master() {
     set +e
-        if [ "$REDIS_PORT" -eq 0 ]; then
-            REDIS_MASTER=$(redis-cli  -a "${AUTH}" --no-auth-warning -p "${REDIS_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key info | grep master_host | sed 's/master_host://' | sed 's/\r//')
+        if [ "$KV_PORT" -eq 0 ]; then
+            KV_MASTER=$(redis-cli  -a "${AUTH}" --no-auth-warning -p "${KV_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key info | grep master_host | sed 's/master_host://' | sed 's/\r//')
         else
-            REDIS_MASTER=$(redis-cli  -a "${AUTH}" --no-auth-warning -p "${REDIS_PORT}" info | grep master_host | sed 's/master_host://' | sed 's/\r//')
+            KV_MASTER=$(redis-cli  -a "${AUTH}" --no-auth-warning -p "${KV_PORT}" info | grep master_host | sed 's/master_host://' | sed 's/\r//')
         fi
     set -e
     }
@@ -642,10 +642,10 @@ data:
     set +e
         sh /readonly-config/init.sh
 
-        if [ "$REDIS_PORT" -eq 0 ]; then
-            echo "shutdown" | redis-cli  -a "${AUTH}" --no-auth-warning -p "${REDIS_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key
+        if [ "$KV_PORT" -eq 0 ]; then
+            echo "shutdown" | redis-cli  -a "${AUTH}" --no-auth-warning -p "${KV_TLS_PORT}" --tls --cacert /tls-certs/ca.crt  --cert /tls-certs/redis.crt --key /tls-certs/redis.key
         else
-            echo "shutdown" | redis-cli  -a "${AUTH}" --no-auth-warning -p "${REDIS_PORT}"
+            echo "shutdown" | redis-cli  -a "${AUTH}" --no-auth-warning -p "${KV_PORT}"
         fi
     set -e
     }
@@ -680,14 +680,14 @@ data:
             fi
         elif [ "${MASTER}" ]; then
             identify_redis_master
-            if [ "$REDIS_MASTER" != "$MASTER" ]; then
+            if [ "$KV_MASTER" != "$MASTER" ]; then
                 echo "Redis master and local master are not the same. waiting."
                 sleep 10
                 identify_master
                 identify_redis_master
-                echo "Redis master is ${MASTER}, expected master is ${REDIS_MASTER}. No need to reinitialize."
-                if [ "${REDIS_MASTER}" != "${MASTER}" ]; then
-                    echo "Redis master is ${MASTER}, expected master is ${REDIS_MASTER}, reinitializing"
+                echo "Redis master is ${MASTER}, expected master is ${KV_MASTER}. No need to reinitialize."
+                if [ "${KV_MASTER}" != "${MASTER}" ]; then
+                    echo "Redis master is ${MASTER}, expected master is ${KV_MASTER}, reinitializing"
                     reinit
                 fi
             fi

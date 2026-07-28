@@ -1950,12 +1950,12 @@ func TestEnv_Envsubst(t *testing.T) {
 }
 
 func TestEnv_Envsubst_Overlap(t *testing.T) {
-	env := Env{&EnvEntry{"ARGOCD_APP_NAMESPACE", "default"}, &EnvEntry{"ARGOCD_APP_NAME", "guestbook"}}
+	env := Env{&EnvEntry{"CD_APP_NAMESPACE", "default"}, &EnvEntry{"CD_APP_NAME", "guestbook"}}
 
 	assert.Equal(
 		t,
 		"namespace: default; name: guestbook",
-		env.Envsubst("namespace: $ARGOCD_APP_NAMESPACE; name: $ARGOCD_APP_NAME"),
+		env.Envsubst("namespace: $CD_APP_NAMESPACE; name: $CD_APP_NAME"),
 	)
 }
 
@@ -4336,7 +4336,7 @@ func TestApplicationSourcePluginParameters_Environ_string(t *testing.T) {
 	assert.Contains(t, environ, "PARAM_VERSION=1.2.3")
 	paramsJSON, err := json.Marshal(params)
 	require.NoError(t, err)
-	assert.Contains(t, environ, fmt.Sprintf("ARGOCD_APP_PARAMETERS=%s", paramsJSON))
+	assert.Contains(t, environ, fmt.Sprintf("CD_APP_PARAMETERS=%s", paramsJSON))
 }
 
 func TestApplicationSourcePluginParameters_Environ_array(t *testing.T) {
@@ -4353,7 +4353,7 @@ func TestApplicationSourcePluginParameters_Environ_array(t *testing.T) {
 	assert.Contains(t, environ, "PARAM_DEPENDENCIES_1=minio")
 	paramsJSON, err := json.Marshal(params)
 	require.NoError(t, err)
-	assert.Contains(t, environ, fmt.Sprintf("ARGOCD_APP_PARAMETERS=%s", paramsJSON))
+	assert.Contains(t, environ, fmt.Sprintf("CD_APP_PARAMETERS=%s", paramsJSON))
 }
 
 func TestApplicationSourcePluginParameters_Environ_map(t *testing.T) {
@@ -4375,7 +4375,7 @@ func TestApplicationSourcePluginParameters_Environ_map(t *testing.T) {
 	assert.Contains(t, environ, "PARAM_HELM_PARAMETERS_IMAGE_TAG=v2.4.0")
 	paramsJSON, err := json.Marshal(params)
 	require.NoError(t, err)
-	assert.Contains(t, environ, fmt.Sprintf("ARGOCD_APP_PARAMETERS=%s", paramsJSON))
+	assert.Contains(t, environ, fmt.Sprintf("CD_APP_PARAMETERS=%s", paramsJSON))
 }
 
 func TestApplicationSourcePluginParameters_Environ_all(t *testing.T) {
@@ -4406,7 +4406,7 @@ func TestApplicationSourcePluginParameters_Environ_all(t *testing.T) {
 	assert.Contains(t, environ, "PARAM_SOME_NAME_IMAGE_TAG=v2.4.0")
 	paramsJSON, err := json.Marshal(params)
 	require.NoError(t, err)
-	assert.Contains(t, environ, fmt.Sprintf("ARGOCD_APP_PARAMETERS=%s", paramsJSON))
+	assert.Contains(t, environ, fmt.Sprintf("CD_APP_PARAMETERS=%s", paramsJSON))
 }
 
 func getApplicationSpec() *ApplicationSpec {

@@ -101,7 +101,7 @@ layer:
 * `application/vnd.oci.image.layer.v1.tar+gzip`
 * `application/vnd.cncf.helm.chart.content.v1.tar+gzip`
 
-Custom media types can be configured by setting the `ARGOCD_REPO_SERVER_OCI_LAYER_MEDIA_TYPES` environment variable 
+Custom media types can be configured by setting the `CD_REPO_SERVER_OCI_LAYER_MEDIA_TYPES` environment variable 
 in the repo-server deployment.
 
 To create an OCI artifact compatible with Argo CD, there are a multitude of tools to choose from. For this example we'll

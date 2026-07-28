@@ -353,10 +353,10 @@ func TestHelmSet(t *testing.T) {
 		Path("helm").
 		When().
 		CreateApp().
-		AppSet("--helm-set", "foo=bar", "--helm-set", "foo=baz", "--helm-set", "app=$ARGOCD_APP_NAME").
+		AppSet("--helm-set", "foo=bar", "--helm-set", "foo=baz", "--helm-set", "app=$CD_APP_NAME").
 		Then().
 		And(func(app *Application) {
-			assert.Equal(t, []HelmParameter{{Name: "foo", Value: "baz"}, {Name: "app", Value: "$ARGOCD_APP_NAME"}}, app.Spec.GetSource().Helm.Parameters)
+			assert.Equal(t, []HelmParameter{{Name: "foo", Value: "baz"}, {Name: "app", Value: "$CD_APP_NAME"}}, app.Spec.GetSource().Helm.Parameters)
 		})
 }
 
@@ -365,10 +365,10 @@ func TestHelmSetString(t *testing.T) {
 		Path("helm").
 		When().
 		CreateApp().
-		AppSet("--helm-set-string", "foo=bar", "--helm-set-string", "foo=baz", "--helm-set-string", "app=$ARGOCD_APP_NAME").
+		AppSet("--helm-set-string", "foo=bar", "--helm-set-string", "foo=baz", "--helm-set-string", "app=$CD_APP_NAME").
 		Then().
 		And(func(app *Application) {
-			assert.Equal(t, []HelmParameter{{Name: "foo", Value: "baz", ForceString: true}, {Name: "app", Value: "$ARGOCD_APP_NAME", ForceString: true}}, app.Spec.GetSource().Helm.Parameters)
+			assert.Equal(t, []HelmParameter{{Name: "foo", Value: "baz", ForceString: true}, {Name: "app", Value: "$CD_APP_NAME", ForceString: true}}, app.Spec.GetSource().Helm.Parameters)
 		})
 }
 
@@ -390,7 +390,7 @@ func TestHelmSetEnv(t *testing.T) {
 	ctx.Path("helm-values").
 		When().
 		CreateApp().
-		AppSet("--helm-set", "foo=$ARGOCD_APP_NAME").
+		AppSet("--helm-set", "foo=$CD_APP_NAME").
 		Sync().
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded)).
@@ -405,7 +405,7 @@ func TestHelmSetStringEnv(t *testing.T) {
 	ctx.Path("helm-values").
 		When().
 		CreateApp().
-		AppSet("--helm-set-string", "foo=$ARGOCD_APP_NAME").
+		AppSet("--helm-set-string", "foo=$CD_APP_NAME").
 		Sync().
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded)).

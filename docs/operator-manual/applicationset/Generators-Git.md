@@ -437,7 +437,7 @@ In `values` we can also interpolate all fields set by the git files generator as
 When using a Git generator, the ApplicationSet controller polls Git
 repositories, by default, every 3 minutes to detect changes, unless
 different default value is set by the
-`ARGOCD_APPLICATIONSET_CONTROLLER_REQUEUE_AFTER` environment variable.
+`CD_APPLICATIONSET_CONTROLLER_REQUEUE_AFTER` environment variable.
 You can customize this interval per ApplicationSet using
 `requeueAfterSeconds`.
 

@@ -59,9 +59,9 @@ import (
 const (
 	MetaDataTokenKey = "token"
 	// EnvArgoCDServer is the environment variable to look for an Hanzo CD server address
-	EnvArgoCDServer = "ARGOCD_SERVER"
+	EnvArgoCDServer = "CD_SERVER"
 	// EnvArgoCDAuthToken is the environment variable to look for an Hanzo CD auth token
-	EnvArgoCDAuthToken = "ARGOCD_AUTH_TOKEN"
+	EnvArgoCDAuthToken = "CD_AUTH_TOKEN"
 )
 
 // MaxGRPCMessageSize contains max grpc message size

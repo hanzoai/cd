@@ -64,10 +64,10 @@ spec:
 {{ toYaml .Values.master.args | indent 10 }}
         {{- end }}
         env:
-        - name: REDIS_REPLICATION_MODE
+        - name: KV_REPLICATION_MODE
           value: master
         {{- if .Values.usePassword }}
-        - name: REDIS_PASSWORD
+        - name: KV_PASSWORD
           valueFrom:
             secretKeyRef:
             {{- if .Values.existingSecret }}
@@ -79,13 +79,13 @@ spec:
         {{- else }}
         - name: ALLOW_EMPTY_PASSWORD
           value: "yes"
-        - name: REDIS_PORT
+        - name: KV_PORT
           value: {{ .Values.master.port | quote }}
         {{- end }}
-        - name: REDIS_DISABLE_COMMANDS
+        - name: KV_DISABLE_COMMANDS
           value: {{ .Values.master.disableCommands }}
         {{- if .Values.master.extraFlags }}
-        - name: REDIS_EXTRA_FLAGS
+        - name: KV_EXTRA_FLAGS
           value: {{ .Values.master.extraFlags | join " " }}
         {{- end }}
         ports:

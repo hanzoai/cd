@@ -47,61 +47,61 @@ spec:
         - args:
             - /usr/local/bin/hanzocd-notifications
           env:
-            - name: ARGOCD_NOTIFICATIONS_CONTROLLER_LOGFORMAT
+            - name: CD_NOTIFICATIONS_CONTROLLER_LOGFORMAT
               valueFrom:
                 configMapKeyRef:
                   key: notificationscontroller.log.format
                   name: hanzocd-cmd-params-cm
                   optional: true
-            - name: ARGOCD_NOTIFICATIONS_CONTROLLER_LOGLEVEL
+            - name: CD_NOTIFICATIONS_CONTROLLER_LOGLEVEL
               valueFrom:
                 configMapKeyRef:
                   key: notificationscontroller.log.level
                   name: hanzocd-cmd-params-cm
                   optional: true
-            - name: ARGOCD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT
+            - name: CD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT
               valueFrom:
                 configMapKeyRef:
                   key: notificationscontroller.processors.count
                   name: hanzocd-cmd-params-cm
                   optional: true
-            - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+            - name: CD_LOG_FORMAT_TIMESTAMP
               valueFrom:
                 configMapKeyRef:
                   name: hanzocd-cmd-params-cm
                   key: log.format.timestamp
                   optional: true
-            - name: ARGOCD_APPLICATION_NAMESPACES
+            - name: CD_APPLICATION_NAMESPACES
               valueFrom:
                 configMapKeyRef:
                   key: application.namespaces
                   name: hanzocd-cmd-params-cm
                   optional: true
-            - name: ARGOCD_NOTIFICATION_CONTROLLER_SELF_SERVICE_NOTIFICATION_ENABLED
+            - name: CD_NOTIFICATION_CONTROLLER_SELF_SERVICE_NOTIFICATION_ENABLED
               valueFrom:
                 configMapKeyRef:
                   key: notificationscontroller.selfservice.enabled
                   name: hanzocd-cmd-params-cm
                   optional: true
-            - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_PLAINTEXT
+            - name: CD_NOTIFICATION_CONTROLLER_REPO_SERVER_PLAINTEXT
               valueFrom:
                 configMapKeyRef:
                   key: notificationscontroller.repo.server.plaintext
                   name: hanzocd-cmd-params-cm
                   optional: true
-            - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CA_CERT_PATH
+            - name: CD_NOTIFICATION_CONTROLLER_REPO_SERVER_CA_CERT_PATH
               valueFrom:
                 configMapKeyRef:
                   key: notificationscontroller.repo.server.ca.cert.path
                   name: hanzocd-cmd-params-cm
                   optional: true
-            - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
+            - name: CD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
               valueFrom:
                 configMapKeyRef:
                   key: notificationscontroller.repo.server.client.cert.path
                   name: hanzocd-cmd-params-cm
                   optional: true
-            - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
+            - name: CD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
               valueFrom:
                 configMapKeyRef:
                   key: notificationscontroller.repo.server.client.cert.key.path

@@ -30,31 +30,31 @@ spec:
                 name: hanzocd-cmd-params-cm
                 key: commitserver.grpc.enable.txt.service.config
                 optional: true
-          - name: ARGOCD_COMMIT_SERVER_LISTEN_ADDRESS
+          - name: CD_COMMIT_SERVER_LISTEN_ADDRESS
             valueFrom:
               configMapKeyRef:
                 name: hanzocd-cmd-params-cm
                 key: commitserver.listen.address
                 optional: true
-          - name: ARGOCD_COMMIT_SERVER_METRICS_LISTEN_ADDRESS
+          - name: CD_COMMIT_SERVER_METRICS_LISTEN_ADDRESS
             valueFrom:
               configMapKeyRef:
                 name: hanzocd-cmd-params-cm
                 key: commitserver.metrics.listen.address
                 optional: true
-          - name: ARGOCD_COMMIT_SERVER_LOGFORMAT
+          - name: CD_COMMIT_SERVER_LOGFORMAT
             valueFrom:
               configMapKeyRef:
                 name: hanzocd-cmd-params-cm
                 key: commitserver.log.format
                 optional: true
-          - name: ARGOCD_COMMIT_SERVER_LOGLEVEL
+          - name: CD_COMMIT_SERVER_LOGLEVEL
             valueFrom:
               configMapKeyRef:
                 name: hanzocd-cmd-params-cm
                 key: commitserver.log.level
                 optional: true
-          - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          - name: CD_LOG_FORMAT_TIMESTAMP
             valueFrom:
               configMapKeyRef:
                 name: hanzocd-cmd-params-cm
