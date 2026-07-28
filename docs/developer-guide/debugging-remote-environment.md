@@ -78,7 +78,7 @@ In VSCode use the following launch configuration to run argocd-server:
                 "${workspaceFolder}/.envrc.remote",
             ],
             "env": {
-                "ARGOCD_BINARY_NAME": "argocd-server",
+                "CD_BINARY_NAME": "argocd-server",
                 "CGO_ENABLED": "0",
                 "KUBECONFIG": "/path/to/kube/config"
             }

@@ -116,7 +116,7 @@ spec:
       commonLabels:
         foo: bar
       commonAnnotations:
-        beep: boop-${ARGOCD_APP_REVISION}
+        beep: boop-${CD_APP_REVISION}
       # Toggle which enables/disables env variables substitution in commonAnnotations
       commonAnnotationsEnvsubst: true
       # Defines if the common label(s) should be applied to resource selectors. It also excludes common labels from

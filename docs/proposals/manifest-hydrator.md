@@ -312,21 +312,21 @@ Some of these environment variables may change independently of the dry source a
 
 These environment variables will **not** be set:
 
-* `ARGOCD_APP_NAME`
-* `ARGOCD_APP_NAMESPACE`
+* `CD_APP_NAME`
+* `CD_APP_NAMESPACE`
 * `KUBE_VERSION`
 * `KUBE_API_VERSIONS`
 
 These environment variables will be set because they are commit SHAs and are directly and immutably tied to the dry manifest commit:
 
-* `ARGOCD_APP_REVISION`
-* `ARGOCD_APP_REVISION_SHORT`
+* `CD_APP_REVISION`
+* `CD_APP_REVISION_SHORT`
 
 These environment variables will be set because they are inherently tied to the manifest hydrator configuration. If these fields set in `spec.sourceHydrator.drySource` change, we are breaking the connection to the original hydrator configuration anyway.
 
-* `ARGOCD_APP_SOURCE_PATH`
-* `ARGOCD_APP_SOURCE_REPO_URL`
-* `ARGOCD_APP_SOURCE_TARGET_REVISION`
+* `CD_APP_SOURCE_PATH`
+* `CD_APP_SOURCE_REPO_URL`
+* `CD_APP_SOURCE_TARGET_REVISION`
 
 ### Support for Helm-Specific Features
 

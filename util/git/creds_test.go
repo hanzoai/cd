@@ -432,7 +432,7 @@ func TestAzureWorkloadIdentityCreds_Environ(t *testing.T) {
 	}
 
 	require.Len(t, env, 1)
-	assert.Equal(t, "ARGOCD_GIT_BEARER_AUTH_HEADER=Authorization: Bearer accessToken", env[0], "ARGOCD_GIT_BEARER_AUTH_HEADER env var must be set")
+	assert.Equal(t, "CD_GIT_BEARER_AUTH_HEADER=Authorization: Bearer accessToken", env[0], "CD_GIT_BEARER_AUTH_HEADER env var must be set")
 }
 
 func TestAzureWorkloadIdentityCreds_Environ_cleanup(t *testing.T) {

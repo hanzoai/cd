@@ -79,7 +79,7 @@ func TestJsonnetTlaEnv(t *testing.T) {
 	ctx.
 		Path("jsonnet-tla-cm").
 		When().
-		CreateApp("--jsonnet-tla-str", "foo=$ARGOCD_APP_NAME", "--jsonnet-tla-code", "bar='$ARGOCD_APP_NAME'").
+		CreateApp("--jsonnet-tla-str", "foo=$CD_APP_NAME", "--jsonnet-tla-code", "bar='$CD_APP_NAME'").
 		Sync().
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded)).
@@ -95,7 +95,7 @@ func TestJsonnetExtVarEnv(t *testing.T) {
 	ctx.
 		Path("jsonnet-ext-var").
 		When().
-		CreateApp("--jsonnet-ext-var-str", "foo=$ARGOCD_APP_NAME", "--jsonnet-ext-var-code", "bar='$ARGOCD_APP_NAME'").
+		CreateApp("--jsonnet-ext-var-str", "foo=$CD_APP_NAME", "--jsonnet-ext-var-code", "bar='$CD_APP_NAME'").
 		Sync().
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded)).

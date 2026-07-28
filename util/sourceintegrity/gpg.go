@@ -173,12 +173,12 @@ func InitializeGnuPG() error {
 	gnuPgHome := common.GetGnuPGHomePath()
 	ctx := context.Background()
 
-	// We only operate if ARGOCD_GNUPGHOME is set
+	// We only operate if CD_GNUPGHOME is set
 	if gnuPgHome == "" {
 		return fmt.Errorf("%s is not set; refusing to initialize", common.EnvGnuPGHome)
 	}
 
-	// Directory set in ARGOCD_GNUPGHOME must exist and has to be a directory
+	// Directory set in CD_GNUPGHOME must exist and has to be a directory
 	st, err := os.Stat(gnuPgHome)
 	if err != nil {
 		return err

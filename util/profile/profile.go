@@ -8,7 +8,7 @@ import (
 	"github.com/hanzoai/deploy/util/env"
 )
 
-var enableProfilerFilePath = env.StringFromEnv("ARGOCD_ENABLE_PROFILER_FILE_PATH", "/home/argocd/params/profiler.enabled")
+var enableProfilerFilePath = env.StringFromEnv("CD_ENABLE_PROFILER_FILE_PATH", "/home/argocd/params/profiler.enabled")
 
 func wrapHandler(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

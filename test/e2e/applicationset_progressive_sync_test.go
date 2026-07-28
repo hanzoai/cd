@@ -22,7 +22,7 @@ const (
 )
 
 func TestApplicationSetProgressiveSyncStep(t *testing.T) {
-	if os.Getenv("ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
+	if os.Getenv("CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
 		t.Skip("Skipping progressive sync tests - env variable not set to enable progressive sync")
 	}
 	expectedDevApp := v1alpha1.Application{
@@ -181,8 +181,8 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 }
 
 func TestProgressiveSyncHealthGating(t *testing.T) {
-	if os.Getenv("ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
-		t.Skip("Skipping progressive sync tests - ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS not enabled")
+	if os.Getenv("CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
+		t.Skip("Skipping progressive sync tests - CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS not enabled")
 	}
 	expectedDevApp := generateExpectedApp("prog-", "progressive-sync/", "dev", "dev", "")
 	expectedStageApp := generateExpectedApp("prog-", "progressive-sync/", "staging", "staging", "")
@@ -349,8 +349,8 @@ func TestProgressiveSyncHealthGating(t *testing.T) {
 }
 
 func TestNoApplicationStatusWhenNoSteps(t *testing.T) {
-	if os.Getenv("ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
-		t.Skip("Skipping progressive sync tests - ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS not enabled")
+	if os.Getenv("CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
+		t.Skip("Skipping progressive sync tests - CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS not enabled")
 	}
 
 	expectedConditions := []v1alpha1.ApplicationSetCondition{
@@ -393,8 +393,8 @@ func TestNoApplicationStatusWhenNoSteps(t *testing.T) {
 }
 
 func TestNoApplicationStatusWhenNoApplications(t *testing.T) {
-	if os.Getenv("ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
-		t.Skip("Skipping progressive sync tests - ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS not enabled")
+	if os.Getenv("CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
+		t.Skip("Skipping progressive sync tests - CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS not enabled")
 	}
 	expectedApps := []v1alpha1.Application{
 		generateExpectedApp("prog-", "progressive-sync/", "dev", "dev", ""),
@@ -415,8 +415,8 @@ func TestNoApplicationStatusWhenNoApplications(t *testing.T) {
 }
 
 func TestProgressiveSyncMultipleAppsPerStepWithReverseDeletionOrder(t *testing.T) {
-	if os.Getenv("ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
-		t.Skip("Skipping progressive sync tests - ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS not enabled")
+	if os.Getenv("CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS") != "true" {
+		t.Skip("Skipping progressive sync tests - CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS not enabled")
 	}
 	// Define app groups by step (for reverse deletion: prod -> staging -> dev)
 	prodApps := []string{"prog-ship", "prog-run"}

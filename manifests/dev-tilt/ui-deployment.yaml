@@ -15,9 +15,9 @@ spec:
         - name: argocd-ui
           image: argocd-ui
           env:
-            - name: ARGOCD_API_URL
+            - name: CD_API_URL
               value: https://argocd-server
-            - name: ARGOCD_E2E_JS_HOST
+            - name: CD_E2E_JS_HOST
               value: "0.0.0.0"
           ports:
             - containerPort: 4000

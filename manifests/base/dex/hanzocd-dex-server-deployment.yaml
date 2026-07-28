@@ -42,25 +42,25 @@ spec:
         imagePullPolicy: Always
         command: [/shared/hanzocd-dex, rundex]
         env:
-          - name: ARGOCD_DEX_SERVER_LOGFORMAT
+          - name: CD_DEX_SERVER_LOGFORMAT
             valueFrom:
               configMapKeyRef:
                 key: dexserver.log.format
                 name: hanzocd-cmd-params-cm
                 optional: true
-          - name: ARGOCD_DEX_SERVER_LOGLEVEL
+          - name: CD_DEX_SERVER_LOGLEVEL
             valueFrom:
               configMapKeyRef:
                 key: dexserver.log.level
                 name: hanzocd-cmd-params-cm
                 optional: true
-          - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          - name: CD_LOG_FORMAT_TIMESTAMP
             valueFrom:
               configMapKeyRef:
                 name: hanzocd-cmd-params-cm
                 key: log.format.timestamp
                 optional: true
-          - name: ARGOCD_DEX_SERVER_DISABLE_TLS
+          - name: CD_DEX_SERVER_DISABLE_TLS
             valueFrom:
               configMapKeyRef:
                 name: hanzocd-cmd-params-cm

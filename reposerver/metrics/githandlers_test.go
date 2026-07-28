@@ -95,7 +95,7 @@ func TestEdgeCasesAndErrorHandling(t *testing.T) {
 }
 
 func TestSemaphoreFunctionality(t *testing.T) {
-	t.Setenv("ARGOCD_GIT_LSREMOTE_PARALLELISM_LIMIT", "1")
+	t.Setenv("CD_GIT_LSREMOTE_PARALLELISM_LIMIT", "1")
 
 	tests := []struct {
 		name     string

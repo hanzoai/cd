@@ -193,7 +193,7 @@ evaluated, so you can construct patterns dynamically:
 source:
   helm:
     valueFiles:
-    - envs/$ARGOCD_APP_NAME/*.yaml
+    - envs/$CD_APP_NAME/*.yaml
 ```
 
 This lets a single Application template expand to the right set of files per app name.
@@ -583,7 +583,7 @@ E.g. via the CLI:
 
 ```bash
 argocd app create APPNAME \
-  --helm-set-string 'app=${ARGOCD_APP_NAME}'
+  --helm-set-string 'app=${CD_APP_NAME}'
 ```
 
 Or via declarative syntax:
@@ -594,7 +594,7 @@ Or via declarative syntax:
       helm:
         parameters:
         - name: app
-          value: $ARGOCD_APP_NAME
+          value: $CD_APP_NAME
 ```
 
 It's also possible to use build environment variables for the Helm values file path:
@@ -605,7 +605,7 @@ It's also possible to use build environment variables for the Helm values file p
       helm:
         valueFiles:
         - values.yaml
-        - myprotocol://somepath/$ARGOCD_APP_NAME/$ARGOCD_APP_REVISION
+        - myprotocol://somepath/$CD_APP_NAME/$CD_APP_REVISION
 ```
 
 ## Helm plugins

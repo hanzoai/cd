@@ -93,7 +93,7 @@ func TestRedisSetCache(t *testing.T) {
 
 func TestRedisSetCacheWithPrefix(t *testing.T) {
 	prefix := "argocd-dev:"
-	t.Setenv("ARGOCD_REDIS_KEY_PREFIX", prefix)
+	t.Setenv("CD_KV_KEY_PREFIX", prefix)
 	mr, err := miniredis.Run()
 	if err != nil {
 		panic(err)

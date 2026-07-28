@@ -22,7 +22,7 @@ func Test_getDefaultRequeueAfter(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			t.Setenv("ARGOCD_APPLICATIONSET_CONTROLLER_REQUEUE_AFTER", tt.requeueAfterEnv)
+			t.Setenv("CD_APPLICATIONSET_CONTROLLER_REQUEUE_AFTER", tt.requeueAfterEnv)
 			assert.Equalf(t, tt.want, getDefaultRequeueAfter(), "getDefaultRequeueAfter()")
 		})
 	}

@@ -8,13 +8,13 @@ import (
 
 func loadOpts(t *testing.T, opts string) {
 	t.Helper()
-	t.Setenv("ARGOCD_OPTS", opts)
+	t.Setenv("CD_OPTS", opts)
 	assert.NoError(t, LoadFlags())
 }
 
 func loadInvalidOpts(t *testing.T, opts string) {
 	t.Helper()
-	t.Setenv("ARGOCD_OPTS", opts)
+	t.Setenv("CD_OPTS", opts)
 	assert.Error(t, LoadFlags())
 }
 

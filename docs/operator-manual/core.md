@@ -56,9 +56,9 @@ contains all the required resources.
 Example:
 
 ```
-export ARGOCD_VERSION=<desired argo cd release version (e.g. v2.7.0)>
+export CD_VERSION=<desired argo cd release version (e.g. v2.7.0)>
 kubectl create namespace argocd
-kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/$ARGOCD_VERSION/manifests/core-install.yaml
+kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/$CD_VERSION/manifests/core-install.yaml
 ```
 
 ## Using

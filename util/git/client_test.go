@@ -1380,7 +1380,7 @@ func Test_newAuth_SSH_HostKeyAlgorithms(t *testing.T) {
 	knownHostsLine := "example.com " + strings.TrimSpace(string(authorizedKey))
 	require.NoError(t, os.WriteFile(knownHostsPath, []byte(knownHostsLine+"\n"), 0o600))
 
-	t.Setenv("ARGOCD_SSH_DATA_PATH", tmpDir)
+	t.Setenv("CD_SSH_DATA_PATH", tmpDir)
 
 	auth, err := newAuth("git@example.com:org/repo.git", SSHCreds{sshPrivateKey: string(privPEM)})
 	require.NoError(t, err)
@@ -1439,7 +1439,7 @@ func Test_newAuth_SSH_HostNotInKnownHosts(t *testing.T) {
 	knownHostsLine := "other.example.com " + strings.TrimSpace(string(authorizedKey))
 	require.NoError(t, os.WriteFile(knownHostsPath, []byte(knownHostsLine+"\n"), 0o600))
 
-	t.Setenv("ARGOCD_SSH_DATA_PATH", tmpDir)
+	t.Setenv("CD_SSH_DATA_PATH", tmpDir)
 
 	auth, err := newAuth("git@example.com:org/repo.git", SSHCreds{sshPrivateKey: string(privPEM)})
 	require.NoError(t, err)
@@ -1459,7 +1459,7 @@ func Test_newAuth_SSH_MalformedPrivateKey(t *testing.T) {
 	// ParsePrivateKey, not from the known_hosts setup.
 	tmpDir := t.TempDir()
 	require.NoError(t, os.WriteFile(filepath.Join(tmpDir, "ssh_known_hosts"), nil, 0o600))
-	t.Setenv("ARGOCD_SSH_DATA_PATH", tmpDir)
+	t.Setenv("CD_SSH_DATA_PATH", tmpDir)
 
 	auth, err := newAuth("git@example.com:org/repo.git", SSHCreds{sshPrivateKey: "not a valid PEM-encoded private key"})
 	require.Error(t, err)
@@ -1477,10 +1477,10 @@ func Test_newAuth_SSH_KnownHostsUnreadable(t *testing.T) {
 	require.NoError(t, err)
 	privPEM := pem.EncodeToMemory(pemBlock)
 
-	// Point ARGOCD_SSH_DATA_PATH at a directory that does not contain an
+	// Point CD_SSH_DATA_PATH at a directory that does not contain an
 	// ssh_known_hosts file. skeema/knownhosts NewDB returns an error when
 	// the file is missing.
-	t.Setenv("ARGOCD_SSH_DATA_PATH", t.TempDir())
+	t.Setenv("CD_SSH_DATA_PATH", t.TempDir())
 
 	auth, err := newAuth("git@example.com:org/repo.git", SSHCreds{sshPrivateKey: string(privPEM)})
 	require.Error(t, err)
@@ -1495,7 +1495,7 @@ func Test_newAuth_SSH_KnownHostsUnreadable(t *testing.T) {
 func Test_newAuth_SSH_NoCreds_AgentUnavailable(t *testing.T) {
 	tmpDir := t.TempDir()
 	require.NoError(t, os.WriteFile(filepath.Join(tmpDir, "ssh_known_hosts"), nil, 0o600))
-	t.Setenv("ARGOCD_SSH_DATA_PATH", tmpDir)
+	t.Setenv("CD_SSH_DATA_PATH", tmpDir)
 	// Force ssh-agent setup to fail by pointing SSH_AUTH_SOCK at a path that
 	// cannot be dialed.
 	t.Setenv("SSH_AUTH_SOCK", filepath.Join(tmpDir, "nonexistent-agent.sock"))
