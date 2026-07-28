@@ -26,14 +26,14 @@ import (
 
 // Server provides a Cluster service
 type Server struct {
-	db      db.ArgoDB
+	db      db.DB
 	enf     *rbac.Enforcer
 	cache   *servercache.Cache
 	kubectl kube.Kubectl
 }
 
 // NewServer returns a new instance of the Cluster service
-func NewServer(db db.ArgoDB, enf *rbac.Enforcer, cache *servercache.Cache, kubectl kube.Kubectl) *Server {
+func NewServer(db db.DB, enf *rbac.Enforcer, cache *servercache.Cache, kubectl kube.Kubectl) *Server {
 	return &Server{
 		db:      db,
 		enf:     enf,

@@ -55,12 +55,12 @@ type Config struct {
 }
 
 type ClusterGenerator struct {
-	db        db.ArgoDB
+	db        db.DB
 	clientSet *kubernetes.Clientset
 	config    *rest.Config
 }
 
-func NewClusterGenerator(db db.ArgoDB, clientSet *kubernetes.Clientset, config *rest.Config) Generator {
+func NewClusterGenerator(db db.DB, clientSet *kubernetes.Clientset, config *rest.Config) Generator {
 	return &ClusterGenerator{db, clientSet, config}
 }
 

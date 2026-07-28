@@ -22,7 +22,7 @@ type SecretMaperValidation struct {
 	Transform func(string) string
 }
 
-type ArgoDB interface {
+type DB interface {
 	// ListClusters lists configured clusters
 	ListClusters(ctx context.Context) (*appv1.ClusterList, error)
 	// CreateCluster creates a cluster
@@ -131,7 +131,7 @@ type db struct {
 }
 
 // NewDB returns a new instance of the argo database
-func NewDB(namespace string, settingsMgr *settings.SettingsManager, kubeclientset kubernetes.Interface) ArgoDB {
+func NewDB(namespace string, settingsMgr *settings.SettingsManager, kubeclientset kubernetes.Interface) DB {
 	return &db{
 		settingsMgr:   settingsMgr,
 		ns:            namespace,

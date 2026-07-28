@@ -260,7 +260,7 @@ func newFakeControllerWithResync(ctx context.Context, data *fakeData, appResyncP
 		testEnableEventList,
 		false,
 	)
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1).Maybe()
 	// Setting a default sharding algorithm for the tests where we cannot set it.
 	ctrl.clusterSharding = sharding.NewClusterSharding(db, 0, 1, common.DefaultShardingAlgorithm)
@@ -2659,7 +2659,7 @@ func TestOrphanedIndexDoesNotQueryProjectDuringStartupRace(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1).Maybe()
 	ctrl.clusterSharding = sharding.NewClusterSharding(db, 0, 1, common.DefaultShardingAlgorithm)
 
@@ -2724,7 +2724,7 @@ func TestOrphanedIndexReturnsNamespaceWhenProjectHasOrphanedResources(t *testing
 	)
 	require.NoError(t, err)
 
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1).Maybe()
 	ctrl.clusterSharding = sharding.NewClusterSharding(db, 0, 1, common.DefaultShardingAlgorithm)
 

@@ -74,7 +74,7 @@ func TestHandleModEvent_HasChanges(_ *testing.T) {
 	clusterCache := &mocks.ClusterCache{}
 	clusterCache.EXPECT().Invalidate(mock.Anything, mock.Anything).Return().Once()
 	clusterCache.EXPECT().EnsureSynced().Return(nil).Once()
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1)
 	clustersCache := liveStateCache{
 		clusters: map[string]cache.ClusterCache{
@@ -98,7 +98,7 @@ func TestHandleModEvent_ClusterExcluded(t *testing.T) {
 	clusterCache := &mocks.ClusterCache{}
 	clusterCache.EXPECT().Invalidate(mock.Anything, mock.Anything).Return().Once()
 	clusterCache.EXPECT().EnsureSynced().Return(nil).Once()
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1).Maybe()
 	clustersCache := liveStateCache{
 		db:          nil,
@@ -131,7 +131,7 @@ func TestHandleModEvent_NoChanges(_ *testing.T) {
 	clusterCache := &mocks.ClusterCache{}
 	clusterCache.EXPECT().Invalidate(mock.Anything).Panic("should not invalidate").Maybe()
 	clusterCache.EXPECT().EnsureSynced().Return(nil).Panic("should not re-sync").Maybe()
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1).Maybe()
 	clustersCache := liveStateCache{
 		clusters: map[string]cache.ClusterCache{
@@ -151,7 +151,7 @@ func TestHandleModEvent_NoChanges(_ *testing.T) {
 
 func TestHandleAddEvent_ClusterExcluded(t *testing.T) {
 	t.Parallel()
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1).Maybe()
 	clustersCache := liveStateCache{
 		clusters:        map[string]cache.ClusterCache{},
@@ -171,7 +171,7 @@ func TestHandleDeleteEvent_CacheDeadlock(t *testing.T) {
 		Server: "https://mycluster",
 		Config: appv1.ClusterConfig{Username: "bar"},
 	}
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1)
 	fakeClient := fake.NewClientset()
 	settingsMgr := argosettings.NewSettingsManager(t.Context(), fakeClient, "cd")

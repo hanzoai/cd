@@ -255,7 +255,7 @@ func TestCallExtension(t *testing.T) {
 		metricsMock := &mocks.ExtensionMetricsRegistry{}
 		userMock := &mocks.UserGetter{}
 
-		dbMock := &dbmocks.ArgoDB{}
+		dbMock := &dbmocks.DB{}
 		dbMock.EXPECT().GetClusterServersByName(mock.Anything, mock.Anything).Return([]string{"cluster1"}, nil).Maybe()
 		dbMock.EXPECT().GetCluster(mock.Anything, mock.Anything).Return(&v1alpha1.Cluster{Server: "some-url", Name: "cluster1"}, nil).Maybe()
 

@@ -12,7 +12,7 @@ import (
 
 func setupTestSharding(shard int, replicas int) *ClusterSharding {
 	shardingAlgorithm := "legacy" // we are using the legacy algorithm as it is deterministic based on the cluster id which is easier to test
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	return NewClusterSharding(db, shard, replicas, shardingAlgorithm).(*ClusterSharding)
 }
 
@@ -70,7 +70,7 @@ func TestClusterSharding_AddRoundRobin_Redistributes(t *testing.T) {
 	shard := 1
 	replicas := 2
 
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 
 	sharding := NewClusterSharding(db, shard, replicas, "round-robin").(*ClusterSharding)
 
