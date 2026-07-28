@@ -1,4 +1,4 @@
-name: Init ArgoCD Release
+name: Init Hanzo CD Release
 on:
   workflow_dispatch:
     inputs:
@@ -30,7 +30,7 @@ jobs:
       # to generate the correct image name in the manifests
       IMAGE_REGISTRY: ${{ vars.IMAGE_REGISTRY || 'quay.io' }}
       IMAGE_NAMESPACE: ${{ vars.IMAGE_NAMESPACE || 'argoproj' }}
-      IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY || 'argocd' }}
+      IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY || 'cd' }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
         if: ${{ vars.disable_harden_runner != 'true' }}
@@ -72,7 +72,7 @@ jobs:
           # Derive the major version from TARGET_VERSION so this works across future major bumps.
           GE_VERSION="v${{ inputs.TARGET_VERSION }}"
           MAJOR=$(echo "${{ inputs.TARGET_VERSION }}" | cut -d. -f1)
-          GE_MODULE="github.com/argoproj/argo-cd/gitops-engine/v${MAJOR}"
+          GE_MODULE="github.com/hanzoai/cd/gitops-engine/v${MAJOR}"
           sed -i "s|${GE_MODULE} v[^ ]*|${GE_MODULE} ${GE_VERSION}|" go.mod
 
         # We install kustomize in the dist directory

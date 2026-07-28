@@ -5,7 +5,7 @@ metadata:
   finalizers:
     - finalizer.keda.sh
   labels:
-    argocd.argoproj.io/instance: keda-default
+    cd.hanzo.ai/instance: keda-default
   name: keda-with-fallback
   namespace: keda
   resourceVersion: '160591443'

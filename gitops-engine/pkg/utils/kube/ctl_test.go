@@ -39,7 +39,7 @@ func TestConvertToVersion(t *testing.T) {
 	})
 	t.Run("CustomResource", func(t *testing.T) {
 		t.Parallel()
-		_, err := kubectl.ConvertToVersion(testingutils.UnstructuredFromFile("testdata/cr.yaml"), "argoproj.io", "v1")
+		_, err := kubectl.ConvertToVersion(testingutils.UnstructuredFromFile("testdata/cr.yaml"), "apps.hanzo.ai", "v1")
 		assert.Error(t, err)
 	})
 	t.Run("ExtensionsDeployment", func(t *testing.T) {

@@ -5,21 +5,21 @@ Time related functions.
 
 The `time` functions can be used in both notification templates and triggers.
 
-When converting a time value to local time using `.Local()`, Argo CD Notifications uses the local timezone configured for the `argocd-notifications-controller` container.
+When converting a time value to local time using `.Local()`, Hanzo CD Notifications uses the local timezone configured for the `cd-notifications-controller` container.
 
-You can configure this timezone by setting the `TZ` environment variable on the `argocd-notifications-controller` container:
+You can configure this timezone by setting the `TZ` environment variable on the `cd-notifications-controller` container:
 
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: argocd-notifications-controller
+  name: cd-notifications-controller
 spec:
   template:
     spec:
       containers:
-      - name: argocd-notifications-controller
+      - name: cd-notifications-controller
         env:
         - name: TZ
           value: Asia/Tokyo
@@ -102,7 +102,7 @@ Executes function built-in Golang [strings.ToLower](https://pkg.go.dev/strings#T
 
 <hr>
 **`sync.GetInfoItem(app map, name string) string`**
-Returns the `info` item value by given name stored in the Argo CD App sync operation.
+Returns the `info` item value by given name stored in the Hanzo CD App sync operation.
 
 ### **repo**
 Functions that provide additional information about Application source repository.

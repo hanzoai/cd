@@ -3,15 +3,15 @@
 ## Declarative
 
 You can install Helm charts through the UI, or in the declarative GitOps way.  
-Helm is [only used to inflate charts with `helm template`](../faq.md#after-deploying-my-helm-application-with-argo-cd-i-cannot-see-it-with-helm-ls-and-other-helm-commands). The lifecycle of the application is handled by Argo CD instead of Helm.
+Helm is [only used to inflate charts with `helm template`](../faq.md#after-deploying-my-helm-application-with-argo-cd-i-cannot-see-it-with-helm-ls-and-other-helm-commands). The lifecycle of the application is handled by Hanzo CD instead of Helm.
 Here is an example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: sealed-secrets
-  namespace: argocd
+  namespace: cd
 spec:
   project: default
   source:
@@ -27,7 +27,7 @@ spec:
 
 Another example using a public OCI helm chart:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: nginx
@@ -56,10 +56,10 @@ parameters from. Alternate or multiple values file(s), can be specified using th
 flag. The flag can be repeated to support multiple values files:
 
 ```bash
-argocd app set helm-guestbook --values values-production.yaml
+cd app set helm-guestbook --values values-production.yaml
 ```
 > [!NOTE]
-> Before `v2.6` of Argo CD, Values files must be in the same git repository as the Helm
+> Before `v2.6` of Hanzo CD, Values files must be in the same git repository as the Helm
 > chart. The files can be in a different location in which case it can be accessed using
 > a relative path relative to the root directory of the Helm chart.
 > As of `v2.6`, values files can be sourced from a separate repository than the Helm chart
@@ -97,8 +97,8 @@ when the set of environment-specific override files is not known in advance, or 
 pick up new files automatically without updating the Application spec.
 
 ```bash
-# Single quotes prevent the shell from expanding the glob before Argo CD receives it
-argocd app set helm-guestbook --values 'envs/*.yaml'
+# Single quotes prevent the shell from expanding the glob before Hanzo CD receives it
+cd app set helm-guestbook --values 'envs/*.yaml'
 ```
 
 In the declarative syntax:
@@ -126,7 +126,7 @@ Glob expansion uses the [doublestar](https://github.com/bmatcuk/doublestar) libr
 
 Each matched file is passed to `helm template` as a separate `--values <path>` flag, in the same
 order they appear after expansion. This is identical to listing each file individually in
-`valueFiles`. Argo CD does the expansion before invoking Helm.
+`valueFiles`. Hanzo CD does the expansion before invoking Helm.
 
 Matched files are expanded **in-place** within the `valueFiles` list and sorted in **lexical
 (alphabetical) order**. Because Helm gives higher precedence to later `--values` flags, lexical
@@ -242,10 +242,10 @@ lexically.
 ### Constraints and limitations
 
 **Path boundary**: Glob patterns cannot match files outside the repository root, even with
-patterns like `../../secrets/*.yaml`. Argo CD resolves the pattern's base path against the
+patterns like `../../secrets/*.yaml`. Hanzo CD resolves the pattern's base path against the
 repository root before expanding it, and any match that would escape the root is rejected.
 
-**Symlinks**: Argo CD follows symlinks when checking the path boundary. A symlink that lives
+**Symlinks**: Hanzo CD follows symlinks when checking the path boundary. A symlink that lives
 inside the repository but points to a target outside the repository root is rejected, even though
 the symlink's own path is within the repo. This check applies to every file produced by glob
 expansion, including multi-hop symlink chains. Symlinks that resolve to a target still inside the
@@ -264,11 +264,11 @@ part of the URL.
 Always quote patterns to prevent unintended shell expansion:
 
 ```bash
-# Correct: single quotes pass the literal pattern to Argo CD
-argocd app set myapp --values 'envs/*.yaml'
+# Correct: single quotes pass the literal pattern to Hanzo CD
+cd app set myapp --values 'envs/*.yaml'
 
 # Incorrect: the shell expands *.yaml against the current directory first
-argocd app set myapp --values envs/*.yaml
+cd app set myapp --values envs/*.yaml
 ```
 
 ### Deduplication
@@ -300,7 +300,7 @@ valueFiles:
 
 ### No-match behavior
 
-If a glob pattern matches no files, Argo CD saves the Application spec (the spec is not invalid and
+If a glob pattern matches no files, Hanzo CD saves the Application spec (the spec is not invalid and
 the files may be added to the repository later) and surfaces a `ComparisonError` condition on the
 Application:
 
@@ -327,7 +327,7 @@ every environment.
 
 ## Values
 
-Argo CD supports the equivalent of a values file directly in the Application manifest using the `source.helm.valuesObject` key.
+Hanzo CD supports the equivalent of a values file directly in the Application manifest using the `source.helm.valuesObject` key.
 
 ```yaml
 source:
@@ -378,11 +378,11 @@ a `values.yaml`. For example, `service.type` is a common parameter which is expo
 helm template . --set service.type=LoadBalancer
 ```
 
-Similarly, Argo CD can override values in the `values.yaml` parameters using `argocd app set` command,
+Similarly, Hanzo CD can override values in the `values.yaml` parameters using `cd app set` command,
 in the form of `-p PARAM=VALUE`. For example:
 
 ```bash
-argocd app set helm-guestbook -p service.type=LoadBalancer
+cd app set helm-guestbook -p service.type=LoadBalancer
 ```
 
 In the declarative syntax:
@@ -463,7 +463,7 @@ The `--set-file` argument to helm can be used with the following syntax on
 the cli:
 
 ```bash
-argocd app set helm-guestbook --helm-set-file some.key=path/to/file.ext
+cd app set helm-guestbook --helm-set-file some.key=path/to/file.ext
 ```
 
 or using the fileParameters for yaml:
@@ -478,11 +478,11 @@ source:
 
 ## Helm Release Name
 
-By default, the Helm release name is equal to the Application name to which it belongs. Sometimes, especially on a centralised Argo CD,
+By default, the Helm release name is equal to the Application name to which it belongs. Sometimes, especially on a centralised Hanzo CD,
 you may want to override that  name, and it is possible with the `release-name` flag on the cli:
 
 ```bash
-argocd app set helm-guestbook --release-name myRelease
+cd app set helm-guestbook --release-name myRelease
 ```
 
  or using the releaseName for yaml:
@@ -496,49 +496,49 @@ source:
 > [!WARNING]
 > **Important notice on overriding the release name**
 >
-> Please note that overriding the Helm release name might cause problems when the chart you are deploying is using the `app.kubernetes.io/instance` label. Argo CD injects this label with the value of the Application name for tracking purposes. So when overriding the release name, the Application name will stop being equal to the release name. Because Argo CD will overwrite the label with the Application name it might cause some selectors on the resources to stop working. In order to avoid this we can configure Argo CD to use another label for tracking in the [ArgoCD configmap argocd-cm.yaml](../operator-manual/argocd-cm.yaml) - check the lines describing `application.instanceLabelKey`.
+> Please note that overriding the Helm release name might cause problems when the chart you are deploying is using the `app.kubernetes.io/instance` label. Hanzo CD injects this label with the value of the Application name for tracking purposes. So when overriding the release name, the Application name will stop being equal to the release name. Because Hanzo CD will overwrite the label with the Application name it might cause some selectors on the resources to stop working. In order to avoid this we can configure Hanzo CD to use another label for tracking in the [Hanzo CD configmap cd-cm.yaml](../operator-manual/cd-cm.yaml) - check the lines describing `application.instanceLabelKey`.
 
 ## Helm Hooks
 
-Helm hooks are similar to [Argo CD hooks](sync-waves.md). In Helm, a hook
+Helm hooks are similar to [Hanzo CD hooks](sync-waves.md). In Helm, a hook
 is any normal Kubernetes resource annotated with the `helm.sh/hook` annotation.
 
-Argo CD supports many (most?) Helm hooks by mapping the Helm annotations onto Argo CD's own hook annotations. This is annotation compatibility, not a guarantee that hook lifecycle semantics are identical to Helm's:
+Hanzo CD supports many (most?) Helm hooks by mapping the Helm annotations onto Hanzo CD's own hook annotations. This is annotation compatibility, not a guarantee that hook lifecycle semantics are identical to Helm's:
 
 | Helm Annotation                 | Notes                                                                                                                                              |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `helm.sh/hook: crd-install`     | Supported as equivalent to normal Argo CD CRD handling.                                                                                            |
-| `helm.sh/hook: pre-delete`      | Supported as equivalent to `argocd.argoproj.io/hook: PreDelete`                                                                                    |
+| `helm.sh/hook: crd-install`     | Supported as equivalent to normal Hanzo CD CRD handling.                                                                                            |
+| `helm.sh/hook: pre-delete`      | Supported as equivalent to `cd.hanzo.ai/hook: PreDelete`                                                                                    |
 | `helm.sh/hook: pre-rollback`    | Not supported. Never used in Helm stable.                                                                                                          |
-| `helm.sh/hook: pre-install`     | Supported as equivalent to `argocd.argoproj.io/hook: PreSync`.                                                                                     |
-| `helm.sh/hook: pre-upgrade`     | Supported as equivalent to `argocd.argoproj.io/hook: PreSync`.                                                                                     |
-| `helm.sh/hook: post-upgrade`    | Supported as equivalent to `argocd.argoproj.io/hook: PostSync`.                                                                                    |
-| `helm.sh/hook: post-install`    | Supported as equivalent to `argocd.argoproj.io/hook: PostSync`.                                                                                    |
-| `helm.sh/hook: post-delete`     | Supported as equivalent to `argocd.argoproj.io/hook: PostDelete`.                                                                                  |
+| `helm.sh/hook: pre-install`     | Supported as equivalent to `cd.hanzo.ai/hook: PreSync`.                                                                                     |
+| `helm.sh/hook: pre-upgrade`     | Supported as equivalent to `cd.hanzo.ai/hook: PreSync`.                                                                                     |
+| `helm.sh/hook: post-upgrade`    | Supported as equivalent to `cd.hanzo.ai/hook: PostSync`.                                                                                    |
+| `helm.sh/hook: post-install`    | Supported as equivalent to `cd.hanzo.ai/hook: PostSync`.                                                                                    |
+| `helm.sh/hook: post-delete`     | Supported as equivalent to `cd.hanzo.ai/hook: PostDelete`.                                                                                  |
 | `helm.sh/hook: post-rollback`   | Not supported. Never used in Helm stable.                                                                                                          |
-| `helm.sh/hook: test-success`    | Not supported. No equivalent in Argo CD.                                                                                                           |
-| `helm.sh/hook: test-failure`    | Not supported. No equivalent in Argo CD.                                                                                                           |
-| `helm.sh/hook-delete-policy`    | Supported. Cleanup still follows Argo CD sync semantics, which can differ from Helm's hook event lifecycle. See also `argocd.argoproj.io/hook-delete-policy`. |
+| `helm.sh/hook: test-success`    | Not supported. No equivalent in Hanzo CD.                                                                                                           |
+| `helm.sh/hook: test-failure`    | Not supported. No equivalent in Hanzo CD.                                                                                                           |
+| `helm.sh/hook-delete-policy`    | Supported. Cleanup still follows Hanzo CD sync semantics, which can differ from Helm's hook event lifecycle. See also `cd.hanzo.ai/hook-delete-policy`. |
 | `helm.sh/hook-delete-timeout`   | Not supported. Never used in Helm stable                                                                                                           |
-| `helm.sh/hook-weight`           | Supported as equivalent to `argocd.argoproj.io/sync-wave`.                                                                                         |
-| `helm.sh/resource-policy: keep` | Supported as equivalent to `argocd.argoproj.io/sync-options: Delete=false`.                                                                        |
+| `helm.sh/hook-weight`           | Supported as equivalent to `cd.hanzo.ai/sync-wave`.                                                                                         |
+| `helm.sh/resource-policy: keep` | Supported as equivalent to `cd.hanzo.ai/sync-options: Delete=false`.                                                                        |
 
-Unsupported hooks are ignored. In Argo CD, hooks are created by using `kubectl apply`, rather than `kubectl create`. This means that if the hook is named and already exists, it will not change unless you have annotated it with `before-hook-creation`.
+Unsupported hooks are ignored. In Hanzo CD, hooks are created by using `kubectl apply`, rather than `kubectl create`. This means that if the hook is named and already exists, it will not change unless you have annotated it with `before-hook-creation`.
 
 > [!WARNING]
-> **Helm hooks + ArgoCD hooks**
+> **Helm hooks + Hanzo CD hooks**
 >
-> If you define any Argo CD hooks, _all_ Helm hooks will be ignored.   
+> If you define any Hanzo CD hooks, _all_ Helm hooks will be ignored.   
 
 > [!WARNING]
 > **'install' vs 'upgrade' vs 'sync'**
 >
-> Argo CD cannot know if it is running a first-time "install" or an "upgrade" - every operation is a "sync'. This means that, by default, apps that have `pre-install` and `pre-upgrade` will have those hooks run at the same time.
+> Hanzo CD cannot know if it is running a first-time "install" or an "upgrade" - every operation is a "sync'. This means that, by default, apps that have `pre-install` and `pre-upgrade` will have those hooks run at the same time.
 
 > [!NOTE]
 > **Hook delete semantics differ from Helm**
 >
-> Helm hook annotations are mapped onto Argo CD hooks, but deletion policies are still evaluated using Argo CD sync phases and sync result semantics. This differs from Helm's per-hook-event lifecycle. In particular, passive resources such as `ServiceAccount` do not have a Kubernetes completion state like `Job` or `Workflow`, so `hook-succeeded`/`HookSucceeded` may be evaluated at a different point than you would observe with Helm.
+> Helm hook annotations are mapped onto Hanzo CD hooks, but deletion policies are still evaluated using Hanzo CD sync phases and sync result semantics. This differs from Helm's per-hook-event lifecycle. In particular, passive resources such as `ServiceAccount` do not have a Kubernetes completion state like `Job` or `Workflow`, so `hook-succeeded`/`HookSucceeded` may be evaluated at a different point than you would observe with Helm.
 
 ### Hook Tips
 
@@ -564,15 +564,15 @@ data:
   {{- end }}
 ```
 
-The Argo CD application controller periodically compares Git state against the live state, running
+The Hanzo CD application controller periodically compares Git state against the live state, running
 the `helm template <CHART>` command to generate the helm manifests. Because the random value is
 regenerated every time the comparison is made, any application which makes use of the `randAlphaNum`
 function will always be in an `OutOfSync` state. This can be mitigated by explicitly setting a
-value in the values.yaml or using `argocd app set` command to override the value such that the value
+value in the values.yaml or using `cd app set` command to override the value such that the value
 is stable between each comparison. For example:
 
 ```bash
-argocd app set redis -p password=abc123
+cd app set redis -p password=abc123
 ```
 
 ## Build Environment
@@ -582,7 +582,7 @@ Helm apps have access to the [standard build environment](build-environment.md) 
 E.g. via the CLI:
 
 ```bash
-argocd app create APPNAME \
+cd app create APPNAME \
   --helm-set-string 'app=${CD_APP_NAME}'
 ```
 
@@ -610,18 +610,18 @@ It's also possible to use build environment variables for the Helm values file p
 
 ## Helm plugins
 
-Argo CD is un-opinionated on what cloud provider you use and what kind of Helm plugins you are using, that's why there are no plugins delivered with the ArgoCD image.
+Hanzo CD is un-opinionated on what cloud provider you use and what kind of Helm plugins you are using, that's why there are no plugins delivered with the Hanzo CD image.
 
 But sometimes you want to use a custom plugin. Perhaps you would like to use Google Cloud Storage or Amazon S3 storage to save the Helm charts, for example: https://github.com/hayorov/helm-gcs where you can use `gs://` protocol for Helm chart repository access.
-There are two ways to install custom plugins; you can modify the ArgoCD container image, or you can use a Kubernetes `initContainer`.
+There are two ways to install custom plugins; you can modify the Hanzo CD container image, or you can use a Kubernetes `initContainer`.
 
-### Modifying the ArgoCD container image
-One way to use this plugin is to prepare your own ArgoCD image where it is included.
+### Modifying the Hanzo CD container image
+One way to use this plugin is to prepare your own Hanzo CD image where it is included.
 
 Example `Dockerfile`:
 
 ```dockerfile
-FROM argoproj/argocd:v1.5.7
+FROM argoproj/cd:v1.5.7
 
 USER root
 RUN apt-get update && \
@@ -630,25 +630,25 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-USER argocd
+USER cd
 
 ARG GCS_PLUGIN_VERSION="0.3.5"
 ARG GCS_PLUGIN_REPO="https://github.com/hayorov/helm-gcs.git"
 
 RUN helm plugin install ${GCS_PLUGIN_REPO} --version ${GCS_PLUGIN_VERSION}
 
-ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"
+ENV HELM_PLUGINS="/home/cd/.local/share/helm/plugins/"
 ```
 
-The `HELM_PLUGINS` environment variable required for Argo CD to locate plugins correctly.
+The `HELM_PLUGINS` environment variable required for Hanzo CD to locate plugins correctly.
 
-Once built, use the custom image for ArgoCD installation.
+Once built, use the custom image for Hanzo CD installation.
 
 ### Using `initContainers`
 Another option is to install Helm plugins via Kubernetes `initContainers`.
-Some users find this pattern preferable to maintaining their own version of the ArgoCD container image.
+Some users find this pattern preferable to maintaining their own version of the Hanzo CD container image.
 
-Below is an example of how to add Helm plugins when installing ArgoCD with the [official ArgoCD helm chart](https://github.com/argoproj/argo-helm/tree/master/charts/argo-cd):
+Below is an example of how to add Helm plugins when installing Hanzo CD with the [official Hanzo CD helm chart](https://github.com/argoproj/argo-helm/tree/master/charts/argo-cd):
 
 ```yaml
 repoServer:
@@ -692,9 +692,9 @@ repoServer:
 ## Helm Version 
 
 This field was used in the past, during the transition period from Helm 2 to Helm 3.
-Before Helm 2 became EOL, Argo CD was shipped with both Helm binaries (v2 and v3) and users could specify which Helm binary Argo CD should use to render their charts, by setting this field.
+Before Helm 2 became EOL, Hanzo CD was shipped with both Helm binaries (v2 and v3) and users could specify which Helm binary Hanzo CD should use to render their charts, by setting this field.
 
-Since Helm 2 became EOL, this field does not need to be configured anymore. It exists for backwards-compatibility only. The only Helm binary used to render charts in Argo CD (starting with version 3.5) is v4.
+Since Helm 2 became EOL, this field does not need to be configured anymore. It exists for backwards-compatibility only. The only Helm binary used to render charts in Hanzo CD (starting with version 3.5) is v4.
 
 If you historically have the following setting on your Helm applications:
 ```yaml
@@ -716,7 +716,7 @@ from a different domain than the repository.
 If needed, it is possible to opt into passing credentials for all domains by setting the `helm-pass-credentials` flag on the cli:
 
 ```bash
-argocd app set helm-guestbook --helm-pass-credentials
+cd app set helm-guestbook --helm-pass-credentials
 ```
 
 Or using declarative syntax:
@@ -736,7 +736,7 @@ See the [CRD best practices](https://helm.sh/docs/chart_best_practices/custom_re
 If needed, it is possible to skip the CRD installation step with the `helm-skip-crds` flag on the cli:
 
 ```bash
-argocd app set helm-guestbook --helm-skip-crds
+cd app set helm-guestbook --helm-skip-crds
 ```
 
 Or using declarative syntax:
@@ -755,7 +755,7 @@ Helm validates the values.yaml file using a values.schema.json file. See [Schema
 If needed, it is possible to skip the schema validation step with the `helm-skip-schema-validation` flag on the cli:
 
 ```bash
-argocd app set helm-guestbook --helm-skip-schema-validation
+cd app set helm-guestbook --helm-skip-schema-validation
 ```
 
 Or using declarative syntax:
@@ -770,12 +770,12 @@ spec:
 
 ## Helm `--skip-tests`
 
-By default, Helm includes test manifests when rendering templates. Argo CD currently skips manifests that include hooks not supported by Argo CD, including [Helm test hooks](https://helm.sh/docs/topics/chart_tests/). While this feature covers many testing use cases, it is not totally congruent with --skip-tests, so the --skip-tests option can be used.
+By default, Helm includes test manifests when rendering templates. Hanzo CD currently skips manifests that include hooks not supported by Hanzo CD, including [Helm test hooks](https://helm.sh/docs/topics/chart_tests/). While this feature covers many testing use cases, it is not totally congruent with --skip-tests, so the --skip-tests option can be used.
 
 If needed, it is possible to skip the test manifests installation step with the `helm-skip-tests` flag on the cli:
 
 ```bash
-argocd app set helm-guestbook --helm-skip-tests
+cd app set helm-guestbook --helm-skip-tests
 ```
 
 Or using declarative syntax:

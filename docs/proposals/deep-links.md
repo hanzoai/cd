@@ -20,31 +20,31 @@ creation-date: 2022-08-01
 
 # Deep Links
 
-Deep links allow end users to quickly redirect to third-party systems such as Splunk, DataDog etc. from the Argo CD
+Deep links allow end users to quickly redirect to third-party systems such as Splunk, DataDog etc. from the Hanzo CD
 user interface.
 
 
 ## Summary
 
-Argo CD administrator will be able to configure links that redirect users to third-party systems such as Splunk,
+Hanzo CD administrator will be able to configure links that redirect users to third-party systems such as Splunk,
 DataDog etc. The template should be able to reference different types of resources relating to where the links show up,
 this includes projects, applications, or individual resources(pods, services etc.) that are part of the application.
 
 Deep Link is a generic integration solution for third-party systems which enables users to integrate any system -  not
-only popular solutions but also custom/private systems that can leverage the data available in Argo CD.
+only popular solutions but also custom/private systems that can leverage the data available in Hanzo CD.
 
 ## Motivation
 
-Argo CD UI with deep links to third-party integrations will provide a unified solution for users making it easier for
+Hanzo CD UI with deep links to third-party integrations will provide a unified solution for users making it easier for
 them to switch between relevant systems without having to separately navigate and correlate the information.
 
 
 ## Proposal
 
-The configuration for Deep Links will be present in the `argocd-cm`, we will add new `<location>.links` fields in the
+The configuration for Deep Links will be present in the `cd-cm`, we will add new `<location>.links` fields in the
 cm to list all the deep links that will be displayed in the provided location. The possible values for `<location>`
 currently are :
-- `project` : all links under this field will show up in the project tab in the Argo CD UI.
+- `project` : all links under this field will show up in the project tab in the Hanzo CD UI.
 - `application` : all links under this field will show up in the application summary tab.
 - `resource` : all links under this field will show up in the individual resource(deployments, pods, services etc.)
   summary tab.
@@ -60,7 +60,7 @@ Each link in the list has five subfields :
    the field is omitted by default the deep links will be displayed.
 
 
-An example `argocd-cm.yaml` file with deep links and its variations :
+An example `cd-cm.yaml` file with deep links and its variations :
 
 ```yaml
 data:
@@ -88,7 +88,7 @@ data:
 
 ```
 
-The argocd server will expose new APIs for rendering deep links in the UI, the server will handle the templating and
+The cd server will expose new APIs for rendering deep links in the UI, the server will handle the templating and
 conditional rendering logic and will provide the UI with the final list of links that need to be displayed for a
 particular location/resource.
 

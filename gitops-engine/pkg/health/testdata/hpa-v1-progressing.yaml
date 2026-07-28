@@ -4,7 +4,7 @@ metadata:
   annotations:
     autoscaling.alpha.kubernetes.io/conditions: '[{"type":"AbleToScale","status":"False","lastTransitionTime":"2020-11-23T19:38:38Z","reason":"SucceededGetScale","message":"the HPA controller was not able to get the target''s current scale"}]'
   name: sample
-  namespace: argocd
+  namespace: cd
 spec:
   maxReplicas: 1
   minReplicas: 1

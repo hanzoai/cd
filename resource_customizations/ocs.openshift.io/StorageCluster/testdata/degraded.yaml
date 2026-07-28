@@ -2,7 +2,7 @@ apiVersion: ocs.openshift.io/v1
 kind: StorageCluster
 metadata:
   name: test-storagecluster
-  namespace: argocd
+  namespace: cd
 spec:
   manageNodes: false
   monDataDirHostPath: /var/lib/rook

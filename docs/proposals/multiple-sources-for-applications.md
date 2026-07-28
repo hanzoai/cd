@@ -30,9 +30,9 @@ Related Issues:
 
 ## Summary
 
-Currently, Argo CD supports Applications with only a single ApplicationSource. In certain scenarios, it would be useful to support more than one source for the application. For example, consider a need to create multiple deployments of the same application and manifests but manifests can come from different sources. Today we would have to copy manifest files from one application to another.
+Currently, Hanzo CD supports Applications with only a single ApplicationSource. In certain scenarios, it would be useful to support more than one source for the application. For example, consider a need to create multiple deployments of the same application and manifests but manifests can come from different sources. Today we would have to copy manifest files from one application to another.
 
-For example, from [one of the comments on this proposal PR](https://github.com/argoproj/argo-cd/pull/8322/files#r799624767)
+For example, from [one of the comments on this proposal PR](https://github.com/hanzoai/cd/pull/8322/files#r799624767)
 ```
 An independent support of the Helm charts and their values files. This opens a door to such highly requested scenarios like multiple deployments of the same (possibly external) Helm chart with different values files or an independent migration to a newer Helm chart version for the same applications installed in Test and Production environments.
 ```
@@ -49,11 +49,11 @@ The goals of the enhancement are:
 
 #### **Supporting multiple sources for creating an application**
 
-Users should be able to specify multiple sources to add services to the application. Argo CD should compile all the sources and reconcile each source individually for creating the application.
+Users should be able to specify multiple sources to add services to the application. Hanzo CD should compile all the sources and reconcile each source individually for creating the application.
 
 #### **Allow specifying external value files for Helm repositories**
 
-Users should be able to specify different sources for Helm charts and values files. The Helm charts specified by the user could be available in Git or Helm repository and the value files are stored in Git. Argo CD should track changes in both the Helm charts and the value files repository and reconcile the application.
+Users should be able to specify different sources for Helm charts and values files. The Helm charts specified by the user could be available in Git or Helm repository and the value files are stored in Git. Hanzo CD should track changes in both the Helm charts and the value files repository and reconcile the application.
 
 #### Changes to UI
 
@@ -130,11 +130,11 @@ spec:
 ### Combined Example Application yaml
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: grafana
-  namespace: argocd
+  namespace: cd
 spec:
   destination:
     namespace: monitoring
@@ -184,7 +184,7 @@ As per one of the [comment](https://github.com/argoproj/argo-cd/issues/2789#issu
 ```
 We have a Helm Chart which is used in 30+ Services and each of them is customized for 3 possible environments.
 Replicating this Chart 30 times without a centralized Repo looks dirty. Can be a show stopper for the whole migration.
-Modifying the Application definition is not an option since the whole goal is to reduce the rights that the CI-solution has. Giving it the right to update all Application-definitions from various teams in the argocd namespace is a hard thing to convince people with.
+Modifying the Application definition is not an option since the whole goal is to reduce the rights that the CI-solution has. Giving it the right to update all Application-definitions from various teams in the cd namespace is a hard thing to convince people with.
 ```
 
 ### Implementation Details
@@ -199,7 +199,7 @@ To avoid complexity on the deciding the list of sources, if both `source` and `s
 
 #### Invalidating existing cache
 
-Argo CD benefits from the assumption of a single repo per application to detect changes and to cache the results. But this enhancement now requires us to look at all the source repo "HEAD"s and invalidate the cache if any one of them changes.
+Hanzo CD benefits from the assumption of a single repo per application to detect changes and to cache the results. But this enhancement now requires us to look at all the source repo "HEAD"s and invalidate the cache if any one of them changes.
 
 #### Reconciliation of the Application
 
@@ -210,7 +210,7 @@ Today, we allow users to add only one source in the UI. We would need to update 
 
 #### Updates to cli
 
-We would need to create new options to the `argocd app create` command for adding multiple sources to the Application. We would also need to introduce allowing `ref` field for sources and to reference the files from symlinked source.
+We would need to create new options to the `cd app create` command for adding multiple sources to the Application. We would also need to introduce allowing `ref` field for sources and to reference the files from symlinked source.
 
 As per the community call on February 3, changes to UI and cli are huge and are not planned to be part of first iteration.
 
@@ -222,7 +222,7 @@ Good unit- and end-to-end tests need to be in place for this functionality to en
 
 #### Uncontrolled number of sources added to Application
 
-The users might add a huge number of external sources to the Application, with a potential performance impact on the Argo CD creation/reconciliation processes. This would apply even for the external value files for Helm projects.
+The users might add a huge number of external sources to the Application, with a potential performance impact on the Hanzo CD creation/reconciliation processes. This would apply even for the external value files for Helm projects.
 
 A possible mitigation to this would be to enforce the number of external sources allowed per Application.
 

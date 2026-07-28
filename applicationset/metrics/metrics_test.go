@@ -33,7 +33,7 @@ var (
 )
 
 const fakeAppsetList = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: test1
@@ -62,7 +62,7 @@ spec:
         targetRevision: HEAD
 status:
   resources:
-  - group: argoproj.io
+  - group: apps.hanzo.ai
     health:
       status: Missing
     kind: Application
@@ -70,7 +70,7 @@ status:
     namespace: cd
     status: OutOfSync
     version: v1alpha1
-  - group: argoproj.io
+  - group: apps.hanzo.ai
     health:
       status: Missing
     kind: Application
@@ -95,7 +95,7 @@ status:
     status: "True"
     type: ResourcesUpToDate
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: test2
@@ -122,7 +122,7 @@ spec:
         repoURL: https://github.com/test/test.git
         targetRevision: HEAD
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: should-be-filtered-out

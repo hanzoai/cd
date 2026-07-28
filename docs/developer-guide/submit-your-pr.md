@@ -11,14 +11,14 @@
 > [!NOTE]
 > **Before you start**
 >
-> The Argo CD project continuously grows, both in terms of features and community size. It gets adopted by more and more organizations which entrust Argo CD to handle their critical production workloads. Thus, we need to take great care with any changes that affect compatibility, performance, scalability, stability and security of Argo CD. For this reason, every new feature or larger enhancement must be properly designed and discussed before it gets accepted into the codebase.
+> The Hanzo CD project continuously grows, both in terms of features and community size. It gets adopted by more and more organizations which entrust Hanzo CD to handle their critical production workloads. Thus, we need to take great care with any changes that affect compatibility, performance, scalability, stability and security of Hanzo CD. For this reason, every new feature or larger enhancement must be properly designed and discussed before it gets accepted into the codebase.
 >
-> We do welcome and encourage everyone to participate in the Argo CD project, but please understand that we can't accept each and every contribution from the community, for various reasons. If you want to submit code for a great new feature or enhancement, we kindly ask you to take a look at the
+> We do welcome and encourage everyone to participate in the Hanzo CD project, but please understand that we can't accept each and every contribution from the community, for various reasons. If you want to submit code for a great new feature or enhancement, we kindly ask you to take a look at the
 > [code contribution guide](code-contributions.md#) before you start to write code or submit a PR.
 
 If you want to submit a PR, please read this document carefully, as it contains important information guiding you through our PR quality gates.
 
-If you need guidance with submitting a PR, or have any other questions regarding development of Argo CD, do not hesitate to [join our Slack](https://argoproj.github.io/community/join-slack) and get in touch with us in the `#argo-cd-contributors` channel!
+If you need guidance with submitting a PR, or have any other questions regarding development of Hanzo CD, do not hesitate to [join our Slack](https://argoproj.github.io/community/join-slack) and get in touch with us in the `#argo-cd-contributors` channel!
 
 ## Before Submitting a PR
 
@@ -35,12 +35,12 @@ make pre-commit-local
 
 ## Continuous Integration process
 
-When you submit a PR against Argo CD's GitHub repository, a couple of CI checks will be run automatically to ensure your changes will build fine and meet certain quality standards. Your contribution needs to pass those checks in order to be merged into the repository.
+When you submit a PR against Hanzo CD's GitHub repository, a couple of CI checks will be run automatically to ensure your changes will build fine and meet certain quality standards. Your contribution needs to pass those checks in order to be merged into the repository.
 
 > [!NOTE]
-> Please make sure that you always create PRs from a branch that is up-to-date with the latest changes from Argo CD's master branch. Depending on how long it takes for the maintainers to review and merge your PR, it might be necessary to pull in latest changes into your branch again.
+> Please make sure that you always create PRs from a branch that is up-to-date with the latest changes from Hanzo CD's master branch. Depending on how long it takes for the maintainers to review and merge your PR, it might be necessary to pull in latest changes into your branch again.
 
-Please understand that we, as an Open Source project, have limited capacities for reviewing and merging PRs to Argo CD. We will do our best to review your PR and give you feedback as soon as possible, but please bear with us if it takes a little longer than expected.
+Please understand that we, as an Open Source project, have limited capacities for reviewing and merging PRs to Hanzo CD. We will do our best to review your PR and give you feedback as soon as possible, but please bear with us if it takes a little longer than expected.
 
 The following guide will help you to submit a PR that meets the standards of our CI tests:
 
@@ -55,7 +55,7 @@ We use [PR title checker](https://github.com/marketplace/actions/pr-title-checke
 * `feat` - Your PR contains a new feature
 * `test` - Your PR adds tests to the code base, or improves existing tests
 * `docs` - Your PR improves the documentation
-* `chore` - Your PR improves any internals of Argo CD, such as the build process, unit tests, etc
+* `chore` - Your PR improves any internals of Hanzo CD, such as the build process, unit tests, etc
 * `refactor` - Your PR refactors the code base, without adding new features or fixing bugs
 * `revert` - Your PR reverts a previous commit
 
@@ -75,7 +75,7 @@ After you have submitted your PR, and whenever you push new commits to that bran
 * Run the unit tests (`make test`)
 * Run the End-to-End tests (`make test-e2e`)
 * Build and lint the UI code (`make lint-ui`)
-* Build the `argocd` CLI (`make cli`)
+* Build the `cd` CLI (`make cli`)
 
 If any of these tests in the CI pipeline fail, it means that some of your contribution is considered faulty (or a test might be flaky, see below).
 
@@ -87,9 +87,9 @@ Whenever you develop a new feature or submit a bug fix, please also write approp
 If you want to see how much coverage just a specific module (i.e. your new one) has, you can set the `TEST_MODULE` to the (fully qualified) name of that module with `make test`, i.e.:
 
 ```bash
- make test TEST_MODULE=github.com/argoproj/argo-cd/server/cache
+ make test TEST_MODULE=github.com/hanzoai/cd/server/cache
 ...
-ok      github.com/argoproj/argo-cd/server/cache        0.029s  coverage: 89.3% of statements
+ok      github.com/hanzoai/cd/server/cache        0.029s  coverage: 89.3% of statements
 ```
 
 ## Cherry-picking fixes

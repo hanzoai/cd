@@ -4,7 +4,7 @@ and "implements" GitOps.
 
 Example
 
-The https://github.com/argoproj/argo-cd/tree/master/gitops-engine/agent demonstrates how to use the engine.
+The https://github.com/hanzoai/cd/tree/master/gitops-engine/agent demonstrates how to use the engine.
 */
 
 package engine

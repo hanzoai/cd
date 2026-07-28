@@ -118,7 +118,7 @@ func GetHealthCheckFunc(gvk schema.GroupVersionKind) func(obj *unstructured.Unst
 		if gvk.Kind == kube.IngressKind {
 			return getIngressHealth
 		}
-	case "argoproj.io":
+	case "apps.hanzo.ai":
 		if gvk.Kind == "Workflow" {
 			return getArgoWorkflowHealth
 		}

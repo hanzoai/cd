@@ -17,7 +17,7 @@ type ArgoprojV1alpha1Interface interface {
 	ApplicationSetsGetter
 }
 
-// ArgoprojV1alpha1Client is used to interact with features provided by the argoproj.io group.
+// ArgoprojV1alpha1Client is used to interact with features provided by the apps.hanzo.ai group.
 type ArgoprojV1alpha1Client struct {
 	restClient rest.Interface
 }

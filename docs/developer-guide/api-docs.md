@@ -1,6 +1,6 @@
 # API Docs
 
-You can find the Swagger docs by setting the path to `/swagger-ui` in your Argo CD UI. E.g. [http://localhost:8080/swagger-ui](http://localhost:8080/swagger-ui).
+You can find the Swagger docs by setting the path to `/swagger-ui` in your Hanzo CD UI. E.g. [http://localhost:8080/swagger-ui](http://localhost:8080/swagger-ui).
 
 ## Authorization
 
@@ -15,7 +15,7 @@ Then pass using the HTTP `Authorization` header, prefixing it with `Bearer `:
 
 ```bash
 $ curl $CD_SERVER/api/v1/applications -H "Authorization: Bearer $CD_TOKEN" 
-{"metadata":{"selfLink":"/apis/argoproj.io/v1alpha1/namespaces/argocd/applications","resourceVersion":"37755"},"items":...}
+{"metadata":{"selfLink":"/apis/apps.hanzo.ai/v1alpha1/namespaces/cd/applications","resourceVersion":"37755"},"items":...}
 ```
 
 ## Services

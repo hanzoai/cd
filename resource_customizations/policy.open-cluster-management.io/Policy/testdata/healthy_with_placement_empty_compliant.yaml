@@ -2,10 +2,10 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    cd.hanzo.ai/compare-options: IgnoreExtraneous
+    cd.hanzo.ai/sync-options: SkipDryRunOnMissingResource=true
   labels:
-    argocd.argoproj.io/instance: acm
+    cd.hanzo.ai/instance: acm
   name: acm-hub-ca-policy
   namespace: open-cluster-management
 spec:

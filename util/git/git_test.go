@@ -152,8 +152,8 @@ func TestSanitizeRepoURL(t *testing.T) {
 		in   string
 		want string
 	}{
-		{"no credentials", "https://github.com/argoproj/argo-cd.git", "https://github.com/argoproj/argo-cd.git"},
-		{"strips user and password", "https://user:p@ss@github.com/argoproj/argo-cd.git", "https://github.com/argoproj/argo-cd.git"},
+		{"no credentials", "https://github.com/hanzoai/cd.git", "https://github.com/hanzoai/cd.git"},
+		{"strips user and password", "https://user:p@ss@github.com/hanzoai/cd.git", "https://github.com/hanzoai/cd.git"},
 		{"strips token-only userinfo", "https://token@github.com/org/repo", "https://github.com/org/repo"},
 		{"scp-style ssh left unchanged", "git@github.com:argoproj/argo-cd.git", "git@github.com:argoproj/argo-cd.git"},
 		{"unparseable returned unchanged", "://not a url", "://not a url"},
@@ -264,7 +264,7 @@ func TestCustomHTTPClient(t *testing.T) {
 
 func TestLsRemote(t *testing.T) {
 	setupGitEnv(t)
-	clnt, err := NewClientExt("https://github.com/argoproj/argo-cd.git", "/tmp", NopCreds{}, false, false, "", "")
+	clnt, err := NewClientExt("https://github.com/hanzoai/cd.git", "/tmp", NopCreds{}, false, false, "", "")
 	require.NoError(t, err)
 
 	testCases := []struct {
@@ -502,7 +502,7 @@ func TestListRevisions(t *testing.T) {
 	setupGitEnv(t)
 	dir := t.TempDir()
 
-	repoURL := "https://github.com/argoproj/argo-cd.git"
+	repoURL := "https://github.com/hanzoai/cd.git"
 	client, err := NewClientExt(repoURL, dir, NopCreds{}, false, false, "", "")
 	require.NoError(t, err)
 
@@ -763,7 +763,7 @@ func TestAnnotatedTagHandling(t *testing.T) {
 	setupGitEnv(t)
 	dir := t.TempDir()
 
-	client, err := NewClientExt("https://github.com/argoproj/argo-cd.git", dir, NopCreds{}, false, false, "", "")
+	client, err := NewClientExt("https://github.com/hanzoai/cd.git", dir, NopCreds{}, false, false, "", "")
 	require.NoError(t, err)
 
 	err = client.Init()

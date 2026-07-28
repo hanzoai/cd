@@ -10,7 +10,7 @@ YAML syntax is incorrect.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.slack: |
     token: $slack-token
@@ -23,7 +23,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.slack: |
     token: $slack-token
@@ -32,13 +32,13 @@ data:
 
 ### service type 'xxxx' is not supported
 
-Check the `argocd-notifications` controller version. For example, the Teams integration support started in `v1.1.0`.
+Check the `cd-notifications` controller version. For example, the Teams integration support started in `v1.1.0`.
 
 ## Failed to notify recipient
 
 ### notification service 'xxxx' is not supported
 
-You have not defined `xxxx` in `argocd-notifications-cm` or parsing failed.
+You have not defined `xxxx` in `cd-notifications-cm` or parsing failed.
 
 ### GitHub.repoURL (\u003cno value\u003e) does not have a / using the configuration
 
@@ -85,8 +85,8 @@ template.example: |
 ## config referenced xxx, but key does not exist in secret
 
 - If you are using a custom secret, check that the secret is in the same namespace
-- You have added the label: `app.kubernetes.io/part-of: argocd` to the secret
-- You have tried restarting `argocd-notifications` controller
+- You have added the label: `app.kubernetes.io/part-of: cd` to the secret
+- You have tried restarting `cd-notifications` controller
 
 ### Example:
 Secret:
@@ -94,10 +94,10 @@ Secret:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argocd-slackbot
-  namespace: <the namespace where argocd is installed>
+  name: cd-slackbot
+  namespace: <the namespace where cd is installed>
   labels:
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: cd
 type: Opaque
 data:
   slack-token: <base64encryptedtoken>
@@ -107,8 +107,8 @@ ConfigMap
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.slack: |
-    token: $argocd-slackbot:slack-token
+    token: $cd-slackbot:slack-token
 ```

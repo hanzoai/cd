@@ -16,14 +16,14 @@ See 'How to modify ApplicationSet container parameters' below for detailed steps
 
 ## Managed Applications modification Policies
 
-The ApplicationSet controller supports a parameter `--policy`, which is specified on launch (within the controller Deployment container), and which restricts what types of modifications will be made to managed Argo CD `Application` resources.
+The ApplicationSet controller supports a parameter `--policy`, which is specified on launch (within the controller Deployment container), and which restricts what types of modifications will be made to managed Hanzo CD `Application` resources.
 
 The `--policy` parameter takes four values: `sync`, `create-only`, `create-delete`, and `create-update`. (`sync` is the default, which is used if the `--policy` parameter is not specified; the other policies are described below).
 
 It is also possible to set this policy per ApplicationSet.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 spec:
   # (...)
@@ -37,7 +37,7 @@ spec:
 - Policy `create-delete`: Prevents ApplicationSet controller from modifying Applications. Delete is allowed.
 - Policy `sync`: Create, Update and Delete are allowed.
 
-If the controller parameter `--policy` is set, it takes precedence on the field `applicationsSync`. It is possible to allow per ApplicationSet sync policy by setting variable `CD_APPLICATIONSET_CONTROLLER_ENABLE_POLICY_OVERRIDE` to argocd-cmd-params-cm `applicationsetcontroller.enable.policy.override` or directly with controller parameter `--enable-policy-override` (default to `false`).
+If the controller parameter `--policy` is set, it takes precedence on the field `applicationsSync`. It is possible to allow per ApplicationSet sync policy by setting variable `CD_APPLICATIONSET_CONTROLLER_ENABLE_POLICY_OVERRIDE` to cd-cmd-params-cm `applicationsetcontroller.enable.policy.override` or directly with controller parameter `--enable-policy-override` (default to `false`).
 
 ### Policy - `create-only`: Prevent ApplicationSet controller from modifying and deleting Applications
 
@@ -52,7 +52,7 @@ To allow the ApplicationSet controller to *create* `Application` resources, but 
 At ApplicationSet level
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 spec:
   # (...)
@@ -75,7 +75,7 @@ This may be useful to users looking for additional protection against deletion o
 At ApplicationSet level
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 spec:
   # (...)
@@ -90,11 +90,11 @@ You must set the finalizer to ApplicationSet to prevent deletion in such case, a
 If you use foreground cascading deletion, there's no guarantee to preserve applications.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.cd.hanzo.ai
 spec:
   # (...)
 ```
@@ -111,7 +111,7 @@ You may optionally also specify a `name` to apply the ignore rule to a specific 
 the ignore rule to all Applications.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 spec:
   ignoreApplicationDifferences:
@@ -130,7 +130,7 @@ For example, if you have an ApplicationSet that is configured to automatically s
 disable auto-sync for a specific Application. You can do this by adding an ignore rule for the `spec.syncPolicy.automated` field.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 spec:
   ignoreApplicationDifferences:
@@ -155,7 +155,7 @@ field will be reset to the value defined in the ApplicationSet.
 For example, consider this ApplicationSet:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 spec:
   ignoreApplicationDifferences:
@@ -174,7 +174,7 @@ You can freely change the `targetRevision` of the `repo1` source, and the Applic
 your change.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 spec:
   sources:
@@ -188,7 +188,7 @@ However, if you change the `targetRevision` of the `repo2` source, the Applicati
 `sources` field.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 spec:
   sources:
@@ -211,7 +211,7 @@ By default, when an `Application` resource is deleted by the ApplicationSet cont
 
 To prevent an Application's child resources from being deleted when the parent Application is deleted, add the `preserveResourcesOnDeletion: true` field to the `syncPolicy` of the ApplicationSet:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 spec:
   # (...)
@@ -219,18 +219,18 @@ spec:
     preserveResourcesOnDeletion: true
 ```
 
-More information on the specific behaviour of `preserveResourcesOnDeletion`, and deletion in ApplicationSet controller and Argo CD in general, can be found on the [Application Deletion](Application-Deletion.md) page.
+More information on the specific behaviour of `preserveResourcesOnDeletion`, and deletion in ApplicationSet controller and Hanzo CD in general, can be found on the [Application Deletion](Application-Deletion.md) page.
 
 
 ## Prevent an Application's child resources from being modified
 
-Changes made to the ApplicationSet will propagate to the Applications managed by the ApplicationSet, and then Argo CD will propagate the Application changes to the underlying cluster resources (as per [Argo CD Integration](Argo-CD-Integration.md)).
+Changes made to the ApplicationSet will propagate to the Applications managed by the ApplicationSet, and then Hanzo CD will propagate the Application changes to the underlying cluster resources (as per [Hanzo CD Integration](Hanzo CD-Integration.md)).
 
 The propagation of Application changes to the cluster is managed by the [automated sync settings](../../user-guide/auto_sync.md), which are referenced in the ApplicationSet `template` field:
 
 - `spec.template.syncPolicy.automated`: If enabled, changes to Applications will automatically propagate to the cluster resources of the cluster. 
     - Unset this within the ApplicationSet template to 'pause' updates to cluster resources managed by the `Application` resource.
-- `spec.template.syncPolicy.automated.prune`: By default, Automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git.
+- `spec.template.syncPolicy.automated.prune`: By default, Automated sync will not delete resources when Hanzo CD detects the resource is no longer defined in Git.
     - For extra safety, set this to false to prevent unexpected changes to the backing Git repository from affecting cluster resources.
 
 
@@ -242,7 +242,7 @@ There are a couple of ways to modify the ApplicationSet container parameters, so
 
 Edit the applicationset-controller `Deployment` resource on the cluster:
 ```
-kubectl edit deployment/argocd-applicationset-controller -n argocd
+kubectl edit deployment/cd-applicationset-controller -n cd
 ```
 
 Locate the `.spec.template.spec.containers[0].command` field, and add the required parameter(s):
@@ -255,7 +255,7 @@ spec:
       containers:
       - command:
         - entrypoint.sh
-        - argocd-applicationset-controller
+        - cd-applicationset-controller
         # Insert new parameters here, for example:
         # --policy create-only
     # (...)
@@ -283,7 +283,7 @@ cd applicationset/manifests
 # as described in the previous section.
 
 # Apply the change to the cluster
-kubectl apply -n argocd --server-side --force-conflicts -f install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f install.yaml
 ```
 
 ## Preserving changes made to an Applications annotations and labels
@@ -297,7 +297,7 @@ It is common practice in Kubernetes to store state in annotations, operators wil
 
 For example, imagine that we have an Application created from an ApplicationSet, but a custom annotation and label has since been added (to the Application) that does not exist in the `ApplicationSet` resource:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   # This annotation and label exists only on this Application, and not in 
@@ -312,7 +312,7 @@ spec:
 
 To preserve this annotation and label we can use the `preservedFields` property of the `ApplicationSet` like so:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 spec:
   # (...)
@@ -323,7 +323,7 @@ spec:
 
 The ApplicationSet controller will leave this annotation and label as-is when reconciling, even though it is not defined in the metadata of the ApplicationSet itself.
 
-By default, the Argo CD notifications and the Argo CD refresh type annotations are also preserved.
+By default, the Hanzo CD notifications and the Hanzo CD refresh type annotations are also preserved.
 
 > [!NOTE]
 > One can also set global preserved fields for the controller by passing a comma separated list of annotations and labels to 
@@ -332,14 +332,14 @@ By default, the Argo CD notifications and the Argo CD refresh type annotations a
 ## Debugging unexpected changes to Applications
 
 When the ApplicationSet controller makes a change to an application, it logs the patch at the debug level. To see these
-logs, set the log level to debug in the `argocd-cmd-params-cm` ConfigMap in the `argocd` namespace:
+logs, set the log level to debug in the `cd-cmd-params-cm` ConfigMap in the `cd` namespace:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cmd-params-cm
-  namespace: argocd
+  name: cd-cmd-params-cm
+  namespace: cd
 data:
   applicationsetcontroller.log.level: debug
 ```
@@ -350,7 +350,7 @@ To preview changes that the ApplicationSet controller would make to Applications
 mode. This works whether the AppSet already exists or not.
 
 ```shell
-argocd appset create --dry-run ./appset.yaml -o json | jq -r '.status.resources[].name'
+cd appset create --dry-run ./appset.yaml -o json | jq -r '.status.resources[].name'
 ```
 
 The dry-run will populate the returned ApplicationSet's status with the Applications which would be managed with the 

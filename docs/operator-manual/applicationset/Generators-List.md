@@ -2,11 +2,11 @@
 
 The List generator generates parameters based on an arbitrary list of key/value pairs (as long as the values are string values). In this example, we're targeting a local cluster named `engineering-dev`:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -23,14 +23,14 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: applicationset/examples/list-generator/guestbook/{{.cluster}}
       destination:
         server: '{{.url}}'
         namespace: guestbook
 ```
-(*The [full example](https://github.com/argoproj/argo-cd/tree/master/applicationset/examples/list-generator).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/list-generator).*)
 
 In this example, the List generator passes the `url` and `cluster` fields as parameters into the template. If we wanted to add a second environment, we could uncomment the second element and the ApplicationSet controller would automatically target it with the defined application.
 
@@ -53,18 +53,18 @@ spec:
 ```
 
 > [!NOTE]
-> **Clusters must be predefined in Argo CD**
+> **Clusters must be predefined in Hanzo CD**
 >
-> These clusters *must* already be defined within Argo CD, in order to generate applications for these values. The ApplicationSet controller does not create clusters within Argo CD (for instance, it does not have the credentials to do so).
+> These clusters *must* already be defined within Hanzo CD, in order to generate applications for these values. The ApplicationSet controller does not create clusters within Hanzo CD (for instance, it does not have the credentials to do so).
 
 ## Dynamically generated elements
 The List generator can also dynamically generate its elements based on a yaml/json it gets from a previous generator like git by combining the two with a matrix generator. In this example we are using the matrix generator with a git followed by a list generator and pass the content of a file in git as input to the `elementsYaml` field of the list generator:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: elements-yaml
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -72,7 +72,7 @@ spec:
   - matrix:
       generators:
       - git:
-          repoURL: https://github.com/argoproj/argo-cd.git
+          repoURL: https://github.com/hanzoai/cd.git
           revision: HEAD
           files:
           - path: applicationset/examples/list-generator/list-elementsYaml-example.yaml

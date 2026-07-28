@@ -2,21 +2,21 @@
 
 ## Overview
 
-The `argocd.argoproj.io/managed-by-url` annotation allows an Application resource to specify which Argo CD instance manages it. This is useful when you have multiple Argo CD instances and need application links in the UI to point to the correct managing instance.
+The `cd.hanzo.ai/managed-by-url` annotation allows an Application resource to specify which Hanzo CD instance manages it. This is useful when you have multiple Hanzo CD instances and need application links in the UI to point to the correct managing instance.
 
 ## Use Case
 
-When using multiple Argo CD instances with the [app-of-apps pattern](cluster-bootstrapping.md):
+When using multiple Hanzo CD instances with the [app-of-apps pattern](cluster-bootstrapping.md):
 
-- A primary Argo CD instance creates a parent Application
-- The parent Application deploys child Applications that are managed by a secondary Argo CD instance
+- A primary Hanzo CD instance creates a parent Application
+- The parent Application deploys child Applications that are managed by a secondary Hanzo CD instance
 - Without the annotation, clicking on child Applications in the primary instance's UI tries to open them in the primary instance (incorrect)
 - With the annotation, child Applications correctly open in the secondary instance
 
-The `managed-by-url` annotation ensures application links redirect to the correct Argo CD instance.
+The `managed-by-url` annotation ensures application links redirect to the correct Hanzo CD instance.
 
 > [!NOTE]
-> This annotation is particularly useful in multi-tenant setups where different teams have their own Argo CD instances, or in hub-and-spoke architectures where a central instance manages multiple edge instances.
+> This annotation is particularly useful in multi-tenant setups where different teams have their own Hanzo CD instances, or in hub-and-spoke architectures where a central instance manages multiple edge instances.
 
 ## Example
 
@@ -24,14 +24,14 @@ This example demonstrates the [app-of-apps pattern](cluster-bootstrapping.md) wh
 
 ### Step 1: Create Parent Application
 
-Create a parent Application in your primary Argo CD instance:
+Create a parent Application in your primary Hanzo CD instance:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: parent-app
-  namespace: argocd
+  namespace: cd
 spec:
   project: default
   source:
@@ -52,13 +52,13 @@ spec:
 In your Git repository at `apps/child-apps/child-app.yaml`, add the `managed-by-url` annotation:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: child-app
   namespace: namespace-b
   annotations:
-    argocd.argoproj.io/managed-by-url: "http://localhost:8081" # replace with actual secondary ArgoCD URL in real setup
+    cd.hanzo.ai/managed-by-url: "http://localhost:8081" # replace with actual secondary Hanzo CD URL in real setup
 spec:
   project: default
   source:
@@ -78,8 +78,8 @@ spec:
 
 When viewing the parent Application in the primary instance's UI:
 - The parent Application syncs from Git and deploys the child Application
-- Clicking on `child-app` in the resource tree navigates to `https://secondary-argocd.example.com/applications/namespace-b/child-app`
-- The link opens the child Application in the correct Argo CD instance that actually manages it
+- Clicking on `child-app` in the resource tree navigates to `https://secondary-cd.example.com/applications/namespace-b/child-app`
+- The link opens the child Application in the correct Hanzo CD instance that actually manages it
 
 ## Configuration
 
@@ -87,7 +87,7 @@ When viewing the parent Application in the primary instance's UI:
 
 | Field | Value |
 |-------|-------|
-| **Annotation** | `argocd.argoproj.io/managed-by-url` |
+| **Annotation** | `cd.hanzo.ai/managed-by-url` |
 | **Target** | Application |
 | **Value** | Valid HTTP(S) URL |
 | **Required** | No |
@@ -96,17 +96,17 @@ When viewing the parent Application in the primary instance's UI:
 
 The annotation value **must** be a valid HTTP(S) URL:
 
-- ✅ `https://argocd.example.com`
-- ✅ `https://argocd.example.com:8080`
+- ✅ `https://cd.example.com`
+- ✅ `https://cd.example.com:8080`
 - ✅ `http://localhost:8080` (for development)
-- ❌ `argocd.example.com` (missing protocol)
+- ❌ `cd.example.com` (missing protocol)
 - ❌ `javascript:alert(1)` (invalid protocol)
 
 Invalid URLs will prevent the Application from being created or updated.
 
 ### Behavior
 
-When generating application links, Argo CD:
+When generating application links, Hanzo CD:
 - **Without annotation**: Uses the current instance's base URL
 - **With annotation**: Uses the URL from the annotation
 - **Invalid annotation**: Falls back to the current instance's base URL and logs a warning
@@ -116,26 +116,26 @@ When generating application links, Argo CD:
 
 ## Testing Locally
 
-To test the annotation with two local Argo CD instances:
+To test the annotation with two local Hanzo CD instances:
 
 ```bash
 # Install primary instance
-kubectl create namespace argocd
-kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl create namespace cd
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # Install secondary instance
 kubectl create namespace namespace-b
 kubectl apply -n namespace-b --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # Port forward both instances
-kubectl port-forward -n argocd svc/argocd-server 8080:443 &
-kubectl port-forward -n namespace-b svc/argocd-server 8081:443 &
+kubectl port-forward -n cd svc/cd-server 8080:443 &
+kubectl port-forward -n namespace-b svc/cd-server 8081:443 &
 
-# Wait for Argo CD to be ready
-kubectl wait --for=condition=available --timeout=300s deployment/argocd-server -n argocd
+# Wait for Hanzo CD to be ready
+kubectl wait --for=condition=available --timeout=300s deployment/cd-server -n cd
 
 # Get the admin password for primary instance
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+kubectl -n cd get secret cd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
 
 ```
 
@@ -150,7 +150,7 @@ You will need to repeat the command to get the password for the secondary instan
 
 ```bash
 # Get the admin password for secondary instance
-kubectl -n namespace-b get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+kubectl -n namespace-b get secret cd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
 ```
 
 ## Troubleshooting
@@ -160,11 +160,11 @@ kubectl -n namespace-b get secret argocd-initial-admin-secret -o jsonpath="{.dat
 **Check if the annotation is present:**
 
 ```bash
-kubectl get application child-app -n instance-b -o jsonpath='{.metadata.annotations.argocd\.argoproj\.io/managed-by-url}'
+kubectl get application child-app -n instance-b -o jsonpath='{.metadata.annotations.cd\.argoproj\.io/managed-by-url}'
 ```
 
 Expected output: A complete URL like `http://localhost:8081` or the url that has been set 
-i.e `https://secondary-argocd.example.com`
+i.e `https://secondary-cd.example.com`
 
 **If the annotation is present but links still don't work:**
 - Verify the URL is accessible from your browser

@@ -48,7 +48,7 @@ const (
 	// Note: this is NOT the namespace the ApplicationSet controller is deployed to; see ArgoCDNamespace.
 	ApplicationsResourcesNamespace = "applicationset-e2e"
 
-	TestingLabel = "e2e.argoproj.io"
+	TestingLabel = "e2e.apps.hanzo.ai"
 )
 
 var (
@@ -117,14 +117,14 @@ func EnsureCleanState(t *testing.T) {
 
 	fixture.RunFunctionsInParallelAndCheckErrors(t, []func() error{
 		func() error {
-			// kubectl delete secrets -l cd.argoproj.io/secret-type=repository
+			// kubectl delete secrets -l cd.hanzo.ai/secret-type=repository
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepository})
 		},
 		func() error {
-			// kubectl delete secrets -l cd.argoproj.io/secret-type=repo-creds
+			// kubectl delete secrets -l cd.hanzo.ai/secret-type=repo-creds
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
@@ -164,7 +164,7 @@ func EnsureCleanState(t *testing.T) {
 			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
-			// kubectl delete secrets -l e2e.argoproj.io=true
+			// kubectl delete secrets -l e2e.apps.hanzo.ai=true
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},

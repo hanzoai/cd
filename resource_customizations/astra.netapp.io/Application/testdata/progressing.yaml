@@ -6,7 +6,7 @@ metadata:
     - astra.netapp.io/finalizer
   generation: 3
   labels:
-    argocd.argoproj.io/instance: ghost-demo
+    cd.hanzo.ai/instance: ghost-demo
   name: ghost
   namespace: astra-connector
   resourceVersion: "3235325"

@@ -76,7 +76,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 		{
 			name:                "namespace does not yet exist and managedNamespaceMetadata not nil",
 			expected:            true,
-			expectedAnnotations: map[string]string{"cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              nil,
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -87,7 +87,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 			name:                "namespace does not yet exist and managedNamespaceMetadata has empty labels map",
 			expected:            true,
 			expectedLabels:      map[string]string{},
-			expectedAnnotations: map[string]string{"cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              nil,
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -99,7 +99,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 		{
 			name:                "namespace does not yet exist and managedNamespaceMetadata has empty annotations map",
 			expected:            true,
-			expectedAnnotations: map[string]string{"cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              nil,
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -112,7 +112,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 			name:                "namespace does not yet exist and managedNamespaceMetadata has empty annotations and labels map",
 			expected:            true,
 			expectedLabels:      map[string]string{},
-			expectedAnnotations: map[string]string{"cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              nil,
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -126,7 +126,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 			name:                "namespace does not yet exist and managedNamespaceMetadata has labels",
 			expected:            true,
 			expectedLabels:      map[string]string{"my-cool-label": "some-value"},
-			expectedAnnotations: map[string]string{"cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              nil,
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -139,7 +139,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 		{
 			name:                "namespace does not yet exist and managedNamespaceMetadata has annotations",
 			expected:            true,
-			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              nil,
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -153,7 +153,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 			name:                "namespace does not yet exist and managedNamespaceMetadata has annotations and labels",
 			expected:            true,
 			expectedLabels:      map[string]string{"my-cool-label": "some-value"},
-			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              nil,
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -167,7 +167,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 			name:                "namespace exists with no labels or annotations and managedNamespaceMetadata has labels",
 			expected:            true,
 			expectedLabels:      map[string]string{"my-cool-label": "some-value"},
-			expectedAnnotations: map[string]string{"cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              createFakeNamespace("something", "1", map[string]string{}, map[string]string{}),
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -179,7 +179,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 		{
 			name:                "namespace exists with no labels or annotations and managedNamespaceMetadata has annotations",
 			expected:            true,
-			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              createFakeNamespace("something", "1", map[string]string{}, map[string]string{}),
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -192,7 +192,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 			name:                "namespace exists with no labels or annotations and managedNamespaceMetadata has annotations and labels",
 			expected:            true,
 			expectedLabels:      map[string]string{"my-cool-label": "some-value"},
-			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              createFakeNamespace("something", "1", map[string]string{}, map[string]string{}),
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -205,7 +205,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 		{
 			name:                "namespace exists with labels and managedNamespaceMetadata has mismatching labels",
 			expected:            true,
-			expectedAnnotations: map[string]string{"cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			expectedLabels:      map[string]string{"my-cool-label": "some-value", "my-other-label": "some-other-value"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              createFakeNamespace("something", "1", map[string]string{"my-cool-label": "some-value"}, map[string]string{}),
@@ -220,7 +220,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 			name:                "namespace exists with annotations and managedNamespaceMetadata has mismatching annotations",
 			expected:            true,
 			expectedLabels:      map[string]string{},
-			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              createFakeNamespace("something", "1", map[string]string{}, map[string]string{"my-cool-annotation": "some-value", "my-other-annotation": "some-other-value"}),
 			syncPolicy: &v1alpha1.SyncPolicy{
@@ -234,7 +234,7 @@ func Test_shouldNamespaceSync(t *testing.T) {
 			name:                "namespace exists with annotations and labels managedNamespaceMetadata has mismatching annotations and labels",
 			expected:            true,
 			expectedLabels:      map[string]string{"my-cool-label": "some-value", "my-other-label": "some-other-value"},
-			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "my-other-annotation": "some-other-value", "cd.argoproj.io/sync-options": "ServerSideApply=true"},
+			expectedAnnotations: map[string]string{"my-cool-annotation": "some-value", "my-other-annotation": "some-other-value", "cd.hanzo.ai/sync-options": "ServerSideApply=true"},
 			managedNs:           createFakeNamespace("", "", map[string]string{}, map[string]string{}),
 			liveNs:              createFakeNamespace("something", "1", map[string]string{"my-cool-label": "some-value"}, map[string]string{"my-cool-annotation": "some-value"}),
 			syncPolicy: &v1alpha1.SyncPolicy{

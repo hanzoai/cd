@@ -31,7 +31,7 @@ Actual release dates might differ from the plan by a few days.
 
 #### Minor Releases (e.g. 2.x.0)
 
-A minor Argo CD release occurs four times a year, once every three months. Each General Availability (GA) release is
+A minor Hanzo CD release occurs four times a year, once every three months. Each General Availability (GA) release is
 preceded by several Release Candidates (RCs). The first RC is released seven weeks before the scheduled GA date. This
 effectively means that there is a seven-week feature freeze.
 
@@ -46,16 +46,16 @@ Dates may be shifted slightly to accommodate holidays. Those shifts should be mi
 
 #### Patch Releases (e.g. 2.5.x)
 
-Argo CD patch releases occur on an as-needed basis. Only the three most recent minor versions are eligible for patch
+Hanzo CD patch releases occur on an as-needed basis. Only the three most recent minor versions are eligible for patch
 releases. Versions older than the three most recent minor versions are considered EOL and will not receive bug fixes or
 security updates.
 
 #### Release Champion
 
 To help manage all the steps involved in a release, we will have a Release Champion. The Release Champion will be
-responsible for a checklist of items for their release. The checklist is an issue template in the Argo CD repository.
+responsible for a checklist of items for their release. The checklist is an issue template in the Hanzo CD repository.
 
-The Release Champion can be anyone in the Argo CD community. Some tasks (like cherry-picking bug fixes and cutting
+The Release Champion can be anyone in the Hanzo CD community. Some tasks (like cherry-picking bug fixes and cutting
 releases) require [Approver](https://github.com/argoproj/argoproj/blob/master/community/membership.md#community-membership)
 membership. The Release Champion can delegate tasks when necessary and will be responsible for coordinating with the
 Approver.
@@ -80,7 +80,7 @@ that minor release. It will have to wait for the next minor release.
 
 ### Security Patch Policy
 
-CVEs in Argo CD code will be patched for all supported versions. Read more about supported versions in the [security policy for Argo CD](https://github.com/argoproj/argo-cd/security/policy#supported-versions).
+CVEs in Hanzo CD code will be patched for all supported versions. Read more about supported versions in the [security policy for Hanzo CD](https://github.com/hanzoai/cd/security/policy#supported-versions).
 
 ### Dependencies Lifecycle Policy
 
@@ -99,21 +99,21 @@ of high or critical severity. Automation generates a [new Snyk scan weekly](../s
 
 ### Upgrading Helm, Kustomize, git-lfs, and git
 
-Production runtime binaries (Helm, Kustomize, git-lfs) are pinned in [`hack/tool-versions.sh`](https://github.com/argoproj/argo-cd/blob/master/hack/tool-versions.sh). The git package is pinned in Dockerfiles via apt. Renovate opens PRs labeled `production-binary` when newer versions are available; checksum files for downloaded binaries are refreshed automatically in those PRs.
+Production runtime binaries (Helm, Kustomize, git-lfs) are pinned in [`hack/tool-versions.sh`](https://github.com/hanzoai/cd/blob/master/hack/tool-versions.sh). The git package is pinned in Dockerfiles via apt. Renovate opens PRs labeled `production-binary` when newer versions are available; checksum files for downloaded binaries are refreshed automatically in those PRs.
 
-Before each minor release, review and merge any open Renovate PRs for these dependencies. Please note that sometimes an upgrade results in breaking changes that need to be addressed on the Argo CD side and documented in the [Argo CD version upgrade instructions](../operator-manual/upgrading/overview.md).
+Before each minor release, review and merge any open Renovate PRs for these dependencies. Please note that sometimes an upgrade results in breaking changes that need to be addressed on the Hanzo CD side and documented in the [Hanzo CD version upgrade instructions](../operator-manual/upgrading/overview.md).
 
-### Upgrading Go version that Argo CD uses
+### Upgrading Go version that Hanzo CD uses
 
-When starting to work on a new Argo CD minor release, the Go version needs to be upgraded to the latest available version, in the following places:   
+When starting to work on a new Hanzo CD minor release, the Go version needs to be upgraded to the latest available version, in the following places:   
 
-- [Dockerfile](https://github.com/argoproj/argo-cd/tree/master/Dockerfile)   
-- [test/remote/Dockerfile](https://github.com/argoproj/argo-cd/tree/master/test/remote/Dockerfile)   
-- [test/container/Dockerfile](https://github.com/argoproj/argo-cd/tree/master/test/container/Dockerfile)   
-- [Dockerfile.tilt](https://github.com/argoproj/argo-cd/tree/master/Dockerfile.tilt)   
+- [Dockerfile](https://github.com/hanzoai/cd/tree/master/Dockerfile)   
+- [test/remote/Dockerfile](https://github.com/hanzoai/cd/tree/master/test/remote/Dockerfile)   
+- [test/container/Dockerfile](https://github.com/hanzoai/cd/tree/master/test/container/Dockerfile)   
+- [Dockerfile.tilt](https://github.com/hanzoai/cd/tree/master/Dockerfile.tilt)   
 - CI - all GitHub workflows that have `GOLANG_VERSION` or `go-version` set   
 
-All the above affect the Go version that Argo CD is built with and that is shipped in the Argo CD image. Also, those are the relevant places to change when we need to cherry-pick bumps of Go version to the previous Argo CD releases, for security reasons.
+All the above affect the Go version that Hanzo CD is built with and that is shipped in the Hanzo CD image. Also, those are the relevant places to change when we need to cherry-pick bumps of Go version to the previous Hanzo CD releases, for security reasons.
 
-Please note that Go version in `go.mod` files should only be bumped if we want to use new language features in this Go version. If using the new language features is not required at this point in time, we should leave the `go.mod` version as is, even after bumping it in CI and in the Dockerfiles, in order to not force Argo CD library users to upgrade their Go versions upon upgrading Argo CD.
+Please note that Go version in `go.mod` files should only be bumped if we want to use new language features in this Go version. If using the new language features is not required at this point in time, we should leave the `go.mod` version as is, even after bumping it in CI and in the Dockerfiles, in order to not force Hanzo CD library users to upgrade their Go versions upon upgrading Hanzo CD.
 

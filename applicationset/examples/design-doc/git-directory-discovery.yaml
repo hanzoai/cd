@@ -21,7 +21,7 @@
 #
 # The following ApplicationSet would produce four applications (in different namespaces),
 # using the directory basename as both the namespace and application name. 
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons

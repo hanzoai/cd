@@ -8,7 +8,7 @@ import (
 	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 )
 
-var appSet = `apiVersion: argoproj.io/v1alpha1
+var appSet = `apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook

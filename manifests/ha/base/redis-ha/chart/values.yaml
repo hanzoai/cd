@@ -1,11 +1,11 @@
 redis-ha:
   auth: true
   authKey: auth
-  existingSecret: argocd-redis
+  existingSecret: cd-redis
   persistentVolume:
     enabled: false
   redis:
-    masterGroupName: argocd
+    masterGroupName: cd
     config:
       save: '""'
       bind: '0.0.0.0'
@@ -36,4 +36,4 @@ redis-ha:
           command:
             - '/bin/sh'
             - '-c'
-            - 'sleep 30; redis-cli -p 26379 sentinel reset argocd'
+            - 'sleep 30; redis-cli -p 26379 sentinel reset cd'

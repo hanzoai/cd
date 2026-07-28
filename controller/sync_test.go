@@ -862,7 +862,7 @@ func TestNormalizeTargetResourcesCRDs(t *testing.T) {
 
 		ignores := []v1alpha1.ResourceIgnoreDifferences{
 			{
-				Group:             "argoproj.io",
+				Group:             "apps.hanzo.ai",
 				Kind:              "Rollout",
 				JQPathExpressions: []string{`.spec.template.spec.containers[] | select(.name == "init") | .image`},
 			},
@@ -921,7 +921,7 @@ func TestNormalizeTargetResourcesCRDs(t *testing.T) {
 		// This is typical for app-of-apps to ignore certain fields
 		ignores := []v1alpha1.ResourceIgnoreDifferences{
 			{
-				Group:             "argoproj.io",
+				Group:             "apps.hanzo.ai",
 				Kind:              "Application",
 				JQPathExpressions: []string{".spec.syncPolicy.automated"},
 			},
@@ -2112,7 +2112,7 @@ func TestClientSideApplyMigration(t *testing.T) {
 		// Add custom manager annotation if specified
 		if customManager != "" {
 			app.Annotations = map[string]string{
-				"cd.argoproj.io/client-side-apply-migration-manager": customManager,
+				"cd.hanzo.ai/client-side-apply-migration-manager": customManager,
 			}
 		}
 

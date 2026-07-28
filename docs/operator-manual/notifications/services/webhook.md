@@ -29,13 +29,13 @@ The wait time between retries is between `retryWaitMin` and `retryWaitMax`. If a
 
 Use the following steps to configure webhook:
 
-1 Register webhook in `argocd-notifications-cm` ConfigMap:
+1 Register webhook in `cd-notifications-cm` ConfigMap:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.webhook.<webhook-name>: |
     url: https://<hostname>/<optional-path>
@@ -54,7 +54,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   template.github-commit-status: |
     webhook:
@@ -71,22 +71,22 @@ data:
 3 Create subscription for webhook integration:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.<trigger-name>.<webhook-name>: ""
+    notifications.apps.hanzo.ai/subscribe.<trigger-name>.<webhook-name>: ""
 ```
 
 4. TLS configuration (optional)
 
-If your webhook server uses a custom TLS certificate, you can configure the notification service to trust it by adding the certificate to the `argocd-tls-certs-cm` ConfigMap as shown below:
+If your webhook server uses a custom TLS certificate, you can configure the notification service to trust it by adding the certificate to the `cd-tls-certs-cm` ConfigMap as shown below:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-tls-certs-cm
+  name: cd-tls-certs-cm
 data:
   <hostname>: |
     -----BEGIN CERTIFICATE-----
@@ -99,7 +99,7 @@ data:
 ```
 Put \"https://...\": x509: certificate signed by unknown authority
 ```
-*Adding the server's certificate to `argocd-tls-certs-cm` resolves this issue.*
+*Adding the server's certificate to `cd-tls-certs-cm` resolves this issue.*
 
 ## Examples
 
@@ -109,7 +109,7 @@ Put \"https://...\": x509: certificate signed by unknown authority
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.webhook.github: |
     url: https://api.github.com
@@ -124,7 +124,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.webhook.github: |
     url: https://api.github.com
@@ -143,8 +143,8 @@ data:
             {{if eq .app.status.operationState.phase "Succeeded"}} "state": "success"{{end}}
             {{if eq .app.status.operationState.phase "Error"}} "state": "error"{{end}}
             {{if eq .app.status.operationState.phase "Failed"}} "state": "error"{{end}},
-            "description": "ArgoCD",
-            "target_url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+            "description": "Hanzo CD",
+            "target_url": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
             "context": "continuous-delivery/{{.app.metadata.name}}"
           }
 ```
@@ -155,7 +155,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.webhook.jenkins: |
     url: http://<jenkins-host>/job/<job-name>/build?token=<job-secret>
@@ -172,7 +172,7 @@ type: Opaque
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.webhook.form: |
     url: https://form.example.com
@@ -193,7 +193,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.webhook.slack_webhook: |
     url: https://hooks.slack.com/services/xxxxx
@@ -209,7 +209,7 @@ data:
           {
             "attachments": [{
               "title": "{{.app.metadata.name}}",
-              "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+              "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
               "color": "#18be52",
               "fields": [{
                 "title": "Sync Status",

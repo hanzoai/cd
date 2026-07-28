@@ -1,4 +1,4 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: cmp-symlink
@@ -7,7 +7,7 @@ spec:
   init:
     command: [kustomize, version]
   generate:
-    command: [sh, -c, 'kustomize edit set image test=quay.io/argoprojlabs/argocd-e2e-container:0.2 && kustomize build --load-restrictor LoadRestrictionsNone']
+    command: [sh, -c, 'kustomize edit set image test=quay.io/argoprojlabs/cd-e2e-container:0.2 && kustomize build --load-restrictor LoadRestrictionsNone']
   discover:
     find:
       glob: "**/kustomization.yaml"

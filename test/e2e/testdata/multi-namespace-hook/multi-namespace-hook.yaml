@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: quay.io/argoprojlabs/argocd-e2e-container:0.1
+        image: quay.io/argoprojlabs/cd-e2e-container:0.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -33,13 +33,13 @@ kind: Pod
 metadata:
   name: my-hook
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    cd.hanzo.ai/hook: PostSync
+    cd.hanzo.ai/hook-delete-policy: HookSucceeded
 spec:
   restartPolicy: Never
   containers:
   - name: main
-    image: quay.io/argoprojlabs/argocd-e2e-container:0.1
+    image: quay.io/argoprojlabs/cd-e2e-container:0.1
     imagePullPolicy: IfNotPresent
     command: [sh, -c, "sleep 10"]
 
@@ -50,12 +50,12 @@ metadata:
   name: my-hook
   namespace: test-multi-ns-hook-second
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    cd.hanzo.ai/hook: PostSync
+    cd.hanzo.ai/hook-delete-policy: HookSucceeded
 spec:
   restartPolicy: Never
   containers:
   - name: main
-    image: quay.io/argoprojlabs/argocd-e2e-container:0.1
+    image: quay.io/argoprojlabs/cd-e2e-container:0.1
     imagePullPolicy: IfNotPresent
     command: [sh, -c, "sleep 10"]

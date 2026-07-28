@@ -47,7 +47,7 @@ You should turn off "send_resolved" or you will receive unnecessary recovery not
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.alertmanager: |
     targets:
@@ -62,7 +62,7 @@ If your alertmanager has changed the default api, you can customize "apiPath".
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.alertmanager: |
     targets:
@@ -74,7 +74,7 @@ data:
 
 ### Send high availability alertmanager with auth
 
-Store auth token in `argocd-notifications-secret` Secret and use configure in `argocd-notifications-cm` ConfigMap.
+Store auth token in `cd-notifications-secret` Secret and use configure in `cd-notifications-cm` ConfigMap.
 
 ```yaml
 apiVersion: v1
@@ -93,7 +93,7 @@ stringData:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.alertmanager: |
     targets:
@@ -114,7 +114,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.alertmanager: |
     targets:
@@ -137,7 +137,7 @@ the `label` or `annotations` or `generatorURL` values can be templated.
 
 ```yaml
 context: |
-  argocdUrl: https://example.com/argocd
+  cdUrl: https://example.com/cd
 
 template.app-deployed: |
   message: Application {{.app.metadata.name}} has been healthy.
@@ -148,7 +148,7 @@ template.app-deployed: |
       event_status: "succeed"
       recipient: "{{.recipient}}"
     annotations:
-      application: '<a href="{{.context.argocdUrl}}/applications/{{.app.metadata.name}}">{{.app.metadata.name}}</a>'
+      application: '<a href="{{.context.cdUrl}}/applications/{{.app.metadata.name}}">{{.app.metadata.name}}</a>'
       author: "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
       message: "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Message}}"
 ```

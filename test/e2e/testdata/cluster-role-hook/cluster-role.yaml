@@ -4,7 +4,7 @@ metadata:
   namespace: cert-manager
   name: my-cluster-role-binding
   annotations:
-    argocd.argoproj.io/hook: PreSync
+    cd.hanzo.ai/hook: PreSync
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

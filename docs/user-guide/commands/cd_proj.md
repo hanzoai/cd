@@ -1,27 +1,27 @@
-# `argocd proj` Command Reference
+# `cd proj` Command Reference
 
-## argocd proj
+## cd proj
 
 Manage projects
 
 ```
-argocd proj [flags]
+cd proj [flags]
 ```
 
 ### Examples
 
 ```
   # List all available projects
-  argocd proj list
+  cd proj list
   
   # Create a new project with name PROJECT
-  argocd proj create PROJECT
+  cd proj create PROJECT
   
   # Delete the project with name PROJECT
-  argocd proj delete PROJECT
+  cd proj delete PROJECT
   
   # Edit the information on project with name PROJECT
-  argocd proj edit PROJECT
+  cd proj edit PROJECT
 ```
 
 ### Options
@@ -44,58 +44,58 @@ argocd proj [flags]
 ### Options inherited from parent commands
 
 ```
-      --argocd-context string           The name of the Argo-CD server context to use
+      --cd-context string           The name of the Hanzo CD server context to use
       --auth-token string               Authentication token; set this or the CD_AUTH_TOKEN environment variable
       --client-crt string               Client certificate file
       --client-crt-key string           Client certificate key file
-      --config string                   Path to Argo CD config (default "/home/user/.config/argocd/config")
-      --controller-name string          Name of the Argo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "argocd-application-controller")
-      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Argo CD API server
-      --grpc-web                        Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2.
-      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2. Set web root.
-  -H, --header strings                  Sets additional header to all requests made by Argo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
-      --http-retry-max int              Maximum number of retries to establish http connection to Argo CD server
+      --config string                   Path to Hanzo CD config (default "/home/user/.config/cd/config")
+      --controller-name string          Name of the Hanzo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "cd-application-controller")
+      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Hanzo CD API server
+      --grpc-web                        Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2.
+      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2. Set web root.
+  -H, --header strings                  Sets additional header to all requests made by Hanzo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
+      --http-retry-max int              Maximum number of retries to establish http connection to Hanzo CD server
       --insecure                        Skip server certificate and domain verification
       --kube-context string             Directs the command to the given kube-context
       --logformat string                Set the logging format. One of: json|text (default "json")
       --loglevel string                 Set the logging level. One of: debug|info|warn|error (default "info")
       --plaintext                       Disable TLS
-      --port-forward                    Connect to a random argocd-server port using port forwarding
+      --port-forward                    Connect to a random cd-server port using port forwarding
       --port-forward-namespace string   Namespace name which should be used for port forwarding
       --prompts-enabled                 Force optional interactive prompts to be enabled or disabled, overriding local configuration. If not specified, the local configuration value will be used, which is false by default.
       --redis-compress string           Enable this if the application controller is configured with redis compression enabled. (possible values: gzip, none) (default "gzip")
-      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis-ha-haproxy")
-      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis")
-      --repo-server-name string         Name of the Argo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-repo-server")
-      --server string                   Argo CD server address
+      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "cd-redis-ha-haproxy")
+      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "cd-redis")
+      --repo-server-name string         Name of the Hanzo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-repo-server")
+      --server string                   Hanzo CD server address
       --server-crt string               Server certificate file
-      --server-name string              Name of the Argo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-server")
+      --server-name string              Name of the Hanzo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-server")
 ```
 
 ### SEE ALSO
 
-* [argocd](argocd.md)	 - argocd controls an Argo CD server
-* [argocd proj add-destination](argocd_proj_add-destination.md)	 - Add project destination
-* [argocd proj add-destination-service-account](argocd_proj_add-destination-service-account.md)	 - Add project destination's default service account
-* [argocd proj add-orphaned-ignore](argocd_proj_add-orphaned-ignore.md)	 - Add a resource to orphaned ignore list
-* [argocd proj add-source](argocd_proj_add-source.md)	 - Add project source repository
-* [argocd proj add-source-namespace](argocd_proj_add-source-namespace.md)	 - Add source namespace to the AppProject
-* [argocd proj allow-cluster-resource](argocd_proj_allow-cluster-resource.md)	 - Adds a cluster-scoped API resource to the allow list and removes it from deny list
-* [argocd proj allow-namespace-resource](argocd_proj_allow-namespace-resource.md)	 - Removes a namespaced API resource from the deny list or add a namespaced API resource to the allow list
-* [argocd proj create](argocd_proj_create.md)	 - Create a project
-* [argocd proj delete](argocd_proj_delete.md)	 - Delete project
-* [argocd proj deny-cluster-resource](argocd_proj_deny-cluster-resource.md)	 - Removes a cluster-scoped API resource from the allow list and adds it to deny list
-* [argocd proj deny-namespace-resource](argocd_proj_deny-namespace-resource.md)	 - Adds a namespaced API resource to the deny list or removes a namespaced API resource from the allow list
-* [argocd proj edit](argocd_proj_edit.md)	 - Edit project
-* [argocd proj get](argocd_proj_get.md)	 - Get project details
-* [argocd proj list](argocd_proj_list.md)	 - List projects
-* [argocd proj remove-destination](argocd_proj_remove-destination.md)	 - Remove project destination
-* [argocd proj remove-destination-service-account](argocd_proj_remove-destination-service-account.md)	 - Remove default destination service account from the project
-* [argocd proj remove-orphaned-ignore](argocd_proj_remove-orphaned-ignore.md)	 - Remove a resource from orphaned ignore list
-* [argocd proj remove-source](argocd_proj_remove-source.md)	 - Remove project source repository
-* [argocd proj remove-source-namespace](argocd_proj_remove-source-namespace.md)	 - Removes the source namespace from the AppProject
-* [argocd proj role](argocd_proj_role.md)	 - Manage a project's roles
-* [argocd proj set](argocd_proj_set.md)	 - Set project parameters
-* [argocd proj source-integrity](argocd_proj_source-integrity.md)	 - Manage criteria for source integrity
-* [argocd proj windows](argocd_proj_windows.md)	 - Manage a project's sync windows
+* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd proj add-destination](cd_proj_add-destination.md)	 - Add project destination
+* [cd proj add-destination-service-account](cd_proj_add-destination-service-account.md)	 - Add project destination's default service account
+* [cd proj add-orphaned-ignore](cd_proj_add-orphaned-ignore.md)	 - Add a resource to orphaned ignore list
+* [cd proj add-source](cd_proj_add-source.md)	 - Add project source repository
+* [cd proj add-source-namespace](cd_proj_add-source-namespace.md)	 - Add source namespace to the AppProject
+* [cd proj allow-cluster-resource](cd_proj_allow-cluster-resource.md)	 - Adds a cluster-scoped API resource to the allow list and removes it from deny list
+* [cd proj allow-namespace-resource](cd_proj_allow-namespace-resource.md)	 - Removes a namespaced API resource from the deny list or add a namespaced API resource to the allow list
+* [cd proj create](cd_proj_create.md)	 - Create a project
+* [cd proj delete](cd_proj_delete.md)	 - Delete project
+* [cd proj deny-cluster-resource](cd_proj_deny-cluster-resource.md)	 - Removes a cluster-scoped API resource from the allow list and adds it to deny list
+* [cd proj deny-namespace-resource](cd_proj_deny-namespace-resource.md)	 - Adds a namespaced API resource to the deny list or removes a namespaced API resource from the allow list
+* [cd proj edit](cd_proj_edit.md)	 - Edit project
+* [cd proj get](cd_proj_get.md)	 - Get project details
+* [cd proj list](cd_proj_list.md)	 - List projects
+* [cd proj remove-destination](cd_proj_remove-destination.md)	 - Remove project destination
+* [cd proj remove-destination-service-account](cd_proj_remove-destination-service-account.md)	 - Remove default destination service account from the project
+* [cd proj remove-orphaned-ignore](cd_proj_remove-orphaned-ignore.md)	 - Remove a resource from orphaned ignore list
+* [cd proj remove-source](cd_proj_remove-source.md)	 - Remove project source repository
+* [cd proj remove-source-namespace](cd_proj_remove-source-namespace.md)	 - Removes the source namespace from the AppProject
+* [cd proj role](cd_proj_role.md)	 - Manage a project's roles
+* [cd proj set](cd_proj_set.md)	 - Set project parameters
+* [cd proj source-integrity](cd_proj_source-integrity.md)	 - Manage criteria for source integrity
+* [cd proj windows](cd_proj_windows.md)	 - Manage a project's sync windows
 

@@ -10,7 +10,7 @@ out of the box such as Dex.
 
 ## Using Dex
 
-Edit the `argocd-cm` and configure the `dex.config` section:
+Edit the `cd-cm` and configure the `dex.config` section:
 
 ```yaml
 dex.config: |
@@ -27,12 +27,12 @@ dex.config: |
         insecureSkipEmailVerified: true
 ```
 
-ArgoCD automatically generates a static client named `argo-cd-cli` that you can use to get your token from a GitHub Action.
+Hanzo CD automatically generates a static client named `argo-cd-cli` that you can use to get your token from a GitHub Action.
 
-Here is an example of GitHub Action that will retrieve a valid Argo CD authentication token from Dex and use it to perform action with the CLI:
+Here is an example of GitHub Action that will retrieve a valid Hanzo CD authentication token from Dex and use it to perform action with the CLI:
 
 ```yaml
-name: argocd-test
+name: cd-test
 
 on:
   pull_request:
@@ -41,7 +41,7 @@ permissions:
   id-token: write # This is required for requesting the JWT
 
 jobs:
-  argocd-test:
+  cd-test:
     runs-on:
       group: ephemeral_runners
     steps:
@@ -74,7 +74,7 @@ jobs:
           echo "::add-mask::$GH_TOKEN"
 
           # exchange it for a dex token
-          DEX_URL="https://argocd.example.com/api/dex/token"
+          DEX_URL="https://cd.example.com/api/dex/token"
           echo "getting access token from Dex: $DEX_URL"
           DEX_TOKEN_RESPONSE=$(curl -sSf \
               "$DEX_URL" \
@@ -97,31 +97,31 @@ jobs:
           echo "dex-token=$DEX_TOKEN" >> "$GITHUB_OUTPUT"
           # use $DEX_TOKEN
 
-      - name: Setup ArgoCD CLI
+      - name: Setup Hanzo CD CLI
         run: |
-          curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-          mkdir -p "$RUNNER_TEMP/argocd"
-          install -m 555 argocd-linux-amd64 "$RUNNER_TEMP/argocd/argocd"
-          rm argocd-linux-amd64
-          echo "$RUNNER_TEMP/argocd" >> "$GITHUB_PATH"
+          curl -sSL -o cd-linux-amd64 https://github.com/hanzoai/cd/releases/latest/download/cd-linux-amd64
+          mkdir -p "$RUNNER_TEMP/cd"
+          install -m 555 cd-linux-amd64 "$RUNNER_TEMP/cd/cd"
+          rm cd-linux-amd64
+          echo "$RUNNER_TEMP/cd" >> "$GITHUB_PATH"
 
       - name: Use CLI in some commands
         env:
           CD_AUTH_TOKEN: ${{ steps.idtoken.outputs.dex-token }}
-          CD_SERVER: argocd.example.com
+          CD_SERVER: cd.example.com
           CD_OPTS: --grpc-web
         run: |
           set -x
-          argocd version
-          argocd account get-user-info
-          argocd proj list
-          argocd app list
+          cd version
+          cd account get-user-info
+          cd proj list
+          cd app list
 ```
 
 
 ## Configuring RBAC
 
-When using ArgoCD v3.0.0 or later, then you define your `policy.csv` like so:
+When using Hanzo CD v3.0.0 or later, then you define your `policy.csv` like so:
 
 ```yaml
 configs:
@@ -135,6 +135,6 @@ configs:
 More info: [RBAC Configuration](../rbac.md)
 
 > [!NOTE]
-> Defining policies are not supported on ArgoCD v2.
+> Defining policies are not supported on Hanzo CD v2.
 > To define policies, please [upgrade](../upgrading/overview.md)
 > to v3.0.0 or later.

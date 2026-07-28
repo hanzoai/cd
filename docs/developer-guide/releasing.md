@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Argo CD is released in a 2 step automated fashion using GitHub actions. The release process takes about 60 minutes,
+Hanzo CD is released in a 2 step automated fashion using GitHub actions. The release process takes about 60 minutes,
 sometimes a little less, depending on the performance of GitHub Actions runners.
 
 The target release branch must already exist in the GitHub repository. If you for
@@ -22,13 +22,13 @@ triggered. This will be automated in the very near future.
 * Commit & push changes to `CHANGELOG.md`
 * Update `goreleaser.yaml` with the updated blog post link in the `Release Notes Blog Post` section.
 
-**The `Init ArgoCD Release` workflow will perform the following steps:**
+**The `Init Hanzo CD Release` workflow will perform the following steps:**
 
 * Update `VERSION` file in the release branch
 * Update manifests with image tags of the new version in the release branch
 * Create a pull request to submit the above changes
 
-**The `Publish ArgoCD Release` workflow will perform the following steps:**
+**The `Publish Hanzo CD Release` workflow will perform the following steps:**
 
 * Build, push, and signs the container image to Quay.io
 * Generate a provenance for the container image
@@ -43,7 +43,7 @@ triggered. This will be automated in the very near future.
 ### Step 1 - Update Version and Manifest
 
 1. Ensure that the TARGET_BRANCH already exist.
-2. Visit the [Release GitHub Action](https://github.com/argoproj/argo-cd/actions/workflows/init-release.yaml)
+2. Visit the [Release GitHub Action](https://github.com/hanzoai/cd/actions/workflows/init-release.yaml)
 and choose which branch you would like to work from.
 3. Enter the TARGET_BRANCH to checkout.
 4. Enter the TARGET_VERSION that will be used to build manifest and `VERSION` file. (e.g `2.7.0-rc1`)
@@ -56,7 +56,7 @@ When the action is completed a pull request will be generated that contains the 
 
 ### Step 2 - Tag Release Branch
 
-The steps below need to be executed by someone with write access in Argo CD upstream repo.
+The steps below need to be executed by someone with write access in Hanzo CD upstream repo.
 
 1. Checkout the release branch. Example: `git fetch upstream && git
    checkout release-2.7`
@@ -79,7 +79,7 @@ The script will ask for confirmation, type `y` to proceed. If no confirmation is
 > * Pre-release: `v<MAJOR>.<MINOR>.<PATCH>-rc<RC#>`
 
 Once the script is executed successfully, a GitHub workflow will start
-execution. You can follow its progress under the [Actions](https://github.com/argoproj/argo-cd/actions/workflows/release.yaml) tab, the name of the action is `Publish ArgoCD Release`. 
+execution. You can follow its progress under the [Actions](https://github.com/hanzoai/cd/actions/workflows/release.yaml) tab, the name of the action is `Publish Hanzo CD Release`. 
 
 > [!WARNING]
 > You cannot perform more than one release on the same release branch at the
@@ -91,17 +91,17 @@ After the automatic release creation has finished, you should perform manual
 checks to see if the release came out correctly:
 
 * Check status & output of the GitHub action
-* Check [https://github.com/argoproj/argo-cd/releases](https://github.com/argoproj/argo-cd/releases)
+* Check [https://github.com/hanzoai/cd/releases](https://github.com/hanzoai/cd/releases)
   to see if the release has been correctly created and if all required assets
   are attached.
 * Check whether the image has been published on Quay.io correctly
 
 ### If something went wrong
 
-A new Argo CD release results in:
+A new Hanzo CD release results in:
 - A new GitHub release created
 - Stable Git tag pointing to the release (if the release is the latest release)
-- The release Go packages are published for using Argo CD code as dependency
+- The release Go packages are published for using Hanzo CD code as dependency
 - Docker images and SBOM artifacts are published
 
 Because of all the above dependencies, in a case of a release that failed, it is not safe to delete and recreate it.

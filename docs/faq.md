@@ -2,19 +2,19 @@
 
 ## I've deleted/corrupted my repo and can't delete my app.
 
-Argo CD can't delete an app if it cannot generate manifests. You need to either:
+Hanzo CD can't delete an app if it cannot generate manifests. You need to either:
 
 1. Reinstate/fix your repo.
 1. Delete the app using `--cascade=false` and then manually deleting the resources.
 
 ## Why is my application still `OutOfSync` immediately after a successful Sync?
 
-See [Diffing](user-guide/diffing.md) documentation for reasons resources can be OutOfSync, and ways to configure Argo CD
+See [Diffing](user-guide/diffing.md) documentation for reasons resources can be OutOfSync, and ways to configure Hanzo CD
 to ignore fields when differences are expected.
 
 ## Why is my application stuck in `Progressing` state?
 
-Argo CD provides health for several standard Kubernetes types. The `Ingress`, `StatefulSet` and `SealedSecret` types have known issues
+Hanzo CD provides health for several standard Kubernetes types. The `Ingress`, `StatefulSet` and `SealedSecret` types have known issues
 which might cause health check to return `Progressing` state instead of `Healthy`.
 
 * `Ingress` is considered healthy if `status.loadBalancer.ingress` list is non-empty, with at least one value
@@ -33,7 +33,7 @@ which might cause health check to return `Progressing` state instead of `Healthy
   See [#1881](https://github.com/argoproj/argo-cd/issues/1881).
 * For `SealedSecret`, see [Why are resources of type `SealedSecret` stuck in the `Progressing` state?](#sealed-secret-stuck-progressing)
 
-As workaround Argo CD allows providing [health check](operator-manual/health.md) customization which overrides default
+As workaround Hanzo CD allows providing [health check](operator-manual/health.md) customization which overrides default
 behavior.
 
 If you are using Traefik for your Ingress, you can update the Traefik config to publish the loadBalancer IP using [publishedservice](https://doc.traefik.io/traefik/providers/kubernetes-ingress/#publishedservice), which will resolve this issue.
@@ -47,11 +47,11 @@ providers:
 
 ## I forgot the admin password, how do I reset it?
 
-For Argo CD v1.8 and earlier, the initial password is set to the name of the server pod, as
-per [the getting started guide](getting_started.md). For Argo CD v1.9 and later, the initial password is available from
-a secret named `argocd-initial-admin-secret`.
+For Hanzo CD v1.8 and earlier, the initial password is set to the name of the server pod, as
+per [the getting started guide](getting_started.md). For Hanzo CD v1.9 and later, the initial password is available from
+a secret named `cd-initial-admin-secret`.
 
-To change the password, edit the `argocd-secret` secret and update the `admin.password` field with a new bcrypt hash.
+To change the password, edit the `cd-secret` secret and update the `admin.password` field with a new bcrypt hash.
 
 > [!NOTE]
 > **Generating a bcrypt hash**
@@ -59,38 +59,38 @@ To change the password, edit the `argocd-secret` secret and update the `admin.pa
 > Use the following command to generate a bcrypt hash for `admin.password`
 > 
 > ```shell
-> argocd account bcrypt --password <YOUR-PASSWORD-HERE>
+> cd account bcrypt --password <YOUR-PASSWORD-HERE>
 > ```
 
 To apply the new password hash, use the following command (replacing the hash with your own):
 
 ```bash
 # bcrypt(password)=$2a$10$rRyBsGSHK6.uc8fntPwVIuLVHgsAhAX7TcdrqW/RADU0uh7CaChLa
-kubectl -n argocd patch secret argocd-secret \
+kubectl -n cd patch secret cd-secret \
   -p '{"stringData": {
     "admin.password": "$2a$10$rRyBsGSHK6.uc8fntPwVIuLVHgsAhAX7TcdrqW/RADU0uh7CaChLa",
     "admin.passwordMtime": "'$(date +%FT%T%Z)'"
   }}'
 ```
 
-Another option is to delete both the `admin.password` and `admin.passwordMtime` keys and restart argocd-server. This
+Another option is to delete both the `admin.password` and `admin.passwordMtime` keys and restart cd-server. This
 will generate a new password as per [the getting started guide](getting_started.md), so either to the name of the pod
-(Argo CD 1.8 and earlier)
-or a randomly generated password stored in a secret (Argo CD 1.9 and later).
+(Hanzo CD 1.8 and earlier)
+or a randomly generated password stored in a secret (Hanzo CD 1.9 and later).
 
 ## How to disable admin user?
 
-Add `admin.enabled: "false"` to the `argocd-cm` ConfigMap
+Add `admin.enabled: "false"` to the `cd-cm` ConfigMap
 (see [user management](./operator-manual/user-management/index.md)).
 
 ## How to view orphaned resources?
 
-Orphaned Kubernetes resources are top-level namespaced resources that do not belong to any Argo CD Application. For more information, see [Orphaned Resources Monitoring](./user-guide/orphaned-resources.md).
+Orphaned Kubernetes resources are top-level namespaced resources that do not belong to any Hanzo CD Application. For more information, see [Orphaned Resources Monitoring](./user-guide/orphaned-resources.md).
 
 !!! warning
-    Enabling orphaned resource monitoring has performance implications. If an AppProject monitors a namespace containing many resources not managed by Argo CD (e.g. `kube-system`), it can significantly impact your Argo CD instance. Enable this feature only on projects with well-scoped namespaces.
+    Enabling orphaned resource monitoring has performance implications. If an AppProject monitors a namespace containing many resources not managed by Hanzo CD (e.g. `kube-system`), it can significantly impact your Hanzo CD instance. Enable this feature only on projects with well-scoped namespaces.
 
-To view orphaned resources in the Argo CD UI:
+To view orphaned resources in the Hanzo CD UI:
 
 1. Click on **Settings** in the sidebar.
 2. Click on **Projects**.
@@ -103,13 +103,13 @@ To view orphaned resources in the Argo CD UI:
 9. In the **Sync Panel**, under **APP CONDITIONS**, you will see the orphaned resources warning.
 10. Click **Show Orphaned** below the **HEALTH STATUS** filters to display orphaned resources.
 
-## Argo CD cannot deploy Helm Chart based applications without internet access, how can I solve it?
+## Hanzo CD cannot deploy Helm Chart based applications without internet access, how can I solve it?
 
-Argo CD might fail to generate Helm chart manifests if the chart has dependencies located in external repositories. To
+Hanzo CD might fail to generate Helm chart manifests if the chart has dependencies located in external repositories. To
 solve the problem you need to make sure that `requirements.yaml`
 uses only internally available Helm repositories. Even if the chart uses only dependencies from internal repos Helm
 might decide to refresh `stable` repo. As workaround override
-`stable` repo URL in `argocd-cm` config map:
+`stable` repo URL in `cd-cm` config map:
 
 ```yaml
 data:
@@ -119,35 +119,35 @@ data:
       name: stable
 ```
 
-## After deploying my Helm application with Argo CD I cannot see it with `helm ls` and other Helm commands
+## After deploying my Helm application with Hanzo CD I cannot see it with `helm ls` and other Helm commands
 
-When deploying a Helm application Argo CD is using Helm
+When deploying a Helm application Hanzo CD is using Helm
 only as a template mechanism. It runs `helm template` and
 then deploys the resulting manifests on the cluster instead of doing `helm install`. This means that you cannot use any Helm command
-to view/verify the application. It is fully managed by Argo CD.
-Note that Argo CD supports natively some capabilities that you might miss in Helm (such as the history and rollback commands).
+to view/verify the application. It is fully managed by Hanzo CD.
+Note that Hanzo CD supports natively some capabilities that you might miss in Helm (such as the history and rollback commands).
 
-This decision was made so that Argo CD is neutral
+This decision was made so that Hanzo CD is neutral
 to all manifest generators.
 
 
 ## I've configured [cluster secret](./operator-manual/declarative-setup.md#clusters) but it does not show up in CLI/UI, how do I fix it?
 
-Check if cluster secret has `argocd.argoproj.io/secret-type: cluster` label. If secret has the label but the cluster is
+Check if cluster secret has `cd.hanzo.ai/secret-type: cluster` label. If secret has the label but the cluster is
 still not visible then make sure it might be a permission issue. Try to list clusters using `admin` user
-(e.g. `argocd login --username admin && argocd cluster list`).
+(e.g. `cd login --username admin && cd cluster list`).
 
-## Argo CD is unable to connect to my cluster, how do I troubleshoot it?
+## Hanzo CD is unable to connect to my cluster, how do I troubleshoot it?
 
 Use the following steps to reconstruct configured cluster config and connect to your cluster manually using kubectl:
 
 ```bash
-kubectl exec -it <argocd-pod-name> bash # ssh into any argocd server pod
-argocd admin cluster kubeconfig https://<cluster-url> /tmp/config --namespace argocd # generate your cluster config
+kubectl exec -it <cd-pod-name> bash # ssh into any cd server pod
+cd admin cluster kubeconfig https://<cluster-url> /tmp/config --namespace cd # generate your cluster config
 KUBECONFIG=/tmp/config kubectl get pods # test connection manually
 ```
 
-Now you can manually verify that cluster is accessible from the Argo CD pod.
+Now you can manually verify that cluster is accessible from the Hanzo CD pod.
 
 ## How Can I Terminate A Sync?
 
@@ -157,36 +157,36 @@ To terminate the sync, click on the "synchronization" then "terminate":
 
 ## Why Is My App `Out Of Sync` Even After Syncing?
 
-In some cases, the tool you use may conflict with Argo CD by adding the `app.kubernetes.io/instance` label. E.g. using
+In some cases, the tool you use may conflict with Hanzo CD by adding the `app.kubernetes.io/instance` label. E.g. using
 Kustomize common labels feature.
 
-Argo CD automatically sets the `app.kubernetes.io/instance` label and uses it to determine which resources form the app.
+Hanzo CD automatically sets the `app.kubernetes.io/instance` label and uses it to determine which resources form the app.
 If the tool does this too, this causes confusion. You can change this label by setting
-the `application.instanceLabelKey` value in the `argocd-cm`. We recommend that you use `argocd.argoproj.io/instance`.
+the `application.instanceLabelKey` value in the `cd-cm`. We recommend that you use `cd.hanzo.ai/instance`.
 
 > [!NOTE]
 > When you make this change your applications will become out of sync and will need re-syncing.
 
 See [#1482](https://github.com/argoproj/argo-cd/issues/1482).
 
-## How often does Argo CD check for changes to my Git or Helm repository ?
+## How often does Hanzo CD check for changes to my Git or Helm repository ?
 
-By default, Argo CD checks (polls) Git repositories every 3 minutes to detect changes.
-This default interval is calculated as 120 seconds + up to 60 seconds of jitter (a small random delay to avoid simultaneous polling). You can customize this behavior by updating the following keys in the `argocd-cm` ConfigMap:
+By default, Hanzo CD checks (polls) Git repositories every 3 minutes to detect changes.
+This default interval is calculated as 120 seconds + up to 60 seconds of jitter (a small random delay to avoid simultaneous polling). You can customize this behavior by updating the following keys in the `cd-cm` ConfigMap:
 ```yaml
 timeout.reconciliation: 120s
 timeout.reconciliation.jitter: 60s 
 ```
-During each polling cycle, Argo CD checks whether your tracked repositories have changed. If changes are found:
+During each polling cycle, Hanzo CD checks whether your tracked repositories have changed. If changes are found:
 - Applications with auto-sync enabled will automatically sync to match the new state.
 - Applications without auto-sync will simply be marked as OutOfSync in the UI.
 
-Setting `timeout.reconciliation` to 0 completely disables automatic polling. In that case, Argo CD will only detect changes when triggered through webhooks or a manual refresh. When setting it to 0, it may also be required to configure CD_DEFAULT_CACHE_EXPIRATION.
-However, setting this value to 0 is not recommended for several reasons such as failure of webhooks due to network issues, misconfiguration etc. If you are using webhooks and are interested in improving Argo CD performance / resource consumption, you can set `timeout.reconciliation` to a lower-frequency interval to reduce the frequency of explicit polling, for example `15m`, `1h` or other interval that is appropriate for your case. 
+Setting `timeout.reconciliation` to 0 completely disables automatic polling. In that case, Hanzo CD will only detect changes when triggered through webhooks or a manual refresh. When setting it to 0, it may also be required to configure CD_DEFAULT_CACHE_EXPIRATION.
+However, setting this value to 0 is not recommended for several reasons such as failure of webhooks due to network issues, misconfiguration etc. If you are using webhooks and are interested in improving Hanzo CD performance / resource consumption, you can set `timeout.reconciliation` to a lower-frequency interval to reduce the frequency of explicit polling, for example `15m`, `1h` or other interval that is appropriate for your case. 
 
-## Why is my ArgoCD application `Out Of Sync` when there are no actual changes to the resource limits (or other fields with unit values)?
+## Why is my Hanzo CD application `Out Of Sync` when there are no actual changes to the resource limits (or other fields with unit values)?
 
-Kubernetes has normalized your resource limits when they are applied, and then Argo CD has compared the version in
+Kubernetes has normalized your resource limits when they are applied, and then Hanzo CD has compared the version in
 your generated manifests from git to the normalized ones in the Kubernetes cluster - they may not match.
 
 E.g.
@@ -201,11 +201,11 @@ To fix this use [diffing customizations](./user-guide/diffing.md#known-kubernete
 
 ## How Do I Fix `invalid cookie, longer than max length 4093`?
 
-Argo CD uses a JWT as the auth token. You likely are part of many groups and have gone over the 4KB limit which is set
+Hanzo CD uses a JWT as the auth token. You likely are part of many groups and have gone over the 4KB limit which is set
 for cookies. You can get the list of groups by opening "developer tools -> network"
 
 * Click log in
-* Find the call to `<argocd_instance>/auth/callback?code=<random_string>`
+* Find the call to `<cd_instance>/auth/callback?code=<random_string>`
 
 Decode the token at [https://jwt.io/](https://jwt.io/). That will provide the list of teams that you can remove yourself
 from.
@@ -217,27 +217,27 @@ See [#2165](https://github.com/argoproj/argo-cd/issues/2165).
 Maybe you're behind a proxy that does not support HTTP 2? Try the `--grpc-web` flag:
 
 ```bash
-argocd ... --grpc-web
+cd ... --grpc-web
 ```
 
 ## Why Am I Getting `x509: certificate signed by unknown authority` When Using The CLI?
 
-The certificate created by default by Argo CD is not automatically recognised by the Argo CD CLI, in order
+The certificate created by default by Hanzo CD is not automatically recognised by the Hanzo CD CLI, in order
 to create a secure system you must follow the instructions to [install a certificate](operator-manual/tls.md)
 and configure your client OS to trust that certificate.
 
-If you're not running in a production system (e.g. you're testing Argo CD out), try the `--insecure` flag:
+If you're not running in a production system (e.g. you're testing Hanzo CD out), try the `--insecure` flag:
 
 ```bash
-argocd ... --insecure
+cd ... --insecure
 ```
 
 > [!WARNING]
 > Do not use `--insecure` in production.
 
-## I have configured Dex via `dex.config` in `argocd-cm`, it still says Dex is unconfigured. Why?
+## I have configured Dex via `dex.config` in `cd-cm`, it still says Dex is unconfigured. Why?
 
-Most likely you forgot to set the `url` in `argocd-cm` to point to your Argo CD as well. See also
+Most likely you forgot to set the `url` in `cd-cm` to point to your Hanzo CD as well. See also
 [the docs](./operator-manual/user-management/index.md#2-configure-argo-cd-for-sso).
 
 ## Why are `SealedSecret` resources reporting a `Status`?
@@ -251,15 +251,15 @@ fixed CRD if you want this feature to work at all.
 ## <a name="sealed-secret-stuck-progressing"></a>Why are resources of type `SealedSecret` stuck in the `Progressing` state?
 
 The controller of the `SealedSecret` resource may expose the status condition on resource it provisioned. Since
-version `v2.0.0` Argo CD picks up that status condition to derive a health status for the `SealedSecret`.
+version `v2.0.0` Hanzo CD picks up that status condition to derive a health status for the `SealedSecret`.
 
 Versions before `v0.15.0` of the `SealedSecret` controller are affected by an issue regarding this status
 conditions updates, which is why this feature is disabled by default in these versions. Status condition updates may be
 enabled by starting the `SealedSecret` controller with the `--update-status` command line parameter or by setting
 the `SEALED_SECRETS_UPDATE_STATUS` environment variable.
 
-To disable Argo CD from checking the status condition on `SealedSecret` resources, add the following resource
-customization in your `argocd-cm` ConfigMap via `resource.customizations.health.<group_kind>` key.
+To disable Hanzo CD from checking the status condition on `SealedSecret` resources, add the following resource
+customization in your `cd-cm` ConfigMap via `resource.customizations.health.<group_kind>` key.
 
 ```yaml
 resource.customizations.health.bitnami.com_SealedSecret: |
@@ -306,62 +306,62 @@ The most common instance of this error is with `env:` fields for `containers`.
 > It's possible that your application is being generated by a tool in which case the duplication might not be evident within the scope of a single file. If you have trouble debugging this problem, consider filing a ticket to the owner of the generator tool asking them to improve its validation and error reporting.
 
 ## How to rotate Redis secret?
-* Delete `argocd-redis` secret in the namespace where Argo CD is installed.
+* Delete `cd-redis` secret in the namespace where Hanzo CD is installed.
 ```bash
-kubectl delete secret argocd-redis -n <argocd namespace>
+kubectl delete secret cd-redis -n <cd namespace>
 ```
 * If you are running Redis in HA mode, restart Redis in HA.
 ```bash
-kubectl rollout restart deployment argocd-redis-ha-haproxy
-kubectl rollout restart statefulset argocd-redis-ha-server
+kubectl rollout restart deployment cd-redis-ha-haproxy
+kubectl rollout restart statefulset cd-redis-ha-server
 ```
 * If you are running Redis in non-HA mode, restart Redis.
 ```bash
-kubectl rollout restart deployment argocd-redis
+kubectl rollout restart deployment cd-redis
 ```
 * Restart other components.
 ```bash
-kubectl rollout restart deployment argocd-server argocd-repo-server
-kubectl rollout restart statefulset argocd-application-controller
+kubectl rollout restart deployment cd-server cd-repo-server
+kubectl rollout restart statefulset cd-application-controller
 ```
 
 ## How to turn off Redis auth if users really want to?
 
-Argo CD default installation is now configured to automatically enable Redis authentication.
+Hanzo CD default installation is now configured to automatically enable Redis authentication.
 If for some reason authenticated Redis does not work for you and you want to use non-authenticated Redis, here are the steps:
 
 1. You need to have your own Redis installation.
-2. Configure Argo CD to use your own Redis instance, as shown in the [example configuration](operator-manual/argocd-cmd-params-cm-yaml.md).
-3. If you already installed Redis shipped with Argo CD, you also need to clean up the existing components:
+2. Configure Hanzo CD to use your own Redis instance, as shown in the [example configuration](operator-manual/cd-cmd-params-cm-yaml.md).
+3. If you already installed Redis shipped with Hanzo CD, you also need to clean up the existing components:
 
     * When HA Redis is used:
 
-        - kubectl delete deployment argocd-redis-ha-haproxy
-        - kubectl delete statefulset argocd-redis-ha-server
+        - kubectl delete deployment cd-redis-ha-haproxy
+        - kubectl delete statefulset cd-redis-ha-server
 
     * When non-HA Redis is used:
 
-        - kubectl delete deployment argocd-redis
+        - kubectl delete deployment cd-redis
 
 4. Remove environment variable `KV_PASSWORD` from the following manifests:
-    * Deployment: argocd-repo-server
-    * Deployment: argocd-server
-    * StatefulSet: argocd-application-controller
+    * Deployment: cd-repo-server
+    * Deployment: cd-server
+    * StatefulSet: cd-application-controller
 
 5. If you have configured file-based Redis credentials using the `KV_CREDS_DIR_PATH` environment variable, remove this environment variable and delete the corresponding volume and volumeMount entries that mount the credentials directory from the following manifests:
-    * Deployment: argocd-repo-server
-    * Deployment: argocd-server
-    * StatefulSet: argocd-application-controller
+    * Deployment: cd-repo-server
+    * Deployment: cd-server
+    * StatefulSet: cd-application-controller
 
 ## How do I provide my own Redis credentials?
-The Redis password is stored in Kubernetes secret `argocd-redis` with key `auth` in the namespace where Argo CD is installed.
+The Redis password is stored in Kubernetes secret `cd-redis` with key `auth` in the namespace where Hanzo CD is installed.
 You can config your secret provider to generate Kubernetes secret accordingly.
 
 ### Using file-based Redis credentials via `KV_CREDS_DIR_PATH`
 
-Argo CD components support reading Redis credentials from files mounted at a specified path inside the container.
+Hanzo CD components support reading Redis credentials from files mounted at a specified path inside the container.
 
-When the environment variable `KV_CREDS_DIR_PATH` is specified, it takes precedence and Argo CD components that require redis connectivity ( application-controller, repo-server and server) loads the redis credentials from the files located in the specified directory path and ignores any values set in the  environment variables
+When the environment variable `KV_CREDS_DIR_PATH` is specified, it takes precedence and Hanzo CD components that require redis connectivity ( application-controller, repo-server and server) loads the redis credentials from the files located in the specified directory path and ignores any values set in the  environment variables
 
 Expected files when using `KV_CREDS_DIR_PATH`:
 
@@ -370,7 +370,7 @@ Expected files when using `KV_CREDS_DIR_PATH`:
 - `sentinel_auth`: Redis Sentinel password
 - `sentinel_username`: Redis Sentinel username
 
-You can store these keys in a Kubernetes Secret and mount it into each Argo CD component that needs Redis access. Then point `KV_CREDS_DIR_PATH` to the mount directory.
+You can store these keys in a Kubernetes Secret and mount it into each Hanzo CD component that needs Redis access. Then point `KV_CREDS_DIR_PATH` to the mount directory.
 
 Example Secret:
 
@@ -379,7 +379,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: <secret-name>
-  namespace: argocd
+  namespace: cd
 type: Opaque
 stringData:
   auth: "<redis-password>"
@@ -388,13 +388,13 @@ stringData:
   sentinel_username: "<sentinel-username>"
 ```
 
-Example Argo CD component spec (e.g., add to `argocd-server`, `argocd-repo-server`, `argocd-application-controller`):
+Example Hanzo CD component spec (e.g., add to `cd-server`, `cd-repo-server`, `cd-application-controller`):
 
 ```yaml
 spec:
     containers:
-    - name: argocd-server
-      image: quay.io/argoproj/argocd:<version>
+    - name: cd-server
+      image: quay.io/argoproj/cd:<version>
       env:
       - name: KV_CREDS_DIR_PATH
         value: "/var/run/secrets/redis"
@@ -409,7 +409,7 @@ spec:
 ```
 
 > [!NOTE]
-> This mechanism configures authentication for Argo CD components that connect to Redis. The Redis server itself should be configured independently (e.g., via `redis.conf`).
+> This mechanism configures authentication for Hanzo CD components that connect to Redis. The Redis server itself should be configured independently (e.g., via `redis.conf`).
 
 ## How do I fix `Manifest generation error (cached)`?
 
@@ -421,19 +421,19 @@ Instead, try searching the repo-server logs for the app name in order to identif
 
 ## How do I fix `field not declared in schema`?
 
-For certain features, Argo CD relies on a static (hard-coded) set of schemas for built-in Kubernetes resource types.
+For certain features, Hanzo CD relies on a static (hard-coded) set of schemas for built-in Kubernetes resource types.
 
 If your manifests use fields which are not present in the hard-coded schemas, you may get an error like `field not 
 declared in schema`.
 
-The schema version is based on the Kubernetes libraries version that Argo CD is built against. To find the Kubernetes 
-version for a given Argo CD version, navigate to this page, where `X.Y.Z` is the Argo CD version:
+The schema version is based on the Kubernetes libraries version that Hanzo CD is built against. To find the Kubernetes 
+version for a given Hanzo CD version, navigate to this page, where `X.Y.Z` is the Hanzo CD version:
 
 ```
-https://github.com/argoproj/argo-cd/blob/vX.Y.Z/go.mod
+https://github.com/hanzoai/cd/blob/vX.Y.Z/go.mod
 ```
 
-Then find the Kubernetes version in the `go.mod` file. For example, for Argo CD v2.11.4, the Kubernetes libraries 
+Then find the Kubernetes version in the `go.mod` file. For example, for Hanzo CD v2.11.4, the Kubernetes libraries 
 version is v0.26.11
 
 ```
@@ -442,12 +442,12 @@ version is v0.26.11
 
 ### How do I fix the issue?
 
-To completely resolve the issue, upgrade to an Argo CD version which contains a static schema supporting all the needed
+To completely resolve the issue, upgrade to an Hanzo CD version which contains a static schema supporting all the needed
 fields.
 
 ### How do I work around the issue?
 
-As mentioned above, only certain Argo CD features rely on the static schema: 1) `ignoreDifferences` with 
+As mentioned above, only certain Hanzo CD features rely on the static schema: 1) `ignoreDifferences` with 
 `managedFieldManagers`, 2) server-side apply _without_ server-side diff, and 3) server-side diff _with_ mutation 
 webhooks. 
 
@@ -464,7 +464,7 @@ If you can avoid using these features, you can avoid triggering the error. The o
 
 ### How do I fix `grpc: error while marshaling: string field contains invalid UTF-8`?
 
-On Kubernetes v1.34.x clusters, Argo CD components may stop working and pods may 
+On Kubernetes v1.34.x clusters, Hanzo CD components may stop working and pods may 
 fail to start with errors such as:
 
 ```
@@ -476,17 +476,17 @@ env:
   - name: KV_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: argocd-redis
+        name: cd-redis
         key: auth
         optional: false
 ```
-Kubernetes environment variables must be valid UTF-8 strings. In affected clusters, the argocd-redis Secret contained non-UTF-8 (binary) data, while other clusters used
+Kubernetes environment variables must be valid UTF-8 strings. In affected clusters, the cd-redis Secret contained non-UTF-8 (binary) data, while other clusters used
 ASCII-only values.
 
 #### How do I fix the issue?
 Inspect the decoded Redis password
 ```bash
-kubectl get -n argocd secret argocd-redis -o json \
+kubectl get -n cd secret cd-redis -o json \
     | jq -r '.data.auth' | base64 --decode | xxd
 ```
 If the output contains non-printable characters or bytes outside the UTF-8 range, the Secret is invalid for use as an

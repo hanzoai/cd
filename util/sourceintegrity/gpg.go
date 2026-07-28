@@ -46,7 +46,7 @@ Key-Length: 2048
 Key-Usage: sign
 Name-Real: Anon Ymous
 Name-Comment: Hanzo CD key signing key
-Name-Email: noreply@argoproj.io
+Name-Email: noreply@apps.hanzo.ai
 Expire-Date: 6m
 %commit
 `

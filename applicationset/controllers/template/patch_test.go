@@ -22,7 +22,7 @@ func Test_ApplyTemplatePatch(t *testing.T) {
 			appTemplate: &appv1.Application{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       "Application",
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:       "my-cluster-guestbook",
@@ -67,7 +67,7 @@ func Test_ApplyTemplatePatch(t *testing.T) {
 			expectedApp: &appv1.Application{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       "Application",
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:       "my-cluster-guestbook",
@@ -107,7 +107,7 @@ func Test_ApplyTemplatePatch(t *testing.T) {
 			appTemplate: &appv1.Application{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       "Application",
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:       "my-cluster-guestbook",
@@ -143,7 +143,7 @@ spec:
 			expectedApp: &appv1.Application{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       "Application",
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:       "my-cluster-guestbook",
@@ -183,7 +183,7 @@ spec:
 			appTemplate: &appv1.Application{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       "Application",
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "my-cluster-guestbook",
@@ -208,7 +208,7 @@ spec:
 			expectedApp: &appv1.Application{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       "Application",
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "my-cluster-guestbook",

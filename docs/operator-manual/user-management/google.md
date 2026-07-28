@@ -1,6 +1,6 @@
 # Google
 
-There are three different ways to integrate Argo CD login with your Google Workspace users. Generally the OpenID Connect (_oidc_) method would be the recommended way of doing this integration (and easier, as well...), but depending on your needs, you may choose a different option.
+There are three different ways to integrate Hanzo CD login with your Google Workspace users. Generally the OpenID Connect (_oidc_) method would be the recommended way of doing this integration (and easier, as well...), but depending on your needs, you may choose a different option.
 
 - [OpenID Connect using Dex](#openid-connect-using-dex)
   This is the recommended login method if you don't need information about the groups the user's belongs to. Google doesn't expose the `groups` claim via _oidc_, so you won't be able to use Google Groups membership information for RBAC.
@@ -15,8 +15,8 @@ Once you've set up one of the above integrations, be sure to edit `argo-rbac-cm`
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-rbac-cm
-  namespace: argocd
+  name: cd-rbac-cm
+  namespace: cd
 data:
   policy.default: role:readonly
 ```
@@ -31,7 +31,7 @@ If you've never configured this, you'll be redirected straight to this if you tr
 2. Go and [edit your OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent/edit) Verify you're in the correct project!
 3. Configure a name for your login app and a user support email address
 4. The app logo and filling the information links is not mandatory, but it's a nice touch for the login page
-5. In "Authorized domains" add the domains who are allowed to log in to ArgoCD (e.g. if you add `example.com`, all Google Workspace users with an `@example.com` address will be able to log in)
+5. In "Authorized domains" add the domains who are allowed to log in to Hanzo CD (e.g. if you add `example.com`, all Google Workspace users with an `@example.com` address will be able to log in)
 6. Save to continue to the "Scopes" section
 7. Click on "Add or remove scopes" and add the `.../auth/userinfo.profile` and the `openid` scopes
 8. Save, review the summary of your changes and finish
@@ -40,9 +40,9 @@ If you've never configured this, you'll be redirected straight to this if you tr
 
 1. Go to your [Google API Credentials](https://console.cloud.google.com/apis/credentials) console, and make sure you're in the correct project.
 2. Click on "+Create Credentials"/"OAuth Client ID"
-3. Select "Web Application" in the Application Type drop down menu, and enter an identifying name for your app (e.g. `Argo CD`)
-4. Fill "Authorized JavaScript origins" with your Argo CD URL, e.g. `https://argocd.example.com`
-5. Fill "Authorized redirect URIs" with your Argo CD URL plus `/api/dex/callback`, e.g. `https://argocd.example.com/api/dex/callback`
+3. Select "Web Application" in the Application Type drop down menu, and enter an identifying name for your app (e.g. `Hanzo CD`)
+4. Fill "Authorized JavaScript origins" with your Hanzo CD URL, e.g. `https://cd.example.com`
+5. Fill "Authorized redirect URIs" with your Hanzo CD URL plus `/api/dex/callback`, e.g. `https://cd.example.com/api/dex/callback`
 
    ![](../../assets/google-admin-oidc-uris.png)
 
@@ -50,11 +50,11 @@ If you've never configured this, you'll be redirected straight to this if you tr
 
 ### Configure Argo to use OpenID Connect
 
-Edit `argocd-cm` and add the following `dex.config` to the data section, replacing `clientID` and `clientSecret` with the values you saved before:
+Edit `cd-cm` and add the following `dex.config` to the data section, replacing `clientID` and `clientSecret` with the values you saved before:
 
 ```yaml
 data:
-  url: https://argocd.example.com
+  url: https://cd.example.com
   dex.config: |
     connectors:
     - config:
@@ -91,20 +91,20 @@ data:
 
    ![Google Admin Add Custom SAML App](../../assets/google-admin-saml-add-app-menu.png 'Add apps menu with add custom SAML app highlighted')
 
-3. Enter a `Name` for the application (e.g. `Argo CD`), then choose `Continue`
+3. Enter a `Name` for the application (e.g. `Hanzo CD`), then choose `Continue`
 
    ![Google Admin Apps Menu](../../assets/google-admin-saml-app-details.png 'Add apps menu with add custom SAML app highlighted')
 
 4. Download the metadata or copy the `SSO URL`, `Certificate`, and optionally `Entity ID` from the identity provider details for use in the next section. Choose `continue`.
 
    - Base64 encode the contents of the certificate file, for example:
-   - `$ cat ArgoCD.cer | base64`
+   - `$ cat Hanzo CD.cer | base64`
    - _Keep a copy of the encoded output to be used in the next section._
    - _Ensure that the certificate is in PEM format before base64 encoding_
 
    ![Google Admin IdP Metadata](../../assets/google-admin-idp-metadata.png 'A screenshot of the Google IdP metadata')
 
-5. For both the `ACS URL` and `Entity ID`, use your Argo Dex Callback URL, for example: `https://argocd.example.com/api/dex/callback`
+5. For both the `ACS URL` and `Entity ID`, use your Argo Dex Callback URL, for example: `https://cd.example.com/api/dex/callback`
 
    ![Google Admin Service Provider Details](../../assets/google-admin-service-provider-details.png 'A screenshot of the Google Service Provider Details')
 
@@ -116,11 +116,11 @@ data:
 
 ### Configure Argo to use the new Google SAML App
 
-Edit `argocd-cm` and add the following `dex.config` to the data section, replacing the `caData`, `argocd.example.com`, `sso-url`, and optionally `google-entity-id` with your values from the Google SAML App:
+Edit `cd-cm` and add the following `dex.config` to the data section, replacing the `caData`, `cd.example.com`, `sso-url`, and optionally `google-entity-id` with your values from the Google SAML App:
 
 ```yaml
 data:
-  url: https://argocd.example.com
+  url: https://cd.example.com
   dex.config: |
     connectors:
     - type: saml
@@ -128,10 +128,10 @@ data:
       name: saml
       config:
         ssoURL: https://sso-url (e.g. https://accounts.google.com/o/saml2/idp?idpid=Abcde0)
-        entityIssuer: https://argocd.example.com/api/dex/callback
+        entityIssuer: https://cd.example.com/api/dex/callback
         caData: |
           BASE64-ENCODED-CERTIFICATE-DATA
-        redirectURI: https://argocd.example.com/api/dex/callback
+        redirectURI: https://cd.example.com/api/dex/callback
         usernameAttr: name
         emailAttr: email
         # optional
@@ -158,7 +158,7 @@ Also, you'll need the email address for an admin user on this domain. Dex will i
 
 ### Configure OpenID Connect
 
-Go through the same steps as in [OpenID Connect using Dex](#openid-connect-using-dex), except for configuring `argocd-cm`. We'll do that later.
+Go through the same steps as in [OpenID Connect using Dex](#openid-connect-using-dex), except for configuring `cd-cm`. We'll do that later.
 
 ### Set up Directory API access
 
@@ -179,13 +179,13 @@ Go through the same steps as in [OpenID Connect using Dex](#openid-connect-using
    apiVersion: v1
    kind: Secret
    metadata:
-     name: argocd-google-groups-json
-     namespace: argocd
+     name: cd-google-groups-json
+     namespace: cd
    data:
      googleAuth.json: JSON_FILE_BASE64_ENCODED
    ```
 
-   Then edit your `argocd-dex-server` deployment to mount that secret as a file:
+   Then edit your `cd-dex-server` deployment to mount that secret as a file:
 
    - Add a volume mount in `/spec/template/spec/containers/0/volumeMounts/` like this. Be aware of editing the running container and not the init container!
 
@@ -211,24 +211,24 @@ Go through the same steps as in [OpenID Connect using Dex](#openid-connect-using
        - name: google-json
          secret:
            defaultMode: 420
-           secretName: argocd-google-groups-json
+           secretName: cd-google-groups-json
      ```
 
    **Option 2: Using Workload Identity (Dex > v2.34.0)**
 
-   Configure Workload Identity for your `argocd-dex-server` service account. No secret file is needed when using Workload Identity.
+   Configure Workload Identity for your `cd-dex-server` service account. No secret file is needed when using Workload Identity.
 
-2. Edit `argocd-cm` and add the following `url` and `dex.config` to the data section, replacing `clientID` and `clientSecret` with the values you saved before, `adminEmail` with the address for the admin user you're going to impersonate, and editing `redirectURI` with your Argo CD domain (note that the `type` is now `google` instead of `oidc`):
+2. Edit `cd-cm` and add the following `url` and `dex.config` to the data section, replacing `clientID` and `clientSecret` with the values you saved before, `adminEmail` with the address for the admin user you're going to impersonate, and editing `redirectURI` with your Hanzo CD domain (note that the `type` is now `google` instead of `oidc`):
 
    **Option 1: Using Service Account File**
 
    ```yaml
    data:
-     url: https://argocd.example.com
+     url: https://cd.example.com
      dex.config: |
        connectors:
        - config:
-           redirectURI: https://argocd.example.com/api/dex/callback
+           redirectURI: https://cd.example.com/api/dex/callback
            clientID: XXXXXXXXXXXXX.apps.googleusercontent.com
            clientSecret: XXXXXXXXXXXXX
            serviceAccountFilePath: /tmp/oidc/googleAuth.json
@@ -244,11 +244,11 @@ Go through the same steps as in [OpenID Connect using Dex](#openid-connect-using
 
    ```yaml
    data:
-     url: https://argocd.example.com
+     url: https://cd.example.com
      dex.config: |
        connectors:
        - config:
-           redirectURI: https://argocd.example.com/api/dex/callback
+           redirectURI: https://cd.example.com/api/dex/callback
            clientID: XXXXXXXXXXXXX.apps.googleusercontent.com
            clientSecret: XXXXXXXXXXXXX
            adminEmail: admin-email@example.com
@@ -258,8 +258,8 @@ Go through the same steps as in [OpenID Connect using Dex](#openid-connect-using
          name: Google
    ```
 
-3. Restart your `argocd-dex-server` deployment to be sure it's using the latest configuration
-4. Login to Argo CD and go to the "User info" section, were you should see the groups you're member
+3. Restart your `cd-dex-server` deployment to be sure it's using the latest configuration
+4. Login to Hanzo CD and go to the "User info" section, were you should see the groups you're member
    ![User info](../../assets/google-groups-membership.png)
 5. Now you can use groups email addresses to give RBAC permissions
 

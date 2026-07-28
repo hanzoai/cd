@@ -13,13 +13,13 @@ The Google Chat notification service send message notifications to a google chat
 3. Under **Incoming Webhooks**, click **Add Webhook**
 4. Give a name to the webhook, optionally add an image and click **Save**
 5. Copy the URL next to your webhook
-6. Store the URL in `argocd-notification-secret` and declare it in `argocd-notifications-cm`
+6. Store the URL in `cd-notification-secret` and declare it in `cd-notifications-cm`
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.googlechat: |
     webhooks:
@@ -38,11 +38,11 @@ stringData:
 6. Create a subscription for your space
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.googlechat: spaceName
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.googlechat: spaceName
 ```
 
 ## Templates
@@ -61,7 +61,7 @@ template.app-sync-succeeded: |
   googlechat:
     cardsV2: |
       - header:
-          title: ArgoCD Bot Notification
+          title: Hanzo CD Bot Notification
         sections:
           - widgets:
               - decoratedText:

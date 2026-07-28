@@ -16,7 +16,7 @@ last-updated: 2024-03-26
 
 # Manifest Hydrator
 
-This proposal describes a feature to make manifest hydration (i.e. the "rendered manifest pattern") a first-class feature of Argo CD.
+This proposal describes a feature to make manifest hydration (i.e. the "rendered manifest pattern") a first-class feature of Hanzo CD.
 
 ## Terms
 
@@ -27,11 +27,11 @@ This proposal describes a feature to make manifest hydration (i.e. the "rendered
 
 Manifest hydration tools like Helm and Kustomize are indispensable in GitOps. These tools transform "dry" (Don't Repeat Yourself) sources into plain Kubernetes manifests. The effects of a change to dry sources are not always obvious. So storing only dry sources in git leaves the user with an incomplete and confusing history of their application. This undercuts some of the main benefits of GitOps.
 
-The "rendered manifests" pattern has emerged as a way to mitigate the downsides of using hydration tools in GitOps. Today, developers use CI tools to automatically hydrate manifests and push to separate branches. They then configure Argo CD to deploy from the hydrated branches. (For more information, see the awesome [blog post](https://akuity.io/blog/the-rendered-manifests-pattern/) and [ArgoCon talk](https://www.youtube.com/watch?v=TonN-369Qfo) by Nicholas Morey.)
+The "rendered manifests" pattern has emerged as a way to mitigate the downsides of using hydration tools in GitOps. Today, developers use CI tools to automatically hydrate manifests and push to separate branches. They then configure Hanzo CD to deploy from the hydrated branches. (For more information, see the awesome [blog post](https://akuity.io/blog/the-rendered-manifests-pattern/) and [ArgoCon talk](https://www.youtube.com/watch?v=TonN-369Qfo) by Nicholas Morey.)
 
-This proposal describes manifest hydration and pushing to git as a first-class feature of Argo CD.
+This proposal describes manifest hydration and pushing to git as a first-class feature of Hanzo CD.
 
-It offers two modes of operation: push-to-deploy and push-to-stage. In push-to-deploy, hydrated manifests are pushed to the same branch from which Argo CD deploys. In push-to-stage, manifests are pushed to a different branch, and Argo CD relies on some external system to move changes to the deployment branch; this provides an integration point for automated environment promotion systems.
+It offers two modes of operation: push-to-deploy and push-to-stage. In push-to-deploy, hydrated manifests are pushed to the same branch from which Hanzo CD deploys. In push-to-stage, manifests are pushed to a different branch, and Hanzo CD relies on some external system to move changes to the deployment branch; this provides an integration point for automated environment promotion systems.
 
 ### Opinions
 
@@ -43,7 +43,7 @@ This requirement is incompatible with tooling which injects nondeterministic con
 
 2) Kustomize remote bases to unpinned git revisions
 
-3) Config tool parameter overrides in the Argo CD Application `spec.source` fields
+3) Config tool parameter overrides in the Hanzo CD Application `spec.source` fields
 
 4) Multiple sources referenced in the same application (knowledge of combination of source versions is held externally to git)
 
@@ -55,7 +55,7 @@ We believe that the problems of injecting external configuration are best solved
 
 2) Does the configuration need to be mutable at runtime, or only at deploy time?
 
-If the configuration belongs in the developer's interface, write a tool to push the information to git. Image tags are a good example of such configuration, and the Argo CD Image Updater is a good example of such tooling.
+If the configuration belongs in the developer's interface, write a tool to push the information to git. Image tags are a good example of such configuration, and the Hanzo CD Image Updater is a good example of such tooling.
 
 If the configuration doesn't belong in the developer's interface, and it needs to be updated at runtime, write a controller. The developer shouldn't be expected to maintain configuration which is not an immediate part of their desired state. An example would be an auto-sizing controller which eliminates the need for the developer to manage their own autoscaler config.
 
@@ -71,11 +71,11 @@ These opinions will lock out use cases where configuration injection cannot be a
 
 ## Motivation
 
-Many organizations have implemented their own manifest hydration system. By implementing it in Argo CD, we can lower the cost to our users of maintaining those systems, and we can encourage best practices related to the pattern.
+Many organizations have implemented their own manifest hydration system. By implementing it in Hanzo CD, we can lower the cost to our users of maintaining those systems, and we can encourage best practices related to the pattern.
 
 ### Goals
 
-1) Make manifest hydration easy and intuitive for Argo CD users
+1) Make manifest hydration easy and intuitive for Hanzo CD users
 
 2) Make it possible to implement a promotion system which relies on the manifest hydration's push-to-stage mode
 
@@ -91,7 +91,7 @@ One goal of this proposal is to make hydration reproducibility easy. Reproducibi
 
 ##### Easy Iteration/Debugging
 
-The hydration system should enable developers to easily reproduce the hydration process locally. The developer should be able to run a short series of commands and perform the exact same tasks that Argo CD would take to hydrate their manifests. This allows the developer to verify that Argo CD is behaving as expected and to quickly tweak inputs and see the results. This lets them iterate quickly and improves developer satisfaction and change velocity.
+The hydration system should enable developers to easily reproduce the hydration process locally. The developer should be able to run a short series of commands and perform the exact same tasks that Hanzo CD would take to hydrate their manifests. This allows the developer to verify that Hanzo CD is behaving as expected and to quickly tweak inputs and see the results. This lets them iterate quickly and improves developer satisfaction and change velocity.
 
 To provide this experience, the hydrator needs to provide the developer with a few pieces of information:
 
@@ -101,17 +101,17 @@ To provide this experience, the hydrator needs to provide the developer with a f
 
 3) A series of commands and arguments which the developer can run locally
 
-Equipped with this information, the developer can perform the exact same steps as Argo CD and be confident that their dry manifest changes will produce the desired output.
+Equipped with this information, the developer can perform the exact same steps as Hanzo CD and be confident that their dry manifest changes will produce the desired output.
 
 Ensuring that hydration is deterministic assures the developer that the output for a given dry state will be the same next week as it is today.
 
 ###### Avoiding Esoteric Behavior
 
-We should avoid the developer needing to know Argo CD-specific behavior in order to reproduce hydration. Tools like Helm, Kustimize, etc. have excellent public-facing documentation which the developer should be able to take advantage of without needing to know quirks of Argo CD.
+We should avoid the developer needing to know Hanzo CD-specific behavior in order to reproduce hydration. Tools like Helm, Kustimize, etc. have excellent public-facing documentation which the developer should be able to take advantage of without needing to know quirks of Hanzo CD.
 
 ##### Reliable Previews
 
-Deterministic hydration output allows Argo CD to produce a reliable change preview when a developer proposes a change to the dry manifests via a PR.
+Deterministic hydration output allows Hanzo CD to produce a reliable change preview when a developer proposes a change to the dry manifests via a PR.
 
 If output is not deterministic, then a preview generated today might not be valid/correct a week, day, or even hour later. Non-determinism makes it so that developers can't trust that the change they review will be the change actually applied.
 
@@ -128,16 +128,16 @@ If output is not deterministic, then a preview generated today might not be vali
 
 ## Proposal
 
-Today, Argo CD watches one or more git repositories (configured in the `spec.source` or `spec.sources` field). When a new commit appears, Argo CD updates the desired state by rendering the manifests with the configured manifest hydration tool. If auto-sync is enabled, Argo CD applies the new manifests to the cluster.
+Today, Hanzo CD watches one or more git repositories (configured in the `spec.source` or `spec.sources` field). When a new commit appears, Hanzo CD updates the desired state by rendering the manifests with the configured manifest hydration tool. If auto-sync is enabled, Hanzo CD applies the new manifests to the cluster.
 
-With the introduction of this change, Argo CD will watch two revisions in the same git repository: the first is the "dry source", i.e. the git repo/revision where the un-rendered manifests reside, and the second is the "hydrated source," where the rendered manifests are places and retrieved for syncing to the cluster.
+With the introduction of this change, Hanzo CD will watch two revisions in the same git repository: the first is the "dry source", i.e. the git repo/revision where the un-rendered manifests reside, and the second is the "hydrated source," where the rendered manifests are places and retrieved for syncing to the cluster.
 
 ### New `spec.sourceHydrator` Application Field
 
-A `sourceHydrator` field will be added to the Argo CD Application spec:
+A `sourceHydrator` field will be added to the Hanzo CD Application spec:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: example
@@ -153,7 +153,7 @@ spec:
     syncSource:
       targetBranch: environments/e2e
       path: .
-    # The hydrateTo field is optional. If specified, Argo CD will write hydrated manifests to this branch instead of the
+    # The hydrateTo field is optional. If specified, Hanzo CD will write hydrated manifests to this branch instead of the
     # syncSource.targetBranch. This allows the user to "stage" a hydrated commit before actually deploying the changes
     # by merging them into the syncSource branch. A complete change promotion system can be built around this feature. 
     hydrateTo:
@@ -161,20 +161,20 @@ spec:
       # The path is assumed to be the same as that in syncSource.
 ```
 
-When the Argo CD application controller detects a new commit on the `drySource`, it queue up the hydration process.
+When the Hanzo CD application controller detects a new commit on the `drySource`, it queue up the hydration process.
 
 When the application controller detects a new (hydrated) commit on the `syncSource.targetBranch`, it will sync the manifests.
 
 ### Processing a New Dry Commit
 
-On noticing a new dry commit, Argo CD will first collect all Applications which have the same `drySource` repo and targetRevision.
+On noticing a new dry commit, Hanzo CD will first collect all Applications which have the same `drySource` repo and targetRevision.
 
-Argo CD will then group those sources by the configured `syncSource` targetBranch.
+Hanzo CD will then group those sources by the configured `syncSource` targetBranch.
 
 ```go
 package hydrator
 
-import "github.com/argoproj/argo-cd/v2/pkg/apis/application/v1alpha1"
+import "github.com/hanzoai/cd/v2/pkg/apis/application/v1alpha1"
 
 type DrySource struct {
 	repoURL        string
@@ -188,7 +188,7 @@ type SyncSource struct {
 var appGroups map[DrySource]map[SyncSource][]v1alpha1.Application
 ```
 
-Then Argo CD will loop over the apps in each group. For each group, it will run manifest hydration on the configured `drySource.path` and write the result to the configured `syncSource.path`. After looping over all apps in the group and writing all their manifests, it will commit the changes to the configured `syncSource` repoURL and targetBranch (or, if configured, the `hydratedTo` targetBranch). Finally, it will push those changes to git. Then it will repeat this process for the remaining groups.
+Then Hanzo CD will loop over the apps in each group. For each group, it will run manifest hydration on the configured `drySource.path` and write the result to the configured `syncSource.path`. After looping over all apps in the group and writing all their manifests, it will commit the changes to the configured `syncSource` repoURL and targetBranch (or, if configured, the `hydratedTo` targetBranch). Finally, it will push those changes to git. Then it will repeat this process for the remaining groups.
 
 The actual push operation should be delegated to the [commit server](./manifest-hydrator/commit-server/README.md).
 
@@ -196,7 +196,7 @@ To understand how this would work for a simple dev/test/prod setup with two regi
 
 ```yaml
 ### DEV APPS ###
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: dev-west
@@ -210,7 +210,7 @@ spec:
       targetBranch: environments/dev
       path: west
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: dev-east
@@ -225,7 +225,7 @@ spec:
       path: east
 ---
 ### TEST APPS ###
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: test-west
@@ -239,7 +239,7 @@ spec:
       targetBranch: environments/test
       path: west
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: test-east
@@ -254,7 +254,7 @@ spec:
       path: east
 ---
 ### PROD APPS ###
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: prod-west
@@ -268,7 +268,7 @@ spec:
       targetBranch: environments/prod
       path: west
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: prod-east
@@ -290,23 +290,23 @@ Each commit to the dry branch will result in a commit to up to three branches. E
 
 Since only one source may be used in as the dry source, the multi-source approach to external Helm values files will not work here. Instead, we'll recommend that users use the umbrella chart approach. The main reasons for multi-source as an alternative were convenience (no need to maintain the parent chart) and resolving issues with authentication to dependency charts. We believe the simplification is worth the cost of convenience, and we can address the auth issues as standalone bugs.
 
-An earlier iteration of this proposal attempted to preserve the multi-source style of external value file inclusion by introducing a "magic" `.argocd-hydrator.yaml` file containing `additionalSources` to reference the Helm chart. In the end, it felt like we were re-implementing Helm's dependencies feature or git submodules. It's better to just rely on one of those existing tools.
+An earlier iteration of this proposal attempted to preserve the multi-source style of external value file inclusion by introducing a "magic" `.cd-hydrator.yaml` file containing `additionalSources` to reference the Helm chart. In the end, it felt like we were re-implementing Helm's dependencies feature or git submodules. It's better to just rely on one of those existing tools.
 
-### `.argocd-source.yaml` Support
+### `.cd-source.yaml` Support
 
 The `spec.sourceHydrator.drySource` field contains only three fields: `repoURL`, `targetRevision`, and `path`.
 
-`spec.source` contains a number of fields for configuring manifest hydration tools (`helm`, `kustomize`, and `directory`). That functionality is still available for `spec.sourceHydrator`. But instead of being configured in the Application CR, those values are set in `.argocd-source.yaml`, an existing "override" mechanism for `spec.source`. By requiring that this configuration be set in `.argocd-source.yaml`, we respect the principle that all changes must be made in git instead of in the Application CR.
+`spec.source` contains a number of fields for configuring manifest hydration tools (`helm`, `kustomize`, and `directory`). That functionality is still available for `spec.sourceHydrator`. But instead of being configured in the Application CR, those values are set in `.cd-source.yaml`, an existing "override" mechanism for `spec.source`. By requiring that this configuration be set in `.cd-source.yaml`, we respect the principle that all changes must be made in git instead of in the Application CR.
 
 ### `spec.destination.namespace` Behavior
 
 The Application `spec.destination.namespace` field is used to set the `metadata.namespace` field of any namespace resources for which that field is not set in the manifests.
 
-The hydrator will not inject `metadata.namespace` into the hydrated manifests pushed to git. Instead, Argo CD's behavior of injecting that value immediately before applying to the cluster will continue to be used with the `spec.sourceHydrator.syncSource`.
+The hydrator will not inject `metadata.namespace` into the hydrated manifests pushed to git. Instead, Hanzo CD's behavior of injecting that value immediately before applying to the cluster will continue to be used with the `spec.sourceHydrator.syncSource`.
 
 ### Build Environment Support
 
-For sources specified in `spec.source` or `spec.sources`, Argo CD [sets certain environment variables](https://argo-cd.readthedocs.io/en/stable/user-guide/build-environment/) before running the manifest hydration tool.
+For sources specified in `spec.source` or `spec.sources`, Hanzo CD [sets certain environment variables](https://argo-cd.readthedocs.io/en/stable/user-guide/build-environment/) before running the manifest hydration tool.
 
 Some of these environment variables may change independently of the dry source and therefore break the reproducibility of manifest hydration (see the [Opinions](#opinions) section). Therefore, only some environment variables will be populated for the `spec.sourceHydrator` source.
 
@@ -332,13 +332,13 @@ These environment variables will be set because they are inherently tied to the 
 
 #### App Name / Release Name
 
-By default, Argo CD's `source` and `sources` fields use the Application's name as the release name when hydrating Helm manifests.
+By default, Hanzo CD's `source` and `sources` fields use the Application's name as the release name when hydrating Helm manifests.
 
-To centralize the source of truth when using `spec.sourceHydrator`, the default release name will be an empty string, and any different release name should be specified in the `helm.releaseName` field in `.argocd-source.yaml`.
+To centralize the source of truth when using `spec.sourceHydrator`, the default release name will be an empty string, and any different release name should be specified in the `helm.releaseName` field in `.cd-source.yaml`.
 
 #### Kube API Versions
 
-`helm install` supports dynamically reading Kube API versions from the destination cluster to adjust manifest output. `helm template` accepts a list of Kube API versions to simulate the same behavior, and Argo CD's `spec.source` and `spec.sources` fields set those API versions when running `helm template`.
+`helm install` supports dynamically reading Kube API versions from the destination cluster to adjust manifest output. `helm template` accepts a list of Kube API versions to simulate the same behavior, and Hanzo CD's `spec.source` and `spec.sources` fields set those API versions when running `helm template`.
 
 To centralize the source of truth when using `spec.sourceHydrator`, the Kube API versions will not be populated by default.
 
@@ -355,7 +355,7 @@ spec:
         - ... etc.
 ```
 
-That field will also be available in `.argocd-source.yaml`:
+That field will also be available in `.cd-source.yaml`:
 
 ```yaml
 helm:
@@ -365,7 +365,7 @@ helm:
     - ... etc.
 ```
 
-So the appropriate way to set Kube API versions for the source hydrator will be to populate the `.argocd-source.yaml` file.
+So the appropriate way to set Kube API versions for the source hydrator will be to populate the `.cd-source.yaml` file.
 
 #### Hydrated Environment Branches
 
@@ -443,7 +443,7 @@ To reproduce the manifest hydration, do the following:
 
 ```
 git clone https://github.com/argoproj/argocd-example-apps
-cd argocd-example-apps
+cd cd-example-apps
 git checkout ab2382f
 kustomize edit set image my-app:v0.0.2
 kustomize build environments/dev/west
@@ -512,7 +512,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   labels:
-    argocd.argoproj.io/secret-type: repository-write
+    cd.hanzo.ai/secret-type: repository-write
 stringData:
   url: 'https://github.com/argoproj/argocd-example-apps'
   githubAppID: '123456'
@@ -539,7 +539,7 @@ This proposal would involve introducing a component capable of pushing to git.
 
 We'll need to consider what git permissions setup to recommend, what security features we should recommend enabling (e.g. branch protection), etc.
 
-We'll also need to consider how to store the git push secrets. It's probable that they'll need to be stored in a namespace separate from the other Argo CD components to provide a bit extra protection.
+We'll also need to consider how to store the git push secrets. It's probable that they'll need to be stored in a namespace separate from the other Hanzo CD components to provide a bit extra protection.
 
 ### Risks and Mitigations
 

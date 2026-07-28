@@ -7,7 +7,7 @@ metadata:
       cpu: unable to fetch metrics from resource metrics API: the server is currently
       unable to handle the request (get pods.metrics.k8s.io)"}]'
   name: sample
-  namespace: argocd
+  namespace: cd
 spec:
   maxReplicas: 1
   minReplicas: 1

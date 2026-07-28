@@ -1,14 +1,14 @@
 # Automated Sync Policy
 
-Argo CD has the ability to automatically sync an application when it detects differences between
+Hanzo CD has the ability to automatically sync an application when it detects differences between
 the desired manifests in Git, and the live state in the cluster. A benefit of automatic sync is that
-CI/CD pipelines no longer need direct access to the Argo CD API server to perform the deployment.
+CI/CD pipelines no longer need direct access to the Hanzo CD API server to perform the deployment.
 Instead, the pipeline makes a commit and push to the Git repository with the changes to the
 manifests in the tracking Git repo.
 
 To configure automated sync run:
 ```bash
-argocd app set <APPNAME> --sync-policy automated
+cd app set <APPNAME> --sync-policy automated
 ```
 
 Alternatively, if creating the application an application manifest, specify a syncPolicy with an
@@ -37,13 +37,13 @@ For a standalone application, toggling auto-sync is performed by changing the ap
 
 ## Automatic Pruning
 
-By default (and as a safety mechanism), automated sync will not delete resources when Argo CD detects
+By default (and as a safety mechanism), automated sync will not delete resources when Hanzo CD detects
 the resource is no longer defined in Git. To prune the resources, a manual sync can always be
 performed (with pruning checked). Pruning can also be enabled to happen automatically as part of the
 automated sync by running:
 
 ```bash
-argocd app set <APPNAME> --auto-prune
+cd app set <APPNAME> --auto-prune
 ```
 
 Or by setting the prune option to true in the automated sync policy:
@@ -61,7 +61,7 @@ By default (and as a safety mechanism), automated sync with prune have a protect
 when there are no target resources. It prevents application from having empty resources. To allow applications have empty resources, run:
 
 ```bash
-argocd app set <APPNAME> --allow-empty
+cd app set <APPNAME> --allow-empty
 ```
 
 Or by setting the allow empty option to true in the automated sync policy:
@@ -79,7 +79,7 @@ By default, changes that are made to the live cluster will not trigger automated
 when the live cluster's state deviates from the state defined in Git, run:
 
 ```bash
-argocd app set <APPNAME> --self-heal
+cd app set <APPNAME> --self-heal
 ```
 
 Or by setting the self-heal option to true in the automated sync policy:
@@ -96,7 +96,7 @@ spec:
 
 ## Automatic Retry with a limit
 
-Argo CD can automatically retry a failed sync operation using exponential backoff. To enable, configure the `retry` field in the sync policy:
+Hanzo CD can automatically retry a failed sync operation using exponential backoff. To enable, configure the `retry` field in the sync policy:
 
 ```yaml
 spec:
@@ -119,7 +119,7 @@ spec:
 This feature allows users to configure their applications to refresh on new revisions when the current sync is retrying. To enable automatic refresh during sync retries, run:
 
 ```bash
-argocd app set <APPNAME> --sync-retry-refresh
+cd app set <APPNAME> --sync-retry-refresh
 ```
 
 Or by setting the `retry.refresh` option to `true` in the sync policy:
@@ -139,9 +139,9 @@ spec:
   application parameters. If the most recent successful sync in the history was already performed
   against the same commit-SHA and parameters, a second sync will not be attempted, unless `selfHeal` flag is set to true.
 * If the `selfHeal` flag is set to true, then the sync will be attempted again after self-heal timeout (5 seconds by default)
-which is controlled by `--self-heal-timeout-seconds` flag of `argocd-application-controller` deployment.
+which is controlled by `--self-heal-timeout-seconds` flag of `cd-application-controller` deployment.
 * Automatic sync will not reattempt a sync if the previous sync attempt against the same commit-SHA
   and parameters had failed.
 
 * Rollback cannot be performed against an application with automated sync enabled.
-* The automatic sync interval is determined by [the `timeout.reconciliation` value in the `argocd-cm` ConfigMap](../faq.md#how-often-does-argo-cd-check-for-changes-to-my-git-or-helm-repository), which defaults to `120s` with added jitter of `60s` for a maximum period of 3 minutes.
+* The automatic sync interval is determined by [the `timeout.reconciliation` value in the `cd-cm` ConfigMap](../faq.md#how-often-does-argo-cd-check-for-changes-to-my-git-or-helm-repository), which defaults to `120s` with added jitter of `60s` for a maximum period of 3 minutes.

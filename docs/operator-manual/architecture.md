@@ -1,7 +1,7 @@
 
 # Architectural Overview
 
-![Argo CD Architecture](../assets/argocd_architecture.png)
+![Hanzo CD Architecture](../assets/cd_architecture.png)
 
 ## Components
 

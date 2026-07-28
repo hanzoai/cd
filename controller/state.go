@@ -1363,7 +1363,7 @@ func (m *appStateManager) isSelfReferencedObj(live, config *unstructured.Unstruc
 	//        ingress-app:extensions/Ingress:default/some-ingress
 	//     when it should be:
 	//        ingress-app:networking.k8s.io/Ingress:default/some-ingress
-	// More details in: https://github.com/argoproj/argo-cd/pull/11012
+	// More details in: https://github.com/hanzoai/cd/pull/11012
 	var aiv cd.AppInstanceValue
 	if config != nil {
 		aiv = cd.UnstructuredToAppInstanceValue(config, appName, "")

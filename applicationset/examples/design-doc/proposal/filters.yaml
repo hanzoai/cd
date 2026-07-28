@@ -1,7 +1,7 @@
 # For all generators, filters can be applied to reduce the generated items to a smaller subset.
 # A powerful set of filter expressions are supported using syntax provided by the
 # https://github.com/antonmedv/expr library. Examples expressions are demonstrated below
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook

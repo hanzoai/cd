@@ -2,10 +2,10 @@
 
 !!! warning
 
-    Enabling orphaned resource monitoring has performance implications. If an AppProject monitors a namespace containing many resources not managed by Argo CD (e.g. `kube-system`), it can significantly impact your Argo CD instance. Enable this feature only on projects with well-scoped namespaces.
+    Enabling orphaned resource monitoring has performance implications. If an AppProject monitors a namespace containing many resources not managed by Hanzo CD (e.g. `kube-system`), it can significantly impact your Hanzo CD instance. Enable this feature only on projects with well-scoped namespaces.
 
-An [orphaned Kubernetes resource](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#orphaned-dependents) is a top-level namespaced resource that does not belong to any Argo CD Application. The Orphaned Resources Monitoring feature allows detecting
-orphaned resources, inspecting/removing resources using the Argo CD UI, and generating a warning.
+An [orphaned Kubernetes resource](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#orphaned-dependents) is a top-level namespaced resource that does not belong to any Hanzo CD Application. The Orphaned Resources Monitoring feature allows detecting
+orphaned resources, inspecting/removing resources using the Hanzo CD UI, and generating a warning.
 
 The Orphaned Resources monitoring is enabled in the [Project](projects.md) settings.
 Below is an example of enabling the feature using the AppProject custom resource.
@@ -38,7 +38,7 @@ When warnings are disabled, application users can still view orphaned resources 
 
 ## Exceptions
 
-Not every resource in the Kubernetes cluster is controlled by the end user and managed by Argo CD. Other operators in the cluster can automatically create resources (e.g., the cert-manager creating secrets), which are then considered orphaned.
+Not every resource in the Kubernetes cluster is controlled by the end user and managed by Hanzo CD. Other operators in the cluster can automatically create resources (e.g., the cert-manager creating secrets), which are then considered orphaned.
 
 The following resources are never considered orphaned:
 

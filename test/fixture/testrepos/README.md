@@ -37,7 +37,7 @@ By copying pre-generated keys before starting sshd, the same keys are used every
 Contains SSH host key fingerprints for:
 
 - `[localhost]:2222` - Local development/testing
-- `[argocd-e2e-server]:2222` - Remote/in-cluster testing
+- `[cd-e2e-server]:2222` - Remote/in-cluster testing
 
 Both entries have identical fingerprints since they use the same keys from this directory.
 
@@ -63,13 +63,13 @@ If you need to regenerate the SSH host keys:
 cd test/fixture/testrepos
 
 # Generate RSA key
-ssh-keygen -t rsa -b 2048 -f ssh_host_rsa_key -N "" -C "root@argocd-e2e"
+ssh-keygen -t rsa -b 2048 -f ssh_host_rsa_key -N "" -C "root@cd-e2e"
 
 # Generate ECDSA key
-ssh-keygen -t ecdsa -f ssh_host_ecdsa_key -N "" -C "root@argocd-e2e"
+ssh-keygen -t ecdsa -f ssh_host_ecdsa_key -N "" -C "root@cd-e2e"
 
 # Generate Ed25519 key
-ssh-keygen -t ed25519 -f ssh_host_ed25519_key -N "" -C "root@argocd-e2e"
+ssh-keygen -t ed25519 -f ssh_host_ed25519_key -N "" -C "root@cd-e2e"
 ```
 
 ### 2. Update ssh_known_hosts
@@ -94,13 +94,13 @@ ssh-keyscan -p 2222 localhost > ssh_known_hosts.tmp
 sudo kill $SSHD_PID
 sudo rm -rf /tmp/test-sshd
 
-# Create new ssh_known_hosts with both localhost and argocd-e2e-server entries
+# Create new ssh_known_hosts with both localhost and cd-e2e-server entries
 cat > ssh_known_hosts << 'EOF'
 # localhost:2222 SSH-2.0-OpenSSH_X.Xp1
 EOF
 cat ssh_known_hosts.tmp >> ssh_known_hosts
 echo "# For in-cluster tests" >> ssh_known_hosts
-sed 's/\[localhost\]/[argocd-e2e-server]/g' ssh_known_hosts.tmp >> ssh_known_hosts
+sed 's/\[localhost\]/[cd-e2e-server]/g' ssh_known_hosts.tmp >> ssh_known_hosts
 
 rm ssh_known_hosts.tmp
 ```

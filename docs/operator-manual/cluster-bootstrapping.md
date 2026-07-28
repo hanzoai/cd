@@ -1,6 +1,6 @@
 # Cluster Bootstrapping
 
-This guide is for operators who have already installed Argo CD, and have a new cluster and are looking to install many apps in that cluster.
+This guide is for operators who have already installed Hanzo CD, and have a new cluster and are looking to install many apps in that cluster.
 
 There's no one particular pattern to solve this problem, e.g. you could write a script to create your apps, or you could even manually create them.
 
@@ -19,26 +19,26 @@ data:
 kind: Secret
 metadata:
   annotations:
-    managed-by: argocd.argoproj.io
+    managed-by: cd.hanzo.ai
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
     cloud: gcp
     department: billing
     env: qa
     region: eu
     type: workload
   name: cluster-qa-eu-example
-  namespace: argocd
+  namespace: cd
 ```
 
-Then as soon as you add the cluster to Argo CD, any application set that uses these labels will deploy the respective applications.
+Then as soon as you add the cluster to Hanzo CD, any application set that uses these labels will deploy the respective applications.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: eu-only-appset
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -91,10 +91,10 @@ For more information see also [Templating](./applicationset/Template.md).
 > The ability to create Applications in arbitrary [Projects](./declarative-setup.md#projects) 
 > is an admin-level capability. Only admins should have push access to the parent Application's source repository. 
 > Admins should review pull requests to that repository, paying particular attention to the `project` field in each 
-> Application. Projects with access to the namespace in which Argo CD is installed effectively have admin-level 
+> Application. Projects with access to the namespace in which Hanzo CD is installed effectively have admin-level 
 > privileges.
 
-[Declaratively](declarative-setup.md) specify one Argo CD app that consists only of other apps.
+[Declaratively](declarative-setup.md) specify one Hanzo CD app that consists only of other apps.
 
 ![Application of Applications](../assets/application-of-applications.png)
 
@@ -120,16 +120,16 @@ A typical layout of your Git repository for this might be:
 `templates` contains one file for each child app, roughly:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.cd.hanzo.ai
 spec:
   destination:
-    namespace: argocd
+    namespace: cd
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
@@ -158,12 +158,12 @@ spec:
 Next, you need to create and sync your parent app, e.g. via the CLI:
 
 ```bash
-argocd app create apps \
-    --dest-namespace argocd \
+cd app create apps \
+    --dest-namespace cd \
     --dest-server https://kubernetes.default.svc \
     --repo https://github.com/argoproj/argocd-example-apps.git \
     --path apps  
-argocd app sync apps  
+cd app sync apps  
 ```
 
 The parent app will appear as in-sync but the child apps will be out of sync:
@@ -171,7 +171,7 @@ The parent app will appear as in-sync but the child apps will be out of sync:
 ![New App Of Apps](../assets/new-app-of-apps.png)
 
 > [!NOTE]
-> You may want to modify this behavior to bootstrap your cluster in waves; see [the health assessment of Applications](./health.md#argocd-app) for information on changing this.
+> You may want to modify this behavior to bootstrap your cluster in waves; see [the health assessment of Applications](./health.md#cd-app) for information on changing this.
 
 You can either sync via the UI, firstly filter by the correct label:
 
@@ -184,7 +184,7 @@ Then select the "out of sync" apps and sync:
 Or, via the CLI: 
 
 ```bash
-argocd app sync -l app.kubernetes.io/instance=apps
+cd app sync -l app.kubernetes.io/instance=apps
 ```
 
 View [the example on GitHub](https://github.com/argoproj/argocd-example-apps/tree/master/apps).
@@ -196,20 +196,20 @@ View [the example on GitHub](https://github.com/argoproj/argocd-example-apps/tre
 If you want to ensure that child-apps and all of their resources are deleted when the parent-app is deleted make sure to add the appropriate [finalizer](../user-guide/app_deletion.md#about-the-deletion-finalizer) to your `Application` definition
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.cd.hanzo.ai
 spec:
  ...
 ```
 
 ### Deleting child applications
 
-When working with the App of Apps pattern, you may need to delete individual child applications. Starting in 3.2, Argo CD provides consistent deletion behaviour whether you delete from the Applications List or from the parent application's Resource Tree.
+When working with the App of Apps pattern, you may need to delete individual child applications. Starting in 3.2, Hanzo CD provides consistent deletion behaviour whether you delete from the Applications List or from the parent application's Resource Tree.
 
 For detailed information about deletion options and behaviour, including:
 - Consistent deletion across UI views
@@ -238,7 +238,7 @@ spec:
         # Allow manually disabling auto sync for apps, useful for debugging.
         - /spec/syncPolicy/automated
         # These are automatically updated on a regular basis. Not ignoring last applied configuration since it's used for computing diffs after normalization.
-        - /metadata/annotations/argocd.argoproj.io~1refresh
+        - /metadata/annotations/cd.hanzo.ai~1refresh
         - /operation
   ...
 ```

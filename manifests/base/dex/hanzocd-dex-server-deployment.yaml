@@ -20,7 +20,7 @@ spec:
       - name: copyutil
         image: ghcr.io/hanzoai/deploy:latest
         imagePullPolicy: Always
-        command: [/bin/cp, -n, /usr/local/bin/argocd, /shared/hanzocd-dex]
+        command: [/bin/cp, -n, /usr/local/bin/cd, /shared/hanzocd-dex]
         volumeMounts:
         - mountPath: /shared
           name: static-files

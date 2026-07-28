@@ -1,11 +1,11 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: plugin-test-app
 spec:
   project: default
   source:
-    repoURL: https://github.com/argoproj/argo-cd.git
+    repoURL: https://github.com/hanzoai/cd.git
     path: test/manifests/cmp/app
     plugin:
       env:

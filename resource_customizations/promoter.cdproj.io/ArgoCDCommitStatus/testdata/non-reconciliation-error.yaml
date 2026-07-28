@@ -1,5 +1,5 @@
-apiVersion: promoter.argoproj.io/v1alpha1
-kind: ArgoCDCommitStatus
+apiVersion: promoter.apps.hanzo.ai/v1alpha1
+kind: Hanzo CDCommitStatus
 metadata:
   name: test-commit-status
   namespace: test
@@ -13,7 +13,7 @@ spec:
 status:
   conditions:
     - lastTransitionTime: '2025-10-15T16:00:00Z'
-      message: 'Failed to query Argo CD applications: connection timeout'
+      message: 'Failed to query Hanzo CD applications: connection timeout'
       observedGeneration: 1
       reason: ReconciliationError
       status: 'False'

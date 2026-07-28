@@ -7,7 +7,7 @@ You may wish to exclude resources from the app's overall sync status under certa
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    cd.hanzo.ai/compare-options: IgnoreExtraneous
 ```
 
 ![compare option needs pruning](../assets/compare-option-ignore-needs-pruning.png)
@@ -24,7 +24,7 @@ configMapGenerator:
       - foo=bar
 generatorOptions:
   annotations:
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    cd.hanzo.ai/compare-options: IgnoreExtraneous
 kind: Kustomization
 ``` 
  

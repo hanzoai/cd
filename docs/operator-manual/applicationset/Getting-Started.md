@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide assumes you are familiar with Argo CD and its basic concepts. See the [Argo CD documentation](../../core_concepts.md) for more information.
+This guide assumes you are familiar with Hanzo CD and its basic concepts. See the [Hanzo CD documentation](../../core_concepts.md) for more information.
     
 ## Requirements
 
@@ -12,24 +12,24 @@ This guide assumes you are familiar with Argo CD and its basic concepts. See the
 There are a few options for installing the ApplicationSet controller.
 
 
-### A) Install ApplicationSet as part of Argo CD
+### A) Install ApplicationSet as part of Hanzo CD
 
-Starting with Argo CD v2.3, the ApplicationSet controller is bundled with Argo CD. It is no longer necessary to install the ApplicationSet controller separately from Argo CD.
+Starting with Hanzo CD v2.3, the ApplicationSet controller is bundled with Hanzo CD. It is no longer necessary to install the ApplicationSet controller separately from Hanzo CD.
 
-Follow the [Argo CD Getting Started](../../getting_started.md) instructions for more information.
+Follow the [Hanzo CD Getting Started](../../getting_started.md) instructions for more information.
 
 
 
-### B) Install ApplicationSet into an existing Argo CD install (pre-Argo CD v2.3)
+### B) Install ApplicationSet into an existing Hanzo CD install (pre-Hanzo CD v2.3)
 
-**Note**: These instructions only apply to versions of Argo CD before v2.3.0.
+**Note**: These instructions only apply to versions of Hanzo CD before v2.3.0.
 
-The ApplicationSet controller *must* be installed into the same namespace as the Argo CD it is targeting.
+The ApplicationSet controller *must* be installed into the same namespace as the Hanzo CD it is targeting.
 
-Presuming that Argo CD is installed into the `argocd` namespace, run the following command:
+Presuming that Hanzo CD is installed into the `cd` namespace, run the following command:
 
 ```bash
-kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
 ```
 
 Once installed, the ApplicationSet controller requires no additional setup.
@@ -37,8 +37,8 @@ Once installed, the ApplicationSet controller requires no additional setup.
 The `manifests/install.yaml` file contains the Kubernetes manifests required to install the ApplicationSet controller:
 
 - CustomResourceDefinition for `ApplicationSet` resource
-- Deployment for `argocd-applicationset-controller`
-- ServiceAccount for use by ApplicationSet controller, to access Argo CD resources
+- Deployment for `cd-applicationset-controller`
+- ServiceAccount for use by ApplicationSet controller, to access Hanzo CD resources
 - Role granting RBAC access to needed resources, for ServiceAccount
 - RoleBinding to bind the ServiceAccount and Role
 
@@ -47,20 +47,20 @@ The `manifests/install.yaml` file contains the Kubernetes manifests required to 
 
 Development builds of the ApplicationSet controller can be installed by running the following command:
 ```bash
-kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/master/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/master/manifests/install.yaml
 ```
 
-With this option you will need to ensure that Argo CD is already installed into the `argocd` namespace.
+With this option you will need to ensure that Hanzo CD is already installed into the `cd` namespace.
 
 How it works:
 
-- After each successful commit to *argoproj/applicationset* `master` branch, a GitHub action will run that performs a container build/push to [`argoproj/argocd-applicationset:latest`](https://quay.io/repository/argoproj/argocd-applicationset?tab=tags )
-- [Documentation for the `master`-branch-based developer builds](https://argocd-applicationset.readthedocs.io/en/master/)  is available from Read the Docs.
+- After each successful commit to *argoproj/applicationset* `master` branch, a GitHub action will run that performs a container build/push to [`argoproj/cd-applicationset:latest`](https://quay.io/repository/argoproj/cd-applicationset?tab=tags )
+- [Documentation for the `master`-branch-based developer builds](https://cd-applicationset.readthedocs.io/en/master/)  is available from Read the Docs.
 
 > [!WARNING]
 > Development builds contain newer features and bug fixes, but are more likely to be unstable, as compared to release builds.
 
-See the `master` branch [Read the Docs](https://argocd-applicationset.readthedocs.io/en/master/) page for documentation on post-release features. -->
+See the `master` branch [Read the Docs](https://cd-applicationset.readthedocs.io/en/master/) page for documentation on post-release features. -->
 
 
 <!-- ## Upgrading to a Newer Release
@@ -74,7 +74,7 @@ There are no manual upgrade steps required between any release of ApplicationSet
 There are no breaking changes, however, a couple of behaviours have changed from v0.2.0 to v0.3.0. See the [v0.3.0 upgrade page](upgrading/v0.2.0-to-v0.3.0.md) for details. -->
 ## Enabling high availability mode
 
-To enable high availability, you have to set the command ``` --enable-leader-election=true  ``` in argocd-applicationset-controller container and increase the replicas. 
+To enable high availability, you have to set the command ``` --enable-leader-election=true  ``` in cd-applicationset-controller container and increase the replicas. 
 
 do following changes in manifests/install.yaml
 
@@ -83,7 +83,7 @@ do following changes in manifests/install.yaml
       containers:
       - command:
         - entrypoint.sh
-        - argocd-applicationset-controller
+        - cd-applicationset-controller
         - --enable-leader-election=true
 ```
 

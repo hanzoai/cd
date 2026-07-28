@@ -4,7 +4,7 @@ metadata:
   name: my-plugin-config
 data:
   plugin.yaml: |
-    apiVersion: argoproj.io/v1alpha1
+    apiVersion: apps.hanzo.ai/v1alpha1
     kind: ConfigManagementPlugin
     metadata:
       name: my-plugin

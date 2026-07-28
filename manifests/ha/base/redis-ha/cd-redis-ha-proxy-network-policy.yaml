@@ -2,27 +2,27 @@ kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   labels:
-    app.kubernetes.io/name: argocd-redis-ha-haproxy
+    app.kubernetes.io/name: cd-redis-ha-haproxy
     app.kubernetes.io/component: redis
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-proxy-network-policy
+    app.kubernetes.io/part-of: cd
+  name: cd-redis-ha-proxy-network-policy
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-redis-ha-haproxy
+      app.kubernetes.io/name: cd-redis-ha-haproxy
   policyTypes:
   - Ingress
   ingress:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-server
+          app.kubernetes.io/name: cd-server
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-repo-server
+          app.kubernetes.io/name: cd-repo-server
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-application-controller
+          app.kubernetes.io/name: cd-application-controller
     ports:
     - port: 6379
       protocol: TCP

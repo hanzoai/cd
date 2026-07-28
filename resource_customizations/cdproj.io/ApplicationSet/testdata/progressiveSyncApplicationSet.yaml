@@ -1,8 +1,8 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-git
-  namespace: argocd
+  namespace: cd
 spec:
   generators:
     - merge:

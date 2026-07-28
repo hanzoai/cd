@@ -1,13 +1,13 @@
 message: |
     {{if eq .serviceType "slack"}}:exclamation:{{end}} Application {{.app.metadata.name}} has degraded.
-    Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+    Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
 email:
     subject: Application {{.app.metadata.name}} has degraded.
 slack:
     attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#f4c030",
           "fields": [
           {
@@ -56,7 +56,7 @@ teams:
           "name":"Open Application",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
           }]
         },
         {

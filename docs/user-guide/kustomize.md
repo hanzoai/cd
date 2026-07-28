@@ -5,7 +5,7 @@
 You can define a Kustomize application manifest in the declarative GitOps way. Here is an example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: kustomize-example
@@ -20,7 +20,7 @@ spec:
     server: 'https://kubernetes.default.svc'
 ```
 
-If the `kustomization.yaml` file exists at the location pointed to by `repoURL` and `path`, Argo CD will render the manifests using Kustomize.
+If the `kustomization.yaml` file exists at the location pointed to by `repoURL` and `path`, Hanzo CD will render the manifests using Kustomize.
 
 The following configuration options are available for Kustomize:
 
@@ -37,8 +37,8 @@ The following configuration options are available for Kustomize:
 * `patches` is a list of Kustomize patches that supports inline updates
 * `components` is a list of Kustomize components
 * `ignoreMissingComponents` prevents kustomize from failing when components do not exist locally by not appending them to kustomization file
-* `forceCommonLabels` is a boolean value. When true, Argo CD passes --force to kustomize edit add label, allowing an existing commonLabels/labels entry in kustomization.yaml to be replaced. When false, generation fails if the label key already exists.
-* `forceCommonAnnotations` is a boolean value. When true, Argo CD passes --force to kustomize edit add annotation, allowing an existing commonAnnotations entry in kustomization.yaml to be replaced. When false, generation fails if the annotation key already exists. 
+* `forceCommonLabels` is a boolean value. When true, Hanzo CD passes --force to kustomize edit add label, allowing an existing commonLabels/labels entry in kustomization.yaml to be replaced. When false, generation fails if the label key already exists.
+* `forceCommonAnnotations` is a boolean value. When true, Hanzo CD passes --force to kustomize edit add annotation, allowing an existing commonAnnotations entry in kustomization.yaml to be replaced. When false, generation fails if the annotation key already exists. 
 
 To use Kustomize with an overlay, point your path to the overlay.
 
@@ -46,7 +46,7 @@ To use Kustomize with an overlay, point your path to the overlay.
 > If you're generating resources, you should read up how to ignore those generated resources using the [`IgnoreExtraneous` compare option](compare-options.md).
 
 ## Patches
-Patches are a way to kustomize resources using inline configurations in Argo CD applications.  `patches`  follow the same logic as the corresponding Kustomization.  Any patches that target existing Kustomization file will be merged.
+Patches are a way to kustomize resources using inline configurations in Hanzo CD applications.  `patches`  follow the same logic as the corresponding Kustomization.  Any patches that target existing Kustomization file will be merged.
 
 This Kustomize example sources manifests from the `/kustomize-guestbook` folder of the `argoproj/argocd-example-apps` repository, and patches the `Deployment` to use port `443` on the container.
 ```yaml
@@ -69,13 +69,13 @@ patches:
 
 This `Application` does the equivalent using the inline `kustomize.patches` configuration.
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: kustomize-inline-guestbook
-  namespace: argocd
+  namespace: cd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   destination:
     namespace: test1
@@ -99,7 +99,7 @@ spec:
 The inline kustomize patches work well with `ApplicationSets`, too. Instead of maintaining a patch or overlay for each cluster, patches can now be done in the `Application` template and utilize attributes from the generators. For example, with [`external-dns`](https://github.com/kubernetes-sigs/external-dns/) to set the [`txt-owner-id`](https://github.com/kubernetes-sigs/external-dns/blob/e1adc9079b12774cccac051966b2c6a3f18f7872/docs/registry/registry.md?plain=1#L6) to the cluster name.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: external-dns
@@ -135,7 +135,7 @@ spec:
 Kustomize [components](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/components.md) encapsulate both resources and patches together. They provide a powerful way to modularize and reuse configuration in Kubernetes applications. 
 If Kustomize is passed a non-existing component directory, it will error out. Missing component directories can be ignored (meaning, not passed to Kustomize) using `ignoreMissingComponents`. This can be particularly helpful to implement a [default/override pattern].
 
-Outside of Argo CD, to utilize components, you must add the following to the `kustomization.yaml` that the Application references. For example:
+Outside of Hanzo CD, to utilize components, you must add the following to the `kustomization.yaml` that the Application references. For example:
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -146,7 +146,7 @@ components:
 
 With support added for components in `v2.10.0`, you can now reference a component directly in the Application:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: application-kustomize-components
@@ -168,45 +168,45 @@ spec:
 
 If you have remote bases that are either (a) HTTPS and need username/password (b) SSH and need SSH private key, then they'll inherit that from the app's repo.
 
-This will work if the remote bases use the same credentials/private key. It will not work if they use different ones. For security reasons your app only ever knows about its own repo (not other team's or users repos), and so you won't be able to access other private repos, even if Argo CD knows about them.
+This will work if the remote bases use the same credentials/private key. It will not work if they use different ones. For security reasons your app only ever knows about its own repo (not other team's or users repos), and so you won't be able to access other private repos, even if Hanzo CD knows about them.
 
 Read more about [private repos](private-repositories.md).
 
 ## `kustomize build` Options/Parameters
 
-To provide build options to `kustomize build` of default Kustomize version, use `kustomize.buildOptions` field of `argocd-cm` ConfigMap. Use `kustomize.buildOptions.<version>` to register version specific build options.
+To provide build options to `kustomize build` of default Kustomize version, use `kustomize.buildOptions` field of `cd-cm` ConfigMap. Use `kustomize.buildOptions.<version>` to register version specific build options.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
     kustomize.buildOptions: --load-restrictor LoadRestrictionsNone
     kustomize.buildOptions.v4.4.0: --output /tmp
 ```
 
-After modifying `kustomize.buildOptions`, you may need to restart ArgoCD for the changes to take effect.
+After modifying `kustomize.buildOptions`, you may need to restart Hanzo CD for the changes to take effect.
 
 ## Custom Kustomize versions
 
-Argo CD supports using multiple Kustomize versions simultaneously and specifies required version per application.
+Hanzo CD supports using multiple Kustomize versions simultaneously and specifies required version per application.
 To add additional versions make sure required versions are [bundled](../operator-manual/custom_tools.md) and then
-use `kustomize.path.<version>` fields of `argocd-cm` ConfigMap to register bundled additional versions.
+use `kustomize.path.<version>` fields of `cd-cm` ConfigMap to register bundled additional versions.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
     kustomize.path.v3.5.1: /custom-tools/kustomize_3_5_1
     kustomize.path.v3.5.4: /custom-tools/kustomize_3_5_4
@@ -215,7 +215,7 @@ data:
 Once a new version is configured you can reference it in an Application spec as follows:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
@@ -232,7 +232,7 @@ spec:
 Additionally, the application kustomize version can be configured using the Parameters tab of the Application Details page, or using the following CLI command:
 
 ```bash
-argocd app set <appName> --kustomize-version v3.5.4
+cd app set <appName> --kustomize-version v3.5.4
 ```
 
 
@@ -240,16 +240,16 @@ argocd app set <appName> --kustomize-version v3.5.4
 
 Kustomize apps have access to the [standard build environment](build-environment.md) which can be used in combination with a [config management plugin](../operator-manual/config-management-plugins.md) to alter the rendered manifests.
 
-You can use these build environment variables in your Argo CD Application manifests. You can enable this by setting `.spec.source.kustomize.commonAnnotationsEnvsubst` to `true` in your Application manifest.
+You can use these build environment variables in your Hanzo CD Application manifests. You can enable this by setting `.spec.source.kustomize.commonAnnotationsEnvsubst` to `true` in your Application manifest.
 
 For example, the following Application manifest will set the `app-source` annotation to the name of the Application:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook-app
-  namespace: argocd
+  namespace: cd
 spec:
   project: default
   destination:
@@ -272,16 +272,16 @@ spec:
 
 It's possible to [render Helm charts with Kustomize](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/chart.md).
 Doing so requires that you pass the `--enable-helm` flag to the `kustomize build` command.
-This flag is not part of the Kustomize options within Argo CD.
-If you would like to render Helm charts through Kustomize in an Argo CD application, you have two options:
-You can either create a [custom plugin](https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/), or modify the `argocd-cm` ConfigMap to include the `--enable-helm` flag globally for all Kustomize applications:
+This flag is not part of the Kustomize options within Hanzo CD.
+If you would like to render Helm charts through Kustomize in an Hanzo CD application, you have two options:
+You can either create a [custom plugin](https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/), or modify the `cd-cm` ConfigMap to include the `--enable-helm` flag globally for all Kustomize applications:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
 data:
   kustomize.buildOptions: --enable-helm
 ```
@@ -292,4 +292,4 @@ The `spec.destination.namespace` field only adds a namespace when it's missing f
 
 Using Kustomize directly to set the missing namespaces can resolve this problem. Setting `spec.source.kustomize.namespace` instructs Kustomize to set namespace fields to the given value.
 
-If `spec.destination.namespace` and `spec.source.kustomize.namespace` are both set, Argo CD will defer to the latter, the namespace value set by Kustomize.
+If `spec.destination.namespace` and `spec.source.kustomize.namespace` are both set, Hanzo CD will defer to the latter, the namespace value set by Kustomize.

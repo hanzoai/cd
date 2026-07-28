@@ -1,4 +1,4 @@
-# +argocd:skip-file-rendering
+# +cd:skip-file-rendering
 apiVersion: v1
 kind: ConfigMap
 metadata:

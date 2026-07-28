@@ -2,7 +2,7 @@
 # An ApplicationSet is comprised with two stanzas:
 #  - spec.generator - producer of a list of values supplied as arguments to an app template
 #  - spec.template - an application template, which has been parameterized
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook

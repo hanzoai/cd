@@ -8,11 +8,11 @@
 
 ## Overview
 
-With UI extensions it is possible to enhance Argo CD web interface to
+With UI extensions it is possible to enhance Hanzo CD web interface to
 provide valuable data to the user. However the data is restricted to
 the resources that belongs to the Application. With proxy extensions
 it is also possible to add additional functionality that have access
-to data provided by backend services. In this case Argo CD API server
+to data provided by backend services. In this case Hanzo CD API server
 acts as a reverse-proxy authenticating and authorizing incoming
 requests before forwarding to the backend service.
 
@@ -20,22 +20,22 @@ requests before forwarding to the backend service.
 
 As proxy extension is in [Alpha][1] phase, the feature is disabled by
 default. To enable it, it is necessary to configure the feature flag
-in Argo CD command parameters. The easiest way to properly enable
+in Hanzo CD command parameters. The easiest way to properly enable
 this feature flag is by adding the `server.enable.proxy.extension` key
-in the existing `argocd-cmd-params-cm`. For example:
+in the existing `cd-cmd-params-cm`. For example:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cmd-params-cm
-  namespace: argocd
+  name: cd-cmd-params-cm
+  namespace: cd
 data:
   server.enable.proxy.extension: 'true'
 ```
 
 Once the proxy extension is enabled, it can be configured in the main
-Argo CD configmap ([argocd-cm][2]).
+Hanzo CD configmap ([cd-cm][2]).
 
 The example below demonstrates all possible configurations available
 for proxy extensions:
@@ -44,8 +44,8 @@ for proxy extensions:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
 data:
   extension.config: |
     extensions:
@@ -59,14 +59,14 @@ data:
         - url: http://httpbin.org
           headers:
           - name: some-header
-            value: '$some.argocd.secret.key'
+            value: '$some.cd.secret.key'
           cluster:
             name: some-cluster
             server: https://some-cluster
 ```
 
 Proxy extensions can also be provided individually using dedicated
-Argo CD configmap keys for better GitOps operations. The example below
+Hanzo CD configmap keys for better GitOps operations. The example below
 demonstrates how to configure the same hypothetical httpbin config
 above using a dedicated key:
 
@@ -74,8 +74,8 @@ above using a dedicated key:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
 data:
   extension.config.httpbin: |
     connectionTimeout: 2s
@@ -86,20 +86,20 @@ data:
     - url: http://httpbin.org
       headers:
       - name: some-header
-        value: '$some.argocd.secret.key'
+        value: '$some.cd.secret.key'
       cluster:
         name: some-cluster
         server: https://some-cluster
 ```
 
-Attention: Extension names must be unique in the Argo CD configmap. If
-duplicated keys are found, the Argo CD API server will log an error
+Attention: Extension names must be unique in the Hanzo CD configmap. If
+duplicated keys are found, the Hanzo CD API server will log an error
 message and no proxy extension will be registered.
 
-Note: There is no need to restart Argo CD Server after modifying the
-`extension.config` entry in Argo CD configmap. Changes will be
+Note: There is no need to restart Hanzo CD Server after modifying the
+`extension.config` entry in Hanzo CD configmap. Changes will be
 automatically applied. A new proxy registry will be built making
-all new incoming extensions requests (`<argocd-host>/extensions/*`) to
+all new incoming extensions requests (`<cd-host>/extensions/*`) to
 respect the new configuration.
 
 Every configuration entry is explained below:
@@ -117,7 +117,7 @@ route. For example, if the value of the property is `extensions.name:
 my-extension` then the backend service will be exposed under the
 following url:
 
-    <argocd-host>/extensions/my-extension
+    <cd-host>/extensions/my-extension
 
 #### `extensions.backend.connectionTimeout` (_duration string_)
 
@@ -178,15 +178,15 @@ provided.
 
 Defines the value of the header. It is a mandatory field if a header is
 provided. The value can be provided as verbatim or as a reference to an
-Argo CD secret key. In order to provide it as a reference, it is
+Hanzo CD secret key. In order to provide it as a reference, it is
 necessary to prefix it with a dollar sign.
 
 Example:
 
-    value: '$some.argocd.secret.key'
+    value: '$some.cd.secret.key'
 
 In the example above, the value will be replaced with the one from
-the argocd-secret with key 'some.argocd.secret.key'.
+the cd-secret with key 'some.cd.secret.key'.
 
 #### `extensions.backend.services.cluster` (_object_)
 
@@ -218,7 +218,7 @@ It will be matched with the value from
 ## Usage
 
 Once a proxy extension is configured it will be made available under
-the `/extensions/<extension-name>` endpoint exposed by Argo CD API
+the `/extensions/<extension-name>` endpoint exposed by Hanzo CD API
 server. The example above will proxy requests to
 `<apiserver-host>/extensions/httpbin/` to `http://httpbin.org`.
 
@@ -227,14 +227,14 @@ configuration:
 
 ```
                                               ┌─────────────┐
-                                              │ Argo CD UI  │
+                                              │ Hanzo CD UI  │
                                               └────┬────────┘
                                                    │  ▲
   GET <apiserver-host>/extensions/httpbin/anything │  │ 200 OK
             + authn/authz headers                  │  │
                                                    ▼  │
                                             ┌─────────┴────────┐
-                                            │Argo CD API Server│
+                                            │Hanzo CD API Server│
                                             └──────┬───────────┘
                                                    │  ▲
                    GET http://httpbin.org/anything │  │ 200 OK
@@ -247,23 +247,23 @@ configuration:
 
 ### Incoming Request Headers
 
-Note that Argo CD API Server requires additional HTTP headers to be
+Note that Hanzo CD API Server requires additional HTTP headers to be
 sent in order to enforce if the incoming request is authenticated and
 authorized before being proxied to the backend service. The headers
 are documented below:
 
 #### `Cookie`
 
-Argo CD UI keeps the authentication token stored in a cookie
-(`argocd.token`). This value needs to be sent in the `Cookie` header
+Hanzo CD UI keeps the authentication token stored in a cookie
+(`cd.token`). This value needs to be sent in the `Cookie` header
 so the API server can validate its authenticity.
 
 Example:
 
-    Cookie: argocd.token=eyJhbGciOiJIUzI1Ni...
+    Cookie: cd.token=eyJhbGciOiJIUzI1Ni...
 
-The entire Argo CD cookie list can also be sent. The API server will
-only use the `argocd.token` attribute in this case.
+The entire Hanzo CD cookie list can also be sent. The API server will
+only use the `cd.token` attribute in this case.
 
 #### `Argocd-Application-Name` (mandatory)
 
@@ -284,9 +284,9 @@ Example:
 
     Argocd-Project-Name: default
 
-Argo CD API Server will ensure that the logged in user has the
+Hanzo CD API Server will ensure that the logged in user has the
 permission to access the resources provided by the headers above. The
-validation is based on pre-configured [Argo CD RBAC rules][3]. The
+validation is based on pre-configured [Hanzo CD RBAC rules][3]. The
 same headers are also sent to the backend service. The backend service
 must also validate if the validated headers are compatible with the
 rest of the incoming request.
@@ -312,20 +312,20 @@ section for more details.
 
 #### `Argocd-Username`
 
-Will be populated with the username logged in Argo CD. This is primarily useful for display purposes. 
+Will be populated with the username logged in Hanzo CD. This is primarily useful for display purposes. 
 To identify a user for programmatic needs, `Argocd-User-Id` is probably a better choice.
 
 #### `Argocd-User-Id`
 
-Will be populated with the internal user id, most often defined by the `sub` claim, logged in Argo CD.
+Will be populated with the internal user id, most often defined by the `sub` claim, logged in Hanzo CD.
 
 #### `Argocd-User-Groups`
 
-Will be populated with the configured RBAC scopes, most often the `groups` claim, from the user logged in Argo CD.
+Will be populated with the configured RBAC scopes, most often the `groups` claim, from the user logged in Hanzo CD.
 
 ### Multi Backend Use-Case
 
-In some cases when Argo CD is configured to sync with multiple remote
+In some cases when Hanzo CD is configured to sync with multiple remote
 clusters, there might be a need to call a specific backend service in
 each of those clusters. The proxy-extension can be configured to
 address this use-case by defining multiple services for the same
@@ -353,12 +353,12 @@ request to.
 
 When a request to `/extensions/*` reaches the API Server, it will
 first verify if it is authenticated with a valid token. It does so by
-inspecting if the `Cookie` header is properly sent from Argo CD UI
+inspecting if the `Cookie` header is properly sent from Hanzo CD UI
 extension.
 
 Once the request is authenticated it is then verified if the
 user has permission to invoke this extension. The permission is
-enforced by Argo CD RBAC configuration. The details about how to
+enforced by Hanzo CD RBAC configuration. The details about how to
 configure the RBAC for proxy-extensions can be found in the [RBAC
 documentation][3] page.
 
@@ -386,9 +386,9 @@ extension.config: |
 In the example above, all requests sent to
 `http://extension-name.com:8080` will have an additional
 `Authorization` header. The value of this header will be the one from
-the [argocd-secret](../../operator-manual/argocd-secret-yaml.md) with
+the [cd-secret](../../operator-manual/cd-secret-yaml.md) with
 key `some-extension.authorization.header`
 
 [1]: https://github.com/argoproj/argoproj/blob/master/community/feature-status.md
-[2]: https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-cm.yaml
+[2]: https://argo-cd.readthedocs.io/en/stable/operator-manual/cd-cm.yaml
 [3]: ../../operator-manual/rbac.md#the-extensions-resource

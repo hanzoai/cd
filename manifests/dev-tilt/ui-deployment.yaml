@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: argocd-ui
+  name: cd-ui
 spec:
   selector:
     matchLabels:
-      app: argocd-ui
+      app: cd-ui
   template:
     metadata:
       labels:
-        app: argocd-ui
+        app: cd-ui
     spec:
       containers:
-        - name: argocd-ui
-          image: argocd-ui
+        - name: cd-ui
+          image: cd-ui
           env:
             - name: CD_API_URL
-              value: https://argocd-server
+              value: https://cd-server
             - name: CD_E2E_JS_HOST
               value: "0.0.0.0"
           ports:

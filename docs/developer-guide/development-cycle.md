@@ -14,13 +14,13 @@ When you have developed and possibly manually tested the code you want to contri
 [These instructions](toolchain-guide.md#using-podman) are relevant for most of the steps below 
 
 ## Development cycle steps
-### Set kubectl context to argocd namespace
+### Set kubectl context to cd namespace
 
-Setting kubectl config to the argocd namespace is required for these steps to succeed.
+Setting kubectl config to the cd namespace is required for these steps to succeed.
 All following commands in this guide assume the namespace is already set.
 
 ```shell
-kubectl config set-context --current --namespace=argocd
+kubectl config set-context --current --namespace=cd
 ```
 
 ### Pull in all UI build dependencies
@@ -56,7 +56,7 @@ NPM dependencies, such as this
 
 ### Generate API glue code and other assets
 
-Argo CD relies on Google's [Protocol Buffers](https://developers.google.com/protocol-buffers) for its API, and this makes heavy use of auto-generated glue code and stubs. Whenever you touched parts of the API code, you must re-generate the auto generated code.
+Hanzo CD relies on Google's [Protocol Buffers](https://developers.google.com/protocol-buffers) for its API, and this makes heavy use of auto-generated glue code and stubs. Whenever you touched parts of the API code, you must re-generate the auto generated code.
 
 * Run `make codegen` or `make codegen-local`, this might take a while
 * Check if something has changed by running `git status` or `git diff`
@@ -92,7 +92,7 @@ If you touched UI code, you should also run the linter on it:
 
 ### Run end-to-end tests
 
-The final step is running the End-to-End testsuite, which ensures that your Kubernetes dependencies are working properly. This will involve starting all the Argo CD components on your computer. The end-to-end tests consists of two parts: a server component, and a client component.
+The final step is running the End-to-End testsuite, which ensures that your Kubernetes dependencies are working properly. This will involve starting all the Hanzo CD components on your computer. The end-to-end tests consists of two parts: a server component, and a client component.
 
 * First, start the End-to-End server: `make start-e2e` or `make start-e2e-local`. This will spawn a number of processes and services on your system.
 * When all components have started, run `make test-e2e` or `make test-e2e-local` to run the end-to-end tests against your local services.
@@ -111,7 +111,7 @@ Here are some frequently used make targets (all will run on your machine):
 ### Local Toolchain Make Targets
 
 * `make install-tools-local` - Install testing and building tools for the local toolchain 
-* `make build-local` - Build Argo CD binaries
+* `make build-local` - Build Hanzo CD binaries
 * `make test-local` - Run unit tests
 * `make codegen-local` - Re-generate auto generated Swagger and Protobuf (after changing API code)
 * `make lint-local` - Run linting
@@ -119,14 +119,14 @@ Here are some frequently used make targets (all will run on your machine):
 * `make start-e2e-local` - Start server for end-to-end tests
 * `make test-e2e-local` - Run end-to-end tests
 * `make serve-docs-local` - Serve documentation
-* `make start-local` - Start Argo CD
-* `make cli-local` - Build Argo CD CLI binary
+* `make start-local` - Start Hanzo CD
+* `make cli-local` - Build Hanzo CD CLI binary
 
 ### Virtualized Toolchain Make Targets
 
 * `make verify-kube-connect` - Test whether the virtualized toolchain has access to your K8s cluster
 * `make test-tools-image` - Prepare the environment of the virtualized chain
-* `make build` - Build Argo CD binaries
+* `make build` - Build Hanzo CD binaries
 * `make test` - Run unit tests
 * `make codegen` - Re-generate auto generated Swagger and Protobuf (after changing API code)
 * `make lint` - Run linting
@@ -134,9 +134,9 @@ Here are some frequently used make targets (all will run on your machine):
 * `make start-e2e` - Start server for end-to-end tests
 * `make test-e2e` - Run end-to-end tests
 * `make serve-docs` - Serve documentation
-* `make start` - Start Argo CD
+* `make start` - Start Hanzo CD
 
 ---
 Congrats on making it to the end of this runbook! 🚀
 
-For more on Argo CD, find us in Slack - <https://slack.cncf.io/> [#argo-contributors](https://cloud-native.slack.com/archives/C020XM04CUW)
+For more on Hanzo CD, find us in Slack - <https://slack.cncf.io/> [#argo-contributors](https://cloud-native.slack.com/archives/C020XM04CUW)

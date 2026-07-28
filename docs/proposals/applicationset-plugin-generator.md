@@ -56,7 +56,7 @@ Overall, the use of plugins should be considered as a way to enhance the capabil
 ### Add a new `generator` plugin
 
 ```
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: fb-plugin

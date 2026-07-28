@@ -563,7 +563,7 @@ func TestSecretsRepositoryBackend_CreateRepoCreds(t *testing.T) {
 				URL:      "git@github.com:kubernetes",
 				Username: "anotherUsername",
 				Password: "anotherPassword",
-				Proxy:    "https://proxy.argoproj.io:3128",
+				Proxy:    "https://proxy.apps.hanzo.ai:3128",
 			},
 		},
 		{
@@ -657,7 +657,7 @@ func TestSecretsRepositoryBackend_GetRepoCreds(t *testing.T) {
 				"url":      []byte("git@gitlab.com"),
 				"username": []byte("someOtherUsername"),
 				"password": []byte("someOtherPassword"),
-				"proxy":    []byte("https://proxy.argoproj.io:3128"),
+				"proxy":    []byte("https://proxy.apps.hanzo.ai:3128"),
 				"noProxy":  []byte(".example.com,127.0.0.1"),
 			},
 		},
@@ -684,7 +684,7 @@ func TestSecretsRepositoryBackend_GetRepoCreds(t *testing.T) {
 	assert.Equal(t, "someOtherUsername", repoCred.Username)
 	assert.Equal(t, "someOtherPassword", repoCred.Password)
 	if repoCred.Proxy != "" {
-		assert.Equal(t, "https://proxy.argoproj.io:3128", repoCred.Proxy)
+		assert.Equal(t, "https://proxy.apps.hanzo.ai:3128", repoCred.Proxy)
 	}
 	if repoCred.NoProxy != "" {
 		assert.Equal(t, ".example.com,127.0.0.1", repoCred.NoProxy)

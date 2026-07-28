@@ -19,7 +19,7 @@ last-updated: 2024-02-06
 
 # Decouple Application Sync using Impersonation
 
-Application syncs in Argo CD have the same privileges as the Argo CD control plane. As a consequence, in a multi-tenant setup, the Argo CD control plane privileges needs to match the tenant that needs the highest privileges. As an example, if an Argo CD instance has 10 Applications and only one of them requires admin privileges, then the Argo CD control plane must have admin privileges in order to be able to sync that one Application. Argo CD provides a multi-tenancy model to restrict what each Application can do using `AppProjects`, even though the control plane has higher privileges, however that creates a large attack surface since if Argo CD is compromised, attackers would have cluster-admin access to the cluster.
+Application syncs in Hanzo CD have the same privileges as the Hanzo CD control plane. As a consequence, in a multi-tenant setup, the Hanzo CD control plane privileges needs to match the tenant that needs the highest privileges. As an example, if an Hanzo CD instance has 10 Applications and only one of them requires admin privileges, then the Hanzo CD control plane must have admin privileges in order to be able to sync that one Application. Hanzo CD provides a multi-tenancy model to restrict what each Application can do using `AppProjects`, even though the control plane has higher privileges, however that creates a large attack surface since if Hanzo CD is compromised, attackers would have cluster-admin access to the cluster.
 
 The goal of this proposal is to perform the Application sync as a different user using impersonation and use the service account provided in the cluster config purely for control plane operations.
 
@@ -38,8 +38,8 @@ kubectl --as <user-to-impersonate> --as-group <group-to-impersonate> ...
 
 - Should the restrictions imposed as part of the `AppProjects` be honored if the impersonation feature is enabled ?
 >Yes, other restrictions implemented by `AppProject` related to whitelisting/blacklisting resources must continue to be honoured.
-- Can an Application refer to a service account with elevated privileges like say  `cluster-admin`, `admin`, and service accounts used for running the ArgoCD controllers itself ?
->Yes, this is possible as long as the ArgoCD admin user explicitly allows it through the `AppProject` configuration.
+- Can an Application refer to a service account with elevated privileges like say  `cluster-admin`, `admin`, and service accounts used for running the Hanzo CD controllers itself ?
+>Yes, this is possible as long as the Hanzo CD admin user explicitly allows it through the `AppProject` configuration.
 - Among the destinations configured in the `AppProject`, if there are multiple matches for a given destination, which destination option should be used ?
 >If there are more than one matching destination, either with a glob pattern match or an exact match, then we use the first valid match to determine the service account to be used for the sync operation.
 - Can the kubernetes audit trail events capture the impersonation.
@@ -51,11 +51,11 @@ kubectl --as <user-to-impersonate> --as-group <group-to-impersonate> ...
 
 ## Summary
 
-In a multi team/multi tenant environment, an application team is typically granted access to a namespace to self-manage their Applications in a declarative way. Current implementation of ArgoCD requires the ArgoCD Administrator to create an `AppProject` with access settings configured to replicate the RBAC resources that are configured for each team. This approach requires duplication of effort and also requires syncing the access between both to maintain the security posture. It would be desirable for users to use the existing RBAC rules without having to revert to Argo CD API to create and manage these Applications. One namespace per team, or even one namespace per application is what we are looking to address as part of this proposal.
+In a multi team/multi tenant environment, an application team is typically granted access to a namespace to self-manage their Applications in a declarative way. Current implementation of Hanzo CD requires the Hanzo CD Administrator to create an `AppProject` with access settings configured to replicate the RBAC resources that are configured for each team. This approach requires duplication of effort and also requires syncing the access between both to maintain the security posture. It would be desirable for users to use the existing RBAC rules without having to revert to Hanzo CD API to create and manage these Applications. One namespace per team, or even one namespace per application is what we are looking to address as part of this proposal.
 
 ## Motivation
 
-This proposal would allow ArgoCD administrators to manage the cluster permissions using kubernetes native RBAC implementation rather than using complex configurations in `AppProjects` to restrict access to individual applications. By decoupling the privileges required for application sync from the privileges required for ArgoCD control plane operations, the security requirement of providing least privileges can be achieved there by improving the security posture of ArgoCD. For implementing multi team/tenant use cases, this decoupling would be greatly beneficial.
+This proposal would allow Hanzo CD administrators to manage the cluster permissions using kubernetes native RBAC implementation rather than using complex configurations in `AppProjects` to restrict access to individual applications. By decoupling the privileges required for application sync from the privileges required for Hanzo CD control plane operations, the security requirement of providing least privileges can be achieved there by improving the security posture of Hanzo CD. For implementing multi team/tenant use cases, this decoupling would be greatly beneficial.
 
 ### Assumptions
 
@@ -70,7 +70,7 @@ This proposal would allow ArgoCD administrators to manage the cluster permission
 - Applications may only impersonate ServiceAccounts that live in the same namespace as the destination namespace configured in the application.If the service account is created in a different namespace, then the user can provide the service account name in the format `<namespace>:<service_account_name>` . ServiceAccount to be used for syncing each application is determined by the target destination configured in the `AppProject` associated with the `Application`.
 - If impersonation feature is enabled, and no service account name is provided in the associated `AppProject`, then the default service account of the destination namespace of the `Application` should be used.
 - Access restrictions implemented through properties in AppProject (if done) must have the existing behavior. From a security standpoint, any restrictions that were available before switching to a service account based approach should continue to exist even when the impersonation feature is enabled.
-- The feature can be enabled/disabled only at the system level. Once enabled/disabled, it is applicable to all Argo CD `Applications`.
+- The feature can be enabled/disabled only at the system level. Once enabled/disabled, it is applicable to all Hanzo CD `Applications`.
 
 ### Non-Goals
 
@@ -78,20 +78,20 @@ None
 
 ## Proposal
 
-As part of this proposal, it would be possible for an ArgoCD Admin to specify a service account name in `AppProjects` CR for a single or a group of destinations. A destination is uniquely identified by a target cluster and a namespace combined.
+As part of this proposal, it would be possible for an Hanzo CD Admin to specify a service account name in `AppProjects` CR for a single or a group of destinations. A destination is uniquely identified by a target cluster and a namespace combined.
 
 When applications gets synced, based on its destination (target cluster and namespace combination), the `defaultServiceAccount` configured in the `AppProject` will be selected and used for impersonation when executing the kubectl commands for the sync operation.
 
 We would be introducing a new element `destinationServiceAccounts` in `AppProject.spec`. This element is used for the sole purpose of specifying the impersonation configuration. The `defaultServiceAccount` configured for the `AppProject` would be used for the sync operation for a particular destination cluster and namespace. If impersonation feature is enabled and no specific service account is provided in the `AppProject` CR, then the `default` service account in the destination namespace would be used for impersonation.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -153,27 +153,27 @@ So that, I can use a generic convention of naming service accounts and avoid ass
 
 - Fix GitOps Engine code to honor Impersonate configuration set in the Application sync context for all kubectl commands that are being executed.
 
-#### Component: ArgoCD API
+#### Component: Hanzo CD API
 
 - Create a new struct type `DestinationServiceAccount` having fields `namespace`, `server` and `defaultServiceAccount`
 - Create a new field `DestinationServiceAccounts` under a `AppProject.Spec` that takes in a list of `DestinationServiceAccount` objects.
 - Add Documentation for newly introduced struct and its fields for `DestinationServiceAccount` and `DestinationServiceAccounts` under `AppProject.Spec`
 
-#### Component: ArgoCD Application Controller
+#### Component: Hanzo CD Application Controller
 
-- Provide a configuration in `argocd-cm`  which can be modified to enable the Impersonation feature. Set `applicationcontroller.enable.impersonation: true` in the Argo CD ConfigMap. Default value of `applicationcontroller.enable.impersonation` would be `false` and user has to explicitly override it to use this feature.
+- Provide a configuration in `cd-cm`  which can be modified to enable the Impersonation feature. Set `applicationcontroller.enable.impersonation: true` in the Hanzo CD ConfigMap. Default value of `applicationcontroller.enable.impersonation` would be `false` and user has to explicitly override it to use this feature.
 - Provide an option to override the Impersonation feature using environment variables.
 Set `CD_APPLICATION_CONTROLLER_ENABLE_IMPERSONATION=true` in the Application controller environment variables. Default value of the environment variable must be `false` and user has to explicitly set it to `true` to use this feature.
 - Provide an option to enable this feature using a command line flag `--enable-impersonation`. This new argument option needs to be added to the Application controller args.
 - Fix Application Controller `sync.go` to set the Impersonate configuration from the AppProject CR to the `SyncContext` Object (rawConfig and restConfig field, need to understand which config is used for the actual sync and if both configs need to be impersonated.)
 
-#### Component: ArgoCD UI
+#### Component: Hanzo CD UI
 
 - Provide option to create `DestinationServiceAccount` with fields `namespace`, `server` and `defaultServiceAccount`.
 - Provide option to add multiple `DestinationServiceAccounts` to an `AppProject` created/updated via the web console.
 - Update the User Guide documentation on how to use these newly added fields from the web console.
 
-#### Component: ArgoCD CLI
+#### Component: Hanzo CD CLI
 
 - Provide option to create `DestinationServiceAccount` with fields `namespace`, `server` and `defaultServiceAccount`.
 - Provide option to add multiple `DestinationServiceAccounts` to an `AppProject` created/updated via the web console.
@@ -183,8 +183,8 @@ Set `CD_APPLICATION_CONTROLLER_ENABLE_IMPERSONATION=true` in the Application con
 
 - Add note that this is a Beta feature in the documentation.
 - Add a separate section for this feature under user-guide section.
-- Update the ArgoCD  CLI command reference documentation.
-- Update the ArgoCD  UI command reference documentation.
+- Update the Hanzo CD  CLI command reference documentation.
+- Update the Hanzo CD  UI command reference documentation.
 
 ### Detailed examples
 
@@ -192,14 +192,14 @@ Set `CD_APPLICATION_CONTROLLER_ENABLE_IMPERSONATION=true` in the Application con
 
 In this specific scenario, service account name `generic-deployer` will get used for the application sync as the namespace `guestbook` matches the glob pattern `*`.
 
-- Install ArgoCD in the `argocd` namespace.
+- Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n argocd
+kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
 ```
 
-- Enable the impersonation feature in ArgoCD.
+- Enable the impersonation feature in Hanzo CD.
 ```shell
-kubectl patch cm argocd-cm -n argocd --type json --patch '[{ "op": "add", "path": "/data/application.sync.impersonation.enabled", "value": "true" }]'
+kubectl patch cm cd-cm -n cd --type json --patch '[{ "op": "add", "path": "/data/application.sync.impersonation.enabled", "value": "true" }]'
 ```
 
 - Create a namespace called `guestbook` and a service account called `guestbook-deployer`.
@@ -214,13 +214,13 @@ kubectl create role guestbook-deployer-role --verb get,list,update,delete --reso
 kubectl create rolebinding guestbook-deployer-rb --serviceaccount guestbook-deployer --role guestbook-deployer-role
 ```
 
-- Create the `Application` in the `argocd` namespace and the required `AppProject` as below 
+- Create the `Application` in the `cd` namespace and the required `AppProject` as below 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   project: my-project
   source:
@@ -231,13 +231,13 @@ spec:
     server: https://kubernetes.default.svc
     namespace: guestbook
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -256,14 +256,14 @@ spec:
 
 In this specific scenario, service account name `guestbook-deployer` will get used for the application sync as the namespace `guestbook` matches the target namespace `guestbook`.
 
-- Install ArgoCD in the `argocd` namespace.
+- Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n argocd
+kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
 ```
 
-- Enable the impersonation feature in ArgoCD.
+- Enable the impersonation feature in Hanzo CD.
 ```shell
-kubectl patch cm argocd-cm -n argocd --type json --patch '[{ "op": "add", "path": "/data/application.sync.impersonation.enabled", "value": "true" }]'
+kubectl patch cm cd-cm -n cd --type json --patch '[{ "op": "add", "path": "/data/application.sync.impersonation.enabled", "value": "true" }]'
 ```
 
 - Create a namespace called `guestbook` and a service account called `guestbook-deployer`.
@@ -279,11 +279,11 @@ kubectl create rolebinding guestbook-deployer-rb --serviceaccount guestbook-depl
 
 In this specific scenario, service account name `guestbook-deployer` will get used as it matches to the specific namespace `guestbook`.
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   project: my-project
   source:
@@ -294,13 +294,13 @@ spec:
     server: https://kubernetes.default.svc
     namespace: guestbook
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -322,23 +322,23 @@ spec:
 
 #### Example 3: Remote destination with cluster-admin access and using different service account for the sync operation
 
-**Note**: In this example, we are relying on the default service account `argocd-manager` with `cluster-admin` privileges which gets created when adding a remote cluster destination using the ArgoCD CLI.
+**Note**: In this example, we are relying on the default service account `cd-manager` with `cluster-admin` privileges which gets created when adding a remote cluster destination using the Hanzo CD CLI.
 
-- Install ArgoCD in the `argocd` namespace.
+- Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n argocd
+kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
 ```
 
-- Enable the impersonation feature in ArgoCD.
+- Enable the impersonation feature in Hanzo CD.
 ```shell
-kubectl patch cm argocd-cm -n argocd --type json --patch '[{ "op": "add", "path": "/data/application.sync.impersonation.enabled", "value": "true" }]'
+kubectl patch cm cd-cm -n cd --type json --patch '[{ "op": "add", "path": "/data/application.sync.impersonation.enabled", "value": "true" }]'
 ```
 
-- Add the remote cluster as a destination to argocd
+- Add the remote cluster as a destination to cd
 ```shell
-argocd cluster add remote-cluster --name remote-cluster
+cd cluster add remote-cluster --name remote-cluster
 ```
-**Note:** The above command would create a service account named `argocd-manager` in `kube-system` namespace and `ClusterRole` named `argocd-manager-role` with full cluster admin access and a `ClusterRoleBinding` named `argocd-manager-role-binding` mapping the `argocd-manager-role` to the service account `remote-cluster`
+**Note:** The above command would create a service account named `cd-manager` in `kube-system` namespace and `ClusterRole` named `cd-manager-role` with full cluster admin access and a `ClusterRoleBinding` named `cd-manager-role-binding` mapping the `cd-manager-role` to the service account `remote-cluster`
 
 - In the remote cluster, create a namespace called `guestbook` and a service account called `guestbook-deployer`.
 ```shell
@@ -357,11 +357,11 @@ kubectl create rolebinding guestbook-deployer-rb --serviceaccount guestbook-depl
 
 - Create the `Application` and `AppProject` for the `guestbook` application.
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   project: my-project
   source:
@@ -372,13 +372,13 @@ spec:
     server: https://kubernetes.default.svc
     namespace: guestbook
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -397,24 +397,24 @@ spec:
 
 **Note**: In this example, we are relying on a non default service account `guestbook` created in the target cluster and namespace for the sync operation. This use case is for handling scenarios where the remote cluster is managed by a different administrator and providing a service account with `cluster-admin` level access is not feasible.
 
-- Install ArgoCD in the `argocd` namespace.
+- Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n argocd
+kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
 ```
 
-- Enable the impersonation feature in ArgoCD.
+- Enable the impersonation feature in Hanzo CD.
 ```shell
-kubectl patch cm argocd-cm -n argocd --type json --patch '[{ "op": "add", "path": "/data/application.sync.impersonation.enabled", "value": "true" }]'
+kubectl patch cm cd-cm -n cd --type json --patch '[{ "op": "add", "path": "/data/application.sync.impersonation.enabled", "value": "true" }]'
 ```
 
-- In the remote cluster, create a service account called `argocd-admin`
+- In the remote cluster, create a service account called `cd-admin`
 ```shell
 kubectl ctx remote-cluster
-kubectl create serviceaccount argocd-admin
-kubectl create clusterrole argocd-admin-role --verb=impersonate --resource="users,groups,serviceaccounts"
-kubectl create clusterrole argocd-admin-role-access-review --verb=create --resource="selfsubjectaccessreviews"
-kubectl create clusterrolebinding argocd-admin-role-binding --serviceaccount argocd-admin --clusterrole  argocd-admin-role
-kubectl create clusterrolebinding argocd-admin-access-review-role-binding --serviceaccount argocd-admin --clusterrole  argocd-admin-role
+kubectl create serviceaccount cd-admin
+kubectl create clusterrole cd-admin-role --verb=impersonate --resource="users,groups,serviceaccounts"
+kubectl create clusterrole cd-admin-role-access-review --verb=create --resource="selfsubjectaccessreviews"
+kubectl create clusterrolebinding cd-admin-role-binding --serviceaccount cd-admin --clusterrole  cd-admin-role
+kubectl create clusterrolebinding cd-admin-access-review-role-binding --serviceaccount cd-admin --clusterrole  cd-admin-role
 ```
 
 - In the remote cluster, create a namespace called `guestbook` and a service account called `guestbook-deployer`.
@@ -432,11 +432,11 @@ kubectl create rolebinding guestbook-deployer-rb --serviceaccount guestbook-depl
 
 In this specific scenario, service account name `guestbook-deployer` will get used as it matches to the specific namespace `guestbook`.
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   project: my-project
   source:
@@ -447,13 +447,13 @@ spec:
     server: https://kubernetes.default.svc
     namespace: guestbook
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -523,11 +523,11 @@ The service account to be used for impersonation is determined on a per Applicat
 eg:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   project: my-project
   source:
@@ -537,13 +537,13 @@ spec:
   destination:
     server: https://kubernetes.default.svc
 ---
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -562,13 +562,13 @@ spec:
       server: https://kubernetes.default.svc
       defaultServiceAccount: guestbook-ui-deployer
 ```
-In the above example, since `spec.destination.namespace` is not specified, Application's namespace `argocd` is used for scoping the service account. So the service account `system:serviceaccount:argocd:guestbook-deployer` will be used for the sync operation.
+In the above example, since `spec.destination.namespace` is not specified, Application's namespace `cd` is used for scoping the service account. So the service account `system:serviceaccount:cd:guestbook-deployer` will be used for the sync operation.
 
 In the above example, If the matching service account is specified with a namespace, eg: `guestbook:guestbook-deployer`, then the service account `system:serviceaccount:guestbook:guestbook-deployer` will be used for the sync operation.
 
 ### Security Considerations
 
-* How does this proposal impact the security aspects of Argo CD workloads ?
+* How does this proposal impact the security aspects of Hanzo CD workloads ?
 * Are there any unresolved follow-ups that need to be done to make the enhancement more robust ?
 
 ### Risks and Mitigations
@@ -606,11 +606,11 @@ Consider the following in developing an upgrade/downgrade strategy for this enha
 Allow all options available in the `ImpersonationConfig` available to the user through the `AppProject` CRs.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -640,5 +640,5 @@ https://kubernetes.io/docs/reference/access-authn-authz/authentication/#user-imp
 
 ### Prior art
 
-https://github.com/argoproj/argo-cd/pull/3377
-https://github.com/argoproj/argo-cd/pull/7651
+https://github.com/hanzoai/cd/pull/3377
+https://github.com/hanzoai/cd/pull/7651

@@ -49,7 +49,7 @@ const (
 	defaultAdminPassword    = "password"
 	defaultAdminUsername    = "admin"
 	DefaultTestUserPassword = "password"
-	TestingLabel            = "e2e.argoproj.io"
+	TestingLabel            = "e2e.apps.hanzo.ai"
 	ArgoCDNamespace         = "cd-e2e"
 	ArgoCDAppNamespace      = "cd-e2e-external"
 
@@ -698,56 +698,56 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 				metav1.ListOptions{FieldSelector: "metadata.name!=default"})
 		},
 		func() error {
-			// kubectl delete secrets -l cd.argoproj.io/secret-type=repo-config
+			// kubectl delete secrets -l cd.hanzo.ai/secret-type=repo-config
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepository})
 		},
 		func() error {
-			// kubectl delete secrets -l cd.argoproj.io/secret-type=repo-creds
+			// kubectl delete secrets -l cd.hanzo.ai/secret-type=repo-creds
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepoCreds})
 		},
 		func() error {
-			// kubectl delete secrets -l cd.argoproj.io/secret-type=repository-write
+			// kubectl delete secrets -l cd.hanzo.ai/secret-type=repository-write
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepositoryWrite})
 		},
 		func() error {
-			// kubectl delete secrets -l cd.argoproj.io/secret-type=repo-write-creds
+			// kubectl delete secrets -l cd.hanzo.ai/secret-type=repo-write-creds
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepoCredsWrite})
 		},
 		func() error {
-			// kubectl delete secrets -l cd.argoproj.io/secret-type=cluster
+			// kubectl delete secrets -l cd.hanzo.ai/secret-type=cluster
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeCluster})
 		},
 		func() error {
-			// kubectl delete secrets -l e2e.argoproj.io=true
+			// kubectl delete secrets -l e2e.apps.hanzo.ai=true
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: TestingLabel + "=true"})
 		},
 		func() error {
-			// kubectl delete clusterroles -l e2e.argoproj.io=true
+			// kubectl delete clusterroles -l e2e.apps.hanzo.ai=true
 			return KubeClientset.RbacV1().ClusterRoles().DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: TestingLabel + "=true"})
 		},
 		func() error {
-			// kubectl delete clusterrolebindings -l e2e.argoproj.io=true
+			// kubectl delete clusterrolebindings -l e2e.apps.hanzo.ai=true
 			return KubeClientset.RbacV1().ClusterRoleBindings().DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},

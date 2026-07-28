@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: cm-2
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    cd.hanzo.ai/sync-wave: "2"

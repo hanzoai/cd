@@ -5,7 +5,7 @@
 
 ## Local vs Virtualized toolchain
 
-Argo CD provides a fully virtualized development and testing toolchain using Docker images. Those images provide the same runtime environment as the final product, and it is much easier to keep up-to-date with changes to the toolchain and dependencies. The virtualized toolchain runs the build and programs inside a Docker container using the test tools image. That makes everything repeatable. The dynamic nature of requirements is another reason to choose this toolchain. This setup may also require configuring the default K8s API URL that comes with installing a local K8s cluster.
+Hanzo CD provides a fully virtualized development and testing toolchain using Docker images. Those images provide the same runtime environment as the final product, and it is much easier to keep up-to-date with changes to the toolchain and dependencies. The virtualized toolchain runs the build and programs inside a Docker container using the test tools image. That makes everything repeatable. The dynamic nature of requirements is another reason to choose this toolchain. This setup may also require configuring the default K8s API URL that comes with installing a local K8s cluster.
 
 The local toolchain results in a faster development and testing cycle. Particularly on macOS where Docker and the Linux kernel run inside a VM, you may want to try developing fully locally. Local toolchain also requires installing additional tools on your machine. This toolchain is a good choice for working with an IDE debugger. 
 
@@ -43,7 +43,7 @@ export SUDO=sudo
 ```
 
 #### Using Podman
-In order to use podman for running and testing Argo CD locally, set the `DOCKER` environment variable to `podman` before you run `make`, e.g:
+In order to use podman for running and testing Hanzo CD locally, set the `DOCKER` environment variable to `podman` before you run `make`, e.g:
 
 ```
 DOCKER=podman make start
@@ -60,7 +60,7 @@ The `Dockerfile` used to build these images can be found at `test/container/Dock
 ##### K3d
 K3d is a minimal Kubernetes distribution, in docker. Because it's running in a docker container, you're dealing with docker's internal networking rules when using k3d. A typical Kubernetes cluster running on your local machine is part of the same network that you're on, so you can access it using **kubectl**. However, a Kubernetes cluster running within a docker container (in this case, the one launched by make) cannot access 0.0.0.0 from inside the container itself, when 0.0.0.0 is a network resource outside the container itself (and/or the container's network). This is the cost of a fully self-contained, disposable Kubernetes cluster.
 
-The configuration you will need for Argo CD virtualized toolchain:
+The configuration you will need for Hanzo CD virtualized toolchain:
 
 1. For most users, the following command works to find the host IP address.
 
@@ -125,18 +125,18 @@ you should edit your `~/.kube/config` and modify the `server` option to point to
 
 <https://github.com/mattn/goreman#getting-started>
 
-Goreman is used to start all needed processes to get a working Argo CD development environment (defined in `Procfile`)
+Goreman is used to start all needed processes to get a working Hanzo CD development environment (defined in `Procfile`)
 
 #### Production binary versions
 
-Helm, Kustomize, and git-lfs versions shipped in the Argo CD image are pinned in `hack/tool-versions.sh`. The git package is pinned in Dockerfiles. Renovate proposes updates via PRs labeled `production-binary`; downloaded binary checksums are refreshed automatically. Maintainers must review and merge those PRs before they land on `master`.
+Helm, Kustomize, and git-lfs versions shipped in the Hanzo CD image are pinned in `hack/tool-versions.sh`. The git package is pinned in Dockerfiles. Renovate proposes updates via PRs labeled `production-binary`; downloaded binary checksums are refreshed automatically. Maintainers must review and merge those PRs before they land on `master`.
 
 #### Install required dependencies and build-tools
 
 > [!NOTE]
 > The installation instructions are valid for Linux hosts only. Mac instructions will follow shortly.
 
-For installing the tools required to build and test Argo CD on your local system, we provide convenient installer scripts. By default, they will install binaries to `/usr/local/bin` on your system, which might require `root` privileges.
+For installing the tools required to build and test Hanzo CD on your local system, we provide convenient installer scripts. By default, they will install binaries to `/usr/local/bin` on your system, which might require `root` privileges.
 
 You can change the target location by setting the `BIN` environment before running the installer scripts. For example, you can install the binaries into `~/go/bin` (which should then be the first component in your `PATH` environment, i.e. `export PATH=~/go/bin:$PATH`):
 

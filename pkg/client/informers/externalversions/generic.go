@@ -36,7 +36,7 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=argoproj.io, Version=v1alpha1
+	// Group=apps.hanzo.ai, Version=v1alpha1
 	case v1alpha1.SchemeGroupVersion.WithResource("appprojects"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Argoproj().V1alpha1().AppProjects().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("applications"):

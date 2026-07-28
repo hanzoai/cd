@@ -1,7 +1,7 @@
-# argocd-repo-creds.yaml example
+# cd-repo-creds.yaml example
 
-An example of an argocd-repo-creds.yaml file:
+An example of an cd-repo-creds.yaml file:
 
 ```yaml
-{!docs/operator-manual/argocd-repo-creds.yaml!}
+{!docs/operator-manual/cd-repo-creds.yaml!}
 ```

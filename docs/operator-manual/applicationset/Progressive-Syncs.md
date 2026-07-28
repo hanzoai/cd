@@ -14,7 +14,7 @@ The Progressive Syncs feature set is intended to be light and flexible. The feat
 
 - Progressive Syncs watch for the managed Application resources to become "Healthy" before proceeding to the next stage.
 - Deployments, DaemonSets, StatefulSets, and [Argo Rollouts](https://argoproj.github.io/argo-rollouts/) are all supported, because the Application enters a "Progressing" state while pods are being rolled out. In fact, any resource with a health check that can report a "Progressing" status is supported.
-- [Argo CD Resource Hooks](../../user-guide/sync-waves.md) are supported. We recommend this approach for users that need advanced functionality when an Argo Rollout cannot be used, such as smoke testing after a DaemonSet change.
+- [Hanzo CD Resource Hooks](../../user-guide/sync-waves.md) are supported. We recommend this approach for users that need advanced functionality when an Argo Rollout cannot be used, such as smoke testing after a DaemonSet change.
 
 ## Enabling Progressive Syncs
 
@@ -22,7 +22,7 @@ As an experimental feature, progressive syncs must be explicitly enabled, in one
 
 1. Pass `--enable-progressive-syncs` to the ApplicationSet controller args.
 1. Set `CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS=true` in the ApplicationSet controller environment variables.
-1. Set `applicationsetcontroller.enable.progressive.syncs: "true"` in the Argo CD `argocd-cmd-params-cm` ConfigMap.
+1. Set `applicationsetcontroller.enable.progressive.syncs: "true"` in the Hanzo CD `cd-cmd-params-cm` ConfigMap.
 
 ## Strategies
 
@@ -162,11 +162,11 @@ The following example illustrates how to stage a progressive sync over Applicati
 Once a change is pushed, the following will happen in order.
 
 - All `env-dev` Applications will be updated simultaneously.
-- The rollout will wait for all `env-qa` Applications to be manually synced via the `argocd` CLI or by clicking the Sync button in the UI.
+- The rollout will wait for all `env-qa` Applications to be manually synced via the `cd` CLI or by clicking the Sync button in the UI.
 - 10% of all `env-prod` Applications will be updated at a time until all `env-prod` Applications have been updated.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook

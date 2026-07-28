@@ -1,17 +1,17 @@
-apiVersion: promoter.argoproj.io/v1alpha1
+apiVersion: promoter.apps.hanzo.ai/v1alpha1
 kind: ChangeTransferPolicy
 metadata:
   annotations:
-    promoter.argoproj.io/reconcile-at: '2025-10-15T17:11:51.672763364Z'
+    promoter.apps.hanzo.ai/reconcile-at: '2025-10-15T17:11:51.672763364Z'
   creationTimestamp: '2025-10-15T16:26:17Z'
   generation: 1
   labels:
-    promoter.argoproj.io/environment: environments-qal-usw2
-    promoter.argoproj.io/promotion-strategy: strategy
+    promoter.apps.hanzo.ai/environment: environments-qal-usw2
+    promoter.apps.hanzo.ai/promotion-strategy: strategy
   name: strategy-environments-qal-usw2-27894e05
   namespace: test
   ownerReferences:
-    - apiVersion: promoter.argoproj.io/v1alpha1
+    - apiVersion: promoter.apps.hanzo.ai/v1alpha1
       blockOwnerDeletion: true
       controller: true
       kind: PromotionStrategy
@@ -22,7 +22,7 @@ metadata:
 spec:
   activeBranch: environments/qal-usw2
   activeCommitStatuses:
-    - key: argocd-health
+    - key: cd-health
   autoMerge: true
   gitRepositoryRef:
     name: repo
@@ -30,7 +30,7 @@ spec:
 status:
   active:
     commitStatuses:
-      - key: argocd-health
+      - key: cd-health
         phase: pending
     dry: {}
     hydrated:
@@ -74,7 +74,7 @@ status:
       sha: ac7866685e376f32aaf09dced3cf2d39dc1ba50e
       subject: Create promotion-strategy.yaml
     hydrated:
-      author: Argo CD
+      author: Hanzo CD
       body: 'Co-authored-by: user <user@example.com>'
       commitTime: '2025-10-15T16:26:18Z'
       sha: 2e8097c049a97c05e6f787f46aabfe3cc2a8af21

@@ -53,7 +53,7 @@ Valid `operators` include `In`, `NotIn`, `Exists`, and `DoesNotExist`. The `valu
 ## Full Example
 In the example, the list generator generates a set of two applications, which then filter by the key value to only select the `env` with value `staging`:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook

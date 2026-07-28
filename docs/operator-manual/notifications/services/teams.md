@@ -40,13 +40,13 @@ The Teams notification service sends message notifications using Office 365 Conn
 3. Press `Add to a team` -> select team and channel -> press `Set up a connector`
 4. Enter webhook name and upload image (optional)
 5. Press `Create` then copy webhook url (it will be from `webhook.office.com`)
-6. Store it in `argocd-notifications-secret` and define it in `argocd-notifications-cm`
+6. Store it in `cd-notifications-secret` and define it in `cd-notifications-cm`
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.teams: |
     recipientUrls:
@@ -75,11 +75,11 @@ The `teams` service supports Office 365 Connectors (deprecated):
 7. Create subscription for your Teams integration:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.teams: channelName
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.teams: channelName
 ```
 
 ## Channel Support
@@ -119,7 +119,7 @@ template.app-sync-succeeded: |
         "name":"Operation Details",
         "targets":[{
           "os":"default",
-          "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+          "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
         }]
       }]
     title: Application {{.app.metadata.name}} has been successfully synced

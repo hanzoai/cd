@@ -3,7 +3,7 @@ kind: ManagedCertificate
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"networking.gke.io/v1beta2","kind":"ManagedCertificate","metadata":{"annotations":{},"name":"web","namespace":"default"},"spec":{"domains":["argocdtest.micke.me", "argocdtest2.micke.me", "argocdtest3.micke.me"]}}
+      {"apiVersion":"networking.gke.io/v1beta2","kind":"ManagedCertificate","metadata":{"annotations":{},"name":"web","namespace":"default"},"spec":{"domains":["cdtest.micke.me", "cdtest2.micke.me", "cdtest3.micke.me"]}}
   creationTimestamp: "2020-05-16T19:35:14Z"
   generation: 2
   name: web
@@ -13,16 +13,16 @@ metadata:
   uid: 8011785f-233f-4e29-a68d-81945a342f08
 spec:
   domains:
-    - argocdtest.micke.me
-    - argocdtest2.micke.me
-    - argocdtest3.micke.me
+    - cdtest.micke.me
+    - cdtest2.micke.me
+    - cdtest3.micke.me
 status:
   certificateName: mcrt-0a994e84-76b2-4ba3-9819-2a4ec5c0637e
   certificateStatus: Provisioning
   domainStatus:
-    - domain: argocdtest.micke.me
+    - domain: cdtest.micke.me
       status: Active
-    - domain: argocdtest2.micke.me
+    - domain: cdtest2.micke.me
       status: Provisioning
-    - domain: argocdtest3.micke.me
+    - domain: cdtest3.micke.me
       status: FailedNotVisible

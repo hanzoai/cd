@@ -1,8 +1,8 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    rollout.argoproj.io/revision: "7"
+    rollout.apps.hanzo.ai/revision: "7"
   clusterName: ""
   creationTimestamp: 2019-01-22T16:52:54Z
   generation: 1
@@ -11,7 +11,7 @@ metadata:
   name: ks-guestbook-ui
   namespace: default
   resourceVersion: "164023"
-  selfLink: /apis/argoproj.io/v1alpha1/namespaces/default/rollouts/ks-guestbook-ui
+  selfLink: /apis/apps.hanzo.ai/v1alpha1/namespaces/default/rollouts/ks-guestbook-ui
   uid: 29802403-1e66-11e9-a6a4-025000000001
 spec:
   minReadySeconds: 30
@@ -31,7 +31,7 @@ spec:
         app: ks-guestbook-ui
     spec:
       containers:
-      - image: quay.io/argoprojlabs/argocd-e2e-container:0.1
+      - image: quay.io/argoprojlabs/cd-e2e-container:0.1
         name: ks-guestbook-ui
         ports:
         - containerPort: 83

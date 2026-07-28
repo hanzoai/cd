@@ -25,7 +25,7 @@ The Rocket.Chat notification service configuration includes following settings:
 4. Copy username and password that you was created for bot user
 5. Create a public or private channel, or a team, for this example `my_channel`
 6. Add your bot to this channel **otherwise it won't work**
-7. Store email and password in argocd-notifications-secret Secret
+7. Store email and password in cd-notifications-secret Secret
  
 ```yaml
 apiVersion: v1
@@ -37,13 +37,13 @@ stringData:
   rocketchat-password: <password>
 ```
 
-8. Finally, use these credentials to configure the RocketChat integration in the `argocd-configmap` config map: 
+8. Finally, use these credentials to configure the RocketChat integration in the `cd-configmap` config map: 
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.rocketchat: |
     email: $rocketchat-email
@@ -55,11 +55,11 @@ data:
 *Note: channel, team or user must be prefixed with # or @ elsewhere we will be interpretative destination as a room ID*
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.rocketchat: #my_channel
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.rocketchat: #my_channel
 ```
 
 ## Templates
@@ -76,12 +76,12 @@ The message attachments can be specified in `attachments` string fields under `r
 template.app-sync-status: |
   message: |
     Application {{.app.metadata.name}} sync is {{.app.status.sync.status}}.
-    Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+    Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
   rocketchat:
     attachments: |
       [{
         "title": "{{.app.metadata.name}}",
-        "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+        "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
         "color": "#18be52",
         "fields": [{
           "title": "Sync Status",

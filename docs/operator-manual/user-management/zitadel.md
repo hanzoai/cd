@@ -1,24 +1,24 @@
 # Zitadel
 Please also consult the [Zitadel Documentation](https://zitadel.com/docs).
-## Integrating Zitadel and ArgoCD
-These instructions will take you through the entire process of getting your ArgoCD application authenticating and authorizing with Zitadel. You will create an application within Zitadel and configure ArgoCD to use Zitadel for authentication using roles set in Zitadel to determine privileges in ArgoCD.
+## Integrating Zitadel and Hanzo CD
+These instructions will take you through the entire process of getting your Hanzo CD application authenticating and authorizing with Zitadel. You will create an application within Zitadel and configure Hanzo CD to use Zitadel for authentication using roles set in Zitadel to determine privileges in Hanzo CD.
 
-The following steps are required to integrate ArgoCD with Zitadel:
+The following steps are required to integrate Hanzo CD with Zitadel:
 1. Create a new project and a new application in Zitadel
 2. Configure the application in Zitadel
 3. Set up roles in Zitadel
 4. Set up an action in Zitadel
-5. Configure ArgoCD configmaps
+5. Configure Hanzo CD configmaps
 6. Test the setup
 
 The following values will be used in this example:
 - Zitadel FQDN: `auth.example.com`
-- Zitadel Project: `argocd-project`
-- Zitadel Application: `argocd-application`
+- Zitadel Project: `cd-project`
+- Zitadel Application: `cd-application`
 - Zitadel Action: `groupsClaim`
-- ArgoCD FQDN: `argocd.example.com`
-- ArgoCD Administrator Role: `argocd_administrators`
-- ArgoCD User Role: `argocd_users`
+- Hanzo CD FQDN: `cd.example.com`
+- Hanzo CD Administrator Role: `cd_administrators`
+- Hanzo CD User Role: `cd_users`
 
 You may choose different values in your setup; these are used to keep the guide consistent.
 
@@ -37,8 +37,8 @@ Check the following options:
 ### Roles
 
 Go to **Roles** and click **New**. Create the following two roles. Use the specified values below for both fields **Key** and **Group**.
-- `argocd_administrators`
-- `argocd_users`
+- `cd_administrators`
+- `cd_users`
 
 Your roles should now look like this:
 
@@ -46,8 +46,8 @@ Your roles should now look like this:
 
 ### Authorizations
 
-Next, go to **Authorizations** and assign your user the role `argocd_administrators`.
-Click **New**, enter the name of your user and click **Continue**. Select the role `argocd_administrators` and click **Save**.
+Next, go to **Authorizations** and assign your user the role `cd_administrators`.
+Click **New**, enter the name of your user and click **Continue**. Select the role `cd_administrators` and click **Save**.
 
 Your authorizations should now look like this:
 
@@ -55,7 +55,7 @@ Your authorizations should now look like this:
 
 ### Creating an application
 
-Go to **General** and create a new application. Name the application `argocd-application`.
+Go to **General** and create a new application. Name the application `cd-application`.
 
 For type of the application, select **WEB** and click continue.
 
@@ -66,10 +66,10 @@ Select **CODE** and continue.
 ![Zitadel Application Setup Step 2](../../assets/zitadel-application-2.png "Zitadel Application Setup Step 2")
 
 Next, we will set up the redirect and post-logout URIs. Set the following values:
-- Redirect URI: `https://argocd.example.com/auth/callback`
-- Post Logout URI: `https://argocd.example.com`
+- Redirect URI: `https://cd.example.com/auth/callback`
+- Post Logout URI: `https://cd.example.com`
 
-The post logout URI is optional. In the example setup users will be taken back to the ArgoCD login page after logging out.
+The post logout URI is optional. In the example setup users will be taken back to the Hanzo CD login page after logging out.
 
 ![Zitadel Application Setup Step 3](../../assets/zitadel-application-3.png "Zitadel Application Setup Step 3")
 
@@ -79,7 +79,7 @@ Verify your configuration on the next screen and click **Create** to create the 
 
 After clicking **Create** you will be shown the `ClientId` and the `ClientSecret` for your application. Make sure to copy the ClientSecret as you will not be able to retrieve it after closing this window.  
 For our example, the following values are used:
-- ClientId: `227060711795262483@argocd-project`
+- ClientId: `227060711795262483@cd-project`
 - ClientSecret: `UGvTjXVFAQ8EkMv2x4GbPcrEwrJGWZ0sR2KbwHRNfYxeLsDurCiVEpa5bkgW0pl0`
 
 ![Zitadel Application Secrets](../../assets/zitadel-application-secrets.png "Zitadel Application Secrets")
@@ -94,7 +94,7 @@ Go to **Token Settings** and enable the following options:
 
 ## Setting up an action in Zitadel
 
-To include the role of the user in the token issued by Zitadel, we will need to set up a Zitadel Action. The authorization in ArgoCD will be determined by the role contained within the auth token.  
+To include the role of the user in the token issued by Zitadel, we will need to set up a Zitadel Action. The authorization in Hanzo CD will be determined by the role contained within the auth token.  
 Go to **Actions**, click **New** and choose `groupsClaim` as the name of your action.
 
 Paste the following code into the action:
@@ -141,31 +141,31 @@ Your Actions page should now look like the following screenshot:
 ![Zitadel Actions](../../assets/zitadel-actions.png "Zitadel Actions")
 
 
-## Configuring the ArgoCD configmaps
+## Configuring the Hanzo CD configmaps
 
-Next, we will configure two ArgoCD configmaps:
-- [argocd-cm.yaml](https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cm.yaml)
-- [argocd-rbac-cm.yaml](https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-rbac-cm.yaml)
+Next, we will configure two Hanzo CD configmaps:
+- [cd-cm.yaml](https://github.com/hanzoai/cd/blob/master/docs/operator-manual/cd-cm.yaml)
+- [cd-rbac-cm.yaml](https://github.com/hanzoai/cd/blob/master/docs/operator-manual/cd-rbac-cm.yaml)
 
 Configure your configmaps as follows while making sure to replace the relevant values such as `url`, `issuer`, `clientID`, `clientSecret` and `logoutURL` with ones matching your setup.
 
-### argocd-cm.yaml
+### cd-cm.yaml
 ```yaml
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: cd
 data:
   admin.enabled: "false"
-  url: https://argocd.example.com
+  url: https://cd.example.com
   oidc.config: |
     name: Zitadel
     issuer: https://auth.example.com
-    clientID: 227060711795262483@argocd-project
+    clientID: 227060711795262483@cd-project
     clientSecret: UGvTjXVFAQ8EkMv2x4GbPcrEwrJGWZ0sR2KbwHRNfYxeLsDurCiVEpa5bkgW0pl0
     requestedScopes:
       - openid
@@ -175,36 +175,36 @@ data:
     logoutURL: https://auth.example.com/oidc/v1/end_session
 ```
 
-### argocd-rbac-cm.yaml
+### cd-rbac-cm.yaml
 ```yaml
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-rbac-cm
-  namespace: argocd
+  name: cd-rbac-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: cd
 data:
   scopes: '[groups]'
   policy.csv: |
-    g, argocd_administrators, role:admin
-    g, argocd_users, role:readonly
+    g, cd_administrators, role:admin
+    g, cd_users, role:readonly
   policy.default: ''
 ```
 
 The roles specified under `policy.csv` must match the roles configured in Zitadel.  
-The Zitadel role `argocd_administrators` will be assigned the ArgoCD role `admin` granting admin access to ArgoCD.  
-The Zitadel role `argocd_users` will be assigned the ArgoCD role `readonly` granting read-only access to ArgoCD.
+The Zitadel role `cd_administrators` will be assigned the Hanzo CD role `admin` granting admin access to Hanzo CD.  
+The Zitadel role `cd_users` will be assigned the Hanzo CD role `readonly` granting read-only access to Hanzo CD.
 
-Deploy your ArgoCD configmaps. ArgoCD and Zitadel should now be set up correctly to allow users to log in to ArgoCD using Zitadel.
+Deploy your Hanzo CD configmaps. Hanzo CD and Zitadel should now be set up correctly to allow users to log in to Hanzo CD using Zitadel.
 
 ## Testing the setup
 
-Go to your ArgoCD instance. You should now see the **LOG IN WITH ZITADEL** button above the usual username/password login.
+Go to your Hanzo CD instance. You should now see the **LOG IN WITH ZITADEL** button above the usual username/password login.
 
-![Zitadel ArgoCD Login](../../assets/zitadel-argocd-login.png "Zitadel ArgoCD Login")
+![Zitadel Hanzo CD Login](../../assets/zitadel-cd-login.png "Zitadel Hanzo CD Login")
 
-After logging in with your Zitadel user go to **User Info**. If everything is set up correctly you should now see the group `argocd_administrators` as shown below.
+After logging in with your Zitadel user go to **User Info**. If everything is set up correctly you should now see the group `cd_administrators` as shown below.
 
-![Zitadel ArgoCD User Info](../../assets/zitadel-argocd-user-info.png "Zitadel ArgoCD User Info")
+![Zitadel Hanzo CD User Info](../../assets/zitadel-cd-user-info.png "Zitadel Hanzo CD User Info")

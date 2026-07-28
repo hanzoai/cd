@@ -1,6 +1,6 @@
 # Commit Server
 
-The Argo CD Commit Server provides push access to git repositories for hydrated manifests.
+The Hanzo CD Commit Server provides push access to git repositories for hydrated manifests.
 
 The server exposes a gRPC service which accepts requests to push hydrated manifests to a git repository. This is the interface:
 

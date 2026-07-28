@@ -38,7 +38,7 @@ management tools (Helm, Kustomize, etc.).
         + [Non-Goals](#non-goals)
     * [Proposal](#proposal)
         + [Use cases](#use-cases)
-            - [Use case 1: building Argo CD without config management dependencies](#use-case-1-building-argo-cd-without-config-management-dependencies)
+            - [Use case 1: building Hanzo CD without config management dependencies](#use-case-1-building-argo-cd-without-config-management-dependencies)
             - [Use case 2: writing CMPs with rich UI experiences](#use-case-2-writing-cmps-with-rich-ui-experiences)
         + [Implementation Details/Notes/Constraints](#implementation-detailsnotesconstraints)
             - [Prerequisites](#prerequisites)
@@ -69,7 +69,7 @@ management tools (Helm, Kustomize, etc.).
 ## Summary
 
 [Config Management Plugins](https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/) 
-allow Argo CD administrators to define custom manifest generation tooling.
+allow Hanzo CD administrators to define custom manifest generation tooling.
 
 The only existing way for users to parameterize manifest generation is with environment variables.
 
@@ -92,8 +92,8 @@ More robust CMPs will make it easier to start supporting tools like [Tanka](http
 
 ### 2. Decisions about config management tools are limited by the core code
 
-For example, there's a [Helm bug](https://github.com/argoproj/argo-cd/issues/7291) affecting Argo CD users. The fix 
-would involve importing the Helm SDK (a very large dependency) into Argo CD. Implementing Helm support as a CMP would
+For example, there's a [Helm bug](https://github.com/argoproj/argo-cd/issues/7291) affecting Hanzo CD users. The fix 
+would involve importing the Helm SDK (a very large dependency) into Hanzo CD. Implementing Helm support as a CMP would
 allow us to use that SDK without embedding it in the core code.
 
 ### 3. Ksonnet is deprecated, and CMPs are a good place to maintain support
@@ -105,16 +105,16 @@ actively-developed base. But we need CMP parameters to provide Ksonnet support o
 
 Parameterized CMPs must be:
 * Easy to write
-  * An Argo CD admin should be able to write a simple parameterized CMP in just a few lines of code.
-  * An Argo CD admin should be able to write an _advanced_ parameterized CMP server relying on thorough docs.
+  * An Hanzo CD admin should be able to write a simple parameterized CMP in just a few lines of code.
+  * An Hanzo CD admin should be able to write an _advanced_ parameterized CMP server relying on thorough docs.
     
     Writing a custom CMP server might be preferable if the parameters announcement code gets too complex to be 
     an inline shell script.
 * Easy to install
   * Installing a simple CMP or even a CMP with a custom server should be intuitive and painless.
 * Easy to use
-  * Argo CD end-users (for example, developers) should be able to
-    1. View and set parameters in the Argo CD Application UI
+  * Hanzo CD end-users (for example, developers) should be able to
+    1. View and set parameters in the Hanzo CD Application UI
     2. See the parameters reflected in the Application manifest
     3. Easily read/modify the generated parameters in the manifest (they should be structured in a way that's easy to read)
   * CMPs should be able to announce parameters with more helpful interfaces than a simple text field.
@@ -129,7 +129,7 @@ Parameterized CMPs must be:
     1. Serve as a rich example for others CMP developers to mimic
     2. Allow us to decouple the Helm config management release cycle from the Argo release cycle
     3. Allow us to work around [this bug](https://github.com/argoproj/argo-cd/issues/7291) without including the Helm 
-       SDK in the core Argo CD code
+       SDK in the core Hanzo CD code
   * The Helm CMP must be on-par with the native implementation.
     1. It must present an equivalent parameters UI.
     2. It must communicate errors back to the repo-server (and then the UI) the same as the native implementation.
@@ -143,20 +143,20 @@ We should not:
 
 ### Use cases
 
-#### Use case 1: building Argo CD without config management dependencies
+#### Use case 1: building Hanzo CD without config management dependencies
 
-As an Argo CD developer, I would like to be able to build Argo CD without including the Helm SDK as a dependency.
+As an Hanzo CD developer, I would like to be able to build Hanzo CD without including the Helm SDK as a dependency.
 
 The Helm SDK includes the Kubernetes code base. That's a lot of code, and it will make builds unacceptably slow.
 
 #### Use case 2: writing CMPs with rich UI experiences
 
-As an Argo CD user, I would like to be able to parameterize manifests built by a CMP.
+As an Hanzo CD user, I would like to be able to parameterize manifests built by a CMP.
 
-For example, if the Argo CD administrator has installed a CMP which applies a last-mile kustomize overlay to a Helm
+For example, if the Hanzo CD administrator has installed a CMP which applies a last-mile kustomize overlay to a Helm
 repo, I would like to be able to pass values to the Helm chart without having to manually discover those parameter names
 (in other words, they should show up in the Application UI just like with a native Helm Application). I also shouldn't 
-have to ask my Argo CD admin to modify the CMP to accommodate the values as environment variables.
+have to ask my Hanzo CD admin to modify the CMP to accommodate the values as environment variables.
 
 ### Implementation Details/Notes/Constraints
 
@@ -166,7 +166,7 @@ Since this proposal is designed to increase CMP adoption, we need to make sure t
 less robust than native tools.
 
 Bugs to fix:
-1. [#8145](https://github.com/argoproj/argo-cd/issues/8145) - `argocd app sync/diff --local` doesn't account for sidecar CMPs
+1. [#8145](https://github.com/argoproj/argo-cd/issues/8145) - `cd app sync/diff --local` doesn't account for sidecar CMPs
 2. [#8243](https://github.com/argoproj/argo-cd/issues/8243) - "Configure plugin via sidecar" ⇒ child resources not pruned on deletion
 
 #### Terms
@@ -186,7 +186,7 @@ Bugs to fix:
 This proposal adds a new `parameters` key to the ConfigManagementPlugin config spec.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: cmp-plugin
@@ -219,7 +219,7 @@ if my CMP is designed to handle Kustomize projects which contain Helm charts, I 
 `ignore-helm-charts` parameter to avoid announcing parameters for those charts.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 spec:
   source:
@@ -240,7 +240,7 @@ the user can set any parameter name, so it's the CMP's job to ignore invalid par
 This example is for a hypothetical Helm CMP. This CMP accepts a `values` and a `values-files` parameter.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 spec:
   source:
@@ -260,7 +260,7 @@ spec:
             image.tag: "0.1"
 ```
 
-When Argo CD generates manifests (for example, when the user clicks "Hard Refresh" in the UI), Argo CD will send these
+When Hanzo CD generates manifests (for example, when the user clicks "Hard Refresh" in the UI), Hanzo CD will send these
 parameters to the CMP as JSON (using the equivalent structure to what's shown above) on an environment variable called
 `CD_APP_PARAMETERS`.
 
@@ -344,7 +344,7 @@ The CMP developer will have two ways to announce acceptable parameters: statical
 Static parameter announcements are written directly into the CMP config file:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: helm
@@ -364,7 +364,7 @@ Dynamic parameters are generated by a CMP developer-defined command.
 A parameter definition is an object with following schema:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: helm
@@ -505,7 +505,7 @@ type ParametersAnnouncement []ParameterAnnouncement
    **Answer**: We send all given information to the CMP and allow it to select the relevant field.
 
    ```yaml
-   apiVersion: argoproj.io/v1alpha1
+   apiVersion: apps.hanzo.ai/v1alpha1
    kind: Application
    spec:
      source:
@@ -549,11 +549,11 @@ type ParametersAnnouncement []ParameterAnnouncement
    - name: name-prefix  # expects a string
    - name: helm-parameters-incorrect  # expects a string, the map is ignored
      map:
-       global.image.repository: quay.io/argoproj/argocd
+       global.image.repository: quay.io/argoproj/cd
    - name: helm-parameters  # expects a map
      collectionType: map
      map:
-       global.image.repository: quay.io/argoproj/argocd
+       global.image.repository: quay.io/argoproj/cd
    ```
 
 5. **Question**: What do we do if a parameter has a missing or absent top-level `name` field?
@@ -567,7 +567,7 @@ type ParametersAnnouncement []ParameterAnnouncement
    - title: Parameter Overrides
      collectionType: map
      map:
-       global.image.repository: quay.io/argoproj/argocd
+       global.image.repository: quay.io/argoproj/cd
    ```
 
 ### Detailed examples
@@ -575,7 +575,7 @@ type ParametersAnnouncement []ParameterAnnouncement
 #### Example 1: trivial parameterized CMP
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: trivial-cmp
@@ -613,14 +613,14 @@ spec:
 **Plugin config**
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: kustomize-helm-proxy-cmp
 spec:
   version: v1.0
   generate:
-    command: [/home/argocd/generate.sh]
+    command: [/home/cd/generate.sh]
   discover:
     fileName: "./kustomization.yaml"
   parameters:
@@ -633,7 +633,7 @@ spec:
       - name: name-suffix
         title: NAME SUFFIX
     dynamic:
-      command: [/home/argocd/get-parameters.sh]
+      command: [/home/cd/get-parameters.sh]
 ```
 
 **generate.sh**
@@ -672,7 +672,7 @@ FROM ubuntu:20.04
 
 RUN apt install jq yq helm kustomize -y
 
-ADD get-parameters.sh /home/argocd/get-parameters.sh
+ADD get-parameters.sh /home/cd/get-parameters.sh
 ```
 
 #### Example 3: simple Helm CMP
@@ -682,14 +682,14 @@ This example demonstrates how the Helm parameters interface could be achieved wi
 ![Helm parameters interface](images/helm-parameters.png)
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: simple-helm-cmp
 spec:
   version: v1.0
   generate:
-    command: [/home/argocd/generate.sh]
+    command: [/home/cd/generate.sh]
   discover:
     fileName: "./values.yaml"
   parameters:
@@ -698,7 +698,7 @@ spec:
       title: VALUES FILES
       collectionType: array
     dynamic:
-      command: [/home/argocd/get-parameters.sh]
+      command: [/home/cd/get-parameters.sh]
 ```
 
 **generate.sh**
@@ -749,7 +749,7 @@ Consider a very simple values.yaml:
 
 ```yaml
 image:
-  repo: quay.io/argoproj/argocd
+  repo: quay.io/argoproj/cd
   tag: latest
 ```
 
@@ -762,7 +762,7 @@ The script above will produce the following parameters announcement:
     "title": "Helm Parameters",
     "collectionType": "map",
     "map": {
-      "image.repo": "quay.io/argoproj/argocd",
+      "image.repo": "quay.io/argoproj/cd",
       "image.tag": "latest"
     }
   }
@@ -772,7 +772,7 @@ The script above will produce the following parameters announcement:
 #### Example 4: simple Kustomize CMP
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: kustomize
@@ -799,8 +799,8 @@ spec:
     "title": "Image Overrides",
     "collectionType": "map",
     "map": {
-      "quay.io/argoproj/argocd": "docker.example.com/proxy/argoproj/argocd",
-      "ubuntu:latest": "docker.example.com/proxy/argoproj/argocd"
+      "quay.io/argoproj/cd": "docker.example.com/proxy/argoproj/cd",
+      "ubuntu:latest": "docker.example.com/proxy/argoproj/cd"
     }
   }
 ]
@@ -830,9 +830,9 @@ well as image and source code scanning tools in CI/CD.
 
 ### Upgrade / Downgrade Strategy
 
-Upgrading will only require using a new version of Argo CD and adding the `parameters` settings to the plugin config.
+Upgrading will only require using a new version of Hanzo CD and adding the `parameters` settings to the plugin config.
 
-Downgrading will only require using an older version of Argo CD. The `parameters` section of the plugin config will 
+Downgrading will only require using an older version of Hanzo CD. The `parameters` section of the plugin config will 
 simply be ignored.
 
 ## Drawbacks

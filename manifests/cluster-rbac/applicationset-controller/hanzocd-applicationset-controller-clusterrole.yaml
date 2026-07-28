@@ -69,7 +69,7 @@ rules:
     resources:
       - leases
     resourceNames:
-      # Defined in `cmd/argocd-applicationset-controller/commands/applicationset_controller.go`
+      # Defined in `cmd/cd-applicationset-controller/commands/applicationset_controller.go`
       - 58ac56fa.applicationsets.apps.hanzo.ai
     verbs:
       - get

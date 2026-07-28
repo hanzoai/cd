@@ -1,10 +1,10 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/tracking-id: 'app-of-apps:argoproj.io/Application:argocd/argo-workflows'
+    cd.hanzo.ai/tracking-id: 'app-of-apps:apps.hanzo.ai/Application:cd/argo-workflows'
   name: argo-workflows
-  namespace: argocd
+  namespace: cd
 spec:
   destination:
     name: in-cluster

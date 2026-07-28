@@ -1,43 +1,43 @@
 # Parameter Overrides
 
-Argo CD provides a mechanism to override the parameters of Argo CD applications that leverages config management
+Hanzo CD provides a mechanism to override the parameters of Hanzo CD applications that leverages config management
 tools. This provides flexibility in having most of the application manifests defined in Git, while leaving room
 for *some* parts of the  k8s manifests determined dynamically, or outside of Git. It also serves as an alternative way of
-redeploying an application by changing application parameters via Argo CD, instead of making the 
+redeploying an application by changing application parameters via Hanzo CD, instead of making the 
 changes to the manifests in Git.
 
 > [!TIP]
 > Many consider this mode of operation as an anti-pattern to GitOps, since the source of
-> truth becomes a union of the Git repository, and the application overrides. The Argo CD parameter
+> truth becomes a union of the Git repository, and the application overrides. The Hanzo CD parameter
 > overrides feature is provided mainly as a convenience to developers and is intended to be used in
 > dev/test environments, vs. production environments.
 
-To use parameter overrides, run the `argocd app set -p (COMPONENT=)PARAM=VALUE` command:
+To use parameter overrides, run the `cd app set -p (COMPONENT=)PARAM=VALUE` command:
 
 ```bash
-argocd app set guestbook -p image=example/guestbook:abcd123
-argocd app sync guestbook
+cd app set guestbook -p image=example/guestbook:abcd123
+cd app sync guestbook
 ```
 
 The `PARAM` is expected to be a normal YAML path
 
 ```bash
-argocd app set guestbook -p ingress.enabled=true
-argocd app set guestbook -p ingress.hosts[0]=guestbook.myclusterurl
+cd app set guestbook -p ingress.enabled=true
+cd app set guestbook -p ingress.hosts[0]=guestbook.myclusterurl
 ```
 
-The `argocd app set` [command](./commands/argocd_app_set.md) supports more tool-specific flags such as `--kustomize-image`, `--jsonnet-ext-var-str`, etc.
+The `cd app set` [command](./commands/cd_app_set.md) supports more tool-specific flags such as `--kustomize-image`, `--jsonnet-ext-var-str`, etc.
 You can also specify overrides directly in the source field on the application spec. Read more about supported options in the corresponding tool [documentation](./application_sources.md).
 
 ## Overrides in Multi-Source Applications
 
-For multi-source applications, Argo CD allows you to override parameters for a specific source using the `--source-position` flag.
+For multi-source applications, Hanzo CD allows you to override parameters for a specific source using the `--source-position` flag.
 Each source in the application spec is indexed starting from `0`.
 
 For example, to override a parameter in the **second source (index 1)** of a multi-source app:
 
 ```bash
-argocd app set my-app --source-position 1 -p replicaCount=2
+cd app set my-app --source-position 1 -p replicaCount=2
 ```
 
 ## When To Use Overrides?
@@ -50,7 +50,7 @@ case, the application would expose a parameter named `image`, whose value used i
 environment contains a placeholder value (e.g. `example/guestbook:replaceme`). The placeholder value
 would be determined externally (outside of Git) such as a build system. Then, as part of the build
 pipeline, the parameter value of the `image` would be continually updated to the freshly built image
-(e.g. `argocd app set guestbook -p image=example/guestbook:abcd123`). A sync operation
+(e.g. `cd app set guestbook -p image=example/guestbook:abcd123`). A sync operation
 would result in the application being redeployed with the new image.
 
 2. A repository of Helm manifests is already publicly available (e.g. https://github.com/helm/charts).
@@ -60,15 +60,15 @@ forking the repository to make the changes. For example, to install Redis from t
 repository and customize the database password, you would run:
 
 ```bash
-argocd app create redis --repo https://github.com/helm/charts.git --path stable/redis --dest-server https://kubernetes.default.svc --dest-namespace default -p password=abc123
+cd app create redis --repo https://github.com/helm/charts.git --path stable/redis --dest-server https://kubernetes.default.svc --dest-namespace default -p password=abc123
 ```
 
 ## Store Overrides In Git
 
-The config management tool specific overrides can be specified in `.argocd-source.yaml` file stored in the source application
+The config management tool specific overrides can be specified in `.cd-source.yaml` file stored in the source application
 directory in the Git repository.
 
-The `.argocd-source.yaml` file is used during manifest generation and overrides
+The `.cd-source.yaml` file is used during manifest generation and overrides
 application source fields, such as `kustomize`, `helm` etc.
 
 Example:
@@ -76,26 +76,26 @@ Example:
 ```yaml
 kustomize:
   images:
-    - quay.io/argoprojlabs/argocd-e2e-container:0.2
+    - quay.io/argoprojlabs/cd-e2e-container:0.2
 ```
 
-The `.argocd-source` is trying to solve two following main use cases:
+The `.cd-source` is trying to solve two following main use cases:
 
 - Provide the unified way to "override" application parameters in Git and enable the "write back" feature
-for projects like [argocd-image-updater](https://github.com/argoproj-labs/argocd-image-updater).
+for projects like [cd-image-updater](https://github.com/argoproj-labs/cd-image-updater).
 - Support "discovering" applications in the Git repository by projects like [applicationset](https://github.com/argoproj/applicationset)
-(see [git files generator](https://github.com/argoproj/argo-cd/blob/master/applicationset/examples/git-generator-files-discovery/git-generator-files.yaml))
+(see [git files generator](https://github.com/hanzoai/cd/blob/master/applicationset/examples/git-generator-files-discovery/git-generator-files.yaml))
 
 You can also store parameter overrides in an application specific file, if you
 are sourcing multiple applications from a single path in your repository.
 
-The application specific file must be named `.argocd-source-<appname>.yaml`,
+The application specific file must be named `.cd-source-<appname>.yaml`,
 where `<appname>` is the name of the application the overrides are valid for.
 When combined with the [apps-in-any-namespace](../operator-manual/app-any-namespace.md)
 feature, filename is expected to include the namespace name as a prefix, i.e.
-`.argocd-source-<namespace>_<appname>.yaml`.
+`.cd-source-<namespace>_<appname>.yaml`.
 
-If there exists a non-application specific `.argocd-source.yaml`, parameters
+If there exists a non-application specific `.cd-source.yaml`, parameters
 included in that file will be merged first, and then the application specific
 parameters are merged, which can also contain overrides to the parameters
 stored in the non-application specific file.

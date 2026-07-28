@@ -1,15 +1,15 @@
-# `argocd-application-controller` Command Reference
+# `cd-application-controller` Command Reference
 
-## argocd-application-controller
+## cd-application-controller
 
-Run ArgoCD Application Controller
+Run Hanzo CD Application Controller
 
 ### Synopsis
 
-ArgoCD application controller is a Kubernetes controller that continuously monitors running applications and compares the current, live state against the desired target state (as specified in the repo). This command runs Application Controller in the foreground.  It can be configured by following options.
+Hanzo CD application controller is a Kubernetes controller that continuously monitors running applications and compares the current, live state against the desired target state (as specified in the repo). This command runs Application Controller in the foreground.  It can be configured by following options.
 
 ```
-argocd-application-controller [flags]
+cd-application-controller [flags]
 ```
 
 ### Options
@@ -27,14 +27,14 @@ argocd-application-controller [flags]
       --client-certificate string                                 Path to a client certificate file for TLS
       --client-key string                                         Path to a client key file for TLS
       --cluster string                                            The name of the kubeconfig cluster to use
-      --commit-server string                                      Commit server address. (default "argocd-commit-server:8086")
+      --commit-server string                                      Commit server address. (default "cd-commit-server:8086")
       --context string                                            The name of the kubeconfig context to use
       --default-cache-expiration duration                         Cache expiration default (default 24h0m0s)
       --disable-compression                                       If true, opt-out of response compression for all requests to the server
       --dynamic-cluster-distribution-enabled                      Enables dynamic cluster distribution.
-      --enable-k8s-event none                                     Enable ArgoCD to use k8s event. For disabling all events, set the value as none. (e.g --enable-k8s-event=none), For enabling specific events, set the value as `event reason`. (e.g --enable-k8s-event=StatusRefreshed,ResourceCreated) (default [all])
+      --enable-k8s-event none                                     Enable Hanzo CD to use k8s event. For disabling all events, set the value as none. (e.g --enable-k8s-event=none), For enabling specific events, set the value as `event reason`. (e.g --enable-k8s-event=StatusRefreshed,ResourceCreated) (default [all])
       --gloglevel int                                             Set the glog logging level
-  -h, --help                                                      help for argocd-application-controller
+  -h, --help                                                      help for cd-application-controller
       --hydration-processors int                                  Number of manifest hydration processors (only relevant when the Source Hydrator is enabled) (default 5)
       --hydrator-enabled                                          Feature flag to enable Hydrator. Default ("false")
       --ignore-normalizer-jq-execution-timeout-seconds duration   Set ignore normalizer JQ execution timeout
@@ -43,10 +43,10 @@ argocd-application-controller [flags]
       --kubectl-parallelism-limit int                             Number of allowed concurrent kubectl fork/execs. Any value less than 1 means no limit. (default 20)
       --logformat string                                          Set the logging format. One of: json|text (default "json")
       --loglevel string                                           Set the logging level. One of: debug|info|warn|error (default "info")
-      --metrics-application-conditions strings                    List of Application conditions that will be added to the argocd_app_condition metric
-      --metrics-application-labels strings                        List of Application labels that will be added to the argocd_app_labels metric
+      --metrics-application-conditions strings                    List of Application conditions that will be added to the cd_app_condition metric
+      --metrics-application-labels strings                        List of Application labels that will be added to the cd_app_labels metric
       --metrics-cache-expiration duration                         Prometheus metrics cache expiration (disabled  by default. e.g. 24h0m0s)
-      --metrics-cluster-labels strings                            List of Cluster labels that will be added to the argocd_cluster_labels metric
+      --metrics-cluster-labels strings                            List of Cluster labels that will be added to the cd_cluster_labels metric
       --metrics-port int                                          Start metrics server on given port (default 8082)
   -n, --namespace string                                          If present, the namespace scope for this CLI request
       --operation-processors int                                  Number of application operation processors (default 10)
@@ -58,7 +58,7 @@ argocd-application-controller [flags]
       --password string                                           Password for basic authentication to the API server
       --persist-resource-health                                   Enables storing the managed resources health in the Application CRD
       --proxy-url string                                          If provided, this URL will be used to connect via proxy
-      --redis string                                              Redis server hostname and port (e.g. argocd-redis:6379). 
+      --redis string                                              Redis server hostname and port (e.g. cd-redis:6379). 
       --redis-ca-certificate string                               Path to Redis server CA certificate (e.g. /etc/certs/redis/ca.crt). If not specified, system trusted CAs will be used for server certificate validation.
       --redis-client-certificate string                           Path to Redis client certificate (e.g. /etc/certs/redis/client.crt).
       --redis-client-key string                                   Path to Redis client key (e.g. /etc/certs/redis/client.crt).
@@ -67,7 +67,7 @@ argocd-application-controller [flags]
       --redis-use-tls                                             Use TLS when connecting to Redis. 
       --redisdb int                                               Redis database.
       --repo-error-grace-period-seconds int                       Grace period in seconds for ignoring consecutive errors while communicating with repo server. (default 180)
-      --repo-server string                                        Repo server address. (default "argocd-repo-server:8081")
+      --repo-server string                                        Repo server address. (default "cd-repo-server:8081")
       --repo-server-ca-cert-path string                           Path to the repo-server CA certificate file
       --repo-server-client-cert-key-path string                   Path to the client certificate key file for mTLS. Defaults to the auto-mounted Secret path; mTLS client cert is skipped if the file does not exist. (default "/app/config/reposerver/mtls/client.key")
       --repo-server-client-cert-path string                       Path to the client certificate file for mTLS. Defaults to the auto-mounted Secret path; mTLS client cert is skipped if the file does not exist. (default "/app/config/reposerver/mtls/client.crt")
@@ -78,7 +78,7 @@ argocd-application-controller [flags]
       --self-heal-backoff-factor int                              Specifies factor of exponential timeout between application self heal attempts (default 3)
       --self-heal-backoff-timeout-seconds int                     Specifies initial timeout of exponential backoff between self heal attempts (default 2)
       --self-heal-timeout-seconds int                             Specifies timeout between application self heal attempts
-      --sentinel stringArray                                      Redis sentinel hostname and port (e.g. argocd-redis-ha-announce-0:6379). 
+      --sentinel stringArray                                      Redis sentinel hostname and port (e.g. cd-redis-ha-announce-0:6379). 
       --sentinelmaster string                                     Redis sentinel master group name. (default "master")
       --server string                                             The address and port of the Kubernetes API server
       --server-side-diff-enabled                                  Feature flag to enable ServerSide diff. Default ("false")

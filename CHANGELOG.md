@@ -19,7 +19,7 @@
 - chore: update parse-url (#10101)
 - docs: add api field example in the appset security doc (#10087)
 - chore: update redis to 7.0.4 avoid CVE-2022-30065 (#10059)
-- docs: add argocd-server grpc metric usage (#10007)
+- docs: add cd-server grpc metric usage (#10007)
 - chore: upgrade Dex to 2.32.0 (#10036) (#10042)
 - chore: update redis to avoid CVE-2022-2097 (#10031)
 - chore: update haproxy to 2.0.29 for redis-ha (#10045)
@@ -28,7 +28,7 @@
 
 ### Bug fixes
 
-fix: Support files in argocd.argoproj.io/manifest-generate-paths annotation (#9908)
+fix: Support files in cd.hanzo.ai/manifest-generate-paths annotation (#9908)
 fix: terminal websocket write lock to avoid races (#10011)
 fix: updated all a tags to Link tags in app summary (#9777)
 fix: e2e test to use func from clusterauth instead creating one with old logic (#9989)
@@ -51,7 +51,7 @@ docs: supported versions (#9876)
 ### Bug fixes
 
 * fix: 'unexpected reserved bits' breaking web terminal (#9605) (#9895)
-* fix: argocd login just hangs on 2.4.0 #9679 (#9935)
+* fix: cd login just hangs on 2.4.0 #9679 (#9935)
 * fix: CMP manifest generation fails with ENHANCE_YOUR_CALM if over 40s (#9922)
 * fix: NotAfter is not set when ValidFor is set (#9911)
 * fix: add missing download CLI tool link for ppc64le, s390x (#9649)
@@ -74,13 +74,13 @@ docs: supported versions (#9876)
 
 ### Security fixes
 
-* HIGH: Certificate verification is skipped for connections to OIDC providers ([GHSA-7943-82jg-wmw5](https://github.com/argoproj/argo-cd/security/advisories/GHSA-7943-82jg-wmw5))
-* LOW: A leaked API server encryption key can allow XSS for SSO users ([GHSA-pmjg-52h9-72qv](https://github.com/argoproj/argo-cd/security/advisories/GHSA-pmjg-52h9-72qv))
+* HIGH: Certificate verification is skipped for connections to OIDC providers ([GHSA-7943-82jg-wmw5](https://github.com/hanzoai/cd/security/advisories/GHSA-7943-82jg-wmw5))
+* LOW: A leaked API server encryption key can allow XSS for SSO users ([GHSA-pmjg-52h9-72qv](https://github.com/hanzoai/cd/security/advisories/GHSA-pmjg-52h9-72qv))
 
 ### Potentially-breaking changes
 
 The fix for GHSA-7943-82jg-wmw5 enables TLS certificate validation by default for connections to OIDC providers. If
-connections to your OIDC provider fails validation, SSO will be broken for your Argo CD instance. You should test 2.4.5
+connections to your OIDC provider fails validation, SSO will be broken for your Hanzo CD instance. You should test 2.4.5
 before upgrading it to production. From the new documentation:
 
 > By default, all connections made by the API server to OIDC providers (either external providers or the bundled Dex
@@ -89,14 +89,14 @@ before upgrading it to production. From the new documentation:
 > token as part of an OIDC login flow.
 >
 > Disabling certificate verification might make sense if:
-> * You are using the bundled Dex instance **and** your Argo CD instance has TLS configured with a self-signed certificate
+> * You are using the bundled Dex instance **and** your Hanzo CD instance has TLS configured with a self-signed certificate
     >   **and** you understand and accept the risks of skipping OIDC provider cert verification.
 > * You are using an external OIDC provider **and** that provider uses an invalid certificate **and** you cannot solve
     >   the problem by setting `oidcConfig.rootCA` **and** you understand and accept the risks of skipping OIDC provider cert
     >   verification.
 >
 > If either of those two applies, then you can disable OIDC provider certificate verification by setting
-> `oidc.tls.insecure.skip.verify` to `"true"` in the `argocd-cm` ConfigMap.
+> `oidc.tls.insecure.skip.verify` to `"true"` in the `cd-cm` ConfigMap.
 
 ### Bug fixes
 
@@ -126,7 +126,7 @@ before upgrading it to production. From the new documentation:
 - fix: respect OIDC providers' supported token signing algorithms (#9433) (#9761)
 - fix websockets for terminal not working on subPath (#9795)
 - fix: avoid closing and re-opening port of api server settings change (#9778)
-- fix: [ArgoCD] Fixing webhook typo in case of error in GetManifests (#9671)
+- fix: [Hanzo CD] Fixing webhook typo in case of error in GetManifests (#9671)
 - fix: overrides should not appear in the manifest cache key (#9601)
 
 ## v2.4.2 (2022-06-21)
@@ -147,14 +147,14 @@ before upgrading it to production. From the new documentation:
 
 ### Security fixes
 
-* CRITICAL: External URLs for Deployments can include javascript ([GHSA-h4w9-6x78-8vrj](https://github.com/argoproj/argo-cd/security/advisories/GHSA-h4w9-6x78-8vrj))
-* HIGH: Insecure entropy in PKCE/Oauth2/OIDC params ([GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2m7h-86qq-fp4v))
-* MODERATE: DoS through large directory app manifest files ([GHSA-jhqp-vf4w-rpwq](https://github.com/argoproj/argo-cd/security/advisories/GHSA-jhqp-vf4w-rpwq))
-* MODERATE: Symlink following allows leaking out-of-bounds YAML files from Argo CD repo-server ([GHSA-q4w5-4gq2-98vm](https://github.com/argoproj/argo-cd/security/advisories/GHSA-q4w5-4gq2-98vm))
+* CRITICAL: External URLs for Deployments can include javascript ([GHSA-h4w9-6x78-8vrj](https://github.com/hanzoai/cd/security/advisories/GHSA-h4w9-6x78-8vrj))
+* HIGH: Insecure entropy in PKCE/Oauth2/OIDC params ([GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories/GHSA-2m7h-86qq-fp4v))
+* MODERATE: DoS through large directory app manifest files ([GHSA-jhqp-vf4w-rpwq](https://github.com/hanzoai/cd/security/advisories/GHSA-jhqp-vf4w-rpwq))
+* MODERATE: Symlink following allows leaking out-of-bounds YAML files from Hanzo CD repo-server ([GHSA-q4w5-4gq2-98vm](https://github.com/hanzoai/cd/security/advisories/GHSA-q4w5-4gq2-98vm))
 
 ### Potentially-breaking changes
 
-From the [GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2m7h-86qq-fp4v) description:
+From the [GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories/GHSA-2m7h-86qq-fp4v) description:
 
 > The patch introduces a new `reposerver.max.combined.directory.manifests.size` config parameter, which you should tune before upgrading in production. It caps the maximum total file size of .yaml/.yml/.json files in directory-type (raw manifest) Applications. The default max is 10M per Application. This max is designed to keep any single app from consuming more than 3G of memory in the repo-server (manifests consume more space in memory than on disk). The 300x ratio assumes a maliciously-crafted manifest file. If you only want to protect against accidental excessive memory use, it is probably safe to use a smaller ratio.
 >
@@ -173,7 +173,7 @@ From the [GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advi
 
 ## v2.4.0 (2022-06-10)
 
-### Web Terminal In Argo CD UI
+### Web Terminal In Hanzo CD UI
 
 Feature enables engineers to start a shell in the running application container without leaving the web interface. Just find the required Kubernetes
 Pod using the Application Details page, click on it and select the Terminal tab. The shell starts automatically and enables you to execute the required
@@ -181,7 +181,7 @@ commands, and helps to troubleshoot the application state.
 
 ### Access Control For Pod Logs & Web Terminal
 
-Argo CD is used to manage the critical infrastructure of multiple organizations, which makes security the top priority of the project. We've listened to
+Hanzo CD is used to manage the critical infrastructure of multiple organizations, which makes security the top priority of the project. We've listened to
 your feedback and introduced additional access control settings that control access to Kubernetes Pod logs and the new Web Terminal feature.
 
 #### Pod Logs UI
@@ -194,8 +194,8 @@ Upon pressing the "LOGS" tab in pod view by users who don't have an explicit all
 
 ### OpenTelemetry Tracing Integration
 
-The new feature allows emitting richer telemetry data that might make identifying performance bottlenecks easier. The new feature is available for argocd-server
-and argocd-repo-server components and can be enabled using the --otlp-address flag.
+The new feature allows emitting richer telemetry data that might make identifying performance bottlenecks easier. The new feature is available for cd-server
+and cd-repo-server components and can be enabled using the --otlp-address flag.
 
 ### Power PC and IBM Z Support
 
@@ -247,13 +247,13 @@ This is mainly a security related release and updates compatibility with Kuberne
 
 ### Security fixes
 
-* HIGH: Certificate verification is skipped for connections to OIDC providers ([GHSA-7943-82jg-wmw5](https://github.com/argoproj/argo-cd/security/advisories/GHSA-7943-82jg-wmw5))
-* LOW: A leaked API server encryption key can allow XSS for SSO users ([GHSA-pmjg-52h9-72qv](https://github.com/argoproj/argo-cd/security/advisories/GHSA-pmjg-52h9-72qv))
+* HIGH: Certificate verification is skipped for connections to OIDC providers ([GHSA-7943-82jg-wmw5](https://github.com/hanzoai/cd/security/advisories/GHSA-7943-82jg-wmw5))
+* LOW: A leaked API server encryption key can allow XSS for SSO users ([GHSA-pmjg-52h9-72qv](https://github.com/hanzoai/cd/security/advisories/GHSA-pmjg-52h9-72qv))
 
 ### Potentially-breaking changes
 
 The fix for GHSA-7943-82jg-wmw5 enables TLS certificate validation by default for connections to OIDC providers. If
-connections to your OIDC provider fails validation, SSO will be broken for your Argo CD instance. You should test 2.3.6
+connections to your OIDC provider fails validation, SSO will be broken for your Hanzo CD instance. You should test 2.3.6
 before upgrading it to production. From the new documentation:
 
 > By default, all connections made by the API server to OIDC providers (either external providers or the bundled Dex
@@ -262,14 +262,14 @@ before upgrading it to production. From the new documentation:
 > token as part of an OIDC login flow.
 >
 > Disabling certificate verification might make sense if:
-> * You are using the bundled Dex instance **and** your Argo CD instance has TLS configured with a self-signed certificate
+> * You are using the bundled Dex instance **and** your Hanzo CD instance has TLS configured with a self-signed certificate
     >   **and** you understand and accept the risks of skipping OIDC provider cert verification.
 > * You are using an external OIDC provider **and** that provider uses an invalid certificate **and** you cannot solve
     >   the problem by setting `oidcConfig.rootCA` **and** you understand and accept the risks of skipping OIDC provider cert
     >   verification.
 >
 > If either of those two applies, then you can disable OIDC provider certificate verification by setting
-> `oidc.tls.insecure.skip.verify` to `"true"` in the `argocd-cm` ConfigMap.
+> `oidc.tls.insecure.skip.verify` to `"true"` in the `cd-cm` ConfigMap.
 
 ### Bug fixes
 
@@ -279,14 +279,14 @@ before upgrading it to production. From the new documentation:
 
 ### Security fixes
 
-* CRITICAL: External URLs for Deployments can include javascript ([GHSA-h4w9-6x78-8vrj](https://github.com/argoproj/argo-cd/security/advisories/GHSA-h4w9-6x78-8vrj))
-* HIGH: Insecure entropy in PKCE/Oauth2/OIDC params ([GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2m7h-86qq-fp4v))
-* MODERATE: DoS through large directory app manifest files ([GHSA-jhqp-vf4w-rpwq](https://github.com/argoproj/argo-cd/security/advisories/GHSA-jhqp-vf4w-rpwq))
-* MODERATE: Symlink following allows leaking out-of-bounds YAML files from Argo CD repo-server ([GHSA-q4w5-4gq2-98vm](https://github.com/argoproj/argo-cd/security/advisories/GHSA-q4w5-4gq2-98vm))
+* CRITICAL: External URLs for Deployments can include javascript ([GHSA-h4w9-6x78-8vrj](https://github.com/hanzoai/cd/security/advisories/GHSA-h4w9-6x78-8vrj))
+* HIGH: Insecure entropy in PKCE/Oauth2/OIDC params ([GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories/GHSA-2m7h-86qq-fp4v))
+* MODERATE: DoS through large directory app manifest files ([GHSA-jhqp-vf4w-rpwq](https://github.com/hanzoai/cd/security/advisories/GHSA-jhqp-vf4w-rpwq))
+* MODERATE: Symlink following allows leaking out-of-bounds YAML files from Hanzo CD repo-server ([GHSA-q4w5-4gq2-98vm](https://github.com/hanzoai/cd/security/advisories/GHSA-q4w5-4gq2-98vm))
 
 ### Potentially-breaking changes
 
-From the [GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2m7h-86qq-fp4v) description:
+From the [GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories/GHSA-2m7h-86qq-fp4v) description:
 
 > The patch introduces a new `reposerver.max.combined.directory.manifests.size` config parameter, which you should tune before upgrading in production. It caps the maximum total file size of .yaml/.yml/.json files in directory-type (raw manifest) Applications. The default max is 10M per Application. This max is designed to keep any single app from consuming more than 3G of memory in the repo-server (manifests consume more space in memory than on disk). The 300x ratio assumes a maliciously-crafted manifest file. If you only want to protect against accidental excessive memory use, it is probably safe to use a smaller ratio.
 >
@@ -311,9 +311,9 @@ From the [GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advi
 
 ### Security fixes
 
-- CRITICAL: Argo CD will trust invalid JWT claims if anonymous access is enabled (https://github.com/argoproj/argo-cd/security/advisories/GHSA-r642-gv9p-2wjj)
-- LOW: Login screen allows message spoofing if SSO is enabled (https://github.com/argoproj/argo-cd/security/advisories/GHSA-xmg8-99r8-jc2j)
-- MODERATE: Symlink following allows leaking out-of-bound manifests and JSON files from Argo CD repo-server (https://github.com/argoproj/argo-cd/security/advisories/GHSA-6gcg-hp2x-q54h)
+- CRITICAL: Hanzo CD will trust invalid JWT claims if anonymous access is enabled (https://github.com/hanzoai/cd/security/advisories/GHSA-r642-gv9p-2wjj)
+- LOW: Login screen allows message spoofing if SSO is enabled (https://github.com/hanzoai/cd/security/advisories/GHSA-xmg8-99r8-jc2j)
+- MODERATE: Symlink following allows leaking out-of-bound manifests and JSON files from Hanzo CD repo-server (https://github.com/hanzoai/cd/security/advisories/GHSA-6gcg-hp2x-q54h)
 
 ### Bug Fixes
 
@@ -340,27 +340,27 @@ From the [GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advi
 
 ## v2.3.0 (2022-03-05)
 
-### Argo CD ApplicationSet and Notifications are now part of Argo CD
+### Hanzo CD ApplicationSet and Notifications are now part of Hanzo CD
 
-Two popular [Argoproj Labs](https://github.com/argoproj-labs) projects [Argo CD ApplicationSet](https://github.com/argoproj/applicationset) and
-[Argo CD Notifications](https://github.com/argoproj-labs/argocd-notifications) are now part of Argo CD! The default Argo CD installation manifests now
-bundle both projects out of the box. Going forward you can expect more tightened integration of these projects into Argo CD.
+Two popular [Argoproj Labs](https://github.com/argoproj-labs) projects [Hanzo CD ApplicationSet](https://github.com/argoproj/applicationset) and
+[Hanzo CD Notifications](https://github.com/argoproj-labs/cd-notifications) are now part of Hanzo CD! The default Hanzo CD installation manifests now
+bundle both projects out of the box. Going forward you can expect more tightened integration of these projects into Hanzo CD.
 
 ### New sync and diff strategies
 
-Users can now configure the Application resource to instruct Argo CD to consider the ignore difference setup during the sync process.
+Users can now configure the Application resource to instruct Hanzo CD to consider the ignore difference setup during the sync process.
 In order to do so, add the new sync option RespectIgnoreDifferences=true in the Application resource. Once the sync option is added,
-Argo CD won't change ignored fields during the syncing process.
+Hanzo CD won't change ignored fields during the syncing process.
 
 Configuring ignored fields is also easier now. Instead of listing fields one by one users can now leverage the 
-managedFields metadata to instruct Argo CD about trusted managers and automatically ignore any fields owned by them. A new diff customization
+managedFields metadata to instruct Hanzo CD about trusted managers and automatically ignore any fields owned by them. A new diff customization
 (managedFieldsManagers) is now available allowing users to specify managers the application should trust and to ignore all fields owned by those managers.
-Read more about these changes at [New sync and diff strategies in ArgoCD](https://blog.argoproj.io/new-sync-and-diff-strategies-in-argocd-44195d3f8b8c) blog post.
+Read more about these changes at [New sync and diff strategies in Hanzo CD](https://blog.apps.hanzo.ai/new-sync-and-diff-strategies-in-cd-44195d3f8b8c) blog post.
 
 ### ARM Images
 
-An officially supported ARM 64 image is now available. Enjoy running Argo CD on your Raspberry Pi! Additionally, the image size was reduced by nearly ~50%
-and is only 200MB now. The ARM version of `argocd` CLI is also available and published as a Github release artifact.
+An officially supported ARM 64 image is now available. Enjoy running Hanzo CD on your Raspberry Pi! Additionally, the image size was reduced by nearly ~50%
+and is only 200MB now. The ARM version of `cd` CLI is also available and published as a Github release artifact.
 
 ### Compact Tree View And Click Application Navigation
 
@@ -379,7 +379,7 @@ Both bundled Helm and Kustomize binaries have been upgraded to the latest versio
 * Config management tools enhancements:
 * The skipCrds flag and ability to ignore missing values files for Helm (#8012, #8003)
 * Additional environment variables for Kustomize (#8096)
-* Argo CD CLI follows the XDG Base directory standard (#7638)
+* Hanzo CD CLI follows the XDG Base directory standard (#7638)
 * Redis is no longer used during SSO login (#8241)
 
 
@@ -393,7 +393,7 @@ Both bundled Helm and Kustomize binaries have been upgraded to the latest versio
 - feat: Allow escaping dollar in Envsubst (#7961)
 - feat: Allow external links on Application (#3487) (#8231)
 - feat: Allow selecting application on detail page (#8176)
-- feat: Bundle applicationset-controller with argocd (#8148)
+- feat: Bundle applicationset-controller with cd (#8148)
 - feat: Enable specifying root ca for oidc (#6712)
 - feat: Expose CD_APP_NAME to the `kustomize build` command (#8096)
 - feat: Ignore differences owned by trusted managers from managedFields (#7869)
@@ -444,7 +444,7 @@ Both bundled Helm and Kustomize binaries have been upgraded to the latest versio
 
 - chore: Bump go-jsonnet to v0.18.0 (#8011)
 - chore: Escape proj in regex (#7985)
-- chore: Exclude argocd-server rbac for core-install (#8234)
+- chore: Exclude cd-server rbac for core-install (#8234)
 - chore: Log out the resource triggering reconciliation (#8192)
 - chore: Migrate to use golang-jwt/jwt v4.2.0 (#8136)
 - chore: Move resolveRevision from api-server to repo-server (#7966)
@@ -501,13 +501,13 @@ This is mainly a security related release and updates compatibility with Kuberne
 
 ### Security fixes
 
-* HIGH: Certificate verification is skipped for connections to OIDC providers ([GHSA-7943-82jg-wmw5](https://github.com/argoproj/argo-cd/security/advisories/GHSA-7943-82jg-wmw5))
-* LOW: A leaked API server encryption key can allow XSS for SSO users ([GHSA-pmjg-52h9-72qv](https://github.com/argoproj/argo-cd/security/advisories/GHSA-pmjg-52h9-72qv))
+* HIGH: Certificate verification is skipped for connections to OIDC providers ([GHSA-7943-82jg-wmw5](https://github.com/hanzoai/cd/security/advisories/GHSA-7943-82jg-wmw5))
+* LOW: A leaked API server encryption key can allow XSS for SSO users ([GHSA-pmjg-52h9-72qv](https://github.com/hanzoai/cd/security/advisories/GHSA-pmjg-52h9-72qv))
 
 ### Potentially-breaking changes
 
 The fix for GHSA-7943-82jg-wmw5 enables TLS certificate validation by default for connections to OIDC providers. If
-connections to your OIDC provider fails validation, SSO will be broken for your Argo CD instance. You should test 2.2.11
+connections to your OIDC provider fails validation, SSO will be broken for your Hanzo CD instance. You should test 2.2.11
 before upgrading it to production. From the new documentation:
 
 > By default, all connections made by the API server to OIDC providers (either external providers or the bundled Dex
@@ -516,14 +516,14 @@ before upgrading it to production. From the new documentation:
 > token as part of an OIDC login flow.
 >
 > Disabling certificate verification might make sense if:
-> * You are using the bundled Dex instance **and** your Argo CD instance has TLS configured with a self-signed certificate
+> * You are using the bundled Dex instance **and** your Hanzo CD instance has TLS configured with a self-signed certificate
     >   **and** you understand and accept the risks of skipping OIDC provider cert verification.
 > * You are using an external OIDC provider **and** that provider uses an invalid certificate **and** you cannot solve
     >   the problem by setting `oidcConfig.rootCA` **and** you understand and accept the risks of skipping OIDC provider cert
     >   verification.
 >
 > If either of those two applies, then you can disable OIDC provider certificate verification by setting
-> `oidc.tls.insecure.skip.verify` to `"true"` in the `argocd-cm` ConfigMap.
+> `oidc.tls.insecure.skip.verify` to `"true"` in the `cd-cm` ConfigMap.
 
 ### Features
 
@@ -537,14 +537,14 @@ before upgrading it to production. From the new documentation:
 
 ### Security fixes
 
-* CRITICAL: External URLs for Deployments can include javascript ([GHSA-h4w9-6x78-8vrj](https://github.com/argoproj/argo-cd/security/advisories/GHSA-h4w9-6x78-8vrj))
-* HIGH: Insecure entropy in PKCE/Oauth2/OIDC params ([GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2m7h-86qq-fp4v))
-* MODERATE: DoS through large directory app manifest files ([GHSA-jhqp-vf4w-rpwq](https://github.com/argoproj/argo-cd/security/advisories/GHSA-jhqp-vf4w-rpwq))
-* MODERATE: Symlink following allows leaking out-of-bounds YAML files from Argo CD repo-server ([GHSA-q4w5-4gq2-98vm](https://github.com/argoproj/argo-cd/security/advisories/GHSA-q4w5-4gq2-98vm))
+* CRITICAL: External URLs for Deployments can include javascript ([GHSA-h4w9-6x78-8vrj](https://github.com/hanzoai/cd/security/advisories/GHSA-h4w9-6x78-8vrj))
+* HIGH: Insecure entropy in PKCE/Oauth2/OIDC params ([GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories/GHSA-2m7h-86qq-fp4v))
+* MODERATE: DoS through large directory app manifest files ([GHSA-jhqp-vf4w-rpwq](https://github.com/hanzoai/cd/security/advisories/GHSA-jhqp-vf4w-rpwq))
+* MODERATE: Symlink following allows leaking out-of-bounds YAML files from Hanzo CD repo-server ([GHSA-q4w5-4gq2-98vm](https://github.com/hanzoai/cd/security/advisories/GHSA-q4w5-4gq2-98vm))
 
 ### Potentially-breaking changes
 
-From the [GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2m7h-86qq-fp4v) description:
+From the [GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories/GHSA-2m7h-86qq-fp4v) description:
 
 > The patch introduces a new `reposerver.max.combined.directory.manifests.size` config parameter, which you should tune before upgrading in production. It caps the maximum total file size of .yaml/.yml/.json files in directory-type (raw manifest) Applications. The default max is 10M per Application. This max is designed to keep any single app from consuming more than 3G of memory in the repo-server (manifests consume more space in memory than on disk). The 300x ratio assumes a maliciously-crafted manifest file. If you only want to protect against accidental excessive memory use, it is probably safe to use a smaller ratio.
 >
@@ -572,9 +572,9 @@ This is a security release. We urge all users of the 2.2.z branch to update as s
 
 ### Security fixes
 
-- CRITICAL: Argo CD will trust invalid JWT claims if anonymous access is enabled (https://github.com/argoproj/argo-cd/security/advisories/GHSA-r642-gv9p-2wjj)
-- LOW: Login screen allows message spoofing if SSO is enabled (https://github.com/argoproj/argo-cd/security/advisories/GHSA-xmg8-99r8-jc2j)
-- MODERATE: Symlink following allows leaking out-of-bound manifests and JSON files from Argo CD repo-server (https://github.com/argoproj/argo-cd/security/advisories/GHSA-6gcg-hp2x-q54h)
+- CRITICAL: Hanzo CD will trust invalid JWT claims if anonymous access is enabled (https://github.com/hanzoai/cd/security/advisories/GHSA-r642-gv9p-2wjj)
+- LOW: Login screen allows message spoofing if SSO is enabled (https://github.com/hanzoai/cd/security/advisories/GHSA-xmg8-99r8-jc2j)
+- MODERATE: Symlink following allows leaking out-of-bound manifests and JSON files from Hanzo CD repo-server (https://github.com/hanzoai/cd/security/advisories/GHSA-6gcg-hp2x-q54h)
 
 ## v2.2.8 (2022-03-22)
 
@@ -583,11 +583,11 @@ This is a security release. We urge all users of the 2.2.z branch to update as s
 This release contains the fix for a security issue with critical severity. We recommend users on the 2.2 release branch to update to this release as soon as possible.
 
 More information can be found in the related
-[security advisory](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2f5v-8r3f-8pww).
+[security advisory](https://github.com/hanzoai/cd/security/advisories/GHSA-2f5v-8r3f-8pww).
 
 ### Changes
 
-As part of the security fix, the Argo CD UI no longer automatically presents child resources of allow-listed resources unless the child resources are also allow-listed. For example, Pods are not going to show up if only Deployment is added to the allow-list.
+As part of the security fix, the Hanzo CD UI no longer automatically presents child resources of allow-listed resources unless the child resources are also allow-listed. For example, Pods are not going to show up if only Deployment is added to the allow-list.
 
 If you have [projects](https://argo-cd.readthedocs.io/en/stable/user-guide/projects/) configured with allow-lists, make sure the allow-lists include all the resources you want users to be able to view/manage through the UI. For example, if your project allows `Deployments`, you would add `ReplicaSets` and `Pods`.
 
@@ -620,7 +620,7 @@ If you have [projects](https://argo-cd.readthedocs.io/en/stable/user-guide/proje
 This release contains the fix for a security issue with high severity. We recommend users on the 2.2 release branch to update to this release as soon as possible.
 
 More information can be found in the related
-[security advisory](https://github.com/argoproj/argo-cd/security/advisories/GHSA-63qx-x74g-jcr7)
+[security advisory](https://github.com/hanzoai/cd/security/advisories/GHSA-63qx-x74g-jcr7)
 
 ### Bug Fixes
 
@@ -673,15 +673,15 @@ improved plugin manifests discovery.
 
 ### Resource tracking
 
-Argo CD has traditionally tracked the resources it manages by the well-known "app.kubernetes.io/instance" property.
-While using this property works ok in simple scenarios, it also has several limitations. ArgoCD now allows you to use
-a new annotation (argocd.argoproj.io/tracking-id) for tracking your resources. Using this annotation is a much more flexible approach
-as there are no conflicts with other Kubernetes tools, and you can easily install multiple Argo CD instances on the same clusters.
+Hanzo CD has traditionally tracked the resources it manages by the well-known "app.kubernetes.io/instance" property.
+While using this property works ok in simple scenarios, it also has several limitations. Hanzo CD now allows you to use
+a new annotation (cd.hanzo.ai/tracking-id) for tracking your resources. Using this annotation is a much more flexible approach
+as there are no conflicts with other Kubernetes tools, and you can easily install multiple Hanzo CD instances on the same clusters.
 
 ### Bug Fixes and Performance Enhancements
 
-* Argo CD API server caches RBAC checks that significantly improves the GET /api/v1/applications API performance (#7587)
-* Argo CD RBAC supports regex matches (#7165)
+* Hanzo CD API server caches RBAC checks that significantly improves the GET /api/v1/applications API performance (#7587)
+* Hanzo CD RBAC supports regex matches (#7165)
 * Health check support for KubeVirt (#7176), Cassandra (#7017), Openshift Route (#7112), DeploymentConfig (#7114), Confluent (#6957) and SparkApplication (#7434) CRDs.
 * Persistent banner (#7312) with custom positioning (#7462)
 * Cluster name support in project destinations (#7198)
@@ -691,16 +691,16 @@ as there are no conflicts with other Kubernetes tools, and you can easily instal
 
 ### Security fixes
 
-* CRITICAL: External URLs for Deployments can include javascript ([GHSA-h4w9-6x78-8vrj](https://github.com/argoproj/argo-cd/security/advisories/GHSA-h4w9-6x78-8vrj))
-* HIGH: Insecure entropy in PKCE/Oauth2/OIDC params ([GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2m7h-86qq-fp4v))
-* MODERATE: DoS through large directory app manifest files ([GHSA-jhqp-vf4w-rpwq](https://github.com/argoproj/argo-cd/security/advisories/GHSA-jhqp-vf4w-rpwq))
-* MODERATE: Symlink following allows leaking out-of-bounds YAML files from Argo CD repo-server ([GHSA-q4w5-4gq2-98vm](https://github.com/argoproj/argo-cd/security/advisories/GHSA-q4w5-4gq2-98vm))
+* CRITICAL: External URLs for Deployments can include javascript ([GHSA-h4w9-6x78-8vrj](https://github.com/hanzoai/cd/security/advisories/GHSA-h4w9-6x78-8vrj))
+* HIGH: Insecure entropy in PKCE/Oauth2/OIDC params ([GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories/GHSA-2m7h-86qq-fp4v))
+* MODERATE: DoS through large directory app manifest files ([GHSA-jhqp-vf4w-rpwq](https://github.com/hanzoai/cd/security/advisories/GHSA-jhqp-vf4w-rpwq))
+* MODERATE: Symlink following allows leaking out-of-bounds YAML files from Hanzo CD repo-server ([GHSA-q4w5-4gq2-98vm](https://github.com/hanzoai/cd/security/advisories/GHSA-q4w5-4gq2-98vm))
 
 **Note:** This will be the last security fix release in the 2.1.x series. Please [upgrade to a newer minor version](https://argo-cd.readthedocs.io/en/latest/operator-manual/upgrading/overview/) to continue to get security fixes.
 
 ### Potentially-breaking changes
 
-From the [GHSA-2m7h-86qq-fp4v](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2m7h-86qq-fp4v) description:
+From the [GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories/GHSA-2m7h-86qq-fp4v) description:
 
 > The patch introduces a new `reposerver.max.combined.directory.manifests.size` config parameter, which you should tune before upgrading in production. It caps the maximum total file size of .yaml/.yml/.json files in directory-type (raw manifest) Applications. The default max is 10M per Application. This max is designed to keep any single app from consuming more than 3G of memory in the repo-server (manifests consume more space in memory than on disk). The 300x ratio assumes a maliciously-crafted manifest file. If you only want to protect against accidental excessive memory use, it is probably safe to use a smaller ratio.
 >
@@ -729,9 +729,9 @@ This is a security release. We urge all users of the 2.1.z branch to update as s
 
 ### Security fixes
 
-- CRITICAL: Argo CD will trust invalid JWT claims if anonymous access is enabled (https://github.com/argoproj/argo-cd/security/advisories/GHSA-r642-gv9p-2wjj)
-- LOW: Login screen allows message spoofing if SSO is enabled (https://github.com/argoproj/argo-cd/security/advisories/GHSA-xmg8-99r8-jc2j)
-- MODERATE: Symlink following allows leaking out-of-bound manifests and JSON files from Argo CD repo-server (https://github.com/argoproj/argo-cd/security/advisories/GHSA-6gcg-hp2x-q54h)
+- CRITICAL: Hanzo CD will trust invalid JWT claims if anonymous access is enabled (https://github.com/hanzoai/cd/security/advisories/GHSA-r642-gv9p-2wjj)
+- LOW: Login screen allows message spoofing if SSO is enabled (https://github.com/hanzoai/cd/security/advisories/GHSA-xmg8-99r8-jc2j)
+- MODERATE: Symlink following allows leaking out-of-bound manifests and JSON files from Hanzo CD repo-server (https://github.com/hanzoai/cd/security/advisories/GHSA-6gcg-hp2x-q54h)
 
 ## v2.1.14 (2022-03-22)
 
@@ -740,11 +740,11 @@ This is a security release. We urge all users of the 2.1.z branch to update as s
 This release contains the fix for a security issue with critical severity. We recommend users on the 2.1 release branch to update to this release as soon as possible.
 
 More information can be found in the related
-[security advisory](https://github.com/argoproj/argo-cd/security/advisories/GHSA-2f5v-8r3f-8pww).
+[security advisory](https://github.com/hanzoai/cd/security/advisories/GHSA-2f5v-8r3f-8pww).
 
 ### Changes
 
-As part of the security fix, the Argo CD UI no longer automatically presents child resources of allow-listed resources unless the child resources are also allow-listed. For example, Pods are not going to show up if only Deployment is added to the allow-list.
+As part of the security fix, the Hanzo CD UI no longer automatically presents child resources of allow-listed resources unless the child resources are also allow-listed. For example, Pods are not going to show up if only Deployment is added to the allow-list.
 
 If you have [projects](https://argo-cd.readthedocs.io/en/stable/user-guide/projects/) configured with allow-lists, make sure the allow-lists include all the resources you want users to be able to view/manage through the UI. For example, if your project allows `Deployments`, you would add `ReplicaSets` and `Pods`.
 
@@ -783,7 +783,7 @@ Unused release number.
 This release contains the fix for a security issue with high severity. We recommend users on the 2.1 release branch to update to this release as soon as possible.
 
 More information can be found in the related
-[security advisory](https://github.com/argoproj/argo-cd/security/advisories/GHSA-63qx-x74g-jcr7)
+[security advisory](https://github.com/hanzoai/cd/security/advisories/GHSA-63qx-x74g-jcr7)
 
 ### Bug Fixes
 
@@ -824,9 +824,9 @@ More information can be found in the related
 
 ## v2.1.3 (2021-10-29)
 
-- fix: core-install.yaml always refers to latest argocd image (#7321)
+- fix: core-install.yaml always refers to latest cd image (#7321)
 - fix: handle applicationset backup forbidden error (#7306)
-- fix: Argo CD should not use cached git/helm revision during app creation/update validation (#7244)
+- fix: Hanzo CD should not use cached git/helm revision during app creation/update validation (#7244)
 
 ## v2.1.2 (2021-10-02)
 
@@ -849,9 +849,9 @@ More information can be found in the related
 
 > [Upgrade instructions](./docs/operator-manual/upgrading/2.0-2.1.md)
 
-### Argo CD Core
+### Hanzo CD Core
 
-Argo CD Core - lightweight Argo CD distribution that packages only core GitOps features and relies
+Hanzo CD Core - lightweight Hanzo CD distribution that packages only core GitOps features and relies
 on Kubernetes API/RBAC to power UI and CLI.
 
 ### Core Features
@@ -865,15 +865,15 @@ on Kubernetes API/RBAC to power UI and CLI.
 
 ### Improved Settings
 
-A set of changes had been implemented to simplify configuring Argo CD.
+A set of changes had been implemented to simplify configuring Hanzo CD.
 
-* Simplified Repository Registration: you no longer need to modify the argocd-cm ConfigMap to register a
+* Simplified Repository Registration: you no longer need to modify the cd-cm ConfigMap to register a
   new Git or Helm repository.
 * Enhanced Resource Customizations: the resource.customizations key has been deprecated in favor of
   a separate ConfigMap key per resource.
 * Reference secret values from any Kubernetes secret: starting v2.1 you can use sensitive data stored in 
-  any Kubernetes secret to configure Argo CD.
-* Simplify parametrization of Argo CD server processes: an additional optional ConfigMap argocd-cmd-params-cm
+  any Kubernetes secret to configure Hanzo CD.
+* Simplify parametrization of Hanzo CD server processes: an additional optional ConfigMap cd-cmd-params-cm
   has been introduced.
 
 ### Refreshed User Interface
@@ -882,17 +882,17 @@ A set of changes had been implemented to simplify configuring Argo CD.
 * Status bar on the Application List page.
 * The redesigned search box on the Application List page and more.
 
-### The argocd-util CLI deprecation
+### The cd-util CLI deprecation
 
-The argocd CLI and now available under argocd admin subcommand.
+The cd CLI and now available under cd admin subcommand.
 
 ## v2.0.5 (2021-07-22)
 
-* fix: allow argocd-notification ingress to repo-server (#6746)
-* fix: argocd-server crashes due to nil pointer dereference (#6757)
+* fix: allow cd-notification ingress to repo-server (#6746)
+* fix: cd-server crashes due to nil pointer dereference (#6757)
 * fix: WebUI failure when loading pod view 't.parentRefs is undefined' (#6490) (#6535)
 * fix: prevent 'cannot read property "filter" of undefined' during nodes filtering (#6453)
-* fix: download Pod Logs button not honouring argocd-server rootpath (#6548) (#6627)
+* fix: download Pod Logs button not honouring cd-server rootpath (#6548) (#6627)
 * fix: Version warning banner in docs (#6682)
 * fix: upgrade gitops engine to fix workflow health check
 
@@ -913,7 +913,7 @@ The argocd CLI and now available under argocd admin subcommand.
 
 ### Bug Fixes
 
-* fix: add missing --container flag to 'argocd app logs' command (#6320)
+* fix: add missing --container flag to 'cd app logs' command (#6320)
 * fix: grpc web proxy must ensure to read full header (#6319)
 * fix: controller should refresh app before running sync operation (#6294)
 
@@ -926,10 +926,10 @@ The argocd CLI and now available under argocd admin subcommand.
 * fix: Don't count errored or completed neighbor pods toward resource consumption (#6259)
 * fix: Enable kex algo diffie-hellman-group-exchange-sha256 for go-git ssh (#6256)
 * fix: copy github app key from repocreds (#6140, #6197)
-* fix(ui): UI crashes after reinstalling ArgoCD (#6218)
-* fix: add network policies to restrict traffic flow between argocd components (#6156)
+* fix(ui): UI crashes after reinstalling Hanzo CD (#6218)
+* fix: add network policies to restrict traffic flow between cd components (#6156)
 * fix: Revert "feat: Add health checks for kubernetes-external-secrets (#5435)"
-* chore: Allow ingress traffic to argocd-server by default (#6179)
+* chore: Allow ingress traffic to cd-server by default (#6179)
 
 ## v2.0.1 (2021-04-15)
 
@@ -955,7 +955,7 @@ resources they requested.
 
 ### Logs Viewer
 
-Argo CD provides a way to see live logs of pods, which is very useful for debugging and troubleshooting. In the v2.0
+Hanzo CD provides a way to see live logs of pods, which is very useful for debugging and troubleshooting. In the v2.0
 release, the log visualization has been rewritten to support pagination, filtering, the ability to disable/enable log
 streaming, and even a dark mode for terminal lovers. Do you want to see aggregated logs of multiple deployment pods?
 Not a problem! Just click on the parent resource such as Deployment, ReplicaSet, or StatefulSet and navigate
@@ -963,20 +963,20 @@ to the Logs tab.
 
 ### Banner Feature
 
-Want to notify your Argo CD users of upcoming changes? Just specify the notification message and optional URL using the
-`ui.bannercontent` and `ui.bannerurl` attributes in the `argocd-cm` ConfigMap. 
+Want to notify your Hanzo CD users of upcoming changes? Just specify the notification message and optional URL using the
+`ui.bannercontent` and `ui.bannerurl` attributes in the `cd-cm` ConfigMap. 
 
 ### Core Features
 
 * The new sync option `PrunePropagationPolicy=background` allows using background deletion during syncing
-* New application finalizer `resources-finalizer.argocd.argoproj.io:background` allows using background deletion when the application is deleted
+* New application finalizer `resources-finalizer.cd.hanzo.ai:background` allows using background deletion when the application is deleted
 * The new sync option `ApplyOutOfSyncOnly=true` allows skipping syncing resources that are already in the desired state.
 * The new sync option `PruneLast=true` allows deferring resource pruning until the last synchronization phase after all other resources are synced and healthy.
 
-### The argocd-util CLI
+### The cd-util CLI
 
-Argo CD Util is a CLI tool that contains useful commands for operators who manage Argo CD. Starting from this release
-the Argo CD Utility is published with every Argo CD release as a Homebrew installation.
+Hanzo CD Util is a CLI tool that contains useful commands for operators who manage Hanzo CD. Starting from this release
+the Hanzo CD Utility is published with every Hanzo CD release as a Homebrew installation.
 
 ## v1.8.7 (2021-02-26)
 
@@ -1000,10 +1000,10 @@ resources, you will have to adapt your cluster resources allow lists to explicit
 
 ## v1.8.5 (2021-02-19)
 
-- fix: 'argocd app wait --suspended' stuck if operation is in progress (#5511)
+- fix: 'cd app wait --suspended' stuck if operation is in progress (#5511)
 - fix: Presync hooks stop working after namespace resource is added in a Helm chart #5522
 - docs: add the missing rbac resources to the documentation (#5476)
-- refactor: optimize argocd-application-controller redis usage (#5345)
+- refactor: optimize cd-application-controller redis usage (#5345)
 
 ## v1.8.4 (2021-02-05)
 
@@ -1049,25 +1049,25 @@ resources, you will have to adapt your cluster resources allow lists to explicit
 ### Mono-Repository Improvements
 
 Enhanced performance during manifest generation from mono-repository - the repository that represents the
-desired state of the whole cluster and contains hundreds of applications. The improved argocd-repo-server
+desired state of the whole cluster and contains hundreds of applications. The improved cd-repo-server
 now able to concurrently generate manifests from the same repository and for the same commit SHA. This
 might provide 10x performance improvement of manifests generation.
 
 ### Annotation Based Path Detection
 
 The feature that allows specifying which source repository directories influence the application manifest generation
-using the `argocd.argoproj.io/manifest-generate-paths` annotation. The annotation improves the Git webhook handler
+using the `cd.hanzo.ai/manifest-generate-paths` annotation. The annotation improves the Git webhook handler
 behavior. The webhook avoids related applications reconciliation if no related files have been changed by the Git commit
 and even allows to skip manifests generation for new commit by re-using generation manifests for the previous commit.
 
 ### Horizontal Controller Scaling
 
-This release allows scaling the `argocd-application-controller` horizontally. This allows you to manage as many Kubernetes clusters
-as needed using a single Argo CD instance.
+This release allows scaling the `cd-application-controller` horizontally. This allows you to manage as many Kubernetes clusters
+as needed using a single Hanzo CD instance.
 
 ## New Core Functionality Features
 
-Besides performance improvements, Argo CD got a lot of usability enhancements and new features:
+Besides performance improvements, Hanzo CD got a lot of usability enhancements and new features:
 
 * Namespace and CRD creation [#4354](https://github.com/argoproj/argo-cd/issues/4354)
 * Unknown fields of built-in K8S types [#1787](https://github.com/argoproj/argo-cd/issues/1787)
@@ -1077,14 +1077,14 @@ Besides performance improvements, Argo CD got a lot of usability enhancements an
 
 ## Global Projects
 
-This release makes it easy to manage an Argo CD that has hundreds of Projects. Instead of duplicating the same organization-wide rules in all projects
+This release makes it easy to manage an Hanzo CD that has hundreds of Projects. Instead of duplicating the same organization-wide rules in all projects
 you can put such rules into one project and make this project “global” for all other projects. Rules defined in the global project are inherited by all
 other projects and therefore don’t have to be duplicated. The sample below demonstrates how you can create a global project and specify which project should
 inherit global project rules using Kubernetes labels. 
 
 ## User Interface Improvements
 
-The Argo CD user interface is an important part of a project and we keep working hard on improving the user experience. Here is an incomplete list of implemented improvements:
+The Hanzo CD user interface is an important part of a project and we keep working hard on improving the user experience. Here is an incomplete list of implemented improvements:
 
 * Improved Applications Filters [#4622](https://github.com/argoproj/argo-cd/issues/4622)
 * Git tags and branches autocompletion [#4713](https://github.com/argoproj/argo-cd/issues/4713)
@@ -1100,12 +1100,12 @@ The Argo CD user interface is an important part of a project and we keep working
 
 ## Bug fixes and under the hood changes
 
-In addition to new features and enhancements, we’ve fixed more than 50 bugs and upgraded third-party components and libraries that Argo CD relies on.
+In addition to new features and enhancements, we’ve fixed more than 50 bugs and upgraded third-party components and libraries that Hanzo CD relies on.
 
 ## v1.7.9 (2020-11-17)
 
 - fix: improve commit verification tolerance (#4825)
-- fix: argocd diff --local should not print data of local secrets (#4850)
+- fix: cd diff --local should not print data of local secrets (#4850)
 - fix(ui): stack overflow crash of resource tree view for large applications (#4685)
 - chore: Update golang to v1.14.12 [backport to release-1.7] (#4834)
 - chore: Update redis to 5.0.10 (#4767)
@@ -1123,15 +1123,15 @@ In addition to new features and enhancements, we’ve fixed more than 50 bugs an
 
 - fix: Support transition from a git managed namespace to auto create (#4401)
 - fix: reduce memory spikes during cluster cache refresh (#4298)
-- fix: No error/warning condition if application destination namespace not monitored by Argo CD (#4329)
+- fix: No error/warning condition if application destination namespace not monitored by Hanzo CD (#4329)
 - fix: Fix local diff/sync of apps using cluster name (#4201)
 
 ## v1.7.6 (2020-09-18)
 
 - fix: Added cluster authentication to AKS clusters (#4265)
 - fix: swagger UI stuck loading (#4377)
-- fix: prevent 'argocd app sync' hangs if sync is completed too quickly (#4373)
-- fix: argocd app wait/sync might stuck (#4350)
+- fix: prevent 'cd app sync' hangs if sync is completed too quickly (#4373)
+- fix: cd app wait/sync might stuck (#4350)
 - fix: failed syncs are not retried soon enough (#4353)
 
 ## v1.7.5 (2020-09-15)
@@ -1172,36 +1172,36 @@ In addition to new features and enhancements, we’ve fixed more than 50 bugs an
 ## v1.7.2 (2020-08-25)
 
 - fix: Unable to create project JWT token on K8S v1.15 (#4165)
-- fix: Argo CD does not exclude creationTimestamp from diffing (#4157)
+- fix: Hanzo CD does not exclude creationTimestamp from diffing (#4157)
 
 ## v1.7.0 (2020-08-24)
 
 ### GnuPG Signature Verification
 
 The feature allows to only sync against commits that are signed in Git using GnuPG. The list of public 
-GPG keys required for verification is configured at the system level and can be managed using Argo CD CLI or Web user interface.
-The keys management is integrated with Argo CD SSO and access control system (e.g. `argocd gpg add --from <path-to-key>`)
+GPG keys required for verification is configured at the system level and can be managed using Hanzo CD CLI or Web user interface.
+The keys management is integrated with Hanzo CD SSO and access control system (e.g. `cd gpg add --from <path-to-key>`)
 
 The signature verification is enabled on the project level. The ApplicationProject CRD has a new signatureKeys field that includes
-a list of imported public GPG keys. Argo CD will verify the commit signature by these keys for every project application.
+a list of imported public GPG keys. Hanzo CD will verify the commit signature by these keys for every project application.
 
 ### Cluster Management Enhancements
 
 The feature allows using the cluster name instead of the URL to specify the application destination cluster.
-Additionally, the cluster CLI and Web user interface have been improved. Argo CD operators now can view and edit cluster
+Additionally, the cluster CLI and Web user interface have been improved. Hanzo CD operators now can view and edit cluster
 details using the Cluster Details page. The page includes cluster settings details as well as runtime information such
 as the number of monitored Kubernetes resources.
 
 ### Diffing And Synchronization Usability
 
-* **Diffing logic improvement** Argo CD performs client-side resource diffing to detect deviations and present detected
+* **Diffing logic improvement** Hanzo CD performs client-side resource diffing to detect deviations and present detected
 differences in the UI and CLI. The 1.7 release aligns a comparison algorithm with server-side Kubernetes implementation
 and removes inaccuracies in some edge cases.
 
-* **Helm Hooks Compatibility** The improvement removes the discrepancy between the way how Argo CD and Helm deletes
+* **Helm Hooks Compatibility** The improvement removes the discrepancy between the way how Hanzo CD and Helm deletes
 hooks resources. This significantly improves the compatibility and enables additional use cases.
 
-* **Namespace Auto-Creation** With a new option for applications Argo CD will ensure that namespace specified as the
+* **Namespace Auto-Creation** With a new option for applications Hanzo CD will ensure that namespace specified as the
 application destination exists in the destination cluster. 
 
 * **Failed Sync Retry** This feature enables retrying of failed synchronization attempts during both manually-triggered
@@ -1225,11 +1225,11 @@ The enhancement allows configuring an exception list in Orphaned Resources setti
 
 ## v1.6.0 (2020-06-16)
 
-[1.6 Release blog post](https://blog.argoproj.io/argo-cd-v1-6-democratizing-gitops-with-gitops-engine-5a17cfc87d62)
+[1.6 Release blog post](https://blog.apps.hanzo.ai/argo-cd-v1-6-democratizing-gitops-with-gitops-engine-5a17cfc87d62)
 
 ### GitOps Engine
 
-As part of 1.6 release, the core Argo CD functionality has been moved into [GitOps Engine](https://github.com/argoproj/gitops-engine).
+As part of 1.6 release, the core Hanzo CD functionality has been moved into [GitOps Engine](https://github.com/argoproj/gitops-engine).
 GitOps Engine is a reusable library that empowers you to quickly build specialized tools that implement specific GitOps
 use cases, such as bootstrapping a Kubernetes cluster, or decentralized management of namespaces.
 
@@ -1238,7 +1238,7 @@ use cases, such as bootstrapping a Kubernetes cluster, or decentralized manageme
 - feat: upgrade kustomize to v3.6.1 version (#3696)
 - feat: Add build support for ARM images (#3554)
 - feat: CLI: Allow setting Helm values literal (#3601) (#3646)
-- feat: argocd-util settings resource-overrides list-actions (#3616)
+- feat: cd-util settings resource-overrides list-actions (#3616)
 - feat: adding failure retry (#3548)
 - feat: Implement GKE ManagedCertificate CRD health checks (#3600)
 - feat: Introduce diff normalizer knobs and allow for ignoring aggregated cluster roles (#2382) (#3076)
@@ -1247,7 +1247,7 @@ use cases, such as bootstrapping a Kubernetes cluster, or decentralized manageme
 - feat: support delete cluster from UI (#3555)
 - feat: add button loading status for time-consuming operations (#3559)
 - feat: Add --logformat switch to API server, repository server and controller (#3408)
-- feat: Add a Get Repo command to see if Argo CD has a repo (#3523)
+- feat: Add a Get Repo command to see if Hanzo CD has a repo (#3523)
 - feat: Allow selecting TLS ciphers on server (#3524)
 - feat: Support additional metadata in Application sync operation (#3747)
 - feat: upgrade redis to 5.0.8-alpine (#3783)
@@ -1259,7 +1259,7 @@ use cases, such as bootstrapping a Kubernetes cluster, or decentralized manageme
 - fix: Read cert data from kubeconfig during cluster addition and use if present (#3655) (#3667)
 - fix: oidc should set samesite cookie (#3632)
 - fix: Allow underscores in hostnames in certificate module (#3596)
-- fix: apply scopes from argocd-rbac-cm to project jwt group searches (#3508)
+- fix: apply scopes from cd-rbac-cm to project jwt group searches (#3508)
 - fix: fix nil pointer dereference error after cluster deletion (#3634)
 - fix: Prevent possible nil pointer dereference when getting Helm client (#3613)
 - fix: Allow CLI version command to succeed without server connection (#3049) (#3550)
@@ -1282,7 +1282,7 @@ use cases, such as bootstrapping a Kubernetes cluster, or decentralized manageme
 
 ## v1.5.7 (2020-06-09)
 
-The 1.5.7 patch release resolves issue #3719 . The CD_ENABLE_LEGACY_DIFF=true should be added to argocd-application-controller deployment.
+The 1.5.7 patch release resolves issue #3719 . The CD_ENABLE_LEGACY_DIFF=true should be added to cd-application-controller deployment.
 
 - fix: application with EnvoyFilter causes high memory/CPU usage (#3719)
 
@@ -1308,17 +1308,17 @@ This patch release introduces a set of enhancements and bug fixes. Here are most
 
 #### Multiple Kustomize Versions
 
-The bundled Kustomize version had been upgraded to v3.5.4. Argo CD allows changing bundled version using
+The bundled Kustomize version had been upgraded to v3.5.4. Hanzo CD allows changing bundled version using
 [custom image or init container](https://argoproj.github.io/argo-cd/operator-manual/custom_tools/). 
 This [feature](https://argoproj.github.io/argo-cd/user-guide/kustomize/#custom-kustomize-versions)
 enables bundling multiple Kustomize versions at the same time and allows end-users to specify the required version per application.
 
 #### Custom Root Path
 
-The feature allows accessing Argo CD UI and API using a custom root path(for example https://myhostname/argocd).
-This enables running Argo CD behind a proxy that takes care of user authentication (such as Ambassador) or hosting
-multiple Argo CD using the same hostname. A set of bug fixes and enhancements had been implemented to makes it easier.
-Use new `--rootpath` [flag](https://argoproj.github.io/argo-cd/operator-manual/ingress/#argocd-server-and-ui-root-path-v153) to enable the feature.
+The feature allows accessing Hanzo CD UI and API using a custom root path(for example https://myhostname/cd).
+This enables running Hanzo CD behind a proxy that takes care of user authentication (such as Ambassador) or hosting
+multiple Hanzo CD using the same hostname. A set of bug fixes and enhancements had been implemented to makes it easier.
+Use new `--rootpath` [flag](https://argoproj.github.io/argo-cd/operator-manual/ingress/#cd-server-and-ui-root-path-v153) to enable the feature.
 
 ### Login Rate Limiting
 
@@ -1327,14 +1327,14 @@ The feature prevents a built-in user password brute force attack and addresses t
 
 ### Settings Management Tools
 
-A new set of [CLI commands](https://argoproj.github.io/argo-cd/operator-manual/troubleshooting/) that simplify configuring Argo CD.
-Using the CLI you can test settings changes offline without affecting running Argo CD instance and have ability to troubleshot diffing
+A new set of [CLI commands](https://argoproj.github.io/argo-cd/operator-manual/troubleshooting/) that simplify configuring Hanzo CD.
+Using the CLI you can test settings changes offline without affecting running Hanzo CD instance and have ability to troubleshot diffing
 customizations, custom resource health checks, and more.
 
 ### Other
 
-* New Project and Application CRD settings ([#2900](https://github.com/argoproj/argo-cd/issues/2900), [#2873](https://github.com/argoproj/argo-cd/issues/2873)) that allows customizing Argo CD behavior.
-* Upgraded Dex (v2.22.0) enables seamless [SSO integration](https://www.openshift.com/blog/openshift-authentication-integration-with-argocd) with OpenShift.
+* New Project and Application CRD settings ([#2900](https://github.com/argoproj/argo-cd/issues/2900), [#2873](https://github.com/argoproj/argo-cd/issues/2873)) that allows customizing Hanzo CD behavior.
+* Upgraded Dex (v2.22.0) enables seamless [SSO integration](https://www.openshift.com/blog/openshift-authentication-integration-with-cd) with OpenShift.
 
 
 #### Enhancements
@@ -1346,7 +1346,7 @@ customizations, custom resource health checks, and more.
 * feat: support user specified account token ids (#3425)
 * feat: support separate Kustomize version per application (#3414)
 * feat: add support for dex prometheus metrics (#3249)
-* feat: add settings troubleshooting commands to the 'argocd-util' binary (#3398)
+* feat: add settings troubleshooting commands to the 'cd-util' binary (#3398)
 * feat: Let user to define meaningful unique JWT token name (#3388)
 * feat: Display link between OLM ClusterServiceVersion and it's OperatorGroup (#3390)
 * feat: Introduce sync-option SkipDryRunOnMissingResource=true (#2873) (#3247)
@@ -1356,10 +1356,10 @@ customizations, custom resource health checks, and more.
 #### Bug Fixes
 
 * fix: added path to cookie (#3501)
-* fix: 'argocd sync' does not take into account IgnoreExtraneous annotation (#3486)
+* fix: 'cd sync' does not take into account IgnoreExtraneous annotation (#3486)
 * fix: CLI renders flipped diff results (#3480)
 * fix: GetApplicationSyncWindows API should not validate project permissions (#3456)
-* fix: argocd-util kubeconfig should use RawRestConfig to export config (#3447)
+* fix: cd-util kubeconfig should use RawRestConfig to export config (#3447)
 * fix: javascript error on accounts list page (#3453)
 * fix: support both <group>/<kind> as well as <kind> as a resource override key (#3433)
 * fix: Updating to jsonnet v1.15.0 fix issue #3277 (#3431)
@@ -1402,7 +1402,7 @@ for more information.
 
 #### Helm Integration Enhancements - Helm 3 Support And More
 
-Introduced native support Helm3 charts. For backward compatibility Helm 2 charts are still rendered using Helm 2 CLI. Argo CD inspects the
+Introduced native support Helm3 charts. For backward compatibility Helm 2 charts are still rendered using Helm 2 CLI. Hanzo CD inspects the
 Charts.yaml file and choose the right binary based on `apiVersion` value.
 
 Following enhancement were implemented in addition to Helm 3:
@@ -1412,18 +1412,18 @@ Following enhancement were implemented in addition to Helm 3:
 
 #### Better Performance and Improved Metrics
 
- If you are running Argo CD instances with several hundred applications on it, you should see a
+ If you are running Hanzo CD instances with several hundred applications on it, you should see a
  huge performance boost and significantly less Kubernetes API server load.
 
- The Argo CD controller Prometheus metrics have been reworked to enable a richer Grafana dashboard.
- The improved dashboard is available at [examples/dashboard.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard.json).
- You can set `CD_LEGACY_CONTROLLER_METRICS=true` environment variable and use [examples/dashboard-legacy.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard-legacy.json)
+ The Hanzo CD controller Prometheus metrics have been reworked to enable a richer Grafana dashboard.
+ The improved dashboard is available at [examples/dashboard.json](https://github.com/hanzoai/cd/blob/master/examples/dashboard.json).
+ You can set `CD_LEGACY_CONTROLLER_METRICS=true` environment variable and use [examples/dashboard-legacy.json](https://github.com/hanzoai/cd/blob/master/examples/dashboard-legacy.json)
  to keep using old dashboard.
 
 #### Local accounts
 
 The local accounts had been introduced additional to `admin` user and SSO integration. The feature is useful for creating authentication
-tokens with limited permissions to automate Argo CD management. Local accounts also could be used small by teams when SSO integration is overkill.
+tokens with limited permissions to automate Hanzo CD management. Local accounts also could be used small by teams when SSO integration is overkill.
 This enhancement also allows to disable admin user and enforce only SSO logins.
 
 #### Redis HA Proxy mode
@@ -1436,14 +1436,14 @@ The HA proxy replaced the sentinel and provides more reliable Redis connection.
 
 #### Windows CLI
 
-Windows users deploy to Kubernetes too! Now you can use Argo CD CLI on Linux, Mac OS, and Windows. The Windows compatible binary is available 
-in the release details page as well as on the Argo CD Help page.
+Windows users deploy to Kubernetes too! Now you can use Hanzo CD CLI on Linux, Mac OS, and Windows. The Windows compatible binary is available 
+in the release details page as well as on the Hanzo CD Help page.
 
 #### Breaking Changes
 
-The `argocd_app_sync_status`, `argocd_app_health_status` and `argocd_app_created_time` prometheus metrics are deprecated in favor of additional labels
-to `argocd_app_info` metric. The deprecated labels are still available can be re-enabled using `CD_LEGACY_CONTROLLER_METRICS=true` environment variable.
-The legacy example Grafana dashboard is available at [examples/dashboard-legacy.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard-legacy.json). 
+The `cd_app_sync_status`, `cd_app_health_status` and `cd_app_created_time` prometheus metrics are deprecated in favor of additional labels
+to `cd_app_info` metric. The deprecated labels are still available can be re-enabled using `CD_LEGACY_CONTROLLER_METRICS=true` environment variable.
+The legacy example Grafana dashboard is available at [examples/dashboard-legacy.json](https://github.com/hanzoai/cd/blob/master/examples/dashboard-legacy.json). 
 
 ####  Known issues
 Last-minute bugs that will be addressed in 1.5.1 shortly:
@@ -1455,7 +1455,7 @@ Last-minute bugs that will be addressed in 1.5.1 shortly:
 
 #### Enhancements
 * feat: support helm3 (#2383) (#3178)
-* feat: Argo CD Service Account / Local Users #3185
+* feat: Hanzo CD Service Account / Local Users #3185
 * feat: Disable Admin Login (fixes #3019) (#3179)
 * feat(ui): add docs to sync policy options present in create application panel (Close #3098) (#3203)
 * feat: add "service-account" flag to "cluster add" command (#3183) (#3184)
@@ -1465,7 +1465,7 @@ Last-minute bugs that will be addressed in 1.5.1 shortly:
 * feat: allow ssh and http repository references in bitbucketserver webhook #2773 (#3036)
 * feat: Add helm --set-file support (#2751)
 * feat: Include resource group for Event's InvolvedObject.APIVersion
-* feat: Add argocd cmd for Windows #2121 (#3015)
+* feat: Add cd cmd for Windows #2121 (#3015)
 
 #### Bug Fixes
 
@@ -1479,7 +1479,7 @@ Last-minute bugs that will be addressed in 1.5.1 shortly:
 - fix: ui referring to /api/version using absolute path (#3092)
 - fix: Unhang UI on long app info items by using more sane URL match pattern (#3159)
 - fix: Allow multiple hostnames per SSH known hosts entry and also allow IPv6 (#2814) (#3074)
-- fix: argocd-util backup produced truncated backups. import app status (#3096)
+- fix: cd-util backup produced truncated backups. import app status (#3096)
 - fix: upgrade redis-ha chart and enable haproxy (#3147)
 - fix: make dex server deployment init container resilient to restarts (#3136)
 - fix: redact secret values of manifests stored in git (#3088)
@@ -1538,30 +1538,30 @@ The v1.4.0 is a stability release that brings multiple bug fixes, security, perf
 
 #### Security
 A number of security enhancements and features have been implemented (thanks to [@jannfis](https://github.com/jannfis) for driving it! ):
-* **Repository Credential Templates Management UI/CLI**. Now you can use Argo CD CLI or UI to configure
+* **Repository Credential Templates Management UI/CLI**. Now you can use Hanzo CD CLI or UI to configure
 [credentials template](https://argoproj.github.io/argo-cd/user-guide/private-repositories/#credential-templates) for multiple repositories!
 * **X-Frame-Options header on serving static assets**. The X-Frame-Options prevents third party sites to trick users into interacting with the application.
 * **Tighten AppProject RBAC enforcement**. We've improved the enforcement of access rules specified in the
 [application project](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#projects) configuration.
 
 #### Namespace Isolation
-With the namespace isolation feature, you are no longer have to give full read-only cluster access to the Argo CD. Instead, you can give access only to selected namespaces with-in
+With the namespace isolation feature, you are no longer have to give full read-only cluster access to the Hanzo CD. Instead, you can give access only to selected namespaces with-in
 the cluster:
 
 ```bash
-argocd cluster add <mycluster> --namespace <mynamespace1> --namespace <mynamespace2>
+cd cluster add <mycluster> --namespace <mynamespace1> --namespace <mynamespace2>
 ```
 
-This feature is useful if you don't have full cluster access but still want to use Argo CD to manage some cluster namespaces. The feature also improves performance if Argo CD is
+This feature is useful if you don't have full cluster access but still want to use Hanzo CD to manage some cluster namespaces. The feature also improves performance if Hanzo CD is
 used to manage a few namespaces of a large cluster.
 
 #### Reconciliation Performance
-The Argo CD no longer fork/exec `kubectl` to apply resource changes in the target cluster or convert resource manifest to the required manifest version. This reduces
-CPU and Memory usage of large Argo CD instances.
+The Hanzo CD no longer fork/exec `kubectl` to apply resource changes in the target cluster or convert resource manifest to the required manifest version. This reduces
+CPU and Memory usage of large Hanzo CD instances.
 
 #### Resources Health based Hook Status
-The existing Argo CD [resource hooks](https://argoproj.github.io/argo-cd/user-guide/resource_hooks/) feature allows running custom logic during the syncing process. You can mark
-any Kubernetes resource as a hook and Argo CD assess hook status if resource is a `Pod`, `Job` or `Argo Workflow`. In the v1.4.0 release Argo CD is going to leverage resource
+The existing Hanzo CD [resource hooks](https://argoproj.github.io/argo-cd/user-guide/resource_hooks/) feature allows running custom logic during the syncing process. You can mark
+any Kubernetes resource as a hook and Hanzo CD assess hook status if resource is a `Pod`, `Job` or `Argo Workflow`. In the v1.4.0 release Hanzo CD is going to leverage resource
 [health assessment](https://argoproj.github.io/argo-cd/operator-manual/health/) to get sync hook status. This allows using any custom CRD as a sync hook and leverage custom health
 check logic.
 
@@ -1570,23 +1570,23 @@ check logic.
  need to choose the exact version, such as v1.4.0 ,instead you can use a semantic version constraint such as v1.4.* and the latest version that matches will be installed.
 * **Build Environment Variables**. Feature allows config management tool to get access to app details during manifest generation via
 [environment variables](https://argoproj.github.io/argo-cd/user-guide/build-environment/).
-* **Git submodules**. Argo CD is going to automatically fetch sub-modules if your repository has `.gitmodules` directory.
+* **Git submodules**. Hanzo CD is going to automatically fetch sub-modules if your repository has `.gitmodules` directory.
 
 #### UI and CLI
 * **Improved Resource Tree View**. The Application details page got even prettier. The resource view was tuned to fit more resources into the screen, include more information about
 each resource and don't lose usability at the same time.
-* **New Account Management CLI Command**. The CLI allows to check which actions are allowed for your account: `argocd account can-i sync applications '*'`
+* **New Account Management CLI Command**. The CLI allows to check which actions are allowed for your account: `cd account can-i sync applications '*'`
 
 #### Maintenance Tools
-The team put more effort into building tools that help to maintain Argo CD itself:
-* **Bulk Project Editing**. The `argocd-util` allows to add and remove permissions defined in multiple project roles using one command.
+The team put more effort into building tools that help to maintain Hanzo CD itself:
+* **Bulk Project Editing**. The `cd-util` allows to add and remove permissions defined in multiple project roles using one command.
 * **More Prometheus Metrics**. A set of additional metrics that contains useful information managed clusters is exposed by application controller.
 
 More documentation and tools are coming in patch releases.
 
 #### Breaking Changes
 
-The Argo CD deletes all **in-flight** hooks if you terminate running sync operation. The hook state assessment change implemented in this release the Argo CD enables detection of 
+The Hanzo CD deletes all **in-flight** hooks if you terminate running sync operation. The hook state assessment change implemented in this release the Hanzo CD enables detection of 
 an in-flight state for all Kubernetes resources including `Deployment`, `PVC`, `StatefulSet`, `ReplicaSet` etc. So if you terminate the sync operation that has, for example,
 `StatefulSet` hook that is `Progressing` it will be deleted. The long-running jobs are not supposed to be used as a sync hook and you should consider using
 [Sync Waves](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/) instead.
@@ -1598,19 +1598,19 @@ an in-flight state for all Kubernetes resources including `Deployment`, `PVC`, `
 * feat: add support for --additional-headers cli flag (#2467)
 * feat: Add support for ssh-with-port repo url (#2866) (#2948)
 * feat: Add Time to ApplicationCondition. (#2417)
-* feat: Adds `argocd auth can-i` command. Close #2255
+* feat: Adds `cd auth can-i` command. Close #2255
 * feat: Adds revision history limit. Closes #2790 (#2818)
 * feat: Adds support for ARGO_CD_[TARGET_REVISION|REVISION] and pass to Custom Tool/Helm/Jsonnet 
 * feat: Adds support for Helm charts to be a semver range. Closes #2552 (#2606)
 * feat: Adds tracing to key external invocations. (#2811)
-* feat: argocd-util should allow editing project policies in bulk  (#2615)
+* feat: cd-util should allow editing project policies in bulk  (#2615)
 * feat: Displays controllerrevsion's revision in the UI. Closes #2306 (#2702)
 * feat: Issue #2559 - Add gauge Prometheus metric which represents the number of pending manifest requests. (#2658)
 * feat: Make ConvertToVersion maybe 1090% faster on average (#2820)
 * feat: namespace isolation (#2839)
 * feat: removes redundant mutex usage in controller cache and adds cluster cache metrics (#2898)
 * feat: Set X-Frame-Options on serving static assets (#2706) (#2711)
-* feat: Simplify using Argo CD without users/SSO/UI (#2688)
+* feat: Simplify using Hanzo CD without users/SSO/UI (#2688)
 * feat: Template Out Data Source in Grafana Dashboard (#2859) 
 * feat: Updates UI icons. Closes #2625 and #2757 (#2653)
 * feat: use editor arguments in InteractiveEditor (#2833)
@@ -1639,7 +1639,7 @@ an in-flight state for all Kubernetes resources including `Deployment`, `PVC`, `
 - fix: Issue #2853 - Improve application env variables/labels editing (#2856)
 - fix: Issue 2848 - Application Deployment history panel shows incorrect info for recent releases (#2849)
 - fix: Make BeforeHookCreation the default. Fixes #2754 (#2759)
-- fix: No error on `argocd app create` in CLI if `--revision` is omitted #2665
+- fix: No error on `cd app create` in CLI if `--revision` is omitted #2665
 - fix: Only delete resources during app delete cascade if permitted to (fixes #2693) (#2695)
 - fix: prevent user from seeing/deleting resources not permitted in project (#2908) (#2910)
 - fix: self-heal should retry syncing an application after specified delay
@@ -1647,7 +1647,7 @@ an in-flight state for all Kubernetes resources including `Deployment`, `PVC`, `
 - fix: stop using jsondiffpatch on clientside to render resource difference  (#2869)
 - fix: Target Revision truncated #2736
 - fix: UI should re-trigger SSO login if SSO JWT token expires (#2891)
-- fix: update argocd-util import was not working properly (#2939)
+- fix: update cd-util import was not working properly (#2939)
 
 #### Contributors
 
@@ -1714,11 +1714,11 @@ an in-flight state for all Kubernetes resources including `Deployment`, `PVC`, `
 - #2664 update account password from API resulted 404
 - #2724 Can't use `DNS-1123` compliant app name when creating project role
 - #2726 App list does not show chart for Helm app
-- #2741 argocd local sync cannot parse kubernetes version
+- #2741 cd local sync cannot parse kubernetes version
 - #2754 BeforeHookCreation should be the default hook
 - #2767 Fix bug whereby retry does not work for CLI
 - #2770 Always cache miss for manifests
-- #1345 argocd-application-controller: can not retrieve list of objects using index : Index with name namespace does not exist
+- #1345 cd-application-controller: can not retrieve list of objects using index : Index with name namespace does not exist
 
 ## v1.3.0 (2019-11-13)
 
@@ -1726,7 +1726,7 @@ an in-flight state for all Kubernetes resources including `Deployment`, `PVC`, `
 
 ##### Helm 1st-Class Support
 
-We know that for many of our users, they want to deploy existing Helm charts using Argo CD. Up until now that has required you to create an Argo CD app in a Git repo that does nothing but point to that chart. Now you can use a Helm chart repository is the same way as a Git repository.
+We know that for many of our users, they want to deploy existing Helm charts using Hanzo CD. Up until now that has required you to create an Hanzo CD app in a Git repo that does nothing but point to that chart. Now you can use a Helm chart repository is the same way as a Git repository.
 
 On top of that, we've improved support for Helm apps. The most common types of Helm hooks such as `pre-install` and `post-install` are supported as well as a the delete policy `before-hook-creation` which makes it easier to work with hooks.
 
@@ -1734,18 +1734,18 @@ https://youtu.be/GP7xtrnNznw
 
 ##### Orphan Resources
 
-Some users would like to make sure that resources in a namespace are managed only by Argo CD. So we've introduced the concept of an "orphan resource" - any resource that is in namespace associated with an app, but not managed by Argo CD. This is enabled in the project settings. Once enabled, Argo CD will show in the app view any resources in the app's namespace that is not managed by Argo CD. 
+Some users would like to make sure that resources in a namespace are managed only by Hanzo CD. So we've introduced the concept of an "orphan resource" - any resource that is in namespace associated with an app, but not managed by Hanzo CD. This is enabled in the project settings. Once enabled, Hanzo CD will show in the app view any resources in the app's namespace that is not managed by Hanzo CD. 
 
 https://youtu.be/9ZoTevVQf5I
 
 ##### Sync Windows
 
-There may be instances when you want to control the times during which an Argo CD app can sync. Sync Windows now gives you the capability to create windows of time in which apps are either allowed or denied the ability to sync. This can apply to both manual and auto-sync, or just auto-sync. The windows are configured at the project level and assigned to apps using app name, namespace or cluster. Wildcards are supported for all fields.
+There may be instances when you want to control the times during which an Hanzo CD app can sync. Sync Windows now gives you the capability to create windows of time in which apps are either allowed or denied the ability to sync. This can apply to both manual and auto-sync, or just auto-sync. The windows are configured at the project level and assigned to apps using app name, namespace or cluster. Wildcards are supported for all fields.
 
 #### Enhancements
 
 * [UI] Add application labels to Applications list and Applications details page (#1099)
-* Helm repository as first class Argo CD Application source (#1145)
+* Helm repository as first class Hanzo CD Application source (#1145)
 * Ability to generate a warn/alert when a namespace deviates from the expected state (#1167)
 * Improve diff support for resource requests/limits (#1615)
 * HTTP API should allow JWT to be passed via Authorization header (#1642)
@@ -1753,7 +1753,7 @@ There may be instances when you want to control the times during which an Argo C
 * Support for in-line block from helm chart values (#1930)
 * Request OIDC groups claim if groups scope is not supported (#1956)
 * Add a maintenance window for Applications with automated syncing (#1995)
-* Support `argocd.argoproj.io/hook-delete-policy: BeforeHookCreation` (#2036)
+* Support `cd.hanzo.ai/hook-delete-policy: BeforeHookCreation` (#2036)
 * Support setting Helm string parameters using CLI/UI (#2078)
 * Config management plugin environment variable UI/CLI support (#2203)
 * Helm: auto-detect URLs (#2260)
@@ -1763,7 +1763,7 @@ There may be instances when you want to control the times during which an Argo C
 * Make `group` optional for `ignoreDifferences` config (#2298)
 * Update Helm docs (#2315)
 * Add cluster information into Splunk (#2354)
-* argocd list command should have filter options like by project (#2396)
+* cd list command should have filter options like by project (#2396)
 * Add target/current revision to status badge (#2445)
 * Update tooling to use Kustomize v3 (#2487)
 * Update root `Dockerfile` to use the `hack/install.sh` (#2488)
@@ -1771,7 +1771,7 @@ There may be instances when you want to control the times during which an Argo C
 * Upgrade Helm  (#2587)
 * UI fixes for "Sync Apps" panel. (#2604)
 * Upgrade kustomize from v3.1.0 to v3.2.1 (#2609)
-* Map helm lifecycle hooks to ArgoCD pre/post/sync hooks (#355)
+* Map helm lifecycle hooks to Hanzo CD pre/post/sync hooks (#355)
 * [UI] Enhance app creation page with Helm parameters overrides (#1059)
 
 #### Bug Fixes
@@ -1782,7 +1782,7 @@ There may be instances when you want to control the times during which an Argo C
 - Error message "Unable to load data: key is missing" is confusing (#1944)
 - OIDC group bindings are truncated (#2006)
 - Multiple parallel app syncs causes OOM (#2022)
-- Unknown error when setting params with argocd app set on helm app (#2046)
+- Unknown error when setting params with cd app set on helm app (#2046)
 - Endpoint is no longer shown as a child of services (#2060)
 - SSH known hosts entry cannot be deleted if contains shell pattern in name (#2099)
 - Application 404s on names with periods (#2114)
@@ -1794,9 +1794,9 @@ There may be instances when you want to control the times during which an Argo C
 - v1.2.0-rc1 Applications List View doesn't work (#2174)
 - Manual sync does not trigger Presync hooks (#2185)
 - SyncError app condition disappears during app reconciliation (#2192)
-- argocd app wait\sync prints 'Unknown' for resources without health (#2198)
+- cd app wait\sync prints 'Unknown' for resources without health (#2198)
 - 1.2.0-rc2 Warning during secret diffing (#2206)
-- SSO redirect url is incorrect if configured Argo CD URL has trailing slash (#2212)
+- SSO redirect url is incorrect if configured Hanzo CD URL has trailing slash (#2212)
 - Application summary diff page shows hooks (#2215)
 - An app with a single resource and Sync hook remains progressing (#2216)
 - CONTRIBUTING documentation outdated (#2231)
@@ -1825,19 +1825,19 @@ There may be instances when you want to control the times during which an Argo C
 - UI don't allow to create window with `* * * * *` schedule (#2475)
 - Helm Hook is executed twice if annotated with both pre-install and pre-upgrade annotations (#2480)
 - Impossible to edit chart name using App details page (#2484)
-- ArgoCD does not provide CSRF protection (#2496)
-- ArgoCD failing to install CRDs in master from Helm Charts (#2497)
+- Hanzo CD does not provide CSRF protection (#2496)
+- Hanzo CD failing to install CRDs in master from Helm Charts (#2497)
 - Timestamp in Helm package file name causes error in Application with Helm source (#2549)
 - Attempting to create a repo with password but not username panics (#2567)
 - UI incorrectly mark resources as `Required Pruning` (#2577)
-- argocd app diff prints only first difference (#2616)
+- cd app diff prints only first difference (#2616)
 - Bump min client cache version (#2619)
 - Cluster list page fails if any cluster is not reachable (#2620)
 - Repository type should be mandatory for repo add command in CLI (#2622)
 - Repo server executes unnecessary ls-remotes (#2626)
 - Application list page incorrectly filter apps by label selector (#2633)
-- Custom actions are disabled in Argo CD UI (#2635)
-- Failure of `argocd version` in the self-building container image (#2645)
+- Custom actions are disabled in Hanzo CD UI (#2635)
+- Failure of `cd version` in the self-building container image (#2645)
 - Application list page is not updated automatically anymore (#2655)
 - Login regression issues (#2659)
 - Regression: Cannot return Kustomize version for 3.1.0 (#2662)
@@ -1868,7 +1868,7 @@ There may be instances when you want to control the times during which an Argo C
 
 ## v1.2.1 (2019-09-12)
 + Support limiting number of concurrent kubectl fork/execs (#2022)
-+ Add --self-heal flag to argocd cli (#2296)
++ Add --self-heal flag to cd cli (#2296)
 - Fix degraded proxy support for http(s) git repository (#2243)
 - Fix nil pointer dereference in application controller (#2290)
 
@@ -1878,15 +1878,15 @@ There may be instances when you want to control the times during which an Argo C
 
 #### Server Certificate And Known Hosts Management
 
-The Server Certificate And Known Hosts Management feature makes it really easy to connect private Git repositories to Argo CD. Now Argo CD provides UI and CLI which
+The Server Certificate And Known Hosts Management feature makes it really easy to connect private Git repositories to Hanzo CD. Now Hanzo CD provides UI and CLI which
 enables managing certificates and known hosts which are used to access Git repositories. It is also possible to configure both hosts and certificates in a declarative manner using
-[argocd-ssh-known-hosts-cm](https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-ssh-known-hosts-cm.yaml) and 
-[argocd-tls-certs-cm.yaml](https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-tls-certs-cm.yaml) config maps.
+[cd-ssh-known-hosts-cm](https://github.com/hanzoai/cd/blob/master/docs/operator-manual/cd-ssh-known-hosts-cm.yaml) and 
+[cd-tls-certs-cm.yaml](https://github.com/hanzoai/cd/blob/master/docs/operator-manual/cd-tls-certs-cm.yaml) config maps.
 
 #### Self-Healing
 
 The existing Automatic Sync feature allows to automatically apply any new changes in Git to the target Kubernetes cluster. However, Automatic Sync does not cover the case when the
-application is out of sync due to the unexpected change in the target cluster. The Self-Healing feature fills this gap. With Self-Healing enabled Argo CD automatically pushes the desired state from Git into the cluster every time when state deviation is detected.
+application is out of sync due to the unexpected change in the target cluster. The Self-Healing feature fills this gap. With Self-Healing enabled Hanzo CD automatically pushes the desired state from Git into the cluster every time when state deviation is detected.
 
 **Anonymous access** - enable read-only access without authentication to anyone in your organization.
 
@@ -1896,12 +1896,12 @@ Support for Git LFS enabled repositories - now you can store Helm charts as tar 
 
 **Badge for application status** - add badge with the health and sync status of your application into README.md of your deployment repo.
 
-**Allow configuring google analytics tracking** - use Google Analytics to check how many users are visiting UI or your Argo CD instance.
+**Allow configuring google analytics tracking** - use Google Analytics to check how many users are visiting UI or your Hanzo CD instance.
 
 #### Backward Incompatible Changes
 - Kustomize v1 support is removed. All kustomize charts are built using the same Kustomize version
 - Kustomize v2.0.3 upgraded to v3.1.0 . We've noticed one backward incompatible change: https://github.com/kubernetes-sigs/kustomize/issues/42 . Starting v2.1.0 namespace prefix feature works with CRD ( which might cause renaming of generated resource definitions)
-- Argo CD config maps must be annotated with `app.kubernetes.io/part-of: argocd` label. Make sure to apply updated `install.yaml` manifest in addition to changing image version.
+- Hanzo CD config maps must be annotated with `app.kubernetes.io/part-of: cd` label. Make sure to apply updated `install.yaml` manifest in addition to changing image version.
 
 
 #### Enhancements
@@ -1914,18 +1914,18 @@ Support for Git LFS enabled repositories - now you can store Helm charts as tar 
 + Badge for application status (#1435)
 + Make the health check for APIService a built in (#1841)
 + Bitbucket Server and Gogs webhook providers (#1269)
-+ Jsonnet TLA arguments in ArgoCD CLI (#1626)
++ Jsonnet TLA arguments in Hanzo CD CLI (#1626)
 + Self Healing (#1736)
 + Compact diff view (#1831)
 + Allow Helm parameters to force ambiguously-typed values to be strings (#1846)
-+ Support anonymous argocd access (#1620)
++ Support anonymous cd access (#1620)
 + Allow configuring google analytics tracking (#738)
-+ Bash autocompletion for argocd (#1798)
++ Bash autocompletion for cd (#1798)
 + Additional commit metadata (#1219)
 + Displays targetRevision in app dashboards. (#1239)
 + Local path syncing (#839)
 + System level `kustomize build` options (#1789)
-+ Adds support for `argocd app set` for Kustomize. (#1843)
++ Adds support for `cd app set` for Kustomize. (#1843)
 + Allow users to create tokens for projects where they have any role. (#1977)
 + Add Refresh button to applications table and card view (#1606)
 + Adds CLI support for adding and removing groups from project roles. (#1851)
@@ -1974,13 +1974,13 @@ Support for Git LFS enabled repositories - now you can store Helm charts as tar 
 
 
 ## v1.1.2 (2019-07-30)
-- 'argocd app wait' should print correct sync status (#2049)
+- 'cd app wait' should print correct sync status (#2049)
 - Check that TLS is enabled when registering DEX Handlers (#2047)
 - Do not ignore Argo hooks when there is a Helm hook. (#1952)
 
 ## v1.1.1 (2019-07-25)
 + Support 'override' action in UI/API (#1984)
-- Fix argocd app wait message (#1982)
+- Fix cd app wait message (#1982)
 
 ## v1.1.0 (2019-07-24)
 
@@ -1993,19 +1993,19 @@ than allows you to ensure certain resources are healthy before subsequent resour
 
 #### Optimized Interaction With Git
 
-Argo CD needs to execute `git fetch` operation to access application manifests and `git ls-remote` to resolve ambiguous git revision. The `git ls-remote` is executed very frequently
+Hanzo CD needs to execute `git fetch` operation to access application manifests and `git ls-remote` to resolve ambiguous git revision. The `git ls-remote` is executed very frequently
 and although the operation is very lightweight it adds unnecessary load on Git server and might cause performance issues. In v1.1 release, the application reconciliation process was
-optimized which significantly reduced the number of Git requests. With v1.1 release, Argo CD should send 3x ~ 5x fewer Git requests.
+optimized which significantly reduced the number of Git requests. With v1.1 release, Hanzo CD should send 3x ~ 5x fewer Git requests.
 
 #### User Defined Application Metadata
 
 User-defined Application metadata enables the user to define a list of useful URLs for their specific application and expose those links on the UI
-(e.g. reference to a CI pipeline or an application-specific management tool). These links should provide helpful shortcuts that make easier to integrate Argo CD into existing
-systems by making it easier to find other components inside and outside Argo CD.
+(e.g. reference to a CI pipeline or an application-specific management tool). These links should provide helpful shortcuts that make easier to integrate Hanzo CD into existing
+systems by making it easier to find other components inside and outside Hanzo CD.
 
 ### Deprecation Notice
 
-* Kustomize v1.0 is deprecated and support will be removed in the Argo CD v1.2 release.
+* Kustomize v1.0 is deprecated and support will be removed in the Hanzo CD v1.2 release.
 
 #### Enhancements
 
@@ -2013,12 +2013,12 @@ systems by making it easier to find other components inside and outside Argo CD.
 - Adds Prune=false and IgnoreExtraneous options [#1629](https://github.com/argoproj/argo-cd/issues/1629)
 - Forward Git credentials to config management plugins [#1628](https://github.com/argoproj/argo-cd/issues/1628)
 - Improve Kustomize 2 parameters UI [#1609](https://github.com/argoproj/argo-cd/issues/1609)
-- Adds `argocd logout` [#1210](https://github.com/argoproj/argo-cd/issues/1210)
-- Make it possible to set Helm release name different from Argo CD app name.  [#1066](https://github.com/argoproj/argo-cd/issues/1066)
-- Add ability to specify system namespace during cluster add operation [#1661](https://github.com/argoproj/argo-cd/pull/1661) 
-- Make listener and metrics ports configurable [#1647](https://github.com/argoproj/argo-cd/pull/1647) 
+- Adds `cd logout` [#1210](https://github.com/argoproj/argo-cd/issues/1210)
+- Make it possible to set Helm release name different from Hanzo CD app name.  [#1066](https://github.com/argoproj/argo-cd/issues/1066)
+- Add ability to specify system namespace during cluster add operation [#1661](https://github.com/hanzoai/cd/pull/1661) 
+- Make listener and metrics ports configurable [#1647](https://github.com/hanzoai/cd/pull/1647) 
 - Using SSH keys to authenticate kustomize bases from git [#827](https://github.com/argoproj/argo-cd/issues/827)
-- Adds `argocd app sync APPNAME --async` [#1728](https://github.com/argoproj/argo-cd/issues/1728)
+- Adds `cd app sync APPNAME --async` [#1728](https://github.com/argoproj/argo-cd/issues/1728)
 - Allow users to define app specific urls to expose in the UI [#1677](https://github.com/argoproj/argo-cd/issues/1677)
 - Error view instead of blank page in UI [#1375](https://github.com/argoproj/argo-cd/issues/1375)
 - Project Editor: Whitelisted Cluster Resources doesn't strip whitespace [#1693](https://github.com/argoproj/argo-cd/issues/1693)
@@ -2030,18 +2030,18 @@ systems by making it easier to find other components inside and outside Argo CD.
 - Project Editor: Whitelisted Cluster Resources doesn't strip whitespace [#1693](https://github.com/argoproj/argo-cd/issues/1693)
 - \[ui small bug\] menu position outside block [#1711](https://github.com/argoproj/argo-cd/issues/1711)
 - UI will crash when create application without destination namespace [#1701](https://github.com/argoproj/argo-cd/issues/1701)
-- ArgoCD synchronization failed due to internal error [#1697](https://github.com/argoproj/argo-cd/issues/1697)
+- Hanzo CD synchronization failed due to internal error [#1697](https://github.com/argoproj/argo-cd/issues/1697)
 - Replicasets ordering is not stable on app tree view [#1668](https://github.com/argoproj/argo-cd/issues/1668)
 - Stuck processor on App Controller after deleting application with incomplete operation [#1665](https://github.com/argoproj/argo-cd/issues/1665)
 - Role edit page fails with JS error [#1662](https://github.com/argoproj/argo-cd/issues/1662)
 - failed parsing on parameters with comma [#1660](https://github.com/argoproj/argo-cd/issues/1660)
-- Handle nil obj when processing custom actions [#1700](https://github.com/argoproj/argo-cd/pull/1700)
-- Account for missing fields in Rollout HealthStatus [#1699](https://github.com/argoproj/argo-cd/pull/1699) 
+- Handle nil obj when processing custom actions [#1700](https://github.com/hanzoai/cd/pull/1700)
+- Account for missing fields in Rollout HealthStatus [#1699](https://github.com/hanzoai/cd/pull/1699) 
 - Sync operation unnecessary waits for a healthy state of all resources [#1715](https://github.com/argoproj/argo-cd/issues/1715)
 - failed parsing on parameters with comma [#1660](https://github.com/argoproj/argo-cd/issues/1660)
-- argocd app sync hangs when cluster is not configured (#1935)
+- cd app sync hangs when cluster is not configured (#1935)
 - Do not allow app-of-app child app's Missing status to affect parent (#1954)
-- Argo CD don't handle well k8s objects which size exceeds 1mb (#1685)
+- Hanzo CD don't handle well k8s objects which size exceeds 1mb (#1685)
 - Secret data not redacted in last-applied-configuration (#897)
 - Running app actions requires only read privileges (#1827)
 - UI should allow editing repo URL (#1763)
@@ -2068,7 +2068,7 @@ systems by making it easier to find other components inside and outside Argo CD.
 * [narg95](https://github.com/narg95)
 * [Simon Behar](https://github.com/simster7)
 
-See also [milestone v1.1](https://github.com/argoproj/argo-cd/milestone/13)
+See also [milestone v1.1](https://github.com/hanzoai/cd/milestone/13)
 
 ## v1.0.0 (2019-05-16)
 
@@ -2081,7 +2081,7 @@ based on ingress reference service, service's label selectors and labels. The ne
 
 #### Custom Actions
 
-Argo CD introduces Custom Resource Actions to allow users to provide their own Lua scripts to modify existing Kubernetes resources in their applications. These actions are exposed in the UI to allow easy, safe, and reliable changes to their resources.  This functionality can be used to introduce functionality such as suspending and enabling a Kubernetes cronjob, continue a BlueGreen deployment with Argo Rollouts, or scaling a deployment. 
+Hanzo CD introduces Custom Resource Actions to allow users to provide their own Lua scripts to modify existing Kubernetes resources in their applications. These actions are exposed in the UI to allow easy, safe, and reliable changes to their resources.  This functionality can be used to introduce functionality such as suspending and enabling a Kubernetes cronjob, continue a BlueGreen deployment with Argo Rollouts, or scaling a deployment. 
 
 #### UI Enhancements & Usability Enhancements
 
@@ -2100,7 +2100,7 @@ Argo CD introduces Custom Resource Actions to allow users to provide their own L
 
 #### Enhancements
 
-* `argocd app wait` should have `--resource` flag like sync #1206
+* `cd app wait` should have `--resource` flag like sync #1206
 * Adds support for `kustomize edit set image`. Closes #1275 (#1324)
 * Allow wait to return on health or suspended (#1392)
 * Application warning when a manifest is defined twice #1070
@@ -2120,7 +2120,7 @@ Argo CD introduces Custom Resource Actions to allow users to provide their own L
 * Support for customizable resource actions as Lua scripts #86
 * UI / API Errors Truncated, Time Out #1386
 * UI Enhancement Proposals Quick Wins #1274
-* Update argocd-util import/export to support proper backup and restore (#1328)
+* Update cd-util import/export to support proper backup and restore (#1328)
 * Whitelisting repos/clusters in projects should consider repo/cluster permissions #1432
 * Adds support for configuring repo creds at a domain/org level. (#1332)
 * Implement whitelist option analogous to `resource.exclusions` (#1490)
@@ -2162,7 +2162,7 @@ Argo CD introduces Custom Resource Actions to allow users to provide their own L
 - Annoying warning while using --grpc-web flag (#1420)
 - Delete helm temp directories (#1446)
 - Fix null pointer exception in secret normalization function (#1389)
-- Argo CD should not delete CRDs(#1425)
+- Hanzo CD should not delete CRDs(#1425)
 - UI is unable to load cluster level resource manifest (#1429)
 
 ## v0.12.1 (2019-04-09)
@@ -2176,15 +2176,15 @@ Argo CD introduces Custom Resource Actions to allow users to provide their own L
 - CLI diff should take into account resource customizations (#1294)
 - Don't try deleting application resource if it already has `deletionTimestamp` (#1406)
 - Fix invalid group filtering in 'patch-resource' command (#1319)
-- Fix null pointer dereference error in 'argocd app wait' (#1366)
+- Fix null pointer dereference error in 'cd app wait' (#1366)
 - kubectl v1.13 fails to convert extensions/NetworkPolicy (#1012)
 - Patch APIs are not audited (#1397)
 
-+ 'argocd app wait' should fail sooner if app transitioned to Degraded state (#733)
++ 'cd app wait' should fail sooner if app transitioned to Degraded state (#733)
 + Add mapping to new canonical Ingress API group - kubernetes 1.14 support (#1348) (@twz123)
 + Adds support for `kustomize edit set image`. (#1275)
 + Allow using any name for secrets which store cluster credentials (#1218)
-+ Update argocd-util import/export to support proper backup and restore (#1048)
++ Update cd-util import/export to support proper backup and restore (#1048)
 
 ## v0.12.0 (2019-03-20)
 
@@ -2203,23 +2203,23 @@ Many improvements to the UI were made, including:
 
 #### Custom Health Assessments (CRD Health)
 
-Argo CD has long been able to perform health assessments on resources, however this could only
+Hanzo CD has long been able to perform health assessments on resources, however this could only
 assess the health for a few native kubernetes types (deployments, statefulsets, daemonsets, etc...).
-Now, Argo CD can be extended to gain understanding of any CRD health, in the form of Lua scripts.
-For example, using this feature, Argo CD now understands the CertManager Certificate CRD and will
+Now, Hanzo CD can be extended to gain understanding of any CRD health, in the form of Lua scripts.
+For example, using this feature, Hanzo CD now understands the CertManager Certificate CRD and will
 report a Degraded status when there are issues with the cert.
 
 #### Configuration Management Plugins
 
-Argo CD introduces Config Management Plugins to support custom configuration management tools other
-than the set that Argo CD provides out-of-the-box (Helm, Kustomize, Ksonnet, Jsonnet). Using config
-management plugins, Argo CD can be configured to run specified commands to render manifests. This
-makes it possible for Argo CD to support other config management tools (kubecfg, kapitan, shell
+Hanzo CD introduces Config Management Plugins to support custom configuration management tools other
+than the set that Hanzo CD provides out-of-the-box (Helm, Kustomize, Ksonnet, Jsonnet). Using config
+management plugins, Hanzo CD can be configured to run specified commands to render manifests. This
+makes it possible for Hanzo CD to support other config management tools (kubecfg, kapitan, shell
 scripts, etc...).
 
 #### High Availability
 
-Argo CD is now fully HA. A set HA of manifests are provided for users who wish to run Argo CD in
+Hanzo CD is now fully HA. A set HA of manifests are provided for users who wish to run Hanzo CD in
 a highly available manner. NOTE: The HA installation will require at least three different nodes due
 to pod anti-affinity roles in the specs.
 
@@ -2231,41 +2231,41 @@ to pod anti-affinity roles in the specs.
 
 #### Additional Prometheus Metrics
 
-Argo CD provides the following additional prometheus metrics:
+Hanzo CD provides the following additional prometheus metrics:
 * Sync counter to track sync activity and results over time
-* Application reconciliation (refresh) performance to track Argo CD performance and controller activity
-* Argo CD API Server metrics for monitoring HTTP/gRPC requests
+* Application reconciliation (refresh) performance to track Hanzo CD performance and controller activity
+* Hanzo CD API Server metrics for monitoring HTTP/gRPC requests
 
 #### Fuzzy Diff Logic
 
-Argo CD can now be configured to ignore known differences for resource types by specifying a json
+Hanzo CD can now be configured to ignore known differences for resource types by specifying a json
 pointer to the field path to ignore. This helps prevent OutOfSync conditions when a user has no
 control over the manifests. Ignored differences can be configured either at an application level, 
 or a system level, based on a group/kind.
 
 #### Resource Exclusions
 
-Argo CD can now be configured to completely ignore entire classes of resources group/kinds.
+Hanzo CD can now be configured to completely ignore entire classes of resources group/kinds.
 Excluding high-volume resources improves performance and memory usage, and reduces load and
 bandwidth to the Kubernetes API server. It also allows users to fine-tune the permissions that
-Argo CD needs to a cluster by preventing Argo CD from attempting to watch resources of that
+Hanzo CD needs to a cluster by preventing Hanzo CD from attempting to watch resources of that
 group/kind.
 
 #### gRPC-Web Support
 
-The argocd CLI can be now configured to communicate to the Argo CD API server using gRPC-Web
+The cd CLI can be now configured to communicate to the Hanzo CD API server using gRPC-Web
 (HTTP1.1) using a new CLI flag `--grpc-web`. This resolves some compatibility issues users were
-experiencing with ingresses and gRPC (HTTP2), and should enable argocd CLI to work with virtually
+experiencing with ingresses and gRPC (HTTP2), and should enable cd CLI to work with virtually
 any load balancer, ingress controller, or API gateway.
 
 #### CLI features
 
-Argo CD introduces some additional CLI commands:
+Hanzo CD introduces some additional CLI commands:
 
-* `argocd app edit APPNAME` - to edit an application spec using preferred EDITOR
-* `argocd proj edit PROJNAME` - to edit an project spec using preferred EDITOR
-* `argocd app patch APPNAME` - to patch an application spec
-* `argocd app patch-resource APPNAME` - to patch a specific resource which is part of an application
+* `cd app edit APPNAME` - to edit an application spec using preferred EDITOR
+* `cd proj edit PROJNAME` - to edit an project spec using preferred EDITOR
+* `cd app patch APPNAME` - to patch an application spec
+* `cd app patch-resource APPNAME` - to patch a specific resource which is part of an application
 
 
 ### Breaking Changes
@@ -2281,18 +2281,18 @@ instructions to upgrade from v0.11 to v0.12 without introducing downtime:
 
 ```
 # delete the deployments with cascade=false. this orphan the replicasets, but leaves the pods running
-kubectl delete deploy --cascade=false argocd-server argocd-repo-server argocd-application-controller
+kubectl delete deploy --cascade=false cd-server cd-repo-server cd-application-controller
 
 # apply the new manifests and wait for them to finish rolling out
 kubectl apply <new install manifests>
-kubectl rollout status deploy/argocd-application-controller
-kubectl rollout status deploy/argocd-repo-server
-kubectl rollout status deploy/argocd-application-controller
+kubectl rollout status deploy/cd-application-controller
+kubectl rollout status deploy/cd-repo-server
+kubectl rollout status deploy/cd-application-controller
 
 # delete old replicasets which are using the legacy label
-kubectl delete rs -l app=argocd-server
-kubectl delete rs -l app=argocd-repo-server
-kubectl delete rs -l app=argocd-application-controller
+kubectl delete rs -l app=cd-server
+kubectl delete rs -l app=cd-repo-server
+kubectl delete rs -l app=cd-application-controller
 
 # delete the legacy dex-server which was renamed
 kubectl delete deploy dex-server
@@ -2324,9 +2324,9 @@ spec:
         value: v1.2
 ```
 
-Argo CD will automatically duplicate the legacy field values to the new locations (and vice versa)
+Hanzo CD will automatically duplicate the legacy field values to the new locations (and vice versa)
 as part of automatic migration. The legacy `spec.source.componentParameterOverrides` field will be
-kept around for the v0.12 release (for migration purposes) and will be removed in the next Argo CD
+kept around for the v0.12 release (for migration purposes) and will be removed in the next Hanzo CD
 release.
 
 #### Removal of spec.source.environment and spec.source.valuesFiles
@@ -2337,7 +2337,7 @@ are now completely removed from the Application spec.
 
 #### API/CLI compatibility
 
-Due to API spec changes related to the deprecation of componentParameterOverrides, Argo CD v0.12
+Due to API spec changes related to the deprecation of componentParameterOverrides, Hanzo CD v0.12
 has a minimum client version of v0.12.0. Older CLI clients will be rejected.
 
 
@@ -2357,7 +2357,7 @@ has a minimum client version of v0.12.0. Older CLI clients will be rejected.
 + Support for Jsonnet external variables and top-level arguments
 + Optimized reconciliation performance for applications with very active resources (#1267)
 + Support a separate OAuth2 CLI clientID different from server (#1307)
-+ argocd diff: only print to stdout, if there is a diff + exit code (#1288) (@marcb1)
++ cd diff: only print to stdout, if there is a diff + exit code (#1288) (@marcb1)
 + Detection and handling of duplicated resource definitions (#1284)
 + Support kustomize apps with remote bases in private repos in the same host (#1264)
 + Support patching resource using REST API (#1186)
@@ -2370,7 +2370,7 @@ has a minimum client version of v0.12.0. Older CLI clients will be rejected.
 - Fix CRD creation/deletion handling (#1249)
 - Git cloning via SSH was not verifying host public key (#1276)
 - Fixed multiple goroutine leaks in controller and api-server
-- Fix issue where `argocd app set -p` required repo privileges. (#1280)
+- Fix issue where `cd app set -p` required repo privileges. (#1280)
 - Fix local diff of non-namespaced resources. Also handle duplicates in local diff (#1289)
 - Deprecated resource kinds from 'extensions' groups are not reconciled correctly (#1232)
 - Fix issue where CLI would panic after timeout when cli did not have get permissions (#1209)
@@ -2400,7 +2400,7 @@ has a minimum client version of v0.12.0. Older CLI clients will be rejected.
 - Fix `app diff --local` command (#1008)
 
 ## v0.11.0 (2019-01-10)
-This is Argo CD's biggest release ever and introduces a completely redesigned controller architecture.
+This is Hanzo CD's biggest release ever and introduces a completely redesigned controller architecture.
 
 ### New Features
 
@@ -2415,15 +2415,15 @@ cache. This dramatically improves performance and responsiveness, and is less bu
 API server.
 
 #### Object relationship visualization for CRDs
-With the new controller design, Argo CD is now able to understand ownership relationship between
-*all* Kubernetes objects, not just the built-in types. This enables Argo CD to visualize
+With the new controller design, Hanzo CD is now able to understand ownership relationship between
+*all* Kubernetes objects, not just the built-in types. This enables Hanzo CD to visualize
 parent/child relationships between all kubernetes objects, including CRDs.
 
 #### Multi-namespaced applications
-During sync, Argo CD will now honor any explicitly set namespace in a manifest. Manifests without a
+During sync, Hanzo CD will now honor any explicitly set namespace in a manifest. Manifests without a
 namespace will continue deploy to the "preferred" namespace, as specified in app's
 `spec.destination.namespace`. This enables support for a class of applications which install to
-multiple namespaces. For example, Argo CD can now install the
+multiple namespaces. For example, Hanzo CD can now install the
 [prometheus-operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
 helm chart, which deploys some resources into `kube-system`, and others into the
 `prometheus-operator` namespace.
@@ -2431,7 +2431,7 @@ helm chart, which deploys some resources into `kube-system`, and others into the
 #### Large application support
 Full resource objects are no longer stored in the Application CRD object status. Instead, only
 lightweight metadata is stored in the status, such as a resource's sync and health status.
-This change enabled Argo CD to support applications with a very large number of resources 
+This change enabled Hanzo CD to support applications with a very large number of resources 
 (e.g. istio), and reduces the bandwidth requirements when listing applications in the UI.
 
 #### Resource lifecycle hook improvements
@@ -2442,30 +2442,30 @@ alternative to Jobs, Workflows.
 #### K8s recommended application labels
 The tracking label for resources has been changed to use `app.kubernetes.io/instance`, as
 recommended in [Kubernetes recommended labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/),
-(changed from `applications.argoproj.io/app-name`). This will enable applications managed by Argo CD
+(changed from `applications.apps.hanzo.ai/app-name`). This will enable applications managed by Hanzo CD
 to interoperate with other tooling which are also converging on this labeling, such as the
-Kubernetes dashboard. Additionally, Argo CD no longer injects any tracking labels at the
+Kubernetes dashboard. Additionally, Hanzo CD no longer injects any tracking labels at the
 `spec.template.metadata` level.
 
 #### External OIDC provider support
-Argo CD now supports auth delegation to an existing, external OIDC providers without the need for
+Hanzo CD now supports auth delegation to an existing, external OIDC providers without the need for
 running Dex (e.g. Okta, OneLogin, Auth0, Microsoft, etc...)
 
 The optional, [Dex IDP OIDC provider](https://github.com/dexidp/dex) is still bundled as part of the
-default installation, in order to provide a seamless out-of-box experience, enabling Argo CD to
+default installation, in order to provide a seamless out-of-box experience, enabling Hanzo CD to
 integrate with non-OIDC providers, and to benefit from Dex's full range of
 [connectors](https://dexidp.io/docs/connectors/).
 
 #### OIDC group bindings to Project Roles
-OIDC group claims from an OAuth2 provider can now be bound to a Argo CD project roles. Previously,
-group claims could only be managed in the centralized ConfigMap, `argocd-rbac-cm`. They can now be
+OIDC group claims from an OAuth2 provider can now be bound to a Hanzo CD project roles. Previously,
+group claims could only be managed in the centralized ConfigMap, `cd-rbac-cm`. They can now be
 managed at a project level. This enables project admins to self service access to applications
 within a project.
 
-#### Declarative Argo CD configuration
-Argo CD settings can be now be configured either declaratively, or imperatively. The `argocd-cm`
+#### Declarative Hanzo CD configuration
+Hanzo CD settings can be now be configured either declaratively, or imperatively. The `cd-cm`
 ConfigMap now has a `repositories` field, which can reference credentials in a normal Kubernetes
-secret which you can create declaratively, outside of Argo CD.
+secret which you can create declaratively, outside of Hanzo CD.
 
 #### Helm repository support
 Helm repositories can be configured at the system level, enabling the deployment of helm charts
@@ -2473,8 +2473,8 @@ which have a dependency to external helm repositories.
 
 ### Breaking changes:
 
-* Argo CD's resource names were renamed for consistency. For example, the application-controller
-  deployment was renamed to argocd-application-controller. When upgrading from v0.10 to v0.11,
+* Hanzo CD's resource names were renamed for consistency. For example, the application-controller
+  deployment was renamed to cd-application-controller. When upgrading from v0.10 to v0.11,
   the older resources should be pruned to avoid inconsistent state and controller in-fighting.
 
 * As a consequence to moving to recommended kubernetes labels, when upgrading from v0.10 to v0.11,
@@ -2486,15 +2486,15 @@ which have a dependency to external helm repositories.
   the datastructure and remove fields which were no longer used by the controller. No breaking
   changes were made in `app.spec`.
 
-* An older Argo CD CLI (v0.10 and below) will not be compatible with Argo CD v0.11. To keep
+* An older Hanzo CD CLI (v0.10 and below) will not be compatible with Hanzo CD v0.11. To keep
   CI pipelines in sync with the API server, it is recommended to have pipelines download the CLI
-  directly from the API server https://${CD_SERVER}/download/argocd-linux-amd64 during the CI
+  directly from the API server https://${CD_SERVER}/download/cd-linux-amd64 during the CI
   pipeline.
 
 ### Changes since v0.10:
 * Improve Application state reconciliation performance (#806)
 * Refactor, consolidate and rename resource type data structures
-+ Declarative setup and configuration of ArgoCD (#536)
++ Declarative setup and configuration of Hanzo CD (#536)
 + Declaratively add helm repositories (#747)
 + Switch to k8s recommended app.kubernetes.io/instance label (#857)
 + Ability for a single application to deploy into multiple namespaces (#696)
@@ -2504,7 +2504,7 @@ which have a dependency to external helm repositories.
 + Use external 'diff' utility to render actual vs target state difference
 + Show sync policy in app list view
 * Remove resources state from application CRD (#758)
-* API server & UI should serve argocd binaries instead of linking to GitHub (#716)
+* API server & UI should serve cd binaries instead of linking to GitHub (#716)
 * Update versions for kubectl (v1.13.1), helm (v2.12.1), ksonnet (v0.13.1)
 * Update version of aws-iam-authenticator (0.4.0-alpha.1)
 * Ability to force refresh of application manifests from git
@@ -2559,7 +2559,7 @@ which have a dependency to external helm repositories.
 - API Server fails to return apps due to grpc max message size limit  (issue #690)
 - App Creation UI for Helm Apps shows only files prefixed with `values-` (issue #663)
 - App creation UI should allow specifying values files outside of helm app directory bug (issue #658)
-- argocd-server logs credentials in plain text when adding git repositories (issue #653)
+- cd-server logs credentials in plain text when adding git repositories (issue #653)
 - Azure Repos do not work as a repository (issue #643)
 - Better update conflict error handing during app editing (issue #685)
 - Cluster watch needs to be restarted when CRDs get created (issue #627)
@@ -2579,7 +2579,7 @@ which have a dependency to external helm repositories.
 ## v0.9.2 (2018-09-28)
 
 * Update to kustomize 1.0.8
-- Fix issue where argocd-server logged credentials in plain text during repo add (issue #653)
+- Fix issue where cd-server logged credentials in plain text during repo add (issue #653)
 - Credentials not being accepted for Google Source Repositories (issue #651)
 - Azure Repos do not work as a repository (issue #643)
 - Temporary ignore service catalog resources (issue #650)
@@ -2595,7 +2595,7 @@ which have a dependency to external helm repositories.
 * Cluster wide resources should be allowed in default project (due to issue #330):
 
 ```
-argocd project allow-cluster-resource default '*' '*'
+cd project allow-cluster-resource default '*' '*'
 ```
 
 * Projects now provide the ability to allow or deny deployments of cluster-scoped resources
@@ -2604,16 +2604,16 @@ match the behavior of v0.8 (which did not have restrictions on deploying resourc
 allow deployment of cluster-scoped resources, an additional command should be run:
 
 ```bash
-argocd proj allow-cluster-resource default '*' '*'
+cd proj allow-cluster-resource default '*' '*'
 ```
 
 The above command allows the `default` project to deploy any cluster-scoped resources which matches
 the behavior of v0.8.
 
-* The secret keys in the argocd-secret containing the TLS certificate and key, has been renamed from
-  `server.crt` and `server.key` to the standard `tls.crt` and `tls.key` keys. This enables Argo CD
+* The secret keys in the cd-secret containing the TLS certificate and key, has been renamed from
+  `server.crt` and `server.key` to the standard `tls.crt` and `tls.key` keys. This enables Hanzo CD
   to integrate better with Ingress and cert-manager. When upgrading to v0.9, the `server.crt` and
-  `server.key` keys in argocd-secret should be renamed to the new keys.
+  `server.key` keys in cd-secret should be renamed to the new keys.
 
 ### Changes since v0.8:
 + Auto-sync option in application CRD instance (issue #79)
@@ -2622,8 +2622,8 @@ the behavior of v0.8.
 + Redact K8s secrets from API server payloads (issue #470)
 + Support --in-cluster authentication without providing a kubeconfig (issue #527)
 + Special handling of CustomResourceDefinitions (issue #613)
-+ Argo CD should download helm chart dependencies (issue #582)
-+ Export Argo CD stats as prometheus style metrics (issue #513)
++ Hanzo CD should download helm chart dependencies (issue #582)
++ Export Hanzo CD stats as prometheus style metrics (issue #513)
 + Support restricting TLS version (issue #609)
 + Use 'kubectl auth reconcile' before 'kubectl apply' (issue #523)
 + Projects need controls on cluster-scoped resources (issue #330)
@@ -2644,7 +2644,7 @@ the behavior of v0.8.
 - Fix issue where changes were not pulled when tracking a branch (issue #567)
 - Lazy enforcement of unknown cluster/namespace restricted resources (issue #599)
 - Fix controller hot loop when app source contains bad manifests (issue #568)
-- Fix issue where Argo CD fails to deploy when resources are in a K8s list format (issue #584)
+- Fix issue where Hanzo CD fails to deploy when resources are in a K8s list format (issue #584)
 - Fix comparison failure when app contains unregistered custom resource (issue #583)
 - Fix issue where helm hooks were being deployed as part of sync (issue #605)
 - Fix race conditions in kube.GetResourcesWithLabel and DeleteResourceWithLabel (issue #587)
@@ -2653,13 +2653,13 @@ the behavior of v0.8.
 - Helm hooks are being deployed as resources (issue #605)
 - Disagreement in three way diff calculation (issue #597)
 - SIGSEGV in kube.GetResourcesWithLabel (issue #587)
-- Argo CD fails to deploy resources list (issue #584)
+- Hanzo CD fails to deploy resources list (issue #584)
 - Branch tracking not working properly (issue #567)
 - Controller hot loop when application source has bad manifests (issue #568)
 
 ## v0.8.2 (2018-09-12)
 - Downgrade ksonnet from v0.12.0 to v0.11.0 due to quote unescape regression
-- Fix CLI panic when performing an initial `argocd sync/wait`
+- Fix CLI panic when performing an initial `cd sync/wait`
 
 ## v0.8.1 (2018-09-10)
 + [UI] Support selection of helm values files in App creation wizard (issue #499)
@@ -2698,8 +2698,8 @@ RBAC policy rules, need to be rewritten to include one extra column with the eff
 * Add readiness probes to API server (issue #522)
 * Use gRPC error codes instead of fmt.Errorf (#532)
 - API discovery becomes best effort when partial resource list is returned (issue #524)
-- Fix `argocd app wait` printing incorrect Sync output (issue #542)
-- Fix issue where argocd could not sync to a tag (#541)
+- Fix `cd app wait` printing incorrect Sync output (issue #542)
+- Fix issue where cd could not sync to a tag (#541)
 - Fix issue where static assets were browser cached between upgrades (issue #489)
 
 ## v0.7.2 (2018-08-21)
@@ -2710,7 +2710,7 @@ RBAC policy rules, need to be rewritten to include one extra column with the eff
 + [UI] Improve application creation wizard (#459)
 + [UI] Show indicator when refresh is still in progress (#493)
 * [UI] Improve data loading error notification (#446)
-* Infer username from claims during an `argocd relogin` (#475)
+* Infer username from claims during an `cd relogin` (#475)
 * Expand RBAC role to be able to create application events. Fix username claims extraction
 - Fix scalability issues with the ListApps API (#494)
 - Fix issue where application server was retrieving events from incorrect cluster (#478)
@@ -2727,7 +2727,7 @@ RBAC policy rules, need to be rewritten to include one extra column with the eff
 + Show CLI progress for sync and rollback
 + Make use of dex refresh tokens and store them into local config
 + Expire local superuser tokens when their password changes
-+ Add `argocd relogin` command as a convenience around login to current context
++ Add `cd relogin` command as a convenience around login to current context
 - Fix saving default connection status for repos and clusters
 - Fix undesired fail-fast behavior of health check
 - Fix memory leak in the cluster resource watch
@@ -2775,10 +2775,10 @@ RBAC policy rules, need to be rewritten to include one extra column with the eff
 ## v0.5.0 (2018-06-12)
 + RBAC access control
 + Repository/Cluster state monitoring
-+ Argo CD settings import/export
++ Hanzo CD settings import/export
 + Application creation UI wizard
-+ argocd app manifests for printing the application manifests
-+ argocd app unset command to unset parameter overrides
++ cd app manifests for printing the application manifests
++ cd app unset command to unset parameter overrides
 + Fail app sync if prune flag is required (#276)
 + Take into account number of unavailable replicas to decided if deployment is healthy or not #270
 + Add ability to show parameters and overrides in CLI (resolves #240)
@@ -2786,19 +2786,19 @@ RBAC policy rules, need to be rewritten to include one extra column with the eff
 - Cookie token was not parsed properly when mixed with other site cookies
 
 ## v0.4.7 (2018-06-07)
-- Fix argocd app wait health checking logic
+- Fix cd app wait health checking logic
 
 ## v0.4.6 (2018-06-06)
-- Retry argocd app wait connection errors from EOF watch. Show detailed state changes
+- Retry cd app wait connection errors from EOF watch. Show detailed state changes
 
 ## v0.4.5 (2018-05-31)
-+ Add argocd app unset command to unset parameter overrides
++ Add cd app unset command to unset parameter overrides
 - Cookie token was not parsed properly when mixed with other site cookies
 
 ## v0.4.4 (2018-05-30)
 + Add ability to show parameters and overrides in CLI (resolves #240)
 + Add Events API endpoint
-+ Issue #238 - add upsert flag to 'argocd app create' command
++ Issue #238 - add upsert flag to 'cd app create' command
 + Add repo browsing endpoint (#229)
 + Support subscribing to settings updates and auto-restart of dex and API server
 - Issue #233 - Controller does not persist rollback operation result
@@ -2809,12 +2809,12 @@ RBAC policy rules, need to be rewritten to include one extra column with the eff
 - Fix exit code for app wait (#219)
 
 ## v0.4.2 (2018-05-21)
-+ Show URL in argocd app get
++ Show URL in cd app get
 - Remove interactive context name prompt during login which broke login automation
-* Rename force flag to cascade in argocd app delete
+* Rename force flag to cascade in cd app delete
 
 ## v0.4.1 (2018-05-18)
-+ Implemented argocd app wait command
++ Implemented cd app wait command
 
 ## v0.4.0 (2018-05-17)
 + SSO Integration
@@ -2839,7 +2839,7 @@ RBAC policy rules, need to be rewritten to include one extra column with the eff
 + Add new rollback RPC with numeric identifiers
 + New argo app history and argo app rollback command
 + Switch to gogo/protobuf for golang code generation
-- Fix: create .argocd directory during argo login (issue #123)
+- Fix: create .cd directory during argo login (issue #123)
 - Fix: Allow overriding server or namespace separately (issue #110)
 
 ## v0.3.0 (2018-04-23)

@@ -19,7 +19,7 @@ func TestSimpleClusterGeneratorExternalNamespace(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Application",
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "cluster1-guestbook",
@@ -71,7 +71,7 @@ func TestSimpleClusterGeneratorExternalNamespace(t *testing.T) {
 						Clusters: &v1alpha1.ClusterGenerator{
 							Selector: metav1.LabelSelector{
 								MatchLabels: map[string]string{
-									"cd.argoproj.io/secret-type": "cluster",
+									"cd.hanzo.ai/secret-type": "cluster",
 								},
 							},
 						},
@@ -115,7 +115,7 @@ func TestSimpleClusterGenerator(t *testing.T) {
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "cluster1-guestbook",
@@ -166,7 +166,7 @@ func TestSimpleClusterGenerator(t *testing.T) {
 						Clusters: &v1alpha1.ClusterGenerator{
 							Selector: metav1.LabelSelector{
 								MatchLabels: map[string]string{
-									"cd.argoproj.io/secret-type": "cluster",
+									"cd.hanzo.ai/secret-type": "cluster",
 								},
 							},
 						},
@@ -206,7 +206,7 @@ func TestClusterGeneratorWithLocalCluster(t *testing.T) {
 	expectedAppTemplate := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "in-cluster-guestbook",
@@ -320,7 +320,7 @@ func TestSimpleClusterGeneratorAddingCluster(t *testing.T) {
 	expectedAppTemplate := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "{{name}}-guestbook",
@@ -376,7 +376,7 @@ func TestSimpleClusterGeneratorAddingCluster(t *testing.T) {
 						Clusters: &v1alpha1.ClusterGenerator{
 							Selector: metav1.LabelSelector{
 								MatchLabels: map[string]string{
-									"cd.argoproj.io/secret-type": "cluster",
+									"cd.hanzo.ai/secret-type": "cluster",
 								},
 							},
 						},
@@ -399,7 +399,7 @@ func TestSimpleClusterGeneratorDeletingCluster(t *testing.T) {
 	expectedAppTemplate := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "{{name}}-guestbook",
@@ -456,7 +456,7 @@ func TestSimpleClusterGeneratorDeletingCluster(t *testing.T) {
 						Clusters: &v1alpha1.ClusterGenerator{
 							Selector: metav1.LabelSelector{
 								MatchLabels: map[string]string{
-									"cd.argoproj.io/secret-type": "cluster",
+									"cd.hanzo.ai/secret-type": "cluster",
 								},
 							},
 						},
@@ -480,7 +480,7 @@ func TestClusterGeneratorWithFlatListMode(t *testing.T) {
 	expectedAppTemplate := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "flat-clusters",
@@ -556,7 +556,7 @@ func TestClusterGeneratorWithFlatListMode(t *testing.T) {
 						Clusters: &v1alpha1.ClusterGenerator{
 							Selector: metav1.LabelSelector{
 								MatchLabels: map[string]string{
-									"cd.argoproj.io/secret-type": "cluster",
+									"cd.hanzo.ai/secret-type": "cluster",
 								},
 							},
 							FlatList: true,

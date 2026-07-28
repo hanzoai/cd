@@ -37,7 +37,7 @@ Verify: run `go version`
 
 <https://docs.docker.com/engine/install/>
 
-You will need a working Docker runtime environment, to be able to build and run images. Argo CD is using multi-stage builds. 
+You will need a working Docker runtime environment, to be able to build and run images. Hanzo CD is using multi-stage builds. 
 
 Verify: run `docker version`
 
@@ -53,7 +53,7 @@ You won't need a fully blown multi-master, multi-node cluster, but you will need
 
 ##### [Installation guide](https://kind.sigs.k8s.io/docs/user/quick-start)
 
-You can use `kind` to run Kubernetes inside Docker. But pointing to any other development cluster works fine as well as long as Argo CD can reach it.
+You can use `kind` to run Kubernetes inside Docker. But pointing to any other development cluster works fine as well as long as Hanzo CD can reach it.
 
 ##### Start the Cluster
 ```shell
@@ -84,18 +84,18 @@ minikube start --driver=podman
 * Run `kubectl version` 
 
 ## Fork and Clone the Repository
-1. Fork the Argo CD repository to your personal GitHub Account
+1. Fork the Hanzo CD repository to your personal GitHub Account
 2. Clone the forked repository:
 ```shell
 git clone https://github.com/YOUR-USERNAME/argo-cd.git
 ```
-   Please note that the local build process uses GOPATH and that path should not be used, unless the Argo CD repository was directly cloned in it.
+   Please note that the local build process uses GOPATH and that path should not be used, unless the Hanzo CD repository was directly cloned in it.
 
-3. While everyone has their own Git workflow, the author of this document recommends to create a remote called `upstream` in your local copy pointing to the original Argo CD repository. This way, you can easily keep your local branches up-to-date by merging in latest changes from the Argo CD repository, i.e. by doing a `git pull upstream master` in your locally checked out branch.
+3. While everyone has their own Git workflow, the author of this document recommends to create a remote called `upstream` in your local copy pointing to the original Hanzo CD repository. This way, you can easily keep your local branches up-to-date by merging in latest changes from the Hanzo CD repository, i.e. by doing a `git pull upstream master` in your locally checked out branch.
    To create the remote, run:
    ```shell
    cd argo-cd
-   git remote add upstream https://github.com/argoproj/argo-cd.git
+   git remote add upstream https://github.com/hanzoai/cd.git
    ```
 
 ## Install Additional Required Development Tools
@@ -105,16 +105,16 @@ make install-go-tools-local
 make install-codegen-tools-local
 ```
 
-## Install Latest Argo CD on Your Local Cluster
+## Install Latest Hanzo CD on Your Local Cluster
 
 ```shell
-kubectl create namespace argocd &&
-kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
+kubectl create namespace cd &&
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
 ```
 
 Set kubectl config to avoid specifying the namespace in every kubectl command.  
 
 ```shell
-kubectl config set-context --current --namespace=argocd
+kubectl config set-context --current --namespace=cd
 ```
 

@@ -67,7 +67,7 @@ const (
 	// Rather than importing the whole cd-notifications controller, just copying the const here
 	//   https://github.com/argoproj-labs/cd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/subscriptions.go#L12
 	//   https://github.com/argoproj-labs/cd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/state.go#L17
-	NotifiedAnnotationKey             = "notified.notifications.argoproj.io"
+	NotifiedAnnotationKey             = "notified.notifications.apps.hanzo.ai"
 	ReconcileRequeueOnValidationError = time.Minute * 3
 	ReverseDeletionOrder              = "Reverse"
 	AllAtOnceDeletionOrder            = "AllAtOnce"
@@ -113,8 +113,8 @@ type ApplicationSetReconciler struct {
 
 var _ progressivesync.Dependencies = (*ApplicationSetReconciler)(nil)
 
-// +kubebuilder:rbac:groups=argoproj.io,resources=applicationsets,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=argoproj.io,resources=applicationsets/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=apps.hanzo.ai,resources=applicationsets,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=apps.hanzo.ai,resources=applicationsets/status,verbs=get;update;patch
 
 func (r *ApplicationSetReconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ctrl.Result, err error) {
 	startReconcile := time.Now()
@@ -717,7 +717,7 @@ func (r *ApplicationSetReconciler) createOrUpdateInCluster(ctx context.Context, 
 				},
 				TypeMeta: metav1.TypeMeta{
 					Kind:       application.ApplicationKind,
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 			}
 

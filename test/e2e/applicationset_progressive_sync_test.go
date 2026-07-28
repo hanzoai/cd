@@ -28,7 +28,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 	expectedDevApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "app1-dev",
@@ -37,7 +37,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "dev",
 			},
 			Finalizers: []string{
-				"resources-finalizer.cd.argoproj.io",
+				"resources-finalizer.cd.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -57,7 +57,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 	expectedStageApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "app2-staging",
@@ -66,7 +66,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "staging",
 			},
 			Finalizers: []string{
-				"resources-finalizer.cd.argoproj.io",
+				"resources-finalizer.cd.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -85,7 +85,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 	expectedProdApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "app3-prod",
@@ -94,7 +94,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "prod",
 			},
 			Finalizers: []string{
-				"resources-finalizer.cd.argoproj.io",
+				"resources-finalizer.cd.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -422,7 +422,7 @@ func TestProgressiveSyncMultipleAppsPerStepWithReverseDeletionOrder(t *testing.T
 	prodApps := []string{"prog-ship", "prog-run"}
 	stagingApps := []string{"prog-verify", "prog-validate"}
 	devApps := []string{"prog-sketch", "prog-build"}
-	testFinalizer := "test.e2e.argoproj.io/wait-for-verification"
+	testFinalizer := "test.e2e.apps.hanzo.ai/wait-for-verification"
 	// Create expected app definitions for existence checks
 	expectedProdApps := []v1alpha1.Application{
 		generateExpectedApp("prog-", "progressive-sync/multiple-apps-in-step/prod/", "ship", "prod", testFinalizer),
@@ -518,7 +518,7 @@ var appSetInvalidStepConfiguration = v1alpha1.ApplicationSet{
 	},
 	TypeMeta: metav1.TypeMeta{
 		Kind:       "ApplicationSet",
-		APIVersion: "argoproj.io/v1alpha1",
+		APIVersion: "apps.hanzo.ai/v1alpha1",
 	},
 	Spec: v1alpha1.ApplicationSetSpec{
 		GoTemplate: true,
@@ -574,7 +574,7 @@ var appSetWithEmptyGenerator = v1alpha1.ApplicationSet{
 	},
 	TypeMeta: metav1.TypeMeta{
 		Kind:       "ApplicationSet",
-		APIVersion: "argoproj.io/v1alpha1",
+		APIVersion: "apps.hanzo.ai/v1alpha1",
 	},
 	Spec: v1alpha1.ApplicationSetSpec{
 		GoTemplate: true,
@@ -626,7 +626,7 @@ var appSetWithReverseDeletionOrder = v1alpha1.ApplicationSet{
 	},
 	TypeMeta: metav1.TypeMeta{
 		Kind:       "ApplicationSet",
-		APIVersion: "argoproj.io/v1alpha1",
+		APIVersion: "apps.hanzo.ai/v1alpha1",
 	},
 	Spec: v1alpha1.ApplicationSetSpec{
 		GoTemplate: true,
@@ -638,8 +638,8 @@ var appSetWithReverseDeletionOrder = v1alpha1.ApplicationSet{
 					"environment": "{{.environment}}",
 				},
 				Finalizers: []string{
-					"resources-finalizer.cd.argoproj.io",
-					"test.e2e.argoproj.io/wait-for-verification",
+					"resources-finalizer.cd.hanzo.ai",
+					"test.e2e.apps.hanzo.ai/wait-for-verification",
 				},
 			},
 			Spec: v1alpha1.ApplicationSpec{
@@ -684,7 +684,7 @@ var appSetWithReverseDeletionOrder = v1alpha1.ApplicationSet{
 
 func generateExpectedApp(prefix string, path string, name string, envVar string, testFinalizer string) v1alpha1.Application {
 	finalizers := []string{
-		"resources-finalizer.cd.argoproj.io",
+		"resources-finalizer.cd.hanzo.ai",
 	}
 	if testFinalizer != "" {
 		finalizers = append(finalizers, testFinalizer)
@@ -692,7 +692,7 @@ func generateExpectedApp(prefix string, path string, name string, envVar string,
 	return v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Application",
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      prefix + name,

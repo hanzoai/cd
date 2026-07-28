@@ -3,7 +3,7 @@
 The Pull Request generator uses the API of an SCMaaS provider (GitHub, Gitea, or Bitbucket Server) to automatically discover open pull requests within a repository. This fits well with the style of building a test environment when you create a pull request.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -30,7 +30,7 @@ spec:
 Specify the repository from which to fetch the GitHub Pull requests.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -74,7 +74,7 @@ spec:
 Specify the project from which to fetch the GitLab merge requests.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -101,7 +101,7 @@ spec:
         insecure: false
         # Reference to a ConfigMap containing trusted CA certs - useful for self-signed certificates. (optional)
         caRef:
-          configMapName: argocd-tls-certs-cm
+          configMapName: cd-tls-certs-cm
           key: gitlab-ca
       requeueAfterSeconds: 1800
   template:
@@ -114,7 +114,7 @@ spec:
 * `labels`: Labels is used to filter the MRs that you want to target. (Optional)
 * `pullRequestState`: PullRequestState is an additional MRs filter to get only those with a certain state. By default all states. Default: "" (all states). Valid values: `""`, `opened`, `closed`, `merged` or `locked`. (Optional)
 * `insecure`: By default (false) - Skip checking the validity of the SCM's certificate - useful for self-signed TLS certificates.
-* `caRef`: Optional `ConfigMap` name and key containing the GitLab certificates to trust - useful for self-signed TLS certificates. Possibly reference the ArgoCD CM holding the trusted certs.
+* `caRef`: Optional `ConfigMap` name and key containing the GitLab certificates to trust - useful for self-signed TLS certificates. Possibly reference the Hanzo CD CM holding the trusted certs.
 
 As a preferable alternative to setting `insecure` to true, you can configure self-signed TLS certificates for Gitlab by [mounting self-signed certificate to the applicationset controller](./Generators-SCM-Provider.md#self-signed-tls-certificates).
 
@@ -123,7 +123,7 @@ As a preferable alternative to setting `insecure` to true, you can configure sel
 Specify the repository from which to fetch the Gitea Pull requests.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -161,7 +161,7 @@ spec:
 Fetch pull requests from a repo hosted on a Bitbucket Server (not the same as Bitbucket Cloud).
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -195,12 +195,12 @@ spec:
         insecure: true
         # Reference to a ConfigMap containing trusted CA certs - useful for self-signed certificates. (optional)
         caRef:
-          configMapName: argocd-tls-certs-cm
+          configMapName: cd-tls-certs-cm
           key: bitbucket-ca
       # Labels are not supported by Bitbucket Server, so filtering by label is not possible.
       # Filter PRs using the source branch name. (optional)
       filters:
-      - branchMatch: ".*-argocd"
+      - branchMatch: ".*-cd"
   template:
   # ...
 ```
@@ -219,14 +219,14 @@ In case of Bitbucket App Token, go with `bearerToken` section.
 
 In case of self-signed BitBucket Server certificates, the following options can be useful:
 * `insecure`: By default (false) - Skip checking the validity of the SCM's certificate - useful for self-signed TLS certificates.
-* `caRef`: Optional `ConfigMap` name and key containing the BitBucket server certificates to trust - useful for self-signed TLS certificates. Possibly reference the ArgoCD CM holding the trusted certs.
+* `caRef`: Optional `ConfigMap` name and key containing the BitBucket server certificates to trust - useful for self-signed TLS certificates. Possibly reference the Hanzo CD CM holding the trusted certs.
 
 ## Bitbucket Cloud
 
 Fetch pull requests from a repo hosted on a Bitbucket Cloud.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -261,14 +261,14 @@ spec:
         # Labels are not supported by Bitbucket Cloud, so filtering by label is not possible.
         # Filter PRs using the source branch name. (optional)
         filters:
-          - branchMatch: ".*-argocd"
+          - branchMatch: ".*-cd"
           
           # If you need to filter destination branch too, you can use this
           - targetBranchMatch: "master"
             
           # Also you can combine source and target branch filters like
-          # This case will match any pull-request where source branch ends with "-argocd" and destination branch is master
-          - branchMatch: ".*-argocd"
+          # This case will match any pull-request where source branch ends with "-cd" and destination branch is master
+          - branchMatch: ".*-cd"
             targetBranchMatch: "master"
   template:
   # ...
@@ -285,7 +285,7 @@ You can use branch `filters` like
 > [!NOTE]
 > Labels are not supported by Bitbucket.
 
-If you want to access a private repository, Argo CD will need credentials to access repository in Bitbucket Cloud. You can use Bitbucket App Password (generated per user, with access to whole workspace), or Bitbucket App Token (generated per repository, with access limited to repository scope only). If both App Password and App Token are defined, App Token will be used.
+If you want to access a private repository, Hanzo CD will need credentials to access repository in Bitbucket Cloud. You can use Bitbucket App Password (generated per user, with access to whole workspace), or Bitbucket App Token (generated per repository, with access limited to repository scope only). If both App Password and App Token are defined, App Token will be used.
 
 To use Bitbucket App Password, use `basicAuth` section.
 - `username`: The username to authenticate with. It only needs read access to the relevant repo.
@@ -299,7 +299,7 @@ In case of Bitbucket App Token, go with `bearerToken` section.
 Specify the organization, project and repository from which you want to fetch pull requests.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -342,7 +342,7 @@ Filters allow selecting which pull requests to generate for. Each filter can dec
 Currently, only a subset of filters is available when comparing with [SCM provider](Generators-SCM-Provider.md) filters.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -352,10 +352,10 @@ spec:
   generators:
   - pullRequest:
       # ...
-      # Include any pull request branch ending with "argocd" 
+      # Include any pull request branch ending with "cd" 
       # and pull request title starting with "feat:". (optional)
       filters:
-      - branchMatch: ".*-argocd"
+      - branchMatch: ".*-cd"
       - titleMatch: "^feat:"
   template:
   # ...
@@ -374,7 +374,7 @@ As with all generators, several keys are available for replacement in the genera
 The following is a comprehensive Helm Application example;
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -405,7 +405,7 @@ spec:
 And, here is a robust Kustomize example;
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -503,7 +503,7 @@ An Application will be generated when a Pull Request is discovered when the conf
 You may pass additional, arbitrary string key-value pairs via the `values` field of any Pull Request generator. Values added via the `values` field are added as `values.(field)`.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps

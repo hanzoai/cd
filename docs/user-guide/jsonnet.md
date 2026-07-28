@@ -1,6 +1,6 @@
 # Jsonnet
 
-Any file matching `*.jsonnet` in a directory app is treated as a Jsonnet file. Argo CD evaluates the Jsonnet and is able to parse a generated object or array.
+Any file matching `*.jsonnet` in a directory app is treated as a Jsonnet file. Hanzo CD evaluates the Jsonnet and is able to parse a generated object or array.
 
 ## Build Environment
 
@@ -10,7 +10,7 @@ It is also possible to add a shared library (e.g. `vendor` folder) relative to t
 E.g. via the CLI:
 
 ```bash
-argocd app create APPNAME \
+cd app create APPNAME \
   --jsonnet-ext-var-str 'app=${CD_APP_NAME}' \
   --jsonnet-tla-str 'ns=${CD_APP_NAMESPACE}' \
   --jsonnet-libs 'vendor'

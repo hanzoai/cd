@@ -3,7 +3,7 @@ kind: ZookeeperCluster
 metadata:
   generation: 3
   labels:
-    argocd.argoproj.io/instance: test-cluster-zookeeper
+    cd.hanzo.ai/instance: test-cluster-zookeeper
   name: test-cluster-zookeeper
   namespace: zookeeper
   resourceVersion: "265193"

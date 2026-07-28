@@ -490,7 +490,7 @@ func normalizeTargetResources(openAPISchema openapi.Resources, cr *comparisonRes
 		// never by the sync. Merging live `status` into the apply makes the sync
 		// field manager (ArgoCDSSAManager, "cd-controller") a co-owner of
 		// `status` under server-side apply. For resources without a /status
-		// subresource (e.g. argoproj.io/Application) this freezes a stale
+		// subresource (e.g. apps.hanzo.ai/Application) this freezes a stale
 		// status.operationState.phase that the controller can no longer correct.
 		liveForPatch, normalizedLiveForPatch := live, normalized.Lives[idx]
 		liveForPatch = liveForPatch.DeepCopy()

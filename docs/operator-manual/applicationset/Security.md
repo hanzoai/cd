@@ -4,14 +4,14 @@ ApplicationSet is a powerful tool, and it is crucial to understand its security 
 
 ## Only admins may create/update/delete ApplicationSets
 
-ApplicationSets can create Applications under arbitrary [Projects](../../user-guide/projects.md). Argo CD setups often
+ApplicationSets can create Applications under arbitrary [Projects](../../user-guide/projects.md). Hanzo CD setups often
 include Projects (such as the `default`) with high levels of permissions, often including the ability to manage the 
-resources of Argo CD itself (like the RBAC ConfigMap).
+resources of Hanzo CD itself (like the RBAC ConfigMap).
 
 ApplicationSets can also quickly create an arbitrary number of Applications and just as quickly delete them.
 
 Finally, ApplicationSets can reveal privileged information. For example, the [git generator](./Generators-Git.md) can
-read Secrets in the Argo CD namespace and send them to arbitrary URLs (e.g. URL provided for the `api` field) as auth headers.
+read Secrets in the Hanzo CD namespace and send them to arbitrary URLs (e.g. URL provided for the `api` field) as auth headers.
 (This functionality is intended for authorizing requests to SCM providers like GitHub, but it could be abused by a malicious user.)
 
 For these reasons, **only admins** may be given permission (via Kubernetes RBAC or any other mechanism) to create, 
@@ -31,7 +31,7 @@ service.
 It's important to pay special attention to ApplicationSets where the `project` field is templated. A malicious user with
 write access to the generator's source of truth (for example, someone with push access to the git repo for a git
 generator) could create Applications under Projects with insufficient restrictions. A malicious user with the ability to
-create an Application under an unrestricted Project (like the `default` Project) could take control of Argo CD itself
+create an Application under an unrestricted Project (like the `default` Project) could take control of Hanzo CD itself
 by, for example, modifying its RBAC ConfigMap.
 
 If the `project` field is not hard-coded in an ApplicationSet's template, then admins _must_ control all sources of 

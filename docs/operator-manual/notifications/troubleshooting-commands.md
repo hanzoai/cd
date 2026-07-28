@@ -1,9 +1,9 @@
-## argocd admin notifications template get
+## cd admin notifications template get
 
 Prints information about configured templates
 
 ```
-argocd admin notifications template get [flags]
+cd admin notifications template get [flags]
 ```
 
 ### Examples
@@ -11,9 +11,9 @@ argocd admin notifications template get [flags]
 ```
 
 # prints all templates
-argocd admin notifications template get
+cd admin notifications template get
 # print YAML formatted app-sync-succeeded template definition
-argocd admin notifications template get app-sync-succeeded -o=yaml
+cd admin notifications template get app-sync-succeeded -o=yaml
 
 ```
 
@@ -27,8 +27,8 @@ argocd admin notifications template get app-sync-succeeded -o=yaml
 ### Options inherited from parent commands
 
 ```
-      --argocd-repo-server string      Argo CD repo server address (default "argocd-repo-server:8081")
-      --argocd-repo-server-plaintext   Use a plaintext client (non-TLS) to connect to repository server
+      --cd-repo-server string      Hanzo CD repo server address (default "cd-repo-server:8081")
+      --cd-repo-server-plaintext   Use a plaintext client (non-TLS) to connect to repository server
       --as string                      Username to impersonate for the operation
       --as-group stringArray           Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
       --as-uid string                  UID to impersonate for the operation
@@ -36,7 +36,7 @@ argocd admin notifications template get app-sync-succeeded -o=yaml
       --client-certificate string      Path to a client certificate file for TLS
       --client-key string              Path to a client key file for TLS
       --cluster string                 The name of the kubeconfig cluster to use
-      --config-map string              argocd-notifications-cm.yaml file path
+      --config-map string              cd-notifications-cm.yaml file path
       --context string                 The name of the kubeconfig context to use
       --disable-compression            If true, opt-out of response compression for all requests to the server
       --insecure-skip-tls-verify       If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
@@ -45,7 +45,7 @@ argocd admin notifications template get app-sync-succeeded -o=yaml
       --password string                Password for basic authentication to the API server
       --proxy-url string               If provided, this URL will be used to connect via proxy
       --request-timeout string         The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests. (default "0")
-      --secret string                  argocd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
+      --secret string                  cd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
       --server string                  The address and port of the Kubernetes API server
       --tls-server-name string         If provided, this name will be used to validate server certificate. If this is not provided, hostname used to contact the server is used.
       --token string                   Bearer token for authentication to the API server
@@ -53,12 +53,12 @@ argocd admin notifications template get app-sync-succeeded -o=yaml
       --username string                Username for basic authentication to the API server
 ```
 
-## argocd admin notifications template notify
+## cd admin notifications template notify
 
 Generates notification using the specified template and send it to specified recipients
 
 ```
-argocd admin notifications template notify NAME RESOURCE_NAME [flags]
+cd admin notifications template notify NAME RESOURCE_NAME [flags]
 ```
 
 ### Examples
@@ -66,10 +66,10 @@ argocd admin notifications template notify NAME RESOURCE_NAME [flags]
 ```
 
 # Trigger notification using in-cluster config map and secret
-argocd admin notifications template notify app-sync-succeeded guestbook --recipient slack:my-slack-channel
+cd admin notifications template notify app-sync-succeeded guestbook --recipient slack:my-slack-channel
 
 # Render notification render generated notification in console
-argocd admin notifications template notify app-sync-succeeded guestbook
+cd admin notifications template notify app-sync-succeeded guestbook
 
 ```
 
@@ -83,8 +83,8 @@ argocd admin notifications template notify app-sync-succeeded guestbook
 ### Options inherited from parent commands
 
 ```
-      --argocd-repo-server string      Argo CD repo server address (default "argocd-repo-server:8081")
-      --argocd-repo-server-plaintext   Use a plaintext client (non-TLS) to connect to repository server
+      --cd-repo-server string      Hanzo CD repo server address (default "cd-repo-server:8081")
+      --cd-repo-server-plaintext   Use a plaintext client (non-TLS) to connect to repository server
       --as string                      Username to impersonate for the operation
       --as-group stringArray           Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
       --as-uid string                  UID to impersonate for the operation
@@ -92,7 +92,7 @@ argocd admin notifications template notify app-sync-succeeded guestbook
       --client-certificate string      Path to a client certificate file for TLS
       --client-key string              Path to a client key file for TLS
       --cluster string                 The name of the kubeconfig cluster to use
-      --config-map string              argocd-notifications-cm.yaml file path
+      --config-map string              cd-notifications-cm.yaml file path
       --context string                 The name of the kubeconfig context to use
       --disable-compression            If true, opt-out of response compression for all requests to the server
       --insecure-skip-tls-verify       If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
@@ -101,7 +101,7 @@ argocd admin notifications template notify app-sync-succeeded guestbook
       --password string                Password for basic authentication to the API server
       --proxy-url string               If provided, this URL will be used to connect via proxy
       --request-timeout string         The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests. (default "0")
-      --secret string                  argocd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
+      --secret string                  cd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
       --server string                  The address and port of the Kubernetes API server
       --tls-server-name string         If provided, this name will be used to validate server certificate. If this is not provided, hostname used to contact the server is used.
       --token string                   Bearer token for authentication to the API server
@@ -109,12 +109,12 @@ argocd admin notifications template notify app-sync-succeeded guestbook
       --username string                Username for basic authentication to the API server
 ```
 
-## argocd admin notifications trigger get
+## cd admin notifications trigger get
 
 Prints information about configured triggers
 
 ```
-argocd admin notifications trigger get [flags]
+cd admin notifications trigger get [flags]
 ```
 
 ### Examples
@@ -122,9 +122,9 @@ argocd admin notifications trigger get [flags]
 ```
 
 # prints all triggers
-argocd admin notifications trigger get
+cd admin notifications trigger get
 # print YAML formatted on-sync-failed trigger definition
-argocd admin notifications trigger get on-sync-failed -o=yaml
+cd admin notifications trigger get on-sync-failed -o=yaml
 
 ```
 
@@ -138,8 +138,8 @@ argocd admin notifications trigger get on-sync-failed -o=yaml
 ### Options inherited from parent commands
 
 ```
-      --argocd-repo-server string      Argo CD repo server address (default "argocd-repo-server:8081")
-      --argocd-repo-server-plaintext   Use a plaintext client (non-TLS) to connect to repository server
+      --cd-repo-server string      Hanzo CD repo server address (default "cd-repo-server:8081")
+      --cd-repo-server-plaintext   Use a plaintext client (non-TLS) to connect to repository server
       --as string                      Username to impersonate for the operation
       --as-group stringArray           Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
       --as-uid string                  UID to impersonate for the operation
@@ -147,7 +147,7 @@ argocd admin notifications trigger get on-sync-failed -o=yaml
       --client-certificate string      Path to a client certificate file for TLS
       --client-key string              Path to a client key file for TLS
       --cluster string                 The name of the kubeconfig cluster to use
-      --config-map string              argocd-notifications-cm.yaml file path
+      --config-map string              cd-notifications-cm.yaml file path
       --context string                 The name of the kubeconfig context to use
       --disable-compression            If true, opt-out of response compression for all requests to the server
       --insecure-skip-tls-verify       If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
@@ -156,7 +156,7 @@ argocd admin notifications trigger get on-sync-failed -o=yaml
       --password string                Password for basic authentication to the API server
       --proxy-url string               If provided, this URL will be used to connect via proxy
       --request-timeout string         The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests. (default "0")
-      --secret string                  argocd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
+      --secret string                  cd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
       --server string                  The address and port of the Kubernetes API server
       --tls-server-name string         If provided, this name will be used to validate server certificate. If this is not provided, hostname used to contact the server is used.
       --token string                   Bearer token for authentication to the API server
@@ -164,23 +164,23 @@ argocd admin notifications trigger get on-sync-failed -o=yaml
       --username string                Username for basic authentication to the API server
 ```
 
-## argocd admin notifications trigger run
+## cd admin notifications trigger run
 
 Evaluates specified trigger condition and prints the result
 
 ```
-argocd admin notifications trigger run NAME RESOURCE_NAME [flags]
+cd admin notifications trigger run NAME RESOURCE_NAME [flags]
 ```
 
 ### Examples
 
 ```
 
-# Execute trigger configured in 'argocd-notification-cm' ConfigMap
-argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml
+# Execute trigger configured in 'cd-notification-cm' ConfigMap
+cd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml
 
-# Execute trigger using my-config-map.yaml instead of 'argocd-notifications-cm' ConfigMap
-argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml \
+# Execute trigger using my-config-map.yaml instead of 'cd-notifications-cm' ConfigMap
+cd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml \
     --config-map ./my-config-map.yaml
 ```
 
@@ -193,8 +193,8 @@ argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml 
 ### Options inherited from parent commands
 
 ```
-      --argocd-repo-server string      Argo CD repo server address (default "argocd-repo-server:8081")
-      --argocd-repo-server-plaintext   Use a plaintext client (non-TLS) to connect to repository server
+      --cd-repo-server string      Hanzo CD repo server address (default "cd-repo-server:8081")
+      --cd-repo-server-plaintext   Use a plaintext client (non-TLS) to connect to repository server
       --as string                      Username to impersonate for the operation
       --as-group stringArray           Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
       --as-uid string                  UID to impersonate for the operation
@@ -202,7 +202,7 @@ argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml 
       --client-certificate string      Path to a client certificate file for TLS
       --client-key string              Path to a client key file for TLS
       --cluster string                 The name of the kubeconfig cluster to use
-      --config-map string              argocd-notifications-cm.yaml file path
+      --config-map string              cd-notifications-cm.yaml file path
       --context string                 The name of the kubeconfig context to use
       --disable-compression            If true, opt-out of response compression for all requests to the server
       --insecure-skip-tls-verify       If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
@@ -211,7 +211,7 @@ argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml 
       --password string                Password for basic authentication to the API server
       --proxy-url string               If provided, this URL will be used to connect via proxy
       --request-timeout string         The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests. (default "0")
-      --secret string                  argocd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
+      --secret string                  cd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
       --server string                  The address and port of the Kubernetes API server
       --tls-server-name string         If provided, this name will be used to validate server certificate. If this is not provided, hostname used to contact the server is used.
       --token string                   Bearer token for authentication to the API server

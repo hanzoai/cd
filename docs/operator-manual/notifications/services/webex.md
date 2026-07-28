@@ -9,7 +9,7 @@ The Webex Teams notification service configuration includes following settings:
 ## Configuration
 
 1. Create a Webex [Bot](https://developer.webex.com/docs/bots)
-1. Copy the bot access [token](https://developer.webex.com/my-apps) and store it in the `argocd-notifications-secret` Secret and configure Webex Teams integration in `argocd-notifications-cm` ConfigMap
+1. Copy the bot access [token](https://developer.webex.com/my-apps) and store it in the `cd-notifications-secret` Secret and configure Webex Teams integration in `cd-notifications-cm` ConfigMap
 
     ``` yaml
     apiVersion: v1
@@ -24,7 +24,7 @@ The Webex Teams notification service configuration includes following settings:
     apiVersion: v1
     kind: ConfigMap
     metadata:
-    name: argocd-notifications-cm
+    name: cd-notifications-cm
     data:
     service.webex: |
         token: $webex-token
@@ -33,9 +33,9 @@ The Webex Teams notification service configuration includes following settings:
 1. Create subscription for your Webex Teams integration
 
     ``` yaml
-    apiVersion: argoproj.io/v1alpha1
+    apiVersion: apps.hanzo.ai/v1alpha1
     kind: Application
     metadata:
     annotations:
-        notifications.argoproj.io/subscribe.<trigger-name>.webex: <personal email or room id>
+        notifications.apps.hanzo.ai/subscribe.<trigger-name>.webex: <personal email or room id>
     ```

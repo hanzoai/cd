@@ -12,12 +12,12 @@ This library implements core GitOps features:
 
 ## Usage
 
-This library is mainly designed to be used by the Argo CD project.
+This library is mainly designed to be used by the Hanzo CD project.
 However, it can also be used by other projects that need GitOps
 features.
 
 To use the library, add it as a dependency in your Go module:
 
 ```bash
-go get github.com/argoproj/argo-cd/gitops-engine/v3
+go get github.com/hanzoai/cd/gitops-engine/v3
 ```
