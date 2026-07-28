@@ -78,7 +78,6 @@ $ cd admin initial-password reset
 	command.AddCommand(NewImportCommand())
 	command.AddCommand(NewExportCommand())
 	command.AddCommand(NewDashboardCommand(clientOpts))
-	command.AddCommand(NewNotificationsCommand())
 	command.AddCommand(NewInitialPasswordCommand())
 	command.AddCommand(NewRedisInitialPasswordCommand())
 

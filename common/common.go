@@ -29,7 +29,6 @@ const (
 	CommandCMPServer                = "hanzocd-cmp-server"
 	CommandCommitServer             = "hanzocd-commit-server"
 	CommandGitAskPass               = "hanzocd-git-ask-pass"
-	CommandNotifications            = "hanzocd-notifications"
 	CommandK8sAuth                  = "hanzocd-k8s-auth"
 	CommandDex                      = "hanzocd-dex"
 	CommandRepoServer               = "hanzocd-repo-server"
