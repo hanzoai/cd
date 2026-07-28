@@ -16,7 +16,6 @@ import (
 	dex "github.com/hanzoai/deploy/cmd/cd-dex/commands"
 	gitaskpass "github.com/hanzoai/deploy/cmd/cd-git-ask-pass/commands"
 	k8sauth "github.com/hanzoai/deploy/cmd/cd-k8s-auth/commands"
-	notification "github.com/hanzoai/deploy/cmd/cd-notification/commands"
 	reposerver "github.com/hanzoai/deploy/cmd/cd-repo-server/commands"
 	apiserver "github.com/hanzoai/deploy/cmd/cd-server/commands"
 	cli "github.com/hanzoai/deploy/cmd/cd/commands"
@@ -60,8 +59,6 @@ func main() {
 		command = commitserver.NewCommand()
 	case common.CommandDex:
 		command = dex.NewCommand()
-	case common.CommandNotifications:
-		command = notification.NewCommand()
 	case common.CommandGitAskPass:
 		command = gitaskpass.NewCommand()
 		isArgocdCLI = true

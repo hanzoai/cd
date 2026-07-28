@@ -27,7 +27,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/argoproj/notifications-engine/pkg/api"
 	"github.com/hanzoai/deploy/util/vendored/sync"
 	"github.com/golang-jwt/jwt/v5"
 	golang_proto "github.com/golang/protobuf/proto" //nolint:staticcheck
@@ -78,7 +77,6 @@ import (
 	certificatepkg "github.com/hanzoai/deploy/pkg/apiclient/certificate"
 	clusterpkg "github.com/hanzoai/deploy/pkg/apiclient/cluster"
 	gpgkeypkg "github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
-	notificationpkg "github.com/hanzoai/deploy/pkg/apiclient/notification"
 	projectpkg "github.com/hanzoai/deploy/pkg/apiclient/project"
 	repocredspkg "github.com/hanzoai/deploy/pkg/apiclient/repocreds"
 	repositorypkg "github.com/hanzoai/deploy/pkg/apiclient/repository"
@@ -102,7 +100,6 @@ import (
 	"github.com/hanzoai/deploy/server/gpgkey"
 	"github.com/hanzoai/deploy/server/logout"
 	"github.com/hanzoai/deploy/server/metrics"
-	"github.com/hanzoai/deploy/server/notification"
 	"github.com/hanzoai/deploy/server/project"
 	"github.com/hanzoai/deploy/server/rbacpolicy"
 	"github.com/hanzoai/deploy/server/repocreds"
@@ -124,9 +121,6 @@ import (
 	"github.com/hanzoai/deploy/util/io/files"
 	jwtutil "github.com/hanzoai/deploy/util/jwt"
 	kubeutil "github.com/hanzoai/deploy/util/kube"
-	service "github.com/hanzoai/deploy/util/notification/cd"
-	"github.com/hanzoai/deploy/util/notification/k8s"
-	settings_notif "github.com/hanzoai/deploy/util/notification/settings"
 	"github.com/hanzoai/deploy/util/oidc"
 	"github.com/hanzoai/deploy/util/rbac"
 	"github.com/hanzoai/deploy/util/security"
@@ -210,7 +204,6 @@ type ArgoCDServer struct {
 	indexData          []byte
 	indexDataErr       error
 	staticAssets       http.FileSystem
-	apiFactory         api.Factory
 	secretInformer     cache.SharedIndexInformer
 	configMapInformer  cache.SharedIndexInformer
 	serviceSet         *ArgoCDServiceSet
@@ -371,13 +364,8 @@ func NewServer(ctx context.Context, opts ArgoCDServerOpts, appsetOpts Applicatio
 		staticFS = utilio.NewComposableFS(staticFS, root.FS())
 	}
 
-	cdService, err := service.NewArgoCDService(opts.KubeClientset, opts.DynamicClientset, opts.Namespace, opts.RepoClientset)
-	errorsutil.CheckError(err)
 
-	secretInformer := k8s.NewSecretInformer(opts.KubeClientset, opts.Namespace, "cd-notifications-secret")
-	configMapInformer := k8s.NewConfigMapInformer(opts.KubeClientset, opts.Namespace, "cd-notifications-cm")
 
-	apiFactory := api.NewFactory(settings_notif.GetFactorySettings(cdService, "cd-notifications-secret", "cd-notifications-cm", false), opts.Namespace, secretInformer, configMapInformer)
 
 	dbInstance := db.NewDB(opts.Namespace, settingsMgr, opts.KubeClientset)
 	logger := log.NewEntry(log.StandardLogger())
@@ -409,9 +397,6 @@ func NewServer(ctx context.Context, opts ArgoCDServerOpts, appsetOpts Applicatio
 		userStateStorage:   userStateStorage,
 		staticAssets:       http.FS(staticFS),
 		db:                 dbInstance,
-		apiFactory:         apiFactory,
-		secretInformer:     secretInformer,
-		configMapInformer:  configMapInformer,
 		extensionManager:   em,
 		Shutdown:           noopShutdown,
 		stopCh:             make(chan os.Signal, 1),
@@ -991,7 +976,6 @@ func (server *ArgoCDServer) newGRPCServer(prometheusRegistry *prometheus.Registr
 	clusterpkg.RegisterClusterServiceServer(grpcS, server.serviceSet.ClusterService)
 	applicationpkg.RegisterApplicationServiceServer(grpcS, server.serviceSet.ApplicationService)
 	applicationsetpkg.RegisterApplicationSetServiceServer(grpcS, server.serviceSet.ApplicationSetService)
-	notificationpkg.RegisterNotificationServiceServer(grpcS, server.serviceSet.NotificationService)
 	repositorypkg.RegisterRepositoryServiceServer(grpcS, server.serviceSet.RepoService)
 	repocredspkg.RegisterRepoCredsServiceServer(grpcS, server.serviceSet.RepoCredsService)
 	sessionpkg.RegisterSessionServiceServer(grpcS, server.serviceSet.SessionService)
@@ -1018,7 +1002,6 @@ type ArgoCDServiceSet struct {
 	ProjectService        *project.Server
 	SettingsService       *settings.Server
 	AccountService        *account.Server
-	NotificationService   notificationpkg.NotificationServiceServer
 	CertificateService    *certificate.Server
 	GpgkeyService         *gpgkey.Server
 	VersionService        *version.Server
@@ -1084,7 +1067,6 @@ func newArgoCDServiceSet(a *ArgoCDServer) *ArgoCDServiceSet {
 	settingsService := settings.NewServer(a.settingsMgr, a.RepoClientset, a, a.DisableAuth, appsInAnyNamespaceEnabled, a.HydratorEnabled, a.SyncWithReplaceAllowed)
 	accountService := account.NewServer(a.sessionMgr, a.settingsMgr, a.enf, a.Namespace)
 
-	notificationService := notification.NewServer(a.apiFactory)
 	certificateService := certificate.NewServer(a.db, a.enf)
 	gpgkeyService := gpgkey.NewServer(a.db, a.enf)
 	versionService := version.NewServer(a, func() (bool, error) {
@@ -1109,7 +1091,6 @@ func newArgoCDServiceSet(a *ArgoCDServer) *ArgoCDServiceSet {
 		ProjectService:        projectService,
 		SettingsService:       settingsService,
 		AccountService:        accountService,
-		NotificationService:   notificationService,
 		CertificateService:    certificateService,
 		GpgkeyService:         gpgkeyService,
 		VersionService:        versionService,
@@ -1237,7 +1218,6 @@ func (server *ArgoCDServer) newHTTPServer(ctx context.Context, port int, grpcWeb
 	mustRegisterGWHandler(ctx, clusterpkg.RegisterClusterServiceHandler, gwmux, conn)
 	mustRegisterGWHandler(ctx, applicationpkg.RegisterApplicationServiceHandler, gwmux, conn)
 	mustRegisterGWHandler(ctx, applicationsetpkg.RegisterApplicationSetServiceHandler, gwmux, conn)
-	mustRegisterGWHandler(ctx, notificationpkg.RegisterNotificationServiceHandler, gwmux, conn)
 	mustRegisterGWHandler(ctx, repositorypkg.RegisterRepositoryServiceHandler, gwmux, conn)
 	mustRegisterGWHandler(ctx, repocredspkg.RegisterRepoCredsServiceHandler, gwmux, conn)
 	mustRegisterGWHandler(ctx, sessionpkg.RegisterSessionServiceHandler, gwmux, conn)
