@@ -3,11 +3,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   labels:
-    app.kubernetes.io/name: applications.cd.hanzo.ai
+    app.kubernetes.io/name: applications.apps.hanzo.ai
     app.kubernetes.io/part-of: hanzocd
-  name: applications.cd.hanzo.ai
+  name: applications.apps.hanzo.ai
 spec:
-  group: cd.hanzo.ai
+  group: apps.hanzo.ai
   names:
     kind: Application
     listKind: ApplicationList
@@ -7113,11 +7113,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   labels:
-    app.kubernetes.io/name: applicationsets.cd.hanzo.ai
+    app.kubernetes.io/name: applicationsets.apps.hanzo.ai
     app.kubernetes.io/part-of: hanzocd
-  name: applicationsets.cd.hanzo.ai
+  name: applicationsets.apps.hanzo.ai
 spec:
-  group: cd.hanzo.ai
+  group: apps.hanzo.ai
   names:
     kind: ApplicationSet
     listKind: ApplicationSetList
@@ -30451,11 +30451,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   labels:
-    app.kubernetes.io/name: appprojects.cd.hanzo.ai
+    app.kubernetes.io/name: appprojects.apps.hanzo.ai
     app.kubernetes.io/part-of: hanzocd
-  name: appprojects.cd.hanzo.ai
+  name: appprojects.apps.hanzo.ai
 spec:
-  group: cd.hanzo.ai
+  group: apps.hanzo.ai
   names:
     kind: AppProject
     listKind: AppProjectList
@@ -30972,7 +30972,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applications
   - applicationsets
@@ -31011,7 +31011,7 @@ metadata:
   name: hanzocd-applicationset-controller
 rules:
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applications
   - applicationsets
@@ -31025,7 +31025,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - appprojects
   verbs:
@@ -31033,7 +31033,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applicationsets/status
   verbs:
@@ -31068,7 +31068,7 @@ rules:
 - apiGroups:
   - coordination.k8s.io
   resourceNames:
-  - 58ac56fa.applicationsets.cd.hanzo.ai
+  - 58ac56fa.applicationsets.apps.hanzo.ai
   resources:
   - leases
   verbs:
@@ -31105,7 +31105,7 @@ metadata:
   name: hanzocd-notifications-controller
 rules:
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applications
   - appprojects
@@ -31187,7 +31187,7 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applications
   - appprojects
@@ -31238,7 +31238,7 @@ metadata:
   name: hanzocd-applicationset-controller
 rules:
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applications
   - applicationsets
@@ -31252,7 +31252,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - appprojects
   verbs:
@@ -31260,7 +31260,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applicationsets/status
   verbs:
@@ -31295,7 +31295,7 @@ rules:
 - apiGroups:
   - coordination.k8s.io
   resourceNames:
-  - 58ac56fa.applicationsets.cd.hanzo.ai
+  - 58ac56fa.applicationsets.apps.hanzo.ai
   resources:
   - leases
   verbs:
@@ -31340,7 +31340,7 @@ rules:
   verbs:
   - get
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applications
   - applicationsets
@@ -31517,11 +31517,11 @@ data:
   resource.customizations.ignoreResourceUpdates.all: |
     jsonPointers:
       - /status
-  resource.customizations.ignoreResourceUpdates.cd.hanzo.ai_Application: |
+  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
     jqPathExpressions:
       - '.metadata.annotations."notified.notifications.argoproj.io"'
-      - '.metadata.annotations."cd.hanzo.ai/refresh"'
-      - '.metadata.annotations."cd.hanzo.ai/hydrate"'
+      - '.metadata.annotations."apps.hanzo.ai/refresh"'
+      - '.metadata.annotations."apps.hanzo.ai/hydrate"'
       - '.operation'
   resource.customizations.ignoreResourceUpdates.apps_ReplicaSet: |
     jqPathExpressions:
