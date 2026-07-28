@@ -262,7 +262,7 @@ func NewCommand() *cobra.Command {
 				Policy:                       policyObj,
 				EnablePolicyOverride:         enablePolicyOverride,
 				KubeClientset:                k8sClient,
-				ArgoDB:                       argoCDDB,
+				DB:                       argoCDDB,
 				ArgoCDNamespace:              namespace,
 				ApplicationSetNamespaces:     applicationSetNamespaces,
 				EnableProgressiveSyncs:       enableProgressiveSyncs,

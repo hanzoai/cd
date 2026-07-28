@@ -93,7 +93,7 @@ type ApplicationSetReconciler struct {
 	Scheme               *runtime.Scheme
 	Recorder             record.EventRecorder
 	Generators           map[string]generators.Generator
-	ArgoDB               db.ArgoDB
+	DB               db.DB
 	KubeClientset        kubernetes.Interface
 	Policy               argov1alpha1.ApplicationsSyncPolicy
 	EnablePolicyOverride bool
@@ -612,7 +612,7 @@ func (r *ApplicationSetReconciler) validateGeneratedApplications(ctx context.Con
 			return nil, err
 		}
 
-		if _, err = argoutil.GetDestinationCluster(ctx, app.Spec.Destination, r.ArgoDB); err != nil {
+		if _, err = argoutil.GetDestinationCluster(ctx, app.Spec.Destination, r.DB); err != nil {
 			errorsByApp[app.QualifiedName()] = fmt.Errorf("application destination spec is invalid: %s", err.Error())
 			continue
 		}
@@ -966,7 +966,7 @@ func (r *ApplicationSetReconciler) removeFinalizerOnInvalidDestination(ctx conte
 	var validDestination bool
 
 	// Detect if the destination is invalid (name doesn't correspond to a matching cluster)
-	if destCluster, err := argoutil.GetDestinationCluster(ctx, app.Spec.Destination, r.ArgoDB); err != nil {
+	if destCluster, err := argoutil.GetDestinationCluster(ctx, app.Spec.Destination, r.DB); err != nil {
 		appLog.Warnf("The destination cluster for %s could not be found: %v", app.Name, err)
 		validDestination = false
 	} else {

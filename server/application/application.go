@@ -97,7 +97,7 @@ type Server struct {
 	appBroadcaster         broadcast.Broadcaster[v1alpha1.ApplicationWatchEvent]
 	repoClientset          apiclient.Clientset
 	kubectl                kube.Kubectl
-	db                     db.ArgoDB
+	db                     db.DB
 	enf                    *rbac.Enforcer
 	projectLock            sync.KeyLock
 	auditLogger            *cd.AuditLogger
@@ -119,7 +119,7 @@ func NewServer(
 	repoClientset apiclient.Clientset,
 	cache *servercache.Cache,
 	kubectl kube.Kubectl,
-	db db.ArgoDB,
+	db db.DB,
 	enf *rbac.Enforcer,
 	projectLock sync.KeyLock,
 	settingsMgr *settings.SettingsManager,

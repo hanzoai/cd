@@ -1728,7 +1728,7 @@ func TestRemoveFinalizerOnInvalidDestination_FinalizerTypes(t *testing.T) {
 				Recorder:      record.NewFakeRecorder(10),
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
-				ArgoDB:        argodb,
+				DB:        argodb,
 			}
 			clusterList, err := utils.ListClusters(clusterInformer)
 			require.NoError(t, err)
@@ -1894,7 +1894,7 @@ func TestRemoveFinalizerOnInvalidDestination_DestinationTypes(t *testing.T) {
 				Recorder:      record.NewFakeRecorder(10),
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
-				ArgoDB:        argodb,
+				DB:        argodb,
 			}
 
 			clusterList, err := utils.ListClusters(clusterInformer)
@@ -2649,7 +2649,7 @@ func TestValidateGeneratedApplications(t *testing.T) {
 				Scheme:          scheme,
 				Recorder:        record.NewFakeRecorder(1),
 				Generators:      map[string]generators.Generator{},
-				ArgoDB:          argodb,
+				DB:          argodb,
 				ArgoCDNamespace: "namespace",
 				KubeClientset:   kubeclientset,
 				Metrics:         metrics,
@@ -2722,7 +2722,7 @@ func TestReconcilerValidationProjectErrorBehaviour(t *testing.T) {
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		ArgoDB:          argodb,
+		DB:          argodb,
 		KubeClientset:   kubeclientset,
 		Policy:          v1alpha1.ApplicationsSyncPolicySync,
 		ArgoCDNamespace: "cd",
@@ -3229,7 +3229,7 @@ func TestSetApplicationSetStatusCondition(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				ArgoDB:        argodb,
+				DB:        argodb,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -3322,7 +3322,7 @@ func applicationsUpdateSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		ArgoDB:               argodb,
+		DB:               argodb,
 		ArgoCDNamespace:      "cd",
 		KubeClientset:        kubeclientset,
 		Policy:               v1alpha1.ApplicationsSyncPolicySync,
@@ -3496,7 +3496,7 @@ func TestReconcilePopulatesResourcesStatusOnFirstRun(t *testing.T) {
 		Renderer:        &utils.Render{},
 		Recorder:        record.NewFakeRecorder(1),
 		Generators:      map[string]generators.Generator{"List": generators.NewListGenerator()},
-		ArgoDB:          argodb,
+		DB:          argodb,
 		ArgoCDNamespace: "cd",
 		KubeClientset:   kubeclientset,
 		Policy:          v1alpha1.ApplicationsSyncPolicySync,
@@ -3611,7 +3611,7 @@ func applicationsDeleteSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		ArgoDB:               argodb,
+		DB:               argodb,
 		ArgoCDNamespace:      "cd",
 		KubeClientset:        kubeclientset,
 		Policy:               v1alpha1.ApplicationsSyncPolicySync,
@@ -3808,7 +3808,7 @@ func TestPolicies(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				ArgoDB:          argodb,
+				DB:          argodb,
 				ArgoCDNamespace: "cd",
 				KubeClientset:   kubeclientset,
 				Policy:          policy,
@@ -4011,7 +4011,7 @@ func TestSetApplicationSetApplicationStatus(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				ArgoDB:        argodb,
+				DB:        argodb,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -4279,7 +4279,7 @@ func TestUpdateResourceStatus(t *testing.T) {
 				Scheme:                  scheme,
 				Recorder:                record.NewFakeRecorder(1),
 				Generators:              map[string]generators.Generator{},
-				ArgoDB:                  argodb,
+				DB:                  argodb,
 				KubeClientset:           kubeclientset,
 				Metrics:                 metrics,
 				MaxResourcesStatusCount: cc.maxResourcesStatusCount,
@@ -4369,7 +4369,7 @@ func TestResourceStatusAreOrdered(t *testing.T) {
 				Scheme:        scheme,
 				Recorder:      record.NewFakeRecorder(1),
 				Generators:    map[string]generators.Generator{},
-				ArgoDB:        argodb,
+				DB:        argodb,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -5308,7 +5308,7 @@ func TestReconcileAddsFinalizer_WhenDeletionOrderReverse(t *testing.T) {
 				Renderer:               &utils.Render{},
 				Recorder:               record.NewFakeRecorder(1),
 				Generators:             map[string]generators.Generator{},
-				ArgoDB:                 argodb,
+				DB:                 argodb,
 				KubeClientset:          kubeclientset,
 				Metrics:                metrics,
 				EnableProgressiveSyncs: cc.progressiveSyncEnabled,
@@ -5389,7 +5389,7 @@ func TestReconcileProgressiveSyncDisabled(t *testing.T) {
 				Renderer:               &utils.Render{},
 				Recorder:               record.NewFakeRecorder(1),
 				Generators:             map[string]generators.Generator{},
-				ArgoDB:                 argodb,
+				DB:                 argodb,
 				KubeClientset:          kubeclientset,
 				Metrics:                metrics,
 				EnableProgressiveSyncs: cc.enableProgressiveSyncs,

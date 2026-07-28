@@ -15,12 +15,12 @@ import (
 
 // Server provides a service of type GPGKeyService
 type Server struct {
-	db  db.ArgoDB
+	db  db.DB
 	enf *rbac.Enforcer
 }
 
 // NewServer returns a new instance of the service with type GPGKeyService
-func NewServer(db db.ArgoDB, enf *rbac.Enforcer) *Server {
+func NewServer(db db.DB, enf *rbac.Enforcer) *Server {
 	return &Server{
 		db:  db,
 		enf: enf,

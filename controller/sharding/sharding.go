@@ -63,7 +63,7 @@ type shardApplicationControllerMapping struct {
 // and returns whether or not the cluster should be processed by a given shard. It calls the distributionFunction
 // to determine which shard will process the cluster, and if the given shard is equal to the calculated shard
 // the function will return true.
-func GetClusterFilter(_ db.ArgoDB, distributionFunction DistributionFunction, replicas, shard int) ClusterFilterFunction {
+func GetClusterFilter(_ db.DB, distributionFunction DistributionFunction, replicas, shard int) ClusterFilterFunction {
 	return func(c *v1alpha1.Cluster) bool {
 		clusterShard := 0
 		if c != nil && c.Shard != nil {

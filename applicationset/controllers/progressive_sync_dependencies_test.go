@@ -897,7 +897,7 @@ func TestUpdateApplicationSetApplicationStatus(t *testing.T) {
 				Scheme:        scheme,
 				Recorder:      record.NewFakeRecorder(1),
 				Generators:    map[string]generators.Generator{},
-				ArgoDB:        argodb,
+				DB:        argodb,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -1658,7 +1658,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 				Scheme:        scheme,
 				Recorder:      record.NewFakeRecorder(1),
 				Generators:    map[string]generators.Generator{},
-				ArgoDB:        argodb,
+				DB:        argodb,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
