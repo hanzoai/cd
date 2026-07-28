@@ -34,7 +34,7 @@ import (
 	"sigs.k8s.io/yaml"
 
 	enginecache "github.com/hanzoai/deploy/gitops-engine/pkg/cache"
-	timeutil "github.com/argoproj/pkg/v2/time"
+	timeutil "github.com/hanzoai/deploy/util/vendored/time"
 
 	"github.com/hanzoai/deploy/common"
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"

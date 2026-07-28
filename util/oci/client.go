@@ -25,7 +25,7 @@ import (
 
 	"github.com/hanzoai/deploy/util/versions"
 
-	"github.com/argoproj/pkg/v2/sync"
+	"github.com/hanzoai/deploy/util/vendored/sync"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/hanzoai/deploy/util/cache"

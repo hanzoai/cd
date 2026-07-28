@@ -4,3 +4,14 @@ Copyright (c) 2026 Hanzo AI, Inc.
 This product includes software from Argo CD (https://github.com/argoproj/argo-cd), licensed under Apache-2.0:
 
     Copyright 2017-2018 The Argo Authors
+
+---
+
+util/vendored/ contains five small packages copied from
+github.com/argoproj/pkg (v2.0.1), Apache-2.0, Copyright the Argo Project
+Authors: grpc/http, kubeclientmetrics, stats, sync, time — 11 files.
+
+They are vendored rather than depended on so the gRPC surface in grpc-http
+can be removed on our own schedule. Kubernetes client-go requires gRPC
+transitively, so isolating it in one directory is the realistic first step
+toward eliminating it rather than a claim that it is already gone.

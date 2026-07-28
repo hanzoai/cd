@@ -23,7 +23,7 @@ import (
 	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/text"
-	"github.com/argoproj/pkg/v2/sync"
+	"github.com/hanzoai/deploy/util/vendored/sync"
 	jsonpatch "github.com/evanphx/json-patch"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"

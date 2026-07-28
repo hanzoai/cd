@@ -10,7 +10,7 @@ import (
 	"text/tabwriter"
 	"time"
 
-	timeutil "github.com/argoproj/pkg/v2/time"
+	timeutil "github.com/hanzoai/deploy/util/vendored/time"
 	"github.com/golang-jwt/jwt/v5"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
