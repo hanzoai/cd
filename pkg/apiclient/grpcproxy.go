@@ -20,7 +20,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/hanzoai/deploy/common"
-	argocderrors "github.com/hanzoai/deploy/util/errors"
+	cderrors "github.com/hanzoai/deploy/util/errors"
 	utilio "github.com/hanzoai/deploy/util/io"
 	"github.com/hanzoai/deploy/util/rand"
 )
@@ -114,7 +114,7 @@ func (c *client) startGRPCProxy(ctx context.Context) (*grpc.Server, net.Listener
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to generate random socket filename: %w", err)
 	}
-	serverAddr := fmt.Sprintf("%s/argocd-%s.sock", os.TempDir(), randSuffix)
+	serverAddr := fmt.Sprintf("%s/cd-%s.sock", os.TempDir(), randSuffix)
 	lc := &net.ListenConfig{}
 	ln, err := lc.Listen(ctx, "unix", serverAddr)
 	if err != nil {
@@ -189,7 +189,7 @@ func (c *client) startGRPCProxy(ctx context.Context) (*grpc.Server, net.Listener
 		}))
 	go func() {
 		err := proxySrv.Serve(ln)
-		argocderrors.CheckError(err)
+		cderrors.CheckError(err)
 	}()
 	return proxySrv, ln, nil
 }

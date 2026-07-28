@@ -17,6 +17,6 @@ func TestUserInfo(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, `Logged In: true
 Username: admin
-Issuer: argocd
+Issuer: cd
 Groups: `, output)
 }

@@ -30,7 +30,7 @@ func TestClusterInformer_ConcurrentAccess(t *testing.T) {
 	secret1 := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cluster1",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -43,7 +43,7 @@ func TestClusterInformer_ConcurrentAccess(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(secret1)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -75,7 +75,7 @@ func TestClusterInformer_TransformErrors(t *testing.T) {
 	badSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "bad-cluster",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -88,7 +88,7 @@ func TestClusterInformer_TransformErrors(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(badSecret)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -114,7 +114,7 @@ func TestClusterInformer_TransformErrors_MixedSecrets(t *testing.T) {
 	goodSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "good-cluster",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -129,7 +129,7 @@ func TestClusterInformer_TransformErrors_MixedSecrets(t *testing.T) {
 	badSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "bad-cluster",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -142,7 +142,7 @@ func TestClusterInformer_TransformErrors_MixedSecrets(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(goodSecret, badSecret)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -167,7 +167,7 @@ func TestClusterInformer_DynamicUpdates(t *testing.T) {
 	secret1 := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cluster1",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -180,7 +180,7 @@ func TestClusterInformer_DynamicUpdates(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(secret1)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -193,7 +193,7 @@ func TestClusterInformer_DynamicUpdates(t *testing.T) {
 	secret2 := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cluster2",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -205,7 +205,7 @@ func TestClusterInformer_DynamicUpdates(t *testing.T) {
 		},
 	}
 
-	_, err = clientset.CoreV1().Secrets("argocd").Create(t.Context(), secret2, metav1.CreateOptions{})
+	_, err = clientset.CoreV1().Secrets("cd").Create(t.Context(), secret2, metav1.CreateOptions{})
 	require.NoError(t, err)
 
 	time.Sleep(100 * time.Millisecond)
@@ -227,7 +227,7 @@ func TestClusterInformer_URLNormalization(t *testing.T) {
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cluster1",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -239,7 +239,7 @@ func TestClusterInformer_URLNormalization(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(secret)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -267,7 +267,7 @@ func TestClusterInformer_GetClusterServersByName(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "prod-cluster-1",
-				Namespace: "argocd",
+				Namespace: "cd",
 				Labels: map[string]string{
 					common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 				},
@@ -281,7 +281,7 @@ func TestClusterInformer_GetClusterServersByName(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "prod-cluster-2",
-				Namespace: "argocd",
+				Namespace: "cd",
 				Labels: map[string]string{
 					common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 				},
@@ -295,7 +295,7 @@ func TestClusterInformer_GetClusterServersByName(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(secrets...)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -318,7 +318,7 @@ func TestClusterInformer_RaceCondition(t *testing.T) {
 		secret := &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      fmt.Sprintf("cluster-%d", i),
-				Namespace: "argocd",
+				Namespace: "cd",
 				Labels: map[string]string{
 					common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 				},
@@ -334,11 +334,11 @@ func TestClusterInformer_RaceCondition(t *testing.T) {
 
 	clientset := fake.NewClientset()
 	for _, secret := range secrets {
-		_, err := clientset.CoreV1().Secrets("argocd").Create(t.Context(), secret, metav1.CreateOptions{})
+		_, err := clientset.CoreV1().Secrets("cd").Create(t.Context(), secret, metav1.CreateOptions{})
 		require.NoError(t, err)
 	}
 
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -389,7 +389,7 @@ func TestClusterInformer_RaceCondition(t *testing.T) {
 				secret := secrets[id%10].DeepCopy()
 				secret.Data["name"] = fmt.Appendf(nil, "updated-%d-%d", id, j)
 
-				_, err := clientset.CoreV1().Secrets("argocd").Update(t.Context(), secret, metav1.UpdateOptions{})
+				_, err := clientset.CoreV1().Secrets("cd").Update(t.Context(), secret, metav1.UpdateOptions{})
 				if err != nil {
 					updateErrors.Add(1)
 				}
@@ -435,7 +435,7 @@ func TestClusterInformer_DeepCopyIsolation(t *testing.T) {
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "test-cluster",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -449,7 +449,7 @@ func TestClusterInformer_DeepCopyIsolation(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(secret)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -504,7 +504,7 @@ func TestClusterInformer_EdgeCases(t *testing.T) {
 				&corev1.Secret{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "cluster-no-name",
-						Namespace: "argocd",
+						Namespace: "cd",
 						Labels: map[string]string{
 							common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 						},
@@ -533,7 +533,7 @@ func TestClusterInformer_EdgeCases(t *testing.T) {
 				&corev1.Secret{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "special-cluster",
-						Namespace: "argocd",
+						Namespace: "cd",
 						Labels: map[string]string{
 							common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 						},
@@ -559,7 +559,7 @@ func TestClusterInformer_EdgeCases(t *testing.T) {
 				&corev1.Secret{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "cluster1",
-						Namespace: "argocd",
+						Namespace: "cd",
 						Labels: map[string]string{
 							common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 						},
@@ -573,7 +573,7 @@ func TestClusterInformer_EdgeCases(t *testing.T) {
 				&corev1.Secret{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "cluster2",
-						Namespace: "argocd",
+						Namespace: "cd",
 						Labels: map[string]string{
 							common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 						},
@@ -598,7 +598,7 @@ func TestClusterInformer_EdgeCases(t *testing.T) {
 				&corev1.Secret{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "many-namespaces",
-						Namespace: "argocd",
+						Namespace: "cd",
 						Labels: map[string]string{
 							common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 						},
@@ -635,7 +635,7 @@ func TestClusterInformer_EdgeCases(t *testing.T) {
 				&corev1.Secret{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "annotated-cluster",
-						Namespace: "argocd",
+						Namespace: "cd",
 						Labels: map[string]string{
 							common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 							"custom-label":            "custom-value",
@@ -644,7 +644,7 @@ func TestClusterInformer_EdgeCases(t *testing.T) {
 						Annotations: map[string]string{
 							"description":                      "Production cluster",
 							"owner":                            "platform-team",
-							common.AnnotationKeyManagedBy:      "argocd", // system annotation - should be filtered
+							common.AnnotationKeyManagedBy:      "cd", // system annotation - should be filtered
 							appv1.AnnotationKeyRefresh:         time.Now().Format(time.RFC3339),
 							corev1.LastAppliedConfigAnnotation: "should-be-filtered",
 						},
@@ -689,7 +689,7 @@ func TestClusterInformer_EdgeCases(t *testing.T) {
 			t.Cleanup(cancel)
 
 			clientset := fake.NewClientset(tt.secrets...)
-			informer, err := NewClusterInformer(clientset, "argocd")
+			informer, err := NewClusterInformer(clientset, "cd")
 			require.NoError(t, err)
 
 			go informer.Run(ctx.Done())
@@ -708,7 +708,7 @@ func TestClusterInformer_SecretDeletion(t *testing.T) {
 	secret1 := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cluster1",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -722,7 +722,7 @@ func TestClusterInformer_SecretDeletion(t *testing.T) {
 	secret2 := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cluster2",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -734,7 +734,7 @@ func TestClusterInformer_SecretDeletion(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(secret1, secret2)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -744,7 +744,7 @@ func TestClusterInformer_SecretDeletion(t *testing.T) {
 	require.NoError(t, err)
 	assert.Len(t, clusters, 2)
 
-	err = clientset.CoreV1().Secrets("argocd").Delete(t.Context(), "cluster1", metav1.DeleteOptions{})
+	err = clientset.CoreV1().Secrets("cd").Delete(t.Context(), "cluster1", metav1.DeleteOptions{})
 	require.NoError(t, err)
 
 	require.Eventually(t, func() bool {
@@ -801,7 +801,7 @@ func TestClusterInformer_ComplexConfig(t *testing.T) {
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "complex-cluster",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
@@ -816,7 +816,7 @@ func TestClusterInformer_ComplexConfig(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(secret)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())
@@ -852,7 +852,7 @@ func BenchmarkClusterInformer_GetClusterByURL(b *testing.B) {
 		secret := &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      fmt.Sprintf("cluster-%d", i),
-				Namespace: "argocd",
+				Namespace: "cd",
 				Labels: map[string]string{
 					common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 				},
@@ -867,7 +867,7 @@ func BenchmarkClusterInformer_GetClusterByURL(b *testing.B) {
 	}
 
 	clientset := fake.NewClientset(secrets...)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(b, err)
 
 	go informer.Run(ctx.Done())
@@ -899,7 +899,7 @@ func TestClusterInformer_GetProjectClusters(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "cluster-proj-a-1",
-				Namespace: "argocd",
+				Namespace: "cd",
 				Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
 			},
 			Data: map[string][]byte{
@@ -912,7 +912,7 @@ func TestClusterInformer_GetProjectClusters(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "cluster-proj-a-2",
-				Namespace: "argocd",
+				Namespace: "cd",
 				Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
 			},
 			Data: map[string][]byte{
@@ -925,7 +925,7 @@ func TestClusterInformer_GetProjectClusters(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "cluster-proj-b",
-				Namespace: "argocd",
+				Namespace: "cd",
 				Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
 			},
 			Data: map[string][]byte{
@@ -938,7 +938,7 @@ func TestClusterInformer_GetProjectClusters(t *testing.T) {
 	}
 
 	clientset := fake.NewClientset(secrets...)
-	informer, err := NewClusterInformer(clientset, "argocd")
+	informer, err := NewClusterInformer(clientset, "cd")
 	require.NoError(t, err)
 
 	go informer.Run(ctx.Done())

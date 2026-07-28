@@ -15,12 +15,12 @@ import (
 
 // Metric names as constants
 const (
-	githubAPIRequestTotalMetricName       = "argocd_github_api_requests_total"
-	githubAPIRequestDurationMetricName    = "argocd_github_api_request_duration_seconds"
-	githubAPIRateLimitRemainingMetricName = "argocd_github_api_rate_limit_remaining"
-	githubAPIRateLimitLimitMetricName     = "argocd_github_api_rate_limit_limit"
-	githubAPIRateLimitResetMetricName     = "argocd_github_api_rate_limit_reset_seconds"
-	githubAPIRateLimitUsedMetricName      = "argocd_github_api_rate_limit_used"
+	githubAPIRequestTotalMetricName       = "cd_github_api_requests_total"
+	githubAPIRequestDurationMetricName    = "cd_github_api_request_duration_seconds"
+	githubAPIRateLimitRemainingMetricName = "cd_github_api_rate_limit_remaining"
+	githubAPIRateLimitLimitMetricName     = "cd_github_api_rate_limit_limit"
+	githubAPIRateLimitResetMetricName     = "cd_github_api_rate_limit_reset_seconds"
+	githubAPIRateLimitUsedMetricName      = "cd_github_api_rate_limit_used"
 )
 
 // GitHubMetrics groups all metric vectors for easier injection and registration

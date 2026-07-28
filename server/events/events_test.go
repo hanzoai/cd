@@ -103,8 +103,8 @@ func TestK8sEventListToAPIEventList(t *testing.T) {
 					Reason:              "Updated",
 					Series:              &corev1.EventSeries{Count: 3},
 					Related:             &corev1.ObjectReference{Kind: "Deployment", Name: "dep"},
-					ReportingController: "argocd-application-controller",
-					ReportingInstance:   "argocd-0",
+					ReportingController: "cd-application-controller",
+					ReportingInstance:   "cd-0",
 				},
 			},
 		}
@@ -119,7 +119,7 @@ func TestK8sEventListToAPIEventList(t *testing.T) {
 		require.NotNil(t, got.Related)
 		assert.Equal(t, "Deployment", got.Related.Kind)
 		assert.Equal(t, "dep", got.Related.Name)
-		assert.Equal(t, "argocd-application-controller", got.ReportingController)
-		assert.Equal(t, "argocd-0", got.ReportingInstance)
+		assert.Equal(t, "cd-application-controller", got.ReportingController)
+		assert.Equal(t, "cd-0", got.ReportingInstance)
 	})
 }

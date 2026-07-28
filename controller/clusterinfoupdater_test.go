@@ -49,7 +49,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string]string{},
@@ -59,7 +59,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string][]byte{
@@ -110,7 +110,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
 		Data: map[string]string{},
 	}
@@ -118,7 +118,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
 		Data: map[string][]byte{"admin.password": nil, "server.secretkey": nil},
 	}
@@ -165,7 +165,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
 		Data: map[string]string{},
 	}
@@ -173,7 +173,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
 		Data: map[string][]byte{"admin.password": nil, "server.secretkey": nil},
 	}
@@ -247,7 +247,7 @@ func TestUpdateClusterLabels(t *testing.T) {
 			nil,
 			v1alpha1.Cluster{
 				Server: "kubernetes.svc.local",
-				Labels: map[string]string{"argocd.argoproj.io/auto-label-cluster-info": "true"},
+				Labels: map[string]string{"cd.argoproj.io/auto-label-cluster-info": "true"},
 			},
 			shouldNotBeInvoked,
 			assert.NoError,
@@ -260,7 +260,7 @@ func TestUpdateClusterLabels(t *testing.T) {
 			},
 			v1alpha1.Cluster{
 				Server: "kubernetes.svc.local",
-				Labels: map[string]string{"argocd.argoproj.io/kubernetes-version": "1.28", "argocd.argoproj.io/auto-label-cluster-info": "true"},
+				Labels: map[string]string{"cd.argoproj.io/kubernetes-version": "1.28", "cd.argoproj.io/auto-label-cluster-info": "true"},
 			},
 			shouldNotBeInvoked,
 			assert.NoError,
@@ -273,10 +273,10 @@ func TestUpdateClusterLabels(t *testing.T) {
 			},
 			v1alpha1.Cluster{
 				Server: "kubernetes.svc.local",
-				Labels: map[string]string{"argocd.argoproj.io/kubernetes-version": "1.27", "argocd.argoproj.io/auto-label-cluster-info": "true"},
+				Labels: map[string]string{"cd.argoproj.io/kubernetes-version": "1.27", "cd.argoproj.io/auto-label-cluster-info": "true"},
 			},
 			func(_ context.Context, cluster *v1alpha1.Cluster) (*v1alpha1.Cluster, error) {
-				assert.Equal(t, "1.28", cluster.Labels["argocd.argoproj.io/kubernetes-version"])
+				assert.Equal(t, "1.28", cluster.Labels["cd.argoproj.io/kubernetes-version"])
 				return nil, nil
 			},
 			assert.NoError,
@@ -289,10 +289,10 @@ func TestUpdateClusterLabels(t *testing.T) {
 			},
 			v1alpha1.Cluster{
 				Server: "kubernetes.svc.local",
-				Labels: map[string]string{"argocd.argoproj.io/kubernetes-version": "1.27", "argocd.argoproj.io/auto-label-cluster-info": "true"},
+				Labels: map[string]string{"cd.argoproj.io/kubernetes-version": "1.27", "cd.argoproj.io/auto-label-cluster-info": "true"},
 			},
 			func(_ context.Context, cluster *v1alpha1.Cluster) (*v1alpha1.Cluster, error) {
-				assert.Equal(t, "1.28", cluster.Labels["argocd.argoproj.io/kubernetes-version"])
+				assert.Equal(t, "1.28", cluster.Labels["cd.argoproj.io/kubernetes-version"])
 				return nil, errors.New("some error happened while saving")
 			},
 			assert.Error,

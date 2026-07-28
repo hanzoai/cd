@@ -24,12 +24,12 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v1/orgs/test-argocd/repos?limit=0&page=1":
+		case "/api/v1/orgs/test-cd/repos?limit=0&page=1":
 			_, err := io.WriteString(w, `[{
 					"id": 21618,
 					"owner": {
 						"id": 31480,
-						"login": "test-argocd",
+						"login": "test-cd",
 						"full_name": "",
 						"email": "",
 						"avatar_url": "https://gitea.com/avatars/22d1b1d3f61abf95951c4a958731d848",
@@ -47,10 +47,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 						"followers_count": 0,
 						"following_count": 0,
 						"starred_repos_count": 0,
-						"username": "test-argocd"
+						"username": "test-cd"
 					},
 					"name": "pr-test",
-					"full_name": "test-argocd/pr-test",
+					"full_name": "test-cd/pr-test",
 					"description": "",
 					"empty": false,
 					"private": false,
@@ -60,10 +60,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"mirror": false,
 					"size": 28,
 					"language": "",
-					"languages_url": "https://gitea.com/api/v1/repos/test-argocd/pr-test/languages",
-					"html_url": "https://gitea.com/test-argocd/pr-test",
-					"ssh_url": "git@gitea.com:test-argocd/pr-test.git",
-					"clone_url": "https://gitea.com/test-argocd/pr-test.git",
+					"languages_url": "https://gitea.com/api/v1/repos/test-cd/pr-test/languages",
+					"html_url": "https://gitea.com/test-cd/pr-test",
+					"ssh_url": "git@gitea.com:test-cd/pr-test.git",
+					"clone_url": "https://gitea.com/test-cd/pr-test.git",
 					"original_url": "",
 					"website": "",
 					"stars_count": 0,
@@ -106,7 +106,7 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"id": 21619,
 					"owner": {
 						"id": 31480,
-						"login": "test-argocd",
+						"login": "test-cd",
 						"full_name": "",
 						"email": "",
 						"avatar_url": "https://gitea.com/avatars/22d1b1d3f61abf95951c4a958731d848",
@@ -124,10 +124,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 						"followers_count": 0,
 						"following_count": 0,
 						"starred_repos_count": 0,
-						"username": "test-argocd"
+						"username": "test-cd"
 					},
 					"name": "another-repo",
-					"full_name": "test-argocd/another-repo",
+					"full_name": "test-cd/another-repo",
 					"description": "",
 					"empty": false,
 					"private": false,
@@ -137,10 +137,10 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					"mirror": false,
 					"size": 28,
 					"language": "",
-					"languages_url": "https://gitea.com/api/v1/repos/test-argocd/another-repo/languages",
-					"html_url": "https://gitea.com/test-argocd/another-repo",
-					"ssh_url": "git@gitea.com:test-argocd/another-repo.git",
-					"clone_url": "https://gitea.com/test-argocd/another-repo.git",
+					"languages_url": "https://gitea.com/api/v1/repos/test-cd/another-repo/languages",
+					"html_url": "https://gitea.com/test-cd/another-repo",
+					"ssh_url": "git@gitea.com:test-cd/another-repo.git",
+					"clone_url": "https://gitea.com/test-cd/another-repo.git",
 					"original_url": "",
 					"website": "",
 					"stars_count": 0,
@@ -184,13 +184,13 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v1/repos/test-argocd/another-repo/branches/main":
+		case "/api/v1/repos/test-cd/another-repo/branches/main":
 			_, err := io.WriteString(w, `{
 				"name": "main",
 				"commit": {
 					"id": "1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					"message": "initial commit\n",
-					"url": "https://gitea.com/test-argocd/pr-test/commit/1fa33898cf84e89836863e3a5e76eee45777b4b0",
+					"url": "https://gitea.com/test-cd/pr-test/commit/1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					"author": {
 						"name": "Dan Molik",
 						"email": "dan@danmolik.com",
@@ -224,13 +224,13 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v1/repos/test-argocd/pr-test/branches/test":
+		case "/api/v1/repos/test-cd/pr-test/branches/test":
 			_, err := io.WriteString(w, `{
 				"name": "test",
 				"commit": {
 					"id": "28c3b329933f6fefd9b55225535123bbffec5a46",
 					"message": "initial commit\n",
-					"url": "https://gitea.com/test-argocd/pr-test/commit/28c3b329933f6fefd9b55225535123bbffec5a46",
+					"url": "https://gitea.com/test-cd/pr-test/commit/28c3b329933f6fefd9b55225535123bbffec5a46",
 					"author": {
 						"name": "Dan Molik",
 						"email": "dan@danmolik.com",
@@ -264,13 +264,13 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v1/repos/test-argocd/another-repo/branches/test":
+		case "/api/v1/repos/test-cd/another-repo/branches/test":
 			_, err := io.WriteString(w, `{
 				"name": "test",
 				"commit": {
 					"id": "32cdcf613b259a9439ceabd4d1745d43f163ea70",
 					"message": "initial commit\n",
-					"url": "https://gitea.com/test-argocd/another-repo/commit/32cdcf613b259a9439ceabd4d1745d43f163ea70",
+					"url": "https://gitea.com/test-cd/another-repo/commit/32cdcf613b259a9439ceabd4d1745d43f163ea70",
 					"author": {
 						"name": "Dan Molik",
 						"email": "dan@danmolik.com",
@@ -304,13 +304,13 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v1/repos/test-argocd/pr-test/branches/main":
+		case "/api/v1/repos/test-cd/pr-test/branches/main":
 			_, err := io.WriteString(w, `{
 				"name": "main",
 				"commit": {
 					"id": "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					"message": "initial commit\n",
-					"url": "https://gitea.com/test-argocd/pr-test/commit/75f6fceff80f6aaf12b65a2cf6a89190b866625b",
+					"url": "https://gitea.com/test-cd/pr-test/commit/75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					"author": {
 						"name": "Dan Molik",
 						"email": "dan@danmolik.com",
@@ -344,13 +344,13 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v1/repos/test-argocd/another-repo/branches?limit=0&page=1":
+		case "/api/v1/repos/test-cd/another-repo/branches?limit=0&page=1":
 			_, err := io.WriteString(w, `[{
 				"name": "main",
 				"commit": {
 					"id": "1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					"message": "initial commit\n",
-					"url": "https://gitea.com/test-argocd/pr-test/commit/1fa33898cf84e89836863e3a5e76eee45777b4b0",
+					"url": "https://gitea.com/test-cd/pr-test/commit/1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					"author": {
 						"name": "Dan Molik",
 						"email": "dan@danmolik.com",
@@ -386,7 +386,7 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"commit": {
 					"id": "32cdcf613b259a9439ceabd4d1745d43f163ea70",
 					"message": "add an empty file\n",
-					"url": "https://gitea.com/test-argocd/pr-test/commit/32cdcf613b259a9439ceabd4d1745d43f163ea70",
+					"url": "https://gitea.com/test-cd/pr-test/commit/32cdcf613b259a9439ceabd4d1745d43f163ea70",
 					"author": {
 						"name": "Dan Molik",
 						"email": "dan@danmolik.com",
@@ -420,13 +420,13 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v1/repos/test-argocd/pr-test/branches?limit=0&page=1":
+		case "/api/v1/repos/test-cd/pr-test/branches?limit=0&page=1":
 			_, err := io.WriteString(w, `[{
 				"name": "main",
 				"commit": {
 					"id": "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					"message": "initial commit\n",
-					"url": "https://gitea.com/test-argocd/pr-test/commit/75f6fceff80f6aaf12b65a2cf6a89190b866625b",
+					"url": "https://gitea.com/test-cd/pr-test/commit/75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					"author": {
 						"name": "Dan Molik",
 						"email": "dan@danmolik.com",
@@ -461,7 +461,7 @@ func giteaMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				"commit": {
 					"id": "28c3b329933f6fefd9b55225535123bbffec5a46",
 					"message": "add an empty file\n",
-					"url": "https://gitea.com/test-argocd/pr-test/commit/28c3b329933f6fefd9b55225535123bbffec5a46",
+					"url": "https://gitea.com/test-cd/pr-test/commit/28c3b329933f6fefd9b55225535123bbffec5a46",
 					"author": {
 						"name": "Dan Molik",
 						"email": "dan@danmolik.com",
@@ -554,19 +554,19 @@ func TestGiteaListRepos(t *testing.T) {
 			branches: []string{"main"},
 			expectedRepos: []*Repository{
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					RepositoryId: 21618,
 					Labels:       []string{},
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/another-repo.git",
+					URL:          "git@gitea.com:test-cd/another-repo.git",
 					SHA:          "1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					RepositoryId: 21619,
 					Labels:       []string{},
@@ -582,19 +582,19 @@ func TestGiteaListRepos(t *testing.T) {
 			proto: "ssh",
 			expectedRepos: []*Repository{
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					RepositoryId: 21618,
 					Labels:       []string{},
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/another-repo.git",
+					URL:          "git@gitea.com:test-cd/another-repo.git",
 					SHA:          "1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					RepositoryId: 21619,
 					Labels:       []string{},
@@ -610,19 +610,19 @@ func TestGiteaListRepos(t *testing.T) {
 			proto: "https",
 			expectedRepos: []*Repository{
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "main",
-					URL:          "https://gitea.com/test-argocd/pr-test",
+					URL:          "https://gitea.com/test-cd/pr-test",
 					SHA:          "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					RepositoryId: 21618,
 					Labels:       []string{},
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "https://gitea.com/test-argocd/another-repo",
+					URL:          "https://gitea.com/test-cd/another-repo",
 					SHA:          "1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					RepositoryId: 21619,
 					Labels:       []string{},
@@ -647,37 +647,37 @@ func TestGiteaListRepos(t *testing.T) {
 
 			expectedRepos: []*Repository{
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					Labels:       []string{},
 					RepositoryId: 21618,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/another-repo.git",
+					URL:          "git@gitea.com:test-cd/another-repo.git",
 					SHA:          "1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					Labels:       []string{},
 					RepositoryId: 21619,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "test",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "28c3b329933f6fefd9b55225535123bbffec5a46",
 					Labels:       []string{},
 					RepositoryId: 21618,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "test",
-					URL:          "git@gitea.com:test-argocd/another-repo.git",
+					URL:          "git@gitea.com:test-cd/another-repo.git",
 					SHA:          "32cdcf613b259a9439ceabd4d1745d43f163ea70",
 					Labels:       []string{},
 					RepositoryId: 21619,
@@ -692,37 +692,37 @@ func TestGiteaListRepos(t *testing.T) {
 
 			expectedRepos: []*Repository{
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					Labels:       []string{},
 					RepositoryId: 21618,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/another-repo.git",
+					URL:          "git@gitea.com:test-cd/another-repo.git",
 					SHA:          "1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					Labels:       []string{},
 					RepositoryId: 21619,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "test",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "28c3b329933f6fefd9b55225535123bbffec5a46",
 					Labels:       []string{},
 					RepositoryId: 21618,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "test",
-					URL:          "git@gitea.com:test-argocd/another-repo.git",
+					URL:          "git@gitea.com:test-cd/another-repo.git",
 					SHA:          "32cdcf613b259a9439ceabd4d1745d43f163ea70",
 					Labels:       []string{},
 					RepositoryId: 21619,
@@ -738,37 +738,37 @@ func TestGiteaListRepos(t *testing.T) {
 			branches: []string{"main"},
 			expectedRepos: []*Repository{
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					Labels:       []string{},
 					RepositoryId: 21618,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/another-repo.git",
+					URL:          "git@gitea.com:test-cd/another-repo.git",
 					SHA:          "1fa33898cf84e89836863e3a5e76eee45777b4b0",
 					Labels:       []string{},
 					RepositoryId: 21619,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "test",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "28c3b329933f6fefd9b55225535123bbffec5a46",
 					Labels:       []string{},
 					RepositoryId: 21618,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "another-repo",
 					Branch:       "test",
-					URL:          "git@gitea.com:test-argocd/another-repo.git",
+					URL:          "git@gitea.com:test-cd/another-repo.git",
 					SHA:          "32cdcf613b259a9439ceabd4d1745d43f163ea70",
 					Labels:       []string{},
 					RepositoryId: 21619,
@@ -784,19 +784,19 @@ func TestGiteaListRepos(t *testing.T) {
 			branches: []string{"main"},
 			expectedRepos: []*Repository{
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "main",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "75f6fceff80f6aaf12b65a2cf6a89190b866625b",
 					Labels:       []string{},
 					RepositoryId: 21618,
 				},
 				{
-					Organization: "test-argocd",
+					Organization: "test-cd",
 					Repository:   "pr-test",
 					Branch:       "test",
-					URL:          "git@gitea.com:test-argocd/pr-test.git",
+					URL:          "git@gitea.com:test-cd/pr-test.git",
 					SHA:          "28c3b329933f6fefd9b55225535123bbffec5a46",
 					Labels:       []string{},
 					RepositoryId: 21618,
@@ -811,7 +811,7 @@ func TestGiteaListRepos(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			t.Parallel()
-			provider, _ := NewGiteaProvider("test-argocd", "", ts.URL, c.allBranches, false, c.excludeArchivedRepos, "", "")
+			provider, _ := NewGiteaProvider("test-cd", "", ts.URL, c.allBranches, false, c.excludeArchivedRepos, "", "")
 			rawRepos, err := ListRepos(t.Context(), provider, c.filters, c.proto)
 
 			if c.hasError {

@@ -122,7 +122,7 @@ func NewServer(metricsServer *metrics.MetricsServer, cache *reposervercache.Cach
 	if tlsConfig != nil {
 		serverOpts = append(serverOpts, grpc.Creds(credentials.NewTLS(tlsConfig)))
 	}
-	repoService := repository.NewService(metricsServer, cache, initConstants, gitCredsStore, filepath.Join(os.TempDir(), "_argocd-repo"))
+	repoService := repository.NewService(metricsServer, cache, initConstants, gitCredsStore, filepath.Join(os.TempDir(), "_cd-repo"))
 	if err := repoService.Init(); err != nil {
 		return nil, fmt.Errorf("failed to initialize the repo service: %w", err)
 	}

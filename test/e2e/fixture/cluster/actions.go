@@ -138,7 +138,7 @@ func (a *Actions) createKubeconfigForCluster(config *clientcmdapi.Config, newClu
 	}
 
 	// Set the KUBECONFIG environment variable to use this temp file
-	// This will be use by subsequent kubectl/argocd commands to connect to the cluster
+	// This will be use by subsequent kubectl/cd commands to connect to the cluster
 	a.context.T().Setenv("KUBECONFIG", tmpFile.Name())
 
 	return nil

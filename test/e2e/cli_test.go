@@ -21,7 +21,7 @@ func createTestPlugin(t *testing.T, name, content string) string {
 	t.Helper()
 
 	tmpDir := t.TempDir()
-	pluginPath := filepath.Join(tmpDir, "argocd-"+name)
+	pluginPath := filepath.Join(tmpDir, "cd-"+name)
 
 	require.NoError(t, os.WriteFile(pluginPath, []byte(content), 0o755))
 
@@ -155,17 +155,17 @@ func TestCliPluginExecutionConditions(t *testing.T) {
 `
 
 		tmpDir := t.TempDir()
-		pluginPath := filepath.Join(tmpDir, "argocd_"+name) // this is an invalid plugin name format
+		pluginPath := filepath.Join(tmpDir, "cd_"+name) // this is an invalid plugin name format
 		require.NoError(t, os.WriteFile(pluginPath, []byte(script), 0o755))
 
 		return pluginPath
 	}
 
-	// 'argocd-valid-plugin' is a valid plugin name
+	// 'cd-valid-plugin' is a valid plugin name
 	validPlugin := createValidPlugin(t, "valid-plugin", true)
-	// 'argocd_invalid-plugin' is an invalid plugin name
+	// 'cd_invalid-plugin' is an invalid plugin name
 	invalidPlugin := createInvalidPlugin(t, "invalid-plugin")
-	// 'argocd-nonexec-plugin' is a valid plugin name but lacks executable permissions
+	// 'cd-nonexec-plugin' is a valid plugin name but lacks executable permissions
 	noExecPlugin := createValidPlugin(t, "noexec-plugin", false)
 
 	origPath := os.Getenv("PATH")

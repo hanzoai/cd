@@ -27,7 +27,7 @@ const (
 func getClientset(objects ...runtime.Object) *fake.Clientset {
 	secret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      "cd-secret",
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -37,10 +37,10 @@ func getClientset(objects ...runtime.Object) *fake.Clientset {
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      "cd-cm",
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 	}
@@ -545,12 +545,12 @@ func TestFuzzyEquivalence(t *testing.T) {
 	assert.Nil(t, repo)
 
 	repo, err = db.CreateRepository(ctx, &v1alpha1.Repository{
-		Repo: "https://github.com/argoproj/argocd-example-APPS",
+		Repo: "https://github.com/argoproj/cd-example-APPS",
 	})
 	require.ErrorContains(t, err, "already exists")
 	assert.Nil(t, repo)
 
-	repo, err = db.GetRepository(ctx, "https://github.com/argoproj/argocd-example-APPS", "")
+	repo, err = db.GetRepository(ctx, "https://github.com/argoproj/cd-example-APPS", "")
 	require.NoError(t, err)
 	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
 }

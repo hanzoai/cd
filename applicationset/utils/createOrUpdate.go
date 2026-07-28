@@ -19,9 +19,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
 	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
-	argodiff "github.com/hanzoai/deploy/util/argo/diff"
-	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/cd"
+	argodiff "github.com/hanzoai/deploy/util/cd/diff"
+	"github.com/hanzoai/deploy/util/cd/normalizers"
 )
 
 var appEquality = conversion.EqualitiesOrDie(
@@ -103,7 +103,7 @@ func CreateOrUpdate(ctx context.Context, logCtx *log.Entry, c client.Client, dif
 
 	// Normalize the live spec to avoid spurious diffs from unimportant differences (e.g. nil vs
 	// empty SyncPolicy). obj.Spec is already normalized by the caller; only the live side needs it.
-	normalizedLive.Spec = *argo.NormalizeApplicationSpec(&normalizedLive.Spec)
+	normalizedLive.Spec = *cd.NormalizeApplicationSpec(&normalizedLive.Spec)
 
 	// Apply ignoreApplicationDifferences rules to remove ignored fields from both the live and the desired state. This
 	// prevents those differences from appearing in the diff and therefore in the patch.

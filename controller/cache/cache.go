@@ -34,8 +34,8 @@ import (
 	"github.com/hanzoai/deploy/controller/sharding"
 	"github.com/hanzoai/deploy/pkg/apis/application"
 	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
-	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/cd"
+	"github.com/hanzoai/deploy/util/cd/normalizers"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/env"
 	logutils "github.com/hanzoai/deploy/util/log"
@@ -78,7 +78,7 @@ const (
 
 	// AnnotationIgnoreResourceUpdates when set to true on an untracked resource,
 	// argo will apply `ignoreResourceUpdates` configuration on it.
-	AnnotationIgnoreResourceUpdates = "argocd.argoproj.io/ignore-resource-updates"
+	AnnotationIgnoreResourceUpdates = "cd.argoproj.io/ignore-resource-updates"
 )
 
 // GitOps engine cluster cache tuning options
@@ -193,7 +193,7 @@ func NewLiveStateCache(
 	metricsServer *metrics.MetricsServer,
 	onObjectUpdated ObjectUpdatedHandler,
 	clusterSharding sharding.ClusterShardingCache,
-	resourceTracking argo.ResourceTracking,
+	resourceTracking cd.ResourceTracking,
 ) LiveStateCache {
 	return &liveStateCache{
 		appInformer:      appInformer,
@@ -226,7 +226,7 @@ type liveStateCache struct {
 	settingsMgr          *settings.SettingsManager
 	metricsServer        *metrics.MetricsServer
 	clusterSharding      sharding.ClusterShardingCache
-	resourceTracking     argo.ResourceTracking
+	resourceTracking     cd.ResourceTracking
 	ignoreNormalizerOpts normalizers.IgnoreNormalizerOpts
 
 	clusters      map[string]clustercache.ClusterCache
@@ -400,16 +400,16 @@ func skipResourceUpdate(oldInfo, newInfo *ResourceInfo) bool {
 // If there's an app name from resource tracking, or if this is itself an app, we should generate a hash.
 // Otherwise, the hashing should be skipped to save CPU time.
 func shouldHashManifest(appName string, gvk schema.GroupVersionKind, un *unstructured.Unstructured) bool {
-	// Only hash if the resource belongs to an app OR argocd.argoproj.io/ignore-resource-updates is present and set to true
+	// Only hash if the resource belongs to an app OR cd.argoproj.io/ignore-resource-updates is present and set to true
 	// Best      - Only hash for resources that are part of an app or their dependencies
 	// (current) - Only hash for resources that are part of an app + all apps that might be from an ApplicationSet
 	// Orphan    - If orphan is enabled, hash should be made on all resource of that namespace and a config to disable it
 	// Worst     - Hash all resources watched by Argo
 	isTrackedResource := appName != "" || (gvk.Group == application.Group && gvk.Kind == application.ApplicationKind)
 
-	// If the resource is not a tracked resource, we will look up argocd.argoproj.io/ignore-resource-updates and decide
+	// If the resource is not a tracked resource, we will look up cd.argoproj.io/ignore-resource-updates and decide
 	// whether we generate hash or not.
-	// If argocd.argoproj.io/ignore-resource-updates is presented and is true, return true
+	// If cd.argoproj.io/ignore-resource-updates is presented and is true, return true
 	// Else return false
 	if !isTrackedResource {
 		if val, ok := un.GetAnnotations()[AnnotationIgnoreResourceUpdates]; ok {
@@ -750,7 +750,7 @@ func (c *liveStateCache) isClusterHasApps(apps []any, cluster *appv1.Cluster) bo
 		if !ok {
 			continue
 		}
-		destCluster, err := argo.GetDestinationCluster(context.Background(), app.Spec.Destination, c.db)
+		destCluster, err := cd.GetDestinationCluster(context.Background(), app.Spec.Destination, c.db)
 		if err != nil {
 			log.Warnf("Failed to get destination cluster: %v", err)
 			continue

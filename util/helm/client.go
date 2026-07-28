@@ -147,7 +147,7 @@ func (c *nativeHelmChart) getUserAgent() string {
 
 	// Default User-Agent with version and platform info
 	version := common.GetVersion()
-	return fmt.Sprintf("argocd-repo-server/%s (%s)", version.Version, version.Platform)
+	return fmt.Sprintf("cd-repo-server/%s (%s)", version.Version, version.Platform)
 }
 
 func fileExist(filePath string) (bool, error) {

@@ -24,14 +24,14 @@ import (
 func TestInformerFilterDoesNotCacheDisallowedNamespaces(t *testing.T) {
 	t.Parallel()
 	kept := &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Name: "kept", Namespace: "team-a"}}
-	control := &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Name: "ctrl", Namespace: "argocd"}}
+	control := &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Name: "ctrl", Namespace: "cd"}}
 	dropped := &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Name: "dropped", Namespace: "team-b"}}
 
 	client := apps.NewSimpleClientset(kept, control, dropped)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(client, 0)
 
 	appInformer := factory.Argoproj().V1alpha1().Applications().Informer()
-	require.NoError(t, appInformer.SetTransform(newNamespaceFilterTransform("argocd", []string{"team-a"})))
+	require.NoError(t, appInformer.SetTransform(newNamespaceFilterTransform("cd", []string{"team-a"})))
 
 	ctx, cancel := context.WithCancel(t.Context())
 	defer cancel()
@@ -52,7 +52,7 @@ func TestInformerFilterDoesNotCacheDisallowedNamespaces(t *testing.T) {
 		require.True(t, ok, "indexer must only hold non-nil Applications, got %T", obj)
 		gotNS[app.Namespace] = true
 	}
-	assert.True(t, gotNS["argocd"], "control-plane namespace should be cached")
+	assert.True(t, gotNS["cd"], "control-plane namespace should be cached")
 	assert.True(t, gotNS["team-a"], "allowed namespace should be cached")
 	assert.False(t, gotNS["team-b"], "disallowed namespace must not be cached")
 }

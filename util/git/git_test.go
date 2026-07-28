@@ -45,10 +45,10 @@ func TestEnsurePrefix(t *testing.T) {
 		{"helloworld", "hello", "helloworld"},
 		{"example.com", "https://", "https://example.com"},
 		{"https://example.com", "https://", "https://example.com"},
-		{"cd", "argo", "argocd"},
-		{"argocd", "argo", "argocd"},
-		{"", "argocd", "argocd"},
-		{"argocd", "", "argocd"},
+		{"cd", "argo", "cd"},
+		{"cd", "argo", "cd"},
+		{"", "cd", "cd"},
+		{"cd", "", "cd"},
 	}
 	for _, table := range data {
 		result := ensurePrefix(table[0], table[1])
@@ -170,11 +170,11 @@ func TestSanitizeRepoURL(t *testing.T) {
 func TestCustomHTTPClient(t *testing.T) {
 	proxy.UseTestingProxyCallback()
 
-	certFile, err := filepath.Abs("../../test/fixture/certs/argocd-test-client.crt")
+	certFile, err := filepath.Abs("../../test/fixture/certs/cd-test-client.crt")
 	require.NoError(t, err)
 	assert.NotEmpty(t, certFile)
 
-	keyFile, err := filepath.Abs("../../test/fixture/certs/argocd-test-client.key")
+	keyFile, err := filepath.Abs("../../test/fixture/certs/cd-test-client.key")
 	require.NoError(t, err)
 	assert.NotEmpty(t, keyFile)
 
@@ -243,7 +243,7 @@ func TestCustomHTTPClient(t *testing.T) {
 		assert.Equal(t, "http://proxy-from-env:7878", proxy.String())
 	}
 	// GetRepoHTTPClient with root ca
-	cert, err := os.ReadFile("../../test/fixture/certs/argocd-test-server.crt")
+	cert, err := os.ReadFile("../../test/fixture/certs/cd-test-server.crt")
 	require.NoError(t, err)
 	temppath := t.TempDir()
 	defer os.RemoveAll(temppath)
@@ -361,7 +361,7 @@ func TestLFSClient(t *testing.T) {
 
 	tempDir := t.TempDir()
 
-	client, err := NewClientExt("https://github.com/argoproj-labs/argocd-testrepo-lfs", tempDir, NopCreds{}, false, true, "", "")
+	client, err := NewClientExt("https://github.com/argoproj-labs/cd-testrepo-lfs", tempDir, NopCreds{}, false, true, "", "")
 	require.NoError(t, err)
 
 	commitSHA, err := client.LsRemote("HEAD")

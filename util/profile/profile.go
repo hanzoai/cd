@@ -8,14 +8,14 @@ import (
 	"github.com/hanzoai/deploy/util/env"
 )
 
-var enableProfilerFilePath = env.StringFromEnv("CD_ENABLE_PROFILER_FILE_PATH", "/home/argocd/params/profiler.enabled")
+var enableProfilerFilePath = env.StringFromEnv("CD_ENABLE_PROFILER_FILE_PATH", "/home/cd/params/profiler.enabled")
 
 func wrapHandler(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if data, err := os.ReadFile(enableProfilerFilePath); err == nil && string(data) == "true" {
 			handler.ServeHTTP(w, r)
 		} else {
-			http.Error(w, "Profiler endpoint is not enabled in 'argocd-cmd-params-cm' ConfigMap", http.StatusUnauthorized)
+			http.Error(w, "Profiler endpoint is not enabled in 'cd-cmd-params-cm' ConfigMap", http.StatusUnauthorized)
 		}
 	}
 }

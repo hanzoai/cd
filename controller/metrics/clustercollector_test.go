@@ -38,8 +38,8 @@ func TestMetricClusterConnectivity(t *testing.T) {
 			testCombination: testCombination{
 				applications: []string{fakeApp},
 				responseContains: `
-# TYPE argocd_cluster_connection_status gauge
-argocd_cluster_connection_status{k8s_version="1.21",server="server1"} 1
+# TYPE cd_cluster_connection_status gauge
+cd_cluster_connection_status{k8s_version="1.21",server="server1"} 1
 `,
 			},
 			clustersInfo: []gitopsCache.ClusterInfo{
@@ -58,8 +58,8 @@ argocd_cluster_connection_status{k8s_version="1.21",server="server1"} 1
 			testCombination: testCombination{
 				applications: []string{fakeApp},
 				responseContains: `
-# TYPE argocd_cluster_connection_status gauge
-argocd_cluster_connection_status{k8s_version="1.21",server="server1"} 0
+# TYPE cd_cluster_connection_status gauge
+cd_cluster_connection_status{k8s_version="1.21",server="server1"} 0
 `,
 			},
 			clustersInfo: []gitopsCache.ClusterInfo{
@@ -78,20 +78,20 @@ argocd_cluster_connection_status{k8s_version="1.21",server="server1"} 0
 			testCombination: testCombination{
 				applications: []string{fakeApp},
 				responseContains: `
-# TYPE argocd_cluster_connection_status gauge
-argocd_cluster_connection_status{k8s_version="1.21",server="server1"} 1
-argocd_cluster_connection_status{k8s_version="1.21",server="server2"} 1
-argocd_cluster_connection_status{k8s_version="1.21",server="server3"} 1
+# TYPE cd_cluster_connection_status gauge
+cd_cluster_connection_status{k8s_version="1.21",server="server1"} 1
+cd_cluster_connection_status{k8s_version="1.21",server="server2"} 1
+cd_cluster_connection_status{k8s_version="1.21",server="server3"} 1
 
-# TYPE argocd_cluster_info gauge
-argocd_cluster_info{k8s_version="1.21",name="cluster1",server="server1"} 1
-argocd_cluster_info{k8s_version="1.21",name="cluster2",server="server2"} 1
-argocd_cluster_info{k8s_version="1.21",name="cluster3",server="server3"} 1
+# TYPE cd_cluster_info gauge
+cd_cluster_info{k8s_version="1.21",name="cluster1",server="server1"} 1
+cd_cluster_info{k8s_version="1.21",name="cluster2",server="server2"} 1
+cd_cluster_info{k8s_version="1.21",name="cluster3",server="server3"} 1
 
-# TYPE argocd_cluster_labels gauge
-argocd_cluster_labels{label_env="dev",label_team="team1",name="cluster1",server="server1"} 1
-argocd_cluster_labels{label_env="staging",label_team="team2",name="cluster2",server="server2"} 1
-argocd_cluster_labels{label_env="production",label_team="team3",name="cluster3",server="server3"} 1
+# TYPE cd_cluster_labels gauge
+cd_cluster_labels{label_env="dev",label_team="team1",name="cluster1",server="server1"} 1
+cd_cluster_labels{label_env="staging",label_team="team2",name="cluster2",server="server2"} 1
+cd_cluster_labels{label_env="production",label_team="team3",name="cluster3",server="server3"} 1
 `,
 			},
 			clustersInfo: []gitopsCache.ClusterInfo{

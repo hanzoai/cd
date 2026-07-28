@@ -73,7 +73,7 @@ func newTestSyncCtx(getResourceFunc *func(ctx context.Context, config *rest.Conf
 func TestSyncValidate(t *testing.T) {
 	syncCtx := newTestSyncCtx(nil)
 	pod := testingutils.NewPod()
-	pod.SetNamespace("fake-argocd-ns")
+	pod.SetNamespace("fake-cd-ns")
 	syncCtx.resources = groupResources(ReconciliationResult{
 		Live:   []*unstructured.Unstructured{pod},
 		Target: []*unstructured.Unstructured{pod},
@@ -126,7 +126,7 @@ func TestSyncNamespaceCreatedBeforeDryRunWithoutFailure(t *testing.T) {
 	syncCtx.Sync(context.Background())
 	phase, msg, resources := syncCtx.GetState()
 	assert.Equal(t, synccommon.OperationRunning, phase)
-	assert.Equal(t, "waiting for healthy state of /Namespace/fake-argocd-ns", msg)
+	assert.Equal(t, "waiting for healthy state of /Namespace/fake-cd-ns", msg)
 	require.Len(t, resources, 1)
 	assert.Equal(t, "Namespace", resources[0].ResourceKey.Kind)
 	assert.Equal(t, synccommon.ResultCodeSynced, resources[0].Status)
@@ -363,11 +363,11 @@ func TestSyncSuccessfully_Multistep(t *testing.T) {
 func TestSync_MultistepResourceDeletionMidstep(t *testing.T) {
 	pod1 := testingutils.NewPod()
 	pod1.SetName("pod-1")
-	pod1.SetNamespace("fake-argocd-ns")
+	pod1.SetNamespace("fake-cd-ns")
 	pod1.SetAnnotations(map[string]string{synccommon.AnnotationSyncWave: "1"})
 	pod2 := testingutils.NewPod()
 	pod2.SetName("pod-2")
-	pod2.SetNamespace("fake-argocd-ns")
+	pod2.SetNamespace("fake-cd-ns")
 	pod2.SetAnnotations(map[string]string{synccommon.AnnotationSyncWave: "2"})
 
 	tests := []struct {
@@ -524,13 +524,13 @@ func TestSyncCreateFailure(t *testing.T) {
 func TestSync_ApplyOutOfSyncOnly(t *testing.T) {
 	pod1 := testingutils.NewPod()
 	pod1.SetName("pod-1")
-	pod1.SetNamespace("fake-argocd-ns")
+	pod1.SetNamespace("fake-cd-ns")
 	pod2 := testingutils.NewPod()
 	pod2.SetName("pod-2")
-	pod2.SetNamespace("fake-argocd-ns")
+	pod2.SetNamespace("fake-cd-ns")
 	pod3 := testingutils.NewPod()
 	pod3.SetName("pod-3")
-	pod3.SetNamespace("fake-argocd-ns")
+	pod3.SetNamespace("fake-cd-ns")
 
 	syncCtx := newTestSyncCtx(nil)
 	syncCtx.applyOutOfSyncOnly = true
@@ -2814,12 +2814,12 @@ func TestNeedsClientSideApplyMigration(t *testing.T) {
 			expected: true,
 		},
 		{
-			name: "object with only argocd-controller fields",
+			name: "object with only cd-controller fields",
 			liveObj: func() *unstructured.Unstructured {
 				obj := testingutils.NewPod()
 				obj.SetManagedFields([]metav1.ManagedFieldsEntry{
 					{
-						Manager:   "argocd-controller",
+						Manager:   "cd-controller",
 						Operation: metav1.ManagedFieldsOperationApply,
 						FieldsV1:  &metav1.FieldsV1{Raw: []byte(`{"f:spec":{"f:replicas":{}}}`)},
 					},
@@ -2839,7 +2839,7 @@ func TestNeedsClientSideApplyMigration(t *testing.T) {
 						FieldsV1:  &metav1.FieldsV1{Raw: []byte(`{"f:metadata":{"f:annotations":{}}}`)},
 					},
 					{
-						Manager:   "argocd-controller",
+						Manager:   "cd-controller",
 						Operation: metav1.ManagedFieldsOperationApply,
 						FieldsV1:  &metav1.FieldsV1{Raw: []byte(`{"f:spec":{"f:replicas":{}}}`)},
 					},
@@ -2883,7 +2883,7 @@ func TestPerformCSAUpgradeMigration_NoMigrationNeeded(t *testing.T) {
 	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
 	obj.SetManagedFields([]metav1.ManagedFieldsEntry{
 		{
-			Manager:   "argocd-controller",
+			Manager:   "cd-controller",
 			Operation: metav1.ManagedFieldsOperationApply,
 			FieldsV1:  &metav1.FieldsV1{Raw: []byte(`{"f:spec":{"f:containers":{}}}`)},
 		},
@@ -2893,7 +2893,7 @@ func TestPerformCSAUpgradeMigration_NoMigrationNeeded(t *testing.T) {
 	dynamicClient := fake.NewSimpleDynamicClient(scheme, obj)
 
 	syncCtx := newTestSyncCtx(nil)
-	syncCtx.serverSideApplyManager = "argocd-controller"
+	syncCtx.serverSideApplyManager = "cd-controller"
 	syncCtx.dynamicIf = dynamicClient
 	syncCtx.disco = &fakedisco.FakeDiscovery{
 		Fake: &testcore.Fake{Resources: testingutils.StaticAPIResources},
@@ -2924,7 +2924,7 @@ func TestPerformCSAUpgradeMigration_WithCSAManager(t *testing.T) {
 	dynamicClient := fake.NewSimpleDynamicClient(scheme, obj)
 
 	syncCtx := newTestSyncCtx(nil)
-	syncCtx.serverSideApplyManager = "argocd-controller"
+	syncCtx.serverSideApplyManager = "cd-controller"
 	syncCtx.dynamicIf = dynamicClient
 	syncCtx.disco = &fakedisco.FakeDiscovery{
 		Fake: &testcore.Fake{Resources: testingutils.StaticAPIResources},
@@ -2985,7 +2985,7 @@ func TestPerformCSAUpgradeMigration_ConflictRetry(t *testing.T) {
 	})
 
 	syncCtx := newTestSyncCtx(nil)
-	syncCtx.serverSideApplyManager = "argocd-controller"
+	syncCtx.serverSideApplyManager = "cd-controller"
 	syncCtx.dynamicIf = dynamicClient
 	syncCtx.disco = &fakedisco.FakeDiscovery{
 		Fake: &testcore.Fake{Resources: testingutils.StaticAPIResources},

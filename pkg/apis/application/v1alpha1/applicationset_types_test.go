@@ -57,20 +57,20 @@ func TestApplicationSetRBACName(t *testing.T) {
 		namespace := "guestbook"
 		a := newTestAppSet("test-appset", namespace, testRepo)
 		a.Spec.Template.Spec.Project = "test"
-		assert.Equal(t, "test/guestbook/test-appset", a.RBACName("argocd"))
+		assert.Equal(t, "test/guestbook/test-appset", a.RBACName("cd"))
 	})
 
 	t.Run("Test RBAC name default ns", func(t *testing.T) {
-		namespace := "argocd"
+		namespace := "cd"
 		a := newTestAppSet("test-appset", namespace, testRepo)
 		a.Spec.Template.Spec.Project = "test"
-		assert.Equal(t, "test/test-appset", a.RBACName("argocd"))
+		assert.Equal(t, "test/test-appset", a.RBACName("cd"))
 	})
 
 	t.Run("Test RBAC no ns", func(t *testing.T) {
 		a := newTestAppSet("test-appset", "", testRepo)
 		a.Spec.Template.Spec.Project = "test"
-		assert.Equal(t, "test/test-appset", a.RBACName("argocd"))
+		assert.Equal(t, "test/test-appset", a.RBACName("cd"))
 	})
 }
 

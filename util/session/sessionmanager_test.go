@@ -43,7 +43,7 @@ import (
 )
 
 func getProjLister(objects ...runtime.Object) v1alpha1.AppProjectNamespaceLister {
-	return test.NewFakeProjListerFromInterface(apps.NewSimpleClientset(objects...).ArgoprojV1alpha1().AppProjects("argocd"))
+	return test.NewFakeProjListerFromInterface(apps.NewSimpleClientset(objects...).ArgoprojV1alpha1().AppProjects("cd"))
 }
 
 func getKubeClient(t *testing.T, pass string, enabled bool, capabilities ...settings.AccountCapability) *fake.Clientset {
@@ -62,10 +62,10 @@ func getKubeClient(t *testing.T, pass string, enabled bool, capabilities ...sett
 
 	return fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
-			Namespace: "argocd",
+			Name:      "cd-cm",
+			Namespace: "cd",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string]string{
@@ -74,8 +74,8 @@ func getKubeClient(t *testing.T, pass string, enabled bool, capabilities ...sett
 		},
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
-			Namespace: "argocd",
+			Name:      "cd-secret",
+			Namespace: "cd",
 		},
 		Data: map[string][]byte{
 			"admin.password":   []byte(bcrypt),
@@ -94,7 +94,7 @@ func TestSessionManager_AdminToken(t *testing.T) {
 	redisClient, closer := test.NewInMemoryRedis()
 	defer closer()
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(redisClient))
 
 	token, err := mgr.Create("admin:login", 0, "123")
@@ -115,7 +115,7 @@ func TestSessionManager_AdminToken_ExpiringSoon(t *testing.T) {
 	redisClient, closer := test.NewInMemoryRedis()
 	defer closer()
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(redisClient))
 
 	token, err := mgr.Create("admin:login", int64(autoRegenerateTokenDuration.Seconds()-1), "123")
@@ -139,7 +139,7 @@ func TestSessionManager_AdminToken_Revoked(t *testing.T) {
 	redisClient, closer := test.NewInMemoryRedis()
 	defer closer()
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "cd")
 	storage := NewUserStateStorage(redisClient)
 
 	mgr := newSessionManager(settingsMgr, getProjLister(), storage)
@@ -158,7 +158,7 @@ func TestSessionManager_AdminToken_EmptyJti(t *testing.T) {
 	redisClient, closer := test.NewInMemoryRedis()
 	defer closer()
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(redisClient))
 
 	// Create a token with an empty jti
@@ -174,7 +174,7 @@ func TestSessionManager_AdminToken_NoExpirationTime(t *testing.T) {
 	redisClient, closer := test.NewInMemoryRedis()
 	defer closer()
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(redisClient))
 
 	token, err := mgr.Create("admin:login", 0, "123")
@@ -198,7 +198,7 @@ func TestSessionManager_AdminToken_Expired(t *testing.T) {
 	redisClient, closer := test.NewInMemoryRedis()
 	defer closer()
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(redisClient))
 
 	token, err := mgr.Create("admin:login", 2, "123")
@@ -214,7 +214,7 @@ func TestSessionManager_AdminToken_Expired(t *testing.T) {
 }
 
 func TestSessionManager_AdminToken_Deactivated(t *testing.T) {
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", false), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", false), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(nil))
 
 	token, err := mgr.Create("admin:login", int64(autoRegenerateTokenDuration.Seconds()*2), "abc")
@@ -225,7 +225,7 @@ func TestSessionManager_AdminToken_Deactivated(t *testing.T) {
 }
 
 func TestSessionManager_AdminToken_LoginCapabilityDisabled(t *testing.T) {
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true, settings.AccountCapabilityLogin), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true, settings.AccountCapabilityLogin), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(nil))
 
 	token, err := mgr.Create("admin", int64(autoRegenerateTokenDuration.Seconds()*2), "abc")
@@ -236,13 +236,13 @@ func TestSessionManager_AdminToken_LoginCapabilityDisabled(t *testing.T) {
 }
 
 func TestSessionManager_ProjectToken(t *testing.T) {
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "cd")
 
 	t.Run("Valid Token", func(t *testing.T) {
 		proj := appv1.AppProject{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "default",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: appv1.AppProjectSpec{Roles: []appv1.ProjectRole{{Name: "test"}}},
 			Status: appv1.AppProjectStatus{JWTTokensByRole: map[string]appv1.JWTTokens{
@@ -269,7 +269,7 @@ func TestSessionManager_ProjectToken(t *testing.T) {
 		proj := appv1.AppProject{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "default",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: appv1.AppProjectSpec{Roles: []appv1.ProjectRole{{Name: "test"}}},
 		}
@@ -468,7 +468,7 @@ userInfoPath: /`,
 			req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, ts.URL, http.NoBody)
 			require.NoErrorf(t, err, "error creating request: %s", err)
 			if tc.cookieHeader {
-				req.Header.Add("Cookie", "argocd.token=123456")
+				req.Header.Add("Cookie", "cd.token=123456")
 			}
 
 			// when
@@ -565,7 +565,7 @@ func TestVerifyUsernamePassword(t *testing.T) {
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, password, !tc.disabled), "argocd")
+			settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, password, !tc.disabled), "cd")
 
 			mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(nil))
 
@@ -635,7 +635,7 @@ func TestCacheValueGetters(t *testing.T) {
 }
 
 func TestLoginRateLimiter(t *testing.T) {
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "password", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "password", true), "cd")
 	storage := NewUserStateStorage(nil)
 
 	mgr := newSessionManager(settingsMgr, getProjLister(), storage)
@@ -676,14 +676,14 @@ func TestMaxUsernameLength(t *testing.T) {
 	for range maxUsernameLength + 1 {
 		username.WriteString("a")
 	}
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "password", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "password", true), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(nil))
 	err := mgr.VerifyUsernamePassword(username.String(), "password")
 	assert.ErrorContains(t, err, fmt.Sprintf(usernameTooLongError, maxUsernameLength))
 }
 
 func TestMaxCacheSize(t *testing.T) {
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "password", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "password", true), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(nil))
 
 	invalidUsers := []string{"invalid1", "invalid2", "invalid3", "invalid4", "invalid5", "invalid6", "invalid7"}
@@ -699,7 +699,7 @@ func TestMaxCacheSize(t *testing.T) {
 }
 
 func TestFailedAttemptsExpiry(t *testing.T) {
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "password", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "password", true), "cd")
 	mgr := newSessionManager(settingsMgr, getProjLister(), NewUserStateStorage(nil))
 
 	invalidUsers := []string{"invalid1", "invalid2", "invalid3", "invalid4", "invalid5", "invalid6", "invalid7"}
@@ -726,17 +726,17 @@ func getKubeClientWithConfig(config map[string]string, secretConfig map[string][
 
 	return fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
-			Namespace: "argocd",
+			Name:      "cd-cm",
+			Namespace: "cd",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: config,
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
-			Namespace: "argocd",
+			Name:      "cd-secret",
+			Namespace: "cd",
 		},
 		Data: mergedSecretConfig,
 	})
@@ -760,7 +760,7 @@ clientSecret: yyy
 requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, nil), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, nil), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 		// Use test server's client to avoid TLS issues.
@@ -794,7 +794,7 @@ rootCA: |
 `, oidcTestServer.URL, strings.ReplaceAll(string(cert), "\n", "\n  ")),
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, nil), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, nil), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -831,7 +831,7 @@ rootCA: |
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), dexTestServer.URL, nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -866,7 +866,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -901,7 +901,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), dexTestServer.URL, nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -937,7 +937,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -966,7 +966,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"oidc.tls.insecure.skip.verify": "true",
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, nil), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(dexConfig, nil), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1003,7 +1003,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1039,7 +1039,7 @@ skipAudienceCheckWhenTokenHasNoAudience: true`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1075,7 +1075,7 @@ skipAudienceCheckWhenTokenHasNoAudience: false`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1111,7 +1111,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1148,7 +1148,7 @@ allowedAudiences:
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1185,7 +1185,7 @@ allowedAudiences:
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1221,7 +1221,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1258,7 +1258,7 @@ allowedAudiences: []`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1296,7 +1296,7 @@ allowedAudiences: ["aud-a", "aud-b"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1331,7 +1331,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, NewUserStateStorage(nil))
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1375,7 +1375,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), "", nil, storage)
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1419,7 +1419,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 			"tls.key": utiltest.PrivateKey,
 		}
 
-		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+		settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 		mgr := NewSessionManager(settingsMgr, getProjLister(), dexTestServer.URL, &dex.DexTLSConfig{StrictValidation: false}, storage)
 		mgr.verificationDelayNoiseEnabled = false
 
@@ -1442,7 +1442,7 @@ func TestSessionManager_RevokeToken(t *testing.T) {
 	redisClient, closer := test.NewInMemoryRedis()
 	defer closer()
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClient(t, "pass", true), "cd")
 	storage := NewUserStateStorage(redisClient)
 	mgr := newSessionManager(settingsMgr, getProjLister(), storage)
 
@@ -1503,7 +1503,7 @@ func TestSessionManager_VerifyToken_DexTokenRevokedByAccessTokenHash(t *testing.
 		"tls.key": utiltest.PrivateKey,
 	}
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "argocd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), getKubeClientWithConfig(config, secretConfig), "cd")
 	mgr := NewSessionManager(settingsMgr, getProjLister(), dexTestServer.URL, &dex.DexTLSConfig{StrictValidation: false}, storage)
 	mgr.verificationDelayNoiseEnabled = false
 

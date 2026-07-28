@@ -105,9 +105,9 @@ const (
 	// DefaultAppConfigPath is the Default path to repo server TLS endpoint config
 	DefaultAppConfigPath = "/app/config"
 	// DefaultPluginSockFilePath is the Default path to cmp server plugin socket file
-	DefaultPluginSockFilePath = "/home/argocd/cmp-server/plugins"
+	DefaultPluginSockFilePath = "/home/cd/cmp-server/plugins"
 	// DefaultPluginConfigFilePath is the Default path to cmp server plugin configuration file
-	DefaultPluginConfigFilePath = "/home/argocd/cmp-server/config"
+	DefaultPluginConfigFilePath = "/home/cd/cmp-server/config"
 	// PluginConfigFileName is the Plugin Config File is a ConfigManagementPlugin manifest located inside the plugin container
 	PluginConfigFileName = "plugin.yaml"
 )
@@ -124,12 +124,12 @@ const (
 	ArgoCDAdminUsername = "admin"
 	// ArgoCDUserAgentName is the default user-agent name used by the gRPC API client library and grpc-gateway
 	ArgoCDUserAgentName = "hanzocd-client"
-	// ArgoCDSSAManager is the default argocd manager name used by server-side apply syncs
+	// ArgoCDSSAManager is the default cd manager name used by server-side apply syncs
 	ArgoCDSSAManager = "hanzocd-controller"
 	// AuthCookieName is the HTTP cookie name where we store our auth token
-	AuthCookieName = "argocd.token"
+	AuthCookieName = "cd.token"
 	// StateCookieName is the HTTP cookie name that holds temporary nonce tokens for CSRF protection
-	StateCookieName = "argocd.oauthstate"
+	StateCookieName = "cd.oauthstate"
 	// StateCookieMaxAge is the maximum age of the oauth state cookie
 	StateCookieMaxAge = time.Minute * 5
 
@@ -194,7 +194,7 @@ const (
 	LabelKeyAutoLabelClusterInfo = "apps.hanzo.ai/auto-label-cluster-info"
 	// LabelKeyLegacyApplicationName is the legacy label (v0.10 and below) and is superseded by 'app.kubernetes.io/instance'
 	LabelKeyLegacyApplicationName = "applications.argoproj.io/app-name"
-	// LabelKeySecretType contains the type of argocd secret (currently: 'cluster', 'repository', 'repo-config' or 'repo-creds')
+	// LabelKeySecretType contains the type of cd secret (currently: 'cluster', 'repository', 'repo-config' or 'repo-creds')
 	LabelKeySecretType = "apps.hanzo.ai/secret-type"
 	// LabelKeyClusterKubernetesVersion contains the kubernetes version of the cluster secret if it has been enabled
 	LabelKeyClusterKubernetesVersion = "apps.hanzo.ai/kubernetes-version"
@@ -492,9 +492,9 @@ var WatchAPIBufferSize = env.ParseNumFromEnv(EnvWatchAPIBufferSize, 1000, 0, mat
 
 // Redis password consts
 const (
-	// RedisInitialCredentials is the name for the argocd kubernetes secret which will have the redis password
+	// RedisInitialCredentials is the name for the cd kubernetes secret which will have the redis password
 	RedisInitialCredentials = "hanzocd-redis"
-	// RedisInitialCredentialsKey is the key for the argocd kubernetes secret that maps to the redis password
+	// RedisInitialCredentialsKey is the key for the cd kubernetes secret that maps to the redis password
 	RedisInitialCredentialsKey = "auth"
 )
 

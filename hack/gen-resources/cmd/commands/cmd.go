@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	cliName = "argocd-generator"
+	cliName = "cd-generator"
 )
 
 func init() {
@@ -28,13 +28,13 @@ func initConfig() {
 	cli.SetLogLevel(cmdutil.LogLevel)
 }
 
-// NewCommand returns a new instance of an argocd command
+// NewCommand returns a new instance of an cd command
 func NewCommand() *cobra.Command {
 	var generateOpts util.GenerateOpts
 
 	command := &cobra.Command{
 		Use:   cliName,
-		Short: "Generator for argocd resources",
+		Short: "Generator for cd resources",
 		Run: func(c *cobra.Command, args []string) {
 			c.HelpFunc()(c, args)
 		},
@@ -126,6 +126,6 @@ func NewCleanCommand(opts *util.GenerateOpts) *cobra.Command {
 			}
 		},
 	}
-	command.PersistentFlags().StringVar(&opts.Namespace, "kube-namespace", "argocd", "Name of the namespace where argocd is running [$KUBE_NAMESPACE]")
+	command.PersistentFlags().StringVar(&opts.Namespace, "kube-namespace", "cd", "Name of the namespace where cd is running [$KUBE_NAMESPACE]")
 	return command
 }

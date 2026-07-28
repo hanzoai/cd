@@ -77,7 +77,7 @@ func (s *Server) UpdatePassword(ctx context.Context, q *account.UpdatePasswordRe
 			return nil, fmt.Errorf("failed to get issue time: %w", err)
 		}
 		if time.Since(iat) > common.ChangePasswordSSOTokenMaxAge {
-			return nil, errors.New("SSO token is too old. Please use 'argocd relogin' to get a new token")
+			return nil, errors.New("SSO token is too old. Please use 'cd relogin' to get a new token")
 		}
 	}
 

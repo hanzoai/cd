@@ -8,7 +8,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/glob"
 
 	"k8s.io/apimachinery/pkg/labels"
@@ -110,7 +110,7 @@ func (a *ArgoCDWebhookHandler) HandleRegistryEvent(event *RegistryEvent) {
 				Applications(app.Namespace)
 
 			ht := v1alpha1.HydrateTypeNormal
-			if _, err := argo.RefreshApp(
+			if _, err := cd.RefreshApp(
 				namespacedAppInterface,
 				app.Name,
 				v1alpha1.RefreshTypeNormal,

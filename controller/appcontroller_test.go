@@ -54,15 +54,15 @@ import (
 	"github.com/hanzoai/deploy/reposerver/apiclient"
 	mockrepoclient "github.com/hanzoai/deploy/reposerver/apiclient/mocks"
 	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/argo"
-	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/cd"
+	"github.com/hanzoai/deploy/util/cd/normalizers"
 	cacheutil "github.com/hanzoai/deploy/util/cache"
 	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
 	"github.com/hanzoai/deploy/util/settings"
 	utilTest "github.com/hanzoai/deploy/util/test"
 )
 
-var testEnableEventList []string = argo.DefaultEnableEventList()
+var testEnableEventList []string = cd.DefaultEnableEventList()
 
 type namespacedResource struct {
 	v1alpha1.ResourceNode
@@ -196,7 +196,7 @@ func newFakeControllerWithResync(ctx context.Context, data *fakeData, appResyncP
 
 	secret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      "cd-secret",
 			Namespace: test.FakeArgoCDNamespace,
 		},
 		Data: map[string][]byte{
@@ -206,10 +206,10 @@ func newFakeControllerWithResync(ctx context.Context, data *fakeData, appResyncP
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      "cd-cm",
 			Namespace: test.FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: data.configMapData,
@@ -312,7 +312,7 @@ data:
 kind: Secret
 metadata:
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.argoproj.io/secret-type: cluster
   name: some-secret
   namespace: ` + test.FakeArgoCDNamespace + `
 type: Opaque
@@ -481,7 +481,7 @@ var fakePreDeleteHook = `
       "app.kubernetes.io/instance": "my-app"
     },
     "annotations": {
-      "argocd.argoproj.io/hook": "PreDelete"
+      "cd.argoproj.io/hook": "PreDelete"
     }
   },
   "spec": {
@@ -512,8 +512,8 @@ var fakePostDeleteHook = `
       "app.kubernetes.io/instance": "my-app"
     },
     "annotations": {
-      "argocd.argoproj.io/hook": "PostDelete",
-      "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"
+      "cd.argoproj.io/hook": "PostDelete",
+      "cd.argoproj.io/hook-delete-policy": "HookSucceeded"
     }
   },
   "spec": {
@@ -548,8 +548,8 @@ var fakeServiceAccount = `
     "name": "hook-serviceaccount",
     "namespace": "default",
     "annotations": {
-      "argocd.argoproj.io/hook": "PostDelete",
-      "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "cd.argoproj.io/hook": "PostDelete",
+      "cd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   }
 }
@@ -563,8 +563,8 @@ var fakeRole = `
     "name": "hook-role",
     "namespace": "default",
     "annotations": {
-      "argocd.argoproj.io/hook": "PostDelete",
-      "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "cd.argoproj.io/hook": "PostDelete",
+      "cd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   },
   "rules": [
@@ -585,8 +585,8 @@ var fakeRoleBinding = `
     "name": "hook-rolebinding",
     "namespace": "default",
     "annotations": {
-      "argocd.argoproj.io/hook": "PostDelete",
-      "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "cd.argoproj.io/hook": "PostDelete",
+      "cd.argoproj.io/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   },
   "roleRef": {
@@ -2623,13 +2623,13 @@ func TestOrphanedIndexDoesNotQueryProjectDuringStartupRace(t *testing.T) {
 	mockCommitClientset := &mockcommitclient.Clientset{}
 
 	secret := corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: test.FakeArgoCDNamespace},
+		ObjectMeta: metav1.ObjectMeta{Name: "cd-secret", Namespace: test.FakeArgoCDNamespace},
 		Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "argocd-cm", Namespace: test.FakeArgoCDNamespace,
-			Labels: map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Name: "cd-cm", Namespace: test.FakeArgoCDNamespace,
+			Labels: map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
 	}
 	kubeClient := fake.NewClientset(&clust, &secret, &cm)
@@ -2688,13 +2688,13 @@ func TestOrphanedIndexReturnsNamespaceWhenProjectHasOrphanedResources(t *testing
 	mockCommitClientset := &mockcommitclient.Clientset{}
 
 	secret := corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: test.FakeArgoCDNamespace},
+		ObjectMeta: metav1.ObjectMeta{Name: "cd-secret", Namespace: test.FakeArgoCDNamespace},
 		Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "argocd-cm", Namespace: test.FakeArgoCDNamespace,
-			Labels: map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Name: "cd-cm", Namespace: test.FakeArgoCDNamespace,
+			Labels: map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
 	}
 	kubeClient := fake.NewClientset(&clust, &secret, &cm)
@@ -3687,7 +3687,7 @@ func Test_syncDeleteOption(t *testing.T) {
 	})
 	t.Run("with delete set to false object is retained", func(t *testing.T) {
 		cmObj := kube.MustToUnstructured(&cm)
-		cmObj.SetAnnotations(map[string]string{"argocd.argoproj.io/sync-options": "Delete=false"})
+		cmObj.SetAnnotations(map[string]string{"cd.argoproj.io/sync-options": "Delete=false"})
 		assert.False(t, ctrl.shouldBeDeleted(app, cmObj))
 	})
 	t.Run("with delete set to false object is retained", func(t *testing.T) {
@@ -3707,7 +3707,7 @@ func Test_syncDeleteOption(t *testing.T) {
 		newApp := app.DeepCopy()
 		newApp.Spec.SyncPolicy.SyncOptions = []string{"Delete=false"}
 		cmObj := kube.MustToUnstructured(&cm)
-		cmObj.SetAnnotations(map[string]string{"argocd.argoproj.io/sync-options": "Delete=foo"})
+		cmObj.SetAnnotations(map[string]string{"cd.argoproj.io/sync-options": "Delete=foo"})
 		assert.True(t, ctrl.shouldBeDeleted(newApp, cmObj))
 	})
 }

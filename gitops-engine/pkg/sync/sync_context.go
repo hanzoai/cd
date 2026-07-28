@@ -41,13 +41,13 @@ import (
 
 var tracer = otel.Tracer("github.com/hanzoai/deploy/gitops-engine/pkg/sync")
 
-// taskTraceAttrs returns the standard argocd.resource.* span attributes for a sync task.
+// taskTraceAttrs returns the standard cd.resource.* span attributes for a sync task.
 func taskTraceAttrs(t *syncTask) []attribute.KeyValue {
 	return []attribute.KeyValue{
-		attribute.String("argocd.resource.group", t.group()),
-		attribute.String("argocd.resource.kind", t.kind()),
-		attribute.String("argocd.resource.namespace", t.namespace()),
-		attribute.String("argocd.resource.name", t.name()),
+		attribute.String("cd.resource.group", t.group()),
+		attribute.String("cd.resource.kind", t.kind()),
+		attribute.String("cd.resource.namespace", t.namespace()),
+		attribute.String("cd.resource.name", t.name()),
 	}
 }
 
@@ -492,7 +492,7 @@ func (sc *syncContext) setRunningPhase(tasks syncTasks, isPendingDeletion bool) 
 // Sync executes next synchronization step and updates operation status.
 func (sc *syncContext) Sync(ctx context.Context) {
 	ctx, span := tracer.Start(ctx, "sync.Sync")
-	span.SetAttributes(attribute.Bool("argocd.sync.started", sc.started()))
+	span.SetAttributes(attribute.Bool("cd.sync.started", sc.started()))
 	defer span.End()
 	sc.log.WithValues("skipHooks", sc.skipHooks, "started", sc.started()).Info("Syncing")
 	tasks, ok := sc.getSyncTasks(ctx)
@@ -1417,7 +1417,7 @@ func (sc *syncContext) applyObject(ctx context.Context, t *syncTask, dryRun, val
 	ctx, span := tracer.Start(ctx, "sync.apply")
 	if span.IsRecording() {
 		span.SetAttributes(taskTraceAttrs(t)...)
-		span.SetAttributes(attribute.Bool("argocd.sync.dry_run", dryRun))
+		span.SetAttributes(attribute.Bool("cd.sync.dry_run", dryRun))
 	}
 	defer span.End()
 
@@ -1439,7 +1439,7 @@ func (sc *syncContext) applyObject(ctx context.Context, t *syncTask, dryRun, val
 	// Check if we need to perform client-side apply migration for server-side apply
 	// Perform client-side apply migration for server-side apply
 	// This uses csaupgrade to directly patch managedFields, transferring ownership
-	// from CSA managers (operation: Update) to the SSA manager (argocd-controller)
+	// from CSA managers (operation: Update) to the SSA manager (cd-controller)
 	if serverSideApply && !dryRun && sc.enableClientSideApplyMigration {
 		if sc.needsClientSideApplyMigration(t.liveObj, sc.clientSideApplyMigrationManager) {
 			err = sc.performCSAUpgradeMigration(ctx, t.liveObj, sc.clientSideApplyMigrationManager)
@@ -1489,7 +1489,7 @@ func (sc *syncContext) pruneObject(ctx context.Context, t *syncTask, prune, dryR
 	ctx, span := tracer.Start(ctx, "sync.prune")
 	if span.IsRecording() {
 		span.SetAttributes(taskTraceAttrs(t)...)
-		span.SetAttributes(attribute.Bool("argocd.sync.dry_run", dryRun))
+		span.SetAttributes(attribute.Bool("cd.sync.dry_run", dryRun))
 	}
 	defer span.End()
 
@@ -1629,8 +1629,8 @@ func (sc *syncContext) runTasks(ctx context.Context, tasks syncTasks, dryRun boo
 	ctx, span := tracer.Start(ctx, "sync.runTasks")
 	if span.IsRecording() {
 		span.SetAttributes(
-			attribute.Bool("argocd.sync.dry_run", dryRun),
-			attribute.Int("argocd.sync.num_tasks", len(tasks)),
+			attribute.Bool("cd.sync.dry_run", dryRun),
+			attribute.Int("cd.sync.num_tasks", len(tasks)),
 		)
 	}
 	defer span.End()

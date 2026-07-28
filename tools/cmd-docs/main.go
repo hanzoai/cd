@@ -9,12 +9,12 @@ import (
 
 	"github.com/spf13/cobra/doc"
 
-	controller "github.com/hanzoai/deploy/cmd/argocd-application-controller/commands"
-	argocdappsetcontroller "github.com/hanzoai/deploy/cmd/argocd-applicationset-controller/commands"
-	argocddex "github.com/hanzoai/deploy/cmd/argocd-dex/commands"
-	reposerver "github.com/hanzoai/deploy/cmd/argocd-repo-server/commands"
-	argocdserver "github.com/hanzoai/deploy/cmd/argocd-server/commands"
-	argocdcli "github.com/hanzoai/deploy/cmd/argocd/commands"
+	controller "github.com/hanzoai/deploy/cmd/cd-application-controller/commands"
+	cdappsetcontroller "github.com/hanzoai/deploy/cmd/cd-applicationset-controller/commands"
+	cddex "github.com/hanzoai/deploy/cmd/cd-dex/commands"
+	reposerver "github.com/hanzoai/deploy/cmd/cd-repo-server/commands"
+	cdserver "github.com/hanzoai/deploy/cmd/cd-server/commands"
+	cdcli "github.com/hanzoai/deploy/cmd/cd/commands"
 )
 
 func main() {
@@ -31,12 +31,12 @@ func main() {
 		return fmt.Sprintf("# `%s` Command Reference\n\n", strings.ReplaceAll(filename, "_", " "))
 	}
 
-	err := doc.GenMarkdownTreeCustom(argocdcli.NewCommand(), "./docs/user-guide/commands", headerPrepender, identity)
+	err := doc.GenMarkdownTreeCustom(cdcli.NewCommand(), "./docs/user-guide/commands", headerPrepender, identity)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = doc.GenMarkdownTreeCustom(argocdserver.NewCommand(), "./docs/operator-manual/server-commands", headerPrepender, identity)
+	err = doc.GenMarkdownTreeCustom(cdserver.NewCommand(), "./docs/operator-manual/server-commands", headerPrepender, identity)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -51,12 +51,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = doc.GenMarkdownTreeCustom(argocddex.NewCommand(), "./docs/operator-manual/server-commands", headerPrepender, identity)
+	err = doc.GenMarkdownTreeCustom(cddex.NewCommand(), "./docs/operator-manual/server-commands", headerPrepender, identity)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = doc.GenMarkdownTreeCustom(argocdappsetcontroller.NewCommand(), "./docs/operator-manual/server-commands", headerPrepender, identity)
+	err = doc.GenMarkdownTreeCustom(cdappsetcontroller.NewCommand(), "./docs/operator-manual/server-commands", headerPrepender, identity)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -21,7 +21,7 @@ import (
 	"github.com/hanzoai/deploy/common"
 	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	applister "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/git"
 	"github.com/hanzoai/deploy/util/healthz"
@@ -63,7 +63,7 @@ var (
 	descAppConditions *prometheus.Desc
 
 	descAppInfo = prometheus.NewDesc(
-		"argocd_app_info",
+		"cd_app_info",
 		"Information about application.",
 		append(descAppDefaultLabels, "autosync_enabled", "repo", "dest_server", "dest_namespace", "sync_status", "health_status", "operation"),
 		nil,
@@ -71,7 +71,7 @@ var (
 
 	syncCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_app_sync_total",
+			Name: "cd_app_sync_total",
 			Help: "Number of application syncs.",
 		},
 		append(descAppDefaultLabels, "dest_server", "phase", "dry_run"),
@@ -79,7 +79,7 @@ var (
 
 	syncDuration = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_app_sync_duration_seconds_total",
+			Name: "cd_app_sync_duration_seconds_total",
 			Help: "Application sync performance in seconds total.",
 		},
 		append(descAppDefaultLabels, "dest_server"),
@@ -87,25 +87,25 @@ var (
 
 	k8sRequestCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_app_k8s_request_total",
+			Name: "cd_app_k8s_request_total",
 			Help: "Number of kubernetes requests executed during application reconciliation.",
 		},
 		append(descAppDefaultLabels, "server", "response_code", "verb", "resource_kind", "resource_namespace", "dry_run"),
 	)
 
 	kubectlExecCounter = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "argocd_kubectl_exec_total",
+		Name: "cd_kubectl_exec_total",
 		Help: "Number of kubectl executions",
 	}, []string{"hostname", "command"})
 
 	kubectlExecPendingGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "argocd_kubectl_exec_pending",
+		Name: "cd_kubectl_exec_pending",
 		Help: "Number of pending kubectl executions",
 	}, []string{"hostname", "command"})
 
 	reconcileHistogram = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "argocd_app_reconcile",
+			Name: "cd_app_reconcile",
 			Help: "Application reconciliation performance in seconds.",
 			// Buckets chosen after observing a ~2100ms mean reconcile time
 			Buckets: []float64{0.25, .5, 1, 2, 4, 8, 16},
@@ -114,13 +114,13 @@ var (
 	)
 
 	clusterEventsCounter = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "argocd_cluster_events_total",
+		Name: "cd_cluster_events_total",
 		Help: "Number of processes k8s resource events.",
 	}, append(descClusterDefaultLabels, "group", "kind"))
 
 	redisRequestCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_redis_request_total",
+			Name: "cd_redis_request_total",
 			Help: "Number of redis requests executed during application reconciliation.",
 		},
 		[]string{"hostname", "initiator", "failed"},
@@ -128,7 +128,7 @@ var (
 
 	redisRequestHistogram = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_redis_request_duration",
+			Name:    "cd_redis_request_duration",
 			Help:    "Redis requests duration.",
 			Buckets: []float64{0.01, 0.05, 0.10, 0.25, .5, 1},
 		},
@@ -137,7 +137,7 @@ var (
 
 	orphanedResourcesGauge = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "argocd_app_orphaned_resources_count",
+			Name: "cd_app_orphaned_resources_count",
 			Help: "Number of orphaned resources per application",
 		},
 		descAppDefaultLabels,
@@ -145,7 +145,7 @@ var (
 
 	resourceEventsProcessingHistogram = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_resource_events_processing",
+			Name:    "cd_resource_events_processing",
 			Help:    "Time to process resource events in seconds.",
 			Buckets: []float64{0.25, .5, 1, 2, 4, 8, 16},
 		},
@@ -153,7 +153,7 @@ var (
 	)
 
 	resourceEventsNumberGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "argocd_resource_events_processed_in_batch",
+		Name: "cd_resource_events_processed_in_batch",
 		Help: "Number of resource events processed in batch",
 	}, []string{"server"})
 )
@@ -168,7 +168,7 @@ func NewMetricsServer(addr string, appLister applister.ApplicationLister, appFil
 	if len(appLabels) > 0 {
 		normalizedLabels := metricsutil.NormalizeLabels("label", appLabels)
 		descAppLabels = prometheus.NewDesc(
-			"argocd_app_labels",
+			"cd_app_labels",
 			"Argo Application labels converted to Prometheus labels",
 			append(descAppDefaultLabels, normalizedLabels...),
 			nil,
@@ -177,7 +177,7 @@ func NewMetricsServer(addr string, appLister applister.ApplicationLister, appFil
 
 	if len(appConditions) > 0 {
 		descAppConditions = prometheus.NewDesc(
-			"argocd_app_condition",
+			"cd_app_condition",
 			"Report application conditions.",
 			append(descAppDefaultLabels, "condition"),
 			nil,
@@ -402,7 +402,7 @@ func (c *appCollector) Collect(ch chan<- prometheus.Metric) {
 		if !c.appFilter(app) {
 			continue
 		}
-		destCluster, err := argo.GetDestinationCluster(context.Background(), app.Spec.Destination, c.db)
+		destCluster, err := cd.GetDestinationCluster(context.Background(), app.Spec.Destination, c.db)
 		if err != nil {
 			log.Warnf("Failed to get destination cluster for application %s: %v", app.Name, err)
 		}

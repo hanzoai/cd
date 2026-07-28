@@ -14,7 +14,7 @@ import (
 
 	"github.com/hanzoai/deploy/common"
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo/normalizers"
+	"github.com/hanzoai/deploy/util/cd/normalizers"
 	"github.com/hanzoai/deploy/util/errors"
 )
 
@@ -52,7 +52,7 @@ var (
     resourceVersion: "123"
     uid: "4"
     annotations:
-      link.argocd.argoproj.io/external-link: http://my-grafana.example.com/pre-generated-link
+      link.cd.argoproj.io/external-link: http://my-grafana.example.com/pre-generated-link
   spec:
     selector:
       app: guestbook
@@ -71,12 +71,12 @@ var (
     resourceVersion: "123"
     uid: "4"
     annotations:
-      link.argocd.argoproj.io/javascript: 'javascript:alert(1)'
-      link.argocd.argoproj.io/data: 'data:text/html,<script>alert(1)</script>'
-      link.argocd.argoproj.io/vbscript: 'vbscript:msgbox(1)'
-      link.argocd.argoproj.io/titled-javascript: 'click me|javascript:alert(1)'
-      link.argocd.argoproj.io/no-scheme: 'example.com/foo'
-      link.argocd.argoproj.io/safe: 'http://my-grafana.example.com/pre-generated-link'
+      link.cd.argoproj.io/javascript: 'javascript:alert(1)'
+      link.cd.argoproj.io/data: 'data:text/html,<script>alert(1)</script>'
+      link.cd.argoproj.io/vbscript: 'vbscript:msgbox(1)'
+      link.cd.argoproj.io/titled-javascript: 'click me|javascript:alert(1)'
+      link.cd.argoproj.io/no-scheme: 'example.com/foo'
+      link.cd.argoproj.io/safe: 'http://my-grafana.example.com/pre-generated-link'
   spec:
     selector:
       app: guestbook
@@ -125,7 +125,7 @@ var (
     namespace: default
     uid: "4"
     annotations:
-      link.argocd.argoproj.io/external-link: http://my-grafana.example.com/ingress-link
+      link.cd.argoproj.io/external-link: http://my-grafana.example.com/ingress-link
   spec:
     backend:
       serviceName: not-found-service
@@ -158,8 +158,8 @@ var (
     namespace: default
     uid: "4"
     annotations:
-      link.argocd.argoproj.io/external-link: http://my-grafana.example.com/ingress-link
-      argocd.argoproj.io/ignore-default-links: "true"
+      link.cd.argoproj.io/external-link: http://my-grafana.example.com/ingress-link
+      cd.argoproj.io/ignore-default-links: "true"
   spec:
     backend:
       serviceName: not-found-service
@@ -368,7 +368,7 @@ metadata:
   name: annotated-route
   namespace: default
   annotations:
-    link.argocd.argoproj.io/external-link: https://example.com
+    link.cd.argoproj.io/external-link: https://example.com
 spec:
   rules:
   - backendRefs:
@@ -522,7 +522,7 @@ metadata:
   name: annotated-gateway
   namespace: default
   annotations:
-    link.argocd.argoproj.io/external-link: https://custom-link.example.com
+    link.cd.argoproj.io/external-link: https://custom-link.example.com
 spec:
   listeners:
   - name: http
@@ -541,8 +541,8 @@ metadata:
   name: no-default-links-gateway
   namespace: default
   annotations:
-    link.argocd.argoproj.io/external-link: https://custom-link.example.com
-    argocd.argoproj.io/ignore-default-links: "true"
+    link.cd.argoproj.io/external-link: https://custom-link.example.com
+    cd.argoproj.io/ignore-default-links: "true"
 spec:
   listeners:
   - name: http

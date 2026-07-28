@@ -114,7 +114,7 @@ slack:
 func TestGetDestinations(t *testing.T) {
 	t.Parallel()
 	res := GetLegacyDestinations(map[string]string{
-		"my-trigger.recipients.argocd-notifications.argoproj.io": "slack:my-channel",
+		"my-trigger.recipients.cd-notifications.argoproj.io": "slack:my-channel",
 	}, []string{}, nil)
 	assert.Equal(t, services.Destinations{
 		"my-trigger": []services.Destination{

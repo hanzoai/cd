@@ -1641,7 +1641,7 @@ func githubPullMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		switch r.RequestURI {
-		case "/api/v3/repos/applicationset-test-org/argocd-example-apps/pulls?per_page=100":
+		case "/api/v3/repos/applicationset-test-org/cd-example-apps/pulls?per_page=100":
 			_, err := io.WriteString(w, `[
   {
     "number": 1,
@@ -1895,7 +1895,7 @@ func TestSimplePullRequestGenerator(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "git@github.com:applicationset-test-org/argocd-example-apps.git",
+				RepoURL:        "git@github.com:applicationset-test-org/cd-example-apps.git",
 				TargetRevision: "824a5c987fdfb2b0629e9dbf5f31636c69ba4772",
 				Path:           "kustomize-guestbook",
 				Kustomize: &v1alpha1.ApplicationSourceKustomize{
@@ -1918,7 +1918,7 @@ func TestSimplePullRequestGenerator(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "git@github.com:applicationset-test-org/argocd-example-apps.git",
+						RepoURL:        "git@github.com:applicationset-test-org/cd-example-apps.git",
 						TargetRevision: "{{ head_sha }}",
 						Path:           "kustomize-guestbook",
 						Kustomize: &v1alpha1.ApplicationSourceKustomize{
@@ -1937,7 +1937,7 @@ func TestSimplePullRequestGenerator(t *testing.T) {
 						Github: &v1alpha1.PullRequestGeneratorGithub{
 							API:   ts.URL,
 							Owner: "applicationset-test-org",
-							Repo:  "argocd-example-apps",
+							Repo:  "cd-example-apps",
 							Labels: []string{
 								"preview",
 							},
@@ -1971,7 +1971,7 @@ func TestSimplePullRequestGeneratorGoTemplate(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "git@github.com:applicationset-test-org/argocd-example-apps.git",
+				RepoURL:        "git@github.com:applicationset-test-org/cd-example-apps.git",
 				TargetRevision: "824a5c987fdfb2b0629e9dbf5f31636c69ba4772",
 				Path:           "kustomize-guestbook",
 				Kustomize: &v1alpha1.ApplicationSourceKustomize{
@@ -1998,7 +1998,7 @@ func TestSimplePullRequestGeneratorGoTemplate(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "git@github.com:applicationset-test-org/argocd-example-apps.git",
+						RepoURL:        "git@github.com:applicationset-test-org/cd-example-apps.git",
 						TargetRevision: "{{ .head_sha }}",
 						Path:           "kustomize-guestbook",
 						Kustomize: &v1alpha1.ApplicationSourceKustomize{
@@ -2017,7 +2017,7 @@ func TestSimplePullRequestGeneratorGoTemplate(t *testing.T) {
 						Github: &v1alpha1.PullRequestGeneratorGithub{
 							API:   ts.URL,
 							Owner: "applicationset-test-org",
-							Repo:  "argocd-example-apps",
+							Repo:  "cd-example-apps",
 							Labels: []string{
 								"preview",
 							},
@@ -2046,7 +2046,7 @@ func TestPullRequestGeneratorNotAllowedSCMProvider(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "git@github.com:applicationset-test-org/argocd-example-apps.git",
+				RepoURL:        "git@github.com:applicationset-test-org/cd-example-apps.git",
 				TargetRevision: "824a5c987fdfb2b0629e9dbf5f31636c69ba4772",
 				Path:           "kustomize-guestbook",
 				Kustomize: &v1alpha1.ApplicationSourceKustomize{
@@ -2073,7 +2073,7 @@ func TestPullRequestGeneratorNotAllowedSCMProvider(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "git@github.com:applicationset-test-org/argocd-example-apps.git",
+						RepoURL:        "git@github.com:applicationset-test-org/cd-example-apps.git",
 						TargetRevision: "{{ .head_sha }}",
 						Path:           "kustomize-guestbook",
 						Kustomize: &v1alpha1.ApplicationSourceKustomize{
@@ -2092,7 +2092,7 @@ func TestPullRequestGeneratorNotAllowedSCMProvider(t *testing.T) {
 						Github: &v1alpha1.PullRequestGeneratorGithub{
 							API:   "http://myservice.mynamespace.svc.cluster.local",
 							Owner: "applicationset-test-org",
-							Repo:  "argocd-example-apps",
+							Repo:  "cd-example-apps",
 							Labels: []string{
 								"preview",
 							},
@@ -2192,11 +2192,11 @@ func TestApplicationSetHealthStatusCLI(t *testing.T) {
 		// Wait for the ApplicationSet to be ready
 		Expect(ApplicationSetHasConditions(ExpectedConditions)).
 		Expect(ApplicationSetHasHealthStatus(health.HealthStatusHealthy)).
-		// Test 'argocd appset get' shows Health Status field
+		// Test 'cd appset get' shows Health Status field
 		When().AppSetGet().
 		Then().
 		Expect(Success("Health Status:      Healthy")).
-		// Test 'argocd appset list' shows HEALTH column header
+		// Test 'cd appset list' shows HEALTH column header
 		When().AppSetList().
 		Then().
 		Expect(Success("PROJECT  SYNCPOLICY  HEALTH   CONDITIONS")).

@@ -20,13 +20,13 @@ import (
 
 // ArgoCDManagerServiceAccount is the name of the service account for managing a cluster
 const (
-	ArgoCDManagerServiceAccount     = "argocd-manager"
-	ArgoCDManagerClusterRole        = "argocd-manager-role"
-	ArgoCDManagerClusterRoleBinding = "argocd-manager-role-binding"
+	ArgoCDManagerServiceAccount     = "cd-manager"
+	ArgoCDManagerClusterRole        = "cd-manager-role"
+	ArgoCDManagerClusterRoleBinding = "cd-manager-role-binding"
 	SATokenSecretSuffix             = "-long-lived-token"
 )
 
-// ArgoCDManagerPolicyRules are the policies to give argocd-manager
+// ArgoCDManagerPolicyRules are the policies to give cd-manager
 var ArgoCDManagerClusterPolicyRules = []rbacv1.PolicyRule{
 	{
 		APIGroups: []string{"*"},
@@ -39,7 +39,7 @@ var ArgoCDManagerClusterPolicyRules = []rbacv1.PolicyRule{
 	},
 }
 
-// ArgoCDManagerNamespacePolicyRules are the namespace level policies to give argocd-manager
+// ArgoCDManagerNamespacePolicyRules are the namespace level policies to give cd-manager
 var ArgoCDManagerNamespacePolicyRules = []rbacv1.PolicyRule{
 	{
 		APIGroups: []string{"*"},

@@ -39,7 +39,7 @@ func TestUpdateApplicationSetApplicationStatus(t *testing.T) {
 		return v1alpha1.ApplicationSet{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "name",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: v1alpha1.ApplicationSetSpec{
 				Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -890,7 +890,7 @@ func TestUpdateApplicationSetApplicationStatus(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&cc.appSet).WithStatusSubresource(&cc.appSet).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("argocd", settings.NewSettingsManager(t.Context(), kubeclientset, "argocd"), kubeclientset)
+			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := &ApplicationSetReconciler{
 				Client:        client,
@@ -943,7 +943,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -973,7 +973,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{},
 				Status: v1alpha1.ApplicationSetStatus{
@@ -989,7 +989,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{},
@@ -1007,7 +1007,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Status: v1alpha1.ApplicationSetStatus{
 					ApplicationStatus: []v1alpha1.ApplicationSetApplicationStatus{},
@@ -1027,7 +1027,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1078,7 +1078,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1127,7 +1127,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1176,7 +1176,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1316,7 +1316,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1399,7 +1399,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1482,7 +1482,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1565,7 +1565,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
-					Namespace: "argocd",
+					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSetSpec{
 					Strategy: &v1alpha1.ApplicationSetStrategy{
@@ -1651,7 +1651,7 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&cc.appSet).WithStatusSubresource(&cc.appSet).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("argocd", settings.NewSettingsManager(t.Context(), kubeclientset, "argocd"), kubeclientset)
+			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := &ApplicationSetReconciler{
 				Client:        client,

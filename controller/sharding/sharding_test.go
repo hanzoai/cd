@@ -792,7 +792,7 @@ func TestGetClusterSharding(t *testing.T) {
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.DefaultApplicationControllerName,
-			Namespace: "argocd",
+			Namespace: "cd",
 		},
 		Spec: appsv1.DeploymentSpec{
 			Replicas: new(int32(1)),
@@ -801,8 +801,8 @@ func TestGetClusterSharding(t *testing.T) {
 
 	deploymentMultiReplicas := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-application-controller-multi-replicas",
-			Namespace: "argocd",
+			Name:      "cd-application-controller-multi-replicas",
+			Namespace: "cd",
 		},
 		Spec: appsv1.DeploymentSpec{
 			Replicas: new(int32(3)),
@@ -812,7 +812,7 @@ func TestGetClusterSharding(t *testing.T) {
 	objects := append([]runtime.Object{}, deployment, deploymentMultiReplicas)
 	kubeclientset := kubefake.NewSimpleClientset(objects...)
 
-	settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, "argocd", settings.WithRepoOrClusterChangedHandler(func() {
+	settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, "cd", settings.WithRepoOrClusterChangedHandler(func() {
 	}))
 
 	testCases := []struct {
@@ -852,7 +852,7 @@ func TestGetClusterSharding(t *testing.T) {
 			name: "Default sharding with deployment and multiple replicas",
 			envsSetter: func(t *testing.T) {
 				t.Helper()
-				t.Setenv(common.EnvAppControllerName, "argocd-application-controller-multi-replicas")
+				t.Setenv(common.EnvAppControllerName, "cd-application-controller-multi-replicas")
 			},
 			cleanup:            func() {},
 			useDynamicSharding: true,
@@ -930,7 +930,7 @@ func TestGetClusterSharding(t *testing.T) {
 			name: "Explicit shard with deployment and multiple replicas will read from configmap",
 			envsSetter: func(t *testing.T) {
 				t.Helper()
-				t.Setenv(common.EnvAppControllerName, "argocd-application-controller-multi-replicas")
+				t.Setenv(common.EnvAppControllerName, "cd-application-controller-multi-replicas")
 				t.Setenv(common.EnvControllerShard, "3")
 			},
 			cleanup:            func() {},

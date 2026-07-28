@@ -18,7 +18,7 @@ import (
 func (c *Context) RunningCMPServer(configFile string) *Context {
 	c.T().Helper()
 	startCMPServer(c.T(), configFile)
-	c.T().Setenv("CD_BINARY_NAME", "argocd")
+	c.T().Setenv("CD_BINARY_NAME", "cd")
 	return c
 }
 
@@ -27,7 +27,7 @@ func (c *Context) RunningCMPServer(configFile string) *Context {
 func startCMPServer(t *testing.T, configDir string) {
 	t.Helper()
 	pluginSockFilePath := path.Join(fixture.TmpDir(), fixture.PluginSockFilePath)
-	t.Setenv("CD_BINARY_NAME", "argocd-cmp-server")
+	t.Setenv("CD_BINARY_NAME", "cd-cmp-server")
 	// CD_PLUGINSOCKFILEPATH should be set as the same value as repo server env var
 	t.Setenv("CD_PLUGINSOCKFILEPATH", pluginSockFilePath)
 	if _, err := os.Stat(pluginSockFilePath); os.IsNotExist(err) {
@@ -47,7 +47,7 @@ func startCMPServer(t *testing.T, configDir string) {
 
 	// Start CMP server in goroutine (non-blocking)
 	go func() {
-		errors.NewHandler(t).FailOnErr(fixture.RunWithStdin("", "", "../../dist/argocd", "--config-dir-path", configDir))
+		errors.NewHandler(t).FailOnErr(fixture.RunWithStdin("", "", "../../dist/cd", "--config-dir-path", configDir))
 	}()
 
 	// Wait for socket to be created

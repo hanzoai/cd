@@ -20,7 +20,7 @@ import (
 	"github.com/hanzoai/deploy/util/lua"
 
 	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	argoutil "github.com/hanzoai/deploy/util/argo"
+	argoutil "github.com/hanzoai/deploy/util/cd"
 	traceutil "github.com/hanzoai/deploy/util/trace"
 )
 
@@ -33,11 +33,11 @@ const (
 
 var hookTypeAnnotations = map[HookType]map[string]string{
 	PreDeleteHookType: {
-		"argocd.argoproj.io/hook": string(PreDeleteHookType),
+		"cd.argoproj.io/hook": string(PreDeleteHookType),
 		"helm.sh/hook":            "pre-delete",
 	},
 	PostDeleteHookType: {
-		"argocd.argoproj.io/hook": string(PostDeleteHookType),
+		"cd.argoproj.io/hook": string(PostDeleteHookType),
 		"helm.sh/hook":            "post-delete",
 	},
 }
@@ -98,7 +98,7 @@ func hasGitOpsEngineSyncPhaseHook(obj *unstructured.Unstructured) bool {
 // executeHooks is a generic function to execute hooks of a specified type
 func (ctrl *ApplicationController) executeHooks(ctx context.Context, hookType HookType, app *appv1.Application, proj *appv1.AppProject, liveObjs map[kube.ResourceKey]*unstructured.Unstructured, config *rest.Config, logCtx *log.Entry) (completed bool, retErr error) {
 	ctx, span := tracer.Start(ctx, "controller.executeHooks")
-	setAppTraceAttrs(span, app, attribute.String("argocd.hook.type", string(hookType)))
+	setAppTraceAttrs(span, app, attribute.String("cd.hook.type", string(hookType)))
 	defer func() { traceutil.EndSpan(span, retErr) }()
 	appLabelKey, err := ctrl.settingsMgr.GetAppInstanceLabelKey()
 	if err != nil {
@@ -243,7 +243,7 @@ func (ctrl *ApplicationController) executeHooks(ctx context.Context, hookType Ho
 // cleanupHooks is a generic function to clean up hooks of a specified type
 func (ctrl *ApplicationController) cleanupHooks(ctx context.Context, hookType HookType, liveObjs map[kube.ResourceKey]*unstructured.Unstructured, config *rest.Config, logCtx *log.Entry) (completed bool, retErr error) {
 	ctx, span := tracer.Start(ctx, "controller.cleanupHooks")
-	span.SetAttributes(attribute.String("argocd.hook.type", string(hookType)))
+	span.SetAttributes(attribute.String("cd.hook.type", string(hookType)))
 	defer func() { traceutil.EndSpan(span, retErr) }()
 	resourceOverrides, err := ctrl.settingsMgr.GetResourceOverrides()
 	if err != nil {

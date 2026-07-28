@@ -57,7 +57,7 @@ func getCustomResourceDefinitions(ctx context.Context) map[string]*apiextensions
 		crd := toCRD(un, un.GetName() == "applicationsets.argoproj.io")
 		crd.Labels = map[string]string{
 			"app.kubernetes.io/name":    crd.Name,
-			"app.kubernetes.io/part-of": "argocd",
+			"app.kubernetes.io/part-of": "cd",
 		}
 		delete(crd.Annotations, "controller-gen.kubebuilder.io/version")
 		crd.Spec.Scope = "Namespaced"

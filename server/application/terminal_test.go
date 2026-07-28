@@ -13,7 +13,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/security"
 )
 
@@ -199,7 +199,7 @@ func TestIsValidPodName(t *testing.T) {
 	}{
 		{
 			name:           "valid pod name",
-			resourceName:   "argocd-server-794644486d-r8v9d",
+			resourceName:   "cd-server-794644486d-r8v9d",
 			expectedResult: true,
 		},
 		{
@@ -219,7 +219,7 @@ func TestIsValidPodName(t *testing.T) {
 		},
 	} {
 		t.Run(tcase.name, func(t *testing.T) {
-			result := argo.IsValidPodName(tcase.resourceName)
+			result := cd.IsValidPodName(tcase.resourceName)
 			assert.Equalf(t, tcase.expectedResult, result, "Expected result %v, but got %v", tcase.expectedResult, result)
 		})
 	}
@@ -233,12 +233,12 @@ func TestIsValidNamespaceName(t *testing.T) {
 	}{
 		{
 			name:           "valid pod namespace name",
-			resourceName:   "argocd",
+			resourceName:   "cd",
 			expectedResult: true,
 		},
 		{
 			name:           "not valid contains spaces",
-			resourceName:   "kubectl delete ns argocd",
+			resourceName:   "kubectl delete ns cd",
 			expectedResult: false,
 		},
 		{
@@ -248,7 +248,7 @@ func TestIsValidNamespaceName(t *testing.T) {
 		},
 	} {
 		t.Run(tcase.name, func(t *testing.T) {
-			result := argo.IsValidNamespaceName(tcase.resourceName)
+			result := cd.IsValidNamespaceName(tcase.resourceName)
 			assert.Equalf(t, tcase.expectedResult, result, "Expected result %v, but got %v", tcase.expectedResult, result)
 		})
 	}
@@ -262,7 +262,7 @@ func TestIsValidContainerNameName(t *testing.T) {
 	}{
 		{
 			name:           "valid container name",
-			resourceName:   "argocd-server",
+			resourceName:   "cd-server",
 			expectedResult: true,
 		},
 		{
@@ -277,7 +277,7 @@ func TestIsValidContainerNameName(t *testing.T) {
 		},
 	} {
 		t.Run(tcase.name, func(t *testing.T) {
-			result := argo.IsValidContainerName(tcase.resourceName)
+			result := cd.IsValidContainerName(tcase.resourceName)
 			assert.Equalf(t, tcase.expectedResult, result, "Expected result %v, but got %v", tcase.expectedResult, result)
 		})
 	}
@@ -320,7 +320,7 @@ func TestTerminalHandler_ServeHTTP_empty_params(t *testing.T) {
 					paramsArray = append(paramsArray, key+"="+value)
 				}
 				paramsString := strings.Join(paramsArray, "&")
-				request := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "https://argocd.example.com/api/v1/terminal?"+paramsString, http.NoBody)
+				request := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "https://cd.example.com/api/v1/terminal?"+paramsString, http.NoBody)
 				recorder := httptest.NewRecorder()
 				handler.ServeHTTP(recorder, request)
 				response := recorder.Result()
@@ -331,8 +331,8 @@ func TestTerminalHandler_ServeHTTP_empty_params(t *testing.T) {
 }
 
 func TestTerminalHandler_ServeHTTP_disallowed_namespace(t *testing.T) {
-	handler := terminalHandler{namespace: "argocd", enabledNamespaces: []string{"allowed"}}
-	request := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "https://argocd.example.com/api/v1/terminal?pod=valid&container=valid&appName=valid&projectName=valid&namespace=test&appNamespace=disallowed", http.NoBody)
+	handler := terminalHandler{namespace: "cd", enabledNamespaces: []string{"allowed"}}
+	request := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "https://cd.example.com/api/v1/terminal?pod=valid&container=valid&appName=valid&projectName=valid&namespace=test&appNamespace=disallowed", http.NoBody)
 	recorder := httptest.NewRecorder()
 	handler.ServeHTTP(recorder, request)
 	response := recorder.Result()

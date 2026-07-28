@@ -45,7 +45,7 @@ func NewMetricsServer() *MetricsServer {
 
 	gitFetchFailCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_git_fetch_fail_total",
+			Name: "cd_git_fetch_fail_total",
 			Help: "Number of git fetch requests failures by repo server",
 		},
 		[]string{"repo", "revision"},
@@ -54,7 +54,7 @@ func NewMetricsServer() *MetricsServer {
 
 	gitLsRemoteFailCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_git_lsremote_fail_total",
+			Name: "cd_git_lsremote_fail_total",
 			Help: "Number of git ls-remote requests failures by repo server",
 		},
 		[]string{"repo", "revision"},
@@ -63,7 +63,7 @@ func NewMetricsServer() *MetricsServer {
 
 	gitRequestCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_git_request_total",
+			Name: "cd_git_request_total",
 			Help: "Number of git requests performed by repo server",
 		},
 		[]string{"repo", "request_type"},
@@ -72,7 +72,7 @@ func NewMetricsServer() *MetricsServer {
 
 	gitRequestHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_git_request_duration_seconds",
+			Name:    "cd_git_request_duration_seconds",
 			Help:    "Git requests duration seconds.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2, 4, 10, 20},
 		},
@@ -82,7 +82,7 @@ func NewMetricsServer() *MetricsServer {
 
 	repoPendingRequestsGauge := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "argocd_repo_pending_request_total",
+			Name: "cd_repo_pending_request_total",
 			Help: "Number of pending requests requiring repository lock",
 		},
 		[]string{"repo"},
@@ -91,7 +91,7 @@ func NewMetricsServer() *MetricsServer {
 
 	parallelismWaitHistogram := prometheus.NewHistogram(
 		prometheus.HistogramOpts{
-			Name:    "argocd_repo_parallelism_wait_duration_seconds",
+			Name:    "cd_repo_parallelism_wait_duration_seconds",
 			Help:    "Time spent waiting for the repo-server manifest generation parallelism semaphore. Observed on every acquire attempt, including those that fail (e.g. context canceled).",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2, 4, 10, 20, 60, 120},
 		},
@@ -100,7 +100,7 @@ func NewMetricsServer() *MetricsServer {
 
 	redisRequestCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_redis_request_total",
+			Name: "cd_redis_request_total",
 			Help: "Number of kubernetes requests executed during application reconciliation.",
 		},
 		[]string{"initiator", "failed"},
@@ -109,7 +109,7 @@ func NewMetricsServer() *MetricsServer {
 
 	redisRequestHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_redis_request_duration_seconds",
+			Name:    "cd_redis_request_duration_seconds",
 			Help:    "Redis requests duration seconds.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2},
 		},
@@ -119,7 +119,7 @@ func NewMetricsServer() *MetricsServer {
 
 	ociExtractFailCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_oci_extract_fail_total",
+			Name: "cd_oci_extract_fail_total",
 			Help: "Number of OCI extract requests failures by repo server",
 		},
 		[]string{"repo", "revision"},
@@ -128,7 +128,7 @@ func NewMetricsServer() *MetricsServer {
 
 	ociResolveRevisionFailCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_oci_resolve_revision_fail_total",
+			Name: "cd_oci_resolve_revision_fail_total",
 			Help: "Number of OCI resolve revision requests failures by repo server",
 		},
 		[]string{"repo", "revision"},
@@ -137,7 +137,7 @@ func NewMetricsServer() *MetricsServer {
 
 	ociDigestMetadataCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_oci_digest_metadata_fail_total",
+			Name: "cd_oci_digest_metadata_fail_total",
 			Help: "Number of OCI digest metadata requests failures by repo server",
 		},
 		[]string{"repo", "revision"},
@@ -146,7 +146,7 @@ func NewMetricsServer() *MetricsServer {
 
 	ociGetTagsFailCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_oci_get_tags_fail_total",
+			Name: "cd_oci_get_tags_fail_total",
 			Help: "Number of OCI get tags failures by repo server",
 		},
 		[]string{"repo"},
@@ -155,7 +155,7 @@ func NewMetricsServer() *MetricsServer {
 
 	ociTestRepoFailCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_oci_test_repo_fail_total",
+			Name: "cd_oci_test_repo_fail_total",
 			Help: "Number of OCI test repo requests failures by repo server",
 		},
 		[]string{"repo"},
@@ -164,7 +164,7 @@ func NewMetricsServer() *MetricsServer {
 
 	ociRequestCounter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_oci_request_total",
+			Name: "cd_oci_request_total",
 			Help: "Number of OCI requests performed by repo server",
 		},
 		[]string{"repo", "request_type"},
@@ -173,7 +173,7 @@ func NewMetricsServer() *MetricsServer {
 
 	ociRequestHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_oci_request_duration_seconds",
+			Name:    "cd_oci_request_duration_seconds",
 			Help:    "OCI requests duration seconds.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2, 4, 10, 20},
 		},
@@ -240,11 +240,11 @@ func (m *MetricsServer) ObserveParallelismWaitDuration(duration time.Duration) {
 }
 
 func (m *MetricsServer) IncRedisRequest(failed bool) {
-	m.redisRequestCounter.WithLabelValues("argocd-repo-server", strconv.FormatBool(failed)).Inc()
+	m.redisRequestCounter.WithLabelValues("cd-repo-server", strconv.FormatBool(failed)).Inc()
 }
 
 func (m *MetricsServer) ObserveRedisRequestDuration(duration time.Duration) {
-	m.redisRequestHistogram.WithLabelValues("argocd-repo-server").Observe(duration.Seconds())
+	m.redisRequestHistogram.WithLabelValues("cd-repo-server").Observe(duration.Seconds())
 }
 
 // IncOCIRequest increments the OCI requests counter

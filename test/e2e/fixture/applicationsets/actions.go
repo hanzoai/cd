@@ -76,7 +76,7 @@ func (a *Actions) SwitchToExternalNamespace(namespace utils.ExternalNamespace) *
 
 func (a *Actions) SwitchToArgoCDNamespace() *Actions {
 	a.context.switchToNamespace = ""
-	log.Infof("switched to argocd namespace: %s", utils.ArgoCDNamespace)
+	log.Infof("switched to cd namespace: %s", utils.ArgoCDNamespace)
 	return a
 }
 
@@ -286,7 +286,7 @@ func (a *Actions) CreatePlacementRoleAndRoleBinding() *Actions {
 				ObjectMeta: metav1.ObjectMeta{Name: "placement-role-binding", Namespace: fixture.TestNamespace()},
 				Subjects: []rbacv1.Subject{
 					{
-						Name:      "argocd-applicationset-controller",
+						Name:      "cd-applicationset-controller",
 						Namespace: fixture.TestNamespace(),
 						Kind:      "ServiceAccount",
 					},
@@ -551,7 +551,7 @@ func (a *Actions) AppSet(appName string, flags ...string) *Actions {
 	return a
 }
 
-// AppSetGet runs 'argocd appset get' CLI command and stores the output
+// AppSetGet runs 'cd appset get' CLI command and stores the output
 func (a *Actions) AppSetGet(flags ...string) *Actions {
 	a.context.T().Helper()
 	args := []string{"appset", "get", a.context.GetName()}
@@ -560,7 +560,7 @@ func (a *Actions) AppSetGet(flags ...string) *Actions {
 	return a
 }
 
-// AppSetList runs 'argocd appset list' CLI command and stores the output
+// AppSetList runs 'cd appset list' CLI command and stores the output
 func (a *Actions) AppSetList(flags ...string) *Actions {
 	a.context.T().Helper()
 	args := []string{"appset", "list"}

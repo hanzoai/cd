@@ -81,9 +81,9 @@ type ClientApp struct {
 	usePKCE bool
 	// Use Azure Workload Identity for clientID auth instead of clientSecret
 	useAzureWorkloadIdentity bool
-	// Callback URL for OAuth2 responses (e.g. https://argocd.example.com/auth/callback)
+	// Callback URL for OAuth2 responses (e.g. https://cd.example.com/auth/callback)
 	redirectURI string
-	// URL of the issuer (e.g. https://argocd.example.com/api/dex)
+	// URL of the issuer (e.g. https://cd.example.com/api/dex)
 	issuerURL string
 	// The URL endpoint at which the Hanzo CD server is accessed.
 	baseHRef string
@@ -921,7 +921,7 @@ func createClaimsAuthenticationRequestParameter(requestedClaims map[string]*oidc
 // - the Microsoft Graph API if Azure groups overage claim is detected and enabled
 // This is required by some SSO implementations as they don't provide the groups claim in the ID token.
 // If querying the endpoint fails, we return an error to indicate the session is invalid.
-// We assume that everywhere in argocd jwt.MapClaims is used as type for interface jwt.Claims
+// We assume that everywhere in cd jwt.MapClaims is used as type for interface jwt.Claims
 // otherwise this would cause a panic.
 func (a *ClientApp) SetGroupsClaimFromEndpoint(ctx context.Context, claims jwt.Claims, sessionManagerClaimsIssuer string) (jwt.MapClaims, error) {
 	var groupClaims jwt.MapClaims

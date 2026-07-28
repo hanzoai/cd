@@ -108,6 +108,6 @@ func (generator *ApplicationGenerator) Clean(opts *util.GenerateOpts) error {
 	log.Print("Clean applications")
 	applications := generator.argoClientSet.ArgoprojV1alpha1().Applications(opts.Namespace)
 	return applications.DeleteCollection(context.TODO(), metav1.DeleteOptions{}, metav1.ListOptions{
-		LabelSelector: "app.kubernetes.io/generated-by=argocd-generator",
+		LabelSelector: "app.kubernetes.io/generated-by=cd-generator",
 	})
 }

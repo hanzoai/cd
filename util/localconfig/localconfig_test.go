@@ -24,7 +24,7 @@ func TestFilePermission(t *testing.T) {
 	dirPath := "testfolder/"
 
 	err := os.MkdirAll(path.Dir(dirPath), 0o700)
-	require.NoError(t, err, "Could not create argocd folder with 0700 permission: %v", err)
+	require.NoError(t, err, "Could not create cd folder with 0700 permission: %v", err)
 
 	t.Cleanup(func() {
 		err := os.RemoveAll(dirPath)
@@ -93,27 +93,27 @@ func TestFilePermission(t *testing.T) {
 }
 
 const testConfig = `contexts:
-- name: argocd1.example.com:443
-  server: argocd1.example.com:443
-  user: argocd1.example.com:443
-- name: argocd2.example.com:443
-  server: argocd2.example.com:443
-  user: argocd2.example.com:443
+- name: cd1.example.com:443
+  server: cd1.example.com:443
+  user: cd1.example.com:443
+- name: cd2.example.com:443
+  server: cd2.example.com:443
+  user: cd2.example.com:443
 - name: localhost:8080
   server: localhost:8080
   user: localhost:8080
 current-context: localhost:8080
 servers:
-- server: argocd1.example.com:443
-- server: argocd2.example.com:443
+- server: cd1.example.com:443
+- server: cd2.example.com:443
 - plain-text: true
   server: localhost:8080
 users:
 - auth-token: vErrYS3c3tReFRe$hToken
-  name: argocd1.example.com:443
+  name: cd1.example.com:443
   refresh-token: vErrYS3c3tReFRe$hToken
 - auth-token: vErrYS3c3tReFRe$hToken
-  name: argocd2.example.com:443
+  name: cd2.example.com:443
   refresh-token: vErrYS3c3tReFRe$hToken
 - auth-token: vErrYS3c3tReFRe$hToken
   name: localhost:8080`
@@ -261,8 +261,8 @@ func TestRemoveToken_ClearsBothTokens(t *testing.T) {
 	localConfig, err := ReadLocalConfig(testFilePath)
 	require.NoError(t, err)
 
-	// Verify tokens exist before removal (use argocd1 which has both auth-token and refresh-token)
-	serverName := "argocd1.example.com:443"
+	// Verify tokens exist before removal (use cd1 which has both auth-token and refresh-token)
+	serverName := "cd1.example.com:443"
 	require.Equal(t, "vErrYS3c3tReFRe$hToken", localConfig.GetToken(serverName))
 
 	removed := localConfig.RemoveToken(serverName)

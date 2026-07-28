@@ -226,15 +226,15 @@ func TestClusterSkipReconcileAnnotation(t *testing.T) {
 	err := fixture.DoHttpJsonRequest("PUT",
 		fmt.Sprintf("/api/v1/clusters/%s?updatedFields=annotations", clusterURL),
 		&cluster,
-		fmt.Appendf(nil, `{"annotations":{%q:"true"}}`, "argocd.argoproj.io/skip-reconcile")...)
+		fmt.Appendf(nil, `{"annotations":{%q:"true"}}`, "cd.argoproj.io/skip-reconcile")...)
 	require.NoError(t, err)
-	assert.Equal(t, "true", cluster.Annotations["argocd.argoproj.io/skip-reconcile"])
+	assert.Equal(t, "true", cluster.Annotations["cd.argoproj.io/skip-reconcile"])
 
 	var cluster2 Cluster
 	err = fixture.DoHttpJsonRequest("GET", "/api/v1/clusters/"+clusterURL, &cluster2)
 	require.NoError(t, err)
 	assert.Equal(t, "in-cluster", cluster2.Name)
-	assert.Equal(t, "true", cluster2.Annotations["argocd.argoproj.io/skip-reconcile"])
+	assert.Equal(t, "true", cluster2.Annotations["cd.argoproj.io/skip-reconcile"])
 
 	err = fixture.DoHttpJsonRequest("PUT",
 		fmt.Sprintf("/api/v1/clusters/%s?updatedFields=annotations", clusterURL),
@@ -329,14 +329,14 @@ func TestClusterDelete(t *testing.T) {
 		})
 
 	// Check that RBAC is created
-	_, err := fixture.Run("", "kubectl", "get", "serviceaccount", "argocd-manager", "-n", "kube-system")
-	require.NoError(t, err, "Expected no error from not finding serviceaccount argocd-manager")
+	_, err := fixture.Run("", "kubectl", "get", "serviceaccount", "cd-manager", "-n", "kube-system")
+	require.NoError(t, err, "Expected no error from not finding serviceaccount cd-manager")
 
-	_, err = fixture.Run("", "kubectl", "get", "clusterrole", "argocd-manager-role")
-	require.NoError(t, err, "Expected no error from not finding clusterrole argocd-manager-role")
+	_, err = fixture.Run("", "kubectl", "get", "clusterrole", "cd-manager-role")
+	require.NoError(t, err, "Expected no error from not finding clusterrole cd-manager-role")
 
-	_, err = fixture.Run("", "kubectl", "get", "clusterrolebinding", "argocd-manager-role-binding")
-	require.NoError(t, err, "Expected no error from not finding clusterrolebinding argocd-manager-role-binding")
+	_, err = fixture.Run("", "kubectl", "get", "clusterrolebinding", "cd-manager-role-binding")
+	require.NoError(t, err, "Expected no error from not finding clusterrolebinding cd-manager-role-binding")
 
 	clstAction.DeleteByName().
 		Then().
@@ -345,12 +345,12 @@ func TestClusterDelete(t *testing.T) {
 		})
 
 	// Check that RBAC is removed after delete
-	output, err := fixture.Run("", "kubectl", "get", "serviceaccount", "argocd-manager", "-n", "kube-system")
-	require.Error(t, err, "Expected error from not finding serviceaccount argocd-manager but got:\n%s", output)
+	output, err := fixture.Run("", "kubectl", "get", "serviceaccount", "cd-manager", "-n", "kube-system")
+	require.Error(t, err, "Expected error from not finding serviceaccount cd-manager but got:\n%s", output)
 
-	output, err = fixture.Run("", "kubectl", "get", "clusterrole", "argocd-manager-role")
-	require.Error(t, err, "Expected error from not finding clusterrole argocd-manager-role but got:\n%s", output)
+	output, err = fixture.Run("", "kubectl", "get", "clusterrole", "cd-manager-role")
+	require.Error(t, err, "Expected error from not finding clusterrole cd-manager-role but got:\n%s", output)
 
-	output, err = fixture.Run("", "kubectl", "get", "clusterrolebinding", "argocd-manager-role-binding")
-	assert.Error(t, err, "Expected error from not finding clusterrolebinding argocd-manager-role-binding but got:\n%s", output)
+	output, err = fixture.Run("", "kubectl", "get", "clusterrolebinding", "cd-manager-role-binding")
+	assert.Error(t, err, "Expected error from not finding clusterrolebinding cd-manager-role-binding but got:\n%s", output)
 }

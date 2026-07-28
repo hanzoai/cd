@@ -102,7 +102,7 @@ func Diff(ctx context.Context, config, live *unstructured.Unstructured, opts ...
 	// dependency with the kube package that blocks the usage of constants
 	// from common package. common package needs to be refactored and exclude
 	// dependency from kube.
-	syncOptAnnotation := "argocd.argoproj.io/sync-options"
+	syncOptAnnotation := "cd.argoproj.io/sync-options"
 	ssaAnnotation := "ServerSideApply=true"
 
 	// structuredMergeDiff is mainly used as a feature flag to enable

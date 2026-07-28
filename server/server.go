@@ -124,7 +124,7 @@ import (
 	"github.com/hanzoai/deploy/util/io/files"
 	jwtutil "github.com/hanzoai/deploy/util/jwt"
 	kubeutil "github.com/hanzoai/deploy/util/kube"
-	service "github.com/hanzoai/deploy/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/cd"
 	"github.com/hanzoai/deploy/util/notification/k8s"
 	settings_notif "github.com/hanzoai/deploy/util/notification/settings"
 	"github.com/hanzoai/deploy/util/oidc"
@@ -371,13 +371,13 @@ func NewServer(ctx context.Context, opts ArgoCDServerOpts, appsetOpts Applicatio
 		staticFS = utilio.NewComposableFS(staticFS, root.FS())
 	}
 
-	argocdService, err := service.NewArgoCDService(opts.KubeClientset, opts.DynamicClientset, opts.Namespace, opts.RepoClientset)
+	cdService, err := service.NewArgoCDService(opts.KubeClientset, opts.DynamicClientset, opts.Namespace, opts.RepoClientset)
 	errorsutil.CheckError(err)
 
-	secretInformer := k8s.NewSecretInformer(opts.KubeClientset, opts.Namespace, "argocd-notifications-secret")
-	configMapInformer := k8s.NewConfigMapInformer(opts.KubeClientset, opts.Namespace, "argocd-notifications-cm")
+	secretInformer := k8s.NewSecretInformer(opts.KubeClientset, opts.Namespace, "cd-notifications-secret")
+	configMapInformer := k8s.NewConfigMapInformer(opts.KubeClientset, opts.Namespace, "cd-notifications-cm")
 
-	apiFactory := api.NewFactory(settings_notif.GetFactorySettings(argocdService, "argocd-notifications-secret", "argocd-notifications-cm", false), opts.Namespace, secretInformer, configMapInformer)
+	apiFactory := api.NewFactory(settings_notif.GetFactorySettings(cdService, "cd-notifications-secret", "cd-notifications-cm", false), opts.Namespace, secretInformer, configMapInformer)
 
 	dbInstance := db.NewDB(opts.Namespace, settingsMgr, opts.KubeClientset)
 	logger := log.NewEntry(log.StandardLogger())
@@ -659,7 +659,7 @@ func (server *ArgoCDServer) Run(ctx context.Context, listeners *Listeners) {
 	}
 
 	// Start the muxed listeners for our servers
-	log.Infof("argocd %s serving on port %d (url: %s, tls: %v, namespace: %s, sso: %v)",
+	log.Infof("cd %s serving on port %d (url: %s, tls: %v, namespace: %s, sso: %v)",
 		common.GetVersion(), server.ListenPort, server.settings.URL, server.useTLS(), server.Namespace, server.settings.IsSSOConfigured())
 	log.Infof("Enabled application namespace patterns: %s", server.allowedApplicationNamespacesAsString())
 
@@ -1410,21 +1410,21 @@ func newRedirectServer(port int, rootPath string) *http.Server {
 }
 
 // registerDownloadHandlers registers HTTP handlers to support downloads directly from the API server
-// (e.g. argocd CLI)
+// (e.g. cd CLI)
 func registerDownloadHandlers(mux *http.ServeMux, base string) {
 	linuxPath, err := exec.LookPath("hanzocd")
 	if err != nil {
-		log.Warnf("argocd not in PATH")
+		log.Warnf("cd not in PATH")
 	} else {
 		serveBinary := func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, linuxPath)
 		}
 		// Arch-suffixed route, kept for backward compatibility with existing links/scripts.
-		mux.HandleFunc(base+"/argocd-linux-"+go_runtime.GOARCH, serveBinary)
+		mux.HandleFunc(base+"/cd-linux-"+go_runtime.GOARCH, serveBinary)
 		// Arch-agnostic route: each server serves its own embedded binary, so the UI can link here
 		// without knowing the server's architecture. This keeps the UI bundle architecture-independent
 		// (the bundle no longer needs the arch baked in) and avoids 404s on mixed-arch clusters.
-		mux.HandleFunc(base+"/argocd-linux", serveBinary)
+		mux.HandleFunc(base+"/cd-linux", serveBinary)
 	}
 }
 
@@ -1590,7 +1590,7 @@ func (server *ArgoCDServer) getClaims(ctx context.Context) (jwt.Claims, string, 
 		span.SetStatus(otel_codes.Error, ErrNoSession.Error())
 		return nil, "", ErrNoSession
 	}
-	// A valid argocd-issued token is automatically refreshed here prior to expiration.
+	// A valid cd-issued token is automatically refreshed here prior to expiration.
 	// OIDC tokens will be verified and reactively refreshed here if the ID token has expired.
 	claims, newToken, err := server.sessionMgr.VerifyToken(ctx, tokenString)
 	oidcConfig := server.settings.OIDCConfig()
@@ -1650,7 +1650,7 @@ func getToken(md metadata.MD) string {
 	}
 
 	// looks for the HTTP header `Authorization: Bearer ...`
-	// argocd prefers bearer token over cookie
+	// cd prefers bearer token over cookie
 	for _, t := range md["authorization"] {
 		token := strings.TrimPrefix(t, "Bearer ")
 		if strings.HasPrefix(t, "Bearer ") && jwtutil.IsValid(token) {

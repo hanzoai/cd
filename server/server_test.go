@@ -279,8 +279,8 @@ func TestInitializingExistingDefaultProject(t *testing.T) {
 		RepoClientset: mockRepoClient,
 	}
 
-	argocd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
-	assert.NotNil(t, argocd)
+	cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	assert.NotNil(t, cd)
 
 	proj, err := appClientSet.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 	require.NoError(t, err)
@@ -302,8 +302,8 @@ func TestInitializingNotExistingDefaultProject(t *testing.T) {
 		RepoClientset: mockRepoClient,
 	}
 
-	argocd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
-	assert.NotNil(t, argocd)
+	cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	assert.NotNil(t, cd)
 
 	proj, err := appClientSet.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 	require.NoError(t, err)
@@ -623,15 +623,15 @@ func TestAuthenticate(t *testing.T) {
 				AppClientset:  appClientSet,
 				RepoClientset: mockRepoClient,
 			}
-			argocd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+			cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
 			ctx := t.Context()
 			if testData.user != "" {
-				token, err := argocd.sessionMgr.Create(testData.user, 0, "abc")
+				token, err := cd.sessionMgr.Create(testData.user, 0, "abc")
 				require.NoError(t, err)
 				ctx = metadata.NewIncomingContext(t.Context(), metadata.Pairs(apiclient.MetaDataTokenKey, token))
 			}
 
-			_, err := argocd.Authenticate(ctx)
+			_, err := cd.Authenticate(ctx)
 			if testData.errorMsg != "" {
 				assert.Errorf(t, err, testData.errorMsg)
 			} else {
@@ -721,7 +721,7 @@ func dexMockHandler(t *testing.T, url string) func(http.ResponseWriter, *http.Re
 	}
 }
 
-func getTestServer(t *testing.T, anonymousEnabled bool, withFakeSSO bool, useDexForSSO bool, additionalOIDCConfig settings_util.OIDCConfig) (argocd *ArgoCDServer, oidcURL string) {
+func getTestServer(t *testing.T, anonymousEnabled bool, withFakeSSO bool, useDexForSSO bool, additionalOIDCConfig settings_util.OIDCConfig) (cd *ArgoCDServer, oidcURL string) {
 	t.Helper()
 	cm := test.NewFakeConfigMap()
 	if anonymousEnabled {
@@ -776,11 +776,11 @@ connectors:
 	if withFakeSSO && useDexForSSO {
 		argoCDOpts.DexServerAddr = ts.URL
 	}
-	argocd = NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	cd = NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
 	var err error
-	argocd.ssoClientApp, err = oidc.NewClientApp(argocd.settings, argocd.DexServerAddr, argocd.DexTLSConfig, argocd.BaseHRef, cache.NewInMemoryCache(24*time.Hour))
+	cd.ssoClientApp, err = oidc.NewClientApp(cd.settings, cd.DexServerAddr, cd.DexTLSConfig, cd.BaseHRef, cache.NewInMemoryCache(24*time.Hour))
 	require.NoError(t, err)
-	return argocd, oidcServer.URL
+	return cd, oidcServer.URL
 }
 
 func TestGetClaims(t *testing.T) {
@@ -864,7 +864,7 @@ func TestGetClaims(t *testing.T) {
 			// Must be declared here to avoid race.
 			ctx := t.Context() //nolint:ineffassign,staticcheck
 
-			argocd, oidcURL := getTestServer(t, false, true, false, testDataCopy.additionalOIDCConfig)
+			cd, oidcURL := getTestServer(t, false, true, false, testDataCopy.additionalOIDCConfig)
 
 			// create new JWT and store it on the context to simulate an incoming request
 			testDataCopy.claims["iss"] = oidcURL
@@ -876,7 +876,7 @@ func TestGetClaims(t *testing.T) {
 			require.NoError(t, err)
 			ctx = metadata.NewIncomingContext(t.Context(), metadata.Pairs(apiclient.MetaDataTokenKey, tokenString))
 
-			gotClaims, newToken, err := argocd.getClaims(ctx)
+			gotClaims, newToken, err := cd.getClaims(ctx)
 
 			// Note: testutil.oidcMockHandler currently doesn't implement reissuing expired tokens
 			// so newToken will always be empty
@@ -904,7 +904,7 @@ func TestGetClaims_RefreshOnExpiredOIDCToken(t *testing.T) {
 	t.Cleanup(oidcServer.Close)
 
 	cm := test.NewFakeConfigMap()
-	cm.Data["url"] = "https://argocd.example.com"
+	cm.Data["url"] = "https://cd.example.com"
 	cm.Data["oidc.tls.insecure.skip.verify"] = "true"
 	cm.Data["oidc.config"] = fmt.Sprintf(`
 name: Test
@@ -914,20 +914,20 @@ clientSecret: $oidc.clientSecret`, oidcServer.URL)
 	secret := test.NewFakeSecret()
 	secret.Data["oidc.clientSecret"] = []byte("test-client-secret")
 
-	argocd := NewServer(t.Context(), ArgoCDServerOpts{
+	cd := NewServer(t.Context(), ArgoCDServerOpts{
 		Namespace:     test.FakeArgoCDNamespace,
 		KubeClientset: fake.NewSimpleClientset(cm, secret),
 		AppClientset:  apps.NewSimpleClientset(),
 		RepoClientset: &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}},
 	}, ApplicationSetOpts{})
 	var err error
-	argocd.ssoClientApp, err = oidc.NewClientApp(argocd.settings, "", nil, "/", cache.NewInMemoryCache(24*time.Hour))
+	cd.ssoClientApp, err = oidc.NewClientApp(cd.settings, "", nil, "/", cache.NewInMemoryCache(24*time.Hour))
 	require.NoError(t, err)
 
 	sub, sid := "randomUser", "1111"
 	cacheJSON, err := json.Marshal(&oidc.OidcTokenCache{Token: &oauth2.Token{RefreshToken: "not empty"}})
 	require.NoError(t, err)
-	require.NoError(t, argocd.ssoClientApp.SetValueInEncryptedCache(t.Context(),
+	require.NoError(t, cd.ssoClientApp.SetValueInEncryptedCache(t.Context(),
 		fmt.Sprintf("%s_%s_%s", oidc.OidcTokenCachePrefix, sub, sid), cacheJSON, time.Minute))
 
 	expired := jwt.NewWithClaims(jwt.SigningMethodRS512, jwt.MapClaims{
@@ -943,7 +943,7 @@ clientSecret: $oidc.clientSecret`, oidcServer.URL)
 	require.NoError(t, err)
 
 	ctx := metadata.NewIncomingContext(t.Context(), metadata.Pairs(apiclient.MetaDataTokenKey, tokenString))
-	gotClaims, newToken, err := argocd.getClaims(ctx)
+	gotClaims, newToken, err := cd.getClaims(ctx)
 	require.NoError(t, err)
 	assert.NotEmpty(t, newToken)
 	assert.NotEqual(t, tokenString, newToken, "newToken should differ from the original expired token")
@@ -1086,7 +1086,7 @@ func TestAuthenticate_3rd_party_JWTs(t *testing.T) {
 			// Must be declared here to avoid race.
 			ctx := t.Context() //nolint:staticcheck
 
-			argocd, oidcURL := getTestServer(t, testDataCopy.anonymousEnabled, true, testDataCopy.useDex, settings_util.OIDCConfig{})
+			cd, oidcURL := getTestServer(t, testDataCopy.anonymousEnabled, true, testDataCopy.useDex, settings_util.OIDCConfig{})
 
 			if testDataCopy.useDex {
 				testDataCopy.claims.Issuer = oidcURL + "/api/dex"
@@ -1109,7 +1109,7 @@ func TestAuthenticate_3rd_party_JWTs(t *testing.T) {
 			require.NoError(t, err)
 			ctx = metadata.NewIncomingContext(t.Context(), metadata.Pairs(apiclient.MetaDataTokenKey, tokenString))
 
-			ctx, err = argocd.Authenticate(ctx)
+			ctx, err = cd.Authenticate(ctx)
 			claims := ctx.Value("claims")
 			if testDataCopy.expectedClaims == nil {
 				assert.Nil(t, claims)
@@ -1161,10 +1161,10 @@ func TestAuthenticate_no_request_metadata(t *testing.T) {
 		t.Run(testDataCopy.test, func(t *testing.T) {
 			t.Parallel()
 
-			argocd, _ := getTestServer(t, testDataCopy.anonymousEnabled, true, true, settings_util.OIDCConfig{})
+			cd, _ := getTestServer(t, testDataCopy.anonymousEnabled, true, true, settings_util.OIDCConfig{})
 			ctx := t.Context()
 
-			ctx, err := argocd.Authenticate(ctx)
+			ctx, err := cd.Authenticate(ctx)
 			claims := ctx.Value("claims")
 			assert.Equal(t, testDataCopy.expectedClaims, claims)
 			if testDataCopy.expectedErrorContains != "" {
@@ -1209,13 +1209,13 @@ func TestAuthenticate_no_SSO(t *testing.T) {
 			// Must be declared here to avoid race.
 			ctx := t.Context() //nolint:ineffassign,staticcheck
 
-			argocd, dexURL := getTestServer(t, testDataCopy.anonymousEnabled, false, true, settings_util.OIDCConfig{})
+			cd, dexURL := getTestServer(t, testDataCopy.anonymousEnabled, false, true, settings_util.OIDCConfig{})
 			token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{Issuer: dexURL + "/api/dex"})
 			tokenString, err := token.SignedString([]byte("key"))
 			require.NoError(t, err)
 			ctx = metadata.NewIncomingContext(t.Context(), metadata.Pairs(apiclient.MetaDataTokenKey, tokenString))
 
-			ctx, err = argocd.Authenticate(ctx)
+			ctx, err = cd.Authenticate(ctx)
 			claims := ctx.Value("claims")
 			assert.Equal(t, testDataCopy.expectedClaims, claims)
 			if testDataCopy.expectedErrorMessage != "" {
@@ -1297,14 +1297,14 @@ func TestAuthenticate_bad_request_metadata(t *testing.T) {
 		{
 			test:                 "anonymous disabled, bad auth cookie",
 			anonymousEnabled:     false,
-			metadata:             metadata.MD{"grpcgateway-cookie": []string{"argocd.token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiJ9.TGGTTHuuGpEU8WgobXxkrBtW3NiR3dgw5LR-1DEW3BQ"}},
+			metadata:             metadata.MD{"grpcgateway-cookie": []string{"cd.token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiJ9.TGGTTHuuGpEU8WgobXxkrBtW3NiR3dgw5LR-1DEW3BQ"}},
 			expectedErrorMessage: common.TokenVerificationError,
 			expectedClaims:       nil,
 		},
 		{
 			test:                 "anonymous enabled, bad auth cookie",
 			anonymousEnabled:     true,
-			metadata:             metadata.MD{"grpcgateway-cookie": []string{"argocd.token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiJ9.TGGTTHuuGpEU8WgobXxkrBtW3NiR3dgw5LR-1DEW3BQ"}},
+			metadata:             metadata.MD{"grpcgateway-cookie": []string{"cd.token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiJ9.TGGTTHuuGpEU8WgobXxkrBtW3NiR3dgw5LR-1DEW3BQ"}},
 			expectedErrorMessage: "",
 			expectedClaims:       "",
 		},
@@ -1319,10 +1319,10 @@ func TestAuthenticate_bad_request_metadata(t *testing.T) {
 			// Must be declared here to avoid race.
 			ctx := t.Context() //nolint:ineffassign,staticcheck
 
-			argocd, _ := getTestServer(t, testDataCopy.anonymousEnabled, true, true, settings_util.OIDCConfig{})
+			cd, _ := getTestServer(t, testDataCopy.anonymousEnabled, true, true, settings_util.OIDCConfig{})
 			ctx = metadata.NewIncomingContext(t.Context(), testDataCopy.metadata)
 
-			ctx, err := argocd.Authenticate(ctx)
+			ctx, err := cd.Authenticate(ctx)
 			claims := ctx.Value("claims")
 			assert.Equal(t, testDataCopy.expectedClaims, claims)
 			if testDataCopy.expectedErrorMessage != "" {
@@ -1347,8 +1347,8 @@ func Test_getToken(t *testing.T) {
 		assert.Equal(t, token, getToken(metadata.New(map[string]string{"authorization": "Bearer " + token})))
 	})
 	t.Run("Cookie", func(t *testing.T) {
-		assert.Empty(t, getToken(metadata.New(map[string]string{"grpcgateway-cookie": "argocd.token=invalid"})))
-		assert.Equal(t, token, getToken(metadata.New(map[string]string{"grpcgateway-cookie": "argocd.token=" + token})))
+		assert.Empty(t, getToken(metadata.New(map[string]string{"grpcgateway-cookie": "cd.token=invalid"})))
+		assert.Equal(t, token, getToken(metadata.New(map[string]string{"grpcgateway-cookie": "cd.token=" + token})))
 	})
 }
 
@@ -1359,31 +1359,31 @@ func TestTranslateGrpcCookieHeader(t *testing.T) {
 		AppClientset:  apps.NewSimpleClientset(),
 		RepoClientset: &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}},
 	}
-	argocd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
 
 	t.Run("TokenIsNotEmpty", func(t *testing.T) {
 		recorder := httptest.NewRecorder()
-		err := argocd.translateGrpcCookieHeader(t.Context(), recorder, &session.SessionResponse{
+		err := cd.translateGrpcCookieHeader(t.Context(), recorder, &session.SessionResponse{
 			Token: "xyz",
 		})
 		require.NoError(t, err)
-		assert.Equal(t, "argocd.token=xyz; path=/; SameSite=lax; httpOnly; Secure", recorder.Result().Header.Get("Set-Cookie"))
+		assert.Equal(t, "cd.token=xyz; path=/; SameSite=lax; httpOnly; Secure", recorder.Result().Header.Get("Set-Cookie"))
 		assert.Len(t, recorder.Result().Cookies(), 1)
 	})
 
 	t.Run("TokenIsLongerThan4093", func(t *testing.T) {
 		recorder := httptest.NewRecorder()
-		err := argocd.translateGrpcCookieHeader(t.Context(), recorder, &session.SessionResponse{
+		err := cd.translateGrpcCookieHeader(t.Context(), recorder, &session.SessionResponse{
 			Token: "abc.xyz." + strings.Repeat("x", 4093),
 		})
 		require.NoError(t, err)
-		assert.Regexp(t, "argocd.token=.*; path=/; SameSite=lax; httpOnly; Secure", recorder.Result().Header.Get("Set-Cookie"))
+		assert.Regexp(t, "cd.token=.*; path=/; SameSite=lax; httpOnly; Secure", recorder.Result().Header.Get("Set-Cookie"))
 		assert.Len(t, recorder.Result().Cookies(), 2)
 	})
 
 	t.Run("TokenIsEmpty", func(t *testing.T) {
 		recorder := httptest.NewRecorder()
-		err := argocd.translateGrpcCookieHeader(t.Context(), recorder, &session.SessionResponse{
+		err := cd.translateGrpcCookieHeader(t.Context(), recorder, &session.SessionResponse{
 			Token: "",
 		})
 		require.NoError(t, err)
@@ -1452,7 +1452,7 @@ func TestOIDCConfigChangeDetection_SecretsChanged(t *testing.T) {
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 
-	originalSecrets := map[string]string{"k8ssecret:clientid": "argocd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 
 	argoSettings := settings_util.ArgoCDSettings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
@@ -1462,7 +1462,7 @@ func TestOIDCConfigChangeDetection_SecretsChanged(t *testing.T) {
 	assert.Equal(t, originalOIDCConfig.ClientSecret, originalSecrets["k8ssecret:clientsecret"], "expected ClientSecret be replaced by secret value")
 
 	// When
-	newSecrets := map[string]string{"k8ssecret:clientid": "argocd", "k8ssecret:clientsecret": "a!Better!Secret"}
+	newSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "a!Better!Secret"}
 	argoSettings.Secrets = newSecrets
 	result := checkOIDCConfigChange(originalOIDCConfig, &argoSettings)
 
@@ -1473,14 +1473,14 @@ func TestOIDCConfigChangeDetection_SecretsChanged(t *testing.T) {
 func TestOIDCConfigChangeDetection_ConfigChanged(t *testing.T) {
 	// Given
 	rawOIDCConfig, err := yaml.Marshal(&settings_util.OIDCConfig{
-		Name:         "argocd",
+		Name:         "cd",
 		ClientID:     "$k8ssecret:clientid",
 		ClientSecret: "$k8ssecret:clientsecret",
 	})
 
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 
-	originalSecrets := map[string]string{"k8ssecret:clientid": "argocd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 
 	argoSettings := settings_util.ArgoCDSettings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
@@ -1516,7 +1516,7 @@ func TestOIDCConfigChangeDetection_ConfigCreated(t *testing.T) {
 		ClientSecret: "$k8ssecret:clientsecret",
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
-	newSecrets := map[string]string{"k8ssecret:clientid": "argocd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	newSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 	argoSettings.OIDCConfigRAW = string(newRawOICDConfig)
 	argoSettings.Secrets = newSecrets
 	result := checkOIDCConfigChange(originalOIDCConfig, &argoSettings)
@@ -1533,7 +1533,7 @@ func TestOIDCConfigChangeDetection_ConfigDeleted(t *testing.T) {
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 
-	originalSecrets := map[string]string{"k8ssecret:clientid": "argocd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 
 	argoSettings := settings_util.ArgoCDSettings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
@@ -1559,7 +1559,7 @@ func TestOIDCConfigChangeDetection_NoChange(t *testing.T) {
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 
-	originalSecrets := map[string]string{"k8ssecret:clientid": "argocd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 
 	argoSettings := settings_util.ArgoCDSettings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
@@ -1665,15 +1665,15 @@ func TestCacheControlHeaders(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.name, func(t *testing.T) {
-			argocd, closer := fakeServer(t)
+			cd, closer := fakeServer(t)
 			defer closer()
 
-			handler := argocd.newStaticAssetsHandler()
+			handler := cd.newStaticAssetsHandler()
 
 			rr := httptest.NewRecorder()
 			req := httptest.NewRequestWithContext(t.Context(), "", "/"+testCase.filename, http.NoBody)
 
-			fp := filepath.Join(argocd.TmpAssetsDir, testCase.filename)
+			fp := filepath.Join(cd.TmpAssetsDir, testCase.filename)
 
 			if testCase.createFile {
 				tmpFile, err := os.Create(fp)
@@ -1869,11 +1869,11 @@ func TestServeExtensions_IsolatesEachFile(t *testing.T) {
 	err = os.WriteFile(filepath.Join(tmpDir, "extension-b.js"), []byte(`console.log("ext-b");`), 0o644)
 	require.NoError(t, err)
 
-	argocd, closer := fakeServer(t)
+	cd, closer := fakeServer(t)
 	defer closer()
 
 	w := httptest.NewRecorder()
-	argocd.serveExtensions(tmpDir, w)
+	cd.serveExtensions(tmpDir, w)
 	body := w.Body.String()
 
 	// Each file must be wrapped in its own try/catch so a failure in one
@@ -1904,28 +1904,28 @@ func Test_StaticAssetsDir_no_symlink_traversal(t *testing.T) {
 	err = os.WriteFile(filePath, []byte("test"), 0o644)
 	require.NoError(t, err)
 
-	argocd, closer := fakeServer(t)
+	cd, closer := fakeServer(t)
 	defer closer()
 
 	// Create a symlink to the file
-	symlinkPath := filepath.Join(argocd.StaticAssetsDir, "link.txt")
+	symlinkPath := filepath.Join(cd.StaticAssetsDir, "link.txt")
 	err = os.Symlink(filePath, symlinkPath)
 	require.NoError(t, err)
 
 	// Make a request to get the file from the /assets endpoint
 	req := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "/link.txt", http.NoBody)
 	w := httptest.NewRecorder()
-	argocd.newStaticAssetsHandler()(w, req)
+	cd.newStaticAssetsHandler()(w, req)
 	resp := w.Result()
 	assert.Equal(t, http.StatusInternalServerError, resp.StatusCode, "should not have been able to access the symlinked file")
 
 	// Make sure a normal file works
-	normalFilePath := filepath.Join(argocd.StaticAssetsDir, "normal.txt")
+	normalFilePath := filepath.Join(cd.StaticAssetsDir, "normal.txt")
 	err = os.WriteFile(normalFilePath, []byte("normal"), 0o644)
 	require.NoError(t, err)
 	req = httptest.NewRequestWithContext(t.Context(), http.MethodGet, "/normal.txt", http.NoBody)
 	w = httptest.NewRecorder()
-	argocd.newStaticAssetsHandler()(w, req)
+	cd.newStaticAssetsHandler()(w, req)
 	resp = w.Result()
 	assert.Equal(t, http.StatusOK, resp.StatusCode, "should have been able to access the normal file")
 }

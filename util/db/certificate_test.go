@@ -246,10 +246,10 @@ const (
 func getCertClientset() *fake.Clientset {
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      "cd-cm",
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: nil,
@@ -257,10 +257,10 @@ func getCertClientset() *fake.Clientset {
 
 	sshCM := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-ssh-known-hosts-cm",
+			Name:      "cd-ssh-known-hosts-cm",
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string]string{
@@ -270,10 +270,10 @@ func getCertClientset() *fake.Clientset {
 
 	tlsCM := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-tls-certs-cm",
+			Name:      "cd-tls-certs-cm",
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string]string{
