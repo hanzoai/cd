@@ -8,7 +8,7 @@ metadata:
   name: hanzocd-notifications-controller
 rules:
 - apiGroups:
-  - cd.hanzo.ai
+  - apps.hanzo.ai
   resources:
   - applications
   - appprojects
