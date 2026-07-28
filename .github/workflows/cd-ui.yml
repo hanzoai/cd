@@ -1,6 +1,6 @@
 name: cd-ui SPA image
 
-# Builds the monochrome ArgoCD UI bundle as ghcr.io/hanzoai/cd-ui on
+# Builds the monochrome Hanzo CD UI bundle as ghcr.io/hanzoai/cd-ui on
 # Hanzo runners — the SPA served at cd.hanzo.ai/ (hanzoai/spa App CR).
 # Mirrors console-embed (hanzoai/console build-image.yml). Runs on the
 # rebrand/hanzo-monochrome lineage, where the monochrome UI lives.
