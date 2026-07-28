@@ -59,7 +59,7 @@ func TestServerSideDiffMasksSecretData(t *testing.T) {
 			// Annotate the app with IncludeMutationWebhook=true — the condition that
 			// bypasses removeWebhookMutation() and exposed real etcd values in the response.
 			_, err = RunCli("app", "patch", app.Name,
-				"--patch", `{"metadata":{"annotations":{"argocd.argoproj.io/compare-options":"IncludeMutationWebhook=true"}}}`,
+				"--patch", `{"metadata":{"annotations":{"apps.hanzo.ai/compare-options":"IncludeMutationWebhook=true"}}}`,
 				"--type", "merge",
 			)
 			require.NoError(t, err)

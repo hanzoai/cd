@@ -7,7 +7,7 @@ metadata:
   generation: 2
   labels:
     app: knative-serving
-    argocd.argoproj.io/instance: knative-serving
+    apps.hanzo.ai/instance: knative-serving
     version: 0.14.1
   name: knative-serving
   namespace: knative-serving

@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: pod-with-finalizers
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    apps.hanzo.ai/sync-wave: "2"
   # remove this finalizers using container preStop lifecycle hook on delete
   finalizers:
   - example.com/block-delete

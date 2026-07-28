@@ -101,7 +101,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - applications
   - applicationsets
@@ -140,7 +140,7 @@ metadata:
   name: argocd-applicationset-controller
 rules:
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - applications
   - applicationsets
@@ -154,7 +154,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - appprojects
   verbs:
@@ -162,7 +162,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - applicationsets/status
   verbs:
@@ -197,7 +197,7 @@ rules:
 - apiGroups:
   - coordination.k8s.io
   resourceNames:
-  - 58ac56fa.applicationsets.argoproj.io
+  - 58ac56fa.applicationsets.apps.hanzo.ai
   resources:
   - leases
   verbs:
@@ -234,7 +234,7 @@ metadata:
   name: argocd-notifications-controller
 rules:
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - applications
   - appprojects
@@ -338,7 +338,7 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - argoproj.io
+  - apps.hanzo.ai
   resources:
   - applications
   - appprojects
@@ -491,11 +491,11 @@ data:
       - '.metadata.annotations."deployment.kubernetes.io/desired-replicas"'
       - '.metadata.annotations."deployment.kubernetes.io/max-replicas"'
       - '.metadata.annotations."rollout.argoproj.io/desired-replicas"'
-  resource.customizations.ignoreResourceUpdates.argoproj.io_Application: |
+  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
     jqPathExpressions:
       - '.metadata.annotations."notified.notifications.argoproj.io"'
-      - '.metadata.annotations."argocd.argoproj.io/refresh"'
-      - '.metadata.annotations."argocd.argoproj.io/hydrate"'
+      - '.metadata.annotations."apps.hanzo.ai/refresh"'
+      - '.metadata.annotations."apps.hanzo.ai/hydrate"'
       - '.operation'
   resource.customizations.ignoreResourceUpdates.argoproj.io_Rollout: |
     jqPathExpressions:

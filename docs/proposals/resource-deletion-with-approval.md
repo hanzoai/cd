@@ -63,7 +63,7 @@ protect resources from accidental deletion during cascading application deletion
 
 ### Introduce `confirm` option for Prune sync option.
 
-Argo CD already supports `argocd.argoproj.io/sync-options: Prune=false` sync option that prevents resource deletion while syncing
+Argo CD already supports `apps.hanzo.ai/sync-options: Prune=false` sync option that prevents resource deletion while syncing
 the application. This, however, is not ideal since it prevents implementing fully automated workflows that include resource deletion.
 
 In order to improve the situation, we propose to introduce `confirm` option for Prune sync option. When `confirm` option is set, Argo CD should pause the sync operation
@@ -75,7 +75,7 @@ In order to improve the situation, we propose to introduce `confirm` option for 
 
 ### Introduce `confirm` option for Delete sync option.
 
-Similarly to `Prune` sync option we need to introduce `confirm` value for `Delete` sync option: `argocd.argoproj.io/sync-options: Delete=confirm`. The `confirm` option
+Similarly to `Prune` sync option we need to introduce `confirm` value for `Delete` sync option: `apps.hanzo.ai/sync-options: Delete=confirm`. The `confirm` option
 should pause the sync operation **before deleting any app resources** and wait for the user to confirm the deletion. The confirmation can be done in a very friendly way
 using Argo CD UI, CLI or API.
 
@@ -112,7 +112,7 @@ The Argo CD UI, CLI should visualize the `requiresDeletionApproval` field so tha
 #### Approve deletion resource action
 
 The Argo CD UI, CLI should bundle the `Approve Deletion` [resource action](https://argo-cd.readthedocs.io/en/stable/operator-manual/resource_actions/)
-that would allow the user to approve the deletion. The action should patch the resource with the `argocd.argoproj.io/deletion-approved: true` annotation.
+that would allow the user to approve the deletion. The action should patch the resource with the `apps.hanzo.ai/deletion-approved: true` annotation.
 Once annotation is applied the Argo CD should proceed with the deletion.
 
 The main reason to use the action is that we can reuse existing [RBAC](https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/) to control who can approve the deletion.
@@ -133,7 +133,7 @@ deletion approval is required. The notification template should include a list o
 
 #### Declarative approval
 
-The user should be able to approve resource deletion without using the UI or CLI by manually adding the `argocd.argoproj.io/deletion-approved: true` annotation to the resource.
+The user should be able to approve resource deletion without using the UI or CLI by manually adding the `apps.hanzo.ai/deletion-approved: true` annotation to the resource.
 
 ### Use cases
 

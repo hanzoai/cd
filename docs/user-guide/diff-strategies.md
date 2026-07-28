@@ -86,7 +86,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=true
+    apps.hanzo.ai/compare-options: ServerSideDiff=true
 ...
 ```
 
@@ -101,7 +101,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=false
+    apps.hanzo.ai/compare-options: ServerSideDiff=false
 ...
 ```
 
@@ -119,7 +119,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: IncludeMutationWebhook=true
+    apps.hanzo.ai/compare-options: IncludeMutationWebhook=true
 ...
 ```
 
@@ -132,7 +132,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+    apps.hanzo.ai/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
 ...
 ```
 

@@ -31,7 +31,7 @@ import (
 )
 
 const (
-	annotationGCMark = "gitops-agent.argoproj.io/gc-mark"
+	annotationGCMark = "gitops-agent.apps.hanzo.ai/gc-mark"
 	envProfile       = "GITOPS_ENGINE_PROFILE"
 	envProfileHost   = "GITOPS_ENGINE_PROFILE_HOST"
 	envProfilePort   = "GITOPS_ENGINE_PROFILE_PORT"

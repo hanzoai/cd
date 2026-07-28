@@ -60,7 +60,7 @@ metadata:
   name: my-push-secret
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository-write
+    apps.hanzo.ai/secret-type: repository-write
 type: Opaque
 stringData:
   url: "https://github.com/<your org or user>/<your repo>"
@@ -77,7 +77,7 @@ metadata:
   name: my-pull-secret
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 type: Opaque
 stringData:
   url: "https://github.com/<your org or user>/<your repo>"
@@ -90,7 +90,7 @@ stringData:
 ```
 
 The only difference between the secrets above, besides the resource name, is that the push secret contains the label
-`argocd.argoproj.io/secret-type: repository-write`, which causes the Secret to be used for pushing manifests to git
+`apps.hanzo.ai/secret-type: repository-write`, which causes the Secret to be used for pushing manifests to git
 instead of pulling from Git. Argo CD requires different secrets for pushing and pulling to provide better isolation.
 
 Once your secrets are installed, set the `spec.sourceHydrator` field of the Application. For example:
@@ -532,7 +532,7 @@ metadata:
   name: private-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repo-write-creds
+    apps.hanzo.ai/secret-type: repo-write-creds
 stringData:
   type: git
   url: https://github.com/argoproj
@@ -578,7 +578,7 @@ When hydration fails, the application remains in the `Failed` phase and the erro
 
 ## Forcing Hydration with the `hydrate` Annotation
 
-Argo CD uses the `argocd.argoproj.io/hydrate` annotation to request that an Application's dry source be
+Argo CD uses the `apps.hanzo.ai/hydrate` annotation to request that an Application's dry source be
 checked and hydrated (if necessary) outside of the normal commit-detection flow. The application controller
 consumes and removes the annotation as soon as it has processed it, so it will not normally persist on the
 Application.
@@ -607,7 +607,7 @@ touch the dry source repository):
 
 ```shell
 kubectl patch application my-app -n argocd --type merge \
-  -p '{"metadata": {"annotations": {"argocd.argoproj.io/hydrate": "hard"}}}'
+  -p '{"metadata": {"annotations": {"apps.hanzo.ai/hydrate": "hard"}}}'
 ```
 
 > [!NOTE]
@@ -714,7 +714,7 @@ to configure branch protection rules on the destination repository.
 
 > [!NOTE]
 > To maintain reproducibility and determinism in the Hydrator’s output,
-> Argo CD-specific metadata (such as `argocd.argoproj.io/tracking-id`) is
+> Argo CD-specific metadata (such as `apps.hanzo.ai/tracking-id`) is
 > not written to Git during hydration. These annotations are added dynamically
 > during application sync and comparison.
 

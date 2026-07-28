@@ -27,10 +27,10 @@ func NewContextCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 argocd context
 
 # Switch Hanzo CD context
-argocd context cd.argoproj.io
+argocd context cd.hanzo.ai
 
 # Delete Hanzo CD context
-argocd context cd.argoproj.io --delete`,
+argocd context cd.hanzo.ai --delete`,
 		Run: func(c *cobra.Command, args []string) {
 			localCfg, err := localconfig.ReadLocalConfig(clientOpts.ConfigPath)
 			errors.CheckError(err)

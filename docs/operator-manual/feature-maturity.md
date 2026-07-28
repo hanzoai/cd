@@ -33,7 +33,7 @@ to indicate their stability and maturity. These are the statuses of non-stable f
 
 | Feature                         | Property                                                                                | Status |
 | ------------------------------- | --------------------------------------------------------------------------------------- | ------ |
-| [Skip Application Reconcile][4] | `metadata.annotations[argocd.argoproj.io/skip-reconcile]`                               | Alpha  |
+| [Skip Application Reconcile][4] | `metadata.annotations[apps.hanzo.ai/skip-reconcile]`                               | Alpha  |
 | [Source Hydrator][11]           | `spec.sourceHydrator.*`                                                                 | Beta   |
 
 ### AppProject CRD

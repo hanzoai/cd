@@ -226,15 +226,15 @@ func TestClusterSkipReconcileAnnotation(t *testing.T) {
 	err := fixture.DoHttpJsonRequest("PUT",
 		fmt.Sprintf("/api/v1/clusters/%s?updatedFields=annotations", clusterURL),
 		&cluster,
-		fmt.Appendf(nil, `{"annotations":{%q:"true"}}`, "argocd.argoproj.io/skip-reconcile")...)
+		fmt.Appendf(nil, `{"annotations":{%q:"true"}}`, "apps.hanzo.ai/skip-reconcile")...)
 	require.NoError(t, err)
-	assert.Equal(t, "true", cluster.Annotations["argocd.argoproj.io/skip-reconcile"])
+	assert.Equal(t, "true", cluster.Annotations["apps.hanzo.ai/skip-reconcile"])
 
 	var cluster2 Cluster
 	err = fixture.DoHttpJsonRequest("GET", "/api/v1/clusters/"+clusterURL, &cluster2)
 	require.NoError(t, err)
 	assert.Equal(t, "in-cluster", cluster2.Name)
-	assert.Equal(t, "true", cluster2.Annotations["argocd.argoproj.io/skip-reconcile"])
+	assert.Equal(t, "true", cluster2.Annotations["apps.hanzo.ai/skip-reconcile"])
 
 	err = fixture.DoHttpJsonRequest("PUT",
 		fmt.Sprintf("/api/v1/clusters/%s?updatedFields=annotations", clusterURL),

@@ -1,6 +1,6 @@
 # Sync Options
 
-Argo CD allows users to customize some aspects of how it syncs the desired state in the target cluster. Some Sync Options can be defined as annotations in a specific resource. Most of the Sync Options are configured in the Application resource `spec.syncPolicy.syncOptions` attribute. Multiple Sync Options which are configured with the `argocd.argoproj.io/sync-options` annotation can be concatenated with a `,` in the annotation value; white-space will be trimmed.
+Argo CD allows users to customize some aspects of how it syncs the desired state in the target cluster. Some Sync Options can be defined as annotations in a specific resource. Most of the Sync Options are configured in the Application resource `spec.syncPolicy.syncOptions` attribute. Multiple Sync Options which are configured with the `apps.hanzo.ai/sync-options` annotation can be concatenated with a `,` in the annotation value; white-space will be trimmed.
 
 Below you can find details about each available Sync Option:
 
@@ -11,7 +11,7 @@ You may wish to prevent an object from being pruned:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: Prune=false
+    apps.hanzo.ai/sync-options: Prune=false
 ```
 
 It is also possible to set this option as a default option on the application level:
@@ -42,10 +42,10 @@ sync option to require manual confirmation before pruning.
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: Prune=confirm
+    apps.hanzo.ai/sync-options: Prune=confirm
 ```
 
-To confirm the pruning you can use Argo CD UI, CLI or manually apply the `argocd.argoproj.io/deletion-approved: <ISO formatted timestamp>`
+To confirm the pruning you can use Argo CD UI, CLI or manually apply the `apps.hanzo.ai/deletion-approved: <ISO formatted timestamp>`
 annotation to the application.
 
 If a resource with `Prune=confirm` has been pruned, the sync operation will remain in a Syncing state until pruning is
@@ -74,7 +74,7 @@ For a certain class of objects, it is necessary to `kubectl apply` them using th
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: Validate=false
+    apps.hanzo.ai/sync-options: Validate=false
 ```
 
 If you want to exclude a whole class of objects globally, consider setting `resource.customizations` in [system level configuration](../user-guide/diffing.md#system-level-configuration).
@@ -91,7 +91,7 @@ To skip the dry run for missing resource types, use the following annotation:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    apps.hanzo.ai/sync-options: SkipDryRunOnMissingResource=true
 ```
 
 The dry run will still be executed if the CRD is already present in the cluster.
@@ -116,7 +116,7 @@ In such situations you can stop those resources from being cleaned up during app
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    apps.hanzo.ai/sync-options: Delete=false
 ```
 
 It is also possible to set this option as a default option on the application level:
@@ -141,10 +141,10 @@ sync option to require manual confirmation before deletion.
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: Delete=confirm
+    apps.hanzo.ai/sync-options: Delete=confirm
 ```
 
-To confirm the deletion you can use Argo CD UI, CLI or manually apply the `argocd.argoproj.io/deletion-approved: <ISO formatted timestamp>`
+To confirm the deletion you can use Argo CD UI, CLI or manually apply the `apps.hanzo.ai/deletion-approved: <ISO formatted timestamp>`
 annotation to the application.
 
 It is also possible to set this option as a default option on the application level:
@@ -227,7 +227,7 @@ This can also be configured at individual resource level.
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: PruneLast=true
+    apps.hanzo.ai/sync-options: PruneLast=true
 ```
 
 ## Replace Resource Instead Of Applying Changes
@@ -257,7 +257,7 @@ This can also be configured at individual resource level.
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: Replace=true
+    apps.hanzo.ai/sync-options: Replace=true
 ```
 
 ## Force Sync
@@ -273,7 +273,7 @@ In such cases you might use `Force=true` sync option in target resources annotat
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: Force=true,Replace=true
+    apps.hanzo.ai/sync-options: Force=true,Replace=true
 ```
 
 ## Server-Side Apply
@@ -313,7 +313,7 @@ can be used:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: ServerSideApply=true
+    apps.hanzo.ai/sync-options: ServerSideApply=true
 ```
 
 If you want to disable ServerSideApply for a specific resource, while it is enabled at the application level,
@@ -322,7 +322,7 @@ add the following sync-option annotation in it:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-options: ServerSideApply=false
+    apps.hanzo.ai/sync-options: ServerSideApply=false
 ```
 
 ServerSideApply can also be used to patch existing resources by providing a partial
@@ -379,7 +379,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/client-side-apply-migration-manager: 'my-custom-manager'
+    apps.hanzo.ai/client-side-apply-migration-manager: 'my-custom-manager'
 ```
 
 This is useful when you have other operators managing resources that are no longer in use and would like Argo CD to own all the fields for that operator.
@@ -487,7 +487,7 @@ Once a namespace is owned by Argo CD, it will be managed by ArgoCD, including th
 ```yaml
 managedNamespaceMetadata:
   annotations:
-    argocd.argoproj.io/tracking-id: 'your-application-name:/Namespace:/your-namespace-name'
+    apps.hanzo.ai/tracking-id: 'your-application-name:/Namespace:/your-namespace-name'
 ```
 
 > [!NOTE]

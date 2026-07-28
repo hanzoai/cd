@@ -94,7 +94,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.apps.hanzo.ai
 spec:
   # (...)
 ```

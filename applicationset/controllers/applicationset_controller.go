@@ -113,8 +113,8 @@ type ApplicationSetReconciler struct {
 
 var _ progressivesync.Dependencies = (*ApplicationSetReconciler)(nil)
 
-// +kubebuilder:rbac:groups=argoproj.io,resources=applicationsets,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=argoproj.io,resources=applicationsets/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=apps.hanzo.ai,resources=applicationsets,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=apps.hanzo.ai,resources=applicationsets/status,verbs=get;update;patch
 
 func (r *ApplicationSetReconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ctrl.Result, err error) {
 	startReconcile := time.Now()
@@ -717,7 +717,7 @@ func (r *ApplicationSetReconciler) createOrUpdateInCluster(ctx context.Context, 
 				},
 				TypeMeta: metav1.TypeMeta{
 					Kind:       application.ApplicationKind,
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: argov1alpha1.SchemeGroupVersion.String(),
 				},
 			}
 

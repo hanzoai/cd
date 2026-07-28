@@ -5,7 +5,7 @@ metadata:
   - finalizer.kiali
   generation: 1
   labels:
-    argocd.argoproj.io/instance: kiali-default
+    apps.hanzo.ai/instance: kiali-default
   name: kiali
   namespace: kiali
   resourceVersion: "344752"

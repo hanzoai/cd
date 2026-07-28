@@ -42,4 +42,4 @@ spec:
         server: '{{ .url | toString }}'
       metadata:
         labels:
-          argocd.argoproj.io/secret-type: cluster
+          apps.hanzo.ai/secret-type: cluster

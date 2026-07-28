@@ -320,7 +320,7 @@ func TestClusterEventHandler(t *testing.T) {
 															"clusters": {
 															  "selector": {
 																"matchLabels": {
-																  "argocd.argoproj.io/secret-type": "cluster"
+																  "apps.hanzo.ai/secret-type": "cluster"
 																}
 															  }
 															}
@@ -491,7 +491,7 @@ func TestClusterEventHandler(t *testing.T) {
 															"clusters": {
 															  "selector": {
 																"matchLabels": {
-																  "argocd.argoproj.io/secret-type": "cluster"
+																  "apps.hanzo.ai/secret-type": "cluster"
 																}
 															  }
 															}
@@ -619,7 +619,7 @@ func TestNestedGeneratorHasClusterGenerator_NestedMergeGenerator(t *testing.T) {
 						"clusters": {
 						  "selector": {
 							"matchLabels": {
-							  "argocd.argoproj.io/secret-type": "cluster"
+							  "apps.hanzo.ai/secret-type": "cluster"
 							}
 						  }
 						}
@@ -647,7 +647,7 @@ func TestNestedGeneratorHasClusterGenerator_NestedMergeGeneratorWithInvalidJSON(
 						"clusters": {
 						  "selector": {
 							"matchLabels": {
-							  "argocd.argoproj.io/secret-type": "cluster"
+							  "apps.hanzo.ai/secret-type": "cluster"
 							}
 						  }
 						}

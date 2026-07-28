@@ -2,7 +2,7 @@ apiVersion: solr.apache.org/v1beta1
 kind: SolrCloud
 metadata:
   annotations:
-    argocd.argoproj.io/tracking-id: foobar-solr:solr.apache.org/SolrCloud:foo/solr
+    apps.hanzo.ai/tracking-id: foobar-solr:solr.apache.org/SolrCloud:foo/solr
   creationTimestamp: '2024-10-07T09:30:03Z'
   finalizers:
     - storage.finalizers.solr.apache.org

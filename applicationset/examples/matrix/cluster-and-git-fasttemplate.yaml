@@ -18,7 +18,7 @@ spec:
         - clusters:
             selector:
               matchLabels:
-                argocd.argoproj.io/secret-type: cluster
+                apps.hanzo.ai/secret-type: cluster
   template:
     metadata:
       name: '{{path.basename}}-{{name}}'

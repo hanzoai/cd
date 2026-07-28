@@ -19,9 +19,9 @@ data:
 kind: Secret
 metadata:
   annotations:
-    managed-by: argocd.argoproj.io
+    managed-by: apps.hanzo.ai
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
     cloud: gcp
     department: billing
     env: qa
@@ -126,7 +126,7 @@ metadata:
   name: guestbook
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.apps.hanzo.ai
 spec:
   destination:
     namespace: argocd
@@ -202,7 +202,7 @@ metadata:
   name: guestbook
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.apps.hanzo.ai
 spec:
  ...
 ```
@@ -238,7 +238,7 @@ spec:
         # Allow manually disabling auto sync for apps, useful for debugging.
         - /spec/syncPolicy/automated
         # These are automatically updated on a regular basis. Not ignoring last applied configuration since it's used for computing diffs after normalization.
-        - /metadata/annotations/argocd.argoproj.io~1refresh
+        - /metadata/annotations/apps.hanzo.ai~1refresh
         - /operation
   ...
 ```

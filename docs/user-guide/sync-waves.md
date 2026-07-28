@@ -14,7 +14,7 @@ Argo CD has the following hook types:
 | `PreDelete`  | Executes before Application resources are deleted. Only runs when the entire Application is being deleted, not during normal sync operations (even with pruning enabled. ) |
 | `PostDelete` | Executes after all Application resources are deleted. _Available starting in v2.10._                                                                                       |
 
-Adding the argocd.argoproj.io/hook annotation to a resource will assign it to a specific phase. During a Sync operation, Argo CD will apply the resource during the appropriate phase of the deployment. Hooks can be any type of Kubernetes resource kind, but tend to be Pod, Job or Argo Workflows. Multiple hooks can be specified as a comma separated list.
+Adding the apps.hanzo.ai/hook annotation to a resource will assign it to a specific phase. During a Sync operation, Argo CD will apply the resource during the appropriate phase of the deployment. Hooks can be any type of Kubernetes resource kind, but tend to be Pod, Job or Argo Workflows. Multiple hooks can be specified as a comma separated list.
 
 ## How phases work?
 
@@ -41,7 +41,7 @@ This ensures that dependent resources are deleted in the correct order.
 ## Hook lifecycle and cleanup
 
 Argo CD offers several methods to clean up hooks and decide how much history will be kept for previous runs.
-In the most basic case you can use the argocd.argoproj.io/hook-delete-policy to decide when a hook will be deleted.
+In the most basic case you can use the apps.hanzo.ai/hook-delete-policy to decide when a hook will be deleted.
 This can take the following values:
 
 | Policy               | Description                                                                                                                                       |
@@ -99,7 +99,7 @@ If a PostDelete hook fails:
 
 ## How sync waves work?
 
-Argo CD also offers an alternative method of changing the sync order of resources. These are sync waves. They are defined by the argocd.argoproj.io/sync-wave annotation. The value is an integer that defines the ordering (ArgoCD will start deploying from the lowest number and finish with the highest number).
+Argo CD also offers an alternative method of changing the sync order of resources. These are sync waves. They are defined by the apps.hanzo.ai/sync-wave annotation. The value is an integer that defines the ordering (ArgoCD will start deploying from the lowest number and finish with the highest number).
 
 Hooks and resources are assigned to wave 0 by default. The wave can be negative, so you can create a wave that runs before all other resources.
 
@@ -140,7 +140,7 @@ Pre-sync and post-sync can only contain hooks. Apply the hook annotation:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/hook: PreSync
+    apps.hanzo.ai/hook: PreSync
 ```
 
 [Read more about hooks](resource_hooks.md).
@@ -152,7 +152,7 @@ Specify the wave using the following annotation:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "5"
+    apps.hanzo.ai/sync-wave: "5"
 ```
 
 Hooks and resources are assigned to wave zero by default. The wave can be negative, so you can create a wave that runs before all other resources.
@@ -169,8 +169,8 @@ kind: Job
 metadata:
   generateName: app-slack-notification-
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    apps.hanzo.ai/hook: PostSync
+    apps.hanzo.ai/hook-delete-policy: HookSucceeded
 spec:
   template:
     spec:
@@ -198,9 +198,9 @@ kind: Job
 metadata:
   name: db-migrate
   annotations:
-    argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    argocd.argoproj.io/sync-wave: '-1'
+    apps.hanzo.ai/hook: PreSync
+    apps.hanzo.ai/hook-delete-policy: HookSucceeded
+    apps.hanzo.ai/sync-wave: '-1'
 spec:
   ttlSecondsAfterFinished: 360
   template:
@@ -249,7 +249,7 @@ ingress-nginx:
   controller:
     admissionWebhooks:
       annotations:
-        argocd.argoproj.io/hook: Skip
+        apps.hanzo.ai/hook: Skip
 ```
 
 Which results in a successful sync.

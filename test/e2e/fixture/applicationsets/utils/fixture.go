@@ -117,14 +117,14 @@ func EnsureCleanState(t *testing.T) {
 
 	fixture.RunFunctionsInParallelAndCheckErrors(t, []func() error{
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repository
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=repository
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepository})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repo-creds
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=repo-creds
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},

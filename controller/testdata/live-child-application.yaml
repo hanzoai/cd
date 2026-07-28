@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/tracking-id: 'app-of-apps:argoproj.io/Application:argocd/argo-workflows'
+    apps.hanzo.ai/tracking-id: 'app-of-apps:argoproj.io/Application:argocd/argo-workflows'
   name: argo-workflows
   namespace: argocd
 spec:

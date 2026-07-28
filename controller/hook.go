@@ -33,11 +33,11 @@ const (
 
 var hookTypeAnnotations = map[HookType]map[string]string{
 	PreDeleteHookType: {
-		"argocd.argoproj.io/hook": string(PreDeleteHookType),
+		"apps.hanzo.ai/hook": string(PreDeleteHookType),
 		"helm.sh/hook":            "pre-delete",
 	},
 	PostDeleteHookType: {
-		"argocd.argoproj.io/hook": string(PostDeleteHookType),
+		"apps.hanzo.ai/hook": string(PostDeleteHookType),
 		"helm.sh/hook":            "post-delete",
 	},
 }

@@ -521,7 +521,7 @@ Also note that we can configure the health check to return the gRPC health statu
     namespace: argocd
   spec:
     rules:
-    - host: argocd.argoproj.io
+    - host: apps.hanzo.ai
       http:
         paths:
         - path: /
@@ -540,7 +540,7 @@ Also note that we can configure the health check to return the gRPC health statu
           pathType: Prefix
     tls:
     - hosts:
-      - argocd.argoproj.io
+      - apps.hanzo.ai
 ```
 
 ## [Istio](https://www.istio.io)

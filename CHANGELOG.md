@@ -28,7 +28,7 @@
 
 ### Bug fixes
 
-fix: Support files in argocd.argoproj.io/manifest-generate-paths annotation (#9908)
+fix: Support files in apps.hanzo.ai/manifest-generate-paths annotation (#9908)
 fix: terminal websocket write lock to avoid races (#10011)
 fix: updated all a tags to Link tags in app summary (#9777)
 fix: e2e test to use func from clusterauth instead creating one with old logic (#9989)
@@ -675,7 +675,7 @@ improved plugin manifests discovery.
 
 Argo CD has traditionally tracked the resources it manages by the well-known "app.kubernetes.io/instance" property.
 While using this property works ok in simple scenarios, it also has several limitations. ArgoCD now allows you to use
-a new annotation (argocd.argoproj.io/tracking-id) for tracking your resources. Using this annotation is a much more flexible approach
+a new annotation (apps.hanzo.ai/tracking-id) for tracking your resources. Using this annotation is a much more flexible approach
 as there are no conflicts with other Kubernetes tools, and you can easily install multiple Argo CD instances on the same clusters.
 
 ### Bug Fixes and Performance Enhancements
@@ -969,7 +969,7 @@ Want to notify your Argo CD users of upcoming changes? Just specify the notifica
 ### Core Features
 
 * The new sync option `PrunePropagationPolicy=background` allows using background deletion during syncing
-* New application finalizer `resources-finalizer.argocd.argoproj.io:background` allows using background deletion when the application is deleted
+* New application finalizer `resources-finalizer.apps.hanzo.ai:background` allows using background deletion when the application is deleted
 * The new sync option `ApplyOutOfSyncOnly=true` allows skipping syncing resources that are already in the desired state.
 * The new sync option `PruneLast=true` allows deferring resource pruning until the last synchronization phase after all other resources are synced and healthy.
 
@@ -1056,7 +1056,7 @@ might provide 10x performance improvement of manifests generation.
 ### Annotation Based Path Detection
 
 The feature that allows specifying which source repository directories influence the application manifest generation
-using the `argocd.argoproj.io/manifest-generate-paths` annotation. The annotation improves the Git webhook handler
+using the `apps.hanzo.ai/manifest-generate-paths` annotation. The annotation improves the Git webhook handler
 behavior. The webhook avoids related applications reconciliation if no related files have been changed by the Git commit
 and even allows to skip manifests generation for new commit by re-using generation manifests for the previous commit.
 
@@ -1753,7 +1753,7 @@ There may be instances when you want to control the times during which an Argo C
 * Support for in-line block from helm chart values (#1930)
 * Request OIDC groups claim if groups scope is not supported (#1956)
 * Add a maintenance window for Applications with automated syncing (#1995)
-* Support `argocd.argoproj.io/hook-delete-policy: BeforeHookCreation` (#2036)
+* Support `apps.hanzo.ai/hook-delete-policy: BeforeHookCreation` (#2036)
 * Support setting Helm string parameters using CLI/UI (#2078)
 * Config management plugin environment variable UI/CLI support (#2203)
 * Helm: auto-detect URLs (#2260)

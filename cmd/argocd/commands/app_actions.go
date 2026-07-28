@@ -246,7 +246,7 @@ func getActionableResourcesForApplication(ctx context.Context, appIf application
 		return nil, err
 	}
 	app.Kind = application.ApplicationKind
-	app.APIVersion = "argoproj.io/v1alpha1"
+	app.APIVersion = v1alpha1.SchemeGroupVersion.String()
 	appManifest, err := json.Marshal(app)
 	if err != nil {
 		return nil, err

@@ -43,7 +43,7 @@ func testHookSuccessful(t *testing.T, hookType HookType) {
 	ctx.
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", fmt.Sprintf(`[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": %q}}]`, hookType)).
+		PatchFile("hook.yaml", fmt.Sprintf(`[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": %q}}]`, hookType)).
 		CreateApp().
 		Sync().
 		Then().
@@ -128,7 +128,7 @@ func TestPreSyncHookFailure(t *testing.T) {
 	ctx := Given(t)
 	ctx.Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PreSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PreSync"}}]`).
 		// make hook fail
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command", "value": ["false"]}]`).
 		CreateApp().
@@ -192,7 +192,7 @@ func TestPostSyncHookFailure(t *testing.T) {
 	Given(t).
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PostSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PostSync"}}]`).
 		// make hook fail
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command/0", "value": "false"}]`).
 		CreateApp().
@@ -217,7 +217,7 @@ func TestPostSyncHookPodFailure(t *testing.T) {
 		Path("hook").
 		When().
 		IgnoreErrors().
-		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PostSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PostSync"}}]`).
 		// make pod fail
 		PatchFile("pod.yaml", `[{"op": "replace", "path": "/spec/containers/0/command/0", "value": "false"}]`).
 		CreateApp().
@@ -243,7 +243,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    argocd.argoproj.io/hook: SyncFail
+    apps.hanzo.ai/hook: SyncFail
   name: sync-fail-hook
 spec:
   containers:
@@ -254,7 +254,7 @@ spec:
       name: main
   restartPolicy: Never
 `).
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PostSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PostSync"}}]`).
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command/0", "value": "false"}]`).
 		CreateApp().
 		Sync().
@@ -275,7 +275,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    argocd.argoproj.io/hook: SyncFail
+    apps.hanzo.ai/hook: SyncFail
   name: successful-sync-fail-hook
 spec:
   containers:
@@ -291,7 +291,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    argocd.argoproj.io/hook: SyncFail
+    apps.hanzo.ai/hook: SyncFail
   name: failed-sync-fail-hook
 spec:
   containers:
@@ -302,7 +302,7 @@ spec:
       name: main
   restartPolicy: Never
 `).
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PostSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PostSync"}}]`).
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command/0", "value": "false"}]`).
 		CreateApp().
 		Sync().
@@ -326,8 +326,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookFailed # To preserve existence before sync
+    apps.hanzo.ai/hook: Sync
+    apps.hanzo.ai/hook-delete-policy: HookFailed # To preserve existence before sync
   name: invalid-hook
 spec:
   containers:
@@ -368,8 +368,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    argocd.argoproj.io/hook: SyncFail
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded # To preserve existence before sync
+    apps.hanzo.ai/hook: SyncFail
+    apps.hanzo.ai/hook-delete-policy: HookSucceeded # To preserve existence before sync
   name: invalid-sync-fail-hook
 spec:
   containers:
@@ -389,7 +389,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    argocd.argoproj.io/hook: SyncFail
+    apps.hanzo.ai/hook: SyncFail
   name: successful-sync-fail-hook
 spec:
   containers:
@@ -427,7 +427,7 @@ func TestHookDeletePolicyHookSucceededHookExit0(t *testing.T) {
 	Given(t).
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/argocd.argoproj.io~1hook-delete-policy", "value": "HookSucceeded"}]`).
+		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/apps.hanzo.ai~1hook-delete-policy", "value": "HookSucceeded"}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -440,7 +440,7 @@ func TestHookDeletePolicyHookSucceededHookExit1(t *testing.T) {
 	Given(t).
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/argocd.argoproj.io~1hook-delete-policy", "value": "HookSucceeded"}]`).
+		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/apps.hanzo.ai~1hook-delete-policy", "value": "HookSucceeded"}]`).
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command/0", "value": "false"}]`).
 		CreateApp().
 		IgnoreErrors().
@@ -456,7 +456,7 @@ func TestHookDeletePolicyHookFailedHookExit0(t *testing.T) {
 	Given(t).
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/argocd.argoproj.io~1hook-delete-policy", "value": "HookFailed"}]`).
+		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/apps.hanzo.ai~1hook-delete-policy", "value": "HookFailed"}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -471,7 +471,7 @@ func TestHookDeletePolicyHookFailedHookExit1(t *testing.T) {
 		Path("hook").
 		When().
 		IgnoreErrors().
-		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/argocd.argoproj.io~1hook-delete-policy", "value": "HookFailed"}]`).
+		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/apps.hanzo.ai~1hook-delete-policy", "value": "HookFailed"}]`).
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command/0", "value": "false"}]`).
 		CreateApp().
 		Sync().
@@ -488,7 +488,7 @@ func TestHookBeforeHookCreation(t *testing.T) {
 	ctx.
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/argocd.argoproj.io~1hook-delete-policy", "value": "BeforeHookCreation"}]`).
+		PatchFile("hook.yaml", `[{"op": "add", "path": "/metadata/annotations/apps.hanzo.ai~1hook-delete-policy", "value": "BeforeHookCreation"}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -529,7 +529,7 @@ func TestHookBeforeHookCreationFailure(t *testing.T) {
 		Path("hook").
 		When().
 		PatchFile("hook.yaml", `[
-	{"op": "add", "path": "/metadata/annotations/argocd.argoproj.io~1hook-delete-policy", "value": "BeforeHookCreation"},
+	{"op": "add", "path": "/metadata/annotations/apps.hanzo.ai~1hook-delete-policy", "value": "BeforeHookCreation"},
 	{"op": "replace", "path": "/spec/containers/0/command", "value": ["sleep", "3"]}
 ]`).
 		CreateApp().
@@ -552,7 +552,7 @@ func TestHookSkip(t *testing.T) {
 		Path("hook").
 		When().
 		// should not create this pod
-		PatchFile("pod.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "Skip"}}]`).
+		PatchFile("pod.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "Skip"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -582,7 +582,7 @@ func TestAutomaticallyNamingUnnamedHook(t *testing.T) {
 		When().
 		PatchFile("hook.yaml", `[{"op": "remove", "path": "/metadata/name"}]`).
 		// make this part of two sync tasks
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PreSync,PostSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PreSync,PostSync"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -628,7 +628,7 @@ func testHookFinalizer(t *testing.T, hookType HookType) {
 						end
 						if obj.metadata.finalizers ~= nil  then
 							for i, finalizer in ipairs(obj.metadata.finalizers) do
-								if finalizer == "argocd.argoproj.io/hook-finalizer" then
+								if finalizer == "apps.hanzo.ai/hook-finalizer" then
 									hs.message = "Resource has finalizer"
 									return hs
 								end
@@ -641,7 +641,7 @@ func testHookFinalizer(t *testing.T, hookType HookType) {
 		}).
 		Path("hook-resource-deleted-externally").
 		When().
-		PatchFile("hook.yaml", fmt.Sprintf(`[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": %q}}]`, hookType)).
+		PatchFile("hook.yaml", fmt.Sprintf(`[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": %q}}]`, hookType)).
 		CreateApp().
 		Sync().
 		Then().
@@ -661,8 +661,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: %s
+    apps.hanzo.ai/hook: PreSync
+    apps.hanzo.ai/hook-delete-policy: %s
   name: %s
 spec:
   containers:

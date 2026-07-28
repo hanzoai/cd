@@ -355,7 +355,7 @@ kind: Secret
 metadata:
   name: argocd-example-apps
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 type: Opaque
 stringData:
   project: my-project1                                     # Project scoped 
@@ -379,7 +379,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com

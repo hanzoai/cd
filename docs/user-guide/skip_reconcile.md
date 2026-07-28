@@ -8,7 +8,7 @@
 > This feature may be removed in future releases or modified in backwards-incompatible ways.
 
 Argo CD allows users to stop an Application from reconciling.
-The skip reconcile option is configured with the `argocd.argoproj.io/skip-reconcile: "true"` annotation.
+The skip reconcile option is configured with the `apps.hanzo.ai/skip-reconcile: "true"` annotation.
 When the Application is configured to skip reconcile,
 all processing is stopped for the Application.
 During the period of time when the Application is not processing,
@@ -23,7 +23,7 @@ See the below example for enabling an Application to skip reconcile:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/skip-reconcile: "true"
+    apps.hanzo.ai/skip-reconcile: "true"
 ```
 
 See the below example for an Application that is newly created with the skip reconcile enabled:
@@ -33,7 +33,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/skip-reconcile: "true"
+    apps.hanzo.ai/skip-reconcile: "true"
   name: guestbook
   namespace: argocd
 spec:

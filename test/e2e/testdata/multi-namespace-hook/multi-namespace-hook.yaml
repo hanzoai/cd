@@ -33,8 +33,8 @@ kind: Pod
 metadata:
   name: my-hook
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    apps.hanzo.ai/hook: PostSync
+    apps.hanzo.ai/hook-delete-policy: HookSucceeded
 spec:
   restartPolicy: Never
   containers:
@@ -50,8 +50,8 @@ metadata:
   name: my-hook
   namespace: test-multi-ns-hook-second
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    apps.hanzo.ai/hook: PostSync
+    apps.hanzo.ai/hook-delete-policy: HookSucceeded
 spec:
   restartPolicy: Never
   containers:

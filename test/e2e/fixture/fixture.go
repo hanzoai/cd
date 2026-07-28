@@ -698,35 +698,35 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 				metav1.ListOptions{FieldSelector: "metadata.name!=default"})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repo-config
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=repo-config
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepository})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repo-creds
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=repo-creds
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepoCreds})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repository-write
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=repository-write
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepositoryWrite})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repo-write-creds
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=repo-write-creds
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepoCredsWrite})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=cluster
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=cluster
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},

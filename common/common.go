@@ -192,7 +192,12 @@ const (
 	LabelKeyAppName = "app.kubernetes.io/name"
 	// LabelKeyAutoLabelClusterInfo if set to true will automatically add extra labels from the cluster info (currently it only adds a k8s version label)
 	LabelKeyAutoLabelClusterInfo = "apps.hanzo.ai/auto-label-cluster-info"
-	// LabelKeyLegacyApplicationName is the legacy label (v0.10 and below) and is superseded by 'app.kubernetes.io/instance'
+	// LabelKeyLegacyApplicationName is the legacy label (upstream v0.10 and below), superseded by
+	// 'app.kubernetes.io/instance'. This is the ONE argoproj.io string deliberately retained in our
+	// own identity surface: it names the upstream's v0.10 label, not ours. Renaming it to
+	// apps.hanzo.ai would invent a "legacy Hanzo install" that never existed, and would silently
+	// change which application.instanceLabelKey value re-enables pod-template labeling in
+	// util/kube.SetAppInstanceLabel. Delete the compat branch to retire it; do not rebrand it.
 	LabelKeyLegacyApplicationName = "applications.argoproj.io/app-name"
 	// LabelKeySecretType contains the type of argocd secret (currently: 'cluster', 'repository', 'repo-config' or 'repo-creds')
 	LabelKeySecretType = "apps.hanzo.ai/secret-type"

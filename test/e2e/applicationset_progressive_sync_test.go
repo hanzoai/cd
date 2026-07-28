@@ -37,7 +37,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "dev",
 			},
 			Finalizers: []string{
-				"resources-finalizer.argocd.argoproj.io",
+				"resources-finalizer.apps.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -66,7 +66,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "staging",
 			},
 			Finalizers: []string{
-				"resources-finalizer.argocd.argoproj.io",
+				"resources-finalizer.apps.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -94,7 +94,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "prod",
 			},
 			Finalizers: []string{
-				"resources-finalizer.argocd.argoproj.io",
+				"resources-finalizer.apps.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -638,7 +638,7 @@ var appSetWithReverseDeletionOrder = v1alpha1.ApplicationSet{
 					"environment": "{{.environment}}",
 				},
 				Finalizers: []string{
-					"resources-finalizer.argocd.argoproj.io",
+					"resources-finalizer.apps.hanzo.ai",
 					"test.e2e.argoproj.io/wait-for-verification",
 				},
 			},
@@ -684,7 +684,7 @@ var appSetWithReverseDeletionOrder = v1alpha1.ApplicationSet{
 
 func generateExpectedApp(prefix string, path string, name string, envVar string, testFinalizer string) v1alpha1.Application {
 	finalizers := []string{
-		"resources-finalizer.argocd.argoproj.io",
+		"resources-finalizer.apps.hanzo.ai",
 	}
 	if testFinalizer != "" {
 		finalizers = append(finalizers, testFinalizer)

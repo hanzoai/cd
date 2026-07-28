@@ -1290,7 +1290,7 @@ func TestPermissionWithScopedRepo(t *testing.T) {
 		RepoURLType(fixture.RepoURLTypeFile).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1323,7 +1323,7 @@ func TestPermissionDeniedWithScopedRepo(t *testing.T) {
 		RepoURLType(fixture.RepoURLTypeFile).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		IgnoreErrors().
 		CreateApp().
 		Then().
@@ -1347,7 +1347,7 @@ func TestPermissionDeniedWithNegatedNamespace(t *testing.T) {
 		RepoURLType(fixture.RepoURLTypeFile).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		IgnoreErrors().
 		CreateApp().
 		Then().
@@ -1371,7 +1371,7 @@ func TestPermissionDeniedWithNegatedServer(t *testing.T) {
 		RepoURLType(fixture.RepoURLTypeFile).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		IgnoreErrors().
 		CreateApp().
 		Then().
@@ -1383,7 +1383,7 @@ func TestSyncOptionPruneFalseResourceLevel(t *testing.T) {
 	Given(t).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1435,7 +1435,7 @@ func TestSyncOptionPruneFalseResourceOverride(t *testing.T) {
 			"path": "/spec/syncPolicy",
 			"value": { "syncOptions": ["Prune=true"] }
 			}]`).
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		Sync().
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded)).
@@ -1466,7 +1466,7 @@ func TestSyncOptionValidateFalse(t *testing.T) {
 		// client error. K8s API changed error message w/ 1.25, so for now, we need to check both
 		Expect(ErrorRegex("error validating data|of type int32", "")).
 		When().
-		PatchFile("deployment.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Validate=false"}}]`).
+		PatchFile("deployment.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Validate=false"}}]`).
 		Sync().
 		Then().
 		// server error
@@ -1479,7 +1479,7 @@ func TestCompareOptionIgnoreExtraneous(t *testing.T) {
 		Prune(false).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/compare-options": "IgnoreExtraneous"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/compare-options": "IgnoreExtraneous"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -2055,7 +2055,7 @@ func TestFailedSyncWithRetry(t *testing.T) {
 	Given(t).
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "PreSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PreSync"}}]`).
 		// make hook fail
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command", "value": ["false"]}]`).
 		CreateApp().
@@ -2089,7 +2089,7 @@ func TestCreateFromPartialFile(t *testing.T) {
   annotations:
     annotations.local/from-file: file
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.apps.hanzo.ai
 spec:
   syncPolicy:
     automated:
@@ -2258,7 +2258,7 @@ func TestSyncOptionReplace(t *testing.T) {
 	Given(t).
 		Path("config-map").
 		When().
-		PatchFile("config-map.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/sync-options": "Replace=true"}}]`).
+		PatchFile("config-map.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Replace=true"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -2683,7 +2683,7 @@ kind: ConfigMap
 metadata:
   name: other-map
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    apps.hanzo.ai/sync-wave: "1"
 data:
   foo2: bar2`).
 		AddFile("yet-another-configmap.yaml", `
@@ -2692,7 +2692,7 @@ kind: ConfigMap
 metadata:
   name: yet-another-map
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    apps.hanzo.ai/sync-wave: "2"
 data:
   foo3: bar3`).
 		PatchFile("kustomization.yaml", `[{"op": "add", "path": "/resources/-", "value": "other-configmap.yaml"}, {"op": "add", "path": "/resources/-", "value": "yet-another-configmap.yaml"}]`).
@@ -2773,7 +2773,7 @@ func TestDeletionConfirmation(t *testing.T) {
 		Path(guestbookPath).
 		Async(true).
 		When().
-		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "argocd.argoproj.io/sync-options": "Delete=confirm" }}]`).
+		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "apps.hanzo.ai/sync-options": "Delete=confirm" }}]`).
 		CreateApp().Sync().
 		Then().
 		ExpectConsistently(OperationPhaseIs(OperationRunning), time.Second, 5*time.Second).

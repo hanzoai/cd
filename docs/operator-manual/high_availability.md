@@ -57,7 +57,7 @@ the appropriate tool.
   further investigation.
 
 * When using the `discovery` option in Config Management Plugins (CMP), `argocd-repo-server` copies the repository (or
-  only the files specified via the `argocd.argoproj.io/manifest-generate-paths` annotation) into a separate directory
+  only the files specified via the `apps.hanzo.ai/manifest-generate-paths` annotation) into a separate directory
   for each plugin.
   This can place a heavy load on disk resources for a **argocd-repo-server**, especially if the repository contains
   large files. To mitigate this, consider disabling `discovery` or
@@ -168,7 +168,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   shard: 1
@@ -335,16 +335,16 @@ The following are known cases that might cause slowness and their workarounds:
 Argo CD aggressively caches generated manifests and uses the repository commit SHA as a cache key. A new commit to the
 Git repository invalidates the cache for all applications configured in the repository.
 This can negatively affect repositories with multiple applications. You can use the
-`argocd.argoproj.io/manifest-generate-paths` Application CRD annotation to solve this problem and improve performance.
+`apps.hanzo.ai/manifest-generate-paths` Application CRD annotation to solve this problem and improve performance.
 
-Note: The `argocd.argoproj.io/manifest-generate-paths` annotation is available for use with webhooks. Since Argo CD
+Note: The `apps.hanzo.ai/manifest-generate-paths` annotation is available for use with webhooks. Since Argo CD
 v2.11, this annotation can also be used **without configuring any webhooks**. Webhooks are not a pre-condition for this
 feature. You can rely on the annotation alone to optimize manifest generation for all applications.
 
-The `argocd.argoproj.io/manifest-generate-paths` annotation contains a semicolon-separated list of paths within the Git
+The `apps.hanzo.ai/manifest-generate-paths` annotation contains a semicolon-separated list of paths within the Git
 repository that are used during manifest generation. It will use the paths specified in the annotation to compare the
 last cached revision to the latest commit. If no modified files match the paths specified in
-`argocd.argoproj.io/manifest-generate-paths`, then it will not trigger application reconciliation and the existing cache
+`apps.hanzo.ai/manifest-generate-paths`, then it will not trigger application reconciliation and the existing cache
 will be considered valid for the new commit.
 
 Installations that use a different repository for each application are **not** subject to this behavior and will likely
@@ -378,7 +378,7 @@ metadata:
   namespace: argocd
   annotations:
     # resolves to the 'guestbook' directory
-    argocd.argoproj.io/manifest-generate-paths: .
+    apps.hanzo.ai/manifest-generate-paths: .
 spec:
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
@@ -396,7 +396,7 @@ kind: Application
 metadata:
   name: guestbook
   annotations:
-    argocd.argoproj.io/manifest-generate-paths: /guestbook
+    apps.hanzo.ai/manifest-generate-paths: /guestbook
 spec:
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
@@ -415,7 +415,7 @@ metadata:
   name: guestbook
   annotations:
     # resolves to 'my-application' and 'shared'
-    argocd.argoproj.io/manifest-generate-paths: .;../shared
+    apps.hanzo.ai/manifest-generate-paths: .;../shared
 spec:
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
@@ -435,7 +435,7 @@ metadata:
   namespace: argocd
   annotations:
     # resolves to any file matching the pattern of *-secret.yaml in the top level shared folder
-    argocd.argoproj.io/manifest-generate-paths: "/shared/*-secret.yaml"
+    apps.hanzo.ai/manifest-generate-paths: "/shared/*-secret.yaml"
 spec:
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
@@ -445,7 +445,7 @@ spec:
 ```
 
 > [!NOTE]
-> If application manifest generation using the `argocd.argoproj.io/manifest-generate-paths` annotation feature is
+> If application manifest generation using the `apps.hanzo.ai/manifest-generate-paths` annotation feature is
 > enabled, only the resources specified by this annotation will be sent to the CMP server for manifest generation,
 > rather
 > than the entire repository. To determine the appropriate resources, a common root path is calculated based on the
@@ -454,7 +454,7 @@ spec:
 
 #### Measuring Annotation Efficiency
 
-You can use the following metrics to evaluate how effectively the `argocd.argoproj.io/manifest-generate-paths`
+You can use the following metrics to evaluate how effectively the `apps.hanzo.ai/manifest-generate-paths`
 annotation is reducing unnecessary manifest regeneration:
 
 - **`argocd_webhook_requests_total`** (label: `repo`) — counts incoming webhook events per repository. Use this as the
@@ -719,9 +719,9 @@ stringData:
 kind: Secret
 metadata:
   annotations:
-    managed-by: argocd.argoproj.io
+    managed-by: apps.hanzo.ai
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
   name: my-repo
   namespace: argocd
 type: Opaque
@@ -734,6 +734,6 @@ When shallow cloning, the repository is cloned with a depth of 1, which means on
 
 > [!NOTE]
 > Shallow cloning disables the non-webhook Git-history comparison optimization provided by the
-> `argocd.argoproj.io/manifest-generate-paths` annotation. If you rely on that annotation to avoid unnecessary refreshes
+> `apps.hanzo.ai/manifest-generate-paths` annotation. If you rely on that annotation to avoid unnecessary refreshes
 > without webhooks, use a full clone (`depth: "0"` or omit `depth`) for that repository. Webhook payload filtering and
 > Config Management Plugin sidecar path narrowing can still use the annotation with shallow clones.

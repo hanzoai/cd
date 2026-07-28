@@ -5,7 +5,7 @@ metadata:
   name: argoproj-https-creds
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repo-creds
+    apps.hanzo.ai/secret-type: repo-creds
 stringData:
   url: https://github.com/argoproj
   type: helm
@@ -18,7 +18,7 @@ metadata:
   name: argoproj-ssh-creds
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repo-creds
+    apps.hanzo.ai/secret-type: repo-creds
 stringData:
   url: git@github.com:argoproj-labs
   type: helm
@@ -33,7 +33,7 @@ metadata:
   name: github-creds
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repo-creds
+    apps.hanzo.ai/secret-type: repo-creds
 stringData:
   url: https://github.com/argoproj
   type: helm
@@ -50,7 +50,7 @@ metadata:
   name: github-enterprise-creds
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repo-creds
+    apps.hanzo.ai/secret-type: repo-creds
 stringData:
   url: https://github.com/argoproj
   type: helm
@@ -68,7 +68,7 @@ metadata:
   name: private-oci-repo
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repo-creds
+    apps.hanzo.ai/secret-type: repo-creds
 stringData:
   username: my-username
   password: my-password

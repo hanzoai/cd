@@ -253,7 +253,7 @@ func NewImportCommand() *cobra.Command {
 			}
 			applicationSets, err := acdClients.applicationSets.List(ctx, metav1.ListOptions{})
 			if apierrors.IsForbidden(err) || apierrors.IsNotFound(err) {
-				log.Warnf("argoproj.io/ApplicationSet: %v\n", err)
+				log.Warnf("apps.hanzo.ai/ApplicationSet: %v\n", err)
 			} else {
 				errors.CheckError(err)
 			}

@@ -4315,7 +4315,7 @@ func TestGetAppOfAppSummary(t *testing.T) {
 
 	appOfAppsTree := &ApplicationTree{
 		Nodes: []ResourceNode{
-			{ResourceRef: ResourceRef{Name: "children-app", Kind: "Application", Group: "argoproj.io"}},
+			{ResourceRef: ResourceRef{Name: "children-app", Kind: "Application", Group: SchemeGroupVersion.Group}},
 			{ResourceRef: ResourceRef{Name: "any-service", Kind: "Service", Group: ""}},
 		},
 	}

@@ -2,7 +2,7 @@ apiVersion: tower.ansible.com/v1alpha1
 kind: AnsibleJob
 metadata:
   annotations:
-    argocd.argoproj.io/hook: PreSync
+    apps.hanzo.ai/hook: PreSync
   creationTimestamp: "2023-06-27T20:22:22Z"
   generateName: prehook-test-
   generation: 1

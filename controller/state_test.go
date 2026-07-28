@@ -241,7 +241,7 @@ func TestCompareAppStateNamespaceMetadata(t *testing.T) {
 	delete(labels, "kubernetes.io/metadata.name")
 
 	assert.Equal(t, map[string]string{"foo": "bar"}, labels)
-	assert.Equal(t, map[string]string{"argocd.argoproj.io/sync-options": "ServerSideApply=true", "bar": "bat", "foo": "bar"}, result.GetAnnotations())
+	assert.Equal(t, map[string]string{"apps.hanzo.ai/sync-options": "ServerSideApply=true", "bar": "bat", "foo": "bar"}, result.GetAnnotations())
 	assert.Empty(t, app.Status.Conditions)
 }
 
@@ -505,10 +505,10 @@ func TestCompareAppStateSyncHookSyncWave(t *testing.T) {
 func TestCompareAppStateRequireDeletion(t *testing.T) {
 	obj1 := NewPod()
 	obj1.SetName("my-pod-1")
-	obj1.SetAnnotations(map[string]string{"argocd.argoproj.io/sync-options": "Delete=confirm"})
+	obj1.SetAnnotations(map[string]string{"apps.hanzo.ai/sync-options": "Delete=confirm"})
 	obj2 := NewPod()
 	obj2.SetName("my-pod-2")
-	obj2.SetAnnotations(map[string]string{"argocd.argoproj.io/sync-options": "Prune=confirm"})
+	obj2.SetAnnotations(map[string]string{"apps.hanzo.ai/sync-options": "Prune=confirm"})
 	obj3 := NewPod()
 	obj3.SetName("my-pod-3")
 
@@ -746,7 +746,7 @@ func TestCompareAppStateManagedNamespaceMetadataWithLiveNsDoesNotGetPruned(t *te
 	ns := NewNamespace()
 	ns.SetName(test.FakeDestNamespace)
 	ns.SetNamespace(test.FakeDestNamespace)
-	ns.SetAnnotations(map[string]string{"argocd.argoproj.io/sync-options": "ServerSideApply=true"})
+	ns.SetAnnotations(map[string]string{"apps.hanzo.ai/sync-options": "ServerSideApply=true"})
 
 	data := fakeData{
 		manifestResponse: &apiclient.ManifestResponse{
@@ -2182,7 +2182,7 @@ func Test_isObjRequiresDeletionConfirmation(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			obj := NewPod()
-			obj.SetAnnotations(map[string]string{"argocd.argoproj.io/sync-options": strings.Join(tt.resourceSyncOptions, ",")})
+			obj.SetAnnotations(map[string]string{"apps.hanzo.ai/sync-options": strings.Join(tt.resourceSyncOptions, ",")})
 
 			app := newFakeApp()
 			app.Spec.SyncPolicy.SyncOptions = tt.appSyncOptions

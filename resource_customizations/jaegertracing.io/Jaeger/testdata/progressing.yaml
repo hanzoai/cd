@@ -3,7 +3,7 @@ kind: Jaeger
 metadata:
   generation: 3
   labels:
-    argocd.argoproj.io/instance: jaeger-operator-default
+    apps.hanzo.ai/instance: jaeger-operator-default
   name: jaeger
   namespace: jaeger
   resourceVersion: "226432"

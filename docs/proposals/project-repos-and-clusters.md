@@ -70,7 +70,7 @@ kind: Secret
 metadata:
   name: argocd-example-apps
   labels:
-    argocd.argoproj.io/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 type: Opaque
 stringData:
   project: my-project1                                     # new project field

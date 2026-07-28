@@ -82,7 +82,7 @@ recommendation applies even when AppSets-in-any-namespace is disabled, but is es
 since non-Argo-admins may attempt to reference out-of-bounds secrets in the `argocd` namespace from an AppSet
 `tokenRef`.
 
-When this mode is enabled, the referenced secret must have a label `argocd.argoproj.io/secret-type` with value
+When this mode is enabled, the referenced secret must have a label `apps.hanzo.ai/secret-type` with value
 `scm-creds`.
 
 To enable this mode, set the `ARGOCD_APPLICATIONSET_CONTROLLER_TOKENREF_STRICT_MODE` environment variable to `true` in the

@@ -176,7 +176,7 @@ func TestLogResourceEvent(t *testing.T) {
 
 	res := argoappv1.ResourceNode{
 		ResourceRef: argoappv1.ResourceRef{
-			Group:     "argocd.argoproj.io",
+			Group:     "apps.hanzo.ai",
 			Version:   "v1alpha1",
 			Kind:      "SignatureKey",
 			Name:      "testapp",
