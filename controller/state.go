@@ -131,7 +131,7 @@ func (res *comparisonResult) GetHealthStatus() health.HealthStatusCode {
 // appStateManager allows to compare applications to git
 type appStateManager struct {
 	metricsServer         *metrics.MetricsServer
-	db                    db.ArgoDB
+	db                    db.DB
 	settingsMgr           *settings.SettingsManager
 	appclientset          appclientset.Interface
 	kubectl               kubeutil.Kubectl
@@ -1300,7 +1300,7 @@ func (m *appStateManager) persistRevisionHistory(
 
 // NewAppStateManager creates new instance of AppStateManager
 func NewAppStateManager(
-	db db.ArgoDB,
+	db db.DB,
 	appclientset appclientset.Interface,
 	repoClientset apiclient.Clientset,
 	namespace string,

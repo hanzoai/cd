@@ -36,7 +36,7 @@ type ClusterSharding struct {
 	getClusterShard DistributionFunction
 }
 
-func NewClusterSharding(_ db.ArgoDB, shard, replicas int, shardingAlgorithm string) ClusterShardingCache {
+func NewClusterSharding(_ db.DB, shard, replicas int, shardingAlgorithm string) ClusterShardingCache {
 	log.Debugf("Processing clusters from shard %d: Using filter function:  %s", shard, shardingAlgorithm)
 	clusterSharding := &ClusterSharding{
 		Shard:    shard,

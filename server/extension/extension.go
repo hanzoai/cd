@@ -265,11 +265,11 @@ type ProjectGetter interface {
 // DefaultProjectGetter is the real ProjectGetter implementation.
 type DefaultProjectGetter struct {
 	projLister applisters.AppProjectNamespaceLister
-	db         db.ArgoDB
+	db         db.DB
 }
 
 // NewDefaultProjectGetter returns a new default project getter
-func NewDefaultProjectGetter(lister applisters.AppProjectNamespaceLister, db db.ArgoDB) *DefaultProjectGetter {
+func NewDefaultProjectGetter(lister applisters.AppProjectNamespaceLister, db db.DB) *DefaultProjectGetter {
 	return &DefaultProjectGetter{
 		projLister: lister,
 		db:         db,

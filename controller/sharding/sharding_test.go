@@ -26,7 +26,7 @@ import (
 )
 
 func TestGetShardByID_NotEmptyID(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	replicasCount := 1
 	db.EXPECT().GetApplicationControllerReplicas().Return(replicasCount).Maybe()
 	assert.Equal(t, 0, LegacyDistributionFunction(replicasCount)(&v1alpha1.Cluster{ID: "1"}))
@@ -36,7 +36,7 @@ func TestGetShardByID_NotEmptyID(t *testing.T) {
 }
 
 func TestGetShardByID_EmptyID(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	replicasCount := 1
 	db.EXPECT().GetApplicationControllerReplicas().Return(replicasCount).Maybe()
 	distributionFunction := LegacyDistributionFunction
@@ -45,7 +45,7 @@ func TestGetShardByID_EmptyID(t *testing.T) {
 }
 
 func TestGetShardByID_NoReplicas(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(0).Maybe()
 	distributionFunction := LegacyDistributionFunction
 	shard := distributionFunction(0)(&v1alpha1.Cluster{})
@@ -53,7 +53,7 @@ func TestGetShardByID_NoReplicas(t *testing.T) {
 }
 
 func TestGetShardByID_NoReplicasUsingHashDistributionFunction(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(0).Maybe()
 	distributionFunction := LegacyDistributionFunction
 	shard := distributionFunction(0)(&v1alpha1.Cluster{})
@@ -240,7 +240,7 @@ func TestGetShardByIndexModuloReplicasCountDistributionFunctionWhenClusterNumber
 }
 
 func TestGetShardByIndexModuloReplicasCountDistributionFunctionWhenClusterIsAddedAndRemoved(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	cluster1 := createCluster("cluster1", "1")
 	cluster2 := createCluster("cluster2", "2")
 	cluster3 := createCluster("cluster3", "3")
@@ -277,7 +277,7 @@ func TestGetShardByIndexModuloReplicasCountDistributionFunctionWhenClusterIsAdde
 }
 
 func TestConsistentHashingWhenClusterIsAddedAndRemoved(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	clusterCount := 133
 	prefix := "cluster"
 
@@ -347,7 +347,7 @@ func TestConsistentHashingWhenClusterIsAddedAndRemoved(t *testing.T) {
 }
 
 func TestConsistentHashingWhenClusterWithZeroReplicas(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	clusters := []v1alpha1.Cluster{createCluster("cluster-01", "01")}
 	clusterAccessor := getClusterAccessor(clusters)
 	clusterList := &v1alpha1.ClusterList{Items: clusters}
@@ -361,7 +361,7 @@ func TestConsistentHashingWhenClusterWithZeroReplicas(t *testing.T) {
 }
 
 func TestConsistentHashingWhenClusterWithFixedShard(t *testing.T) {
-	db := &dbmocks.ArgoDB{}
+	db := &dbmocks.DB{}
 	var fixedShard int64 = 1
 	cluster := &v1alpha1.Cluster{ID: "1", Shard: &fixedShard}
 	clusters := []v1alpha1.Cluster{*cluster}
@@ -418,8 +418,8 @@ func TestInferShard(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func createTestClusters() (clusterAccessor, *dbmocks.ArgoDB, v1alpha1.Cluster, v1alpha1.Cluster, v1alpha1.Cluster, v1alpha1.Cluster, v1alpha1.Cluster) {
-	db := &dbmocks.ArgoDB{}
+func createTestClusters() (clusterAccessor, *dbmocks.DB, v1alpha1.Cluster, v1alpha1.Cluster, v1alpha1.Cluster, v1alpha1.Cluster, v1alpha1.Cluster) {
+	db := &dbmocks.DB{}
 	cluster1 := createCluster("cluster1", "1")
 	cluster2 := createCluster("cluster2", "2")
 	cluster3 := createCluster("cluster3", "3")

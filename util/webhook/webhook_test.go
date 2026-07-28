@@ -96,13 +96,13 @@ func NewMockHandler(reactor *reactorDef, applicationNamespaces []string, objects
 }
 
 func NewMockHandlerWithPayloadLimit(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, objects ...runtime.Object) *ArgoCDWebhookHandler {
-	mockDB := &mocks.ArgoDB{}
+	mockDB := &mocks.DB{}
 	mockDB.EXPECT().ListRepositories(mock.Anything).Return([]*v1alpha1.Repository{}, nil).Maybe()
 	return newMockHandler(reactor, applicationNamespaces, maxPayloadSize, mockDB, &settings.ArgoCDSettings{}, objects...)
 }
 
 func NewMockHandlerForBitbucketCallback(reactor *reactorDef, applicationNamespaces []string, objects ...runtime.Object) *ArgoCDWebhookHandler {
-	mockDB := &mocks.ArgoDB{}
+	mockDB := &mocks.DB{}
 	mockDB.EXPECT().ListRepositories(mock.Anything).Return(
 		[]*v1alpha1.Repository{
 			{
@@ -150,7 +150,7 @@ func (f *fakeAppsLister) List(selector labels.Selector) ([]*v1alpha1.Application
 	return apps, nil
 }
 
-func newMockHandler(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, argoDB db.ArgoDB, argoSettings *settings.ArgoCDSettings, objects ...runtime.Object) *ArgoCDWebhookHandler {
+func newMockHandler(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, argoDB db.DB, argoSettings *settings.ArgoCDSettings, objects ...runtime.Object) *ArgoCDWebhookHandler {
 	appClientset := appclientset.NewSimpleClientset(objects...)
 	if reactor != nil {
 		defaultReactor := appClientset.ReactionChain[0]
@@ -1112,7 +1112,7 @@ func TestHandleEvent(t *testing.T) {
 
 			// Setup server cache with cluster info
 			serverCache := servercache.NewCache(appstate.NewCache(cacheClient, time.Minute), time.Minute, time.Minute)
-			mockDB := &mocks.ArgoDB{}
+			mockDB := &mocks.DB{}
 
 			// Set destination if not present (required for cache updates)
 			if ttc.app.Spec.Destination.Server == "" {
@@ -1767,7 +1767,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 			&fakeSettingsSrc{},
 			cache.NewCache(cacheClient, 1*time.Minute, 1*time.Minute, 10*time.Second),
 			servercache.NewCache(appstate.NewCache(cacheClient, time.Minute), time.Minute, time.Minute),
-			&mocks.ArgoDB{},
+			&mocks.DB{},
 			int64(50)*1024*1024,
 			2*time.Second,
 			10,
@@ -1807,7 +1807,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 			&fakeSettingsSrc{},
 			cache.NewCache(cacheClient, 1*time.Minute, 1*time.Minute, 10*time.Second),
 			servercache.NewCache(appstate.NewCache(cacheClient, time.Minute), time.Minute, time.Minute),
-			&mocks.ArgoDB{},
+			&mocks.DB{},
 			int64(50)*1024*1024,
 			2*time.Second,
 			100, // High threshold - won't be exceeded

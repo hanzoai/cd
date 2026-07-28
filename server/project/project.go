@@ -55,12 +55,12 @@ type Server struct {
 	sessionMgr    *session.SessionManager
 	projInformer  cache.SharedIndexInformer
 	settingsMgr   *settings.SettingsManager
-	db            db.ArgoDB
+	db            db.DB
 }
 
 // NewServer returns a new instance of the Project service
 func NewServer(ns string, kubeclientset kubernetes.Interface, appclientset appclientset.Interface, enf *rbac.Enforcer, projectLock sync.KeyLock, sessionMgr *session.SessionManager, policyEnf *rbacpolicy.RBACPolicyEnforcer,
-	projInformer cache.SharedIndexInformer, settingsMgr *settings.SettingsManager, db db.ArgoDB, enableK8sEvent []string,
+	projInformer cache.SharedIndexInformer, settingsMgr *settings.SettingsManager, db db.DB, enableK8sEvent []string,
 ) *Server {
 	auditLogger := cd.NewAuditLogger(kubeclientset, ns, "cd-server", enableK8sEvent)
 	return &Server{

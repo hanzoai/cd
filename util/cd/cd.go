@@ -301,7 +301,7 @@ func ValidateRepo(
 	ctx context.Context,
 	app *argoappv1.Application,
 	repoClientset apiclient.Clientset,
-	db db.ArgoDB,
+	db db.DB,
 	kubectl kube.Kubectl,
 	proj *argoappv1.AppProject,
 	settingsMgr *settings.SettingsManager,
@@ -429,7 +429,7 @@ func ValidateManagedByURL(app *argoappv1.Application) []argoappv1.ApplicationCon
 
 func validateRepo(ctx context.Context,
 	app *argoappv1.Application,
-	db db.ArgoDB,
+	db db.DB,
 	sources []argoappv1.ApplicationSource,
 	repoClient apiclient.RepoServerServiceClient,
 	permittedHelmRepos []*argoappv1.Repository,
@@ -640,7 +640,7 @@ func validateSourceHydrator(hydrator *argoappv1.SourceHydrator) []argoappv1.Appl
 }
 
 // ValidatePermissions ensures that the referenced cluster has been added to Hanzo CD and the app source repo and destination namespace/cluster are permitted in app project
-func ValidatePermissions(ctx context.Context, spec *argoappv1.ApplicationSpec, proj *argoappv1.AppProject, db db.ArgoDB) ([]argoappv1.ApplicationCondition, error) {
+func ValidatePermissions(ctx context.Context, spec *argoappv1.ApplicationSpec, proj *argoappv1.AppProject, db db.DB) ([]argoappv1.ApplicationCondition, error) {
 	conditions := []argoappv1.ApplicationCondition{}
 
 	switch {
@@ -738,7 +738,7 @@ func APIResourcesToStrings(resources []kube.APIResourceInfo, includeKinds bool) 
 }
 
 // GetAppProjectWithScopedResources returns a project from an application with scoped resources
-func GetAppProjectWithScopedResources(ctx context.Context, name string, projLister applicationsv1.AppProjectLister, ns string, settingsManager *settings.SettingsManager, db db.ArgoDB) (*argoappv1.AppProject, argoappv1.Repositories, []*argoappv1.Cluster, error) {
+func GetAppProjectWithScopedResources(ctx context.Context, name string, projLister applicationsv1.AppProjectLister, ns string, settingsManager *settings.SettingsManager, db db.DB) (*argoappv1.AppProject, argoappv1.Repositories, []*argoappv1.Cluster, error) {
 	projOrig, err := projLister.AppProjects(ns).Get(name)
 	if err != nil {
 		return nil, nil, nil, fmt.Errorf("error getting app project %q: %w", name, err)
@@ -761,7 +761,7 @@ func GetAppProjectWithScopedResources(ctx context.Context, name string, projList
 }
 
 // GetAppProjectByName returns a project from an application based on name
-func GetAppProjectByName(ctx context.Context, name string, projLister applicationsv1.AppProjectLister, ns string, settingsManager *settings.SettingsManager, db db.ArgoDB) (*argoappv1.AppProject, error) {
+func GetAppProjectByName(ctx context.Context, name string, projLister applicationsv1.AppProjectLister, ns string, settingsManager *settings.SettingsManager, db db.DB) (*argoappv1.AppProject, error) {
 	projOrig, err := projLister.AppProjects(ns).Get(name)
 	if err != nil {
 		return nil, fmt.Errorf("error getting app project %q: %w", name, err)
@@ -792,7 +792,7 @@ func GetAppProjectByName(ctx context.Context, name string, projLister applicatio
 
 // GetAppProject returns a project from an application. It will also ensure
 // that the application is allowed to use the project.
-func GetAppProject(ctx context.Context, app *argoappv1.Application, projLister applicationsv1.AppProjectLister, ns string, settingsManager *settings.SettingsManager, db db.ArgoDB) (*argoappv1.AppProject, error) {
+func GetAppProject(ctx context.Context, app *argoappv1.Application, projLister applicationsv1.AppProjectLister, ns string, settingsManager *settings.SettingsManager, db db.DB) (*argoappv1.AppProject, error) {
 	proj, err := GetAppProjectByName(ctx, app.Spec.GetProject(), projLister, ns, settingsManager, db)
 	if err != nil {
 		return nil, err
@@ -806,7 +806,7 @@ func GetAppProject(ctx context.Context, app *argoappv1.Application, projLister a
 // verifyGenerateManifests verifies a repo path can generate manifests
 func verifyGenerateManifests(
 	ctx context.Context,
-	db db.ArgoDB,
+	db db.DB,
 	helmRepos argoappv1.Repositories,
 	ociRepos argoappv1.Repositories,
 	helmOptions *argoappv1.HelmOptions,
@@ -1314,7 +1314,7 @@ func IsValidContainerName(name string) bool {
 // If matched, the corresponding labels are returned to be added to the generated event. In case of a conflict
 // between labels on the Application and AppProject, the Application label values are prioritized and added to the event.
 // Furthermore, labels specified in `resource.excludeEventLabelKeys` in cd-cm are removed from the event labels, if they were included.
-func GetAppEventLabels(ctx context.Context, app *argoappv1.Application, projLister applicationsv1.AppProjectLister, ns string, settingsManager *settings.SettingsManager, db db.ArgoDB) map[string]string {
+func GetAppEventLabels(ctx context.Context, app *argoappv1.Application, projLister applicationsv1.AppProjectLister, ns string, settingsManager *settings.SettingsManager, db db.DB) map[string]string {
 	eventLabels := make(map[string]string)
 
 	// Get all app & app-project labels

@@ -54,7 +54,7 @@ import (
 
 type Server struct {
 	ns                       string
-	db                       db.ArgoDB
+	db                       db.DB
 	enf                      *rbac.Enforcer
 	k8sClient                kubernetes.Interface
 	dynamicClient            dynamic.Interface
@@ -169,7 +169,7 @@ func (s *Server) isApplicationsetPermitted(selector labels.Selector, minVersion 
 
 // NewServer returns a new instance of the ApplicationSet service
 func NewServer(
-	db db.ArgoDB,
+	db db.DB,
 	kubeclientset kubernetes.Interface,
 	dynamicClientset dynamic.Interface,
 	kubeControllerClientset client.Client,

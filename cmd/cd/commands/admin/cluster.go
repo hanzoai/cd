@@ -249,7 +249,7 @@ func printStatsSummary(clusters []ClusterWithInfo) {
 	_ = w.Flush()
 }
 
-func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.ClientConfig, action func(appClient *versioned.Clientset, argoDB db.ArgoDB, clusters map[string][]string) error) error {
+func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.ClientConfig, action func(appClient *versioned.Clientset, argoDB db.DB, clusters map[string][]string) error) error {
 	clientCfg, err := clientConfig.ClientConfig()
 	if err != nil {
 		return fmt.Errorf("error while creating client config: %w", err)
@@ -316,7 +316,7 @@ func NewClusterNamespacesCommand() *cobra.Command {
 
 			log.SetLevel(log.WarnLevel)
 
-			err := runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, _ db.ArgoDB, clusters map[string][]string) error {
+			err := runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, _ db.DB, clusters map[string][]string) error {
 				w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 				_, _ = fmt.Fprint(w, "CLUSTER\tNAMESPACES\n")
 
@@ -365,7 +365,7 @@ func NewClusterEnableNamespacedMode() *cobra.Command {
 			}
 			pattern := args[0]
 
-			errors.CheckError(runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, argoDB db.ArgoDB, clusters map[string][]string) error {
+			errors.CheckError(runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, argoDB db.DB, clusters map[string][]string) error {
 				for server, namespaces := range clusters {
 					if len(namespaces) == 0 || len(namespaces) > namespacesCount || !glob.Match(pattern, server) {
 						continue
@@ -419,7 +419,7 @@ func NewClusterDisableNamespacedMode() *cobra.Command {
 
 			pattern := args[0]
 
-			errors.CheckError(runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, argoDB db.ArgoDB, clusters map[string][]string) error {
+			errors.CheckError(runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, argoDB db.DB, clusters map[string][]string) error {
 				for server := range clusters {
 					if !glob.Match(pattern, server) {
 						continue

@@ -33,7 +33,7 @@ var clusterInfoTimeout = env.ParseDurationFromEnv(EnvClusterInfoTimeout, default
 
 type clusterInfoUpdater struct {
 	infoSource    metrics.HasClustersInfo
-	db            db.ArgoDB
+	db            db.DB
 	appLister     v1alpha1.ApplicationNamespaceLister
 	cache         *appstatecache.Cache
 	clusterFilter func(cluster *appv1.Cluster) bool
@@ -44,7 +44,7 @@ type clusterInfoUpdater struct {
 
 func NewClusterInfoUpdater(
 	infoSource metrics.HasClustersInfo,
-	db db.ArgoDB,
+	db db.DB,
 	appLister v1alpha1.ApplicationNamespaceLister,
 	cache *appstatecache.Cache,
 	clusterFilter func(cluster *appv1.Cluster) bool,

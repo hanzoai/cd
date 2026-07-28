@@ -32,7 +32,7 @@ import (
 
 // Server provides a Repository service
 type Server struct {
-	db              db.ArgoDB
+	db              db.DB
 	repoClientset   apiclient.Clientset
 	enf             *rbac.Enforcer
 	cache           *servercache.Cache
@@ -46,7 +46,7 @@ type Server struct {
 // NewServer returns a new instance of the Repository service
 func NewServer(
 	repoClientset apiclient.Clientset,
-	db db.ArgoDB,
+	db db.DB,
 	enf *rbac.Enforcer,
 	cache *servercache.Cache,
 	appLister applisters.ApplicationLister,

@@ -201,7 +201,7 @@ type ArgoCDServer struct {
 	appLister       applisters.ApplicationLister
 	appsetInformer  cache.SharedIndexInformer
 	appsetLister    applisters.ApplicationSetLister
-	db              db.ArgoDB
+	db              db.DB
 
 	// stopCh is the channel which when closed, will shutdown the Hanzo CD server
 	stopCh             chan os.Signal
