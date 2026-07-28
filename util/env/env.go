@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	timeutil "github.com/argoproj/pkg/v2/time"
+	timeutil "github.com/hanzoai/deploy/util/vendored/time"
 
 	log "github.com/sirupsen/logrus"
 )

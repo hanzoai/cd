@@ -9,7 +9,7 @@ import (
 	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/db"
 
-	"github.com/argoproj/pkg/v2/sync"
+	"github.com/hanzoai/deploy/util/vendored/sync"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

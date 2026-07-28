@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/argoproj/pkg/v2/stats"
+	"github.com/hanzoai/deploy/util/vendored/stats"
 	"github.com/redis/go-redis/v9"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
