@@ -451,13 +451,13 @@ func Test_setAnnotations(t *testing.T) {
 
 const appsYaml = `---
 # Source: apps/templates/helm.yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: sth1
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   destination:
     namespace: sth
@@ -472,13 +472,13 @@ spec:
         - values.yaml
 ---
 # Source: apps/templates/helm.yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: sth2
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   destination:
     namespace: sth

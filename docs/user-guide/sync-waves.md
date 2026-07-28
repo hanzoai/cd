@@ -2,23 +2,23 @@
 
 Sync phases and hooks define when resources are applied such as before or after the main sync operation. This makes it possible to define jobs, or any other resource to run or be applied in any specific order.
 
-Argo CD has the following hook types:
+Hanzo CD has the following hook types:
 
 | Hook         | Description                                                                                                                                                                |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `PreSync`    | Executes prior to the application of the manifests.                                                                                                                        |
 | `Sync`       | Executes after all `PreSync` hooks completed and were successful, at the same time as the application of the manifests.                                                    |
-| `Skip`       | Indicates to Argo CD to skip the application of the manifest.                                                                                                              |
+| `Skip`       | Indicates to Hanzo CD to skip the application of the manifest.                                                                                                              |
 | `PostSync`   | Executes after all `Sync` hooks completed and were successful, a successful application, and all resources in a `Healthy` state.                                           |
 | `SyncFail`   | Executes when the sync operation fails.                                                                                                                                    |
 | `PreDelete`  | Executes before Application resources are deleted. Only runs when the entire Application is being deleted, not during normal sync operations (even with pruning enabled. ) |
 | `PostDelete` | Executes after all Application resources are deleted. _Available starting in v2.10._                                                                                       |
 
-Adding the argocd.argoproj.io/hook annotation to a resource will assign it to a specific phase. During a Sync operation, Argo CD will apply the resource during the appropriate phase of the deployment. Hooks can be any type of Kubernetes resource kind, but tend to be Pod, Job or Argo Workflows. Multiple hooks can be specified as a comma separated list.
+Adding the cd.hanzo.ai/hook annotation to a resource will assign it to a specific phase. During a Sync operation, Hanzo CD will apply the resource during the appropriate phase of the deployment. Hooks can be any type of Kubernetes resource kind, but tend to be Pod, Job or Argo Workflows. Multiple hooks can be specified as a comma separated list.
 
 ## How phases work?
 
-Argo CD will respect resources assigned to different phases, during a sync operation Argo CD will do the following:
+Hanzo CD will respect resources assigned to different phases, during a sync operation Hanzo CD will do the following:
 
 1. Apply all the resources marked as PreSync hooks. If any of them fails the whole sync process will stop and will be marked as failed
 2. Apply all the resources marked as Sync hooks. If any of them fails the whole sync process will be marked as failed. Hooks marked with SyncFail will also run
@@ -30,9 +30,9 @@ Here is a graphical overview of the sync process:
 
 ![phases](how_phases_work.png)
 
-You can use this simple lifecycle method in various scenarios. For example you can run an essential check as a PreSync hook. If it fails then the whole sync operation will stop preventing the deployment from taking place. In a similar manner you can run smoke tests as PostSync hooks. If they succeed you know that your application has passed the validation. If they fail then the whole deployment will be marked as failed and Argo CD can then notify you in order to take further actions.
+You can use this simple lifecycle method in various scenarios. For example you can run an essential check as a PreSync hook. If it fails then the whole sync operation will stop preventing the deployment from taking place. In a similar manner you can run smoke tests as PostSync hooks. If they succeed you know that your application has passed the validation. If they fail then the whole deployment will be marked as failed and Hanzo CD can then notify you in order to take further actions.
 
-Hooks do not run during a selective sync operation. During the SyncFail phase, hooks can be used for cleanup and other housekeeping tasks. If a SyncFail hook itself fails, Argo CD does not take any additional action beyond marking the overall operation as failed.
+Hooks do not run during a selective sync operation. During the SyncFail phase, hooks can be used for cleanup and other housekeeping tasks. If a SyncFail hook itself fails, Hanzo CD does not take any additional action beyond marking the overall operation as failed.
 
 During pruning, the wave order is reversed from the creation order. Resources in higher waves are pruned first.
 If pruning any resource in a wave fails, the operation is marked as failed, and resources in lower waves are not processed.
@@ -40,8 +40,8 @@ This ensures that dependent resources are deleted in the correct order.
 
 ## Hook lifecycle and cleanup
 
-Argo CD offers several methods to clean up hooks and decide how much history will be kept for previous runs.
-In the most basic case you can use the argocd.argoproj.io/hook-delete-policy to decide when a hook will be deleted.
+Hanzo CD offers several methods to clean up hooks and decide how much history will be kept for previous runs.
+In the most basic case you can use the cd.hanzo.ai/hook-delete-policy to decide when a hook will be deleted.
 This can take the following values:
 
 | Policy               | Description                                                                                                                                       |
@@ -50,20 +50,20 @@ This can take the following values:
 | `HookFailed`         | The hook resource is deleted after the hook failed.                                                                                                |
 | `BeforeHookCreation` | Any existing hook resource is deleted before the new one is created (since v1.3). It is meant to be used with `/metadata/name`.                  |
 
-Note that if no deletion policy is specified, Argo CD will automatically assume `BeforeHookCreation` rules.
+Note that if no deletion policy is specified, Hanzo CD will automatically assume `BeforeHookCreation` rules.
 
-When Helm hook annotations are mapped onto Argo CD hooks, delete-policy evaluation still follows Argo CD sync phases and sync result semantics rather than Helm's per-hook-event lifecycle. For example, a `PreSync` resource mapped from Helm may remain available until later phases finish, and passive resources such as `ServiceAccount` do not have a completion state like `Job` or `Workflow`.
+When Helm hook annotations are mapped onto Hanzo CD hooks, delete-policy evaluation still follows Hanzo CD sync phases and sync result semantics rather than Helm's per-hook-event lifecycle. For example, a `PreSync` resource mapped from Helm may remain available until later phases finish, and passive resources such as `ServiceAccount` do not have a completion state like `Job` or `Workflow`.
 
 ## PreDelete and PostDelete Hooks
 
 ### PreDelete Hooks
 
-PreDelete hooks execute before an Application and its resources are deleted. They run only during Application deletion (e.g., `kubectl delete application` or `argocd app delete`), not during normal sync operations, even when pruning is enabled.
+PreDelete hooks execute before an Application and its resources are deleted. They run only during Application deletion (e.g., `kubectl delete application` or `cd app delete`), not during normal sync operations, even when pruning is enabled.
 **Behavior:**
 
-1. When an Application is deleted, Argo CD checks for PreDelete hooks defined in the Application's manifests
+1. When an Application is deleted, Hanzo CD checks for PreDelete hooks defined in the Application's manifests
 2. If PreDelete hooks exist, they are created and executed before any Application resources are deleted
-3. Argo CD waits for all PreDelete hooks to reach a Healthy state before proceeding with deletion
+3. Hanzo CD waits for all PreDelete hooks to reach a Healthy state before proceeding with deletion
 4. Once all PreDelete hooks complete successfully, they are cleaned up and the Application resources are deleted
 
 **Failure Handling:**
@@ -73,7 +73,7 @@ If a PreDelete hook fails (e.g., a Job fails or a Pod crashes), the Application 
 - The Application will remain in a deleting state with a `DeletionError` condition
 - Application resources will not be deleted until the hook succeeds
 - The user can fix the failing hook by updating its manifest in the git repository
-- After fixing the hook, Argo CD will automatically retry the deletion on the next reconciliation
+- After fixing the hook, Hanzo CD will automatically retry the deletion on the next reconciliation
 - Alternatively, the user can manually delete the failing hook resource to allow deletion to proceed
 
 
@@ -85,7 +85,7 @@ PostDelete hooks execute after all Application resources have been deleted. They
 
 1. Application resources are deleted first
 2. Once all Application resources are fully removed, PostDelete hooks are created and executed
-3. Argo CD waits for all PostDelete hooks to reach a Healthy state
+3. Hanzo CD waits for all PostDelete hooks to reach a Healthy state
 4. Once all PostDelete hooks complete successfully, they are cleaned up and the Application is fully removed
 
 **Failure Handling:**
@@ -94,21 +94,21 @@ If a PostDelete hook fails:
 
 - The Application is already deleted from the cluster, but the Application CR remains with a `DeletionError` condition
 - The user can fix the failing hook by updating its manifest in the git repository
-- After fixing the hook, Argo CD will automatically retry on the next reconciliation
+- After fixing the hook, Hanzo CD will automatically retry on the next reconciliation
 - Alternatively, the user can manually delete the failing hook resource to complete the Application deletion
 
 ## How sync waves work?
 
-Argo CD also offers an alternative method of changing the sync order of resources. These are sync waves. They are defined by the argocd.argoproj.io/sync-wave annotation. The value is an integer that defines the ordering (ArgoCD will start deploying from the lowest number and finish with the highest number).
+Hanzo CD also offers an alternative method of changing the sync order of resources. These are sync waves. They are defined by the cd.hanzo.ai/sync-wave annotation. The value is an integer that defines the ordering (Hanzo CD will start deploying from the lowest number and finish with the highest number).
 
 Hooks and resources are assigned to wave 0 by default. The wave can be negative, so you can create a wave that runs before all other resources.
 
-When a sync operation takes place, Argo CD will:
+When a sync operation takes place, Hanzo CD will:
 
 1. Order all resources according to their wave (lowest to highest)
 2. Apply the resources according to the resulting sequence
 
-There is currently a delay between each sync wave in order to give other controllers a chance to react to the spec change that was just applied. This also prevents Argo CD from assessing resource health too quickly (against the stale object), causing hooks to fire prematurely. The current delay between each sync wave is 2 seconds and can be configured via the environment variable CD_SYNC_WAVE_DELAY.
+There is currently a delay between each sync wave in order to give other controllers a chance to react to the spec change that was just applied. This also prevents Hanzo CD from assessing resource health too quickly (against the stale object), causing hooks to fire prematurely. The current delay between each sync wave is 2 seconds and can be configured via the environment variable CD_SYNC_WAVE_DELAY.
 
 
 
@@ -118,7 +118,7 @@ While you can use sync waves on their own, for maximum flexibility you can combi
 
 ![waves](how_waves_work.png)
 
-When Argo CD starts a sync, it orders the resources in the following precedence:
+When Hanzo CD starts a sync, it orders the resources in the following precedence:
 
 1. The phase
 2. The wave they are in (lower values first)
@@ -127,7 +127,7 @@ When Argo CD starts a sync, it orders the resources in the following precedence:
 
 Once the order is defined:
 
-1. First Argo CD determines the number of the first wave to apply. This is the first number where any resource is out-of-sync or unhealthy.
+1. First Hanzo CD determines the number of the first wave to apply. This is the first number where any resource is out-of-sync or unhealthy.
 2. It applies resources in that wave.
 3. It repeats this process until all phases and waves are in-sync and healthy.
 
@@ -140,7 +140,7 @@ Pre-sync and post-sync can only contain hooks. Apply the hook annotation:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/hook: PreSync
+    cd.hanzo.ai/hook: PreSync
 ```
 
 [Read more about hooks](resource_hooks.md).
@@ -152,7 +152,7 @@ Specify the wave using the following annotation:
 ```yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "5"
+    cd.hanzo.ai/sync-wave: "5"
 ```
 
 Hooks and resources are assigned to wave zero by default. The wave can be negative, so you can create a wave that runs before all other resources.
@@ -169,8 +169,8 @@ kind: Job
 metadata:
   generateName: app-slack-notification-
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    cd.hanzo.ai/hook: PostSync
+    cd.hanzo.ai/hook-delete-policy: HookSucceeded
 spec:
   template:
     spec:
@@ -198,9 +198,9 @@ kind: Job
 metadata:
   name: db-migrate
   annotations:
-    argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    argocd.argoproj.io/sync-wave: '-1'
+    cd.hanzo.ai/hook: PreSync
+    cd.hanzo.ai/hook-delete-policy: HookSucceeded
+    cd.hanzo.ai/sync-wave: '-1'
 spec:
   ttlSecondsAfterFinished: 360
   template:
@@ -223,9 +223,9 @@ spec:
   backoffLimit: 1
 ```
 
-### Work around ArgoCD sync failure
+### Work around Hanzo CD sync failure
 
-Upgrading ingress-nginx controller (managed by helm) with ArgoCD 2.x sometimes fails to work resulting in:
+Upgrading ingress-nginx controller (managed by helm) with Hanzo CD 2.x sometimes fails to work resulting in:
 
 | .         | .                                                                       |
 |-----------|-------------------------------------------------------------------------|
@@ -249,7 +249,7 @@ ingress-nginx:
   controller:
     admissionWebhooks:
       annotations:
-        argocd.argoproj.io/hook: Skip
+        cd.hanzo.ai/hook: Skip
 ```
 
 Which results in a successful sync.

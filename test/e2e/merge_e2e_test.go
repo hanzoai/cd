@@ -20,7 +20,7 @@ func TestListMergeGenerator(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       fmt.Sprintf("%s-%s", name, nameSuffix),
@@ -138,7 +138,7 @@ func TestClusterMergeGenerator(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       fmt.Sprintf("%s-%s-%s", cluster, name, nameSuffix),
@@ -205,7 +205,7 @@ func TestClusterMergeGenerator(t *testing.T) {
 												Clusters: &v1alpha1.ClusterGenerator{
 													Selector: metav1.LabelSelector{
 														MatchLabels: map[string]string{
-															"cd.argoproj.io/secret-type": "cluster",
+															"cd.hanzo.ai/secret-type": "cluster",
 														},
 													},
 													Values: map[string]string{
@@ -279,7 +279,7 @@ func TestMergeTerminalMergeGeneratorSelector(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       fmt.Sprintf("%s-%s", name, nameSuffix),

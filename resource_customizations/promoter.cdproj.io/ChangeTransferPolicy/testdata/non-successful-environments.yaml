@@ -1,17 +1,17 @@
-apiVersion: promoter.argoproj.io/v1alpha1
+apiVersion: promoter.apps.hanzo.ai/v1alpha1
 kind: ChangeTransferPolicy
 metadata:
   annotations:
-    promoter.argoproj.io/reconcile-at: '2025-07-23T15:49:33.901393-05:00'
+    promoter.apps.hanzo.ai/reconcile-at: '2025-07-23T15:49:33.901393-05:00'
   creationTimestamp: '2025-07-07T20:10:43Z'
   generation: 1
   labels:
-    promoter.argoproj.io/environment: environments-development
-    promoter.argoproj.io/promotion-strategy: argocon-demo
+    promoter.apps.hanzo.ai/environment: environments-development
+    promoter.apps.hanzo.ai/promotion-strategy: argocon-demo
   name: argocon-demo-environments-development-eadabead
   namespace: default
   ownerReferences:
-    - apiVersion: promoter.argoproj.io/v1alpha1
+    - apiVersion: promoter.apps.hanzo.ai/v1alpha1
       blockOwnerDeletion: true
       controller: true
       kind: PromotionStrategy
@@ -22,7 +22,7 @@ metadata:
 spec:
   activeBranch: environments/development
   activeCommitStatuses:
-    - key: argocd-health
+    - key: cd-health
   autoMerge: false
   gitRepositoryRef:
     name: argocon-demo
@@ -30,7 +30,7 @@ spec:
 status:
   active:
     commitStatuses:
-      - key: argocd-health
+      - key: cd-health
         phase: pending
     dry:
       repoURL: https://github.com/zachaller/argocon-gitops-promoter-hydrate-demo
@@ -53,7 +53,7 @@ status:
       repoURL: https://github.com/zachaller/argocon-gitops-promoter-hydrate-demo
       sha: 7810fcb6e2143b9a85f3f5bb3e02754b48f63c56
     hydrated:
-      author: Argo CD
+      author: Hanzo CD
       commitTime: '2025-07-14T18:11:24Z'
       sha: 1c0432bb87f80f06fd16377fff184ad80f475313
-      subject: '[Argo CD Bot] hydrate 7810fcb6e2143b9a85f3f5bb3e02754b48f63c56'
+      subject: '[Hanzo CD Bot] hydrate 7810fcb6e2143b9a85f3f5bb3e02754b48f63c56'

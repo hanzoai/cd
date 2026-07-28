@@ -6,7 +6,7 @@ slack:
     attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#18be52",
           "fields": [
           {
@@ -64,7 +64,7 @@ teams:
           "name":"Operation Application",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
           }]
         },
         {

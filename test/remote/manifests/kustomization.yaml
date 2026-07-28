@@ -5,5 +5,5 @@ resources:
 - e2e-repositories.yaml
 
 images:
-- name: argocd-e2e-cluster 
+- name: cd-e2e-cluster 
   newTag: latest

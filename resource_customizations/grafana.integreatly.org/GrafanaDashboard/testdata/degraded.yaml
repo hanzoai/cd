@@ -2,15 +2,15 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   annotations:
-    argocd.argoproj.io/installation-id: argocd.com
-    argocd.argoproj.io/tracking-id: >-
+    cd.hanzo.ai/installation-id: cd.com
+    cd.hanzo.ai/tracking-id: >-
       foo:grafana.integreatly.org/GrafanaDashboard:grafana-operator/degraded
   creationTimestamp: '2025-03-21T20:19:50Z'
   finalizers:
     - operator.grafana.com/finalizer
   generation: 1
   labels:
-    argocd.argoproj.io/instance: foo
+    cd.hanzo.ai/instance: foo
   name: degraded
   namespace: grafana-operator
   resourceVersion: '185954752'

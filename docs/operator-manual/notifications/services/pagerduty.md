@@ -26,7 +26,7 @@ stringData:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.pagerduty: |
     token: $pagerdutyToken
@@ -41,7 +41,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   template.rollout-aborted: |
     message: Rollout {{.rollout.metadata.name}} is aborted.
@@ -58,9 +58,9 @@ NOTE: A Priority is a label representing the importance and impact of an inciden
 
 Annotation sample for pagerduty notifications:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-rollout-aborted.pagerduty: "<serviceID for PagerDuty>"
+    notifications.apps.hanzo.ai/subscribe.on-rollout-aborted.pagerduty: "<serviceID for PagerDuty>"
 ```

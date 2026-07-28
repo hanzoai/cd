@@ -84,7 +84,7 @@ func TestSetApplicationHealth(t *testing.T) {
 	assert.Empty(t, healthCauses)
 	app.Status.Health.Status = healthStatus
 
-	// now we set the `cd.argoproj.io/ignore-healthcheck: "true"` annotation on the job's target.
+	// now we set the `cd.hanzo.ai/ignore-healthcheck: "true"` annotation on the job's target.
 	// The app is considered healthy
 	failedJob.SetAnnotations(nil)
 	failedJobIgnoreHealthcheck := resourceFromFile("./testdata/job-failed-ignore-healthcheck.yaml")
@@ -324,7 +324,7 @@ func newAppLiveObj(status health.HealthStatusCode) *unstructured.Unstructured {
 			Name: "foo",
 		},
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 			Kind:       application.ApplicationKind,
 		},
 		Status: appv1.ApplicationStatus{
@@ -367,7 +367,7 @@ return hs`,
 		require.NoError(t, err)
 		assert.Equal(t, health.HealthStatusDegraded, healthStatus)
 		// The Degraded child app is the cause of the parent's Degraded health.
-		assert.Equal(t, "Caused by argoproj.io/Application:default/foo", healthCauses)
+		assert.Equal(t, "Caused by apps.hanzo.ai/Application:default/foo", healthCauses)
 	})
 
 	t.Run("ChildAppMissing", func(t *testing.T) {

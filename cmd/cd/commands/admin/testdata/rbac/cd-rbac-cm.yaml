@@ -20,7 +20,7 @@ data:
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/name: argocd-rbac-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-rbac-cm
-  namespace: argocd
+    app.kubernetes.io/name: cd-rbac-cm
+    app.kubernetes.io/part-of: cd
+  name: cd-rbac-cm
+  namespace: cd

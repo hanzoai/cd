@@ -2,7 +2,7 @@
 # The expected output would be an application per git directory and a list entry (application_count = git directory * list entries)
 #
 #
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: list-git
@@ -13,7 +13,7 @@ spec:
   - matrix:
       generators:
       - git:
-          repoURL: https://github.com/argoproj/argo-cd.git
+          repoURL: https://github.com/hanzoai/cd.git
           revision: HEAD
           directories:
           - path: applicationset/examples/matrix/cluster-addons/*
@@ -33,7 +33,7 @@ spec:
     spec:
       project: '{{.values.project}}'
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:

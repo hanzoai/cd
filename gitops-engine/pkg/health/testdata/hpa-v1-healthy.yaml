@@ -2,7 +2,7 @@ kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v1
 metadata:
   name: sample
-  namespace: argocd
+  namespace: cd
   annotations:
     autoscaling.alpha.kubernetes.io/conditions: '[{"type":"AbleToScale","status":"True","lastTransitionTime":"2026-02-05T14:13:42Z","reason":"ScaleDownStabilized","message":"recent recommendations were higher than current one, applying the highest recent recommendation"},{"type":"ScalingActive","status":"True","lastTransitionTime":"2026-02-05T14:13:42Z","reason":"ValidMetricFound","message":"the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)"},{"type":"ScalingLimited","status":"False","lastTransitionTime":"2026-02-05T14:13:42Z","reason":"DesiredWithinRange","message":"the desired count is within the acceptable range"}]'
 spec:

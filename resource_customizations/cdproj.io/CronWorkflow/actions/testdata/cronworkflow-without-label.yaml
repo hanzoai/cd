@@ -1,8 +1,8 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: CronWorkflow
 metadata:
   annotations:
-    cronworkflows.argoproj.io/last-used-schedule: CRON_TZ=America/Los_Angeles * * * * *
+    cronworkflows.apps.hanzo.ai/last-used-schedule: CRON_TZ=America/Los_Angeles * * * * *
   name: hello-world
   namespace: default
 spec:

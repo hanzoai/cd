@@ -1,6 +1,6 @@
 # Plugin Generator
 
-The Plugin generator is a generator type which allows you to provide your own custom generator through a plugin. In contrast to other generators with predetermined logic (the [Cluster generator](Generators-Cluster.md) fetching clusters using a selector on ArgoCD secrets, [Git generator](Generators-Git.md) using a Git repository, etc.), a Plugin generator can use any custom code with input and output parameters.
+The Plugin generator is a generator type which allows you to provide your own custom generator through a plugin. In contrast to other generators with predetermined logic (the [Cluster generator](Generators-Cluster.md) fetching clusters using a selector on Hanzo CD secrets, [Git generator](Generators-Git.md) using a Git repository, etc.), a Plugin generator can use any custom code with input and output parameters.
 
 - You can write in any language
 - Simple: a plugin just responds to RPC HTTP requests.
@@ -15,7 +15,7 @@ In general, the flow of an ApplicationSet with a Plugin generator is as follows:
 - Your custom plugin service receives the request, reads the input parameters and executes its custom logic to fetch any necessary data and construct a list of output parameter objects.
 - The plugin service returns the parameter list in a response to the ApplicationSet controller.
 - The ApplicationSet controller iterates through the parameter objects and uses each one to fill out the template (defined in the ApplicationSet object) to create an Application.
-- This allows for dynamic creation of Argo CD Applications based on custom user-created defined templates, parameters, and logic.
+- This allows for dynamic creation of Hanzo CD Applications based on custom user-created defined templates, parameters, and logic.
 
 To start working on your own plugin, you can generate a new repository based on the example
 [applicationset-hello-plugin](https://github.com/argoproj-labs/applicationset-hello-plugin).
@@ -25,7 +25,7 @@ To start working on your own plugin, you can generate a new repository based on 
 Using a generator plugin without combining it with Matrix or Merge.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myplugin
@@ -81,14 +81,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: my-plugin
-  namespace: argocd
+  namespace: cd
 data:
   token: "$plugin.myplugin.token" # Alternatively $<some_K8S_secret>:plugin.myplugin.token
   baseUrl: "http://myplugin.plugin-ns.svc.cluster.local."
   requestTimeout: "60"
 ```
 
-- `token`: Pre-shared token used to authenticate HTTP request (points to the right key you created in the `argocd-secret` Secret)
+- `token`: Pre-shared token used to authenticate HTTP request (points to the right key you created in the `cd-secret` Secret)
 - `baseUrl`: BaseUrl of the k8s service exposing your plugin in the cluster.
 - `requestTimeout`: Timeout of the request to the plugin in seconds (default: 30)
 
@@ -98,11 +98,11 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argocd-secret
-  namespace: argocd
+  name: cd-secret
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-secret
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-secret
+    app.kubernetes.io/part-of: cd
 type: Opaque
 data:
   # ...
@@ -114,12 +114,12 @@ data:
 
 #### Alternative
 
-If you want to store sensitive data in **another** Kubernetes `Secret`, instead of `argocd-secret`, ArgoCD knows how to check the keys under `data` in your Kubernetes `Secret` for a corresponding key whenever a value in a configmap starts with `$`, then your Kubernetes `Secret` name and `:` (colon) followed by the key name.
+If you want to store sensitive data in **another** Kubernetes `Secret`, instead of `cd-secret`, Hanzo CD knows how to check the keys under `data` in your Kubernetes `Secret` for a corresponding key whenever a value in a configmap starts with `$`, then your Kubernetes `Secret` name and `:` (colon) followed by the key name.
 
 Syntax: `$<k8s_secret_name>:<a_key_in_that_k8s_secret>`
 
 > [!NOTE]
-> Secret must have label `app.kubernetes.io/part-of: argocd`
+> Secret must have label `app.kubernetes.io/part-of: cd`
 
 ##### Example
 
@@ -130,9 +130,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: another-secret
-  namespace: argocd
+  namespace: cd
   labels:
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: cd
 type: Opaque
 data:
   # ...
@@ -237,7 +237,7 @@ Some things to note here:
 In the following example, the plugin implementation is returning a set of image digests for the given branch. The returned list contains only one item corresponding to the latest built image for the branch.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: fb-matrix

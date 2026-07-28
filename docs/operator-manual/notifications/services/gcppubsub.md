@@ -19,7 +19,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.argoproj.io/subscribe.on-deployment-ready.gcppubsub: "override-topic"
+    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.gcppubsub: "override-topic"
 ```
 
 ConfigMap:
@@ -27,7 +27,7 @@ ConfigMap:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.gcppubsub: |
     project: "my-gcp-project"
@@ -59,7 +59,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.argoproj.io/subscribe.on-deployment-ready.gcppubsub: ""
+    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.gcppubsub: ""
 ```
 
 ConfigMap:
@@ -67,7 +67,7 @@ ConfigMap:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.gcppubsub: |
     project: "my-gcp-project"

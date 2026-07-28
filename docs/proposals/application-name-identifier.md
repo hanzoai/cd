@@ -19,13 +19,13 @@ This is a proposal to introduce the tracking method settings that allows using
 an annotation as the application identifier instead of the application instance label.
 This will allow application names longer than 63 characters and solve issues caused by
 copying `app.kubernetes.io/instance` label. As an additional goal, we propose to introduce an
-installation ID that will allow multiple Argo CD instances to manage resources
+installation ID that will allow multiple Hanzo CD instances to manage resources
 on the same cluster.
 
 
 ## Summary
 
-Argo CD identifies resources it manages by setting the _application instance
+Hanzo CD identifies resources it manages by setting the _application instance
 label_ to the name of the managing `Application` on all resources that are
 managed (i.e. reconciled from Git). The default label used is the well-known
 label `app.kubernetes.io/instance`.
@@ -40,20 +40,20 @@ The main motivation behind this change is to solve the following known issues:
 
 * The Kubernetes label value cannot be longer than 63 characters. In large scale
   installations, in order to build up an easy to understand and
-  well-formed naming schemes for applications managed by Argo CD, people often
+  well-formed naming schemes for applications managed by Hanzo CD, people often
   hit the 63 character limit and need to define the naming scheme around this
   unnecessary limit.
 
 * Popular off-the-shelf Helm charts often add the `app.kubernetes.io/instance` label
-  to the generated resource manifests. This label confuses Argo CD and makes it think the
+  to the generated resource manifests. This label confuses Hanzo CD and makes it think the
   resource is managed by the application.
 
 * Kubernetes operators often create additional resources without creating owner reference
   and copy the `app.kubernetes.io/instance` label from the application resource. This is
-  also confusing Argo CD and makes it think the resource is managed by the application.
+  also confusing Hanzo CD and makes it think the resource is managed by the application.
 
 An additional motivation - while we're at touching at application instance
-label - is to improve the way how multiple Argo CD instances could manage
+label - is to improve the way how multiple Hanzo CD instances could manage
 applications on the same cluster, without requiring the user to actually
 perform instance specific configuration.
 
@@ -64,9 +64,9 @@ perform instance specific configuration.
 * Prevent confusion caused by copied/generated `app.kubernetes.io/instance` label
 
 * Keep having a human-readable way to identify resources that belong to a
-  given Argo CD application
+  given Hanzo CD application
 
-* As a stretch-goal, allow multiple Argo CD instances to manage resources on
+* As a stretch-goal, allow multiple Hanzo CD instances to manage resources on
   the same cluster without the need for configuring application instance label
   key (usually `app.kubernetes.io/instance`)
 
@@ -80,21 +80,21 @@ We propose introducing a new setting `trackingMethod` that allows to control
 how application resources are identified. The `trackingMethod` setting takes
 one of the following values:
 
-* `label` (default) - Argo CD keep using the `app.kubernetes.io/instance` label.
-* `annotation+label` - Argo CD keep adding `app.kubernetes.io/instance` but only
+* `label` (default) - Hanzo CD keep using the `app.kubernetes.io/instance` label.
+* `annotation+label` - Hanzo CD keep adding `app.kubernetes.io/instance` but only
   for informational purposes: label is not used for tracking, value is truncated if
   longer than 63 characters. The `app.kubernetes.io/instance` annotation is used
   to track application resources.
-* `annotation` - Argo CD uses the `app.kubernetes.io/instance` annotation to track
+* `annotation` - Hanzo CD uses the `app.kubernetes.io/instance` annotation to track
   application resources.
 
 The `app.kubernetes.io/instance` attribute values includes the application name,
-resources identifier it is applied to, and optionally the Argo CD installation ID:
+resources identifier it is applied to, and optionally the Hanzo CD installation ID:
 
 The application name allows to identify the application that manages the resource. The
 resource identifier prevents confusion if an operation copies the
 `app.kubernetes.io/instance` annotation to another resource. Finally optional
-installation ID allows separate two Argo CD instances that manages resources in the same cluster.
+installation ID allows separate two Hanzo CD instances that manages resources in the same cluster.
 
 The `trackingMethod` setting should be available at the system level and the application level to
 allow the smooth transition from the old `app.kubernetes.io/instance` label to the new tracking method.
@@ -126,9 +126,9 @@ e.g. a label selector as in the following example:
 kubectl get deployments -l app.kubernetes.io/instance=<application> --all-namespaces
 ```
 
-#### Use case 3: Multiple Argo CD instances managing apps on same cluster
+#### Use case 3: Multiple Hanzo CD instances managing apps on same cluster
 
-I also want to be able to see which application and Argo CD instance is the
+I also want to be able to see which application and Hanzo CD instance is the
 one in charge of a given resource.
 
 ### Implementation Details/Notes/Constraints [optional]
@@ -136,7 +136,7 @@ one in charge of a given resource.
 #### Include resource identifies in the `app.kubernetes.io/instance` annotation
 
 The `app.kubernetes.io/instance` annotation might be accidentally added or copied
-same as label. To prevent Argo CD confusion the annotation value should include
+same as label. To prevent Hanzo CD confusion the annotation value should include
 the identifier of the resource annotation was applied to. The resource identifier
 includes the group, kind, namespace and name of the resource. It is proposed to use `;`
 to separate identifier from the application name.
@@ -158,27 +158,27 @@ metadata:
     app.kubernetes.io/instance: my-application;apps/Deployment/default/my-deployment
 ```
 
-#### Allow multiple Argo CD instances manage applications on same cluster
+#### Allow multiple Hanzo CD instances manage applications on same cluster
 
-As of today, to allow two or more Argo CD instances with a similar set of
+As of today, to allow two or more Hanzo CD instances with a similar set of
 permissions (e.g. cluster-wide read access to resources) manage applications
 on the same cluster, users would have to configure the _application instance
-label key_ in the Argo CD configuration to a unique value. Otherwise, if an
-application with the same name exists in two different Argo CD installations,
+label key_ in the Hanzo CD configuration to a unique value. Otherwise, if an
+application with the same name exists in two different Hanzo CD installations,
 both would claim ownership of the resources of that application.
 
-We do see the need for preventing such scenarios out-of-the-box in Argo CD.
+We do see the need for preventing such scenarios out-of-the-box in Hanzo CD.
 For this, we do suggest the introduction of an _installation ID_ in the
 form of a standard _GUID_.
 
-This GUID would be generated once by Argo CD upon startup, and is persisted in
-the Argo CD configuration, e.g. by storing it as `installationID` in the
-`argocd-cm` ConfigMap. The GUID of the installation would need to be encoded
-in some way in the resources managed by that Argo CD instance.
+This GUID would be generated once by Hanzo CD upon startup, and is persisted in
+the Hanzo CD configuration, e.g. by storing it as `installationID` in the
+`cd-cm` ConfigMap. The GUID of the installation would need to be encoded
+in some way in the resources managed by that Hanzo CD instance.
 
-We suggest using a dedicated annotation to store the GUID and modify Argo CD so that it matches _both_, the app
+We suggest using a dedicated annotation to store the GUID and modify Hanzo CD so that it matches _both_, the app
 instance key and the GUID to determine whether a resource is managed by
-this Argo CD instance. Given above mentioned GUID, this may look like the
+this Hanzo CD instance. Given above mentioned GUID, this may look like the
 following on a resource:
 
   ```yaml
@@ -189,21 +189,21 @@ following on a resource:
     namespace: some-namespace
     annotations:
       app.kubernetes.io/instance: my-application;/Secret/some-namespace/some-secret
-      argo-cd.argoproj.io/installation-id: 61199294-412c-4e78-a237-3ebba6784fcd
+      argo-cd.hanzo.ai/installation-id: 61199294-412c-4e78-a237-3ebba6784fcd
   ```
 
 The user should be able to opt-out of this feature by setting the `installationID` to an empty string.
 
 ### Security Considerations
 
-We think this change will not have a direct impact on the security of Argo CD
+We think this change will not have a direct impact on the security of Hanzo CD
 or the applications it manages. 
 
 ### Risks and Mitigations
 
 The proposal assumes that user can keep adding `app.kubernetes.io/instance` label
 to be able to retrieve resources using `kubectl get -l app.kubernetes.io/instance=<application>` command.
-However, Argo CD is going to truncate the value of the label if it is longer than 63 characters. There is
+However, Hanzo CD is going to truncate the value of the label if it is longer than 63 characters. There is
 a small possibility that there are several applications with the same first 63 characters in the name. This
 should be clearly stated in documentation.
 
@@ -223,7 +223,7 @@ metadata:
   namespace: some-namespace
 ```
 
-When synced with the current incarnation of Argo CD, Argo CD would inject the
+When synced with the current incarnation of Hanzo CD, Hanzo CD would inject the
 application instance label and once the resource is applied in the cluster, it
 would look like follows:
 
@@ -237,7 +237,7 @@ metadata:
     app.kubernetes.io/instance: some-application
 ```
 
-Once Argo CD is updated to a version implementing this proposal, the resource
+Once Hanzo CD is updated to a version implementing this proposal, the resource
 would be rewritten to look like the following:
 
 ```yaml
@@ -250,10 +250,10 @@ metadata:
     app.kubernetes.io/instance: some-application
   annotations:
     app.kubernetes.io/instance: my-application;/Secret/some-namespace/some-secret
-    argo-cd.argoproj.io/installation-id: 61199294-412c-4e78-a237-3ebba6784fcd
+    argo-cd.hanzo.ai/installation-id: 61199294-412c-4e78-a237-3ebba6784fcd
 ```
 
-On a rollback to a previous Argo CD version, this change would be reverted
+On a rollback to a previous Hanzo CD version, this change would be reverted
 and the resource would look like the first shown example above.
 
 ## Drawbacks
@@ -261,7 +261,7 @@ and the resource would look like the first shown example above.
 We do see some drawbacks to this implementation:
 
 * This change would trigger a re-sync of each and every managed resource, which
-  may result in unexpected heavy load on Argo CD and the cluster at upgrade
+  may result in unexpected heavy load on Hanzo CD and the cluster at upgrade
   time. The workaround is an ability to opt-out of this as a default and enable it
   on application basis.
 

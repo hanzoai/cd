@@ -846,7 +846,7 @@ func TestInvalidMetadata(t *testing.T) {
 
 func TestNilMetadataAccessors(t *testing.T) {
 	service := newService(t, ".")
-	expected := "{\"apiVersion\":\"v1\",\"kind\":\"ConfigMap\",\"metadata\":{\"annotations\":{\"cd.argoproj.io/tracking-id\":\"nil-metadata-accessors:/ConfigMap:/my-map\"},\"labels\":{\"test\":\"nil-metadata-accessors\"},\"name\":\"my-map\"},\"stringData\":{\"foo\":\"bar\"}}"
+	expected := "{\"apiVersion\":\"v1\",\"kind\":\"ConfigMap\",\"metadata\":{\"annotations\":{\"cd.hanzo.ai/tracking-id\":\"nil-metadata-accessors:/ConfigMap:/my-map\"},\"labels\":{\"test\":\"nil-metadata-accessors\"},\"name\":\"my-map\"},\"stringData\":{\"foo\":\"bar\"}}"
 
 	src := v1alpha1.ApplicationSource{Path: "./testdata/nil-metadata-accessors", Directory: &v1alpha1.ApplicationSourceDirectory{Recurse: true}}
 	q := apiclient.ManifestRequest{Repo: &v1alpha1.Repository{}, ApplicationSource: &src, AppLabelKey: "test", AppName: "nil-metadata-accessors", TrackingMethod: "annotation+label"}
@@ -1353,7 +1353,7 @@ func TestGenerateHelmWithEnvVars(t *testing.T) {
 }
 
 // The requested value file (`../minio/values.yaml`) is outside the app path (`./util/helm/testdata/redis`), however
-// since the requested value is still under the repo directory (`~/go/src/github.com/argoproj/argo-cd`), it is allowed
+// since the requested value is still under the repo directory (`~/go/src/github.com/hanzoai/cd`), it is allowed
 func TestGenerateHelmWithValuesDirectoryTraversal(t *testing.T) {
 	service := newService(t, "../../util/helm/testdata")
 	_, err := service.GenerateManifest(t.Context(), &apiclient.ManifestRequest{
@@ -1394,7 +1394,7 @@ func TestChartRepoWithOutOfBoundsSymlink(t *testing.T) {
 }
 
 // This is a Helm first-class app with a values file inside the repo directory
-// (`~/go/src/github.com/argoproj/argo-cd/reposerver/repository`), so it is allowed
+// (`~/go/src/github.com/hanzoai/cd/reposerver/repository`), so it is allowed
 func TestHelmManifestFromChartRepoWithValueFile(t *testing.T) {
 	service := newService(t, ".")
 	source := &v1alpha1.ApplicationSource{
@@ -1425,7 +1425,7 @@ func TestHelmManifestFromChartRepoWithValueFile(t *testing.T) {
 }
 
 // This is a Helm first-class app with a values file outside the repo directory
-// (`~/go/src/github.com/argoproj/argo-cd/reposerver/repository`), so it is not allowed
+// (`~/go/src/github.com/hanzoai/cd/reposerver/repository`), so it is not allowed
 func TestHelmManifestFromChartRepoWithValueFileOutsideRepo(t *testing.T) {
 	service := newService(t, ".")
 	source := &v1alpha1.ApplicationSource{
@@ -1480,7 +1480,7 @@ func TestGenerateHelmWithURL(t *testing.T) {
 }
 
 // The requested value file (`../minio/values.yaml`) is outside the repo directory
-// (`~/go/src/github.com/argoproj/argo-cd/util/helm/testdata/redis`), so it is blocked
+// (`~/go/src/github.com/hanzoai/cd/util/helm/testdata/redis`), so it is blocked
 func TestGenerateHelmWithValuesDirectoryTraversalOutsideRepo(t *testing.T) {
 	t.Run("Values file with relative path pointing outside repo root", func(t *testing.T) {
 		service := newService(t, "../../util/helm/testdata/redis")
@@ -1631,7 +1631,7 @@ func TestGenerateHelmWithAbsoluteFileParameter(t *testing.T) {
 
 // The requested file parameter (`../external/external-secret.txt`) is outside the app path
 // (`./util/helm/testdata/redis`), however since the requested value is still under the repo
-// directory (`~/go/src/github.com/argoproj/argo-cd`), it is allowed. It is used as a means of
+// directory (`~/go/src/github.com/hanzoai/cd`), it is allowed. It is used as a means of
 // providing direct content to a helm chart via a specific key.
 func TestGenerateHelmWithFileParameter(t *testing.T) {
 	service := newService(t, "../../util/helm/testdata")
@@ -3185,7 +3185,7 @@ func TestResolveRevision(t *testing.T) {
 		gitClient.EXPECT().Root().Return(".")
 		paths.EXPECT().GetPath(mock.Anything).Return(".", nil)
 	}, ".")
-	repo := &v1alpha1.Repository{Repo: "https://github.com/argoproj/argo-cd"}
+	repo := &v1alpha1.Repository{Repo: "https://github.com/hanzoai/cd"}
 	app := &v1alpha1.Application{Spec: v1alpha1.ApplicationSpec{Source: &v1alpha1.ApplicationSource{}}}
 	resolveRevisionResponse, err := service.ResolveRevision(t.Context(), &apiclient.ResolveRevisionRequest{
 		Repo:              repo,
@@ -3209,7 +3209,7 @@ func TestResolveRevisionNegativeScenarios(t *testing.T) {
 		gitClient.EXPECT().Root().Return(".")
 		paths.EXPECT().GetPath(mock.Anything).Return(".", nil)
 	}, ".")
-	repo := &v1alpha1.Repository{Repo: "https://github.com/argoproj/argo-cd"}
+	repo := &v1alpha1.Repository{Repo: "https://github.com/hanzoai/cd"}
 	app := &v1alpha1.Application{Spec: v1alpha1.ApplicationSpec{Source: &v1alpha1.ApplicationSource{}}}
 	resolveRevisionResponse, err := service.ResolveRevision(t.Context(), &apiclient.ResolveRevisionRequest{
 		Repo:              repo,

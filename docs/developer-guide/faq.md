@@ -15,13 +15,13 @@ As we have limited resources, it can sometimes take a while for someone to respo
 
 ### How do I get my PR labeled `ready-for-review` ?
 
-Conventionally an initial review is performed by an Argo member or reviewer. Once the initial review is approved, it can be labeled `ready-for-review` and then added to the [Argo CD Review](https://github.com/orgs/argoproj/projects/28) Github project. The project dashboard provides a helpful [info panel](https://github.com/orgs/argoproj/projects/28?pane=info) on the review process.
+Conventionally an initial review is performed by an Argo member or reviewer. Once the initial review is approved, it can be labeled `ready-for-review` and then added to the [Hanzo CD Review](https://github.com/orgs/argoproj/projects/28) Github project. The project dashboard provides a helpful [info panel](https://github.com/orgs/argoproj/projects/28?pane=info) on the review process.
 
 High quality reviews are extremely encouraged from the community. A member/reviewer may work with a community reviewer to get a PR labeled `ready-for-review`. It can then be added to the project dashboard and marked `Community Reviewed`.
 
 ### Why has my PR been declined? I put so much work into it!
 
-We appreciate that you have put your valuable time and know how into a contribution. Alas, some changes do not fit into the overall ArgoCD philosophy, and therefore can't be merged into the official ArgoCD source tree.
+We appreciate that you have put your valuable time and know how into a contribution. Alas, some changes do not fit into the overall Hanzo CD philosophy, and therefore can't be merged into the official Hanzo CD source tree.
 
 To be on the safe side, make sure that you have created an Enhancement Proposal for your change before starting to work on your PR and have gathered enough feedback from the community and the maintainers.
 

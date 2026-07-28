@@ -6,5 +6,5 @@ into the sidecar.
 ## Installation
 
 ```shell
-kustomize build examples/plugins/helm/ | kubectl apply -n argocd -f -
+kustomize build examples/plugins/helm/ | kubectl apply -n cd -f -
 ```

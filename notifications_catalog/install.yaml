@@ -21,7 +21,7 @@ data:
       attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#18be52",
           "fields": [
           {
@@ -80,7 +80,7 @@ data:
           "name":"Operation Application",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
           }]
         },
         {
@@ -98,12 +98,12 @@ data:
       subject: Application {{.app.metadata.name}} has degraded.
     message: |
       {{if eq .serviceType "slack"}}:exclamation:{{end}} Application {{.app.metadata.name}} has degraded.
-      Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+      Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
     slack:
       attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#f4c030",
           "fields": [
           {
@@ -153,7 +153,7 @@ data:
           "name":"Open Application",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
           }]
         },
         {
@@ -171,12 +171,12 @@ data:
       subject: Failed to sync application {{.app.metadata.name}}.
     message: |
       {{if eq .serviceType "slack"}}:exclamation:{{end}}  The sync operation of application {{.app.metadata.name}} has failed at {{.app.status.operationState.finishedAt}} with the following error: {{.app.status.operationState.message}}
-      Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
+      Sync operation details are available at: {{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true .
     slack:
       attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#E96D76",
           "fields": [
           {
@@ -230,7 +230,7 @@ data:
           "name":"Open Operation",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
           }]
         },
         {
@@ -248,12 +248,12 @@ data:
       subject: Start syncing application {{.app.metadata.name}}.
     message: |
       The sync operation of application {{.app.metadata.name}} has started at {{.app.status.operationState.startedAt}}.
-      Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
+      Sync operation details are available at: {{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true .
     slack:
       attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#0DADEA",
           "fields": [
           {
@@ -307,7 +307,7 @@ data:
           "name":"Open Operation",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
           }]
         },
         {
@@ -324,7 +324,7 @@ data:
       subject: Application {{.app.metadata.name}} sync status is 'Unknown'
     message: |
       {{if eq .serviceType "slack"}}:exclamation:{{end}} Application {{.app.metadata.name}} sync is 'Unknown'.
-      Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+      Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
       {{if ne .serviceType "slack"}}
       {{range $c := .app.status.conditions}}
           * {{$c.message}}
@@ -334,7 +334,7 @@ data:
       attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#E96D76",
           "fields": [
           {
@@ -384,7 +384,7 @@ data:
           "name":"Open Application",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
           }]
         },
         {
@@ -401,12 +401,12 @@ data:
       subject: Application {{.app.metadata.name}} has been successfully synced.
     message: |
       {{if eq .serviceType "slack"}}:white_check_mark:{{end}} Application {{.app.metadata.name}} has been successfully synced at {{.app.status.operationState.finishedAt}}.
-      Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
+      Sync operation details are available at: {{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true .
     slack:
       attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#18be52",
           "fields": [
           {
@@ -460,7 +460,7 @@ data:
           "name":"Operation Details",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
           }]
         },
         {
@@ -526,4 +526,4 @@ data:
       when: app.status.operationState != nil and app.status.operationState.phase in ['Succeeded']
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm

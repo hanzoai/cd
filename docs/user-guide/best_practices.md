@@ -64,7 +64,7 @@ For example, consider the following kustomization.yaml
 
 ```yaml
 resources:
-- github.com/argoproj/argo-cd//manifests/cluster-install
+- github.com/hanzoai/cd//manifests/cluster-install
 ```
 
 The above kustomization has a remote base to the HEAD revision of the argo-cd repo. Since this
@@ -75,5 +75,5 @@ A better version would be to use a Git tag or commit SHA. For example:
 
 ```yaml
 bases:
-- github.com/argoproj/argo-cd//manifests/cluster-install?ref=v0.11.1
+- github.com/hanzoai/cd//manifests/cluster-install?ref=v0.11.1
 ```

@@ -1,5 +1,5 @@
-The notification services represent integration with services such as slack, email or custom webhook. Services are configured in `argocd-notifications-cm` ConfigMap
-using `service.<type>.(<custom-name>)` keys and might reference sensitive data from `argocd-notifications-secret` Secret. Following example demonstrates slack
+The notification services represent integration with services such as slack, email or custom webhook. Services are configured in `cd-notifications-cm` ConfigMap
+using `service.<type>.(<custom-name>)` keys and might reference sensitive data from `cd-notifications-secret` Secret. Following example demonstrates slack
 service configuration:
 
 ```yaml
@@ -28,12 +28,12 @@ Service custom names allow configuring two instances of the same service type.
 ```
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.workspace1: my-channel
-    notifications.argoproj.io/subscribe.on-sync-succeeded.workspace2: my-channel
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.workspace1: my-channel
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.workspace2: my-channel
 ```
 
 ## Service Types

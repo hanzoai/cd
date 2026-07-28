@@ -35,9 +35,9 @@ func getCustomResourceDefinitions(ctx context.Context) map[string]*apiextensions
 	// clean up stuff left by controller-gen
 	deleteFile("config/webhook/manifests.yaml")
 	deleteFile("config/webhook")
-	deleteFile("config/argoproj.io_applications.yaml")
-	deleteFile("config/argoproj.io_appprojects.yaml")
-	deleteFile("config/argoproj.io_applicationsets.yaml")
+	deleteFile("config/apps.hanzo.ai_applications.yaml")
+	deleteFile("config/apps.hanzo.ai_appprojects.yaml")
+	deleteFile("config/apps.hanzo.ai_applicationsets.yaml")
 	deleteFile("config")
 
 	objs, err := kube.SplitYAML(crdYamlBytes)
@@ -50,11 +50,11 @@ func getCustomResourceDefinitions(ctx context.Context) map[string]*apiextensions
 		// which get marshalled to `null`, but are typed as as a `string` during Open API validation
 		removeValidation(un, "metadata.creationTimestamp")
 		// remove status validation for AppProject CRD as workaround for https://github.com/argoproj/argo-cd/issues/4158
-		if un.GetName() == "appprojects.argoproj.io" {
+		if un.GetName() == "appprojects.apps.hanzo.ai" {
 			removeValidation(un, "status")
 		}
 
-		crd := toCRD(un, un.GetName() == "applicationsets.argoproj.io")
+		crd := toCRD(un, un.GetName() == "applicationsets.apps.hanzo.ai")
 		crd.Labels = map[string]string{
 			"app.kubernetes.io/name":    crd.Name,
 			"app.kubernetes.io/part-of": "cd",

@@ -1,19 +1,19 @@
 
 # Config Management Plugins
 
-Argo CD's "native" config management tools are Helm, Jsonnet, and Kustomize. If you want to use a different config
-management tool, or if Argo CD's native tool support does not include a feature you need, you might need to turn to
+Hanzo CD's "native" config management tools are Helm, Jsonnet, and Kustomize. If you want to use a different config
+management tool, or if Hanzo CD's native tool support does not include a feature you need, you might need to turn to
 a Config Management Plugin (CMP).
 
-The Argo CD "repo server" component is in charge of building Kubernetes manifests based on some source files from a
+The Hanzo CD "repo server" component is in charge of building Kubernetes manifests based on some source files from a
 Helm, OCI, or Git repository. When a config management plugin is correctly configured, the repo server may delegate the
 task of building manifests to the plugin.
 
 The following sections will describe how to create, install, and use plugins. Check out the
-[example plugins](https://github.com/argoproj/argo-cd/tree/master/examples/plugins) for additional guidance.
+[example plugins](https://github.com/hanzoai/cd/tree/master/examples/plugins) for additional guidance.
 
 > [!WARNING]
-> Plugins are granted a level of trust in the Argo CD system, so it is important to implement plugins securely. Argo
+> Plugins are granted a level of trust in the Hanzo CD system, so it is important to implement plugins securely. Argo
 > CD administrators should only install plugins from trusted sources, and they should audit plugins to weigh their
 > particular risks and benefits.
 
@@ -28,10 +28,10 @@ An operator can configure a plugin tool via a sidecar to repo-server. The follow
 Plugins will be configured via a ConfigManagementPlugin manifest located inside the plugin container.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
-  # The name of the plugin must be unique within a given Argo CD instance.
+  # The name of the plugin must be unique within a given Hanzo CD instance.
   name: my-plugin
 spec:
   # The version of your plugin. Optional. If specified, the Application's spec.source.plugin.name field
@@ -140,12 +140,12 @@ and produce output to stdout when the application source type is supported.
 
 #### Place the plugin configuration file in the sidecar
 
-Argo CD expects the plugin configuration file to be located at `/home/argocd/cmp-server/config/plugin.yaml` in the sidecar.
+Hanzo CD expects the plugin configuration file to be located at `/home/cd/cmp-server/config/plugin.yaml` in the sidecar.
 
 If you use a custom image for the sidecar, you can add the file directly to that image.
 
 ```dockerfile
-WORKDIR /home/argocd/cmp-server/config/
+WORKDIR /home/cd/cmp-server/config/
 COPY plugin.yaml ./
 ```
 
@@ -159,7 +159,7 @@ metadata:
   name: my-plugin-config
 data:
   plugin.yaml: |
-    apiVersion: argoproj.io/v1alpha1
+    apiVersion: apps.hanzo.ai/v1alpha1
     kind: ConfigManagementPlugin
     metadata:
       name: my-plugin
@@ -175,24 +175,24 @@ data:
 
 #### Register the plugin sidecar
 
-To install a plugin, patch argocd-repo-server to run the plugin container as a sidecar, with argocd-cmp-server as its 
+To install a plugin, patch cd-repo-server to run the plugin container as a sidecar, with cd-cmp-server as its 
 entrypoint. You can use either off-the-shelf or custom-built plugin image as sidecar image. For example:
 
 ```yaml
 containers:
 - name: my-plugin
-  command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
+  command: [/var/run/cd/cd-cmp-server] # Entrypoint should be Hanzo CD lightweight CMP server i.e. cd-cmp-server
   image: ubuntu # This can be off-the-shelf or custom-built image
   securityContext:
     runAsNonRoot: true
     runAsUser: 999
   volumeMounts:
-    - mountPath: /var/run/argocd
+    - mountPath: /var/run/cd
       name: var-files
-    - mountPath: /home/argocd/cmp-server/plugins
+    - mountPath: /home/cd/cmp-server/plugins
       name: plugins
     # Remove this volumeMount if you've chosen to bake the config file into the sidecar image.
-    - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+    - mountPath: /home/cd/cmp-server/config/plugin.yaml
       subPath: plugin.yaml
       name: my-plugin-config
     # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps 
@@ -210,9 +210,9 @@ volumes:
 > [!IMPORTANT]
 > **Double-check these items**
 >
-> 1. Make sure to use `/var/run/argocd/argocd-cmp-server` as an entrypoint. The `argocd-cmp-server` is a lightweight GRPC service that allows Argo CD to interact with the plugin.
+> 1. Make sure to use `/var/run/cd/cd-cmp-server` as an entrypoint. The `cd-cmp-server` is a lightweight GRPC service that allows Hanzo CD to interact with the plugin.
 > 2. Make sure that sidecar container is running as user 999.
-> 3. Make sure that plugin configuration file is present at `/home/argocd/cmp-server/config/plugin.yaml`. It can either be volume mapped via configmap or baked into image.
+> 3. Make sure that plugin configuration file is present at `/home/cd/cmp-server/config/plugin.yaml`. It can either be volume mapped via configmap or baked into image.
 
 ### Using environment variables in your plugin
 
@@ -222,7 +222,7 @@ Plugin commands have access to
 2. [Standard build environment variables](../user-guide/build-environment.md)
 3. Variables in the Application spec (References to system and build variables will get interpolated in the variables' values):
 
-        apiVersion: argoproj.io/v1alpha1
+        apiVersion: apps.hanzo.ai/v1alpha1
         kind: Application
         spec:
           source:
@@ -233,13 +233,13 @@ Plugin commands have access to
                 - name: REV
                   value: test-$CD_APP_REVISION
     
-    Before reaching the `init.command`, `generate.command`, and `discover.find.command` commands, Argo CD prefixes all 
+    Before reaching the `init.command`, `generate.command`, and `discover.find.command` commands, Hanzo CD prefixes all 
     user-supplied environment variables (#3 above) with `CD_ENV_`. This prevents users from directly setting 
     potentially-sensitive environment variables.
 
 4. Parameters in the Application spec:
 
-        apiVersion: argoproj.io/v1alpha1
+        apiVersion: apps.hanzo.ai/v1alpha1
         kind: Application
         spec:
          source:
@@ -281,7 +281,7 @@ Plugin commands have access to
 > [!WARNING]
 > **Sanitize/escape user input**
 >
-> As part of Argo CD's manifest generation system, config management plugins are treated with a level of trust. Be
+> As part of Hanzo CD's manifest generation system, config management plugins are treated with a level of trust. Be
 > sure to escape user input in your plugin to prevent malicious input from causing unwanted behavior.
 
 ## Using a config management plugin with an Application
@@ -292,11 +292,11 @@ it is either `<metadata.name>-<spec.version>` if version is mentioned in the `Co
 specified only that particular plugin will be used if its discovery pattern/command matches the provided application repo.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   project: default
   source:
@@ -318,7 +318,7 @@ If you don't need to set any environment variables, you can set an empty plugin 
 > [!IMPORTANT]
 > If your CMP command runs too long, the command will be killed, and the UI will show an error. The CMP server
 > respects the timeouts set by the `server.repo.server.timeout.seconds` and `controller.repo.server.timeout.seconds` 
-> items in `argocd-cmd-params-cm`. Increase their values from the default of 60s.
+> items in `cd-cmd-params-cm`. Increase their values from the default of 60s.
 >
 > Each CMP command will also independently timeout on the `CD_EXEC_TIMEOUT` set for the CMP sidecar. The default
 > is 90s. So if you increase the repo server timeout greater than 90s, be sure to set `CD_EXEC_TIMEOUT` on the
@@ -326,12 +326,12 @@ If you don't need to set any environment variables, you can set an empty plugin 
     
 > [!NOTE]
 > Each Application can only have one config management plugin configured at a time. If you're converting an existing
-> plugin configured through the `argocd-cm` ConfigMap to a sidecar, make sure to update the plugin name to either `<metadata.name>-<spec.version>` 
+> plugin configured through the `cd-cm` ConfigMap to a sidecar, make sure to update the plugin name to either `<metadata.name>-<spec.version>` 
 > if version was mentioned in the `ConfigManagementPlugin` spec or else just use `<metadata.name>`. You can also remove the name altogether 
 > and let the automatic discovery to identify the plugin.
 
 > [!NOTE]
-> If a CMP renders blank manifests, and `prune` is set to `true`, Argo CD will automatically remove resources. CMP plugin authors should ensure errors are part of the exit code. Commonly something like `kustomize build . | cat` won't pass errors because of the pipe. Consider setting `set -o pipefail` so anything piped will pass errors on failure.
+> If a CMP renders blank manifests, and `prune` is set to `true`, Hanzo CD will automatically remove resources. CMP plugin authors should ensure errors are part of the exit code. Commonly something like `kustomize build . | cat` won't pass errors because of the pipe. Consider setting `set -o pipefail` so anything piped will pass errors on failure.
 
 > [!NOTE]
 > If a CMP command fails to gracefully exit on `CD_EXEC_TIMEOUT`, it will be forcefully killed after an additional timeout of `CD_EXEC_FATAL_TIMEOUT`.
@@ -347,14 +347,14 @@ If you are actively developing a sidecar-installed CMP, keep a few things in min
    image. If you're using a different, static tag, set `imagePullPolicy: Always` on the CMP's sidecar container.
 3. CMP errors are cached by the repo-server in Redis. Restarting the repo-server Pod will not clear the cache. Always
    do a "Hard Refresh" when actively developing a CMP so you have the latest output.
-4. Verify your sidecar has started properly by viewing the Pod and seeing that two containers are running `kubectl get pod -l app.kubernetes.io/component=repo-server -n argocd`
+4. Verify your sidecar has started properly by viewing the Pod and seeing that two containers are running `kubectl get pod -l app.kubernetes.io/component=repo-server -n cd`
 5. Write log message to stderr and set the `--loglevel=info` flag in the sidecar. This will print everything written to stderr, even on successful command execution.
 
 
 ### Other Common Errors
 | Error Message | Cause |
 | -- | -- |
-| `no matches for kind "ConfigManagementPlugin" in version "argoproj.io/v1alpha1"` | The `ConfigManagementPlugin` CRD was deprecated in Argo CD 2.4 and removed in 2.8. This error means you've tried to put the configuration for your plugin directly into Kubernetes as a CRD. Refer to this [section of documentation](#write-the-plugin-configuration-file) for how to write the plugin configuration file and place it properly in the sidecar. |
+| `no matches for kind "ConfigManagementPlugin" in version "apps.hanzo.ai/v1alpha1"` | The `ConfigManagementPlugin` CRD was deprecated in Hanzo CD 2.4 and removed in 2.8. This error means you've tried to put the configuration for your plugin directly into Kubernetes as a CRD. Refer to this [section of documentation](#write-the-plugin-configuration-file) for how to write the plugin configuration file and place it properly in the sidecar. |
 
 ## Plugin tar stream exclusions
 
@@ -365,27 +365,27 @@ plugin. We recommend excluding your `.git` folder if it isn't necessary. Use Go'
 You can set it one of three ways:
 
 1. The `--plugin-tar-exclude` argument on the repo server.
-2. The `reposerver.plugin.tar.exclusions` key if you are using `argocd-cmd-params-cm`
+2. The `reposerver.plugin.tar.exclusions` key if you are using `cd-cmd-params-cm`
 3. Directly setting `CD_REPO_SERVER_PLUGIN_TAR_EXCLUSIONS` environment variable on the repo server.
 
 For option 1, the flag can be repeated multiple times. For option 2 and 3, you can specify multiple globs by separating
 them with semicolons.
 
-## Application manifests generation using argocd.argoproj.io/manifest-generate-paths
+## Application manifests generation using cd.hanzo.ai/manifest-generate-paths
 
-To enhance the application manifests generation process, you can enable the use of the `argocd.argoproj.io/manifest-generate-paths` annotation. When this flag is enabled, the resources specified by this annotation will be passed to the CMP server for generating application manifests, rather than sending the entire repository. This can be particularly useful for monorepos.
+To enhance the application manifests generation process, you can enable the use of the `cd.hanzo.ai/manifest-generate-paths` annotation. When this flag is enabled, the resources specified by this annotation will be passed to the CMP server for generating application manifests, rather than sending the entire repository. This can be particularly useful for monorepos.
 
 You can set it one of three ways:
 
 1. The `--plugin-use-manifest-generate-paths` argument on the repo server.
-2. The `reposerver.plugin.use.manifest.generate.paths` key if you are using `argocd-cmd-params-cm`
+2. The `reposerver.plugin.use.manifest.generate.paths` key if you are using `cd-cmd-params-cm`
 3. Directly setting `CD_REPO_SERVER_PLUGIN_USE_MANIFEST_GENERATE_PATHS` environment variable on the repo server to `true`.
 
-## Migrating from argocd-cm plugins
+## Migrating from cd-cm plugins
 
-Installing plugins by modifying the argocd-cm ConfigMap is deprecated as of v2.4 and has been completely removed starting in v2.8.
+Installing plugins by modifying the cd-cm ConfigMap is deprecated as of v2.4 and has been completely removed starting in v2.8.
 
-CMP plugins work by adding a sidecar to `argocd-repo-server` along with a configuration in that sidecar located at `/home/argocd/cmp-server/config/plugin.yaml`. A argocd-cm plugin can be easily converted with the following steps.
+CMP plugins work by adding a sidecar to `cd-repo-server` along with a configuration in that sidecar located at `/home/cd/cmp-server/config/plugin.yaml`. A cd-cm plugin can be easily converted with the following steps.
 
 ### Convert the ConfigMap entry into a config file
 
@@ -407,7 +407,7 @@ data:
 The `pluginName` item would be converted to a config file like this:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: pluginName
@@ -433,10 +433,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: pluginName
-  namespace: argocd
+  namespace: cd
 data:
   pluginName.yaml: |
-    apiVersion: argoproj.io/v1alpha1
+    apiVersion: apps.hanzo.ai/v1alpha1
     kind: ConfigManagementPlugin
     metadata:
       name: pluginName
@@ -464,7 +464,7 @@ To use the name instead of discovery, update the name in your application manife
 if version was mentioned in the `ConfigManagementPlugin` spec or else just use `<metadata.name>`. For example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
@@ -476,8 +476,8 @@ spec:
 
 ### Make sure the plugin has access to the tools it needs
 
-Plugins configured with argocd-cm ran on the Argo CD image. This gave it access to all the tools installed on that
-image by default (see the [Dockerfile](https://github.com/argoproj/argo-cd/blob/master/Dockerfile) for base image and
+Plugins configured with cd-cm ran on the Hanzo CD image. This gave it access to all the tools installed on that
+image by default (see the [Dockerfile](https://github.com/hanzoai/cd/blob/master/Dockerfile) for base image and
 installed tools).
 
 You can either use a stock image (like ubuntu, busybox, or alpine/k8s) or design your own base image with the tools your plugin needs. For
@@ -488,7 +488,7 @@ security, avoid using images with more binaries installed than what your plugin 
 After installing the plugin as a sidecar [according to the directions above](#installing-a-config-management-plugin),
 test it out on a few Applications before migrating all of them to the sidecar plugin.
 
-Once tests have checked out, remove the plugin entry from your argocd-cm ConfigMap.
+Once tests have checked out, remove the plugin entry from your cd-cm ConfigMap.
 
 ### Additional Settings
 
@@ -502,7 +502,7 @@ reasons. If you want to preserve original file mode, you can set `preserveFileMo
 > files with executable permissions which can be a security risk.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: pluginName
@@ -538,7 +538,7 @@ To allow the plugin to access the reposerver git credentials, you can set `provi
 > credentials used to clone the source Git repository.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: pluginName

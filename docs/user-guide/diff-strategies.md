@@ -1,11 +1,11 @@
 # Diff Strategies
 
-Argo CD calculates the diff between the desired state and the live
+Hanzo CD calculates the diff between the desired state and the live
 state in order to define if an Application is out-of-sync. This same
-logic is also used in Argo CD UI to display the differences between
+logic is also used in Hanzo CD UI to display the differences between
 live and desired states for all resources belonging to an application.
 
-Argo CD currently has 3 different strategies to calculate diffs:
+Hanzo CD currently has 3 different strategies to calculate diffs:
 
 - **Legacy**: This is the main diff strategy used by default. It
   applies a 3-way diff based on live state, desired state and
@@ -38,15 +38,15 @@ diff results are cached and new Server-Side Apply requests to Kube API
 are only triggered when:
 
 - An Application refresh or hard-refresh is requested.
-- There is a new revision in the repo which the Argo CD Application is
+- There is a new revision in the repo which the Hanzo CD Application is
   targeting.
-- The Argo CD Application spec changed.
+- The Hanzo CD Application spec changed.
 - The [Resource Version][3] of the resource itself in live state changed
 
 One advantage of Server-Side Diff is that Kubernetes Admission
 Controllers will participate in the diff calculation. If for example
 a validation webhook identifies a resource to be invalid, that will be
-informed to Argo CD during the diff stage rather than during the sync 
+informed to Hanzo CD during the diff stage rather than during the sync 
 stage.
 
 Note that Server-Side Diff will not be performed during the creation of new resources.
@@ -57,51 +57,51 @@ won't be executed when calculating diffs if the resource is not applied in the c
 
 ### Enabling it
 
-Server-Side Diff can be enabled at the Argo CD Controller level or per
+Server-Side Diff can be enabled at the Hanzo CD Controller level or per
 Application.
 
 **Enabling Server-Side Diff for all Applications**
 
-Add the following entry in the argocd-cmd-params-cm configmap:
+Add the following entry in the cd-cmd-params-cm configmap:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cmd-params-cm
+  name: cd-cmd-params-cm
 data:
   controller.diff.server.side: "true"
 ...
 ```
 
-Note: It is necessary to restart the `argocd-application-controller`
+Note: It is necessary to restart the `cd-application-controller`
 after applying this configuration.
 
 **Enabling Server-Side Diff for one application**
 
-Add the following annotation in the Argo CD Application resource:
+Add the following annotation in the Hanzo CD Application resource:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=true
+    cd.hanzo.ai/compare-options: ServerSideDiff=true
 ...
 ```
 
 **Disabling Server-Side Diff for one application**
 
-If Server-Side Diff is enabled globally in your Argo CD instance, it
+If Server-Side Diff is enabled globally in your Hanzo CD instance, it
 is possible to disable it at the application level. In order to do so,
 add the following annotation in the Application resource:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=false
+    cd.hanzo.ai/compare-options: ServerSideDiff=false
 ...
 ```
 
@@ -111,28 +111,28 @@ Server-Side Diff feature*
 ### Mutation Webhooks
 
 Server-Side Diff does not include changes made by mutation webhooks by
-default. If you want to include mutation webhooks in Argo CD diffs add
-the following annotation in the Argo CD Application resource:
+default. If you want to include mutation webhooks in Hanzo CD diffs add
+the following annotation in the Hanzo CD Application resource:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: IncludeMutationWebhook=true
+    cd.hanzo.ai/compare-options: IncludeMutationWebhook=true
 ...
 ```
 
 Note: This annotation is only effective when Server-Side Diff is
 enabled. To enable both options for a given application add the
-following annotation in the Argo CD Application resource:
+following annotation in the Hanzo CD Application resource:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+    cd.hanzo.ai/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
 ...
 ```
 

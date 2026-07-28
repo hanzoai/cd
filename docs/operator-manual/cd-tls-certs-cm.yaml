@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-tls-certs-cm
-  namespace: argocd
+  name: cd-tls-certs-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
   server.example.com: |
     -----BEGIN CERTIFICATE-----

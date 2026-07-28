@@ -127,7 +127,7 @@ func TestPrintApplicationSetTable(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL:  "https://github.com/argoproj/argo-cd.git",
+							RepoURL:  "https://github.com/hanzoai/cd.git",
 							Revision: "head",
 							Directories: []v1alpha1.GitDirectoryGeneratorItem{
 								{
@@ -162,7 +162,7 @@ func TestPrintApplicationSetTable(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL:  "https://github.com/argoproj/argo-cd.git",
+							RepoURL:  "https://github.com/hanzoai/cd.git",
 							Revision: "head",
 							Directories: []v1alpha1.GitDirectoryGeneratorItem{
 								{
@@ -205,7 +205,7 @@ func TestPrintAppSetSummaryTable(t *testing.T) {
 			Generators: []v1alpha1.ApplicationSetGenerator{
 				{
 					Git: &v1alpha1.GitGenerator{
-						RepoURL:  "https://github.com/argoproj/argo-cd.git",
+						RepoURL:  "https://github.com/hanzoai/cd.git",
 						Revision: "head",
 						Directories: []v1alpha1.GitDirectoryGeneratorItem{
 							{

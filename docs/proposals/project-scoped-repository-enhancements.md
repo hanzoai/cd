@@ -22,17 +22,17 @@ last-updated: 2024-06-04
 ## Summary
 
 This is to allow the possibility to have multiple repository credentials which share the same URL. Currently, multiple repository
-credentials sharing the same URL is disallowed by the Argo CD API.
+credentials sharing the same URL is disallowed by the Hanzo CD API.
 
 ## Motivation
 
 This is to allow the possibility to have multiple repository credentials which share the same URL. Currently, multiple repository
-credentials sharing the same URL is disallowed by the Argo CD API. If the credentials are added directly to the `argocd`
-namespace, we "get around" `argocd-server` returning an error, but this still does not work since the first secret that 
+credentials sharing the same URL is disallowed by the Hanzo CD API. If the credentials are added directly to the `cd`
+namespace, we "get around" `cd-server` returning an error, but this still does not work since the first secret that 
 matches a repository URL is the one that gets returned, and the order is also undefined. 
 
 The reason why we want this is due to the fact that in a multi-tenant environment, multiple teams may want to 
-independently use the same repositories without needing to ask an Argo CD admin to add the repository for them, and then
+independently use the same repositories without needing to ask an Hanzo CD admin to add the repository for them, and then
 add the necessary RBAC in the relevant `AppProject`s to prevent other teams from having access to the repository 
 credentials. In other words, this will enable more self-service capabilities for dev teams. 
 
@@ -114,8 +114,8 @@ advisable.
 * It will be more difficult to reason about how a specific repository credential gets selected. There could be scenarios 
 where a repository has both a global repository credential and a scoped credential for the project to which the 
 application belongs.
-* There will be more secrets proliferating in the `argocd` namespace. This has the potential to increase maintenance burden
-to keeping said secrets safe, and it also makes it harder to have a bird's eye view from an Argo CD admin's perspective.
+* There will be more secrets proliferating in the `cd` namespace. This has the potential to increase maintenance burden
+to keeping said secrets safe, and it also makes it harder to have a bird's eye view from an Hanzo CD admin's perspective.
 * Depending on the number of projects making use of distinct credentials for the same repository URL, loading the correct 
 credentials from the repository secrets has the potential to scale linearly with the number of app projects (in the worst case 
 scenario we would need to loop through all the credentials before finding the correct credential to load). This is likely 
@@ -123,9 +123,9 @@ a non-issue in practice.
 * Also depending on the number of projects making use of distinct credentials for the same repository URL, this will 
 imply that for each `AppProject` sharing the same repository URL, a separate copy of the repository will be checked out.
 This has potential implications in terms of memory consumption, sync times, CPU load times etc. This is something 
-of which an Argo CD admin will need to be mindful.
+of which an Hanzo CD admin will need to be mindful.
 
 ## Alternatives
 
 To keep the existing behavior of having a single repository credential shared by multiple `AppProject`s. It would be up 
-to the Argo CD admins to ensure that a specific repository credential cannot be used by unauthorized parties.
+to the Hanzo CD admins to ensure that a specific repository credential cannot be used by unauthorized parties.

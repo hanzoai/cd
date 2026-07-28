@@ -1,4 +1,4 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Experiment
 metadata:
   name: experiment-error-template-missing
@@ -24,7 +24,7 @@ status:
   analysisRuns:
   - analysisRun: ""
     message: 'AnalysisTemplate verification failed for analysis ''does-not-exist'':
-      analysistemplate.argoproj.io "does-not-exist" not found'
+      analysistemplate.apps.hanzo.ai "does-not-exist" not found'
     name: does-not-exist
     phase: Error
   availableAt: "2019-10-27T23:13:10Z"
@@ -36,7 +36,7 @@ status:
     phase: "True"
     type: Progressing
   message: 'AnalysisTemplate verification failed for analysis ''does-not-exist'':
-    analysistemplate.argoproj.io "does-not-exist" not found'
+    analysistemplate.apps.hanzo.ai "does-not-exist" not found'
   running: true
   phase: Error
   templateStatuses:

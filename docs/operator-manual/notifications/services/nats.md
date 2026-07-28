@@ -19,7 +19,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.argoproj.io/subscribe.on-deployment-ready.nats: "mytopic"
+    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.nats: "mytopic"
 ```
 
 * ConfigMap
@@ -27,7 +27,7 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.nats: |
     url: "nats://nats:4222"

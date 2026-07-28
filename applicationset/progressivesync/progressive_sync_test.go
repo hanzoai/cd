@@ -1652,7 +1652,7 @@ func TestPerformReverseDeletionStaleCache(t *testing.T) {
 			// The objects are already gone on the API server: every Delete 404s.
 			Delete: func(_ context.Context, _ client.WithWatch, obj client.Object, _ ...client.DeleteOption) error {
 				deleteAttempts[obj.GetName()]++
-				return apierrors.NewNotFound(schema.GroupResource{Group: "argoproj.io", Resource: "applications"}, obj.GetName())
+				return apierrors.NewNotFound(schema.GroupResource{Group: "apps.hanzo.ai", Resource: "applications"}, obj.GetName())
 			},
 		}).
 		Build()

@@ -1,10 +1,10 @@
 # High Availability
 
-Argo CD is largely stateless. All data is persisted as Kubernetes objects, which in turn is stored in Kubernetes' etcd.
+Hanzo CD is largely stateless. All data is persisted as Kubernetes objects, which in turn is stored in Kubernetes' etcd.
 Redis is only used as a disposable cache and can be safely rebuilt without service disruption.
 
-A set of [HA manifests](https://github.com/argoproj/argo-cd/tree/stable/manifests/ha) are provided for users who wish to
-run Argo CD in a highly available manner. This runs more containers, and runs Redis in HA mode.
+A set of [HA manifests](https://github.com/hanzoai/cd/tree/stable/manifests/ha) are provided for users who wish to
+run Hanzo CD in a highly available manner. This runs more containers, and runs Redis in HA mode.
 
 > [!NOTE]
 > The HA installation will require at least three different nodes due to pod anti-affinity rule in the
@@ -12,77 +12,77 @@ run Argo CD in a highly available manner. This runs more containers, and runs Re
 
 ## Scaling Up
 
-### argocd-repo-server
+### cd-repo-server
 
 **settings:**
 
-The `argocd-repo-server` is responsible for cloning Git repository, keeping it up to date and generating manifests using
+The `cd-repo-server` is responsible for cloning Git repository, keeping it up to date and generating manifests using
 the appropriate tool.
 
-* `argocd-repo-server` fork/exec config management tools to generate manifests. The fork can fail due to lack of memory
+* `cd-repo-server` fork/exec config management tools to generate manifests. The fork can fail due to lack of memory
   or limit on the number of OS threads.
   The `--parallelismlimit` flag controls how many manifests generations are running concurrently and helps avoid OOM
   kills.
 
-* The `argocd-repo-server` ensures that repository is in the clean state during the manifest generation using config
+* The `cd-repo-server` ensures that repository is in the clean state during the manifest generation using config
   management tools such as Kustomize, Helm
   or custom plugin. As a result Git repositories with multiple applications might affect repository server performance.
   Read [Monorepo Scaling Considerations](#monorepo-scaling-considerations) for more information.
 
-* `argocd-repo-server` clones the repository into `/tmp` (or the path specified in the `TMPDIR` env variable). The pod
+* `cd-repo-server` clones the repository into `/tmp` (or the path specified in the `TMPDIR` env variable). The pod
   might run out of disk space if it has too many repositories
   or if the repositories have a lot of files. To avoid this problem mount a persistent volume.
 
-* `argocd-repo-server` uses `git ls-remote` to resolve ambiguous revisions such as `HEAD`, a branch or a tag name. This
+* `cd-repo-server` uses `git ls-remote` to resolve ambiguous revisions such as `HEAD`, a branch or a tag name. This
   operation happens frequently
   and might fail. To avoid failed syncs use the `CD_GIT_ATTEMPTS_COUNT` environment variable to retry failed
   requests.
 
-* `argocd-repo-server` Every 3m (by default) Argo CD checks for changes to the app manifests. Argo CD assumes by default
+* `cd-repo-server` Every 3m (by default) Hanzo CD checks for changes to the app manifests. Hanzo CD assumes by default
   that manifests only change when the repo changes, so it caches the generated manifests (for 24h by default). With
   Kustomize remote bases, or in case a Helm chart gets changed without bumping its version number, the expected
   manifests can change even though the repo has not changed. By reducing the cache time, you can get the changes without
   waiting for 24h. Use `--repo-cache-expiration duration`, and we'd suggest in low volume environments you try `1h`.
   Bear in mind that this will negate the benefits of caching if set too low.
 
-* `argocd-repo-server` executes config management tools such as `helm` or `kustomize` and enforces a 90 second timeout.
+* `cd-repo-server` executes config management tools such as `helm` or `kustomize` and enforces a 90 second timeout.
   This timeout can be changed by using the `CD_EXEC_TIMEOUT` env variable. The value should be in the Go time
   duration string format, for example, `2m30s`.
 
-* `argocd-repo-server` will issue a `SIGTERM` signal to a command that has elapsed the `CD_EXEC_TIMEOUT`. In most
+* `cd-repo-server` will issue a `SIGTERM` signal to a command that has elapsed the `CD_EXEC_TIMEOUT`. In most
   cases, well-behaved commands will exit immediately when receiving the signal. However, if this does not happen,
-  `argocd-repo-server` will wait an additional timeout of `CD_EXEC_FATAL_TIMEOUT` and then forcefully exit the
+  `cd-repo-server` will wait an additional timeout of `CD_EXEC_FATAL_TIMEOUT` and then forcefully exit the
   command with a `SIGKILL` to prevent stalling. Note that a failure to exit with `SIGTERM` is usually a bug in either
-  the offending command or in the way `argocd-repo-server` calls it and should be reported to the issue tracker for
+  the offending command or in the way `cd-repo-server` calls it and should be reported to the issue tracker for
   further investigation.
 
-* When using the `discovery` option in Config Management Plugins (CMP), `argocd-repo-server` copies the repository (or
-  only the files specified via the `argocd.argoproj.io/manifest-generate-paths` annotation) into a separate directory
+* When using the `discovery` option in Config Management Plugins (CMP), `cd-repo-server` copies the repository (or
+  only the files specified via the `cd.hanzo.ai/manifest-generate-paths` annotation) into a separate directory
   for each plugin.
-  This can place a heavy load on disk resources for a **argocd-repo-server**, especially if the repository contains
+  This can place a heavy load on disk resources for a **cd-repo-server**, especially if the repository contains
   large files. To mitigate this, consider disabling `discovery` or
   using [Plugin tar stream exclusions](./config-management-plugins.md#plugin-tar-stream-exclusions).
 
 **metrics:**
 
-* `argocd_git_request_total` - Number of git requests. This metric provides two tags:
+* `cd_git_request_total` - Number of git requests. This metric provides two tags:
     - `repo` - Git repo URL
     - `request_type` - `ls-remote` or `fetch`.
 
 * `CD_ENABLE_GRPC_TIME_HISTOGRAM` - Is an environment variable that enables collecting RPC performance metrics.
   Enable it if you need to troubleshoot performance issues. Note: This metric is expensive to both query and store!
 
-### argocd-application-controller
+### cd-application-controller
 
 **settings:**
 
-The `argocd-application-controller` uses `argocd-repo-server` to get generated manifests and Kubernetes API server to
+The `cd-application-controller` uses `cd-repo-server` to get generated manifests and Kubernetes API server to
 get the actual cluster state.
 
 * each controller replica uses two separate queues to process application reconciliation (milliseconds) and app
   syncing (seconds). The number of queue processors for each queue is controlled by
   `--status-processors` (20 by default) and `--operation-processors` (10 by default) flags. Increase the number of
-  processors if your Argo CD instance manages too many applications.
+  processors if your Hanzo CD instance manages too many applications.
   For 1000 applications, we use 50 for `--status-processors` and 25 for `--operation-processors`
 
 * when the [Source Hydrator](../user-guide/source-hydrator.md) is enabled, the controller hydrates manifests using a
@@ -95,7 +95,7 @@ get the actual cluster state.
   limited to make sure the controller refresh queue does not overflow.
   The app reconciliation fails with `Context deadline exceeded` error if the manifest generation is taking too much
   time. As a workaround increase the value of `--repo-server-timeout-seconds` and
-  consider scaling up the `argocd-repo-server` deployment.
+  consider scaling up the `cd-repo-server` deployment.
 
 * The controller uses Kubernetes watch APIs to maintain a lightweight Kubernetes cluster cache. This allows avoiding
   querying Kubernetes during app reconciliation and significantly improves
@@ -106,11 +106,11 @@ get the actual cluster state.
   reconciliation. In this case, we advise to use the preferred resource version in Git.
 
 * The controller polls Git every 3m by default. You can change this duration using the `timeout.reconciliation` and
-  `timeout.reconciliation.jitter` setting in the `argocd-cm` ConfigMap. The value of the fields is
+  `timeout.reconciliation.jitter` setting in the `cd-cm` ConfigMap. The value of the fields is
   a [duration string](https://pkg.go.dev/time#ParseDuration) e.g `60s`, `1m` or `1h`.
 
 * If the controller is managing too many clusters and uses too much memory then you can shard clusters across multiple
-  controller replicas. To enable sharding, increase the number of replicas in `argocd-application-controller`
+  controller replicas. To enable sharding, increase the number of replicas in `cd-application-controller`
   `StatefulSet`
   and repeat the number of replicas in the `CD_CONTROLLER_REPLICAS` environment variable. The strategic merge patch
   below demonstrates changes required to configure two controller replicas.
@@ -123,13 +123,13 @@ get the actual cluster state.
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: argocd-application-controller
+  name: cd-application-controller
 spec:
   replicas: 2
   template:
     spec:
       containers:
-        - name: argocd-application-controller
+        - name: cd-application-controller
           env:
             - name: CD_CONTROLLER_REPLICAS
               value: "2"
@@ -137,7 +137,7 @@ spec:
 
 * In order to manually set the cluster's shard number, specify the optional `shard` property when creating a cluster. If
   not specified, it will be calculated on the fly by the application controller.
-* The shard distribution algorithm of the `argocd-application-controller` can be set by using the `--sharding-method`
+* The shard distribution algorithm of the `cd-application-controller` can be set by using the `--sharding-method`
   parameter. Supported sharding methods are:
     - `legacy` mode uses an `uid` based distribution (non-uniform).
     - `round-robin` uses an equal distribution across all shards.
@@ -145,7 +145,7 @@ spec:
       and also reduces cluster or application reshuffling in case of additions or removals of shards or clusters.
 
 The `--sharding-method` parameter can also be overridden by setting the key `controller.sharding.algorithm` in the
-`argocd-cmd-params-cm` `ConfigMap` (preferably) or by setting the `CD_CONTROLLER_SHARDING_ALGORITHM` environment
+`cd-cmd-params-cm` `ConfigMap` (preferably) or by setting the `CD_CONTROLLER_SHARDING_ALGORITHM` environment
 variable and by specifying the same possible values.
 
 > [!WARNING]
@@ -168,7 +168,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   shard: 1
@@ -221,15 +221,15 @@ stringData:
 
 **metrics**
 
-* `argocd_app_reconcile` - reports application reconciliation duration in seconds. Can be used to build reconciliation
+* `cd_app_reconcile` - reports application reconciliation duration in seconds. Can be used to build reconciliation
   duration heat map to get a high-level reconciliation performance picture.
-* `argocd_app_k8s_request_total` - number of k8s requests per application. The number of fallback Kubernetes API
+* `cd_app_k8s_request_total` - number of k8s requests per application. The number of fallback Kubernetes API
   queries - useful to identify which application has a resource with
   non-preferred version and causes performance issues.
 
-### argocd-server
+### cd-server
 
-The `argocd-server` is stateless and probably the least likely to cause issues. To ensure there is no downtime during
+The `cd-server` is stateless and probably the least likely to cause issues. To ensure there is no downtime during
 upgrades, consider increasing the number of replicas to `3` or more and repeat the number in the
 `CD_API_SERVER_REPLICAS` environment variable. The strategic merge patch below
 demonstrates this.
@@ -238,13 +238,13 @@ demonstrates this.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: argocd-server
+  name: cd-server
 spec:
   replicas: 3
   template:
     spec:
       containers:
-        - name: argocd-server
+        - name: cd-server
           env:
             - name: CD_API_SERVER_REPLICAS
               value: "3"
@@ -257,23 +257,23 @@ spec:
   replica.
 * The `CD_GRPC_MAX_SIZE_MB` environment variable allows specifying the max size of the server response message in
   megabytes.
-  The default value is 200. You might need to increase this for an Argo CD instance that manages 3000+ applications.
+  The default value is 200. You might need to increase this for an Hanzo CD instance that manages 3000+ applications.
 
-* The `server.glob.cache.size` config key in `argocd-cmd-params-cm` (or the `--glob-cache-size` server flag) controls
+* The `server.glob.cache.size` config key in `cd-cmd-params-cm` (or the `--glob-cache-size` server flag) controls
   the maximum number of compiled glob patterns cached for RBAC policy evaluation. Glob pattern compilation is expensive,
   and caching significantly improves RBAC performance when many applications are managed. The default value is 10000.
   See [RBAC Glob Matching](rbac.md#glob-matching) for more details.
 
-### argocd-dex-server, argocd-redis
+### cd-dex-server, cd-redis
 
-The `argocd-dex-server` uses an in-memory database, and two or more instances may have inconsistent data.
-`argocd-redis` is pre-configured with the understanding of only three total redis servers/sentinels.
+The `cd-dex-server` uses an in-memory database, and two or more instances may have inconsistent data.
+`cd-redis` is pre-configured with the understanding of only three total redis servers/sentinels.
 
 ## Monorepo Scaling Considerations
 
-Argo CD repo server maintains one repository clone locally and uses it for application manifest generation. If the
+Hanzo CD repo server maintains one repository clone locally and uses it for application manifest generation. If the
 manifest generation requires to change a file in the local repository clone then only one concurrent manifest generation
-per server instance is allowed. This limitation might significantly slow down Argo CD if you have a monorepo with
+per server instance is allowed. This limitation might significantly slow down Hanzo CD if you have a monorepo with
 multiple applications (50+).
 
 ### Use Fully Qualified Git References
@@ -282,13 +282,13 @@ When specifying the `targetRevision` in your Application manifests, using fully 
 
 **Performance Impact:**
 
-When resolving a Git reference (e.g., converting `main` to a commit SHA), Argo CD needs to:
+When resolving a Git reference (e.g., converting `main` to a commit SHA), Hanzo CD needs to:
 
 1. Load all Git references (branches and tags)
 2. Iterate through all references to find a match
 3. Resolve symbolic references if needed
 
-For repositories with many references, this process is CPU and memory intensive. Using fully qualified references allows Argo CD to optimize the resolution process and leverage caching more effectively.
+For repositories with many references, this process is CPU and memory intensive. Using fully qualified references allows Hanzo CD to optimize the resolution process and leverage caching more effectively.
 
 **Recommended approach:**
 
@@ -314,17 +314,17 @@ spec:
 
 ### Enable Concurrent Processing
 
-Argo CD determines if manifest generation might change local files in the local repository clone based on the config
+Hanzo CD determines if manifest generation might change local files in the local repository clone based on the config
 management tool and application settings.
 If the manifest generation has no side effects then requests are processed in parallel without a performance penalty.
 The following are known cases that might cause slowness and their workarounds:
 
 * **Multiple Helm based applications pointing to the same directory in one Git repository:** for historical reasons Argo
-  CD used to generate Helm manifests sequentially. Starting v3.0, Argo CD performs a parallel generation of Helm
+  CD used to generate Helm manifests sequentially. Starting v3.0, Hanzo CD performs a parallel generation of Helm
   manifests by default.
 
 * **Multiple Custom plugin based applications:** avoid creating temporal files during manifest generation and create
-  `.argocd-allow-concurrency` file in the app directory, or use the sidecar plugin option, which processes each
+  `.cd-allow-concurrency` file in the app directory, or use the sidecar plugin option, which processes each
   application using a temporary copy of the repository.
 
 * **Multiple Kustomize applications in same repository with [parameter overrides](../user-guide/parameters.md):** Currently,
@@ -332,19 +332,19 @@ The following are known cases that might cause slowness and their workarounds:
 
 ### Manifest Paths Annotation
 
-Argo CD aggressively caches generated manifests and uses the repository commit SHA as a cache key. A new commit to the
+Hanzo CD aggressively caches generated manifests and uses the repository commit SHA as a cache key. A new commit to the
 Git repository invalidates the cache for all applications configured in the repository.
 This can negatively affect repositories with multiple applications. You can use the
-`argocd.argoproj.io/manifest-generate-paths` Application CRD annotation to solve this problem and improve performance.
+`cd.hanzo.ai/manifest-generate-paths` Application CRD annotation to solve this problem and improve performance.
 
-Note: The `argocd.argoproj.io/manifest-generate-paths` annotation is available for use with webhooks. Since Argo CD
+Note: The `cd.hanzo.ai/manifest-generate-paths` annotation is available for use with webhooks. Since Hanzo CD
 v2.11, this annotation can also be used **without configuring any webhooks**. Webhooks are not a pre-condition for this
 feature. You can rely on the annotation alone to optimize manifest generation for all applications.
 
-The `argocd.argoproj.io/manifest-generate-paths` annotation contains a semicolon-separated list of paths within the Git
+The `cd.hanzo.ai/manifest-generate-paths` annotation contains a semicolon-separated list of paths within the Git
 repository that are used during manifest generation. It will use the paths specified in the annotation to compare the
 last cached revision to the latest commit. If no modified files match the paths specified in
-`argocd.argoproj.io/manifest-generate-paths`, then it will not trigger application reconciliation and the existing cache
+`cd.hanzo.ai/manifest-generate-paths`, then it will not trigger application reconciliation and the existing cache
 will be considered valid for the new commit.
 
 Installations that use a different repository for each application are **not** subject to this behavior and will likely
@@ -355,7 +355,7 @@ unrelated change happens in the external source.
 
 > [!NOTE]
 > The Git-history comparison described above is skipped for repositories configured with shallow cloning (`depth` greater
-> than `0`). In that case, Argo CD may not have enough history to compare the previous synced revision with the new
+> than `0`). In that case, Hanzo CD may not have enough history to compare the previous synced revision with the new
 > revision, so it treats the application as potentially changed and proceeds with normal refresh and manifest generation.
 > This does not affect webhook payload filtering, which uses the changed files reported by the webhook event. The
 > annotation can also still be used to calculate a common root path and reduce the repository content sent to a Config
@@ -371,14 +371,14 @@ For webhooks, the comparison is done using the files specified in the webhook ev
   path specified in the application source:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
   annotations:
     # resolves to the 'guestbook' directory
-    argocd.argoproj.io/manifest-generate-paths: .
+    cd.hanzo.ai/manifest-generate-paths: .
 spec:
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
@@ -391,12 +391,12 @@ spec:
   an absolute path within the Git repository:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
   annotations:
-    argocd.argoproj.io/manifest-generate-paths: /guestbook
+    cd.hanzo.ai/manifest-generate-paths: /guestbook
 spec:
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
@@ -409,13 +409,13 @@ spec:
   semicolon (`;`):
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
   annotations:
     # resolves to 'my-application' and 'shared'
-    argocd.argoproj.io/manifest-generate-paths: .;../shared
+    cd.hanzo.ai/manifest-generate-paths: .;../shared
 spec:
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
@@ -428,14 +428,14 @@ spec:
   the [Go filepath Match function](https://pkg.go.dev/path/filepath#Match):
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
   annotations:
     # resolves to any file matching the pattern of *-secret.yaml in the top level shared folder
-    argocd.argoproj.io/manifest-generate-paths: "/shared/*-secret.yaml"
+    cd.hanzo.ai/manifest-generate-paths: "/shared/*-secret.yaml"
 spec:
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
@@ -445,7 +445,7 @@ spec:
 ```
 
 > [!NOTE]
-> If application manifest generation using the `argocd.argoproj.io/manifest-generate-paths` annotation feature is
+> If application manifest generation using the `cd.hanzo.ai/manifest-generate-paths` annotation feature is
 > enabled, only the resources specified by this annotation will be sent to the CMP server for manifest generation,
 > rather
 > than the entire repository. To determine the appropriate resources, a common root path is calculated based on the
@@ -454,20 +454,20 @@ spec:
 
 #### Measuring Annotation Efficiency
 
-You can use the following metrics to evaluate how effectively the `argocd.argoproj.io/manifest-generate-paths`
+You can use the following metrics to evaluate how effectively the `cd.hanzo.ai/manifest-generate-paths`
 annotation is reducing unnecessary manifest regeneration:
 
-- **`argocd_webhook_requests_total`** (label: `repo`) — counts incoming webhook events per repository. Use this as the
-  baseline for how many push events Argo CD is receiving.
+- **`cd_webhook_requests_total`** (label: `repo`) — counts incoming webhook events per repository. Use this as the
+  baseline for how many push events Hanzo CD is receiving.
 
-- **`argocd_webhook_store_cache_attempts_total`** (labels: `repo`, `successful`) — counts attempts to reuse the previously
+- **`cd_webhook_store_cache_attempts_total`** (labels: `repo`, `successful`) — counts attempts to reuse the previously
   cached manifests for the new commit SHA when an application's refresh paths have _not_ changed. A `successful=true`
   result means the cache was warmed for the new revision without re-generating manifests, which is the desired outcome.
 
 To assess efficiency, compare the rate of `successful=true` attempts against the total webhook rate. A high ratio
 indicates the annotation is working well and preventing unnecessary manifest regeneration.
 
-Note that some `successful=false` results are expected and not a cause for concern — they occur when Argo CD has not
+Note that some `successful=false` results are expected and not a cause for concern — they occur when Hanzo CD has not
 yet cached manifests for an application (e.g. after a restart or first sync), so there is nothing to carry forward to
 the new revision.
 
@@ -488,14 +488,14 @@ will skip all Redis cache operations for unaffected applications. This is the re
 with plain YAML manifests.
 
 **Per-repository setting (recommended)**: set `webhookManifestCacheWarmDisabled: true` on the repository via the
-ArgoCD CLI or UI:
+Hanzo CD CLI or UI:
 
 ```bash
-argocd repo edit https://github.com/org/repo.git --webhook-manifest-cache-warm-disabled
+cd repo edit https://github.com/org/repo.git --webhook-manifest-cache-warm-disabled
 ```
 
 **Global setting**: to disable cache warming for all repositories, set the following environment variable on
-`argocd-server`:
+`cd-server`:
 
 ```
 CD_WEBHOOK_MANIFEST_CACHE_WARM_DISABLED=true
@@ -503,7 +503,7 @@ CD_WEBHOOK_MANIFEST_CACHE_WARM_DISABLED=true
 
 ### Application Sync Timeout & Jitter
 
-Argo CD has a timeout for application syncs. It will trigger a refresh for each application periodically when the
+Hanzo CD has a timeout for application syncs. It will trigger a refresh for each application periodically when the
 timeout expires.
 With a large number of applications, this will cause a spike in the refresh queue and can cause a spike to the
 repo-server component. To avoid this, you can set a jitter to the sync timeout which will spread out the refreshes and
@@ -518,11 +518,11 @@ To configure the jitter you can set the following environment variables:
 
 ### Webhook Reconciliation Jitter
 
-When a webhook event arrives (e.g. after a bulk merge to a monorepo), Argo CD may simultaneously enqueue refreshes for
+When a webhook event arrives (e.g. after a bulk merge to a monorepo), Hanzo CD may simultaneously enqueue refreshes for
 a large number of applications, causing a spike in load on the repo-server. To spread these refreshes out over time you
 can configure a random jitter that is applied before each webhook-triggered refresh is processed.
 
-The following `argocd-cm` ConfigMap keys control this behaviour:
+The following `cd-cm` ConfigMap keys control this behaviour:
 
 * `webhook.refresh.jitter` – The maximum duration of the random delay added before each webhook-triggered
   application refresh. For example, if set to `60s`, each refresh will wait between 0 and 60 seconds before being
@@ -535,7 +535,7 @@ The following `argocd-cm` ConfigMap keys control this behaviour:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
+  name: cd-cm
 data:
   # Apply up to 60s of jitter when more than 10 applications are affected
   webhook.refresh.jitter: "60s"
@@ -543,14 +543,14 @@ data:
 ```
 
 You can also tune the number of concurrent workers that process the refresh queue using the
-`server.webhook.refresh.workers` key in `argocd-cmd-params-cm` (default: `20`). Under high webhook load it may be
+`server.webhook.refresh.workers` key in `cd-cmd-params-cm` (default: `20`). Under high webhook load it may be
 beneficial to raise this value alongside the jitter settings to drain the queue faster once the jitter delay expires.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cmd-params-cm
+  name: cd-cmd-params-cm
 data:
   server.webhook.refresh.workers: "40"
 ```
@@ -663,29 +663,29 @@ Not all HTTP responses are eligible for retries. The following conditions will n
 
 ## CPU/Memory Profiling
 
-Argo CD optionally exposes a profiling endpoint that can be used to profile the CPU and memory usage of the Argo CD
+Hanzo CD optionally exposes a profiling endpoint that can be used to profile the CPU and memory usage of the Hanzo CD
 component.
 The profiling endpoint is available on the metrics port of each component. See [metrics](./metrics.md) for more information
 about the port.
 For security reasons, the profiling endpoint is disabled by default. The endpoint can be enabled by setting the
 `server.profile.enabled`, `applicationsetcontroller.profile.enabled`, `reposerver.profile.enabled` or 
-`controller.profile.enabled` key of [argocd-cmd-params-cm](argocd-cmd-params-cm.yaml) ConfigMap to `true`.
+`controller.profile.enabled` key of [cd-cmd-params-cm](cd-cmd-params-cm.yaml) ConfigMap to `true`.
 Once the endpoint is enabled, you can use the go profile tool to collect the CPU and memory profiles. Example:
 
 ```bash
-$ kubectl port-forward svc/argocd-metrics 8082:8082
+$ kubectl port-forward svc/cd-metrics 8082:8082
 $ go tool pprof http://localhost:8082/debug/pprof/heap
 ```
 
 ## Mitigating OOMKilled Events from Memory Spikes
 
-To mitigate `OOMKilled` events caused by sudden memory spikes without over-provisioning resources, you can configure the `GOMEMLIMIT` environment variable on the relevant Argo CD containers (supported in Argo CD versions >= 2.7.0).
+To mitigate `OOMKilled` events caused by sudden memory spikes without over-provisioning resources, you can configure the `GOMEMLIMIT` environment variable on the relevant Hanzo CD containers (supported in Hanzo CD versions >= 2.7.0).
 
 Setting `GOMEMLIMIT` to **80%–90%** of your container's total memory limit forces the Go runtime to trigger garbage collection before the Kubernetes hard limit is reached. For more detail, see the [Go GC Guide](https://go.dev/doc/gc-guide#Memory_limit) and the [Environment variables](https://pkg.go.dev/runtime#hdr-Environment_Variables) reference.
 
 ```yaml
 containers:
-  - name: argocd-application-controller
+  - name: cd-application-controller
     resources:
       limits:
         memory: "2Gi"
@@ -697,7 +697,7 @@ containers:
 ### Known Use Cases
 
 * Application controller cold-start memory spike
-* Expensive per-request memory spikes in argocd-server
+* Expensive per-request memory spikes in cd-server
 
 ### Trade-Offs & Tuning
 
@@ -719,21 +719,21 @@ stringData:
 kind: Secret
 metadata:
   annotations:
-    managed-by: argocd.argoproj.io
+    managed-by: cd.hanzo.ai
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
   name: my-repo
-  namespace: argocd
+  namespace: cd
 type: Opaque
 ```
 
 > [!NOTE]
-> You can use the `argocd repo add <repo-url> --depth` command to add a repository with shallow cloning enabled.
+> You can use the `cd repo add <repo-url> --depth` command to add a repository with shallow cloning enabled.
 
 When shallow cloning, the repository is cloned with a depth of 1, which means only the required commit is cloned as opposed to the full history. This approach makes sense when the repository has a large history.
 
 > [!NOTE]
 > Shallow cloning disables the non-webhook Git-history comparison optimization provided by the
-> `argocd.argoproj.io/manifest-generate-paths` annotation. If you rely on that annotation to avoid unnecessary refreshes
+> `cd.hanzo.ai/manifest-generate-paths` annotation. If you rely on that annotation to avoid unnecessary refreshes
 > without webhooks, use a full clone (`depth: "0"` or omit `depth`) for that repository. Webhook payload filtering and
 > Config Management Plugin sidecar path narrowing can still use the annotation with shallow clones.

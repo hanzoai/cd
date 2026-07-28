@@ -1,22 +1,22 @@
 # Custom Tooling
 
-Argo CD bundles preferred versions of its supported templating tools (helm, kustomize, ks, jsonnet)
+Hanzo CD bundles preferred versions of its supported templating tools (helm, kustomize, ks, jsonnet)
 as part of its container images. Sometimes, it may be desired to use a specific version of a tool
-other than what Argo CD bundles. Some reasons to do this might be:
+other than what Hanzo CD bundles. Some reasons to do this might be:
 
 * To upgrade/downgrade to a specific version of a tool due to bugs or bug fixes.
 * To install additional dependencies to be used by kustomize's configmap/secret generators.
   (e.g. curl, vault, gpg, AWS CLI)
 * To install a [config management plugin](config-management-plugins.md).
 
-As the Argo CD repo-server is the single service responsible for generating Kubernetes manifests, it
+As the Hanzo CD repo-server is the single service responsible for generating Kubernetes manifests, it
 can be customized to use alternative toolchain required by your environment.
 
 ## Adding Tools Via Volume Mounts
 
 The first technique is to use an `init` container and a `volumeMount` to copy a different version of
 a tool into the repo-server container. In the following example, an init container is overwriting
-the helm binary with a different version than what is bundled in Argo CD:
+the helm binary with a different version than what is bundled in Hanzo CD:
 
 ```yaml
     spec:
@@ -37,7 +37,7 @@ the helm binary with a different version than what is bundled in Argo CD:
           name: custom-tools
       # 3. Volume mount the custom binary to the bin directory (overriding the existing version)
       containers:
-      - name: argocd-repo-server
+      - name: cd-repo-server
         volumeMounts:
         - mountPath: /usr/local/bin/helm
           name: custom-tools
@@ -51,7 +51,7 @@ following example builds an entirely customized repo-server from a Dockerfile, i
 dependencies that may be needed for generating manifests.
 
 ```Dockerfile
-FROM argoproj/argocd:v2.5.4 # Replace tag with the appropriate argo version
+FROM argoproj/cd:v2.5.4 # Replace tag with the appropriate argo version
 
 # Switch to root for the ability to perform install
 USER root

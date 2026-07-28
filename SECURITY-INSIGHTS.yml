@@ -38,7 +38,7 @@ documentation:
   - https://argo-cd.readthedocs.io/
 distribution-points:
   - https://github.com/argoproj/argo-cd/releases
-  - https://quay.io/repository/argoproj/argocd
+  - https://quay.io/repository/argoproj/cd
 security-artifacts:
   threat-model:
     threat-model-created: true

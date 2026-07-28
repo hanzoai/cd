@@ -1,11 +1,11 @@
-# `argocd admin cluster shards` Command Reference
+# `cd admin cluster shards` Command Reference
 
-## argocd admin cluster shards
+## cd admin cluster shards
 
 Print information about each controller shard and the estimated portion of Kubernetes resources it is responsible for.
 
 ```
-argocd admin cluster shards [flags]
+cd admin cluster shards [flags]
 ```
 
 ### Options
@@ -29,7 +29,7 @@ argocd admin cluster shards [flags]
       --password string                       Password for basic authentication to the API server
       --port-forward-redis                    Automatically port-forward ha proxy redis from current namespace? (default true)
       --proxy-url string                      If provided, this URL will be used to connect via proxy
-      --redis string                          Redis server hostname and port (e.g. argocd-redis:6379). 
+      --redis string                          Redis server hostname and port (e.g. cd-redis:6379). 
       --redis-ca-certificate string           Path to Redis server CA certificate (e.g. /etc/certs/redis/ca.crt). If not specified, system trusted CAs will be used for server certificate validation.
       --redis-client-certificate string       Path to Redis client certificate (e.g. /etc/certs/redis/client.crt).
       --redis-client-key string               Path to Redis client key (e.g. /etc/certs/redis/client.crt).
@@ -39,7 +39,7 @@ argocd admin cluster shards [flags]
       --redisdb int                           Redis database.
       --replicas int                          Application controller replicas count. Inferred from number of running controller pods if not specified
       --request-timeout string                The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests. (default "0")
-      --sentinel stringArray                  Redis sentinel hostname and port (e.g. argocd-redis-ha-announce-0:6379). 
+      --sentinel stringArray                  Redis sentinel hostname and port (e.g. cd-redis-ha-announce-0:6379). 
       --sentinelmaster string                 Redis sentinel master group name. (default "master")
       --server string                         The address and port of the Kubernetes API server
       --shard int                             Cluster shard filter (default -1)
@@ -53,33 +53,33 @@ argocd admin cluster shards [flags]
 ### Options inherited from parent commands
 
 ```
-      --argocd-context string           The name of the Argo-CD server context to use
+      --cd-context string           The name of the Hanzo CD server context to use
       --auth-token string               Authentication token; set this or the CD_AUTH_TOKEN environment variable
       --client-crt string               Client certificate file
       --client-crt-key string           Client certificate key file
-      --config string                   Path to Argo CD config (default "/home/user/.config/argocd/config")
-      --controller-name string          Name of the Argo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "argocd-application-controller")
-      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Argo CD API server
-      --grpc-web                        Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2.
-      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2. Set web root.
-  -H, --header strings                  Sets additional header to all requests made by Argo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
-      --http-retry-max int              Maximum number of retries to establish http connection to Argo CD server
+      --config string                   Path to Hanzo CD config (default "/home/user/.config/cd/config")
+      --controller-name string          Name of the Hanzo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "cd-application-controller")
+      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Hanzo CD API server
+      --grpc-web                        Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2.
+      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2. Set web root.
+  -H, --header strings                  Sets additional header to all requests made by Hanzo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
+      --http-retry-max int              Maximum number of retries to establish http connection to Hanzo CD server
       --insecure                        Skip server certificate and domain verification
       --kube-context string             Directs the command to the given kube-context
       --logformat string                Set the logging format. One of: json|text (default "json")
       --loglevel string                 Set the logging level. One of: debug|info|warn|error (default "info")
       --plaintext                       Disable TLS
-      --port-forward                    Connect to a random argocd-server port using port forwarding
+      --port-forward                    Connect to a random cd-server port using port forwarding
       --port-forward-namespace string   Namespace name which should be used for port forwarding
       --prompts-enabled                 Force optional interactive prompts to be enabled or disabled, overriding local configuration. If not specified, the local configuration value will be used, which is false by default.
-      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis-ha-haproxy")
-      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis")
-      --repo-server-name string         Name of the Argo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-repo-server")
+      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "cd-redis-ha-haproxy")
+      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "cd-redis")
+      --repo-server-name string         Name of the Hanzo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-repo-server")
       --server-crt string               Server certificate file
-      --server-name string              Name of the Argo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-server")
+      --server-name string              Name of the Hanzo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-server")
 ```
 
 ### SEE ALSO
 
-* [argocd admin cluster](argocd_admin_cluster.md)	 - Manage clusters configuration
+* [cd admin cluster](cd_admin_cluster.md)	 - Manage clusters configuration
 

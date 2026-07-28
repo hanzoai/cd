@@ -60,7 +60,7 @@ The proposed additional synchronization settings are to be added to the `syncPol
 Example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook

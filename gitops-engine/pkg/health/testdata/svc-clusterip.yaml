@@ -3,12 +3,12 @@ kind: Service
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"argocd-metrics","namespace":"argocd"},"spec":{"ports":[{"name":"http","port":8082,"protocol":"TCP","targetPort":8082}],"selector":{"app":"argocd-server"}}}
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"cd-metrics","namespace":"cd"},"spec":{"ports":[{"name":"http","port":8082,"protocol":"TCP","targetPort":8082}],"selector":{"app":"cd-server"}}}
   creationTimestamp: 2018-10-27T06:36:27Z
-  name: argocd-metrics
-  namespace: argocd
+  name: cd-metrics
+  namespace: cd
   resourceVersion: "1131"
-  selfLink: /api/v1/namespaces/argocd/services/argocd-metrics
+  selfLink: /api/v1/namespaces/cd/services/cd-metrics
   uid: a1f65069-d9b2-11e8-b3c1-9ae2f452bd03
 spec:
   clusterIP: 10.96.199.2
@@ -18,7 +18,7 @@ spec:
     protocol: TCP
     targetPort: 8082
   selector:
-    app: argocd-server
+    app: cd-server
   sessionAffinity: None
   type: ClusterIP
 status:

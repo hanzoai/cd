@@ -37,12 +37,12 @@ func TestGenerateParamsForDuckType(t *testing.T) {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"environment":                    "staging",
 					"org":                            "foo",
 				},
 				Annotations: map[string]string{
-					"foo.argoproj.io": "staging",
+					"foo.example.com": "staging",
 				},
 			},
 			Data: map[string][]byte{
@@ -61,12 +61,12 @@ func TestGenerateParamsForDuckType(t *testing.T) {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"environment":                    "production",
 					"org":                            "bar",
 				},
 				Annotations: map[string]string{
-					"foo.argoproj.io": "production",
+					"foo.example.com": "production",
 				},
 			},
 			Data: map[string][]byte{
@@ -369,12 +369,12 @@ func TestGenerateParamsForDuckTypeGoTemplate(t *testing.T) {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"environment":                    "staging",
 					"org":                            "foo",
 				},
 				Annotations: map[string]string{
-					"foo.argoproj.io": "staging",
+					"foo.example.com": "staging",
 				},
 			},
 			Data: map[string][]byte{
@@ -393,12 +393,12 @@ func TestGenerateParamsForDuckTypeGoTemplate(t *testing.T) {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"environment":                    "production",
 					"org":                            "bar",
 				},
 				Annotations: map[string]string{
-					"foo.argoproj.io": "production",
+					"foo.example.com": "production",
 				},
 			},
 			Data: map[string][]byte{

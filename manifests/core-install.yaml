@@ -246,7 +246,7 @@ spec:
                           apiVersions:
                             description: |-
                               APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                              Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                              Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                             items:
                               type: string
                             type: array
@@ -273,7 +273,7 @@ spec:
                             type: boolean
                           kubeVersion:
                             description: |-
-                              KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                              KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                               uses the Kubernetes version of the target cluster.
                             type: string
                           namespace:
@@ -349,7 +349,7 @@ spec:
                           apiVersions:
                             description: |-
                               APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                              Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                              Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                             items:
                               type: string
                             type: array
@@ -399,7 +399,7 @@ spec:
                             type: array
                           kubeVersion:
                             description: |-
-                              KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                              KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                               uses the Kubernetes version of the target cluster.
                             type: string
                           labelIncludeTemplates:
@@ -639,7 +639,7 @@ spec:
                             apiVersions:
                               description: |-
                                 APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                               items:
                                 type: string
                               type: array
@@ -666,7 +666,7 @@ spec:
                               type: boolean
                             kubeVersion:
                               description: |-
-                                KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                 uses the Kubernetes version of the target cluster.
                               type: string
                             namespace:
@@ -743,7 +743,7 @@ spec:
                             apiVersions:
                               description: |-
                                 APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                               items:
                                 type: string
                               type: array
@@ -795,7 +795,7 @@ spec:
                               type: array
                             kubeVersion:
                               description: |-
-                                KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                 uses the Kubernetes version of the target cluster.
                               type: string
                             labelIncludeTemplates:
@@ -1151,7 +1151,7 @@ spec:
                       apiVersions:
                         description: |-
                           APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                          Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                          Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                         items:
                           type: string
                         type: array
@@ -1178,7 +1178,7 @@ spec:
                         type: boolean
                       kubeVersion:
                         description: |-
-                          KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                          KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                           uses the Kubernetes version of the target cluster.
                         type: string
                       namespace:
@@ -1252,7 +1252,7 @@ spec:
                       apiVersions:
                         description: |-
                           APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                          Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                          Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                         items:
                           type: string
                         type: array
@@ -1301,7 +1301,7 @@ spec:
                         type: array
                       kubeVersion:
                         description: |-
-                          KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                          KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                           uses the Kubernetes version of the target cluster.
                         type: string
                       labelIncludeTemplates:
@@ -1532,7 +1532,7 @@ spec:
                           apiVersions:
                             description: |-
                               APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                              Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                              Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                             items:
                               type: string
                             type: array
@@ -1559,7 +1559,7 @@ spec:
                             type: boolean
                           kubeVersion:
                             description: |-
-                              KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                              KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                               uses the Kubernetes version of the target cluster.
                             type: string
                           namespace:
@@ -1635,7 +1635,7 @@ spec:
                           apiVersions:
                             description: |-
                               APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                              Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                              Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                             items:
                               type: string
                             type: array
@@ -1685,7 +1685,7 @@ spec:
                             type: array
                           kubeVersion:
                             description: |-
-                              KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                              KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                               uses the Kubernetes version of the target cluster.
                             type: string
                           labelIncludeTemplates:
@@ -1948,7 +1948,7 @@ spec:
                         apiVersions:
                           description: |-
                             APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                            Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                            Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                           items:
                             type: string
                           type: array
@@ -1975,7 +1975,7 @@ spec:
                           type: boolean
                         kubeVersion:
                           description: |-
-                            KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                            KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                             uses the Kubernetes version of the target cluster.
                           type: string
                         namespace:
@@ -2051,7 +2051,7 @@ spec:
                         apiVersions:
                           description: |-
                             APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                            Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                            Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                           items:
                             type: string
                           type: array
@@ -2101,7 +2101,7 @@ spec:
                           type: array
                         kubeVersion:
                           description: |-
-                            KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                            KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                             uses the Kubernetes version of the target cluster.
                           type: string
                         labelIncludeTemplates:
@@ -2509,7 +2509,7 @@ spec:
                             apiVersions:
                               description: |-
                                 APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                               items:
                                 type: string
                               type: array
@@ -2536,7 +2536,7 @@ spec:
                               type: boolean
                             kubeVersion:
                               description: |-
-                                KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                 uses the Kubernetes version of the target cluster.
                               type: string
                             namespace:
@@ -2613,7 +2613,7 @@ spec:
                             apiVersions:
                               description: |-
                                 APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                               items:
                                 type: string
                               type: array
@@ -2665,7 +2665,7 @@ spec:
                               type: array
                             kubeVersion:
                               description: |-
-                                KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                 uses the Kubernetes version of the target cluster.
                               type: string
                             labelIncludeTemplates:
@@ -2904,7 +2904,7 @@ spec:
                               apiVersions:
                                 description: |-
                                   APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                  Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                  Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                 items:
                                   type: string
                                 type: array
@@ -2932,7 +2932,7 @@ spec:
                                 type: boolean
                               kubeVersion:
                                 description: |-
-                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                   uses the Kubernetes version of the target cluster.
                                 type: string
                               namespace:
@@ -3011,7 +3011,7 @@ spec:
                               apiVersions:
                                 description: |-
                                   APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                  Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                  Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                 items:
                                   type: string
                                 type: array
@@ -3063,7 +3063,7 @@ spec:
                                 type: array
                               kubeVersion:
                                 description: |-
-                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                   uses the Kubernetes version of the target cluster.
                                 type: string
                               labelIncludeTemplates:
@@ -3454,7 +3454,7 @@ spec:
                                   apiVersions:
                                     description: |-
                                       APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                      Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                      Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                     items:
                                       type: string
                                     type: array
@@ -3484,7 +3484,7 @@ spec:
                                     type: boolean
                                   kubeVersion:
                                     description: |-
-                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                       uses the Kubernetes version of the target cluster.
                                     type: string
                                   namespace:
@@ -3565,7 +3565,7 @@ spec:
                                   apiVersions:
                                     description: |-
                                       APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                      Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                      Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                     items:
                                       type: string
                                     type: array
@@ -3619,7 +3619,7 @@ spec:
                                     type: array
                                   kubeVersion:
                                     description: |-
-                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                       uses the Kubernetes version of the target cluster.
                                     type: string
                                   labelIncludeTemplates:
@@ -3871,7 +3871,7 @@ spec:
                                     apiVersions:
                                       description: |-
                                         APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                        Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                        Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                       items:
                                         type: string
                                       type: array
@@ -3901,7 +3901,7 @@ spec:
                                       type: boolean
                                     kubeVersion:
                                       description: |-
-                                        KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                        KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                         uses the Kubernetes version of the target cluster.
                                       type: string
                                     namespace:
@@ -3984,7 +3984,7 @@ spec:
                                     apiVersions:
                                       description: |-
                                         APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                        Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                        Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                       items:
                                         type: string
                                       type: array
@@ -4039,7 +4039,7 @@ spec:
                                       type: array
                                     kubeVersion:
                                       description: |-
-                                        KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                        KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                         uses the Kubernetes version of the target cluster.
                                       type: string
                                     labelIncludeTemplates:
@@ -4417,7 +4417,7 @@ spec:
                               apiVersions:
                                 description: |-
                                   APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                  Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                  Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                 items:
                                   type: string
                                 type: array
@@ -4445,7 +4445,7 @@ spec:
                                 type: boolean
                               kubeVersion:
                                 description: |-
-                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                   uses the Kubernetes version of the target cluster.
                                 type: string
                               namespace:
@@ -4524,7 +4524,7 @@ spec:
                               apiVersions:
                                 description: |-
                                   APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                  Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                  Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                 items:
                                   type: string
                                 type: array
@@ -4576,7 +4576,7 @@ spec:
                                 type: array
                               kubeVersion:
                                 description: |-
-                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                   uses the Kubernetes version of the target cluster.
                                 type: string
                               labelIncludeTemplates:
@@ -4823,7 +4823,7 @@ spec:
                                 apiVersions:
                                   description: |-
                                     APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                    Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                    Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                   items:
                                     type: string
                                   type: array
@@ -4853,7 +4853,7 @@ spec:
                                   type: boolean
                                 kubeVersion:
                                   description: |-
-                                    KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                    KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                     uses the Kubernetes version of the target cluster.
                                   type: string
                                 namespace:
@@ -4934,7 +4934,7 @@ spec:
                                 apiVersions:
                                   description: |-
                                     APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                    Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                    Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                   items:
                                     type: string
                                   type: array
@@ -4987,7 +4987,7 @@ spec:
                                   type: array
                                 kubeVersion:
                                   description: |-
-                                    KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                    KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                     uses the Kubernetes version of the target cluster.
                                   type: string
                                 labelIncludeTemplates:
@@ -5202,7 +5202,7 @@ spec:
                       type: object
                     hook:
                       description: Hook is true if the resource is used as a lifecycle
-                        hook in an Argo CD application.
+                        hook in an Hanzo CD application.
                       type: boolean
                     kind:
                       description: Kind specifies the type of the resource (e.g.,
@@ -5353,7 +5353,7 @@ spec:
                                   apiVersions:
                                     description: |-
                                       APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                      Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                      Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                     items:
                                       type: string
                                     type: array
@@ -5383,7 +5383,7 @@ spec:
                                     type: boolean
                                   kubeVersion:
                                     description: |-
-                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                       uses the Kubernetes version of the target cluster.
                                     type: string
                                   namespace:
@@ -5465,7 +5465,7 @@ spec:
                                   apiVersions:
                                     description: |-
                                       APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                      Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                      Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                     items:
                                       type: string
                                     type: array
@@ -5519,7 +5519,7 @@ spec:
                                     type: array
                                   kubeVersion:
                                     description: |-
-                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                       uses the Kubernetes version of the target cluster.
                                     type: string
                                   labelIncludeTemplates:
@@ -5816,7 +5816,7 @@ spec:
                                   apiVersions:
                                     description: |-
                                       APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                      Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                      Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                     items:
                                       type: string
                                     type: array
@@ -5846,7 +5846,7 @@ spec:
                                     type: boolean
                                   kubeVersion:
                                     description: |-
-                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                       uses the Kubernetes version of the target cluster.
                                     type: string
                                   namespace:
@@ -5928,7 +5928,7 @@ spec:
                                   apiVersions:
                                     description: |-
                                       APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                      Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                      Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                     items:
                                       type: string
                                     type: array
@@ -5982,7 +5982,7 @@ spec:
                                     type: array
                                   kubeVersion:
                                     description: |-
-                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                      KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                       uses the Kubernetes version of the target cluster.
                                     type: string
                                   labelIncludeTemplates:
@@ -6345,7 +6345,7 @@ spec:
                               apiVersions:
                                 description: |-
                                   APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                  Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                  Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                 items:
                                   type: string
                                 type: array
@@ -6373,7 +6373,7 @@ spec:
                                 type: boolean
                               kubeVersion:
                                 description: |-
-                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                   uses the Kubernetes version of the target cluster.
                                 type: string
                               namespace:
@@ -6452,7 +6452,7 @@ spec:
                               apiVersions:
                                 description: |-
                                   APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                  Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                  Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                 items:
                                   type: string
                                 type: array
@@ -6504,7 +6504,7 @@ spec:
                                 type: array
                               kubeVersion:
                                 description: |-
-                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                  KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                   uses the Kubernetes version of the target cluster.
                                 type: string
                               labelIncludeTemplates:
@@ -6751,7 +6751,7 @@ spec:
                                 apiVersions:
                                   description: |-
                                     APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                    Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                    Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                   items:
                                     type: string
                                   type: array
@@ -6781,7 +6781,7 @@ spec:
                                   type: boolean
                                 kubeVersion:
                                   description: |-
-                                    KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                    KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                     uses the Kubernetes version of the target cluster.
                                   type: string
                                 namespace:
@@ -6862,7 +6862,7 @@ spec:
                                 apiVersions:
                                   description: |-
                                     APIVersions specifies the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
-                                    Argo CD uses the API versions of the target cluster. The format is [group/]version/kind.
+                                    Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
                                   items:
                                     type: string
                                   type: array
@@ -6915,7 +6915,7 @@ spec:
                                   type: array
                                 kubeVersion:
                                   description: |-
-                                    KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD
+                                    KubeVersion specifies the Kubernetes API version to pass to Helm when templating manifests. By default, Hanzo CD
                                     uses the Kubernetes version of the target cluster.
                                   type: string
                                 labelIncludeTemplates:
@@ -31147,7 +31147,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: hanzocd-application-controller
-  namespace: argocd
+  namespace: cd
 ---
 apiVersion: v1
 data:
@@ -31166,7 +31166,7 @@ data:
       - /status
   resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
     jqPathExpressions:
-      - '.metadata.annotations."notified.notifications.argoproj.io"'
+      - '.metadata.annotations."notified.notifications.apps.hanzo.ai"'
       - '.metadata.annotations."apps.hanzo.ai/refresh"'
       - '.metadata.annotations."apps.hanzo.ai/hydrate"'
       - '.operation'
@@ -31174,10 +31174,10 @@ data:
     jqPathExpressions:
       - '.metadata.annotations."deployment.kubernetes.io/desired-replicas"'
       - '.metadata.annotations."deployment.kubernetes.io/max-replicas"'
-      - '.metadata.annotations."rollout.argoproj.io/desired-replicas"'
-  resource.customizations.ignoreResourceUpdates.argoproj.io_Rollout: |
+      - '.metadata.annotations."rollout.apps.hanzo.ai/desired-replicas"'
+  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Rollout: |
     jqPathExpressions:
-      - '.metadata.annotations."notified.notifications.argoproj.io"'
+      - '.metadata.annotations."notified.notifications.apps.hanzo.ai"'
   resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler: |
     jqPathExpressions:
       - '.metadata.annotations."autoscaling.alpha.kubernetes.io/behavior"'
@@ -31677,7 +31677,7 @@ spec:
           name: hanzocd-repo-server-tls
         - mountPath: /app/config/reposerver/mtls
           name: hanzocd-repo-server-mtls
-        - mountPath: /home/argocd/params
+        - mountPath: /home/cd/params
           name: hanzocd-cmd-params-cm
       nodeSelector:
         kubernetes.io/os: linux
@@ -31784,7 +31784,7 @@ spec:
           readOnlyRootFilesystem: true
       initContainers:
       - command:
-        - argocd
+        - cd
         - admin
         - redis-initial-password
         image: ghcr.io/hanzoai/deploy:latest
@@ -32172,12 +32172,12 @@ spec:
           name: tmp
         - mountPath: /helm-working-dir
           name: helm-working-dir
-        - mountPath: /home/argocd/cmp-server/plugins
+        - mountPath: /home/cd/cmp-server/plugins
           name: plugins
       initContainers:
       - args:
-        - /bin/cp /usr/local/bin/argocd /var/run/argocd/argocd && /bin/ln -sf /var/run/argocd/argocd
-          /var/run/argocd/hanzocd-cmp-server
+        - /bin/cp /usr/local/bin/cd /var/run/cd/cd && /bin/ln -sf /var/run/cd/cd
+          /var/run/cd/hanzocd-cmp-server
         command:
         - sh
         - -c
@@ -32193,7 +32193,7 @@ spec:
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
-        - mountPath: /var/run/argocd
+        - mountPath: /var/run/cd
           name: var-files
       nodeSelector:
         kubernetes.io/os: linux
@@ -32682,13 +32682,13 @@ spec:
           name: hanzocd-repo-server-tls
         - mountPath: /app/config/reposerver/mtls
           name: hanzocd-repo-server-mtls
-        - mountPath: /home/argocd
+        - mountPath: /home/cd
           name: hanzocd-home
-        - mountPath: /home/argocd/params
+        - mountPath: /home/cd/params
           name: hanzocd-cmd-params-cm
         - mountPath: /tmp
           name: hanzocd-application-controller-tmp
-        workingDir: /home/argocd
+        workingDir: /home/cd
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: hanzocd-application-controller

@@ -1,11 +1,11 @@
-apiVersion: promoter.argoproj.io/v1alpha1
+apiVersion: promoter.apps.hanzo.ai/v1alpha1
 kind: PromotionStrategy
 metadata:
   name: promotion-strategy
   namespace: gitops-promoter
 spec:
   activeCommitStatuses:
-    - key: argocd-health
+    - key: cd-health
   environments:
     - autoMerge: false
       branch: wave/0/west
@@ -32,7 +32,7 @@ status:
   environments:
     - active:
         commitStatuses:
-          - key: argocd-health
+          - key: cd-health
             phase: pending
         dry:
           author: Fake Person <fake@example.com>
@@ -72,7 +72,7 @@ status:
               repoURL: https://git.example.com/fake-org/fake-repo
               sha: 9dc9529ddba077fcdf8cffef716b7d20e1e8b844
               subject: >-
-                Onboarding new cluster to argocd-genai  on wave 5 [ARGO-2499]
+                Onboarding new cluster to cd-genai  on wave 5 [ARGO-2499]
                 (#2921)
             hydrated:
               author: argo-cd[bot]
@@ -115,7 +115,7 @@ status:
           subject: Merge branch 'wave/0/west' into wave/0/west-next
     - active:
         commitStatuses:
-          - key: argocd-health
+          - key: cd-health
             phase: pending
         dry:
           author: Fake Person <fake@example.com>
@@ -201,7 +201,7 @@ status:
           subject: Merge branch 'wave/1/west' into wave/1/west-next
     - active:
         commitStatuses:
-          - key: argocd-health
+          - key: cd-health
             phase: pending
         dry:
           author: Fake Person <fake@example.com>
@@ -247,14 +247,14 @@ status:
           sha: 28f351384c8b8e58624726c4c3713979d0143775
           subject: 'chore: fake old commit message'
         hydrated:
-          author: Argo CD
+          author: Hanzo CD
           body: "Fake commit message"
           commitTime: '2025-09-23T17:33:50Z'
           sha: 6e0e11f0102faa5779223159a2b16ccee63a8ac0
           subject: '28f3513: chore: fake old commit message'
     - active:
         commitStatuses:
-          - key: argocd-health
+          - key: cd-health
             phase: pending
         dry:
           author: Fake Person <fake@example.com>
@@ -299,14 +299,14 @@ status:
           sha: f94c9d42993145d9f10bb2c404b74da14ee3f74e
           subject: 'chore: fake new commit message'
         hydrated:
-          author: Argo CD
+          author: Hanzo CD
           body: "Fake commit message"
           commitTime: '2025-09-24T14:13:49Z'
           sha: daf0534e9db36334c82870cbb2e5d14cc687e0f5
           subject: 'f94c9d4: chore: fake new commit message'
     - active:
         commitStatuses:
-          - key: argocd-health
+          - key: cd-health
             phase: pending
         dry:
           author: Fake Person <fake@example.com>
@@ -352,14 +352,14 @@ status:
           sha: f94c9d42993145d9f10bb2c404b74da14ee3f74e
           subject: 'chore: fake new commit message'
         hydrated:
-          author: Argo CD
+          author: Hanzo CD
           body: "Fake commit message"
           commitTime: '2025-09-24T14:14:09Z'
           sha: 91d942a1da3799d6027a7c407eee98b1f9cde0
           subject: 'f94c9d4: chore: fake new commit message'
     - active:
         commitStatuses:
-          - key: argocd-health
+          - key: cd-health
             phase: pending
         dry:
           author: Fake Person <fake@example.com>
@@ -405,7 +405,7 @@ status:
           sha: f94c9d42993145d9f10bb2c404b74da14ee3f74e
           subject: 'chore: fake new commit message'
         hydrated:
-          author: Argo CD
+          author: Hanzo CD
           body: "Fake commit message"
           commitTime: '2025-09-24T14:14:24Z'
           sha: 20c41602695addbf7760236eff562f5692e585aa

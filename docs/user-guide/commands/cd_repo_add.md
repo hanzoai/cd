@@ -1,66 +1,66 @@
-# `argocd repo add` Command Reference
+# `cd repo add` Command Reference
 
-## argocd repo add
+## cd repo add
 
 Add git, oci or helm repository connection parameters
 
 ```
-argocd repo add REPOURL [flags]
+cd repo add REPOURL [flags]
 ```
 
 ### Examples
 
 ```
   # Add a Git repository via SSH using a private key for authentication, ignoring the server's host key:
-  argocd repo add git@git.example.com:repos/repo --insecure-ignore-host-key --ssh-private-key-path ~/id_rsa
+  cd repo add git@git.example.com:repos/repo --insecure-ignore-host-key --ssh-private-key-path ~/id_rsa
 
   # Add a Git repository via SSH on a non-default port - need to use ssh:// style URLs here
-  argocd repo add ssh://git@git.example.com:2222/repos/repo --ssh-private-key-path ~/id_rsa
+  cd repo add ssh://git@git.example.com:2222/repos/repo --ssh-private-key-path ~/id_rsa
 
   # Add a Git repository via SSH using socks5 proxy with no proxy credentials
-  argocd repo add ssh://git@github.com/argoproj/argocd-example-apps --ssh-private-key-path ~/id_rsa --proxy socks5://your.proxy.server.ip:1080
+  cd repo add ssh://git@github.com/argoproj/argocd-example-apps --ssh-private-key-path ~/id_rsa --proxy socks5://your.proxy.server.ip:1080
 
   # Add a Git repository via SSH using socks5 proxy with proxy credentials
-  argocd repo add ssh://git@github.com/argoproj/argocd-example-apps --ssh-private-key-path ~/id_rsa --proxy socks5://username:password@your.proxy.server.ip:1080
+  cd repo add ssh://git@github.com/argoproj/argocd-example-apps --ssh-private-key-path ~/id_rsa --proxy socks5://username:password@your.proxy.server.ip:1080
 
   # Add a private Git repository via HTTPS using username/password and TLS client certificates:
-  argocd repo add https://git.example.com/repos/repo --username git --password secret --tls-client-cert-path ~/mycert.crt --tls-client-cert-key-path ~/mycert.key
+  cd repo add https://git.example.com/repos/repo --username git --password secret --tls-client-cert-path ~/mycert.crt --tls-client-cert-key-path ~/mycert.key
 
   # Add a private Git repository via HTTPS using username/password without verifying the server's TLS certificate
-  argocd repo add https://git.example.com/repos/repo --username git --password secret --insecure-skip-server-verification
+  cd repo add https://git.example.com/repos/repo --username git --password secret --insecure-skip-server-verification
 
   # Add a public Helm repository named 'stable' via HTTPS
-  argocd repo add https://charts.helm.sh/stable --type helm --name stable  
+  cd repo add https://charts.helm.sh/stable --type helm --name stable  
 
   # Add a private Helm repository named 'stable' via HTTPS
-  argocd repo add https://charts.helm.sh/stable --type helm --name stable --username test --password test
+  cd repo add https://charts.helm.sh/stable --type helm --name stable --username test --password test
 
   # Add a private Helm OCI-based repository named 'stable' via HTTPS
-  argocd repo add helm-oci-registry.cn-zhangjiakou.cr.aliyuncs.com --type helm --name stable --enable-oci --username test --password test
+  cd repo add helm-oci-registry.cn-zhangjiakou.cr.aliyuncs.com --type helm --name stable --enable-oci --username test --password test
   
   # Add a private HTTPS OCI repository named 'stable'
-  argocd repo add oci://helm-oci-registry.cn-zhangjiakou.cr.aliyuncs.com --type oci --name stable --username test --password test
+  cd repo add oci://helm-oci-registry.cn-zhangjiakou.cr.aliyuncs.com --type oci --name stable --username test --password test
   
   # Add a private OCI repository named 'stable' without verifying the server's TLS certificate
-  argocd repo add oci://helm-oci-registry.cn-zhangjiakou.cr.aliyuncs.com --type oci --name stable --username test --password test --insecure-skip-server-verification
+  cd repo add oci://helm-oci-registry.cn-zhangjiakou.cr.aliyuncs.com --type oci --name stable --username test --password test --insecure-skip-server-verification
   
   # Add a private HTTP OCI repository named 'stable'
-  argocd repo add oci://helm-oci-registry.cn-zhangjiakou.cr.aliyuncs.com --type oci --name stable --username test --password test --insecure-oci-force-http
+  cd repo add oci://helm-oci-registry.cn-zhangjiakou.cr.aliyuncs.com --type oci --name stable --username test --password test --insecure-oci-force-http
 
   # Add a private Git repository on GitHub.com via GitHub App. github-app-installation-id is optional, if not provided, the installation id will be fetched from the GitHub API.
-  argocd repo add https://git.example.com/repos/repo --github-app-id 1 --github-app-installation-id 2 --github-app-private-key-path test.private-key.pem
+  cd repo add https://git.example.com/repos/repo --github-app-id 1 --github-app-installation-id 2 --github-app-private-key-path test.private-key.pem
 
   # Add a private Git repository on GitHub Enterprise via GitHub App. github-app-installation-id is optional, if not provided, the installation id will be fetched from the GitHub API.
-  argocd repo add https://ghe.example.com/repos/repo --github-app-id 1 --github-app-installation-id 2 --github-app-private-key-path test.private-key.pem --github-app-enterprise-base-url https://ghe.example.com/api/v3
+  cd repo add https://ghe.example.com/repos/repo --github-app-id 1 --github-app-installation-id 2 --github-app-private-key-path test.private-key.pem --github-app-enterprise-base-url https://ghe.example.com/api/v3
 
   # Add a private Git repository on Google Cloud Sources via GCP service account credentials
-  argocd repo add https://source.developers.google.com/p/my-google-cloud-project/r/my-repo --gcp-service-account-key-path service-account-key.json
+  cd repo add https://source.developers.google.com/p/my-google-cloud-project/r/my-repo --gcp-service-account-key-path service-account-key.json
 
   # Add a private Git repository on Azure Devops via Azure Service Principal credentials
-  argocd repo add https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo --azure-service-principal-client-id 12345678-1234-1234-1234-123456789012 --azure-service-principal-client-secret test --azure-service-principal-tenant-id 12345678-1234-1234-1234-123456789012
+  cd repo add https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo --azure-service-principal-client-id 12345678-1234-1234-1234-123456789012 --azure-service-principal-client-secret test --azure-service-principal-tenant-id 12345678-1234-1234-1234-123456789012
 
   # Add a private Git repository on Azure Devops via Azure Service Principal credentials when not using default Azure public cloud
-  argocd repo add https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo --azure-service-principal-client-id 12345678-1234-1234-1234-123456789012 --azure-service-principal-client-secret test --azure-service-principal-tenant-id 12345678-1234-1234-1234-123456789012 --azure-active-directory-endpoint https://login.microsoftonline.de
+  cd repo add https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo --azure-service-principal-client-id 12345678-1234-1234-1234-123456789012 --azure-service-principal-client-secret test --azure-service-principal-tenant-id 12345678-1234-1234-1234-123456789012 --azure-active-directory-endpoint https://login.microsoftonline.de
 
 ```
 
@@ -103,35 +103,35 @@ argocd repo add REPOURL [flags]
 ### Options inherited from parent commands
 
 ```
-      --argocd-context string           The name of the Argo-CD server context to use
+      --cd-context string           The name of the Hanzo CD server context to use
       --auth-token string               Authentication token; set this or the CD_AUTH_TOKEN environment variable
       --client-crt string               Client certificate file
       --client-crt-key string           Client certificate key file
-      --config string                   Path to Argo CD config (default "/home/user/.config/argocd/config")
-      --controller-name string          Name of the Argo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "argocd-application-controller")
-      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Argo CD API server
-      --grpc-web                        Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2.
-      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2. Set web root.
-  -H, --header strings                  Sets additional header to all requests made by Argo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
-      --http-retry-max int              Maximum number of retries to establish http connection to Argo CD server
+      --config string                   Path to Hanzo CD config (default "/home/user/.config/cd/config")
+      --controller-name string          Name of the Hanzo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "cd-application-controller")
+      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Hanzo CD API server
+      --grpc-web                        Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2.
+      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2. Set web root.
+  -H, --header strings                  Sets additional header to all requests made by Hanzo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
+      --http-retry-max int              Maximum number of retries to establish http connection to Hanzo CD server
       --insecure                        Skip server certificate and domain verification
       --kube-context string             Directs the command to the given kube-context
       --logformat string                Set the logging format. One of: json|text (default "json")
       --loglevel string                 Set the logging level. One of: debug|info|warn|error (default "info")
       --plaintext                       Disable TLS
-      --port-forward                    Connect to a random argocd-server port using port forwarding
+      --port-forward                    Connect to a random cd-server port using port forwarding
       --port-forward-namespace string   Namespace name which should be used for port forwarding
       --prompts-enabled                 Force optional interactive prompts to be enabled or disabled, overriding local configuration. If not specified, the local configuration value will be used, which is false by default.
       --redis-compress string           Enable this if the application controller is configured with redis compression enabled. (possible values: gzip, none) (default "gzip")
-      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis-ha-haproxy")
-      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis")
-      --repo-server-name string         Name of the Argo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-repo-server")
-      --server string                   Argo CD server address
+      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "cd-redis-ha-haproxy")
+      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "cd-redis")
+      --repo-server-name string         Name of the Hanzo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-repo-server")
+      --server string                   Hanzo CD server address
       --server-crt string               Server certificate file
-      --server-name string              Name of the Argo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-server")
+      --server-name string              Name of the Hanzo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-server")
 ```
 
 ### SEE ALSO
 
-* [argocd repo](argocd_repo.md)	 - Manage repository connection parameters
+* [cd repo](cd_repo.md)	 - Manage repository connection parameters
 

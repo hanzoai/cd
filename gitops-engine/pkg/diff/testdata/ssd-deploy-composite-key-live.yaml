@@ -36,7 +36,7 @@ metadata:
                     f:containerPort: {}
                     f:name: {}
                     f:protocol: {}
-    manager: argocd-controller
+    manager: cd-controller
     operation: Apply
     time: "2024-01-01T00:00:00Z"
 spec:

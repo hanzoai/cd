@@ -116,7 +116,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -146,7 +146,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -173,7 +173,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -205,7 +205,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -232,7 +232,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app2",
@@ -264,7 +264,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -293,7 +293,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -327,7 +327,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -356,7 +356,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -388,7 +388,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -423,7 +423,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -463,7 +463,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -500,7 +500,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -542,7 +542,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -575,7 +575,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -611,7 +611,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -642,7 +642,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -680,7 +680,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -711,7 +711,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -767,7 +767,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -810,7 +810,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -852,7 +852,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -877,7 +877,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 			},
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/pull/14743#issuecomment-1761954799
+			// For this use case: https://github.com/hanzoai/cd/pull/14743#issuecomment-1761954799
 			name: "ignore parameters added to a multi-source app in the cluster",
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
@@ -907,7 +907,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -953,7 +953,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "app1",
@@ -1009,7 +1009,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -1055,7 +1055,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -1098,7 +1098,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -1129,7 +1129,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -1162,7 +1162,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -1196,7 +1196,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -1242,7 +1242,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 				got := &v1alpha1.Application{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 				}
 				_ = client.Get(t.Context(), crtclient.ObjectKey{
@@ -1313,7 +1313,7 @@ func TestCreateOrUpdateInCluster_Concurrent(t *testing.T) {
 			existingApps[i] = v1alpha1.Application{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       application.ApplicationKind,
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:            fmt.Sprintf("app%d", i),
@@ -1378,7 +1378,7 @@ func TestCreateOrUpdateInCluster_ContextCancellation(t *testing.T) {
 	existingApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            "app1",
@@ -1533,7 +1533,7 @@ func TestDeleteInCluster_ContextCancellation(t *testing.T) {
 	existingApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
-			APIVersion: "argoproj.io/v1alpha1",
+			APIVersion: "apps.hanzo.ai/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            "delete-me",
@@ -2027,7 +2027,7 @@ func TestCreateApplications(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -2059,7 +2059,7 @@ func TestCreateApplications(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -2086,7 +2086,7 @@ func TestCreateApplications(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -2118,7 +2118,7 @@ func TestCreateApplications(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app1",
@@ -2145,7 +2145,7 @@ func TestCreateApplications(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "app2",
@@ -2186,7 +2186,7 @@ func TestCreateApplications(t *testing.T) {
 				got := &v1alpha1.Application{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       "Application",
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 				}
 				_ = client.Get(t.Context(), crtclient.ObjectKey{
@@ -2238,7 +2238,7 @@ func TestDeleteInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "delete",
@@ -2252,7 +2252,7 @@ func TestDeleteInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "keep",
@@ -2278,7 +2278,7 @@ func TestDeleteInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "keep",
@@ -2294,7 +2294,7 @@ func TestDeleteInCluster(t *testing.T) {
 				{
 					TypeMeta: metav1.TypeMeta{
 						Kind:       application.ApplicationKind,
-						APIVersion: "argoproj.io/v1alpha1",
+						APIVersion: "apps.hanzo.ai/v1alpha1",
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:            "delete",
@@ -2342,7 +2342,7 @@ func TestDeleteInCluster(t *testing.T) {
 			got := &v1alpha1.Application{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       application.ApplicationKind,
-					APIVersion: "argoproj.io/v1alpha1",
+					APIVersion: "apps.hanzo.ai/v1alpha1",
 				},
 			}
 			_ = client.Get(t.Context(), crtclient.ObjectKey{
@@ -2363,7 +2363,7 @@ func TestDeleteInCluster(t *testing.T) {
 				Name:      obj.Name,
 			}, got)
 
-			assert.EqualError(t, err, fmt.Sprintf("applications.argoproj.io %q not found", obj.Name))
+			assert.EqualError(t, err, fmt.Sprintf("applications.apps.hanzo.ai %q not found", obj.Name))
 		}
 	}
 }

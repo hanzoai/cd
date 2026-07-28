@@ -8,9 +8,9 @@ assignees: ''
 
 Checklist:
 
-- [ ] I am willing to maintain this tool, or have another Argo CD maintainer who is.
-- [ ] I have another Argo CD maintainer who is willing to help maintain this tool (there needs to be at least two maintainers willing to maintain this tool)
-- [ ] I have a lead sponsor who is a core Argo CD maintainer
+- [ ] I am willing to maintain this tool, or have another Hanzo CD maintainer who is.
+- [ ] I have another Hanzo CD maintainer who is willing to help maintain this tool (there needs to be at least two maintainers willing to maintain this tool)
+- [ ] I have a lead sponsor who is a core Hanzo CD maintainer
 - [ ] There is a PR which adds said tool - this is so that the maintainers can assess the impact of having this in the tree
 - [ ] I have given a motivation why this should be added
 

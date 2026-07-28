@@ -34,7 +34,7 @@ jobs:
         id: get-target-version
         run: |
           set -ue
-          CURRENT_VERSION=$(grep 'module github.com/argoproj/argo-cd' go.mod | awk '{print $2}' | sed 's/.*\/v//')
+          CURRENT_VERSION=$(grep 'module github.com/hanzoai/cd' go.mod | awk '{print $2}' | sed 's/.*\/v//')
           echo "TARGET_VERSION=$((CURRENT_VERSION + 1))" >> $GITHUB_OUTPUT
 
       - name: Copy source code to GOPATH
@@ -45,7 +45,7 @@ jobs:
       - name: Run script to bump the version
         run: |
           hack/bump-major-version.sh
-        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
+        working-directory: /home/runner/go/src/github.com/hanzoai/cd
 
       - name: Setup Golang
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
@@ -62,12 +62,12 @@ jobs:
           # We need to vendor go modules for codegen yet
           go mod download
           go mod vendor -v
-        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
+        working-directory: /home/runner/go/src/github.com/hanzoai/cd
       - name: Install toolchain for codegen
         run: |
           make install-codegen-tools-local
           make install-go-tools-local
-        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
+        working-directory: /home/runner/go/src/github.com/hanzoai/cd
         # We install kustomize in the dist directory
       - name: Add dist to PATH
         run: |
@@ -77,12 +77,12 @@ jobs:
           set -x
           export GOPATH=$(go env GOPATH)
           make codegen-local
-        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
+        working-directory: /home/runner/go/src/github.com/hanzoai/cd
 
       - name: Copy changes back
         run: |
           # Copy the contents back, but skip the .git directory
-          rsync -a --exclude=.git /home/runner/go/src/github.com/argoproj/argo-cd/ ../argo-cd
+          rsync -a --exclude=.git /home/runner/go/src/github.com/hanzoai/cd/ ../argo-cd
 
       - name: Create pull request
         run: |

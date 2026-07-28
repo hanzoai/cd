@@ -1,8 +1,8 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    rollout.argoproj.io/revision: '2'
+    rollout.apps.hanzo.ai/revision: '2'
   clusterName: ''
   creationTimestamp: '2019-05-01T21:55:30Z'
   generation: 1
@@ -12,7 +12,7 @@ metadata:
   name: guestbook-canary
   namespace: default
   resourceVersion: '956205'
-  selfLink: /apis/argoproj.io/v1alpha1/namespaces/default/rollouts/guestbook-canary
+  selfLink: /apis/apps.hanzo.ai/v1alpha1/namespaces/default/rollouts/guestbook-canary
   uid: d6105ccd-6c5b-11e9-b8d7-025000000001
 spec:
   minReadySeconds: 10
@@ -32,7 +32,7 @@ spec:
         app: guestbook-canary
     spec:
       containers:
-        - image: 'quay.io/argoprojlabs/argocd-e2e-container:0.2'
+        - image: 'quay.io/argoprojlabs/cd-e2e-container:0.2'
           name: guestbook-canary
           ports:
             - containerPort: 80

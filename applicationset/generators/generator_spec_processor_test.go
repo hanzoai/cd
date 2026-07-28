@@ -189,8 +189,8 @@ func TestTransForm(t *testing.T) {
 				MatchLabels: map[string]string{"server": "https://production-01.example.com"},
 			},
 			expected: []map[string]any{{
-				"metadata.annotations.foo.argoproj.io":           "production",
-				"metadata.labels.cd.argoproj.io/secret-type": "cluster",
+				"metadata.annotations.foo.example.com":           "production",
+				"metadata.labels.cd.hanzo.ai/secret-type": "cluster",
 				"metadata.labels.environment":                    "production",
 				"metadata.labels.org":                            "bar",
 				"name":                                           "production_01/west",
@@ -205,8 +205,8 @@ func TestTransForm(t *testing.T) {
 				MatchLabels: map[string]string{"server": "https://some-really-long-url-that-will-exceed-63-characters.com"},
 			},
 			expected: []map[string]any{{
-				"metadata.annotations.foo.argoproj.io":           "production",
-				"metadata.labels.cd.argoproj.io/secret-type": "cluster",
+				"metadata.annotations.foo.example.com":           "production",
+				"metadata.labels.cd.hanzo.ai/secret-type": "cluster",
 				"metadata.labels.environment":                    "production",
 				"metadata.labels.org":                            "bar",
 				"name":                                           "some-really-long-server-url",
@@ -268,12 +268,12 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"cd.argoproj.io/secret-type": "cluster",
+						"cd.hanzo.ai/secret-type": "cluster",
 						"environment":                    "production",
 						"org":                            "bar",
 					},
 					"annotations": map[string]string{
-						"foo.argoproj.io": "production",
+						"foo.example.com": "production",
 					},
 				},
 			}},
@@ -290,12 +290,12 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"cd.argoproj.io/secret-type": "cluster",
+						"cd.hanzo.ai/secret-type": "cluster",
 						"environment":                    "staging",
 						"org":                            "foo",
 					},
 					"annotations": map[string]string{
-						"foo.argoproj.io": "staging",
+						"foo.example.com": "staging",
 					},
 				},
 			}},
@@ -322,12 +322,12 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.argoproj.io/secret-type": "cluster",
+							"cd.hanzo.ai/secret-type": "cluster",
 							"environment":                    "production",
 							"org":                            "bar",
 						},
 						"annotations": map[string]string{
-							"foo.argoproj.io": "production",
+							"foo.example.com": "production",
 						},
 					},
 				},
@@ -338,12 +338,12 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.argoproj.io/secret-type": "cluster",
+							"cd.hanzo.ai/secret-type": "cluster",
 							"environment":                    "production",
 							"org":                            "bar",
 						},
 						"annotations": map[string]string{
-							"foo.argoproj.io": "production",
+							"foo.example.com": "production",
 						},
 					},
 				},
@@ -359,7 +359,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 		{
 			name: "slash key in label",
 			selector: &metav1.LabelSelector{
-				MatchLabels: map[string]string{"metadata.labels.cd.argoproj.io/secret-type": "cluster"},
+				MatchLabels: map[string]string{"metadata.labels.cd.hanzo.ai/secret-type": "cluster"},
 			},
 			expected: []map[string]any{
 				{
@@ -369,12 +369,12 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.argoproj.io/secret-type": "cluster",
+							"cd.hanzo.ai/secret-type": "cluster",
 							"environment":                    "staging",
 							"org":                            "foo",
 						},
 						"annotations": map[string]string{
-							"foo.argoproj.io": "staging",
+							"foo.example.com": "staging",
 						},
 					},
 				},
@@ -385,12 +385,12 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.argoproj.io/secret-type": "cluster",
+							"cd.hanzo.ai/secret-type": "cluster",
 							"environment":                    "production",
 							"org":                            "bar",
 						},
 						"annotations": map[string]string{
-							"foo.argoproj.io": "production",
+							"foo.example.com": "production",
 						},
 					},
 				},
@@ -401,12 +401,12 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.argoproj.io/secret-type": "cluster",
+							"cd.hanzo.ai/secret-type": "cluster",
 							"environment":                    "production",
 							"org":                            "bar",
 						},
 						"annotations": map[string]string{
-							"foo.argoproj.io": "production",
+							"foo.example.com": "production",
 						},
 					},
 				},
@@ -425,12 +425,12 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"cd.argoproj.io/secret-type": "cluster",
+						"cd.hanzo.ai/secret-type": "cluster",
 						"environment":                    "staging",
 						"org":                            "foo",
 					},
 					"annotations": map[string]string{
-						"foo.argoproj.io": "staging",
+						"foo.example.com": "staging",
 					},
 				},
 				"values": map[string]string{
@@ -493,12 +493,12 @@ func getMockClusterGenerator() Generator {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"environment":                    "staging",
 					"org":                            "foo",
 				},
 				Annotations: map[string]string{
-					"foo.argoproj.io": "staging",
+					"foo.example.com": "staging",
 				},
 			},
 			Data: map[string][]byte{
@@ -517,12 +517,12 @@ func getMockClusterGenerator() Generator {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"environment":                    "production",
 					"org":                            "bar",
 				},
 				Annotations: map[string]string{
-					"foo.argoproj.io": "production",
+					"foo.example.com": "production",
 				},
 			},
 			Data: map[string][]byte{
@@ -541,12 +541,12 @@ func getMockClusterGenerator() Generator {
 				Name:      "some-really-long-server-url",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"environment":                    "production",
 					"org":                            "bar",
 				},
 				Annotations: map[string]string{
-					"foo.argoproj.io": "production",
+					"foo.example.com": "production",
 				},
 			},
 			Data: map[string][]byte{
@@ -621,7 +621,7 @@ func TestInterpolateGenerator(t *testing.T) {
 		Clusters: &argov1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"path-basename":                  "{{path.basename}}",
 					"path-zero":                      "{{path[0]}}",
 					"path-full":                      "{{path}}",
@@ -675,7 +675,7 @@ func TestInterpolateGenerator_go(t *testing.T) {
 		Clusters: &argov1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"cd.argoproj.io/secret-type": "cluster",
+					"cd.hanzo.ai/secret-type": "cluster",
 					"path-basename":                  "{{base .path.path}}",
 					"path-zero":                      "{{index .path.segments 0}}",
 					"path-full":                      "{{.path.path}}",

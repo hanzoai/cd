@@ -30,13 +30,13 @@ The service supports the following Microsoft Teams Workflows webhook URL pattern
 7. Choose your team and channel
 8. Configure the webhook name and settings
 9. Copy the webhook URL (it will be from `api.powerautomate.com`, `api.powerplatform.com`, or `flow.microsoft.com`)
-10. Store it in `argocd-notifications-secret` and define it in `argocd-notifications-cm`
+10. Store it in `cd-notifications-secret` and define it in `cd-notifications-cm`
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.teams-workflows: |
     recipientUrls:
@@ -55,11 +55,11 @@ stringData:
 11. Create subscription for your Teams Workflows integration:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.teams-workflows: channelName
+    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.teams-workflows: channelName
 ```
 
 ## Channel Support
@@ -111,10 +111,10 @@ template.app-sync-succeeded: |
     potentialAction: |-
       [{
         "@type": "OpenUri",
-        "name": "View in Argo CD",
+        "name": "View in Hanzo CD",
         "targets": [{
           "os": "default",
-          "uri": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+          "uri": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
         }]
       }]
 ```
@@ -168,8 +168,8 @@ template.app-sync-succeeded: |
         "actions": [
           {
             "type": "Action.OpenUrl",
-            "title": "View in Argo CD",
-            "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            "title": "View in Hanzo CD",
+            "url": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
           }
         ]
       }
@@ -217,7 +217,7 @@ The Teams Workflows service supports the following template fields, which are au
       "name": "View Details",
       "targets": [{
         "os": "default",
-        "uri": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+        "uri": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
       }]
     }]
   ```
@@ -260,10 +260,10 @@ If you're currently using the `teams` service with Office 365 Connectors, follow
 4. **Update your subscriptions:**
    ```yaml
    # Old
-   notifications.argoproj.io/subscribe.on-sync-succeeded.teams: channelName
+   notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.teams: channelName
    
    # New
-   notifications.argoproj.io/subscribe.on-sync-succeeded.teams-workflows: channelName
+   notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.teams-workflows: channelName
    ```
 
 5. **Test and verify:**
@@ -362,8 +362,8 @@ template.app-sync-succeeded-advanced: |
         "actions": [
           {
             "type": "Action.OpenUrl",
-            "title": "View in Argo CD",
-            "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            "title": "View in Hanzo CD",
+            "url": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}"
           }
         ]
       }

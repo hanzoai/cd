@@ -33,7 +33,7 @@ The following snippet contains sample Gmail service configuration:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.email.gmail: |
     username: $username
@@ -49,7 +49,7 @@ Without authentication:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.email.example: |
     host: smtp.example.com
@@ -65,12 +65,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   template.app-sync-succeeded: |
     email:
       subject: Application {{.app.metadata.name}} has been successfully synced.
     message: |
       {{if eq .serviceType "slack"}}:white_check_mark:{{end}} Application {{.app.metadata.name}} has been successfully synced at {{.app.status.operationState.finishedAt}}.
-      Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
+      Sync operation details are available at: {{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true .
 ```

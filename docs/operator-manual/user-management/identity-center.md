@@ -21,10 +21,10 @@ A working Single Sign-On configuration using Identity Center (AWS SSO) has been 
 
 ![Identity Center SAML App 3](../../assets/identity-center-3.png)
 
-3. Copy the Argo CD URL into the `data.url` field in the `argocd-cm` ConfigMap.
+3. Copy the Hanzo CD URL into the `data.url` field in the `cd-cm` ConfigMap.
 
         data:
-          url: https://argocd.example.com
+          url: https://cd.example.com
 
 4. Configure Attribute mappings.
 
@@ -37,15 +37,15 @@ A working Single Sign-On configuration using Identity Center (AWS SSO) has been 
 
 <!-- markdownlint-enable MD046 -->
 
-5. Download the CA certificate to use in the `argocd-cm` configuration.
+5. Download the CA certificate to use in the `cd-cm` configuration.
 
     * If using the `caData` field, you'll need to base64-encode the entire certificate, including the `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` stanzas (e.g., `base64 my_cert.pem`).
 
-    * If using the `ca` field and storing the CA certificate separately as a secret, you will need to mount the secret onto the `dex` container in the `argocd-dex-server` Deployment.
+    * If using the `ca` field and storing the CA certificate separately as a secret, you will need to mount the secret onto the `dex` container in the `cd-dex-server` Deployment.
 
 ![Identity Center SAML App 6](../../assets/identity-center-6.png)
 
-6. Edit the `argocd-cm` and configure the `data.dex.config` section:
+6. Edit the `cd-cm` and configure the `data.dex.config` section:
 
 <!-- markdownlint-disable MD046 -->
 ```yaml
@@ -63,27 +63,27 @@ dex.config: |
       # You need `caData` _OR_ `ca`, but not both.
       caData: <CA cert (IAM Identity Center Certificate of Identity Center APP SAML) passed through base64 encoding>
       # Path to mount the secret to the dex container
-      entityIssuer: https://external.path.to.argocd.io/api/dex/callback
-      redirectURI: https://external.path.to.argocd.io/api/dex/callback
+      entityIssuer: https://external.path.to.cd.io/api/dex/callback
+      redirectURI: https://external.path.to.cd.io/api/dex/callback
       usernameAttr: email
       emailAttr: email
       groupsAttr: groups
 ```
 <!-- markdownlint-enable MD046 -->
 
-### Connect Identity Center Groups to Argo CD Roles
+### Connect Identity Center Groups to Hanzo CD Roles
 
-Argo CD recognizes user memberships in Identity Center groups that match the **Group Attribute Statements** regex. 
+Hanzo CD recognizes user memberships in Identity Center groups that match the **Group Attribute Statements** regex. 
 
- In the example above, the regex `argocd-*` is used, making Argo CD aware of a group named `argocd-admins`.
+ In the example above, the regex `cd-*` is used, making Hanzo CD aware of a group named `cd-admins`.
 
-Modify the `argocd-rbac-cm` ConfigMap to connect the `ArgoCD-administrators` Identity Center group to the builtin Argo CD `admin` role.
+Modify the `cd-rbac-cm` ConfigMap to connect the `Hanzo CD-administrators` Identity Center group to the builtin Hanzo CD `admin` role.
 <!-- markdownlint-disable MD046 -->
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-rbac-cm
+  name: cd-rbac-cm
 data:
   policy.csv: |
     g, <Identity Center Group ID>, role:admin

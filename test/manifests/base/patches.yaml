@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argocd-secret
+  name: cd-secret
   labels:
-    app.kubernetes.io/name: argocd-secret
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-secret
+    app.kubernetes.io/part-of: cd
 stringData:
   # admin.password is "password"
   admin.password: $2a$10$RncPyHW/B5ll2Z3J8s.IBOnbZ9uoJ4JhHLKzj5lzG/kU1KN1Oj3/K

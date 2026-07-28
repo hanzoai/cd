@@ -6,7 +6,7 @@ tests:
 - healthStatus:
     status: Degraded
     message: 'Resource validation failed: spec.acme.config: Required value: no ACME
-      solver configuration specified for domain "cd.apps.argoproj.io"'
+      solver configuration specified for domain "cd.apps.apps.hanzo.ai"'
   inputPath: testdata/degraded_configError.yaml
 - healthStatus:
     status: Healthy

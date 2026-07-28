@@ -1,13 +1,13 @@
 # Disaster Recovery
 
-You can use `argocd admin` to import and export all Argo CD data.
+You can use `cd admin` to import and export all Hanzo CD data.
 
-Make sure you have `~/.kube/config` pointing to your Argo CD cluster.
+Make sure you have `~/.kube/config` pointing to your Hanzo CD cluster.
 
-Figure out what version of Argo CD you're running:
+Figure out what version of Hanzo CD you're running:
 
 ```bash
-argocd version | grep server
+cd version | grep server
 # ...
 export VERSION=v1.0.1
 ```
@@ -15,14 +15,14 @@ export VERSION=v1.0.1
 Export to a backup:
 
 ```bash
-docker run -v ~/.kube:/home/argocd/.kube --rm quay.io/argoproj/argocd:$VERSION argocd admin export > backup.yaml
+docker run -v ~/.kube:/home/cd/.kube --rm quay.io/argoproj/cd:$VERSION cd admin export > backup.yaml
 ```
 
 Import from a backup:
 
 ```bash
-docker run -i -v ~/.kube:/home/argocd/.kube --rm quay.io/argoproj/argocd:$VERSION argocd admin import - < backup.yaml
+docker run -i -v ~/.kube:/home/cd/.kube --rm quay.io/argoproj/cd:$VERSION cd admin import - < backup.yaml
 ```
 
 > [!NOTE]
-> If you are running Argo CD on a namespace different than default remember to pass the namespace parameter (-n <namespace>). 'argocd admin export' will not fail if you run it in the wrong namespace.
+> If you are running Hanzo CD on a namespace different than default remember to pass the namespace parameter (-n <namespace>). 'cd admin export' will not fail if you run it in the wrong namespace.

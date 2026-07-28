@@ -1,11 +1,11 @@
 # Automation from CI Pipelines
 
-Argo CD follows the GitOps model of deployment, where desired configuration changes are first
+Hanzo CD follows the GitOps model of deployment, where desired configuration changes are first
 pushed to Git, and the cluster state then syncs to the desired state in git. This is a departure
 from imperative pipelines which do not traditionally use Git repositories to hold application
 config.
 
-To push new container images to a cluster managed by Argo CD, the following workflow (or 
+To push new container images to a cluster managed by Hanzo CD, the following workflow (or 
 variations) might be used:
 
 ## Build And Publish A New Container Image
@@ -38,16 +38,16 @@ git push
 
 ## Synchronize The App (Optional)
 
-For convenience, the argocd CLI can be downloaded directly from the API server. This is
-useful so that the CLI used in the CI pipeline is always kept in-sync and uses argocd binary
-that is always compatible with the Argo CD API server.
+For convenience, the cd CLI can be downloaded directly from the API server. This is
+useful so that the CLI used in the CI pipeline is always kept in-sync and uses cd binary
+that is always compatible with the Hanzo CD API server.
 
 ```bash
-export CD_SERVER=argocd.example.com
+export CD_SERVER=cd.example.com
 export CD_AUTH_TOKEN=<JWT token generated from project>
-curl -sSL -o /usr/local/bin/argocd https://${CD_SERVER}/download/argocd-linux-amd64
-argocd app sync guestbook
-argocd app wait guestbook
+curl -sSL -o /usr/local/bin/cd https://${CD_SERVER}/download/cd-linux-amd64
+cd app sync guestbook
+cd app wait guestbook
 ```
 
 If [automated synchronization](auto_sync.md) is configured for the application, this step is

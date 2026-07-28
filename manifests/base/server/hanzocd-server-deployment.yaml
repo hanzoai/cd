@@ -425,12 +425,12 @@ spec:
               mountPath: /app/config/reposerver/mtls
             - name: hanzocd-dex-server-tls
               mountPath: /app/config/dex/tls
-            - mountPath: /home/argocd
+            - mountPath: /home/cd
               name: plugins-home
             - mountPath: /tmp
               name: tmp
             - name: hanzocd-cmd-params-cm
-              mountPath: /home/argocd/params
+              mountPath: /home/cd/params
           ports:
             - containerPort: 8080
             - containerPort: 8083

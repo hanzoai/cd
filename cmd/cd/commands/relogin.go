@@ -100,9 +100,9 @@ cd relogin
 cd relogin --password YOUR_PASSWORD
 
 # Configure direct access using Kubernetes API server
-cd login cd.argoproj.io --core
+cd login cd.hanzo.ai --core
 
-# If user logged in with - "cd login cd.argoproj.io" with sso login
+# If user logged in with - "cd login cd.hanzo.ai" with sso login
 # The command - "cd relogin" will Reinitiates SSO login and updates the server context`,
 	}
 	command.Flags().StringVar(&password, "password", "", "The password of an account to authenticate")

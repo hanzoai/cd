@@ -15,17 +15,17 @@ last-updated: 2021-03-29
 
 # Config Management Plugin Enhancement
 
-We want to enhance config management plugin in order to improve Argo CD operator and end-user experience 
+We want to enhance config management plugin in order to improve Hanzo CD operator and end-user experience 
 for using additional tools such as cdk8s, Tanka, jkcfg, QBEC, Dhall, pulumi, etc. 
 
 ## Summary
 
-Currently, Argo CD provides first-class support for Helm, Kustomize and Jsonnet/YAML. The support includes:
+Currently, Hanzo CD provides first-class support for Helm, Kustomize and Jsonnet/YAML. The support includes:
 
 - Bundled binaries (maintainers periodically upgrade binaries)
 - An ability to override parameters using UI/CLI
 - The applications are discovered in Git repository and auto-suggested during application creation in UI
-- Performance optimizations. Argo CD "knows" when it is safe to generate manifests concurrently and takes advantage of it.
+- Performance optimizations. Hanzo CD "knows" when it is safe to generate manifests concurrently and takes advantage of it.
 
 We want to enhance the configuration management plugin so that it can provide similar first-class support for additional 
 tools such as cdk8s, Tanka, jkcfg, QBEC, Dhall, pulumi, etc.
@@ -34,7 +34,7 @@ tools such as cdk8s, Tanka, jkcfg, QBEC, Dhall, pulumi, etc.
 
 The config management plugin feature should be improved to provide the same level of user experience as 
 for the natively supported tools to the additional tools such as  cdk8s, Tanka, jkcfg, QBEC, Dhall, pulumi, etc., 
-including Argo CD operators as well as end-user experience.
+including Hanzo CD operators as well as end-user experience.
 
 ### Goals
 
@@ -43,15 +43,15 @@ The goals for config management plugin enhancement are,
 #### Improve Installation Experience
 The current Config Management plugin installation experience requires two changes:
 
-- An entry in configManagementPlugins in the Argo CD configmap (i.e.  argocd-cm)
-- Either an init container with a volume mount that adds a new binary into Argo CD repo server pod, or a rebuild of the argocd image, which contains the necessary tooling
+- An entry in configManagementPlugins in the Hanzo CD configmap (i.e.  cd-cm)
+- Either an init container with a volume mount that adds a new binary into Hanzo CD repo server pod, or a rebuild of the cd image, which contains the necessary tooling
 
-The problem with this approach is that the process is error-prone, manual, and requires learning from each and every Argo CD administrator. 
+The problem with this approach is that the process is error-prone, manual, and requires learning from each and every Hanzo CD administrator. 
 
-The goal is to make additional tools easily accessible for installation to Argo CD operators.
+The goal is to make additional tools easily accessible for installation to Hanzo CD operators.
 
 #### Provide Discovery (Auto-selection of Tool)
-For Argo CD’s natively supported config management plugins (Helm, Kustomize, Jsonnet), Argo CD auto-detects 
+For Hanzo CD’s natively supported config management plugins (Helm, Kustomize, Jsonnet), Hanzo CD auto-detects 
 and selects the appropriate tool given only the path in the Git repository. 
 This selection is based on the recognition of well-known files in the directory (e.g. Chart.yaml, kustomization.yaml, etc...). 
 
@@ -72,9 +72,9 @@ to additional config management tools.
 
 ## Proposal
 
-We have drafted the solution to the problem statement as **running configuration management plugin tools as sidecar in the argocd-repo-server**. 
+We have drafted the solution to the problem statement as **running configuration management plugin tools as sidecar in the cd-repo-server**. 
 
-All it means that Argo CD Config Management Plugin 2.0 will be,
+All it means that Hanzo CD Config Management Plugin 2.0 will be,
 
 - A user-supplied container image with all the necessary tooling installed in it. 
 - It will run as a sidecar in the repo server deployment and will have shared access to the git repositories.
@@ -85,14 +85,14 @@ based on the CMP specification file.
 This mechanism will provide the following benefits over the existing solution,
 
 - Plugin owners control their execution environment, packaging whatever dependent binaries required.
-- An  Argo CD user who wants to use additional config management tools does not have to go through the hassle of building 
-a customized argocd-repo-server in order to install required dependencies. 
+- An  Hanzo CD user who wants to use additional config management tools does not have to go through the hassle of building 
+a customized cd-repo-server in order to install required dependencies. 
 - The plugin image will be running in a container separate from the main repo-server.
 
 ### Use cases
 
-- UC1: As an Argo CD user, I would like to use first-class support provided for additional tools to generate and manage deployable kubernetes manifests
-- UC2: As an Argo CD operator, I want to have smooth experience while installing additional tools such as  cdk8s, Tanka, jkcfg, QBEC, Dhall, pulumi, etc.
+- UC1: As an Hanzo CD user, I would like to use first-class support provided for additional tools to generate and manage deployable kubernetes manifests
+- UC2: As an Hanzo CD operator, I want to have smooth experience while installing additional tools such as  cdk8s, Tanka, jkcfg, QBEC, Dhall, pulumi, etc.
 - UC3: As a plugin owner, I want to have some control over the execution environment as I want to package whatever dependent binaries required. 
 
 ### Implementation Details
@@ -101,37 +101,37 @@ Config Management Plugin v2.0 implementation and experience will be as,
 
 #### Installation
 
-To install a plugin, an operator will simply patch argocd-repo-server to run config management plugin container as a sidecar, 
-with argocd-cmp-server as it’s entrypoint. Operator can use either off-the-shelf or custom built plugin image as sidecar image. 
+To install a plugin, an operator will simply patch cd-repo-server to run config management plugin container as a sidecar, 
+with cd-cmp-server as it’s entrypoint. Operator can use either off-the-shelf or custom built plugin image as sidecar image. 
 
 ```bash
 # A plugin is a container image which runs as a sidecar, with the execution environment
 # necessary to render manifests. To install a plugin, 
 containers:
 - name: cdk8s
-  command: [/var/run/argocd/argocd-cmp-server]
+  command: [/var/run/cd/cd-cmp-server]
   image: docker.ui/cdk8s/cdk8s:latest
   volumeMounts:
-  - mountPath: /var/run/argocd
+  - mountPath: /var/run/cd
     name: var-files
 ```
 
-The argocd-cmp-server binary will be populated inside the plugin container via an init container in the argocd-repo-server, 
+The cd-cmp-server binary will be populated inside the plugin container via an init container in the cd-repo-server, 
 which will pre-populate a volume shared between plugins and the repo-server.
 
 ```bash
-# An init container will copy the argocd static binary into the shared volume
+# An init container will copy the cd static binary into the shared volume
 # so that the CMP server can become the entrypoint
 initContainers:
 - command:
   - cp
   - -n
-  - /usr/local/bin/argocd
-  - /var/run/argocd/argocd-cmp-server
-  image: quay.io/argoproj/argocd:latest
+  - /usr/local/bin/cd
+  - /var/run/cd/cd-cmp-server
+  image: quay.io/argoproj/cd:latest
   name: copyutil
   volumeMounts:
-  - mountPath: /var/run/argocd
+  - mountPath: /var/run/cd
     name: var-files
  
 # var-files is a shared volume between repo-server and cmp-server which holds:
@@ -145,7 +145,7 @@ volumes:
 #### Configuration
 
 Plugins will be configured via a ConfigManagementPlugin manifest located inside the plugin container, placed at a 
-well-known location (e.g. /home/argocd/plugins/plugin.yaml). Argo CD is agnostic to the mechanism of how the plugin.yaml would be placed, 
+well-known location (e.g. /home/cd/plugins/plugin.yaml). Hanzo CD is agnostic to the mechanism of how the plugin.yaml would be placed, 
 but various options can be used on how to place this file, including: 
 
 - Baking the file into the plugin image as part of docker build
@@ -156,7 +156,7 @@ It only follows kubernetes-style spec conventions.
 
 ```bash
 # metadata file is in the root and shell executor knows about it
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: cdk8s
@@ -176,7 +176,7 @@ spec:
 ```
 
 #### Config Management Plugin API Server (cmp-server)
-The Config Management Plugin API Server (cmp-server) will be a new Argo CD component whose sole responsibility will be 
+The Config Management Plugin API Server (cmp-server) will be a new Hanzo CD component whose sole responsibility will be 
 to execute `generate` commands inside the plugin environment (the sidecar container), at the request of the repo-server.
 
 The cmp-server will expose the following APIs to the repo-server,
@@ -184,15 +184,15 @@ The cmp-server will expose the following APIs to the repo-server,
 - GenerateManifests(path) - returns YAML output using plugin tooling
 - IsSupported(path) - returns whether or not the given path is supported by the plugin
 
-At startup, cmp-server looks at the /home/argocd/cmp-server/plugin.yaml ConfigManagementPlugin specification file to understand how to perform the requests.
+At startup, cmp-server looks at the /home/cd/cmp-server/plugin.yaml ConfigManagementPlugin specification file to understand how to perform the requests.
 
 #### Registration & Communication
 The repo-server needs to understand what all plugins are available to render manifests. To do this, the cmp-server 
-sidecars will register themselves as available plugins to the argocd-repo-server by populating named socket files in the 
+sidecars will register themselves as available plugins to the cd-repo-server by populating named socket files in the 
 shared volume between repo-server and cmp-server. e.g.:
 
 ```bash
-/home/argocd/plugins/
+/home/cd/plugins/
                         cdk8s.sock
                         jkcfg.sock
                         pulumi.sock
@@ -207,7 +207,7 @@ cmp-server listening on the other side.
 #### Discovery (Auto-selection of Tool)
 
 - The plugin discovery will run in the main repo-server container.
-- Argo CD repo-server lists the shared plugins directory and runs `discover` command from the specification file, 
+- Hanzo CD repo-server lists the shared plugins directory and runs `discover` command from the specification file, 
 whichever plugin provides a positive response first will be selected.
 
 #### Versioning
@@ -216,7 +216,7 @@ There will be one sidecar container per version. Hence, for two different versio
 ### Security Considerations
 
 The use of the plugin as sidecars separate from the repo-server is already a security improvement over the current v1.8 
-config management plugin mechanism, since the plugin tooling will no longer have access to the files of the argocd-repo-server image. 
+config management plugin mechanism, since the plugin tooling will no longer have access to the files of the cd-repo-server image. 
 However additional improvements can be made to increase security.
 
 ### Risks and Mitigations
@@ -239,22 +239,22 @@ This would ensure that the command could not read or write anything out-of-tree 
 
 ### Upgrade / Downgrade Strategy
 
-The argocd-repo-server manifest will change in order to populate the argocd-cmp-server binary inside the plugin container 
+The cd-repo-server manifest will change in order to populate the cd-cmp-server binary inside the plugin container 
 via an init container.
 
 ```bash
-# An init container will copy the argocd static binary into the shared volume
+# An init container will copy the cd static binary into the shared volume
 # so that the CMP server can become the entrypoint
 initContainers:
 - command:
   - cp
   - -n
-  - /usr/local/bin/argocd
-  - /var/run/argocd/argocd-cmp-server
-  image: quay.io/argoproj/argocd:latest
+  - /usr/local/bin/cd
+  - /var/run/cd/cd-cmp-server
+  image: quay.io/argoproj/cd:latest
   name: copyutil
   volumeMounts:
-  - mountPath: /var/run/argocd
+  - mountPath: /var/run/cd
     name: var-files
  
 # var-files is a shared volume between repo-server and cmp-server which holds:
@@ -265,25 +265,25 @@ volumes:
   name: var-files
 ```
   
-After upgrading to CMP v2, an Argo CD operator will have to make following changes,
+After upgrading to CMP v2, an Hanzo CD operator will have to make following changes,
 
-- In order to install a plugin, an Argo CD operator will simply have to patch argocd-repo-server 
-to run config management plugin container as a sidecar, with argocd-cmp-server as it’s entrypoint:
+- In order to install a plugin, an Hanzo CD operator will simply have to patch cd-repo-server 
+to run config management plugin container as a sidecar, with cd-cmp-server as it’s entrypoint:
 
     ```bash
     # A plugin is a container image which runs as a sidecar, with the execution environment
     # necessary to render manifests. To install a plugin, 
     containers:
     - name: cdk8s
-      command: [/var/run/argocd/argocd-cmp-server]
+      command: [/var/run/cd/cd-cmp-server]
       image: docker.ui/cdk8s/cdk8s:latest
       volumeMounts:
-      - mountPath: /var/run/argocd
+      - mountPath: /var/run/cd
         name: var-files
     ```
 
 - Plugins will be configured via a ConfigManagementPlugin manifest located inside the plugin container, placed at a 
-well-known location (e.g. /plugin.yaml). Argo CD is agnostic to the mechanism of how the plugin.yaml would be placed, 
+well-known location (e.g. /plugin.yaml). Hanzo CD is agnostic to the mechanism of how the plugin.yaml would be placed, 
 but various options can be used on how to place this file, including: 
     - Baking the file into the plugin image as part of docker build
     - Volume mapping the file through a configmap.
@@ -298,14 +298,14 @@ However following are few minor drawbacks,
 
 - With addition of plugin.yaml, there will be more yamls to manage
 - Operators need to be aware of the modified Kubernetes manifests in the subsequent version.
-- The format of the CMP manifest is a new "contract" that would need to adhere the usual Argo CD compatibility promises in future.
+- The format of the CMP manifest is a new "contract" that would need to adhere the usual Hanzo CD compatibility promises in future.
 
 ## Alternatives
 
 1. ConfigManagementPlugin as CRD. Have a CR which the human operator creates:
 
     ```bash
-    apiVersion: argoproj.io/v1alpha1
+    apiVersion: apps.hanzo.ai/v1alpha1
     kind: ConfigManagementPlugin
     metadata:
       name: cdk8s

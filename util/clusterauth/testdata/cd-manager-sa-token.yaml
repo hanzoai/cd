@@ -6,12 +6,12 @@ data:
 kind: Secret
 metadata:
   annotations:
-    kubernetes.io/service-account.name: argocd-manager
+    kubernetes.io/service-account.name: cd-manager
     kubernetes.io/service-account.uid: 91dd37cf-8d92-11e9-a091-d65f2ae7fa8d
   creationTimestamp: "2019-06-13T04:30:24Z"
-  name: argocd-manager-long-lived-token
+  name: cd-manager-long-lived-token
   namespace: kube-system
   resourceVersion: "133010"
-  selfLink: /api/v1/namespaces/kube-system/secrets/argocd-manager-token-tj79r
+  selfLink: /api/v1/namespaces/kube-system/secrets/cd-manager-token-tj79r
   uid: f657d67e-8d93-11e9-a091-d65f2ae7fa8d
 type: kubernetes.io/service-account-token

@@ -6,7 +6,7 @@ metadata:
   generation: 3
   labels:
     app: knative-eventing
-    argocd.argoproj.io/instance: knative-eventing
+    cd.hanzo.ai/instance: knative-eventing
     version: 0.14.1
   name: knative-eventing
   namespace: knative-eventing

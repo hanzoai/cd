@@ -6,7 +6,7 @@ metadata:
   uid: 12345678-1234-1234-1234-123456789012
   resourceVersion: "1000"
   managedFields:
-  - manager: argocd-controller
+  - manager: cd-controller
     operation: Apply
     apiVersion: v1
     time: "2024-01-01T00:00:00Z"

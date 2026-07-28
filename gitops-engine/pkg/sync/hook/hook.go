@@ -10,7 +10,7 @@ import (
 
 const (
 	// HookFinalizer is the finalizer added to hooks to ensure they are deleted only after the sync phase is completed.
-	HookFinalizer = "cd.argoproj.io/hook-finalizer"
+	HookFinalizer = "cd.hanzo.ai/hook-finalizer"
 )
 
 func HasHookFinalizer(obj *unstructured.Unstructured) bool {

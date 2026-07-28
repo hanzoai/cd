@@ -1,8 +1,8 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: list-and-list
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -31,7 +31,7 @@ spec:
     spec:
       project: '{{.values.project}}'
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:

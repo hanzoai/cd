@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: nested-test
-    applications.argoproj.io/app-name: nested-app
+    applications.apps.hanzo.ai/app-name: nested-app
 spec:
   replicas: 1
   selector:

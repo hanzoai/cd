@@ -1,4 +1,4 @@
-# Bug triage proposal for ArgoCD
+# Bug triage proposal for Hanzo CD
 
 ## Situation
 
@@ -122,11 +122,11 @@ in our tracker:
   the UI, wrong documentation, etc.
 
 * `bug/severity:major`: Malfunction in one of the core components, impacting
-  a majority of users or one of the core functionalities in ArgoCD. There is
+  a majority of users or one of the core functionalities in Hanzo CD. There is
   no data loss involved, but for example a sync is not working due to a bug
-  in ArgoCD (and not due to user error), manifests fail to render, etc.
+  in Hanzo CD (and not due to user error), manifests fail to render, etc.
 
-* `bug/severity:critical`: A critical bug in ArgoCD, possibly resulting in
+* `bug/severity:critical`: A critical bug in Hanzo CD, possibly resulting in
   data loss, integrity breach or severely degraded overall functionality.
 
 ### Priority
@@ -149,7 +149,7 @@ following labels can be used to classify bugs into their priority:
 The priority should be set according to the value of the fix and the attached
 severity. This means, a bug with a severity of `minor` could still be classified
 with priority `high`, when it is a *low hanging fruit* (i.e. the bug is easy to
-fix with low effort) and contributes to overall user experience of ArgoCD.
+fix with low effort) and contributes to overall user experience of Hanzo CD.
 
 Likewise, a bug classified with a severity of `major` could still have a
 priority of `medium`, if there is a workaround available for the bug which

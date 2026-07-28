@@ -10,10 +10,10 @@
 
 By default, clusters are assigned to shards indefinitely. For users of the default, hash-based sharding algorithm, this 
 static assignment is fine: shards will always be roughly-balanced by the hash-based algorithm. But for users of the 
-[round-robin](high_availability.md#argocd-application-controller) or other custom shard assignment algorithms, this 
+[round-robin](high_availability.md#cd-application-controller) or other custom shard assignment algorithms, this 
 static assignment can lead to unbalanced shards when replicas are added or removed.
 
-Starting v2.9, Argo CD supports a dynamic cluster distribution feature. When replicas are added or removed, the sharding
+Starting v2.9, Hanzo CD supports a dynamic cluster distribution feature. When replicas are added or removed, the sharding
 algorithm is re-run to ensure that the clusters are distributed according to the algorithm. If the algorithm is 
 well-balanced, like round-robin, then the shards will be well-balanced.
 
@@ -36,11 +36,11 @@ To accomplish runtime distribution of clusters, the Application Controller uses 
 pod with a shard number and a heartbeat to ensure that controller pods are still alive and handling their shard, in 
 effect, their share of the work.
 
-The Application Controller will create a new ConfigMap named `argocd-app-controller-shard-cm` to store the Controller <-> Shard mapping. The mapping would look like below for each shard:
+The Application Controller will create a new ConfigMap named `cd-app-controller-shard-cm` to store the Controller <-> Shard mapping. The mapping would look like below for each shard:
 
 ```yaml
 ShardNumber    : 0
-ControllerName : "argocd-application-controller-hydrxyt"
+ControllerName : "cd-application-controller-hydrxyt"
 HeartbeatTime  : "2009-11-17 20:34:58.651387237 +0000 UTC"
 ```
 
@@ -50,8 +50,8 @@ HeartbeatTime  : "2009-11-17 20:34:58.651387237 +0000 UTC"
 
 Controller Shard Mapping is updated in the ConfigMap during each readiness probe check of the pod, that is every 10 seconds (otherwise as configured). The controller will acquire the shard during every iteration of readiness probe check and try to update the ConfigMap with the `HeartbeatTime`. The default `HeartbeatDuration` after which the heartbeat should be updated is `10` seconds. If the ConfigMap was not updated for any controller pod for more than `3 * HeartbeatDuration`, then the readiness probe for the application pod is marked as `Unhealthy`. To increase the default `HeartbeatDuration`, you can set the environment variable `CD_CONTROLLER_HEARTBEAT_TIME` with the desired value.
 
-The new sharding mechanism does not monitor the environment variable `CD_CONTROLLER_REPLICAS` but instead reads the replica count directly from the Application Controller Deployment. The controller identifies the change in the number of replicas by comparing the replica count in the Application Controller Deployment and the number of mappings in the `argocd-app-controller-shard-cm` ConfigMap.
+The new sharding mechanism does not monitor the environment variable `CD_CONTROLLER_REPLICAS` but instead reads the replica count directly from the Application Controller Deployment. The controller identifies the change in the number of replicas by comparing the replica count in the Application Controller Deployment and the number of mappings in the `cd-app-controller-shard-cm` ConfigMap.
 
-In the scenario when the number of Application Controller replicas increases, a new entry is added to the list of mappings in the `argocd-app-controller-shard-cm` ConfigMap and the cluster distribution is triggered to re-distribute the clusters.
+In the scenario when the number of Application Controller replicas increases, a new entry is added to the list of mappings in the `cd-app-controller-shard-cm` ConfigMap and the cluster distribution is triggered to re-distribute the clusters.
 
-In the scenario when the number of Application Controller replicas decreases, the mappings in the `argocd-app-controller-shard-cm` ConfigMap are reset and every controller acquires the shard again thus triggering the re-distribution of the clusters.
+In the scenario when the number of Application Controller replicas decreases, the mappings in the `cd-app-controller-shard-cm` ConfigMap are reset and every controller acquires the shard again thus triggering the re-distribution of the clusters.

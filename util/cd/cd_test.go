@@ -301,7 +301,7 @@ func TestNilOutZerValueAppSources(t *testing.T) {
 func TestValidatePermissionsEmptyDestination(t *testing.T) {
 	t.Parallel()
 	conditions, err := ValidatePermissions(t.Context(), &argoappv1.ApplicationSpec{
-		Source: &argoappv1.ApplicationSource{RepoURL: "https://github.com/argoproj/argo-cd", Path: "."},
+		Source: &argoappv1.ApplicationSource{RepoURL: "https://github.com/hanzoai/cd", Path: "."},
 	}, &argoappv1.AppProject{
 		Spec: argoappv1.AppProjectSpec{
 			SourceRepos:  []string{"*"},

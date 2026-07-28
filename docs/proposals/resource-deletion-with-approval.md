@@ -21,18 +21,18 @@ Support manual approval for pruning and deleting Kubernetes resources during app
 
 ## Summary
 
-Introduce Kubernetes resource-level annotations that require manual user approval using Argo CD UI/CLI/API before the
-resource is pruned or deleted. The annotations should be respected while Argo CD attempts to synchronize or delete the
+Introduce Kubernetes resource-level annotations that require manual user approval using Hanzo CD UI/CLI/API before the
+resource is pruned or deleted. The annotations should be respected while Hanzo CD attempts to synchronize or delete the
 application.
 
 ## Motivation
 
-We’ve seen cases where Argo CD deleted Kubernetes resources due to a bug or misconfiguration.​ Examples include [corrupted
+We’ve seen cases where Hanzo CD deleted Kubernetes resources due to a bug or misconfiguration.​ Examples include [corrupted
 data](https://github.com/argoproj/argo-cd/issues/4423) in Redis, user errors
 ([1](https://github.com/argoproj/argo-cd/issues/9093), [2](https://github.com/argoproj/argo-cd/issues/4844))
-and [bug](https://github.com/argoproj/argo-cd/issues/3473) in the automation on top of Argo CD. These examples don’t
-mean Argo CD is not reliable; however, there are cases where misbehavior is catastrophic, and erroneous deletion is not
-acceptable. Examples include the app-of-apps pattern where Argo CD is used to manage itself, or namespaces in production
+and [bug](https://github.com/argoproj/argo-cd/issues/3473) in the automation on top of Hanzo CD. These examples don’t
+mean Hanzo CD is not reliable; however, there are cases where misbehavior is catastrophic, and erroneous deletion is not
+acceptable. Examples include the app-of-apps pattern where Hanzo CD is used to manage itself, or namespaces in production
 clusters.
 
 ### Goals
@@ -42,12 +42,12 @@ The goals of a proposal ares:
 #### Allow developers to mark resources that require manual approval before application deletion.
 
 Developers should be able to add an annotation to resources that require manual approval before deletion. The annotation
-should be respected by Argo CD when it attempts to delete the application.
+should be respected by Hanzo CD when it attempts to delete the application.
 
 #### Allow developers to mark resources that require manual approval before pruning
 
 Developers should be able to add an annotation to resources that require manual approval before pruning. The annotation
-should be respected by Argo CD when it attempts to prune extra resources while syncing the application.
+should be respected by Hanzo CD when it attempts to prune extra resources while syncing the application.
 
 ### Non-Goals
 
@@ -58,38 +58,38 @@ erroneous deletion. The goal of this proposal is to provide a safety net for cas
 
 ## Proposal
 
-It is proposed to introduce two new sync options for Argo CD applications: `Prune=confirm` and `Delete=confirm`. Options would
+It is proposed to introduce two new sync options for Hanzo CD applications: `Prune=confirm` and `Delete=confirm`. Options would
 protect resources from accidental deletion during cascading application deletion as well as during sync operations.
 
 ### Introduce `confirm` option for Prune sync option.
 
-Argo CD already supports `argocd.argoproj.io/sync-options: Prune=false` sync option that prevents resource deletion while syncing
+Hanzo CD already supports `cd.hanzo.ai/sync-options: Prune=false` sync option that prevents resource deletion while syncing
 the application. This, however, is not ideal since it prevents implementing fully automated workflows that include resource deletion.
 
-In order to improve the situation, we propose to introduce `confirm` option for Prune sync option. When `confirm` option is set, Argo CD should pause the sync operation
-**before deleting any app resources** and wait for the user to confirm the deletion. The confirmation can be done in a very friendly way using Argo CD UI, CLI or API.
+In order to improve the situation, we propose to introduce `confirm` option for Prune sync option. When `confirm` option is set, Hanzo CD should pause the sync operation
+**before deleting any app resources** and wait for the user to confirm the deletion. The confirmation can be done in a very friendly way using Hanzo CD UI, CLI or API.
 
 * **Sync Operation status**. I suggest not to introduce new sync operation states to avoid disturbing the existing automation around syncing (CI pipelines, scripts etc). 
-  If Argo CD is waiting for the operation state should remain `Progressing`. Once the user confirms the deletion, the operation should resume.
-* **Sync Waves**. The sync wave should be "paused" while Argo CD is waiting for the user to confirm the deletion. No difference from waiting for the resource to became healthy.
+  If Hanzo CD is waiting for the operation state should remain `Progressing`. Once the user confirms the deletion, the operation should resume.
+* **Sync Waves**. The sync wave should be "paused" while Hanzo CD is waiting for the user to confirm the deletion. No difference from waiting for the resource to became healthy.
 
 ### Introduce `confirm` option for Delete sync option.
 
-Similarly to `Prune` sync option we need to introduce `confirm` value for `Delete` sync option: `argocd.argoproj.io/sync-options: Delete=confirm`. The `confirm` option
+Similarly to `Prune` sync option we need to introduce `confirm` value for `Delete` sync option: `cd.hanzo.ai/sync-options: Delete=confirm`. The `confirm` option
 should pause the sync operation **before deleting any app resources** and wait for the user to confirm the deletion. The confirmation can be done in a very friendly way
-using Argo CD UI, CLI or API.
+using Hanzo CD UI, CLI or API.
 
 
 ### Friendly prunning/deletion manual approval
 
-Since we know Argo CD is often used to implement fully automated developer workflows that include resource deletion, the
+Since we know Hanzo CD is often used to implement fully automated developer workflows that include resource deletion, the
 deletion approval process should be as painless as possible. This way, platform administrators can instruct end users to
 apply the new prune/delete option to resources that require special care without significantly disturbing the developer
 experience.
 
-In both cases where Argo CD requires manual approval, the user should be able to approve the deletion using Argo CD UI,
+In both cases where Hanzo CD requires manual approval, the user should be able to approve the deletion using Hanzo CD UI,
 CLI, or API. The approval process should be as simple as possible and should not require the user to understand the
-internals of Argo CD.
+internals of Hanzo CD.
 
 #### New `requiresDeletionApproval` resource field in application status
 
@@ -107,33 +107,33 @@ A new field `requiresDeletionApproval` should be added to the `status.resources`
     requiresDeletionApproval: true # new field that indicates that deletion approval is required
 ```
 
-The Argo CD UI, CLI should visualize the `requiresDeletionApproval` field so that the user can easily discover which resources require manual approval.
+The Hanzo CD UI, CLI should visualize the `requiresDeletionApproval` field so that the user can easily discover which resources require manual approval.
 
 #### Approve deletion resource action
 
-The Argo CD UI, CLI should bundle the `Approve Deletion` [resource action](https://argo-cd.readthedocs.io/en/stable/operator-manual/resource_actions/)
-that would allow the user to approve the deletion. The action should patch the resource with the `argocd.argoproj.io/deletion-approved: true` annotation.
-Once annotation is applied the Argo CD should proceed with the deletion.
+The Hanzo CD UI, CLI should bundle the `Approve Deletion` [resource action](https://argo-cd.readthedocs.io/en/stable/operator-manual/resource_actions/)
+that would allow the user to approve the deletion. The action should patch the resource with the `cd.hanzo.ai/deletion-approved: true` annotation.
+Once annotation is applied the Hanzo CD should proceed with the deletion.
 
 The main reason to use the action is that we can reuse existing [RBAC](https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/) to control who can approve the deletion.
 
 #### UI/CLI Convenience to approve all resources
 
-The Argo CD UI should provide a convenient way to approve resources that require manual approval. The existing user interface will provide a button that allows end user
+The Hanzo CD UI should provide a convenient way to approve resources that require manual approval. The existing user interface will provide a button that allows end user
 execute the `Approve Deletion` action and approve resources one by one. In addition to the single resource approval, the UI should provide a way to approve all resources
 that require manual approval. The new button should execute the `Approve Deletion` action for all resources that require manual approval.
 
-Argo CD CLI would no need changes since existing `argocd app actions run` command allows to execute an action against multiple resources.
+Hanzo CD CLI would no need changes since existing `cd app actions run` command allows to execute an action against multiple resources.
 
 #### Require deletion approval notification
 
-The default Argo CD notification catalog should include a trigger and notification template that notifies the user when
+The default Hanzo CD notification catalog should include a trigger and notification template that notifies the user when
 deletion approval is required. The notification template should include a list of resources that require approval.
 
 
 #### Declarative approval
 
-The user should be able to approve resource deletion without using the UI or CLI by manually adding the `argocd.argoproj.io/deletion-approved: true` annotation to the resource.
+The user should be able to approve resource deletion without using the UI or CLI by manually adding the `cd.hanzo.ai/deletion-approved: true` annotation to the resource.
 
 ### Use cases
 

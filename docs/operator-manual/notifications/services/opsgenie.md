@@ -1,6 +1,6 @@
 # Opsgenie
 
-To be able to send notifications with argocd-notifications you have to create an [API Integration](https://docs.opsgenie.com/docs/integrations-overview) inside your [Opsgenie Team](https://docs.opsgenie.com/docs/teams).
+To be able to send notifications with cd-notifications you have to create an [API Integration](https://docs.opsgenie.com/docs/integrations-overview) inside your [Opsgenie Team](https://docs.opsgenie.com/docs/teams).
 
 1. Login to Opsgenie at https://app.opsgenie.com or https://app.eu.opsgenie.com (if you have an account in the European Union).
 2. Make sure you already have a team; if not, follow this guide: https://docs.opsgenie.com/docs/teams.
@@ -15,15 +15,15 @@ To be able to send notifications with argocd-notifications you have to create an
 11. Click "Save" at the bottom.
 12. Click "Turn on integration" in the top right corner.
 13. Check your browser for the correct server apiURL. If it is "app.opsgenie.com", then use the US/international API URL `api.opsgenie.com`; otherwise, use `api.eu.opsgenie.com` (European API).
-14. You are finished with configuring Opsgenie. Now you need to configure argocd-notifications. Use the apiUrl, the team name, and the apiKey to configure the Opsgenie integration in the `argocd-notifications-secret` secret.
-15. You can find the example `argocd-notifications-cm` configuration below.
+14. You are finished with configuring Opsgenie. Now you need to configure cd-notifications. Use the apiUrl, the team name, and the apiKey to configure the Opsgenie integration in the `cd-notifications-secret` secret.
+15. You can find the example `cd-notifications-cm` configuration below.
 
 | **Option**    | **Required** | **Type** | **Description**                                                                                          | **Example**                      |
 | ------------- | ------------ | -------- | -------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `description` | True         | `string` | Description field of the alert that is generally used to provide detailed information about the alert.   | `Hello from Argo CD!`            |
+| `description` | True         | `string` | Description field of the alert that is generally used to provide detailed information about the alert.   | `Hello from Hanzo CD!`            |
 | `priority`    | False        | `string` | Priority level of the alert. Possible values are P1, P2, P3, P4, and P5. Default value is P3.            | `P1`                             |
 | `alias`       | False        | `string` | Client-defined identifier of the alert, that is also the key element of Alert De-Duplication.            | `Life is too short for no alias` |
-| `note`        | False        | `string` | Additional note that will be added while creating the alert.                                            | `Error from Argo CD!`           |
+| `note`        | False        | `string` | Additional note that will be added while creating the alert.                                            | `Error from Hanzo CD!`           |
 | `actions`     | False        | `[]string` | Custom actions that will be available for the alert.                                                    | `["Resolve", "Escalate"]`       |
 | `tags`        | False        | `[]string` | Tags of the alert.                                                                                        | `["critical", "deployment"]`    |
 | `visibleTo`   | False        | `[]alert.Responder` | Teams and users that the alert will become visible to without sending any notification. The `type` field is mandatory for each item, where possible values are `team` and `user`. In addition to the `type` field, either `id` or `name` should be provided for teams, and either `id` or `username` should be given for users. Please note that alerts will be visible to the teams specified within the `responders` field by default, so there is no need to re-specify them in the `visibleTo` field. | `[{Type: "team", Id: "team_id"}, {Type: "user", Id: "user_id"}]` |
@@ -35,7 +35,7 @@ To be able to send notifications with argocd-notifications you have to create an
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.opsgenie: |
     apiUrl: <api-url>
@@ -43,7 +43,7 @@ data:
       <your-team>: <integration-api-key>
   template.opsgenie: |
     message: |
-      [Argo CD] Application {{.app.metadata.name}} has a problem.
+      [Hanzo CD] Application {{.app.metadata.name}} has a problem.
     opsgenie:
       description: |
         Application: {{.app.metadata.name}}
@@ -52,7 +52,7 @@ data:
         Sync Status: {{.app.status.sync.status}}
       priority: P1
       alias: {{.app.metadata.name}}
-      note: Error from Argo CD!
+      note: Error from Hanzo CD!
       actions:
         - Restart
         - AnExampleAction
@@ -71,7 +71,7 @@ data:
       details:
         environment: production
         service: web
-      entity: Argo CD Application
+      entity: Hanzo CD Application
       user: John Doe
   trigger.on-a-problem: |
     - description: Application has a problem.
@@ -80,11 +80,11 @@ data:
       when: app.status.health.status == 'Degraded' or app.status.operationState.phase in ['Error', 'Failed'] or app.status.sync.status == 'Unknown'
 ```
 
-16. Add annotation in the application YAML file to enable notifications for a specific Argo CD app.
+16. Add annotation in the application YAML file to enable notifications for a specific Hanzo CD app.
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-a-problem.opsgenie: <your-team>
+    notifications.apps.hanzo.ai/subscribe.on-a-problem.opsgenie: <your-team>
 ```

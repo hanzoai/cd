@@ -1,7 +1,7 @@
-# argocd-repositories.yaml example
+# cd-repositories.yaml example
 
-An example of an argocd-repositories.yaml file:
+An example of an cd-repositories.yaml file:
 
 ```yaml
-{!docs/operator-manual/argocd-repositories.yaml!}
+{!docs/operator-manual/cd-repositories.yaml!}
 ```

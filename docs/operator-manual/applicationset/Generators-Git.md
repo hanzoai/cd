@@ -33,17 +33,17 @@ This repository contains two directories, one for each of the workloads to deplo
 
 We can deploy both workloads, using this example:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-      repoURL: https://github.com/argoproj/argo-cd.git
+      repoURL: https://github.com/hanzoai/cd.git
       revision: HEAD
       directories:
       - path: applicationset/examples/git-generator-directory/cluster-addons/*
@@ -53,7 +53,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:
@@ -63,7 +63,7 @@ spec:
         syncOptions:
         - CreateNamespace=true
 ```
-(*The [full example](https://github.com/argoproj/argo-cd/tree/master/applicationset/examples/git-generator-directory).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-directory).*)
 
 The generator parameters are:
 
@@ -82,7 +82,7 @@ The generator parameters are:
 
 Whenever a new Helm chart/Kustomize YAML/Application/plain subdirectory is added to the Git repository, the ApplicationSet controller will detect this change and automatically deploy the resulting manifests within new `Application` resources.
 
-As with other generators, clusters *must* already be defined within Argo CD, in order to generate Applications for them.
+As with other generators, clusters *must* already be defined within Hanzo CD, in order to generate Applications for them.
 
 ### Exclude directories
 
@@ -91,17 +91,17 @@ The Git directory generator will automatically exclude directories that begin wi
 The Git directory generator also supports an `exclude` option in order to exclude directories in the repository from being scanned by the ApplicationSet controller:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-      repoURL: https://github.com/argoproj/argo-cd.git
+      repoURL: https://github.com/hanzoai/cd.git
       revision: HEAD
       directories:
       - path: applicationset/examples/git-generator-directory/excludes/cluster-addons/*
@@ -113,14 +113,14 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{.path.basename}}'
 ```
-(*The [full example](https://github.com/argoproj/argo-cd/tree/master/applicationset/examples/git-generator-directory/excludes).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-directory/excludes).*)
 
 This example excludes the `exclude-helm-guestbook` directory from the list of directories scanned for this `ApplicationSet` resource.
 
@@ -175,11 +175,11 @@ The Git directory generator can be configured to deploy from the root of the git
 To exclude directories, you only need to put the name/[path.Match](https://golang.org/pkg/path/#Match) of the directory you do not want to deploy.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -211,11 +211,11 @@ You may pass additional, arbitrary string key-value pairs via the `values` field
 
 In this example, a `cluster` parameter value is passed. It is interpolated from the `path` variable, to then be used to determine the destination namespace.
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -297,17 +297,17 @@ cluster.address: https://1.2.3.4
 
 And the generated parameters for all discovered `config.json` files will be substituted into ApplicationSet template:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-      repoURL: https://github.com/argoproj/argo-cd.git
+      repoURL: https://github.com/hanzoai/cd.git
       revision: HEAD
       files:
       - path: "applicationset/examples/git-generator-files-discovery/cluster-config/**/config.json"
@@ -317,18 +317,18 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: "applicationset/examples/git-generator-files-discovery/apps/guestbook"
       destination:
         server: '{{.cluster.address}}'
         namespace: guestbook
 ```
-(*The [full example](https://github.com/argoproj/argo-cd/tree/master/applicationset/examples/git-generator-files-discovery).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-files-discovery).*)
 
 Any `config.json` files found under the `cluster-config` directory will be parameterized based on the `path` wildcard pattern specified. Within each file JSON fields are flattened into key/value pairs, with this ApplicationSet example using the `cluster.address` and `cluster.name` parameters in the template.
 
-As with other generators, clusters *must* already be defined within Argo CD, in order to generate Applications for them.
+As with other generators, clusters *must* already be defined within Hanzo CD, in order to generate Applications for them.
 
 In addition to the flattened key/value pairs from the configuration file, the following generator parameters are provided:
 
@@ -357,7 +357,7 @@ In addition to the flattened key/value pairs from the configuration file, the fo
 The Git file generator also supports an `exclude` option in order to exclude files in the repository from being scanned by the ApplicationSet controller:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
@@ -366,7 +366,7 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         revision: HEAD
         files:
           - path: "applicationset/examples/git-generator-files-discovery/cluster-config/**/config.json"
@@ -378,7 +378,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: "applicationset/examples/git-generator-files-discovery/apps/guestbook"
       destination:
@@ -389,7 +389,7 @@ spec:
 
 This example excludes the `config.json` file in the `dev` directory from the list of files scanned for this `ApplicationSet` resource.
 
-(*The [full example](https://github.com/argoproj/argo-cd/tree/master/applicationset/examples/git-generator-files-discovery/excludes).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-files-discovery/excludes).*)
 
 ### Pass additional key-value pairs via `values` field
 
@@ -397,17 +397,17 @@ You may pass additional, arbitrary string key-value pairs via the `values` field
 
 In this example, a `base_dir` parameter value is passed. It is interpolated from `path` segments, to then be used to determine the source path.
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-      repoURL: https://github.com/argoproj/argo-cd.git
+      repoURL: https://github.com/hanzoai/cd.git
       revision: HEAD
       files:
       - path: "applicationset/examples/git-generator-files-discovery/cluster-config/**/config.json"
@@ -419,7 +419,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: "{{.values.base_dir}}/apps/guestbook"
       destination:
@@ -442,18 +442,18 @@ You can customize this interval per ApplicationSet using
 `requeueAfterSeconds`.
 
 > [!NOTE]
-> The Git generator uses the ArgoCD Repo Server to retrieve file
+> The Git generator uses the Hanzo CD Repo Server to retrieve file
 > and directory lists from Git. Therefore, the Git generator is
 > affected by the Repo Server's Revision Cache Expiration setting
 > (see the description of the `timeout.reconciliation` parameter in
-> [argocd-cm.yaml](../argocd-cm-yaml.md/#:~:text=timeout.reconciliation%3A)).
+> [cd-cm.yaml](../cd-cm-yaml.md/#:~:text=timeout.reconciliation%3A)).
 > If this value exceeds the configured Git Polling Interval, the
 > Git generator might not see files or directories from new commits
 > until the previous cache entry expires.
 > 
-## The `argocd.argoproj.io/application-set-refresh` Annotation
+## The `cd.hanzo.ai/application-set-refresh` Annotation
 
-Setting the `argocd.argoproj.io/application-set-refresh` annotation
+Setting the `cd.hanzo.ai/application-set-refresh` annotation
 (to any value) triggers an ApplicationSet refresh. This annotation
 forces the Git provider to resolve Git references directly, bypassing
 the Revision Cache. The ApplicationSet controller removes this
@@ -468,11 +468,11 @@ following explains how to configure a Git webhook for GitHub, but the
 same process should be applicable to other providers.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -480,7 +480,7 @@ spec:
   - git:
       # When using a Git generator, the ApplicationSet controller polls every `requeueAfterSeconds` interval (defaulting to every 3 minutes) to detect changes.
       requeueAfterSeconds: 180
-      repoURL: https://github.com/argoproj/argo-cd.git
+      repoURL: https://github.com/hanzoai/cd.git
       revision: HEAD
       # ...
 ```
@@ -508,12 +508,12 @@ the contents of webhook payloads are considered untrusted, and will only result 
 application (a process which already occurs at three-minute intervals). If ApplicationSet is publicly
 accessible, then configuring a webhook secret is recommended to prevent a DDoS attack.
 
-In the `argocd-secret` Kubernetes secret, include the Git provider's webhook secret configured in step 1.
+In the `cd-secret` Kubernetes secret, include the Git provider's webhook secret configured in step 1.
 
-Edit the Argo CD Kubernetes secret:
+Edit the Hanzo CD Kubernetes secret:
 
 ```bash
-kubectl edit secret argocd-secret -n argocd
+kubectl edit secret cd-secret -n cd
 ```
 
 TIP: for ease of entering secrets, Kubernetes supports inputting secrets in the `stringData` field,
@@ -525,8 +525,8 @@ GitHub/GitLab/BitBucket key under the `stringData` field:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argocd-secret
-  namespace: argocd
+  name: cd-secret
+  namespace: cd
 type: Opaque
 data:
 ...
@@ -545,5 +545,5 @@ After saving, please restart the ApplicationSet pod for the changes to take effe
 If your [ApplicationSets](index.md) uses a repository where you need credentials to be able to access it _and_ if the
 ApplicationSet project field is templated (i.e. the `project` field of the ApplicationSet contains `{{ ... }}`), you need to add the repository as a "non project scoped" repository.  
 - When doing that through the UI, set this to a **blank** value in the dropdown menu.
-- When doing that through the CLI, make sure you **DO NOT** supply the parameter `--project` ([argocd repo add docs](../../user-guide/commands/argocd_repo_add.md))
-- When doing that declaratively, make sure you **DO NOT** have `project:` defined under `stringData:` ([complete yaml example](../argocd-repositories-yaml.md))
+- When doing that through the CLI, make sure you **DO NOT** supply the parameter `--project` ([cd repo add docs](../../user-guide/commands/cd_repo_add.md))
+- When doing that declaratively, make sure you **DO NOT** have `project:` defined under `stringData:` ([complete yaml example](../cd-repositories-yaml.md))

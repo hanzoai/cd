@@ -1,30 +1,30 @@
 # Reconcile Optimization
 
-By default, an Argo CD Application is refreshed every time a resource that belongs to it changes.
+By default, an Hanzo CD Application is refreshed every time a resource that belongs to it changes.
 
 Kubernetes controllers often update the resources they watch periodically, causing continuous reconcile operation on the Application
-and a high CPU usage on the `argocd-application-controller`. Argo CD allows you to optionally ignore resource updates on specific fields
+and a high CPU usage on the `cd-application-controller`. Hanzo CD allows you to optionally ignore resource updates on specific fields
 for [tracked resources](../user-guide/resource_tracking.md).
-For untracked resources, you can [use the argocd.argoproj.io/ignore-resource-updates annotations](#ignoring-updates-for-untracked-resources)
+For untracked resources, you can [use the cd.hanzo.ai/ignore-resource-updates annotations](#ignoring-updates-for-untracked-resources)
 
 When a resource update is ignored, if the resource's [health status](./health.md) does not change, the Application that this resource belongs to will not be reconciled.
 
 ## System-Level Configuration
 
-By default, `resource.ignoreResourceUpdatesEnabled` is set to `true`, enabling Argo CD to ignore resource updates. This default setting ensures that Argo CD maintains sustainable performance by reducing unnecessary reconcile operations. If you need to alter this behavior, you can explicitly set `resource.ignoreResourceUpdatesEnabled` to `false` in the `argocd-cm` ConfigMap:
+By default, `resource.ignoreResourceUpdatesEnabled` is set to `true`, enabling Hanzo CD to ignore resource updates. This default setting ensures that Hanzo CD maintains sustainable performance by reducing unnecessary reconcile operations. If you need to alter this behavior, you can explicitly set `resource.ignoreResourceUpdatesEnabled` to `false` in the `cd-cm` ConfigMap:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
 data:
   resource.ignoreResourceUpdatesEnabled: 'false'
 ```
 
-Argo CD allows ignoring resource updates at a specific JSON path, using [RFC6902 JSON patches](https://tools.ietf.org/html/rfc6902) and [JQ path expressions](<https://stedolan.github.io/jq/manual/#path(path_expression)>). It can be configured for a specified group and kind
-in `resource.customizations` key of the `argocd-cm` ConfigMap.
+Hanzo CD allows ignoring resource updates at a specific JSON path, using [RFC6902 JSON patches](https://tools.ietf.org/html/rfc6902) and [JQ path expressions](<https://stedolan.github.io/jq/manual/#path(path_expression)>). It can be configured for a specified group and kind
+in `resource.customizations` key of the `cd-cm` ConfigMap.
 
 Following is an example of a customization which ignores the `refreshTime` status field of an [`ExternalSecret`](https://external-secrets.io/main/api/externalsecret/) resource:
 
@@ -39,7 +39,7 @@ data:
     # - .status.refreshTime
 ```
 
-It is possible to configure `ignoreResourceUpdates` to be applied to all tracked resources in every Application managed by an Argo CD instance. In order to do so, resource customizations can be configured like in the example below:
+It is possible to configure `ignoreResourceUpdates` to be applied to all tracked resources in every Application managed by an Hanzo CD instance. In order to do so, resource customizations can be configured like in the example below:
 
 ```yaml
 data:
@@ -58,7 +58,7 @@ To disable this behavior, the `ignoreDifferencesOnResourceUpdates` setting can b
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
+  name: cd-cm
 data:
   resource.compareoptions: |
     ignoreDifferencesOnResourceUpdates: false
@@ -94,7 +94,7 @@ The diff can give you a sense for which fields are changing and should perhaps b
 
 ## Checking Whether Resource Updates are Ignored
 
-Whenever Argo CD skips a refresh due to an ignored resource update, the controller logs the following line:
+Whenever Hanzo CD skips a refresh due to an ignored resource update, the controller logs the following line:
 "Ignoring change of object because none of the watched resource fields have changed".
 
 Search the application-controller logs for this line to confirm that your resource ignore rules are being applied.
@@ -104,15 +104,15 @@ Search the application-controller logs for this line to confirm that your resour
 
 ## Examples
 
-### argoproj.io/Application
+### apps.hanzo.ai/Application
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
+  name: cd-cm
 data:
-  resource.customizations.ignoreResourceUpdates.argoproj.io_Application: |
+  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
     jsonPointers:
     # Ignore when ownerReferences change, for example when a parent ApplicationSet changes often.
     - /metadata/ownerReferences
@@ -126,10 +126,10 @@ data:
 
 ## Ignoring updates for untracked resources
 
-ArgoCD will only apply `ignoreResourceUpdates` configuration to tracked resources of an application. This means dependent resources, such as a `ReplicaSet` and `Pod` created by a `Deployment`, will not ignore any updates and trigger a reconcile of the application for any changes.
+Hanzo CD will only apply `ignoreResourceUpdates` configuration to tracked resources of an application. This means dependent resources, such as a `ReplicaSet` and `Pod` created by a `Deployment`, will not ignore any updates and trigger a reconcile of the application for any changes.
 
 If you want to apply the `ignoreResourceUpdates` configuration to an untracked resource, you can add the
-`argocd.argoproj.io/ignore-resource-updates=true` annotation in the dependent resources manifest.
+`cd.hanzo.ai/ignore-resource-updates=true` annotation in the dependent resources manifest.
 
 ## Example
 
@@ -146,12 +146,12 @@ spec:
   jobTemplate:
     metadata:
       annotations:
-        argocd.argoproj.io/ignore-resource-updates: 'true'
+        cd.hanzo.ai/ignore-resource-updates: 'true'
     spec:
       template:
         metadata:
           annotations:
-            argocd.argoproj.io/ignore-resource-updates: 'true'
+            cd.hanzo.ai/ignore-resource-updates: 'true'
         spec:
           containers:
             - name: hello
@@ -164,9 +164,9 @@ spec:
           restartPolicy: OnFailure
 ```
 
-The resource updates will be ignored based on your the `ignoreResourceUpdates` configuration in the `argocd-cm` configMap:
+The resource updates will be ignored based on your the `ignoreResourceUpdates` configuration in the `cd-cm` configMap:
 
-`argocd-cm`:
+`cd-cm`:
 
 ```yaml
 resource.customizations.ignoreResourceUpdates.batch_Job: |

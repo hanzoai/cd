@@ -1,8 +1,8 @@
 # Cluster Generator
 
-In Argo CD, managed clusters [are stored within Secrets](../declarative-setup.md#clusters) in the Argo CD namespace. The ApplicationSet controller uses those same Secrets to generate parameters to identify and target available clusters.
+In Hanzo CD, managed clusters [are stored within Secrets](../declarative-setup.md#clusters) in the Hanzo CD namespace. The ApplicationSet controller uses those same Secrets to generate parameters to identify and target available clusters.
 
-For each cluster registered with Argo CD, the Cluster generator produces parameters based on the list of items found within the cluster secret.
+For each cluster registered with Hanzo CD, the Cluster generator produces parameters based on the list of items found within the cluster secret.
 
 It automatically provides the following parameter values to the Application template for each cluster:
 
@@ -17,7 +17,7 @@ It automatically provides the following parameter values to the Application temp
 > Use the `nameNormalized` parameter if your cluster name contains characters (such as underscores) that are not valid for Kubernetes resource names. This prevents rendering invalid Kubernetes resources with names like `my_cluster-app1`, and instead would convert them to `my-cluster-app1`.
 
 
-Within [Argo CD cluster Secrets](../declarative-setup.md#clusters) are data fields describing the cluster:
+Within [Hanzo CD cluster Secrets](../declarative-setup.md#clusters) are data fields describing the cluster:
 ```yaml
 kind: Secret
 data:
@@ -28,22 +28,22 @@ data:
   server: "https://kubernetes.default.svc"
 metadata:
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 # (...)
 ```
 
-The Cluster generator will automatically identify clusters defined with Argo CD, and extract the cluster data as parameters:
+The Cluster generator will automatically identify clusters defined with Hanzo CD, and extract the cluster data as parameters:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-  - clusters: {} # Automatically use all clusters defined within Argo CD
+  - clusters: {} # Automatically use all clusters defined within Hanzo CD
   template:
     metadata:
       name: '{{.name}}-guestbook' # 'name' field of the Secret
@@ -57,7 +57,7 @@ spec:
         server: '{{.server}}' # 'server' field of the secret
         namespace: guestbook
 ```
-(*The [full example](https://github.com/argoproj/argo-cd/tree/master/applicationset/examples/cluster).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/cluster).*)
 
 In this example, the cluster secret's `name` and `server` fields are used to populate the `Application` resource `name` and `server`, which are then used to target that same cluster.
 
@@ -65,11 +65,11 @@ In this example, the cluster secret's `name` and `server` fields are used to pop
 
 A label selector may be used to narrow the scope of targeted clusters to only those matching a specific label:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -88,7 +88,7 @@ spec:
   # (...)
 ```
 
-This would match an Argo CD cluster secret containing:
+This would match an Hanzo CD cluster secret containing:
 ```yaml
 apiVersion: v1
 kind: Secret
@@ -96,7 +96,7 @@ data:
   # (... fields as above ...)
 metadata:
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
     staging: "true"
 # (...)
 ```
@@ -105,7 +105,7 @@ The cluster selector also supports set-based requirements, as used by [several c
 
 ### Deploying to the local cluster
 
-In Argo CD, the 'local cluster' is the cluster upon which Argo CD (and the ApplicationSet controller) is installed. This is to distinguish it from 'remote clusters', which are those that are added to Argo CD [declaratively](../declarative-setup.md#clusters) or via the [Argo CD CLI](../../getting_started.md#5-register-a-cluster-to-deploy-apps-to-optional).
+In Hanzo CD, the 'local cluster' is the cluster upon which Hanzo CD (and the ApplicationSet controller) is installed. This is to distinguish it from 'remote clusters', which are those that are added to Hanzo CD [declaratively](../declarative-setup.md#clusters) or via the [Hanzo CD CLI](../../getting_started.md#5-register-a-cluster-to-deploy-apps-to-optional).
  
 The cluster generator will automatically target both local and non-local clusters, for every cluster that matches the cluster selector.
 
@@ -118,7 +118,7 @@ spec:
   - clusters:
       selector:
         matchLabels:
-          argocd.argoproj.io/secret-type: cluster
+          cd.hanzo.ai/secret-type: cluster
         # The cluster generator also supports matchExpressions.
         #matchExpressions:
         #  - key: staging
@@ -127,23 +127,23 @@ spec:
         #      - "true"
 ```
 
-This selector will not match the default local cluster, since the default local cluster does not have a Secret (and thus does not have the `argocd.argoproj.io/secret-type` label on that secret). Any cluster selector that selects on that label will automatically exclude the default local cluster.
+This selector will not match the default local cluster, since the default local cluster does not have a Secret (and thus does not have the `cd.hanzo.ai/secret-type` label on that secret). Any cluster selector that selects on that label will automatically exclude the default local cluster.
 
-However, if you do wish to target both local and non-local clusters, while also using label matching, you can create a secret for the local cluster within the Argo CD web UI:
+However, if you do wish to target both local and non-local clusters, while also using label matching, you can create a secret for the local cluster within the Hanzo CD web UI:
 
-1. Within the Argo CD web UI, select *Settings*, then *Clusters*.
+1. Within the Hanzo CD web UI, select *Settings*, then *Clusters*.
 2. Select your local cluster, usually named `in-cluster`.
 3. Click the *Edit* button, and change the *NAME* of the cluster to another value, for example `in-cluster-local`. Any other value here is fine.
 4. Leave all other fields unchanged.
 5. Click *Save*.
 
-These steps might seem counterintuitive, but the act of changing one of the default values for the local cluster causes the Argo CD Web UI to create a new secret for this cluster. In the Argo CD namespace, you should now see a Secret resource named `cluster-(cluster suffix)` with label `argocd.argoproj.io/secret-type": "cluster"`. You may also create a local [cluster secret declaratively](../declarative-setup.md#clusters), or with the CLI using `argocd cluster add "(context name)" --in-cluster`, rather than through the Web UI.
+These steps might seem counterintuitive, but the act of changing one of the default values for the local cluster causes the Hanzo CD Web UI to create a new secret for this cluster. In the Hanzo CD namespace, you should now see a Secret resource named `cluster-(cluster suffix)` with label `cd.hanzo.ai/secret-type": "cluster"`. You may also create a local [cluster secret declaratively](../declarative-setup.md#clusters), or with the CLI using `cd cluster add "(context name)" --in-cluster`, rather than through the Web UI.
 
 ### Fetch clusters based on their K8s version
 
-There is also the possibility to fetch clusters based upon their Kubernetes version. To do this, the label `argocd.argoproj.io/auto-label-cluster-info` needs to be set to `true` on the cluster secret. 
+There is also the possibility to fetch clusters based upon their Kubernetes version. To do this, the label `cd.hanzo.ai/auto-label-cluster-info` needs to be set to `true` on the cluster secret. 
 Once that has been set, the controller will dynamically label the cluster secret with the Kubernetes version it is running on. To retrieve that value, you need to use the
-`argocd.argoproj.io/kubernetes-version`, as the example below demonstrates:
+`cd.hanzo.ai/kubernetes-version`, as the example below demonstrates:
 
 ```yaml
 spec:
@@ -152,10 +152,10 @@ spec:
   - clusters:
       selector:
         matchLabels:
-          argocd.argoproj.io/kubernetes-version: v1.28.1
+          cd.hanzo.ai/kubernetes-version: v1.28.1
         # matchExpressions are also supported.
         #matchExpressions:
-        #  - key: argocd.argoproj.io/kubernetes-version
+        #  - key: cd.hanzo.ai/kubernetes-version
         #    operator: In
         #    values:
         #      - "v1.27.1"
@@ -294,7 +294,7 @@ spec:
 Given that you have two cluster secrets matching with names cluster1 and cluster2, this would generate the **single** following Application:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: flat-list-guestbook

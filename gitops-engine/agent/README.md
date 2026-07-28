@@ -1,7 +1,7 @@
 # GitOps Agent
 
 The GitOps Agent leverages the GitOps Engine and provides access to many engine features via a simple CLI interface.
-The agent provides the same set of core features as Argo CD including basic reconciliation, syncing as well as sync hooks and sync waves.
+The agent provides the same set of core features as Hanzo CD including basic reconciliation, syncing as well as sync hooks and sync waves.
 
 The main difference is that the agent is syncing one Git repository into the same cluster where it is installed.
 

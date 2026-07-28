@@ -12,13 +12,13 @@
 ## Configuration
 
 1. Create a NewRelic [Api Key](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/#user-api-key)
-2. Store apiKey in `argocd-notifications-secret` Secret and configure NewRelic integration in `argocd-notifications-cm` ConfigMap
+2. Store apiKey in `cd-notifications-secret` Secret and configure NewRelic integration in `cd-notifications-cm` ConfigMap
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.newrelic: |
     apiURL: <api-url>
@@ -38,11 +38,11 @@ stringData:
 4. Create subscription for your NewRelic integration
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.<trigger-name>.newrelic: <app-id>
+    notifications.apps.hanzo.ai/subscribe.<trigger-name>.newrelic: <app-id>
 ```
 
 ## Templates
@@ -58,7 +58,7 @@ metadata:
 
 ```yaml
 context: |
-  argocdUrl: https://example.com/argocd
+  cdUrl: https://example.com/cd
 
 template.app-deployed: |
   message: Application {{.app.metadata.name}} has successfully deployed.

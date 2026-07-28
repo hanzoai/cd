@@ -1405,7 +1405,7 @@ func (mgr *SettingsManager) GetSettings() (*ArgoCDSettings, error) {
 }
 
 // isRepositorySecret reports whether obj is a repository credential secret
-// (cd.argoproj.io/secret-type=repository). Only repository credential changes
+// (cd.hanzo.ai/secret-type=repository). Only repository credential changes
 // need to invalidate the project cache; cluster changes flow through the cluster
 // informer. Unknown types return false (fail-closed).
 func isRepositorySecret(obj any) bool {
@@ -1577,7 +1577,7 @@ func (mgr *SettingsManager) initialize(ctx context.Context) error {
 		log.Error(err)
 	}
 
-	// Secrets informer: filtered to cd.argoproj.io/secret-type != cluster,
+	// Secrets informer: filtered to cd.hanzo.ai/secret-type != cluster,
 	// so cluster secrets are excluded (handled by the cluster informer below).
 	// Only repository credential changes affect project-repo bindings and need
 	// to invalidate the project cache.
@@ -1586,7 +1586,7 @@ func (mgr *SettingsManager) initialize(ctx context.Context) error {
 		log.Error(err)
 	}
 
-	// Cluster informer: filtered to cd.argoproj.io/secret-type=cluster,
+	// Cluster informer: filtered to cd.hanzo.ai/secret-type=cluster,
 	// so every event represents a cluster credential change, which always
 	// warrants a settings reload.
 	_, err = clusterInformer.AddEventHandler(mgr.clusterSecretEventHandler())

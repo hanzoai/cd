@@ -3,14 +3,14 @@ and notification templates reference. The condition is a predicate expression th
 should be sent. The trigger condition evaluation is powered by [antonmedv/expr](https://github.com/antonmedv/expr).
 The condition language syntax is described at [language-definition.md](https://github.com/antonmedv/expr/blob/master/docs/language-definition.md).
 
-The trigger is configured in the `argocd-notifications-cm` ConfigMap. For example the following trigger sends a notification
+The trigger is configured in the `cd-notifications-cm` ConfigMap. For example the following trigger sends a notification
 when application sync status changes to `Unknown` using the `app-sync-status` template:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   trigger.on-sync-status-unknown: |
     - when: app.status.sync.status == 'Unknown'     # trigger condition
@@ -32,7 +32,7 @@ covers all stages of sync status operation and uses a different template for dif
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   trigger.sync-operation-change: |
     - when: app.status?.operationState.phase in ['Succeeded']
@@ -58,7 +58,7 @@ If the `?.` operator were not used, `status.operationState` would resolve to `ni
 ## Avoid Sending Same Notification Too Often
 
 In some cases, the trigger condition might be "flapping". The example below illustrates the problem.
-The trigger is supposed to generate a notification once when Argo CD application is successfully synchronized and healthy.
+The trigger is supposed to generate a notification once when Hanzo CD application is successfully synchronized and healthy.
 However, the application health status might intermittently switch to `Progressing` and then back to `Healthy` so the trigger might unnecessarily generate
 multiple notifications. The `oncePer` field configures triggers to generate the notification only when the corresponding application field changes.
 The `on-deployed` trigger from the example below sends the notification only once per observed Git revision of the deployment repository.
@@ -67,7 +67,7 @@ The `on-deployed` trigger from the example below sends the notification only onc
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   # Optional 'oncePer' property ensures that notification is sent only once per specified field value
   # E.g. following is triggered once per sync revision
@@ -86,7 +86,7 @@ When one repo is used to sync multiple applications, the `oncePer: app.status.sy
 The `oncePer` field is supported like as follows.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
@@ -105,7 +105,7 @@ You can use `defaultTriggers` field instead of specifying individual triggers to
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   # Holds list of triggers that are used by default if trigger is not specified explicitly in the subscription
   defaultTriggers: |
@@ -119,12 +119,12 @@ data:
 Specify the annotations as follows to use `defaultTriggers`. In this example, `slack` sends when `on-sync-status-unknown`, and `mattermost` sends when `on-sync-running` and `on-sync-succeeded`.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.slack: my-channel
-    notifications.argoproj.io/subscribe.mattermost: my-mattermost-channel
+    notifications.apps.hanzo.ai/subscribe.slack: my-channel
+    notifications.apps.hanzo.ai/subscribe.mattermost: my-mattermost-channel
 ```
 
 ## Functions

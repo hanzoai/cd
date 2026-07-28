@@ -42,7 +42,7 @@ metadata:
             'f:rules': {}
             'f:sideEffects': {}
             'f:timeoutSeconds': {}
-      manager: argocd
+      manager: cd
       operation: Update
       time: '2022-04-12T14:17:35Z'
     - apiVersion: admissionregistration.k8s.io/v1

@@ -1,22 +1,22 @@
-# `argocd admin notifications trigger run` Command Reference
+# `cd admin notifications trigger run` Command Reference
 
-## argocd admin notifications trigger run
+## cd admin notifications trigger run
 
 Evaluates specified trigger condition and prints the result
 
 ```
-argocd admin notifications trigger run NAME RESOURCE_NAME [flags]
+cd admin notifications trigger run NAME RESOURCE_NAME [flags]
 ```
 
 ### Examples
 
 ```
 
-# Execute trigger configured in 'argocd-notification-cm' ConfigMap
-argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml
+# Execute trigger configured in 'cd-notification-cm' ConfigMap
+cd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml
 
-# Execute trigger using my-config-map.yaml instead of 'argocd-notifications-cm' ConfigMap
-argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml \
+# Execute trigger using my-config-map.yaml instead of 'cd-notifications-cm' ConfigMap
+cd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml \
     --config-map ./my-config-map.yaml
 ```
 
@@ -29,9 +29,9 @@ argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml 
 ### Options inherited from parent commands
 
 ```
-      --argocd-context string           The name of the Argo-CD server context to use
-      --argocd-repo-server string       Argo CD repo server address (default "argocd-repo-server:8081")
-      --argocd-repo-server-plaintext    Use a plaintext client (non-TLS) to connect to repository server
+      --cd-context string           The name of the Hanzo CD server context to use
+      --cd-repo-server string       Hanzo CD repo server address (default "cd-repo-server:8081")
+      --cd-repo-server-plaintext    Use a plaintext client (non-TLS) to connect to repository server
       --as string                       Username to impersonate for the operation
       --as-group stringArray            Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
       --as-uid string                   UID to impersonate for the operation
@@ -42,16 +42,16 @@ argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml 
       --client-crt-key string           Client certificate key file
       --client-key string               Path to a client key file for TLS
       --cluster string                  The name of the kubeconfig cluster to use
-      --config string                   Path to Argo CD config (default "/home/user/.config/argocd/config")
-      --config-map string               argocd-notifications-cm.yaml file path
+      --config string                   Path to Hanzo CD config (default "/home/user/.config/cd/config")
+      --config-map string               cd-notifications-cm.yaml file path
       --context string                  The name of the kubeconfig context to use
-      --controller-name string          Name of the Argo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "argocd-application-controller")
-      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Argo CD API server
+      --controller-name string          Name of the Hanzo CD Application controller; set this or the CD_APPLICATION_CONTROLLER_NAME environment variable when the controller's name label differs from the default, for example when installing via the Helm chart (default "cd-application-controller")
+      --core                            If set to true then CLI talks directly to Kubernetes instead of talking to Hanzo CD API server
       --disable-compression             If true, opt-out of response compression for all requests to the server
-      --grpc-web                        Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2.
-      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Argo CD server is behind proxy which does not support HTTP2. Set web root.
-  -H, --header strings                  Sets additional header to all requests made by Argo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
-      --http-retry-max int              Maximum number of retries to establish http connection to Argo CD server
+      --grpc-web                        Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2.
+      --grpc-web-root-path string       Enables gRPC-web protocol. Useful if Hanzo CD server is behind proxy which does not support HTTP2. Set web root.
+  -H, --header strings                  Sets additional header to all requests made by Hanzo CD CLI. (Can be repeated multiple times to add multiple headers, also supports comma separated headers)
+      --http-retry-max int              Maximum number of retries to establish http connection to Hanzo CD server
       --insecure                        Skip server certificate and domain verification
       --insecure-skip-tls-verify        If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
       --kube-context string             Directs the command to the given kube-context
@@ -61,19 +61,19 @@ argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml 
   -n, --namespace string                If present, the namespace scope for this CLI request
       --password string                 Password for basic authentication to the API server
       --plaintext                       Disable TLS
-      --port-forward                    Connect to a random argocd-server port using port forwarding
+      --port-forward                    Connect to a random cd-server port using port forwarding
       --port-forward-namespace string   Namespace name which should be used for port forwarding
       --prompts-enabled                 Force optional interactive prompts to be enabled or disabled, overriding local configuration. If not specified, the local configuration value will be used, which is false by default.
       --proxy-url string                If provided, this URL will be used to connect via proxy
       --redis-compress string           Enable this if the application controller is configured with redis compression enabled. (possible values: gzip, none) (default "gzip")
-      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis-ha-haproxy")
-      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "argocd-redis")
-      --repo-server-name string         Name of the Argo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-repo-server")
+      --redis-haproxy-name string       Name of the Redis HA Proxy; set this or the CD_KV_HAPROXY_NAME environment variable when the HA Proxy's name label differs from the default, for example when installing via the Helm chart (default "cd-redis-ha-haproxy")
+      --redis-name string               Name of the Redis deployment; set this or the CD_KV_NAME environment variable when the Redis's name label differs from the default, for example when installing via the Helm chart (default "cd-redis")
+      --repo-server-name string         Name of the Hanzo CD Repo server; set this or the CD_REPO_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-repo-server")
       --request-timeout string          The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests. (default "0")
-      --secret string                   argocd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
+      --secret string                   cd-notifications-secret.yaml file path. Use empty secret if provided value is ':empty'
       --server string                   The address and port of the Kubernetes API server
       --server-crt string               Server certificate file
-      --server-name string              Name of the Argo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "argocd-server")
+      --server-name string              Name of the Hanzo CD API server; set this or the CD_SERVER_NAME environment variable when the server's name label differs from the default, for example when installing via the Helm chart (default "cd-server")
       --tls-server-name string          If provided, this name will be used to validate server certificate. If this is not provided, hostname used to contact the server is used.
       --token string                    Bearer token for authentication to the API server
       --user string                     The name of the kubeconfig user to use
@@ -82,5 +82,5 @@ argocd admin notifications trigger run on-sync-status-unknown ./sample-app.yaml 
 
 ### SEE ALSO
 
-* [argocd admin notifications trigger](argocd_admin_notifications_trigger.md)	 - Notification triggers related commands
+* [cd admin notifications trigger](cd_admin_notifications_trigger.md)	 - Notification triggers related commands
 
