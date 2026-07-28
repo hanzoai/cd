@@ -196,7 +196,7 @@ func newFakeControllerWithResync(ctx context.Context, data *fakeData, appResyncP
 
 	secret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: test.FakeArgoCDNamespace,
 		},
 		Data: map[string][]byte{
@@ -206,10 +206,10 @@ func newFakeControllerWithResync(ctx context.Context, data *fakeData, appResyncP
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Namespace: test.FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: data.configMapData,
@@ -2623,13 +2623,13 @@ func TestOrphanedIndexDoesNotQueryProjectDuringStartupRace(t *testing.T) {
 	mockCommitClientset := &mockcommitclient.Clientset{}
 
 	secret := corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: test.FakeArgoCDNamespace},
+		ObjectMeta: metav1.ObjectMeta{Name: common.ArgoCDSecretName, Namespace: test.FakeArgoCDNamespace},
 		Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "argocd-cm", Namespace: test.FakeArgoCDNamespace,
-			Labels: map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Name: common.ArgoCDConfigMapName, Namespace: test.FakeArgoCDNamespace,
+			Labels: map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 	}
 	kubeClient := fake.NewClientset(&clust, &secret, &cm)
@@ -2688,13 +2688,13 @@ func TestOrphanedIndexReturnsNamespaceWhenProjectHasOrphanedResources(t *testing
 	mockCommitClientset := &mockcommitclient.Clientset{}
 
 	secret := corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: test.FakeArgoCDNamespace},
+		ObjectMeta: metav1.ObjectMeta{Name: common.ArgoCDSecretName, Namespace: test.FakeArgoCDNamespace},
 		Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "argocd-cm", Namespace: test.FakeArgoCDNamespace,
-			Labels: map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Name: common.ArgoCDConfigMapName, Namespace: test.FakeArgoCDNamespace,
+			Labels: map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 	}
 	kubeClient := fake.NewClientset(&clust, &secret, &cm)
