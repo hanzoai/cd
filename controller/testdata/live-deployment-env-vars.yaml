@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    argocd.argoproj.io/tracking-id: 'guestbook:apps/Deployment:default/kustomize-guestbook-ui'
+    cd.hanzo.ai/tracking-id: 'guestbook:apps/Deployment:default/kustomize-guestbook-ui'
     deployment.kubernetes.io/revision: '9'
     iksm-version: '2.0'
     kubectl.kubernetes.io/last-applied-configuration: >
-      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"guestbook:apps/Deployment:default/kustomize-guestbook-ui","iksm-version":"2.0"},"name":"kustomize-guestbook-ui","namespace":"default"},"spec":{"replicas":4,"revisionHistoryLimit":3,"selector":{"matchLabels":{"app":"guestbook-ui"}},"template":{"metadata":{"labels":{"app":"guestbook-ui"}},"spec":{"containers":[{"env":[{"name":"SOME_ENV_VAR","value":"some_value"}],"image":"quay.io/argoprojlabs/argocd-e2e-container:0.1","name":"guestbook-ui","ports":[{"containerPort":80}],"resources":{"requests":{"cpu":"50m","memory":"100Mi"}}}]}}}}
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"cd.hanzo.ai/tracking-id":"guestbook:apps/Deployment:default/kustomize-guestbook-ui","iksm-version":"2.0"},"name":"kustomize-guestbook-ui","namespace":"default"},"spec":{"replicas":4,"revisionHistoryLimit":3,"selector":{"matchLabels":{"app":"guestbook-ui"}},"template":{"metadata":{"labels":{"app":"guestbook-ui"}},"spec":{"containers":[{"env":[{"name":"SOME_ENV_VAR","value":"some_value"}],"image":"quay.io/argoprojlabs/cd-e2e-container:0.1","name":"guestbook-ui","ports":[{"containerPort":80}],"resources":{"requests":{"cpu":"50m","memory":"100Mi"}}}]}}}}
   creationTimestamp: '2022-01-05T15:45:21Z'
   generation: 119
   managedFields:
@@ -25,7 +25,7 @@ metadata:
         'f:metadata':
           'f:annotations':
             .: {}
-            'f:argocd.argoproj.io/tracking-id': {}
+            'f:cd.hanzo.ai/tracking-id': {}
             'f:kubectl.kubernetes.io/last-applied-configuration': {}
         'f:spec':
           'f:progressDeadlineSeconds': {}
@@ -75,7 +75,7 @@ metadata:
               'f:schedulerName': {}
               'f:securityContext': {}
               'f:terminationGracePeriodSeconds': {}
-      manager: argocd
+      manager: cd
       operation: Update
       time: '2022-01-06T15:04:15Z'
     - apiVersion: apps/v1
@@ -137,7 +137,7 @@ spec:
         - env:
             - name: SOME_ENV_VAR
               value: some_value
-          image: 'quay.io/argoprojlabs/argocd-e2e-container:0.1'
+          image: 'quay.io/argoprojlabs/cd-e2e-container:0.1'
           imagePullPolicy: IfNotPresent
           name: guestbook-ui
           ports:

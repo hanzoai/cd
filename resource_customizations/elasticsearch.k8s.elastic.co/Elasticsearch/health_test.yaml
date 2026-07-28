@@ -29,5 +29,5 @@ tests:
   inputPath: testdata/progressing.yaml
 - healthStatus:
     status: Unknown
-    message: "Elasticsearch Cluster status is unknown. Ensure your ArgoCD is current and then check for/file a bug report: https://github.com/argoproj/argo-cd/issues"
+    message: "Elasticsearch Cluster status is unknown. Ensure your Hanzo CD is current and then check for/file a bug report: https://github.com/argoproj/argo-cd/issues"
   inputPath: testdata/unknown.yaml

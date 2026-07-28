@@ -59,7 +59,7 @@ func buildPluginConfig(opts ...pluginOpt) *CMPServerInitConstants {
 		PluginConfig: PluginConfig{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       "ConfigManagementPlugin",
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			Metadata: metav1.ObjectMeta{
 				Name: "some-plugin",

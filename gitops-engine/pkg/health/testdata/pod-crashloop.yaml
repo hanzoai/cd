@@ -3,9 +3,9 @@ kind: Pod
 metadata:
   creationTimestamp: 2018-12-02T09:19:36Z
   name: my-pod
-  namespace: argocd
+  namespace: cd
   resourceVersion: "151454"
-  selfLink: /api/v1/namespaces/argocd/pods/my-pod
+  selfLink: /api/v1/namespaces/cd/pods/my-pod
   uid: 63674389-f613-11e8-a057-fe5f49266390
 spec:
   containers:
@@ -77,7 +77,7 @@ status:
     restartCount: 3
     state:
       waiting:
-        message: Back-off 40s restarting failed container=main pod=my-pod_argocd(63674389-f613-11e8-a057-fe5f49266390)
+        message: Back-off 40s restarting failed container=main pod=my-pod_cd(63674389-f613-11e8-a057-fe5f49266390)
         reason: CrashLoopBackOff
   hostIP: 192.168.64.41
   phase: Running

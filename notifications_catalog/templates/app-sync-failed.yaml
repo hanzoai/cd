@@ -1,13 +1,13 @@
 message: |
     {{if eq .serviceType "slack"}}:exclamation:{{end}}  The sync operation of application {{.app.metadata.name}} has failed at {{.app.status.operationState.finishedAt}} with the following error: {{.app.status.operationState.message}}
-    Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
+    Sync operation details are available at: {{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true .
 email:
     subject: Failed to sync application {{.app.metadata.name}}.
 slack:
     attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#E96D76",
           "fields": [
           {
@@ -60,7 +60,7 @@ teams:
           "name":"Open Operation",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
           }]
         },
         {

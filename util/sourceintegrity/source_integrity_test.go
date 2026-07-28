@@ -48,13 +48,13 @@ func Test_GPGDisabledLogging(t *testing.T) {
 	logrus.AddHook(&logger)
 	t.Cleanup(logger.CleanupHook)
 
-	fun := lookupGit(si, "https://github.com/argoproj/argo-cd.git")
+	fun := lookupGit(si, "https://github.com/hanzoai/cd.git")
 	assert.Equal(t, []string{"SourceIntegrity criteria for git+gpg declared, but it is turned off by CD_GPG_ENABLED"}, logger.GetEntries())
 	assert.Nil(t, fun)
 
 	// No logs on the second call
 	logger.Entries = []logrus.Entry{}
-	lookupGit(si, "https://github.com/argoproj/argo-cd-ext.git")
+	lookupGit(si, "https://github.com/hanzoai/cd-ext.git")
 	assert.Equal(t, []string{}, logger.GetEntries())
 	assert.Nil(t, fun)
 }
@@ -65,13 +65,13 @@ func TestGPGUnknownMode(t *testing.T) {
 	gitClient.EXPECT().CommitSHA(mock.Anything).Return("DEADBEEF", nil)
 
 	s := &v1alpha1.SourceIntegrityGitPolicyGPG{Mode: "foobar", Keys: []string{}}
-	result, _, err := verify(t.Context(), s, gitClient, "https://github.com/argoproj/argo-cd.git")
+	result, _, err := verify(t.Context(), s, gitClient, "https://github.com/hanzoai/cd.git")
 	require.ErrorContains(t, err, `unknown GPG mode "foobar" configured for GIT source integrity`)
 	assert.Nil(t, result)
 }
 
 func TestNullOrEmptyDoesNothing(t *testing.T) {
-	repoURL := "https://github.com/argoproj/argo-cd"
+	repoURL := "https://github.com/hanzoai/cd"
 	applicationSource := v1alpha1.ApplicationSource{RepoURL: repoURL}
 
 	gitClient := &gitmocks.Client{}

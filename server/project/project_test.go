@@ -103,7 +103,7 @@ func TestProjectServer(t *testing.T) {
 				{Namespace: "ns1", Server: "https://server1"},
 				{Namespace: "ns2", Server: "https://server2"},
 			},
-			SourceRepos: []string{"https://github.com/argoproj/argo-cd.git"},
+			SourceRepos: []string{"https://github.com/hanzoai/cd.git"},
 		},
 	}
 	existingApp := v1alpha1.Application{
@@ -164,7 +164,7 @@ func TestProjectServer(t *testing.T) {
 
 		_, err := projectServer.Update(t.Context(), &project.ProjectUpdateRequest{Project: updatedProj})
 
-		assert.Equal(t, status.Error(codes.PermissionDenied, "permission denied: repositories, update, https://github.com/argoproj/argo-cd.git"), err)
+		assert.Equal(t, status.Error(codes.PermissionDenied, "permission denied: repositories, update, https://github.com/hanzoai/cd.git"), err)
 	})
 
 	t.Run("TestClusterResourceWhitelistUpdateDenied", func(t *testing.T) {
@@ -254,7 +254,7 @@ func TestProjectServer(t *testing.T) {
 	t.Run("TestRemoveSourceUsedByApp", func(t *testing.T) {
 		existingApp := v1alpha1.Application{
 			ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "default"},
-			Spec:       v1alpha1.ApplicationSpec{Destination: v1alpha1.ApplicationDestination{Name: "server1"}, Project: "test", Source: &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argo-cd.git"}},
+			Spec:       v1alpha1.ApplicationSpec{Destination: v1alpha1.ApplicationDestination{Name: "server1"}, Project: "test", Source: &v1alpha1.ApplicationSource{RepoURL: "https://github.com/hanzoai/cd.git"}},
 		}
 
 		argoDB := db.NewDB("default", settingsMgr, kubeclientset)
@@ -273,10 +273,10 @@ func TestProjectServer(t *testing.T) {
 
 	t.Run("TestRemoveSourceUsedByAppSuccessfulIfPermittedByAnotherSrc", func(t *testing.T) {
 		proj := existingProj.DeepCopy()
-		proj.Spec.SourceRepos = []string{"https://github.com/argoproj/argo-cd.git", "https://github.com/argoproj/*"}
+		proj.Spec.SourceRepos = []string{"https://github.com/hanzoai/cd.git", "https://github.com/argoproj/*"}
 		existingApp := v1alpha1.Application{
 			ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "default"},
-			Spec:       v1alpha1.ApplicationSpec{Destination: v1alpha1.ApplicationDestination{Server: "https://server1"}, Project: "test", Source: &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argo-cd.git"}},
+			Spec:       v1alpha1.ApplicationSpec{Destination: v1alpha1.ApplicationDestination{Server: "https://server1"}, Project: "test", Source: &v1alpha1.ApplicationSource{RepoURL: "https://github.com/hanzoai/cd.git"}},
 		}
 		argoDB := db.NewDB("default", settingsMgr, kubeclientset)
 		projectServer := NewServer("default", fake.NewSimpleClientset(), apps.NewSimpleClientset(proj, &existingApp), enforcer, sync.NewKeyLock(), nil, nil, projInformer, settingsMgr, argoDB, testEnableEventList)

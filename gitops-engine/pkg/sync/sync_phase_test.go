@@ -49,7 +49,7 @@ func TestSyncDuplicatedPhases(t *testing.T) {
 }
 
 func pod(hookType string) *unstructured.Unstructured {
-	return testingutils.Annotate(testingutils.NewPod(), "cd.argoproj.io/hook", hookType)
+	return testingutils.Annotate(testingutils.NewPod(), "cd.hanzo.ai/hook", hookType)
 }
 
 func podWithHelmHook(hookType string) *unstructured.Unstructured {

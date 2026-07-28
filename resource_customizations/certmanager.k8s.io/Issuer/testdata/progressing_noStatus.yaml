@@ -4,9 +4,9 @@ metadata:
   creationTimestamp: "2018-11-06T23:14:18Z"
   generation: 1
   name: test-issuer
-  namespace: argocd
+  namespace: cd
   resourceVersion: "48889060"
-  selfLink: /apis/certmanager.k8s.io/v1alpha1/namespaces/argocd/issuers/argo-cd-issuer
+  selfLink: /apis/certmanager.k8s.io/v1alpha1/namespaces/cd/issuers/argo-cd-issuer
   uid: b0045219-e219-11e8-9f93-42010a80021d
 spec:
   acme:

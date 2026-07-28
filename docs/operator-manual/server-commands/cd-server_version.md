@@ -1,11 +1,11 @@
-# `argocd-server version` Command Reference
+# `cd-server version` Command Reference
 
-## argocd-server version
+## cd-server version
 
 Print version information
 
 ```
-argocd-server version [flags]
+cd-server version [flags]
 ```
 
 ### Options
@@ -42,5 +42,5 @@ argocd-server version [flags]
 
 ### SEE ALSO
 
-* [argocd-server](argocd-server.md)	 - Run the ArgoCD API server
+* [cd-server](cd-server.md)	 - Run the Hanzo CD API server
 

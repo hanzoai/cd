@@ -1,18 +1,18 @@
-### Automating the generation of Argo CD Applications with the ApplicationSet Controller
+### Automating the generation of Hanzo CD Applications with the ApplicationSet Controller
 
-The [ApplicationSet controller](../operator-manual/applicationset/index.md) adds Application automation and seeks to improve multi-cluster support and cluster multitenant support within Argo CD. Argo CD Applications may be templated from multiple different sources, including from Git or Argo CD's own defined cluster list.
+The [ApplicationSet controller](../operator-manual/applicationset/index.md) adds Application automation and seeks to improve multi-cluster support and cluster multitenant support within Hanzo CD. Hanzo CD Applications may be templated from multiple different sources, including from Git or Hanzo CD's own defined cluster list.
 
-The set of tools provided by the ApplicationSet controller may also be used to allow developers (without access to the Argo CD namespace) to independently create Applications without cluster-administrator intervention.
+The set of tools provided by the ApplicationSet controller may also be used to allow developers (without access to the Hanzo CD namespace) to independently create Applications without cluster-administrator intervention.
 
 > [!WARNING]
 > Be aware of the [security implications](../operator-manual/applicationset/Security.md) before allowing developers to
 > create Applications via ApplicationSets.
 
-The ApplicationSet controller automatically generates Argo CD Applications based on the contents of an `ApplicationSet` Custom Resource (CR).
+The ApplicationSet controller automatically generates Hanzo CD Applications based on the contents of an `ApplicationSet` Custom Resource (CR).
 
-Here is an example of an `ApplicationSet` resource that can be used to target an Argo CD Application to multiple clusters:
+Here is an example of an `ApplicationSet` resource that can be used to target an Hanzo CD Application to multiple clusters:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
@@ -42,12 +42,12 @@ spec:
         namespace: guestbook
 ```
 
-The List generator passes the `url` and `cluster` fields into the template as `{{param}}`-style parameters, which are then rendered into three corresponding Argo CD Applications (one for each defined cluster). Targeting new clusters (or removing existing clusters) is simply a matter of altering the `ApplicationSet` resource, and the corresponding Argo CD Applications will be automatically created.
+The List generator passes the `url` and `cluster` fields into the template as `{{param}}`-style parameters, which are then rendered into three corresponding Hanzo CD Applications (one for each defined cluster). Targeting new clusters (or removing existing clusters) is simply a matter of altering the `ApplicationSet` resource, and the corresponding Hanzo CD Applications will be automatically created.
 
-Likewise, changes made to the ApplicationSet `template` fields will automatically be applied to every generated Application. Managing a set of multiple Argo CD Applications is thus as easy as managing a single `ApplicationSet` resource.
+Likewise, changes made to the ApplicationSet `template` fields will automatically be applied to every generated Application. Managing a set of multiple Hanzo CD Applications is thus as easy as managing a single `ApplicationSet` resource.
 
-Within ApplicationSet there exist other more powerful generators in addition to the List generator, including the Cluster generator (which automatically uses Argo CD-defined clusters to template Applications), and the Git generator (which uses the files/directories of a Git repository to template applications).
+Within ApplicationSet there exist other more powerful generators in addition to the List generator, including the Cluster generator (which automatically uses Hanzo CD-defined clusters to template Applications), and the Git generator (which uses the files/directories of a Git repository to template applications).
 
 To learn more about the ApplicationSet controller, check out the [ApplicationSet documentation](../operator-manual/applicationset/index.md).
 
-To manage ApplicationSets through the Argo CD Web UI, see [Managing ApplicationSets in the Web UI](application-set-ui.md).
+To manage ApplicationSets through the Hanzo CD Web UI, see [Managing ApplicationSets in the Web UI](application-set-ui.md).

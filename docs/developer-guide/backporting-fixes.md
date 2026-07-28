@@ -6,7 +6,7 @@ The prerequisites for backporting are:
 * Your PR is already merged into the `master` branch
 * The changes are a bugfix
 * The changes are non-breaking
-* The backports are to [actively supported releases](https://github.com/argoproj/argo-cd/security/policy#supported-versions)
+* The backports are to [actively supported releases](https://github.com/hanzoai/cd/security/policy#supported-versions)
 
 ## Automated Process
 

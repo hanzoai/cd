@@ -17,11 +17,11 @@ creation-date: 2022-03-17
 
 ---
 
-# Server-Side Apply support for ArgoCD
+# Server-Side Apply support for Hanzo CD
 
 [Server-Side Apply (SSA)][1] allows calculating the final patch to update
 resources in Kubernetes in the server instead of the client. This proposal
-describes how ArgoCD can leverage SSA during syncs.
+describes how Hanzo CD can leverage SSA during syncs.
 
 * [Open Questions](#open-questions)
     * [[Q-1] How to handle conflicts?](#q-1-how-to-handle-conflicts)
@@ -57,7 +57,7 @@ describes how ArgoCD can leverage SSA during syncs.
 
 ### [Q-1] How to handle conflicts?
 When SSA is enabled, the server may return field conflicts with other managers.
-What ArgoCD controller should do in case of conflict? Just force the sync and
+What Hanzo CD controller should do in case of conflict? Just force the sync and
 log warnings (like some other controllers do?)
 
 #### Conclusion
@@ -65,12 +65,12 @@ The first version should use the force flag and override even if there are
 conflicts. We could improve and add other options once there is a use case.
 
 ### [Q-2] Should we support multiple managers?
-Should Server-Side Apply support in ArgoCD be implemented allowing multiple
+Should Server-Side Apply support in Hanzo CD be implemented allowing multiple
 managers for the same controller? ([more details][10])
 
 ## Summary
 
-ArgoCD can benefit from [Server-Side Apply][1] during syncs. A few
+Hanzo CD can benefit from [Server-Side Apply][1] during syncs. A few
 improvements to consider:
 
 - More reliable dry-runs (as admission controller is executed) ([ISSUE-804][5])
@@ -82,11 +82,11 @@ Kubernetes SSA Proposal ([KEP-555][13]) has more details about how it works.
 
 ## Motivation
 
-ArgoCD uses kubectl library while syncing resources in the cluster. Kubectl uses
+Hanzo CD uses kubectl library while syncing resources in the cluster. Kubectl uses
 by default a 3-way-merge logic between the live state (in k8s), desired state
 (in git) and the previous state (`last-applied-configuration` annotation) to
 calculate diffs and patch resources in the cluster. This logic is executed in
-the client (ArgoCD) and once the patch is calculated it is then sent to the
+the client (Hanzo CD) and once the patch is calculated it is then sent to the
 server.
 
 This strategy works well in the majority of the use cases. However, there are
@@ -143,14 +143,14 @@ All following goals should be achieve in order to conclude this proposal:
 
 #### [G-4] Conflict management
 
-- ArgoCD should respect field ownership and provide a configuration to allow
+- Hanzo CD should respect field ownership and provide a configuration to allow
   users to define the behavior in case of conflicts (see
   [Q-1](#q-1-how-to-handle-conflicts) outcome)
 
 #### [G-5] Register a proper manager
 
-- ArgoCD must register itself with a pre-defined manager (suggestion:
-  `argocd-controller`). It shouldn't rely on the default value defined in the
+- Hanzo CD must register itself with a pre-defined manager (suggestion:
+  `cd-controller`). It shouldn't rely on the default value defined in the
   kubectl code. ([more details][11])
 
 ## Non-Goals
@@ -159,8 +159,8 @@ TBD
 
 ## Proposal
 
-Change ArgoCD controller to accept new parameter to enable Server-Side Apply
-during syncs. Changes are necessary in ArgoCD as well as in
+Change Hanzo CD controller to accept new parameter to enable Server-Side Apply
+during syncs. Changes are necessary in Hanzo CD as well as in
 gitops-engine library.
 
 ### Use cases
@@ -169,7 +169,7 @@ The following use cases should be implemented:
 
 #### [UC-1]: As a user, I would like enable SSA at the controller level so all Application are applied server-side
 
-Implement a binary flag to configure ArgoCD to run all syncs using SSA.
+Implement a binary flag to configure Hanzo CD to run all syncs using SSA.
 (suggestion: `--server-side-apply=true`). Default value should be `false`.
 
 #### [UC-2]: As a user, I would like enable SSA at the Application level so all resources are applied server-side
@@ -181,7 +181,7 @@ behaviour (client-side).
 
 #### [UC-3]: As a user, I would like enable SSA at the resource level so only a single manifest is applied server-side
 
-Leverage the existing `argocd.argoproj.io/sync-options` annotation allowing the
+Leverage the existing `cd.hanzo.ai/sync-options` annotation allowing the
 `ServerSideApply=true` to be informed at the resource level. Must not impact
 other sync-options informed in the annotation (make sure this annotation
 supports providing multiple options).
@@ -194,11 +194,11 @@ TBD
 
 #### [R-1] Supported K8s version check
 
-ArgoCD must check if the target Kubernetes cluster has full support for SSA. The
+Hanzo CD must check if the target Kubernetes cluster has full support for SSA. The
 feature turned [GA in Kubernetes 1.22][8]. Full support for managed fields was
 introduced as [beta in Kubernetes 1.18][9]. The implementation must check that
 the target kubernetes cluster is running at least version 1.18. If SSA is
-enabled and target cluster version < 1.18 ArgoCD should log warning and fallback
+enabled and target cluster version < 1.18 Hanzo CD should log warning and fallback
 to client sync.
 
 #### [R-2] Alternating Server-Side Client-Side syncs
@@ -207,7 +207,7 @@ Kubernetes SSA proposal ([KEP-555][13]) mentions about alternating between
 server-side and client-side applies in the [Upgrade/Downgrade Strategy][12]
 section. It is stated that Kubernetes will verify the incoming apply request
 validating if the user-agent is `kubectl` to decide if the
-`last-applied-configuration` annotation should be updated. ArgoCD relies on this
+`last-applied-configuration` annotation should be updated. Hanzo CD relies on this
 annotation and the implementation must make sure that this agent is correctly
 informed when changing to server-side apply and specifying a manager different
 than `kubectl`. This is mainly to make sure that
@@ -217,11 +217,11 @@ client-side/server-side compatibility.
 ### Upgrade / Downgrade
 
 No CRD update necessary as `syncOption` field in Application resource is non-typed
-(string array). Upgrade will only require ArgoCD controller update.
+(string array). Upgrade will only require Hanzo CD controller update.
 
 ## Drawbacks
 
-Slight increase in ArgoCD code base complexity.
+Slight increase in Hanzo CD code base complexity.
 
 [1]: https://kubernetes.io/docs/reference/using-api/server-side-apply/
 [2]: https://github.com/argoproj/argo-cd/issues/2267#issuecomment-920445236
@@ -236,4 +236,4 @@ Slight increase in ArgoCD code base complexity.
 [11]: https://github.com/argoproj/gitops-engine/pull/363#issuecomment-1013289982
 [12]: https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/555-server-side-apply/README.md#upgrade--downgrade-strategy
 [13]: https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/555-server-side-apply/README.md
-[14]: https://github.com/argoproj/argo-cd/pull/8812#discussion_r849140565
+[14]: https://github.com/hanzoai/cd/pull/8812#discussion_r849140565

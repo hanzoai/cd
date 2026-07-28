@@ -16,14 +16,14 @@
 ![1](https://user-images.githubusercontent.com/18019529/111499520-62ed0500-8786-11eb-88b0-d0aade61fed4.png)
 2. Invite team
 ![2](https://user-images.githubusercontent.com/18019529/111500197-1229dc00-8787-11eb-98e5-587ee36c94a9.png)
-3. Store token in `argocd-notifications-secret` Secret and configure Mattermost integration
-in `argocd-notifications-cm` ConfigMap
+3. Store token in `cd-notifications-secret` Secret and configure Mattermost integration
+in `cd-notifications-cm` ConfigMap
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.mattermost: |
     apiURL: <api-url>
@@ -45,11 +45,11 @@ stringData:
 5. Create subscription for your Mattermost integration
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.<trigger-name>.mattermost: <channel-id>
+    notifications.apps.hanzo.ai/subscribe.<trigger-name>.mattermost: <channel-id>
 ```
 
 ## Templates
@@ -67,7 +67,7 @@ template.app-deployed: |
     attachments: |
       [{
         "title": "{{.app.metadata.name}}",
-        "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+        "title_link": "{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
         "color": "#18be52",
         "fields": [{
           "title": "Sync Status",

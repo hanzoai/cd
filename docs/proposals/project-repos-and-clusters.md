@@ -21,12 +21,12 @@ Support project scoped Repositories and Clusters to enable self-service end-user
 
 ## Summary
 
-The Argo CD has two type of users:
+The Hanzo CD has two type of users:
 
-* Administrators who configure the Argo CD and manage the Argo CD projects.
-* Developers who use Argo CD to manage resources in the Kubernetes clusters.
+* Administrators who configure the Hanzo CD and manage the Hanzo CD projects.
+* Developers who use Hanzo CD to manage resources in the Kubernetes clusters.
 
-These two roles enable sharing on the Argo CD instance in a multi-tenant environment. Typically the developer
+These two roles enable sharing on the Hanzo CD instance in a multi-tenant environment. Typically the developer
 requests a new project from an administrator. The administrator creates the project, defines which repositories
 can and clusters can be used within the project which concludes the onboarding.
 
@@ -34,7 +34,7 @@ The problem is that list of repositories and clusters are often not known during
 it later and have to again contact an administrator, somehow share repo/cluster credentials. This back and forth
 process takes time and creates friction.
 
-We want to streamline the process of adding repositories and clusters to the project and make it self-service. The Argo CD
+We want to streamline the process of adding repositories and clusters to the project and make it self-service. The Hanzo CD
 admins should be able to optionally enable self onboarding of repositories/clusters for some projects.
 
 ## Motivation
@@ -48,13 +48,13 @@ The goals of project scoped repositories and clusters are:
 
 #### Allow Self-Registering Repositories/Clusters in a Project
 
-Developer should be able to add a repository/cluster into the project without asking help from Argo CD administrator.
+Developer should be able to add a repository/cluster into the project without asking help from Hanzo CD administrator.
 
 ### Non-Goals
 
 #### Simplify Management of Shared Repositories/Clusters in a Project
 
-The repositories and clusters that can be used across multiple projects still have to be managed by Argo CD administrator.
+The repositories and clusters that can be used across multiple projects still have to be managed by Hanzo CD administrator.
 
 ## Proposal
 
@@ -68,13 +68,13 @@ and clusters are stored as Kubernetes Secrets, so a new field could be stored as
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argocd-example-apps
+  name: cd-example-apps
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 type: Opaque
 stringData:
   project: my-project1                                     # new project field
-  name: argocd-example-apps
+  name: cd-example-apps
   url: https://github.com/argoproj/argocd-example-apps.git
   username: ****
   password: ****
@@ -111,7 +111,7 @@ Both User interface and CLI should get ability to optionally specify project. If
 is considered project scoped:
 
 ```
-argocd repo add --name stable https://charts.helm.sh/stable --type helm --project my-project
+cd repo add --name stable https://charts.helm.sh/stable --type helm --project my-project
 ```
 
 
@@ -127,7 +127,7 @@ As a developer, I would like to register credentials of a Kubernetes cluster so 
 
 ### Implementation Details/Notes/Constraints [optional]
 
-As of v2.0.1 Argo CD stores Repository non-sensitive metadata in `argocd-cm` ConfigMap. This is going to change in https://github.com/argoproj/argo-cd/issues/5436.
+As of v2.0.1 Hanzo CD stores Repository non-sensitive metadata in `cd-cm` ConfigMap. This is going to change in https://github.com/argoproj/argo-cd/issues/5436.
 So we would have to wait for #5436 implementation.
 
 ### Detailed examples
@@ -138,16 +138,16 @@ The security considerations are explained in `Project RBAC Changes` section.
 
 ### Risks and Mitigations
 
-#### Developers Might Overload Argo CD
+#### Developers Might Overload Hanzo CD
 
-The developers are typically not responsible for Argo CD health and don't have access to Argo CD metrics. So adding too many clusters might overload Argo CD.
+The developers are typically not responsible for Hanzo CD health and don't have access to Hanzo CD metrics. So adding too many clusters might overload Hanzo CD.
 Two improvements are proposed to mitigate that risk:
 
 **Improved Cluster Metrics**
 
 The existing metrics should be improved so that administrators could quickly discover if the project "has" too many clusters and easily discover who added the cluster:
 
-* Add `project` tag to existing cluster metrics: [clustercollector.go](https://github.com/argoproj/argo-cd/blob/bfd0b155eff4212e9354a6958e329dbd64f9a69a/controller/metrics/clustercollector.go#L20).
+* Add `project` tag to existing cluster metrics: [clustercollector.go](https://github.com/hanzoai/cd/blob/bfd0b155eff4212e9354a6958e329dbd64f9a69a/controller/metrics/clustercollector.go#L20).
 * Document how administrator can leverage metrics to configure limits per project and get notifications when the limit is exceeded.
 * Add `owner` field to the cluster (and repository for consistency ) and use it to store username of the user who added cluster/repository. The administrator can use the `owner` field to contact
   the person who added the cluster and exceeded the limit.
@@ -163,8 +163,8 @@ So it is safe to rollback and then roll forward.
 
 ## Open Issues
 
-If the same cluster or repository required in multiple projects that there is no way to configure it without involving Argo CD admin. The end-user
-would still have to reach out to the administrator and request Argo CD config changes.
+If the same cluster or repository required in multiple projects that there is no way to configure it without involving Hanzo CD admin. The end-user
+would still have to reach out to the administrator and request Hanzo CD config changes.
 
 ## Alternatives
 

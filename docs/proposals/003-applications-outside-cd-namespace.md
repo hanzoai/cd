@@ -15,7 +15,7 @@ last-updated: 2021-06-05
 
 # Allow Application resources to exist in any namespace
 
-Improve Argo CDs multi-tenancy model to allow Application CRs to be created
+Improve Hanzo CDs multi-tenancy model to allow Application CRs to be created
 and consumed from different namespaces than the control plane's namespace.
 
 Related issues:
@@ -28,14 +28,14 @@ Related issues:
 
 ## Summary
 
-The multi-tenancy model of Argo CD is currently of limited use in a purely
+The multi-tenancy model of Hanzo CD is currently of limited use in a purely
 declarative setup when full autonomy of the tenants is desired.
 This stems mainly from the fact that the multi-tenancy
 model is built around the premise that only a full administrative party has
-access to the Argo CD control plane namespace (usually `argocd`), and the
-multi-tenancy is enforced through the Argo CD API instead of Kubernetes.
+access to the Hanzo CD control plane namespace (usually `cd`), and the
+multi-tenancy is enforced through the Hanzo CD API instead of Kubernetes.
 
-The Argo CD multi-tenancy model is centered around the `AppProject`, which
+The Hanzo CD multi-tenancy model is centered around the `AppProject`, which
 is used to impose certain rules and limitations to the `Application` that
 is associated with the `AppProject`. These limitations e.g. include the
 target clusters and namespaces where an `Application` is allowed to sync to,
@@ -43,16 +43,16 @@ what kind of resources are allowed to be synced by an `Application` and so
 forth.
 
 An `Application` is associated to an `AppProject` by referencing it in the
-`.spec.project` field of the `Application` resource. Argo CD has an internal
+`.spec.project` field of the `Application` resource. Hanzo CD has an internal
 RBAC model to control the `AppProject` that can be referenced from the
-`Application`, but only when created or modified through Argo CD's API
+`Application`, but only when created or modified through Hanzo CD's API
 layer.
 
 Whoever can create or modify `Application` resources in the control-plane
 namespace, can effectively circumvent any restrictions that should be
 imposed by the `AppProject`, simply by choosing another value for the
-`.spec.project` field. So naturally, access to the `argocd` namespace
-is considered equal to super user access within Argo CD RBAC model. This
+`.spec.project` field. So naturally, access to the `cd` namespace
+is considered equal to super user access within Hanzo CD RBAC model. This
 prevents a fully-declarative way in which every party could autonomously
 manage their applications using plain Kubernetes mechanisms (e.g. create,
 modify and delete applications through K8s API control plane) and also
@@ -62,7 +62,7 @@ setup.
 ## Motivation
 
 The main motivation behind this enhancement proposal is to allow organisations
-who wish to set-up Argo CD for multi-tenancy can enable their tenants to fully
+who wish to set-up Hanzo CD for multi-tenancy can enable their tenants to fully
 self-manage `Application` resources in a declarative way, including being
 synced from Git (e.g. via an _app of apps_ pattern).
 
@@ -71,30 +71,30 @@ tenants, e.g.
 
 * Have one _management_ namespace per tenant
 
-* Provide a Git repository to the tenant for managing Argo CD `Application`
+* Provide a Git repository to the tenant for managing Hanzo CD `Application`
   resources
 
 * Create an appropriate `AppProject` per tenant that restricts source to above
   mentioned Git repository, restricts destination to above mentioned namespace
   and restricts allowed resources to be `Application`.
 
-* Create an appropriate `Application` in Argo CD, which uses above mentionend
+* Create an appropriate `Application` in Hanzo CD, which uses above mentionend
   Git repository as source, and above mentioned Namespace as destination
 
 ### Goals
 
-* Allow reconciliation from Argo CD `Application` resources from any namespace
-  in the cluster where the Argo CD control plane is installed to.
+* Allow reconciliation from Hanzo CD `Application` resources from any namespace
+  in the cluster where the Hanzo CD control plane is installed to.
 
 * Allow declarative self-service management of `Application` resources from
-  users without access to the Argo CD control plane's namespace (e.g. `argocd`)
+  users without access to the Hanzo CD control plane's namespace (e.g. `cd`)
 
 * Be as less intrusive as possible, while not introducing additional controllers
   or components.
 
 ### Non-Goals
 
-* Allow reconciliation from Argo CD `Application` resources that are created in
+* Allow reconciliation from Hanzo CD `Application` resources that are created in
   remote clusters. We believe this would be possible with some adaptions, but
   for this initial proposal we only consider the control plane's cluster as a
   source for `Application` resources.
@@ -103,13 +103,13 @@ tenants, e.g.
   is used as central entity for enforcing governance and security, these should
   stay in the control of the cluster administrators.
 
-* Replace or modify Argo CD internal RBAC model
+* Replace or modify Hanzo CD internal RBAC model
 
 ## Proposal
 
 We suggest to adapt the current mechanisms of reconciliation of `Application`
 resources to include resources within the control plane's cluster, but outside
-the control plane's namespace (e.g. `argocd`).
+the control plane's namespace (e.g. `cd`).
 
 We think the following changes would need to be performed so that this will
 become possible in a secure manner:
@@ -119,11 +119,11 @@ become possible in a secure manner:
   to associate to the `AppProject`. Consider the following example:
 
   ```yaml
-  apiVersion: argoproj.io/v1alpha1
+  apiVersion: apps.hanzo.ai/v1alpha1
   kind: AppProject
   metadata:
     name: some-project
-    namespace: argocd
+    namespace: cd
   spec:
     sourceNamespaces:
     - foo-ns
@@ -131,7 +131,7 @@ become possible in a secure manner:
   ```
 
   ```yaml
-  apiVersion: argoproj.io/v1alpha1
+  apiVersion: apps.hanzo.ai/v1alpha1
   kind: Application
   metadata:
     name: some-app
@@ -141,7 +141,7 @@ become possible in a secure manner:
   ```
 
   ```yaml
-  apiVersion: argoproj.io/v1alpha1
+  apiVersion: apps.hanzo.ai/v1alpha1
   kind: Application
   metadata:
     name: other-app
@@ -160,33 +160,33 @@ become possible in a secure manner:
   This method would allow to delegate certain namespaces where users have
   Kubernetes RBAC access to create `Application` resources.
 
-* `Applications` created in the control-plane's namespace (e.g. `argocd`) are
+* `Applications` created in the control-plane's namespace (e.g. `cd`) are
   allowed to associate with any project when created declaratively, as they
   are considered created by a super-user. So the following example would be
   allowed to associate itself to project `some-project`, even with the
-  `argocd` namespace not being in the list of allowed `sourceNamespaces`:
+  `cd` namespace not being in the list of allowed `sourceNamespaces`:
 
   ```yaml
-  apiVersion: argoproj.io/v1alpha1
+  apiVersion: apps.hanzo.ai/v1alpha1
   kind: Application
   metadata:
     name: superuser-app
-    namespace: argocd
+    namespace: cd
   spec:
     project: some-project
   ```
 
-* `Applications` created imperatively (e.g. through Argo CD API via UI or
-  CLI) will keep being created in the control plane namespace, and Argo CD
+* `Applications` created imperatively (e.g. through Hanzo CD API via UI or
+  CLI) will keep being created in the control plane namespace, and Hanzo CD
   RBAC will still be applied to determine whether a user is allowed to
   create `Application` for given `AppProject`.
 
 If no `.spec.sourceNamespaces` is set to an `AppProject`, a default of the
-control plane's namespace (e.g. `argocd`) will be assumed, and the current
+control plane's namespace (e.g. `cd`) will be assumed, and the current
 behaviour would not be changed (only `Application` resources created in the
-`argocd` namespace would be allowed to associate with the `AppProject`).
+`cd` namespace would be allowed to associate with the `AppProject`).
 
-When the `argocd-application-controllers` discovers an `Application` to
+When the `cd-application-controllers` discovers an `Application` to
 consider for reconciliation, it would make sure that the `Application` is
 valid by:
 
@@ -209,12 +209,12 @@ Add a list of detailed use cases this enhancement intends to take care of.
 
 #### Use case 1: Autonomous self-service of declarative configuration
 
-As a developer, I want to be able to create & manage an Argo CD `Application`
+As a developer, I want to be able to create & manage an Hanzo CD `Application`
 in a declarative way, without sending a pull-request to the cluster admin's
 repository and possibly wait for their review, approval and merge. I want
 this process to be in full control of my DevOps team.
 
-As a cluster admin, I want to allow my users the self management of Argo CD
+As a cluster admin, I want to allow my users the self management of Hanzo CD
 `Application` resources without getting involved in the creation process,
 e.g. by reviewing & approving PRs into our admin namespace. I still want
 to be sure that users cannot circumvent any restrictions that our organisation
@@ -224,16 +224,16 @@ wants to impose on these applications capabilities.
 
 As a developer, I want to have the ability to use app-of-apps for my own
 `Application` resources. For this, I will have to create `Application`
-manifests, but I'm currently not allowed to write to the `argocd` namespace.
+manifests, but I'm currently not allowed to write to the `cd` namespace.
 
 #### Use case 3: Easy onboarding of new applications and tenants
 
 As an administrator, I want to provide my tenants with a very easy way to
 create their applications from a simple commit to Git, without losing my
 ability to govern and restrict what goes into my cluster.  I want to set up
-an Argo CD application that reconciles my tenant's `Application` manifests to
+an Hanzo CD application that reconciles my tenant's `Application` manifests to
 a fixed location (namespace) in my cluster, so that the tenant can just put
-their manifests into the Git repository and Argo CD will pick it up from
+their manifests into the Git repository and Hanzo CD will pick it up from
 there, without having to use complex tools such as Open Policy Agent to
 enforce what AppProjects my tenants are allowed to use.
 
@@ -258,7 +258,7 @@ namespace as part of the application name.
 E.g. consider the two following examples:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: some-app
@@ -270,7 +270,7 @@ spec:
 and
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: some-app
@@ -292,17 +292,17 @@ created in the control plane's namespace, as this may break backwards compat
 with existing RBAC rules. So, when considering the following example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: some-app
-  namespace: argocd
+  namespace: cd
 spec:
   project: some-project
 ```
 
 The name of the application would still be `some-app`, instead of
-`argocd/some-app`. This would allow us introducing the change without breaking
+`cd/some-app`. This would allow us introducing the change without breaking
 the RBAC rules of existing installations, and it would be not as intrusive.
 Since for all other `Application` resources in external namespaces the name
 will be prefixed, collisions in names should not happen.
@@ -336,7 +336,7 @@ List of issues on GitHub tracker regarding the length of the application name:
 ### Security Considerations
 
 We think that the security model of this proposal fits nicely within existing
-mechanisms of Argo CD (e.g. RBAC, `AppProject` constraints).
+mechanisms of Hanzo CD (e.g. RBAC, `AppProject` constraints).
 
 However, on a bug in the implementation - e.g. the unwanted possibility for
 non-admin users to associate their `Application` resources to arbitrary or
@@ -352,8 +352,8 @@ of uncontrolled association between an `Application` and an `AppProject`.
 
 A rogue party or process (e.g. malfunctioning CI) could create a tremendous
 amount of unwanted `Application` resources in an allowed source namespace,
-with a potential performance impact on the Argo CD installation. However, this
-is also true for a rogue party using the Argo CLI with appropriate Argo CD RBAC
+with a potential performance impact on the Hanzo CD installation. However, this
+is also true for a rogue party using the Argo CLI with appropriate Hanzo CD RBAC
 permissions to create applications or even with ApplicationSet.
 
 A possible mitigation to this would be to enforce an (optional) quota to the
@@ -363,7 +363,7 @@ number of `Application` resources allowed to associate with any given
 #### Third-party tools
 
 Most third-party tools will look for `Application` resources in a single
-namespace (the control plane's namespace - `argocd`) right now. These would
+namespace (the control plane's namespace - `cd`) right now. These would
 have to adapted to scan for `Application` resources in the complete cluster,
 and might need updated RBAC permissions for this purpose.
 

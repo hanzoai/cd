@@ -10,7 +10,7 @@ metadata:
   name: admin
 rules:
   - apiGroups:
-      - argoproj.io
+      - apps.hanzo.ai
     resources:
       - workflows
       - workflows/finalizers
@@ -30,7 +30,7 @@ rules:
       - update
       - watch
   - apiGroups:
-      - argoproj.io
+      - apps.hanzo.ai
     resources:
       - gateways
       - gateways/finalizers
@@ -50,7 +50,7 @@ rules:
       - update
       - watch
   - apiGroups:
-      - argoproj.io
+      - apps.hanzo.ai
     resources:
       - rollouts
       - rollouts/scale
@@ -241,7 +241,7 @@ rules:
     verbs:
       - update
   - apiGroups:
-      - argoproj.io
+      - apps.hanzo.ai
     resources:
       - workflows
       - workflows/finalizers
@@ -256,7 +256,7 @@ rules:
       - list
       - watch
   - apiGroups:
-      - argoproj.io
+      - apps.hanzo.ai
     resources:
       - gateways
       - gateways/finalizers
@@ -271,7 +271,7 @@ rules:
       - list
       - watch
   - apiGroups:
-      - argoproj.io
+      - apps.hanzo.ai
     resources:
       - rollouts
       - rollouts/scale

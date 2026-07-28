@@ -1,8 +1,8 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    rollout.argoproj.io/revision: '4'
+    rollout.apps.hanzo.ai/revision: '4'
   clusterName: ''
   creationTimestamp: '2019-04-29T21:37:38Z'
   generation: 1
@@ -15,7 +15,7 @@ metadata:
   name: guestbook-bluegreen-helm-guestbook
   namespace: default
   selfLink: >-
-    /apis/argoproj.io/v1alpha1/namespaces/default/rollouts/guestbook-bluegreen-helm-guestbook
+    /apis/apps.hanzo.ai/v1alpha1/namespaces/default/rollouts/guestbook-bluegreen-helm-guestbook
 spec:
   minReadySeconds: 0
   progressDeadlineSeconds: 32
@@ -38,7 +38,7 @@ spec:
         release: guestbook-bluegreen
     spec:
       containers:
-        - image: 'quay.io/argoprojlabs/argocd-e2e-container:0.3'
+        - image: 'quay.io/argoprojlabs/cd-e2e-container:0.3'
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:

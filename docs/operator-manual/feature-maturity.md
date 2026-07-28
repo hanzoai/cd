@@ -1,16 +1,16 @@
 # Feature Maturity
 
-Argo CD features may be marked with a certain [status](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md)
-to indicate their stability and maturity. These are the statuses of non-stable features in Argo CD:
+Hanzo CD features may be marked with a certain [status](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md)
+to indicate their stability and maturity. These are the statuses of non-stable features in Hanzo CD:
 
 > [!CAUTION]
 > **Using Alpha/Beta features risks**
 >
 > Alpha and Beta features do not guarantee backward compatibility and are subject to breaking changes in the future releases.
 > It is highly suggested for Argo users not to rely on these features in production environments, especially if you do not have
-> control over the Argo CD upgrades.
+> control over the Hanzo CD upgrades.
 > 
-> Furthermore, removal of Alpha features may modify your resources to an unpredictable state after Argo CD is upgraded.
+> Furthermore, removal of Alpha features may modify your resources to an unpredictable state after Hanzo CD is upgraded.
 > You should make sure to document which features are in use and review the [release notes](./upgrading/overview.md) before upgrading.
 
 ## Overview
@@ -33,7 +33,7 @@ to indicate their stability and maturity. These are the statuses of non-stable f
 
 | Feature                         | Property                                                                                | Status |
 | ------------------------------- | --------------------------------------------------------------------------------------- | ------ |
-| [Skip Application Reconcile][4] | `metadata.annotations[argocd.argoproj.io/skip-reconcile]`                               | Alpha  |
+| [Skip Application Reconcile][4] | `metadata.annotations[cd.hanzo.ai/skip-reconcile]`                               | Alpha  |
 | [Source Hydrator][11]           | `spec.sourceHydrator.*`                                                                 | Beta   |
 
 ### AppProject CRD
@@ -53,29 +53,29 @@ to indicate their stability and maturity. These are the statuses of non-stable f
 
 | Feature                                   | Resource                                      | Property / Variable                                         | Status |
 | ----------------------------------------- | --------------------------------------------- | ----------------------------------------------------------- | ------ |
-| [AppSet Progressive Syncs][2]             | `ConfigMap/argocd-cmd-params-cm`              | `applicationsetcontroller.enable.progressive.syncs`         | Beta   |
-| [AppSet Progressive Syncs][2]             | `Deployment/argocd-applicationset-controller` | `CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS` | Beta   |
-| [Proxy Extensions][3]                     | `ConfigMap/argocd-cmd-params-cm`              | `server.enable.proxy.extension`                             | Beta   |
-| [Proxy Extensions][3]                     | `Deployment/argocd-server`                    | `CD_SERVER_ENABLE_PROXY_EXTENSION`                      | Beta   |
-| [Proxy Extensions][3]                     | `ConfigMap/argocd-cm`                         | `extension.config`                                          | Beta   |
-| [Dynamic Cluster Distribution][7]         | `Deployment/argocd-application-controller`    | `CD_ENABLE_DYNAMIC_CLUSTER_DISTRIBUTION`                | Alpha  |
-| [Dynamic Cluster Distribution][7]         | `Deployment/argocd-application-controller`    | `CD_CONTROLLER_HEARTBEAT_TIME`                          | Alpha  |
-| [Cluster Sharding: round-robin][6]        | `ConfigMap/argocd-cmd-params-cm`              | `controller.sharding.algorithm: round-robin`                | Alpha  |
-| [Cluster Sharding: round-robin][6]        | `StatefulSet/argocd-application-controller`   | `CD_CONTROLLER_SHARDING_ALGORITHM=round-robin`          | Alpha  |
-| [Cluster Sharding: consistent-hashing][9] | `ConfigMap/argocd-cmd-params-cm`              | `controller.sharding.algorithm: consistent-hashing`         | Alpha  |
-| [Cluster Sharding: consistent-hashing][9] | `StatefulSet/argocd-application-controller`   | `CD_CONTROLLER_SHARDING_ALGORITHM=consistent-hashing`   | Alpha  |
-| [Service Account Impersonation][10]       | `ConfigMap/argocd-cm`                         | `application.sync.impersonation.enabled`                    | Beta   |
-| [Source Hydrator][11]                     | `ConfigMap/argocd-cmd-params-cm`              | `hydrator.enabled`                                          | Beta   |
-| [Source Hydrator][11]                     | `Deployment/argocd-application-controller`    | `CD_HYDRATOR_ENABLED`                                   | Beta   |
-| [Source Hydrator][11]                     | `Deployment/argocd-server`                    | `CD_HYDRATOR_ENABLED`                                   | Beta   |
+| [AppSet Progressive Syncs][2]             | `ConfigMap/cd-cmd-params-cm`              | `applicationsetcontroller.enable.progressive.syncs`         | Beta   |
+| [AppSet Progressive Syncs][2]             | `Deployment/cd-applicationset-controller` | `CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS` | Beta   |
+| [Proxy Extensions][3]                     | `ConfigMap/cd-cmd-params-cm`              | `server.enable.proxy.extension`                             | Beta   |
+| [Proxy Extensions][3]                     | `Deployment/cd-server`                    | `CD_SERVER_ENABLE_PROXY_EXTENSION`                      | Beta   |
+| [Proxy Extensions][3]                     | `ConfigMap/cd-cm`                         | `extension.config`                                          | Beta   |
+| [Dynamic Cluster Distribution][7]         | `Deployment/cd-application-controller`    | `CD_ENABLE_DYNAMIC_CLUSTER_DISTRIBUTION`                | Alpha  |
+| [Dynamic Cluster Distribution][7]         | `Deployment/cd-application-controller`    | `CD_CONTROLLER_HEARTBEAT_TIME`                          | Alpha  |
+| [Cluster Sharding: round-robin][6]        | `ConfigMap/cd-cmd-params-cm`              | `controller.sharding.algorithm: round-robin`                | Alpha  |
+| [Cluster Sharding: round-robin][6]        | `StatefulSet/cd-application-controller`   | `CD_CONTROLLER_SHARDING_ALGORITHM=round-robin`          | Alpha  |
+| [Cluster Sharding: consistent-hashing][9] | `ConfigMap/cd-cmd-params-cm`              | `controller.sharding.algorithm: consistent-hashing`         | Alpha  |
+| [Cluster Sharding: consistent-hashing][9] | `StatefulSet/cd-application-controller`   | `CD_CONTROLLER_SHARDING_ALGORITHM=consistent-hashing`   | Alpha  |
+| [Service Account Impersonation][10]       | `ConfigMap/cd-cm`                         | `application.sync.impersonation.enabled`                    | Beta   |
+| [Source Hydrator][11]                     | `ConfigMap/cd-cmd-params-cm`              | `hydrator.enabled`                                          | Beta   |
+| [Source Hydrator][11]                     | `Deployment/cd-application-controller`    | `CD_HYDRATOR_ENABLED`                                   | Beta   |
+| [Source Hydrator][11]                     | `Deployment/cd-server`                    | `CD_HYDRATOR_ENABLED`                                   | Beta   |
 
 [2]: applicationset/Progressive-Syncs.md
 [3]: ../developer-guide/extensions/proxy-extensions.md
 [4]: ../user-guide/skip_reconcile.md
-[6]: ./high_availability.md#argocd-application-controller
+[6]: ./high_availability.md#cd-application-controller
 [7]: dynamic-cluster-distribution.md
 [8]: ../user-guide/diff-strategies.md#server-side-diff
-[9]: ./high_availability.md#argocd-application-controller
+[9]: ./high_availability.md#cd-application-controller
 [10]: app-sync-using-impersonation.md
 [11]: ../user-guide/source-hydrator.md
 [12]: ../user-guide/application-set-ui.md

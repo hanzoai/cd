@@ -15,10 +15,10 @@ status:
   - clusterName: cluster-02
     namespace: cluster-02
 ```
-2. Any resource that has a list of key / value pairs, where the value matches ArgoCD cluster names can be used.
+2. Any resource that has a list of key / value pairs, where the value matches Hanzo CD cluster names can be used.
 3. The key / value pairs found in each element of the list will be available to the template. As well, `name` and `server` will still be available to the template.
 4. The Service Account used by the ApplicationSet controller must have access to `Get` the resource you want to retrieve the duck type definition from
-5. A configMap is used to identify the resource to read status of generated ArgoCD clusters from. You can use multiple resources by creating a ConfigMap for each one in the ArgoCD namespace.
+5. A configMap is used to identify the resource to read status of generated Hanzo CD clusters from. You can use multiple resources by creating a ConfigMap for each one in the Hanzo CD namespace.
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -32,7 +32,7 @@ data:
 ```
   * `apiVersion`    - This is the apiVersion of your resource
   * `kind`          - This is the plural kind of your resource
-  * `statusListKey` - Default is 'clusters', this is the key found in your resource's status that is a list of ArgoCD clusters.
+  * `statusListKey` - Default is 'clusters', this is the key found in your resource's status that is a list of Hanzo CD clusters.
   * `matchKey`      - Is the key name found in the cluster list, `name` and `clusterName` are the keys in the examples above.
 
 # Applying the example

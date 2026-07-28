@@ -1,6 +1,6 @@
 # Understand The Basics
 
-Before effectively using Argo CD, it is necessary to understand the underlying technology that the platform is built on. It is also necessary to understand the features being provided to you and how to use them. The section below provides some useful links to build up this understanding.
+Before effectively using Hanzo CD, it is necessary to understand the underlying technology that the platform is built on. It is also necessary to understand the features being provided to you and how to use them. The section below provides some useful links to build up this understanding.
  
 ## Learn The Fundamentals
 

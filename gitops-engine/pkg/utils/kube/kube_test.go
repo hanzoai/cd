@@ -411,39 +411,39 @@ func TestServerResourceGroupForGroupVersionKind(t *testing.T) {
 	fakeDisco := &fakedisco.FakeDiscovery{Fake: &testcore.Fake{}}
 	fakeDisco.Resources = append(make([]*metav1.APIResourceList, 0),
 		&metav1.APIResourceList{
-			GroupVersion: "test.argoproj.io/v1alpha1",
+			GroupVersion: "test.apps.hanzo.ai/v1alpha1",
 			APIResources: []metav1.APIResource{
-				{Kind: "TestAllVerbs", Group: "test.argoproj.io", Version: "v1alpha1", Namespaced: true, Verbs: standardVerbs},
-				{Kind: "TestSomeVerbs", Group: "test.argoproj.io", Version: "v1alpha1", Namespaced: true, Verbs: []string{"get", "list"}},
+				{Kind: "TestAllVerbs", Group: "test.apps.hanzo.ai", Version: "v1alpha1", Namespaced: true, Verbs: standardVerbs},
+				{Kind: "TestSomeVerbs", Group: "test.apps.hanzo.ai", Version: "v1alpha1", Namespaced: true, Verbs: []string{"get", "list"}},
 			},
 		})
 
 	t.Run("Successfully resolve for all verbs", func(t *testing.T) {
 		t.Parallel()
 		for _, v := range standardVerbs {
-			_, err := ServerResourceForGroupVersionKind(fakeDisco, schema.FromAPIVersionAndKind("test.argoproj.io/v1alpha1", "TestAllVerbs"), v)
+			_, err := ServerResourceForGroupVersionKind(fakeDisco, schema.FromAPIVersionAndKind("test.apps.hanzo.ai/v1alpha1", "TestAllVerbs"), v)
 			assert.NoError(t, err, "Could not resolve verb %s", v)
 		}
 	})
 	t.Run("Successfully resolve for some verbs", func(t *testing.T) {
 		t.Parallel()
 		for _, v := range []string{"get", "list"} {
-			_, err := ServerResourceForGroupVersionKind(fakeDisco, schema.FromAPIVersionAndKind("test.argoproj.io/v1alpha1", "TestSomeVerbs"), v)
+			_, err := ServerResourceForGroupVersionKind(fakeDisco, schema.FromAPIVersionAndKind("test.apps.hanzo.ai/v1alpha1", "TestSomeVerbs"), v)
 			assert.NoError(t, err, "Could not resolve verb %s", v)
 		}
 	})
 	t.Run("Verb not supported", func(t *testing.T) {
 		t.Parallel()
 		for _, v := range []string{"patch"} {
-			_, err := ServerResourceForGroupVersionKind(fakeDisco, schema.FromAPIVersionAndKind("test.argoproj.io/v1alpha1", "TestSomeVerbs"), v)
-			assert.Equal(t, err, apierrors.NewMethodNotSupported(schema.GroupResource{Group: "test.argoproj.io", Resource: "TestSomeVerbs"}, v))
+			_, err := ServerResourceForGroupVersionKind(fakeDisco, schema.FromAPIVersionAndKind("test.apps.hanzo.ai/v1alpha1", "TestSomeVerbs"), v)
+			assert.Equal(t, err, apierrors.NewMethodNotSupported(schema.GroupResource{Group: "test.apps.hanzo.ai", Resource: "TestSomeVerbs"}, v))
 		}
 	})
 	t.Run("Resource not found", func(t *testing.T) {
 		t.Parallel()
 		for _, v := range standardVerbs {
-			_, err := ServerResourceForGroupVersionKind(fakeDisco, schema.FromAPIVersionAndKind("test.argoproj.io/v1alpha1", "TestNonExisting"), v)
-			assert.Equal(t, err, apierrors.NewNotFound(schema.GroupResource{Group: "test.argoproj.io", Resource: "TestNonExisting"}, ""))
+			_, err := ServerResourceForGroupVersionKind(fakeDisco, schema.FromAPIVersionAndKind("test.apps.hanzo.ai/v1alpha1", "TestNonExisting"), v)
+			assert.Equal(t, err, apierrors.NewNotFound(schema.GroupResource{Group: "test.apps.hanzo.ai", Resource: "TestNonExisting"}, ""))
 		}
 	})
 }

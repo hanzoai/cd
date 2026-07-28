@@ -179,7 +179,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Create symlink in GOPATH
-        run: ln -s $(pwd) ~/go/src/github.com/argoproj/argo-cd
+        run: ln -s $(pwd) ~/go/src/github.com/hanzoai/cd
       - name: Setup Golang
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
         with:
@@ -256,7 +256,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Create symlink in GOPATH
-        run: ln -s $(pwd) ~/go/src/github.com/argoproj/argo-cd
+        run: ln -s $(pwd) ~/go/src/github.com/hanzoai/cd
       - name: Setup Golang
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
         with:
@@ -472,7 +472,7 @@ jobs:
           go tool covdata merge -pcombine -i=test-results,test-results/gitops-engine -o test-results/merged
           go tool covdata textfmt -i=test-results/merged -o test-results/unit-coverage.out
       - name: Generate e2e test coverage profile
-        # We generate coverage reports for all Argo CD components, but only the applicationset-controller,
+        # We generate coverage reports for all Hanzo CD components, but only the applicationset-controller,
         # app-controller, repo-server, and commit-server report contain coverage data. The other components currently
         # don't shut down gracefully, so no coverage data is produced. Once those components are fixed, we can add
         # references to their coverage output directories.
@@ -542,7 +542,7 @@ jobs:
       CD_E2E_K3S: 'true'
       CD_IN_CI: 'true'
       CD_E2E_APISERVER_PORT: '8088'
-      CD_APPLICATION_NAMESPACES: 'argocd-e2e-external,argocd-e2e-external-2'
+      CD_APPLICATION_NAMESPACES: 'cd-e2e-external,cd-e2e-external-2'
       CD_SERVER: '127.0.0.1:8088'
       GITHUB_TOKEN: ${{ secrets.E2E_TEST_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
       GITLAB_TOKEN: ${{ secrets.E2E_TEST_GITLAB_TOKEN }}

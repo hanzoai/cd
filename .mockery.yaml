@@ -77,7 +77,7 @@ packages:
   github.com/hanzoai/deploy/util/io:
     interfaces:
       TempPaths: {}
-  github.com/hanzoai/deploy/util/notification/argocd:
+  github.com/hanzoai/deploy/util/notification/cd:
     interfaces:
       Service: {}
   github.com/hanzoai/deploy/util/oci:

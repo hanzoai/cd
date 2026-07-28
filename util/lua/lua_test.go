@@ -18,7 +18,7 @@ import (
 )
 
 const objJSON = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   labels:
@@ -202,7 +202,7 @@ func TestGetHealthScriptWithOverride(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"argoproj.io/Rollout": {
+			"apps.hanzo.ai/Rollout": {
 				HealthLua:   newHealthStatusFunction,
 				UseOpenLibs: false,
 			},
@@ -219,7 +219,7 @@ func TestGetHealthScriptWithKindWildcardOverride(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"argoproj.io/*": {
+			"apps.hanzo.ai/*": {
 				HealthLua:   newHealthStatusFunction,
 				UseOpenLibs: false,
 			},
@@ -317,7 +317,7 @@ func TestGetResourceActionWithOverride(t *testing.T) {
 
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"argoproj.io/Rollout": {
+			"apps.hanzo.ai/Rollout": {
 				Actions: string(grpc.MustMarshal(appv1.ResourceActions{
 					Definitions: []appv1.ResourceActionDefinition{
 						test,
@@ -355,7 +355,7 @@ func TestGetResourceActionDiscoveryWithOverride(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"argoproj.io/Rollout": {
+			"apps.hanzo.ai/Rollout": {
 				Actions: string(grpc.MustMarshal(appv1.ResourceActions{
 					ActionDiscoveryLua: validDiscoveryLua,
 				})),
@@ -372,7 +372,7 @@ func TestGetResourceActionsWithBuiltInActionsFlag(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"argoproj.io/Rollout": {
+			"apps.hanzo.ai/Rollout": {
 				Actions: string(grpc.MustMarshal(appv1.ResourceActions{
 					ActionDiscoveryLua:  validDiscoveryLua,
 					MergeBuiltinActions: true,
@@ -487,7 +487,7 @@ return obj
 `
 
 const expectedLuaUpdatedResult = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   labels:
@@ -745,7 +745,7 @@ func TestCleanPatch(t *testing.T) {
 	t.Run("Empty Struct preserved", func(t *testing.T) {
 		t.Parallel()
 		const obj = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Test
 metadata:
   labels:
@@ -766,7 +766,7 @@ spec:
        test2: {}
 `
 		const expected = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Test
 metadata:
   labels:
@@ -802,7 +802,7 @@ return obj
 	t.Run("New item added to array", func(t *testing.T) {
 		t.Parallel()
 		const obj = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Test
 metadata:
   labels:
@@ -820,7 +820,7 @@ spec:
        test2: {}
 `
 		const expected = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Test
 metadata:
   labels:
@@ -861,7 +861,7 @@ return obj
 	t.Run("Last item removed from array", func(t *testing.T) {
 		t.Parallel()
 		const obj = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Test
 metadata:
   labels:
@@ -884,7 +884,7 @@ spec:
        test2: {}
 `
 		const expected = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Test
 metadata:
   labels:

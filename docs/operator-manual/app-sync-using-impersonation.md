@@ -13,11 +13,11 @@
 
 ## Introduction
 
-Argo CD supports syncing `Application` resources using the same service account used for its control plane operations. This feature enables users to decouple service account used for application sync from the service account used for control plane operations.
+Hanzo CD supports syncing `Application` resources using the same service account used for its control plane operations. This feature enables users to decouple service account used for application sync from the service account used for control plane operations.
 
-By default, application syncs in Argo CD have the same privileges as the Argo CD control plane. As a consequence, in a multi-tenant setup, the Argo CD control plane privileges needs to match the tenant that needs the highest privileges. As an example, if an Argo CD instance has 10 Applications and only one of them requires admin privileges, then the Argo CD control plane must have admin privileges in order to be able to sync that one Application. This provides an opportunity for malicious tenants to gain admin level access. Argo CD provides a multi-tenancy model to restrict what each `Application` is authorized to do using `AppProjects`, however it is not secure enough and if Argo CD is compromised, attackers will easily gain `cluster-admin` access to the cluster.
+By default, application syncs in Hanzo CD have the same privileges as the Hanzo CD control plane. As a consequence, in a multi-tenant setup, the Hanzo CD control plane privileges needs to match the tenant that needs the highest privileges. As an example, if an Hanzo CD instance has 10 Applications and only one of them requires admin privileges, then the Hanzo CD control plane must have admin privileges in order to be able to sync that one Application. This provides an opportunity for malicious tenants to gain admin level access. Hanzo CD provides a multi-tenancy model to restrict what each `Application` is authorized to do using `AppProjects`, however it is not secure enough and if Hanzo CD is compromised, attackers will easily gain `cluster-admin` access to the cluster.
 
-Some manual steps will need to be performed by the Argo CD administrator in order to enable this feature, as it is disabled by default.
+Some manual steps will need to be performed by the Hanzo CD administrator in order to enable this feature, as it is disabled by default.
 
 > [!NOTE]
 > This feature is considered beta. While the API is stable, some implementation details may change as we gather feedback from users before promoting it to stable status.
@@ -40,7 +40,7 @@ A typical tenant onboarding process looks like below:
 1. The platform admin creates a tenant namespace and the service account to be used for creating the resources is also created in the same tenant namespace.
 2. The platform admin creates one or more Role(s) to manage kubernetes resources in the tenant namespace
 3. The platform admin creates one or more RoleBinding(s) to map the service account to the role(s) created in the previous steps.
-4. The platform admin can choose to use either the [apps-in-any-namespace](./app-any-namespace.md) feature or provide access to tenants to create applications in the ArgoCD control plane namespace.
+4. The platform admin can choose to use either the [apps-in-any-namespace](./app-any-namespace.md) feature or provide access to tenants to create applications in the Hanzo CD control plane namespace.
 5. If the platform admin chooses apps-in-any-namespace feature, tenants can self-service their Argo applications in their respective tenant namespaces and no additional access needs to be provided for the control plane namespace.
 
 ## Implementation details
@@ -55,7 +55,7 @@ In order for an application to use a different service account for the applicati
 
 ### Enable application sync with impersonation feature
 
-In order to enable this feature, the Argo CD administrator must reconfigure the `application.sync.impersonation.enabled` settings in the `argocd-cm` ConfigMap as below:
+In order to enable this feature, the Hanzo CD administrator must reconfigure the `application.sync.impersonation.enabled` settings in the `cd-cm` ConfigMap as below:
 
 ```yaml
 data:
@@ -64,7 +64,7 @@ data:
 
 ### Disable application sync with impersonation feature
 
-In order to disable this feature, the Argo CD administrator must reconfigure the `application.sync.impersonation.enabled` settings in the `argocd-cm` ConfigMap as below:
+In order to disable this feature, the Hanzo CD administrator must reconfigure the `application.sync.impersonation.enabled` settings in the `cd-cm` ConfigMap as below:
 
 ```yaml
 data:
@@ -75,13 +75,13 @@ data:
 > This feature is disabled by default.
 
 > [!NOTE]
-> This feature can be enabled/disabled only at the system level and once enabled/disabled it is applicable to all Applications managed by ArgoCD.
+> This feature can be enabled/disabled only at the system level and once enabled/disabled it is applicable to all Applications managed by Hanzo CD.
 
 ### Configure enforcement behavior
 
-By default, when impersonation is enabled, Argo CD strictly enforces that every project must have a matching service account configured. If no match is found, the sync operation will fail.
+By default, when impersonation is enabled, Hanzo CD strictly enforces that every project must have a matching service account configured. If no match is found, the sync operation will fail.
 
-You can disable this enforcement by setting `application.sync.impersonation.enforced` to `false` in the `argocd-cm` ConfigMap:
+You can disable this enforcement by setting `application.sync.impersonation.enforced` to `false` in the `cd-cm` ConfigMap:
 
 ```yaml
 data:
@@ -89,16 +89,16 @@ data:
   application.sync.impersonation.enforced: 'false'
 ```
 
-When enforcement is disabled, if no matching service account is found, Argo CD will fall back to using the controller's service account.
+When enforcement is disabled, if no matching service account is found, Hanzo CD will fall back to using the controller's service account.
 
-This is useful for gradually migrating to impersonation. Argo CD administrators can:
+This is useful for gradually migrating to impersonation. Hanzo CD administrators can:
 
 1. Enable impersonation with enforcement disabled
 2. Configure service accounts in each project over time
 3. Enable enforcement once all projects are properly configured
 
 > [!WARNING]
-> Disabling enforcement reduces the security isolation between applications. Only disable enforcement if you understand the security implications and trust all applications managed by your Argo CD instance.
+> Disabling enforcement reduces the security isolation between applications. Only disable enforcement if you understand the security implications and trust all applications managed by your Hanzo CD instance.
 
 ## Configuring destination service accounts
 
@@ -108,18 +108,18 @@ During the application sync operation, the controller loops through the availabl
 
 It is possible to specify service accounts along with its namespace. eg: `tenant1-ns:guestbook-deployer`. If no namespace is provided for the service account, then the Application's `spec.destination.namespace` will be used. If no namespace is provided for the service account and the optional `spec.destination.namespace` field is also not provided in the `Application`, then the Application's namespace will be used.
 
-`DestinationServiceAccounts` associated to a `AppProject` can be created and managed, either declaratively or through the Argo CD API (e.g. using the CLI, the web UI, the REST API, etc).
+`DestinationServiceAccounts` associated to a `AppProject` can be created and managed, either declaratively or through the Hanzo CD API (e.g. using the CLI, the web UI, the REST API, etc).
 
 ### Using declarative yaml
 
 For declaratively configuring destination service accounts, create an yaml file for the `AppProject` as below and apply the changes using `kubectl apply` command.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -144,18 +144,18 @@ spec:
 
 ### Using the CLI
 
-Destination service accounts can be added to an `AppProject` using the ArgoCD CLI.
+Destination service accounts can be added to an `AppProject` using the Hanzo CD CLI.
 
 For example, to add a destination service account for `in-cluster` and `guestbook` namespace, you can use the following CLI command:
 
 ```shell
-argocd proj add-destination-service-account my-project https://kubernetes.default.svc guestbook guestbook-sa
+cd proj add-destination-service-account my-project https://kubernetes.default.svc guestbook guestbook-sa
 ```
 
 Likewise, to remove the destination service account from an `AppProject`, you can use the following CLI command:
 
 ```shell
-argocd proj remove-destination-service-account my-project https://kubernetes.default.svc guestbook
+cd proj remove-destination-service-account my-project https://kubernetes.default.svc guestbook
 ```
 
 ### Using the UI

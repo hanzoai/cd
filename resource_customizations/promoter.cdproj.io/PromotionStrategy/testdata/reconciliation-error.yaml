@@ -1,4 +1,4 @@
-apiVersion: promoter.argoproj.io/v1alpha1
+apiVersion: promoter.apps.hanzo.ai/v1alpha1
 kind: PromotionStrategy
 metadata:
   name: test

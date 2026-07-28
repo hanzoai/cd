@@ -330,19 +330,19 @@ func TestRepoURLToSecretName(t *testing.T) {
 		secretName: "repo-4161185408",
 		project:    "foobar",
 	}, {
-		repoURL:    "https://github.com/argoproj/argo-cd",
+		repoURL:    "https://github.com/hanzoai/cd",
 		secretName: "repo-42374749",
 		project:    "",
 	}, {
-		repoURL:    "https://github.com/argoproj/argo-cd",
+		repoURL:    "https://github.com/hanzoai/cd",
 		secretName: "repo-1894545728",
 		project:    "foobar",
 	}, {
-		repoURL:    "https://github.com/argoproj/argo-cd.git",
+		repoURL:    "https://github.com/hanzoai/cd.git",
 		secretName: "repo-821842295",
 		project:    "",
 	}, {
-		repoURL:    "https://github.com/argoproj/argo-cd.git",
+		repoURL:    "https://github.com/hanzoai/cd.git",
 		secretName: "repo-1474166686",
 		project:    "foobar",
 	}, {
@@ -354,11 +354,11 @@ func TestRepoURLToSecretName(t *testing.T) {
 		secretName: "repo-3916272608",
 		project:    "foobar",
 	}, {
-		repoURL:    "ssh://git@github.com/argoproj/argo-cd.git",
+		repoURL:    "ssh://git@github.com/hanzoai/cd.git",
 		secretName: "repo-3569564120",
 		project:    "",
 	}, {
-		repoURL:    "ssh://git@github.com/argoproj/argo-cd.git",
+		repoURL:    "ssh://git@github.com/hanzoai/cd.git",
 		secretName: "repo-754834421",
 		project:    "foobar",
 	}}

@@ -665,7 +665,7 @@ func TestResourceTree(t *testing.T) {
 			{
 				Name:      "app1",
 				Kind:      "Application",
-				Group:     "argoproj.io",
+				Group:     "apps.hanzo.ai",
 				Version:   "v1alpha1",
 				Namespace: "default",
 				Health: &appsv1.HealthStatus{
@@ -690,7 +690,7 @@ func TestResourceTree(t *testing.T) {
 			{
 				ResourceRef: appsv1.ResourceRef{
 					Kind:      "Application",
-					Group:     "argoproj.io",
+					Group:     "apps.hanzo.ai",
 					Version:   "v1alpha1",
 					Namespace: "default",
 					Name:      "app1",
@@ -698,7 +698,7 @@ func TestResourceTree(t *testing.T) {
 				ParentRefs: []appsv1.ResourceRef{
 					{
 						Kind:      "ApplicationSet",
-						Group:     "argoproj.io",
+						Group:     "apps.hanzo.ai",
 						Version:   "v1alpha1",
 						Namespace: "default",
 						Name:      "AppSet1",

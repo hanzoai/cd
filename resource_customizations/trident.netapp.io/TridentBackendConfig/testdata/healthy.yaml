@@ -39,7 +39,7 @@ metadata:
           'f:storagePrefix': {}
           'f:svm': {}
           'f:version': {}
-      manager: argocd-application-controller
+      manager: cd-application-controller
       operation: Update
       time: '2021-06-24T11:30:12Z'
     - apiVersion: trident.netapp.io/v1

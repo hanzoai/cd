@@ -13,4 +13,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: hanzocd-application-controller
-  namespace: argocd
+  namespace: cd

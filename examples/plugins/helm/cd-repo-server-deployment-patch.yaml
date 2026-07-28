@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: argocd-repo-server
+  name: cd-repo-server
 spec:
   template:
     spec:
@@ -20,26 +20,26 @@ spec:
               name: helm-plugin-tools
       containers:
         - name: helm-plugin
-          command: [/var/run/argocd/argocd-cmp-server]
+          command: [/var/run/cd/cd-cmp-server]
           args: [--loglevel, debug]
           image: busybox
           securityContext:
             runAsNonRoot: true
             runAsUser: 999
           volumeMounts:
-            - mountPath: /var/run/argocd
+            - mountPath: /var/run/cd
               name: var-files
-            - mountPath: /home/argocd/cmp-server/plugins
+            - mountPath: /home/cd/cmp-server/plugins
               name: plugins
             - mountPath: /helm-working-dir
               name: helm-plugin-tmp
-            - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            - mountPath: /home/cd/cmp-server/config/plugin.yaml
               subPath: plugin.yaml
               name: helm-plugin-config
-            - mountPath: /var/run/argocd/helm-plugin/generate.sh
+            - mountPath: /var/run/cd/helm-plugin/generate.sh
               subPath: generate.sh
               name: helm-plugin-config
-            - mountPath: /var/run/argocd/helm-plugin/get-parameters.sh
+            - mountPath: /var/run/cd/helm-plugin/get-parameters.sh
               subPath: get-parameters.sh
               name: helm-plugin-config
             - mountPath: /usr/local/bin

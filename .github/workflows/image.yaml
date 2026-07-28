@@ -54,9 +54,9 @@ jobs:
           
           # Calculate image names with defaults
           IMAGE_NAMESPACE="${VARS_IMAGE_NAMESPACE:-argoproj}"
-          IMAGE_REPOSITORY="${VARS_IMAGE_REPOSITORY:-argocd}"
+          IMAGE_REPOSITORY="${VARS_IMAGE_REPOSITORY:-cd}"
           GHCR_NAMESPACE="${VARS_GHCR_NAMESPACE:-$GITHUB_REPOSITORY}"
-          GHCR_REPOSITORY="${VARS_GHCR_REPOSITORY:-argocd}"
+          GHCR_REPOSITORY="${VARS_GHCR_REPOSITORY:-cd}"
           
           echo "image_namespace=$IMAGE_NAMESPACE" >> $GITHUB_OUTPUT
           echo "image_repository=$IMAGE_REPOSITORY" >> $GITHUB_OUTPUT
@@ -99,7 +99,7 @@ jobs:
     needs: [set-vars]
     permissions:
       contents: read
-      packages: write # for pushing packages to GHCR, which is used by cd.apps.argoproj.io to avoid polluting Quay with tags
+      packages: write # for pushing packages to GHCR, which is used by cd.apps.apps.hanzo.ai to avoid polluting Quay with tags
       id-token: write # for creating OIDC tokens for signing.
     if: ${{ (github.repository == 'argoproj/argo-cd' || needs.set-vars.outputs.image_namespace != 'argoproj') && github.event_name != 'push' }}
     uses: ./.github/workflows/image-reuse.yaml
@@ -114,7 +114,7 @@ jobs:
     needs: [set-vars]
     permissions:
       contents: read
-      packages: write # for pushing packages to GHCR, which is used by cd.apps.argoproj.io to avoid polluting Quay with tags
+      packages: write # for pushing packages to GHCR, which is used by cd.apps.apps.hanzo.ai to avoid polluting Quay with tags
       id-token: write # for creating OIDC tokens for signing.
     if: ${{ (github.repository == 'argoproj/argo-cd' || needs.set-vars.outputs.image_namespace != 'argoproj') && github.event_name == 'push' }}
     uses: ./.github/workflows/image-reuse.yaml
@@ -157,7 +157,7 @@ jobs:
       - set-vars
     permissions:
       contents: write # for git to push upgrade commit if not already deployed
-      packages: write # for pushing packages to GHCR, which is used by cd.apps.argoproj.io to avoid polluting Quay with tags
+      packages: write # for pushing packages to GHCR, which is used by cd.apps.apps.hanzo.ai to avoid polluting Quay with tags
     if: ${{ github.repository == 'argoproj/argo-cd' && github.event_name == 'push' }}
     runs-on: ubuntu-24.04
     steps:
@@ -168,10 +168,10 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}
       - run: |
-          docker run -u $(id -u):$(id -g) -v $(pwd):/src -w /src --rm -t ghcr.io/argoproj/argo-cd/argocd:${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG} kustomize edit set image quay.io/argoproj/argocd=ghcr.io/argoproj/argo-cd/argocd:${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG}
+          docker run -u $(id -u):$(id -g) -v $(pwd):/src -w /src --rm -t ghcr.io/argoproj/argo-cd/cd:${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG} kustomize edit set image quay.io/argoproj/cd=ghcr.io/argoproj/argo-cd/cd:${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG}
           git config --global user.email 'ci@argoproj.com'
           git config --global user.name 'CI'
-          git diff --exit-code && echo 'Already deployed' || (git commit -am 'Upgrade argocd to ${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG}' && git push)
-        working-directory: argoproj-deployments/argocd
+          git diff --exit-code && echo 'Already deployed' || (git commit -am 'Upgrade cd to ${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG}' && git push)
+        working-directory: argoproj-deployments/cd
         env:
           NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG: ${{ needs.set-vars.outputs.image-tag }}

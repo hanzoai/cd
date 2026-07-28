@@ -29,7 +29,7 @@ tests:
         OperatorGroup but one already exists in the namespace - assuming that
         OperatorGroup is correct, the Subscription matches what is required by
         the policy, no InstallPlans requiring approval were found,
-        ClusterServiceVersion (argocd-operator.v0.11.0) - install strategy
+        ClusterServiceVersion (cd-operator.v0.11.0) - install strategy
         completed with no errors, there are CRDs present for the operator, all
         operator Deployments have their minimum availability, CatalogSource was
         found
@@ -41,7 +41,7 @@ tests:
         OperatorGroup but one already exists in the namespace - assuming that
         OperatorGroup is correct, the Subscription matches what is required by
         the policy, no InstallPlans requiring approval were found,
-        ClusterServiceVersion (argocd-operator.v0.11.0) - install strategy
+        ClusterServiceVersion (cd-operator.v0.11.0) - install strategy
         completed with no errors, there are CRDs present for the operator, all
         operator Deployments have their minimum availability, CatalogSource was
         found

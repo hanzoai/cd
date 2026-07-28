@@ -633,7 +633,7 @@ func TestKnownTypesInCRDDiffing(t *testing.T) {
 		When().
 		And(func() {
 			require.NoError(t, fixture.SetResourceOverrides(map[string]ResourceOverride{
-				"argoproj.io/Dummy": {
+				"apps.hanzo.ai/Dummy": {
 					KnownTypeFields: []KnownTypeField{{
 						Field: "spec",
 						Type:  "core/v1/ResourceList",

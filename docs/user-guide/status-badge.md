@@ -1,14 +1,14 @@
 # Status Badge
 
-Argo CD can display a badge with health and sync status for any application. The feature is disabled by default because badge image is available to any user without authentication.
-The feature can be enabled using `statusbadge.enabled` key of `argocd-cm` ConfigMap (see [argocd-cm.yaml](../operator-manual/argocd-cm-yaml.md)).
+Hanzo CD can display a badge with health and sync status for any application. The feature is disabled by default because badge image is available to any user without authentication.
+The feature can be enabled using `statusbadge.enabled` key of `cd-cm` ConfigMap (see [cd-cm.yaml](../operator-manual/cd-cm-yaml.md)).
 
 
 ![healthy and synced](../assets/status-badge-healthy-synced.png)
 
 To show this badge, use the following URL format `${argoCdBaseUrl}/api/badge?name=${appName}`, e.g. http://localhost:8080/api/badge?name=guestbook.
 
-To override the `${argoCdBaseUrl}` value, you can use the `statusbadge.url` key of `argocd-cm` ConfigMap.
+To override the `${argoCdBaseUrl}` value, you can use the `statusbadge.url` key of `cd-cm` ConfigMap.
 
 The URLs for status image are available on application details page:
 

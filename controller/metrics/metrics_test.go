@@ -35,7 +35,7 @@ import (
 )
 
 const fakeApp = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app
@@ -43,7 +43,7 @@ metadata:
   labels:
     team-name: my-team
     team-bu: bu-id
-    argoproj.io/cluster: test-cluster
+    apps.hanzo.ai/cluster: test-cluster
 spec:
   destination:
     namespace: dummy-namespace
@@ -60,7 +60,7 @@ status:
 `
 
 const fakeApp2 = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app-2
@@ -68,7 +68,7 @@ metadata:
   labels:
     team-name: my-team
     team-bu: bu-id
-    argoproj.io/cluster: test-cluster
+    apps.hanzo.ai/cluster: test-cluster
 spec:
   destination:
     namespace: dummy-namespace
@@ -95,7 +95,7 @@ operation:
 `
 
 const fakeApp3 = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app-3
@@ -104,7 +104,7 @@ metadata:
   labels:
     team-name: my-team
     team-bu: bu-id
-    argoproj.io/cluster: test-cluster
+    apps.hanzo.ai/cluster: test-cluster
 spec:
   destination:
     namespace: dummy-namespace
@@ -125,7 +125,7 @@ status:
 `
 
 const fakeApp4 = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app-4
@@ -133,7 +133,7 @@ metadata:
   labels:
     team-name: my-team
     team-bu: bu-id
-    argoproj.io/cluster: test-cluster
+    apps.hanzo.ai/cluster: test-cluster
 spec:
   destination:
     namespace: dummy-namespace
@@ -160,7 +160,7 @@ status:
 `
 
 const fakeDefaultApp = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app
@@ -180,7 +180,7 @@ status:
 `
 
 const fakeAppOperationRunning = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app
@@ -188,7 +188,7 @@ metadata:
   labels:
     team-name: my-team
     team-bu: bu-id
-    argoproj.io/cluster: test-cluster
+    apps.hanzo.ai/cluster: test-cluster
 spec:
   destination:
     namespace: dummy-namespace
@@ -208,7 +208,7 @@ status:
 `
 
 const fakeAppOperationFinished = `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app
@@ -216,7 +216,7 @@ metadata:
   labels:
     team-name: my-team
     team-bu: bu-id
-    argoproj.io/cluster: test-cluster
+    apps.hanzo.ai/cluster: test-cluster
 spec:
   destination:
     namespace: dummy-namespace
@@ -385,7 +385,7 @@ func TestMetricLabels(t *testing.T) {
 	cases := []testCases{
 		{
 			description:  "will return the labels metrics successfully",
-			metricLabels: []string{"team-name", "team-bu", "argoproj.io/cluster"},
+			metricLabels: []string{"team-name", "team-bu", "apps.hanzo.ai/cluster"},
 			testCombination: testCombination{
 				applications: []string{fakeApp, fakeApp2, fakeApp3},
 				responseContains: `

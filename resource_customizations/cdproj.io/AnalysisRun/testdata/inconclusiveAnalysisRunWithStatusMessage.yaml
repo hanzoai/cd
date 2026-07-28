@@ -1,4 +1,4 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AnalysisRun
 metadata:
   name: canary-demo-analysis-template-6c6bb7cf6f-ddvn8

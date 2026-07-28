@@ -36,7 +36,7 @@ func TestSimpleGitDirectoryGenerator(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -142,7 +142,7 @@ func TestSimpleGitDirectoryGeneratorGoTemplate(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -254,7 +254,7 @@ func TestSimpleGitDirectoryGeneratorGPGEnabledUnsignedCommits(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -351,7 +351,7 @@ func TestSimpleGitDirectoryGeneratorGPGEnabledWithoutKnownKeys(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -449,7 +449,7 @@ func TestSimpleGitFilesGenerator(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -560,7 +560,7 @@ func TestSimpleGitFilesGeneratorGPGEnabledUnsignedCommits(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -662,7 +662,7 @@ func TestSimpleGitFilesGeneratorGPGEnabledWithoutKnownKeys(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -755,7 +755,7 @@ func TestSimpleGitFilesGeneratorGoTemplate(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -977,7 +977,7 @@ func TestGitGeneratorPrivateRepo(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -1051,7 +1051,7 @@ func TestGitGeneratorPrivateRepoGoTemplate(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -1125,7 +1125,7 @@ func TestSimpleGitGeneratorPrivateRepoWithNoRepo(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -1197,7 +1197,7 @@ func TestSimpleGitGeneratorPrivateRepoWithMatchingProject(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -1268,7 +1268,7 @@ func TestSimpleGitGeneratorPrivateRepoWithMismatchingProject(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -1341,7 +1341,7 @@ func TestGitGeneratorPrivateRepoWithTemplatedProject(t *testing.T) {
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,
@@ -1425,7 +1425,7 @@ func TestGitGeneratorPrivateRepoWithTemplatedProjectAndProjectScopedRepo(t *test
 		return v1alpha1.Application{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       application.ApplicationKind,
-				APIVersion: "argoproj.io/v1alpha1",
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			},
 			ObjectMeta: metav1.ObjectMeta{
 				Name:       name,

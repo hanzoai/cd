@@ -210,17 +210,17 @@ func TestParseRequest(t *testing.T) {
 		},
 		{
 			testName: "CRD Get",
-			url:      "https://127.0.0.1/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/dummies.argoproj.io",
+			url:      "https://127.0.0.1/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/dummies.apps.hanzo.ai",
 			expected: ResourceInfo{
 				Server: "https://127.0.0.1",
 				Verb:   Get,
 				Kind:   "customresourcedefinitions",
-				Name:   "dummies.argoproj.io",
+				Name:   "dummies.apps.hanzo.ai",
 			},
 		},
 		{
 			testName: "Resource With Periods Get",
-			url:      "https://127.0.0.1/apis/argoproj.io/v1alpha1/namespaces/argocd/applications/my-cluster.cluster.k8s.local",
+			url:      "https://127.0.0.1/apis/apps.hanzo.ai/v1alpha1/namespaces/argocd/applications/my-cluster.cluster.k8s.local",
 			expected: ResourceInfo{
 				Server:    "https://127.0.0.1",
 				Verb:      Get,

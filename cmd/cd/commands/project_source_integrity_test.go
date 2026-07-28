@@ -29,7 +29,7 @@ func dummySourceIntegrity() *appsv1.SourceIntegrity {
 				Repos: []appsv1.SourceIntegrityGitPolicyRepo{{
 					URL: "*",
 				}, {
-					URL: "!https://github.com/argoproj/argo-cd.git",
+					URL: "!https://github.com/hanzoai/cd.git",
 				}},
 				GPG: &appsv1.SourceIntegrityGitPolicyGPG{
 					Mode: appsv1.SourceIntegrityGitPolicyGPGModeHead,
@@ -38,7 +38,7 @@ func dummySourceIntegrity() *appsv1.SourceIntegrity {
 			},
 			{
 				Repos: []appsv1.SourceIntegrityGitPolicyRepo{{
-					URL: "https://github.com/argoproj/argo-cd.git",
+					URL: "https://github.com/hanzoai/cd.git",
 				}},
 				GPG: &appsv1.SourceIntegrityGitPolicyGPG{
 					Mode: appsv1.SourceIntegrityGitPolicyGPGModeStrict,
@@ -176,8 +176,8 @@ func TestProjectSourceIntegrityAddCommand(t *testing.T) {
 		require.NoError(t, err)
 
 		expectedOut := `ID	GPG-MODE	GPG-KEYS	REPO-URLS
-0	head	ABCD1234ABCD1234	*, !https://github.com/argoproj/argo-cd.git
-1	strict	1234ABCD1234ABCD	https://github.com/argoproj/argo-cd.git
+0	head	ABCD1234ABCD1234	*, !https://github.com/hanzoai/cd.git
+1	strict	1234ABCD1234ABCD	https://github.com/hanzoai/cd.git
 2	head	0123456789ABCDEF	*
 `
 		tabbedOut := regexp.MustCompile(" {2,}").ReplaceAllString(out, "\t")
@@ -248,8 +248,8 @@ func TestProjectSourceIntegrityListCommand(t *testing.T) {
 			sourceIntegrity: dummySourceIntegrity(),
 			projectName:     projectName,
 			expectedStdout: `ID	GPG-MODE	GPG-KEYS	REPO-URLS
-0	head	ABCD1234ABCD1234	*, !https://github.com/argoproj/argo-cd.git
-1	strict	1234ABCD1234ABCD	https://github.com/argoproj/argo-cd.git
+0	head	ABCD1234ABCD1234	*, !https://github.com/hanzoai/cd.git
+1	strict	1234ABCD1234ABCD	https://github.com/hanzoai/cd.git
 `,
 			expectedStderr: "",
 		},
@@ -265,7 +265,7 @@ func TestProjectSourceIntegrityListCommand(t *testing.T) {
 			sourceIntegrity: dummySourceIntegrity(),
 			projectName:     "not-a-project",
 			expectedStdout:  "",
-			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.argoproj.io \"not-a-project\" not found\n",
+			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.apps.hanzo.ai \"not-a-project\" not found\n",
 		},
 	}
 
@@ -273,7 +273,7 @@ func TestProjectSourceIntegrityListCommand(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			projects := mockProjectClient(t)
 			mockProjectGet(projects, projectName, dummyProject(projectName, tc.sourceIntegrity), nil).Maybe()
-			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.argoproj.io "not-a-project" not found`)).Maybe()
+			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.apps.hanzo.ai "not-a-project" not found`)).Maybe()
 
 			cmd := NewProjectSourceIntegrityGitPoliciesListCommand(&cdclient.ClientOptions{})
 			out, stderr, _ := runCmd(t, cmd, tc.projectName)
@@ -304,15 +304,15 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{projectName, "0", "--gpg-mode=strict", "--yes"},
 			expectedStdout: `ID	GPG-MODE	GPG-KEYS	REPO-URLS
-0	strict	ABCD1234ABCD1234	*, !https://github.com/argoproj/argo-cd.git
-1	strict	1234ABCD1234ABCD	https://github.com/argoproj/argo-cd.git
+0	strict	ABCD1234ABCD1234	*, !https://github.com/hanzoai/cd.git
+1	strict	1234ABCD1234ABCD	https://github.com/hanzoai/cd.git
 `,
 			expectedStderr: "",
 			expectedPolicy: &appsv1.SourceIntegrityGitPolicy{
 				Repos: []appsv1.SourceIntegrityGitPolicyRepo{{
 					URL: "*",
 				}, {
-					URL: "!https://github.com/argoproj/argo-cd.git",
+					URL: "!https://github.com/hanzoai/cd.git",
 				}},
 				GPG: &appsv1.SourceIntegrityGitPolicyGPG{
 					Mode: appsv1.SourceIntegrityGitPolicyGPGModeStrict,
@@ -325,13 +325,13 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{projectName, "1", "--gpg-key=FEDCBA9876543210", "--gpg-key=FEDCBA9876543219", "--yes"},
 			expectedStdout: `ID	GPG-MODE	GPG-KEYS	REPO-URLS
-0	head	ABCD1234ABCD1234	*, !https://github.com/argoproj/argo-cd.git
-1	strict	FEDCBA9876543210, FEDCBA9876543219	https://github.com/argoproj/argo-cd.git
+0	head	ABCD1234ABCD1234	*, !https://github.com/hanzoai/cd.git
+1	strict	FEDCBA9876543210, FEDCBA9876543219	https://github.com/hanzoai/cd.git
 `,
 			expectedStderr: "Warning: Following GPG keys are not in repo-server keyring: FEDCBA9876543210, FEDCBA9876543219\n",
 			expectedPolicy: &appsv1.SourceIntegrityGitPolicy{
 				Repos: []appsv1.SourceIntegrityGitPolicyRepo{{
-					URL: "https://github.com/argoproj/argo-cd.git",
+					URL: "https://github.com/hanzoai/cd.git",
 				}},
 				GPG: &appsv1.SourceIntegrityGitPolicyGPG{
 					Mode: appsv1.SourceIntegrityGitPolicyGPGModeStrict,
@@ -344,15 +344,15 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{projectName, "0", "--delete-gpg-key=ABCD1234ABCD1234", "-y"},
 			expectedStdout: `ID	GPG-MODE	GPG-KEYS	REPO-URLS
-0	head	<none>	*, !https://github.com/argoproj/argo-cd.git
-1	strict	1234ABCD1234ABCD	https://github.com/argoproj/argo-cd.git
+0	head	<none>	*, !https://github.com/hanzoai/cd.git
+1	strict	1234ABCD1234ABCD	https://github.com/hanzoai/cd.git
 `,
 			expectedStderr: "Warning: Policy has no GPG keys and will never validate any revision\n",
 			expectedPolicy: &appsv1.SourceIntegrityGitPolicy{
 				Repos: []appsv1.SourceIntegrityGitPolicyRepo{{
 					URL: "*",
 				}, {
-					URL: "!https://github.com/argoproj/argo-cd.git",
+					URL: "!https://github.com/hanzoai/cd.git",
 				}},
 				GPG: &appsv1.SourceIntegrityGitPolicyGPG{
 					Mode: appsv1.SourceIntegrityGitPolicyGPGModeHead,
@@ -365,7 +365,7 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{projectName, "1", "--repo-url=https://github.com/example/repo.git", "--repo-url=https://github.com/example/other.git", "--yes"},
 			expectedStdout: `ID	GPG-MODE	GPG-KEYS	REPO-URLS
-0	head	ABCD1234ABCD1234	*, !https://github.com/argoproj/argo-cd.git
+0	head	ABCD1234ABCD1234	*, !https://github.com/hanzoai/cd.git
 1	strict	1234ABCD1234ABCD	https://github.com/example/repo.git, https://github.com/example/other.git
 `,
 			expectedStderr: "Warning: Following GPG keys are not in repo-server keyring: 1234ABCD1234ABCD\n",
@@ -386,13 +386,13 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{projectName, "0", "--delete-repo-url=*", "--delete-repo-url=not://present.is/ignored", "--yes"},
 			expectedStdout: `ID	GPG-MODE	GPG-KEYS	REPO-URLS
-0	head	ABCD1234ABCD1234	!https://github.com/argoproj/argo-cd.git
-1	strict	1234ABCD1234ABCD	https://github.com/argoproj/argo-cd.git
+0	head	ABCD1234ABCD1234	!https://github.com/hanzoai/cd.git
+1	strict	1234ABCD1234ABCD	https://github.com/hanzoai/cd.git
 `,
 			expectedStderr: "",
 			expectedPolicy: &appsv1.SourceIntegrityGitPolicy{
 				Repos: []appsv1.SourceIntegrityGitPolicyRepo{{
-					URL: "!https://github.com/argoproj/argo-cd.git",
+					URL: "!https://github.com/hanzoai/cd.git",
 				}},
 				GPG: &appsv1.SourceIntegrityGitPolicyGPG{
 					Mode: appsv1.SourceIntegrityGitPolicyGPGModeHead,
@@ -408,12 +408,12 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 				"--add-gpg-key=9876543210FEDCBA",
 				"--add-repo-url=https://new-repo.com",
 				"--delete-gpg-key=ABCD1234ABCD1234",
-				"--delete-repo-url=!https://github.com/argoproj/argo-cd.git",
+				"--delete-repo-url=!https://github.com/hanzoai/cd.git",
 				"--yes",
 			},
 			expectedStdout: `ID	GPG-MODE	GPG-KEYS	REPO-URLS
 0	none	9876543210FEDCBA	*, https://new-repo.com
-1	strict	1234ABCD1234ABCD	https://github.com/argoproj/argo-cd.git
+1	strict	1234ABCD1234ABCD	https://github.com/hanzoai/cd.git
 `,
 			expectedStderr: "Warning: Following GPG keys are not in repo-server keyring: 9876543210FEDCBA\n",
 			expectedPolicy: &appsv1.SourceIntegrityGitPolicy{
@@ -432,7 +432,7 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 			name:            "Update policy with invalid project name",
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{"not-a-project", "0", "--gpg-mode=strict", "--yes"},
-			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.argoproj.io \"not-a-project\" not found\n",
+			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.apps.hanzo.ai \"not-a-project\" not found\n",
 		},
 		{
 			name:            "Update policy with invalid ID",
@@ -470,7 +470,7 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			projects := mockProjectClient(t)
 			mockProjectGet(projects, projectName, dummyProject(projectName, tc.sourceIntegrity), nil).Maybe()
-			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.argoproj.io "not-a-project" not found`)).Maybe()
+			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.apps.hanzo.ai "not-a-project" not found`)).Maybe()
 			projects.On("Update", mock.Anything, mock.Anything).Return(nil, nil).Maybe()
 
 			cmd := NewProjectSourceIntegrityGitPoliciesUpdateCommand(&cdclient.ClientOptions{})
@@ -521,7 +521,7 @@ func TestProjectSourceIntegrityDeleteCommand(t *testing.T) {
 				Git: &appsv1.SourceIntegrityGit{
 					Policies: []*appsv1.SourceIntegrityGitPolicy{{
 						Repos: []appsv1.SourceIntegrityGitPolicyRepo{{
-							URL: "https://github.com/argoproj/argo-cd.git",
+							URL: "https://github.com/hanzoai/cd.git",
 						}},
 						GPG: &appsv1.SourceIntegrityGitPolicyGPG{
 							Mode: appsv1.SourceIntegrityGitPolicyGPGModeStrict,
@@ -541,7 +541,7 @@ func TestProjectSourceIntegrityDeleteCommand(t *testing.T) {
 						Repos: []appsv1.SourceIntegrityGitPolicyRepo{{
 							URL: "*",
 						}, {
-							URL: "!https://github.com/argoproj/argo-cd.git",
+							URL: "!https://github.com/hanzoai/cd.git",
 						}},
 						GPG: &appsv1.SourceIntegrityGitPolicyGPG{
 							Mode: appsv1.SourceIntegrityGitPolicyGPGModeHead,
@@ -567,7 +567,7 @@ func TestProjectSourceIntegrityDeleteCommand(t *testing.T) {
 			name:            "Delete policy with invalid project name",
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{"not-a-project", "--yes", "0"},
-			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.argoproj.io \"not-a-project\" not found\n",
+			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.apps.hanzo.ai \"not-a-project\" not found\n",
 		},
 		{
 			name:            "Delete policy with invalid ID",
@@ -593,7 +593,7 @@ func TestProjectSourceIntegrityDeleteCommand(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			projects := mockProjectClient(t)
 			mockProjectGet(projects, projectName, dummyProject(projectName, tc.sourceIntegrity), nil).Maybe()
-			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.argoproj.io "not-a-project" not found`)).Maybe()
+			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.apps.hanzo.ai "not-a-project" not found`)).Maybe()
 			projects.On("Update", mock.Anything, mock.Anything).Return(nil, nil).Maybe()
 
 			cmd := NewProjectSourceIntegrityGitPoliciesDeleteCommand(&cdclient.ClientOptions{})

@@ -17,7 +17,7 @@ last-updated: 2021-04-05
 
 # Neat Enhancement Idea
 
-This is a proposal to add support for creating ApplicationSets via the Argo CD Web/CLI, by adding support to the ApplicationSet and API Server backend that respects Argo CD RBAC.
+This is a proposal to add support for creating ApplicationSets via the Hanzo CD Web/CLI, by adding support to the ApplicationSet and API Server backend that respects Hanzo CD RBAC.
 
 ## Summary
 
@@ -25,27 +25,27 @@ Currently, users can only create ApplicationSets by applying configurations decl
 
 ## Motivation
 
-As ApplicationSet Controller is now part of ArgoCD installation, we would like to allow users to be able to create/update/delete application sets via CLI/UI.
+As ApplicationSet Controller is now part of Hanzo CD installation, we would like to allow users to be able to create/update/delete application sets via CLI/UI.
 
 ### Goals
 
 * **Expose endpoints in the API server to interact with ApplicationSets**
 
-  Users should be able to create/update/delete ApplicationSets using argocd CLI/UI.
+  Users should be able to create/update/delete ApplicationSets using cd CLI/UI.
 
 * **Changes to CLI**
 
-  Add a new argocd command option `appset` with `create`, `delete`, `update` and `list` sub-commands.
+  Add a new cd command option `appset` with `create`, `delete`, `update` and `list` sub-commands.
 
 ## Proposal
 
-This is the high level overview of creation (update/deletion) of an ApplicationSet via Argo CD CLI/UI.
+This is the high level overview of creation (update/deletion) of an ApplicationSet via Hanzo CD CLI/UI.
 
 ![High Level Architecture](./backend-support-appset.png)
 
-1. User issues `argocd appset create/update/delete`(or Web UI equivalent) command from CLI, into an Argo CD server on which they are logged-in. The command converts the command request into GRPC and sends it off to Argo CD API Server.
+1. User issues `cd appset create/update/delete`(or Web UI equivalent) command from CLI, into an Hanzo CD server on which they are logged-in. The command converts the command request into GRPC and sends it off to Hanzo CD API Server.
 
-#### **Argo CD API Server:**
+#### **Hanzo CD API Server:**
 
 2. The API Server receives Create/Update/Delete request via GRPC and verifies that ApplicationSet controller is installed within the namespace (if not, return an error response back to user). 
 3. The API Server sends the GRPC request to the ApplicationSet controller via GRPC including authentication information from the user in the request.
@@ -123,24 +123,24 @@ An important design constraint in this area: ApplicationSets do not belong to pr
 #### **Command Design:**
 
 ```shell
-argocd appset create "(filename.yaml)"
-argocd appset delete "(applicationset resource name)"
-argocd appset apply  "(filename.yaml)"
+cd appset create "(filename.yaml)"
+cd appset delete "(applicationset resource name)"
+cd appset apply  "(filename.yaml)"
 ```
 
-This proposal assumes that the ApplicationSet controller is still an optional, standalone install. Thus all argocd appset commands should fail if the ApplicationSet controller is not installed. (The Argo CD API server would check if the ApplicationServer is running by looking for a deployment with a specific 'applicationset controller' annotation, or similar mechanism.)
+This proposal assumes that the ApplicationSet controller is still an optional, standalone install. Thus all cd appset commands should fail if the ApplicationSet controller is not installed. (The Hanzo CD API server would check if the ApplicationServer is running by looking for a deployment with a specific 'applicationset controller' annotation, or similar mechanism.)
 
-This command proposal differs significantly from how the argocd app create command is designed: notice the lack of parameters to appset create/apply besides the filename. Rather than creating an application(set) by adding support for a large number of parameters, eg:
+This command proposal differs significantly from how the cd app create command is designed: notice the lack of parameters to appset create/apply besides the filename. Rather than creating an application(set) by adding support for a large number of parameters, eg:
 
 ```shell
-argocd app create guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
+cd app create guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
 ```
 
 Instead appset create and appset apply will just take as a parameter, a path to a YAML file, in the form of a standard ApplicationSet CR:
 
 ```yaml
 # cluster-addons.yaml:
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-addons
@@ -168,7 +168,7 @@ spec:
 
 ```shell
 # Create the above ApplicationSet
-argocd appset create cluster-addons.yaml
+cd appset create cluster-addons.yaml
 ```
 
 In general, the reason to use YAML is that CLI parameters aren't a good fit for allowing the user to fully express what can be represented with an ApplicationSet resource.
@@ -199,7 +199,7 @@ spec:
         - clusters:
             selector:
               matchLabels:
-                argocd.argoproj.io/secret-type: cluster
+                cd.hanzo.ai/secret-type: cluster
 ```
 
 * Likewise, tough to get full expressive power of YAML, due to support for arrays of generators:
@@ -217,17 +217,17 @@ spec:
 
 #### **Why use CLI params, instead of YAML:**
 
-* Users might be more familiar with Argo CD CLI style commands
+* Users might be more familiar with Hanzo CD CLI style commands
 * Some folks are less literate in YAML, and thus don't grok YAML's hierarchy/parsing rules (which is totally fair, they are initially obtuse)
 * CLI has the advantage of hiding the hierarchy (for better or worse)
 
 
 #### A new component for Application Set
 
-The Application Set will follow the same design as the rest of ArgoCD project by having separate components with different responsibilities. With that, Application Set Controller will not expose any API (internal or external) and be a simple Kubernetes Controller with a single responsibility of reconciling ApplicationSet resources. In order to expose the API endpoints for Application Set controller, we need to come up with a new additional server running Application Set controller + Application Set API.
+The Application Set will follow the same design as the rest of Hanzo CD project by having separate components with different responsibilities. With that, Application Set Controller will not expose any API (internal or external) and be a simple Kubernetes Controller with a single responsibility of reconciling ApplicationSet resources. In order to expose the API endpoints for Application Set controller, we need to come up with a new additional server running Application Set controller + Application Set API.
 
 Later, we would plan to move the code of this new server into existing controller package, but this would require a separate proposal on it's own.
 
 ## Alternatives
 
-Rather than using Argo CD's CLI, we could create a new AppSet CLI "appset" that would communicate directly with the ApplicationSet deployment, rather than going through the Argo CD API Server as an intermediary (though if we were adding web UI support, this would still be required regardless).
+Rather than using Hanzo CD's CLI, we could create a new AppSet CLI "appset" that would communicate directly with the ApplicationSet deployment, rather than going through the Hanzo CD API Server as an intermediary (though if we were adding web UI support, this would still be required regardless).

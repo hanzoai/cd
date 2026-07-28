@@ -245,15 +245,15 @@ func TestURLAsObjectName(t *testing.T) {
 	require.NoError(t, enf.syncUpdate(fakeConfigMap(), noOpUpdate))
 	policy := `
 p, alice, repositories, *, foo/*, allow
-p, bob, repositories, *, foo/https://github.com/argoproj/argo-cd.git, allow
+p, bob, repositories, *, foo/https://github.com/hanzoai/cd.git, allow
 p, cathy, repositories, *, foo/*, allow
 `
 	_ = enf.SetUserPolicy(policy)
 
-	assert.True(t, enf.Enforce("alice", "repositories", "delete", "foo/https://github.com/argoproj/argo-cd.git"))
+	assert.True(t, enf.Enforce("alice", "repositories", "delete", "foo/https://github.com/hanzoai/cd.git"))
 	assert.True(t, enf.Enforce("alice", "repositories", "delete", "foo/https://github.com/golang/go.git"))
 
-	assert.True(t, enf.Enforce("bob", "repositories", "delete", "foo/https://github.com/argoproj/argo-cd.git"))
+	assert.True(t, enf.Enforce("bob", "repositories", "delete", "foo/https://github.com/hanzoai/cd.git"))
 	assert.False(t, enf.Enforce("bob", "repositories", "delete", "foo/https://github.com/golang/go.git"))
 }
 
@@ -474,8 +474,8 @@ p, alice, clusters, get, "https://github.com/*/*.git", allow
 `
 	_ = enf.SetUserPolicy(policy)
 
-	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/argoproj/argo-cd.git"))
-	assert.False(t, enf.Enforce("alice", "repositories", "get", "https://github.com/argoproj/argo-cd.git"))
+	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/hanzoai/cd.git"))
+	assert.False(t, enf.Enforce("alice", "repositories", "get", "https://github.com/hanzoai/cd.git"))
 }
 
 func TestGlobMatchMode(t *testing.T) {
@@ -489,7 +489,7 @@ p, alice, clusters, get, "https://github.com/*/*.git", allow
 `
 	_ = enf.SetUserPolicy(policy)
 
-	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/argoproj/argo-cd.git"))
+	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/hanzoai/cd.git"))
 	assert.False(t, enf.Enforce("alice", "clusters", "get", "https://github.com/argo-cd.git"))
 }
 
@@ -504,7 +504,7 @@ p, alice, clusters, get, "https://github.com/argo[a-z]{4}/argo-[a-z]+.git", allo
 `
 	_ = enf.SetUserPolicy(policy)
 
-	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/argoproj/argo-cd.git"))
+	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/hanzoai/cd.git"))
 	assert.False(t, enf.Enforce("alice", "clusters", "get", "https://github.com/argoproj/1argo-cd.git"))
 }
 

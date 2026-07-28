@@ -1,4 +1,4 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
@@ -7,7 +7,7 @@ spec:
   - scmProvider:
       gitlab:
         api: https://gitlab.com
-        group: test-argocd-proton
+        group: test-cd-proton
         includeSubgroups: true
       cloneProtocol: https
       filters:

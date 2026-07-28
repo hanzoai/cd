@@ -11,6 +11,6 @@ import (
 func TestWave(t *testing.T) {
 	t.Parallel()
 	assert.Equal(t, 0, Wave(testingutils.NewPod()))
-	assert.Equal(t, 1, Wave(testingutils.Annotate(testingutils.NewPod(), "cd.argoproj.io/sync-wave", "1")))
+	assert.Equal(t, 1, Wave(testingutils.Annotate(testingutils.NewPod(), "cd.hanzo.ai/sync-wave", "1")))
 	assert.Equal(t, 1, Wave(testingutils.Annotate(testingutils.NewPod(), "helm.sh/hook-weight", "1")))
 }

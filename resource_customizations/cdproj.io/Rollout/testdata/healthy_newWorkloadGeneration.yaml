@@ -1,9 +1,9 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    rollout.argoproj.io/revision: "1"
-    rollout.argoproj.io/workload-generation: "1"
+    rollout.apps.hanzo.ai/revision: "1"
+    rollout.apps.hanzo.ai/workload-generation: "1"
   creationTimestamp: "2021-07-27T12:14:11Z"
   generation: 3
   name: rollout-ref-deployment

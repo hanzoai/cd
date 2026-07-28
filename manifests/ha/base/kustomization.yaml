@@ -3,15 +3,15 @@ kind: Kustomization
 
 
 patches:
-- path: overlays/argocd-repo-server-deployment.yaml
-- path: overlays/argocd-server-deployment.yaml
-- path: overlays/argocd-application-controller-statefulset.yaml
-- path: overlays/argocd-cmd-params-cm.yaml
+- path: overlays/cd-repo-server-deployment.yaml
+- path: overlays/cd-server-deployment.yaml
+- path: overlays/cd-application-controller-statefulset.yaml
+- path: overlays/cd-cmd-params-cm.yaml
 
 
 images:
-- name: quay.io/argoproj/argocd
-  newName: quay.io/argoproj/argocd
+- name: quay.io/argoproj/cd
+  newName: quay.io/argoproj/cd
   newTag: latest
 resources:
 - ../../base/application-controller

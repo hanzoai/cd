@@ -1,4 +1,4 @@
-The notification template is used to generate the notification content and is configured in the `argocd-notifications-cm` ConfigMap. The template is leveraging
+The notification template is used to generate the notification content and is configured in the `cd-notifications-cm` ConfigMap. The template is leveraging
 the [html/template](https://golang.org/pkg/html/template/) golang package and allows customization of the notification message.
 Templates are meant to be reusable and can be referenced by multiple triggers.
 
@@ -8,12 +8,12 @@ The following template is used to notify the user about application sync status.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   template.my-custom-template-slack-template: |
     message: |
       Application {{.app.metadata.name}} sync is {{.app.status.sync.status}}.
-      Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+      Application details: {{.context.cdUrl}}/applications/{{.app.metadata.name}}.
 ```
 
 Each template has access to the following fields:
@@ -21,7 +21,7 @@ Each template has access to the following fields:
 - `app` holds the application object.
 - `appProject` holds the AppProject object associated with the application. This provides access to project-level details like RBAC roles, policies, source repository restrictions, and destination cluster restrictions.
 - `context` is a user-defined string map and might include any string keys and values.
-- `secrets` provides access to sensitive data stored in `argocd-notifications-secret`
+- `secrets` provides access to sensitive data stored in `cd-notifications-secret`
 - `serviceType` holds the notification service type name (such as "slack" or "email"). The field can be used to conditionally
 render service-specific fields.
 - `recipient` holds the recipient name.
@@ -35,7 +35,7 @@ YAML document of key-value pairs, which can then be used within templates, like 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   context: |
     region: east
@@ -53,7 +53,7 @@ Templates can access the AppProject associated with an Application using the `ap
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   template.app-project-info: |
     message: |
@@ -77,13 +77,13 @@ data:
 Some notification service use cases will require the use of secrets within templates. This can be achieved with the use of
 the `secrets` data variable available within the templates.
 
-Given that we have the following `argocd-notifications-secret`:
+Given that we have the following `cd-notifications-secret`:
 
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argocd-notifications-secret
+  name: cd-notifications-secret
 stringData:
   sampleWebhookToken: secret-token
 type: Opaque
@@ -95,7 +95,7 @@ We can use the defined `sampleWebhookToken` in a template as such:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   template.trigger-webhook: |
       webhook:
@@ -124,7 +124,7 @@ Templates have access to the set of built-in functions such as the functions of 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   template.my-custom-template-slack-template: |
     message: "Author: {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"

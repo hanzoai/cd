@@ -1037,7 +1037,7 @@ func getAppPointers(apps []v1alpha1.Application) []*v1alpha1.Application {
 
 func createApp(name string, server string) v1alpha1.Application {
 	testApp := `
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: ` + name + `

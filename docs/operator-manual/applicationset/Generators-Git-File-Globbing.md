@@ -53,7 +53,7 @@ It can be enabled in any of these ways:
 
 1. Pass `--enable-new-git-file-globbing` to the ApplicationSet controller args.
 1. Set `CD_APPLICATIONSET_CONTROLLER_ENABLE_NEW_GIT_FILE_GLOBBING=true` in the ApplicationSet controller environment variables.
-1. Set `applicationsetcontroller.enable.new.git.file.globbing: "true"` in the `argocd-cmd-params-cm` ConfigMap.
+1. Set `applicationsetcontroller.enable.new.git.file.globbing: "true"` in the `cd-cmd-params-cm` ConfigMap.
 
 Note that the default may change in the future.
 

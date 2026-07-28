@@ -1,13 +1,13 @@
 # UI Extensions: React 19 Upgrade
 
-Starting with Argo CD 3.5, extensions must externalize `react/jsx-runtime`
+Starting with Hanzo CD 3.5, extensions must externalize `react/jsx-runtime`
 in addition to `react` and `react-dom`. The host application exposes the
 JSX runtime as `window.ReactJSXRuntime`. Extensions that bundle their own
 copy of the runtime will fail to load.
 
 ## Detection
 
-Extensions built against an older Argo CD UI fail to load with a
+Extensions built against an older Hanzo CD UI fail to load with a
 `TypeError`. The host UI surfaces it as:
 
 ```
@@ -61,10 +61,10 @@ React 19. Most actively maintained libraries already have one.
 The following pull requests apply this fix and are useful templates for
 other extension repositories:
 
-- [argoproj-labs/argocd-ephemeral-access#141](https://github.com/argoproj-labs/argocd-ephemeral-access/pull/141) — Ephemeral Access extension.
+- [argoproj-labs/cd-ephemeral-access#141](https://github.com/argoproj-labs/cd-ephemeral-access/pull/141) — Ephemeral Access extension.
 - [argoproj-labs/rollout-extension#104](https://github.com/argoproj-labs/rollout-extension/pull/104) — Argo Rollouts extension.
 
-## Globals exposed by the Argo CD UI
+## Globals exposed by the Hanzo CD UI
 
 The host UI currently exposes the following modules on `window` for
 extensions to consume via `externals`:

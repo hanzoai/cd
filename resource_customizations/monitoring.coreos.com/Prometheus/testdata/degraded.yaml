@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
   annotations:
-    argocd.argoproj.io/tracking-id: >-
+    cd.hanzo.ai/tracking-id: >-
       prometheus-stack:monitoring.coreos.com/Prometheus:prometheus/prometheus-stack-kube-prom-prometheus
   creationTimestamp: '2021-12-09T15:51:10Z'
   generation: 46

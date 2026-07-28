@@ -4,10 +4,10 @@ info:
   version: "v1alpha1"
 paths: {}
 definitions:
-  argoproj.io.v1alpha1.Rollout:
+  apps.hanzo.ai.v1alpha1.Rollout:
     type: object
     x-kubernetes-group-version-kind:
-      - group: argoproj.io
+      - group: apps.hanzo.ai
         version: v1alpha1
         kind: Rollout
     properties:

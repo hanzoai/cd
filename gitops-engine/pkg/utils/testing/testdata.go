@@ -80,7 +80,7 @@ func NewCRD() *unstructured.Unstructured {
 	return Unstructured(`apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: testcrds.argoproj.io
+  name: testcrds.apps.hanzo.ai
 spec:
   group: test.io
   version: v1

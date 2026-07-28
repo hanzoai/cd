@@ -1,27 +1,27 @@
 # RBAC Configuration
 
-The RBAC feature enables restrictions of access to Argo CD resources. Argo CD does not have its own
+The RBAC feature enables restrictions of access to Hanzo CD resources. Hanzo CD does not have its own
 user management system and has only one built-in user, `admin`. The `admin` user is a superuser and
 it has unrestricted access to the system. RBAC requires [SSO configuration](user-management/index.md) or [one or more local users setup](user-management/index.md).
 Once SSO or local users are configured, additional RBAC roles can be defined, and SSO groups or local users can then be mapped to roles.
 
 There are two main components where RBAC configuration can be defined:
 
-- The global RBAC config map (see [argo-rbac-cm.yaml](argocd-rbac-cm-yaml.md))
+- The global RBAC config map (see [argo-rbac-cm.yaml](cd-rbac-cm-yaml.md))
 - The [AppProject's roles](../user-guide/projects.md#project-roles)
 
 ## Basic Built-in Roles
 
-Argo CD has two pre-defined roles but RBAC configuration allows defining roles and groups (see below).
+Hanzo CD has two pre-defined roles but RBAC configuration allows defining roles and groups (see below).
 
 - `role:readonly`: read-only access to all resources
 - `role:admin`: unrestricted access to all resources
 
-These default built-in role definitions can be seen in [builtin-policy.csv](https://github.com/argoproj/argo-cd/blob/master/assets/builtin-policy.csv)
+These default built-in role definitions can be seen in [builtin-policy.csv](https://github.com/hanzoai/cd/blob/master/assets/builtin-policy.csv)
 
 ## Default Policy for Authenticated Users
 
-When a user is authenticated in Argo CD, it will be granted the role specified in `policy.default`.
+When a user is authenticated in Hanzo CD, it will be granted the role specified in `policy.default`.
 
 > [!WARNING]
 > **Restricting Default Permissions**
@@ -32,9 +32,9 @@ When a user is authenticated in Argo CD, it will be granted the role specified i
 
 ## Anonymous Access
 
-Enabling anonymous access to the Argo CD instance allows users to assume the default role permissions specified by `policy.default` **without being authenticated**.
+Enabling anonymous access to the Hanzo CD instance allows users to assume the default role permissions specified by `policy.default` **without being authenticated**.
 
-The anonymous access to Argo CD can be enabled using the `users.anonymous.enabled` field in `argocd-cm` (see [argocd-cm.yaml](argocd-cm-yaml.md)).
+The anonymous access to Hanzo CD can be enabled using the `users.anonymous.enabled` field in `cd-cm` (see [cd-cm.yaml](cd-cm-yaml.md)).
 
 > [!WARNING]
 > When enabling anonymous access, consider creating a new default role and assigning it to the default policies
@@ -135,7 +135,7 @@ p, example-user, applications, delete/*/Pod/*/*, default/prod-app, allow
 > [!WARNING]
 > **Understand glob pattern behavior**
 >
-> Argo CD RBAC does not use `/` as a separator when evaluating glob patterns. So the pattern `delete/*/kind/*`
+> Hanzo CD RBAC does not use `/` as a separator when evaluating glob patterns. So the pattern `delete/*/kind/*`
 > will match `delete/<group>/kind/<namespace>/<name>` but also `delete/<group>/<kind>/kind/<name>`.
 >
 > The fact that both of these match will generally not be a problem, because resource kinds generally contain capital
@@ -171,7 +171,7 @@ p, example-user, applications, update/*, default/prod-app, deny
 >
 > To preserve this behavior, you can set the config value
 > `server.rbac.disableApplicationFineGrainedRBACInheritance` to `false` in
-> the Argo CD ConfigMap `argocd-cm`.
+> the Hanzo CD ConfigMap `cd-cm`.
 >
 > When disabled, it is not possible to deny fine-grained permissions for a sub-resource
 > if the action was **explicitly allowed on the application**.
@@ -186,7 +186,7 @@ p, example-user, applications, update/*, default/prod-app, deny
 #### The `action` action
 
 The `action` action corresponds to either built-in resource customizations defined
-[in the Argo CD repository](https://github.com/argoproj/argo-cd/tree/master/resource_customizations),
+[in the Hanzo CD repository](https://github.com/hanzoai/cd/tree/master/resource_customizations),
 or to [custom resource actions](resource_actions.md#custom-resource-actions) defined by you.
 
 See the [resource actions documentation](resource_actions.md#built-in-actions) for a list of built-in actions.
@@ -255,14 +255,14 @@ p, dev-group, applicationsets, *, dev-project/*, allow
 The `logs` resource is an [Application-Specific Policy](#application-specific-policy).
 
 When granted with the `get` action, this policy allows a user to see Pod's logs of an application via
-the Argo CD UI. The functionality is similar to `kubectl logs`.
+the Hanzo CD UI. The functionality is similar to `kubectl logs`.
 
 ### The `exec` resource
 
 The `exec` resource is an [Application-Specific Policy](#application-specific-policy).
 
 When granted with the `create` action, this policy allows a user to `exec` into Pods of an application via
-the Argo CD UI. The functionality is similar to `kubectl exec`.
+the Hanzo CD UI. The functionality is similar to `kubectl exec`.
 
 See [Web-based Terminal](web_based_terminal.md) for more info.
 
@@ -323,7 +323,7 @@ When the `example-user` executes the `extensions/DaemonSet/test` action, the fol
 
 > [!TIP]
 > For performance tuning of glob pattern matching, see the `server.glob.cache.size` config key in
-> [High Availability - argocd-server](high_availability.md#argocd-server).
+> [High Availability - cd-server](high_availability.md#cd-server).
 
 ## Using SSO Users/Groups
 
@@ -338,11 +338,11 @@ The following example shows targeting `email` as well as `groups` from your OIDC
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-rbac-cm
-  namespace: argocd
+  name: cd-rbac-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-rbac-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-rbac-cm
+    app.kubernetes.io/part-of: cd
 data:
   policy.csv: |
     p, my-org:team-alpha, applications, sync, my-project/*, allow
@@ -361,11 +361,11 @@ Here:
 
 This approach can be combined with AppProjects to associate users' emails and groups directly at the project level:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: team-beta-project
-  namespace: argocd
+  namespace: cd
 spec:
   roles:
     - name: admin
@@ -415,9 +415,9 @@ g, my-local-user, role:admin
 
 ## Policy CSV Composition
 
-It is possible to provide additional entries in the `argocd-rbac-cm` configmap to compose the final policy csv.
+It is possible to provide additional entries in the `cd-rbac-cm` configmap to compose the final policy csv.
 In this case, the key must follow the pattern `policy.<any string>.csv`.
-Argo CD will concatenate all additional policies it finds with this pattern below the main one ('policy.csv').
+Hanzo CD will concatenate all additional policies it finds with this pattern below the main one ('policy.csv').
 The order of additional provided policies are determined by the key string.
 
 Example: if two additional policies are provided with keys `policy.A.csv` and `policy.B.csv`,
@@ -431,8 +431,8 @@ The example below shows how a Kustomize patch can be provided in an overlay to a
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-rbac-cm
-  namespace: argocd
+  name: cd-rbac-cm
+  namespace: cd
 data:
   policy.tester-overlay.csv: |
     p, role:tester, applications, *, */*, allow
@@ -443,18 +443,18 @@ data:
 ## Validating and testing your RBAC policies
 
 If you want to ensure that your RBAC policies are working as expected, you can
-use the [`argocd admin settings rbac` command](../user-guide/commands/argocd_admin_settings_rbac.md) to validate them.
+use the [`cd admin settings rbac` command](../user-guide/commands/cd_admin_settings_rbac.md) to validate them.
 This tool allows you to test whether a certain role or subject can perform the requested action with a policy
 that's not live yet in the system, i.e. from a local file or config map.
-Additionally, it can be used against the live RBAC configuration in the cluster your Argo CD is running in.
+Additionally, it can be used against the live RBAC configuration in the cluster your Hanzo CD is running in.
 
 ### Validating a policy
 
-To check whether your new policy configuration is valid and understood by Argo CD's RBAC implementation,
-you can use the [`argocd admin settings rbac validate` command](../user-guide/commands/argocd_admin_settings_rbac_validate.md).
+To check whether your new policy configuration is valid and understood by Hanzo CD's RBAC implementation,
+you can use the [`cd admin settings rbac validate` command](../user-guide/commands/cd_admin_settings_rbac_validate.md).
 
 ### Testing a policy
 
 To test whether a role or subject (group or local user) has sufficient
 permissions to execute certain actions on certain resources, you can
-use the [`argocd admin settings rbac can` command](../user-guide/commands/argocd_admin_settings_rbac_can.md).
+use the [`cd admin settings rbac can` command](../user-guide/commands/cd_admin_settings_rbac_can.md).

@@ -108,31 +108,31 @@ func TestEnforceActionActions(t *testing.T) {
 	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
 	enf.EnableLog(true)
 	_ = enf.SetBuiltinPolicy(fmt.Sprintf(`p, alice, applications, %s/*, my-proj/*, allow
-p, bob, applications, %s/argoproj.io/Rollout/*, my-proj/*, allow
-p, cam, applications, %s/argoproj.io/Rollout/resume, my-proj/*, allow
+p, bob, applications, %s/apps.hanzo.ai/Rollout/*, my-proj/*, allow
+p, cam, applications, %s/apps.hanzo.ai/Rollout/resume, my-proj/*, allow
 `, rbac.ActionAction, rbac.ActionAction, rbac.ActionAction))
 	rbacEnf := NewRBACPolicyEnforcer(enf, projLister)
 	enf.SetClaimsEnforcerFunc(rbacEnf.EnforceClaims)
 
 	// Alice has wild-card approval for all actions
 	claims := jwt.MapClaims{"sub": "alice"}
-	assert.True(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/argoproj.io/Rollout/resume", "my-proj/my-app"))
+	assert.True(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/apps.hanzo.ai/Rollout/resume", "my-proj/my-app"))
 	claims = jwt.MapClaims{"sub": "alice"}
-	assert.True(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/argoproj.io/NewCrd/abort", "my-proj/my-app"))
-	// Bob has wild-card approval for all actions under argoproj.io/Rollout
+	assert.True(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/apps.hanzo.ai/NewCrd/abort", "my-proj/my-app"))
+	// Bob has wild-card approval for all actions under apps.hanzo.ai/Rollout
 	claims = jwt.MapClaims{"sub": "bob"}
-	assert.True(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/argoproj.io/Rollout/resume", "my-proj/my-app"))
+	assert.True(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/apps.hanzo.ai/Rollout/resume", "my-proj/my-app"))
 	claims = jwt.MapClaims{"sub": "bob"}
-	assert.False(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/argoproj.io/NewCrd/abort", "my-proj/my-app"))
-	// Cam only has approval for actions/argoproj.io/Rollout:resume
+	assert.False(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/apps.hanzo.ai/NewCrd/abort", "my-proj/my-app"))
+	// Cam only has approval for actions/apps.hanzo.ai/Rollout:resume
 	claims = jwt.MapClaims{"sub": "cam"}
-	assert.True(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/argoproj.io/Rollout/resume", "my-proj/my-app"))
+	assert.True(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/apps.hanzo.ai/Rollout/resume", "my-proj/my-app"))
 	claims = jwt.MapClaims{"sub": "cam"}
-	assert.False(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/argoproj.io/Rollout/abort", "my-proj/my-app"))
+	assert.False(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/apps.hanzo.ai/Rollout/abort", "my-proj/my-app"))
 
 	// Eve does not have approval for any actions
 	claims = jwt.MapClaims{"sub": "eve"}
-	assert.False(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/argoproj.io/Rollout/resume", "my-proj/my-app"))
+	assert.False(t, enf.Enforce(claims, "applications", rbac.ActionAction+"/apps.hanzo.ai/Rollout/resume", "my-proj/my-app"))
 }
 
 func TestInvalidatedCache(t *testing.T) {

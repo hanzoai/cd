@@ -22,7 +22,7 @@ func TestCreateRepositoryWithProject(t *testing.T) {
 		Create().
 		Then()
 
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
@@ -47,7 +47,7 @@ func TestCreateRepositoryNonAdminUserPermissionDenied(t *testing.T) {
 		Create().
 		Login()
 
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
@@ -74,7 +74,7 @@ func TestCreateRepositoryNonAdminUserWithWrongProject(t *testing.T) {
 			},
 		}, "org-admin")
 
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
@@ -111,7 +111,7 @@ func TestDeleteRepositoryRbacAllowed(t *testing.T) {
 			},
 		}, "org-admin")
 
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
@@ -126,7 +126,7 @@ func TestDeleteRepositoryRbacAllowed(t *testing.T) {
 		Delete().
 		Then().
 		AndCLIOutput(func(output string, _ error) {
-			assert.Contains(t, output, "Repository 'https://github.com/argoproj/argo-cd.git' removed")
+			assert.Contains(t, output, "Repository 'https://github.com/hanzoai/cd.git' removed")
 		})
 }
 
@@ -154,7 +154,7 @@ func TestDeleteRepositoryRbacDenied(t *testing.T) {
 			},
 		}, "org-admin")
 
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
@@ -175,7 +175,7 @@ func TestDeleteRepositoryRbacDenied(t *testing.T) {
 }
 
 func TestDeleteRepository(t *testing.T) {
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 	repoFixture.Given(t).
 		When().
 		Path(path).
@@ -194,7 +194,7 @@ func TestDeleteRepository(t *testing.T) {
 }
 
 func TestListRepoCLIOutput(t *testing.T) {
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 	repoFixture.Given(t).
 		When().
 		Path(path).
@@ -202,19 +202,19 @@ func TestListRepoCLIOutput(t *testing.T) {
 		Create().
 		Then().
 		AndCLIOutput(func(output string, _ error) {
-			assert.Equal(t, `Repository 'https://github.com/argoproj/argo-cd.git' added`, output)
+			assert.Equal(t, `Repository 'https://github.com/hanzoai/cd.git' added`, output)
 		}).
 		When().
 		List().
 		Then().
 		AndCLIOutput(func(output string, _ error) {
 			assert.Equal(t, `TYPE  NAME  REPO                                     INSECURE  OCI    LFS    CREDS  STATUS      MESSAGE  PROJECT
-git         https://github.com/argoproj/argo-cd.git  false     false  false  false  Successful           argo-project`, output)
+git         https://github.com/hanzoai/cd.git  false     false  false  false  Successful           argo-project`, output)
 		})
 }
 
 func TestGetRepoCLIOutput(t *testing.T) {
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 	repoFixture.Given(t).
 		When().
 		Path(path).
@@ -222,14 +222,14 @@ func TestGetRepoCLIOutput(t *testing.T) {
 		Create().
 		Then().
 		AndCLIOutput(func(output string, _ error) {
-			assert.Equal(t, `Repository 'https://github.com/argoproj/argo-cd.git' added`, output)
+			assert.Equal(t, `Repository 'https://github.com/hanzoai/cd.git' added`, output)
 		}).
 		When().
 		Get().
 		Then().
 		AndCLIOutput(func(output string, _ error) {
 			assert.Equal(t, `TYPE  NAME  REPO                                     INSECURE  OCI    LFS    CREDS  STATUS      MESSAGE  PROJECT
-git         https://github.com/argoproj/argo-cd.git  false     false  false  false  Successful           argo-project`, output)
+git         https://github.com/hanzoai/cd.git  false     false  false  false  Successful           argo-project`, output)
 		})
 }
 
@@ -246,7 +246,7 @@ func TestCreateRepoWithSameURLInTwoProjects(t *testing.T) {
 		Create().
 		Then()
 
-	path := "https://github.com/argoproj/argo-cd.git"
+	path := "https://github.com/hanzoai/cd.git"
 
 	// Create repository in first project
 	repoFixture.GivenWithSameState(ctx).

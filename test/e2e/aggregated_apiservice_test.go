@@ -39,7 +39,7 @@ const wardleAPIServiceName = "v1alpha1.wardle.example.com"
 func TestAPIServiceLateRegistrationIsDiscovered(t *testing.T) {
 	// The aggregated apiserver infrastructure is cluster-scoped (Namespace,
 	// APIService, ClusterRole(Binding)s) and is not managed by an Argo CD app. It
-	// is labeled with e2e.argoproj.io=true so fixture.EnsureCleanState tears it
+	// is labeled with e2e.apps.hanzo.ai=true so fixture.EnsureCleanState tears it
 	// down between tests; a dangling APIService backed by a deleted service would
 	// otherwise degrade discovery for subsequent tests.
 	const serverManifests = "testdata/aggregated-apiserver-server/manifests.yaml"

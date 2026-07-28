@@ -1,6 +1,6 @@
-# Debugging a Remote ArgoCD Environment
+# Debugging a Remote Hanzo CD Environment
 
-In this guide, we will describe how to debug a remote ArgoCD environment with [Telepresence](https://telepresence.io/).
+In this guide, we will describe how to debug a remote Hanzo CD environment with [Telepresence](https://telepresence.io/).
 
 Telepresence allows you to connect & debug a service deployed in a remote environment and to "cherry-pick" one service to run locally, staying connected to the remote cluster. This will:
 
@@ -10,25 +10,25 @@ Telepresence allows you to connect & debug a service deployed in a remote enviro
 
 To read more about it, refer to the official documentation at [telepresence.io](https://telepresence.io/) or [Medium](https://medium.com/containers-101/development-environment-using-telepresence-634bd7210c26).
 
-## Install ArgoCD
-First of all, install ArgoCD on your cluster
+## Install Hanzo CD
+First of all, install Hanzo CD on your cluster
 ```shell
-kubectl create ns argocd
-curl -sSfL https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml | kubectl apply -n argocd -f -
+kubectl create ns cd
+curl -sSfL https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml | kubectl apply -n cd -f -
 ```
 
 ## Connect
-Connect to one of the services, for example, to debug the main ArgoCD server run:
+Connect to one of the services, for example, to debug the main Hanzo CD server run:
 ```shell
-kubectl config set-context --current --namespace argocd
+kubectl config set-context --current --namespace cd
 telepresence helm install --set-json agent.securityContext={} # Installs telepresence into your cluster
 telepresence connect # Starts the connection to your cluster (bound to the current namespace)
-telepresence intercept argocd-server --port 8080:http --env-file .envrc.remote # Starts the interception
+telepresence intercept cd-server --port 8080:http --env-file .envrc.remote # Starts the interception
 ```
-* `--port` forwards traffic of remote port http to 8080 locally (use `--port 8080:https` if argocd-server terminates TLS)
+* `--port` forwards traffic of remote port http to 8080 locally (use `--port 8080:https` if cd-server terminates TLS)
 * `--env-file` writes all the environment variables of the remote pod into a local file, the variables are also set on the subprocess of the `--run` command
 
-With this, any traffic that hits your argocd-server service in the cluster (e.g. through a LB / ingress) will be forwarded to your laptop on port 8080. So that you can now start argocd-server locally to debug or test new code. If you launch argocd-server using the environment variables in `.envrc.remote`, it is able to fetch all the configmaps, secrets and so on from the cluster and transparently connect to the other microservices so that no further configuration should be necessary, and it behaves exactly the same as in the cluster.
+With this, any traffic that hits your cd-server service in the cluster (e.g. through a LB / ingress) will be forwarded to your laptop on port 8080. So that you can now start cd-server locally to debug or test new code. If you launch cd-server using the environment variables in `.envrc.remote`, it is able to fetch all the configmaps, secrets and so on from the cluster and transparently connect to the other microservices so that no further configuration should be necessary, and it behaves exactly the same as in the cluster.
 
 List current status of Telepresence using:
 ```shell
@@ -37,7 +37,7 @@ telepresence status
 
 Stop the intercept using:
 ```shell
-telepresence leave argocd-server
+telepresence leave cd-server
 ```
 
 And uninstall telepresence from your cluster:
@@ -50,9 +50,9 @@ See [this quickstart](https://www.telepresence.io/docs/latest/quick-start/) for 
 ### Connect (telepresence v1)
 Use the following command instead:
 ```shell
-telepresence --swap-deployment argocd-server --namespace argocd --env-file .envrc.remote --expose 8080:8080 --expose 8083:8083 --run bash
+telepresence --swap-deployment cd-server --namespace cd --env-file .envrc.remote --expose 8080:8080 --expose 8083:8083 --run bash
 ```
-* `--swap-deployment` changes the argocd-server deployment
+* `--swap-deployment` changes the cd-server deployment
 * `--expose` forwards traffic of remote ports 8080 and 8083 to the same ports locally
 * `--env-file` writes all the environment variables of the remote pod into a local file, the variables are also set on the subprocess of the `--run` command
 * `--run` defines which command to run once a connection is established, use `bash`, `zsh` or others
@@ -62,14 +62,14 @@ Once a connection is established, use your favorite tools to start the server lo
 
 ### Terminal
 * Compile `make server`
-* Run `./dist/argocd-server`
+* Run `./dist/cd-server`
 
 ### VSCode
-In VSCode use the following launch configuration to run argocd-server:
+In VSCode use the following launch configuration to run cd-server:
 
 ```json
         {
-            "name": "Launch argocd-server",
+            "name": "Launch cd-server",
             "type": "go",
             "request": "launch",
             "mode": "auto",
@@ -78,7 +78,7 @@ In VSCode use the following launch configuration to run argocd-server:
                 "${workspaceFolder}/.envrc.remote",
             ],
             "env": {
-                "CD_BINARY_NAME": "argocd-server",
+                "CD_BINARY_NAME": "cd-server",
                 "CGO_ENABLED": "0",
                 "KUBECONFIG": "/path/to/kube/config"
             }

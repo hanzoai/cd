@@ -1,8 +1,8 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: test-hello-world-appset
-  namespace: argocd
+  namespace: cd
 spec:
   generators:
     # The list generator generates a set of two application which then filter by the key value to only select the env with value staging
@@ -21,7 +21,7 @@ spec:
             project: "default"
             source:
               revision: HEAD
-              repoURL: https://github.com/argoproj/argo-cd.git
+              repoURL: https://github.com/hanzoai/cd.git
               # New path value is generated here:
               path: 'applicationset/examples/template-override/{{cluster}}-override'
             destination: {}
@@ -43,7 +43,7 @@ spec:
 
     # Git generator generates parameters either from directory structure of files within a git repo
     - git:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         # OPTIONAL: use directory structure of git repo to generate parameters
         directories:
         - path: applicationset/examples/git-generator-directory/excludes/cluster-addons/*
@@ -138,7 +138,7 @@ spec:
         # NOTE, that if a repository exists but is inaccessible due to
         # access rights, SCM providers usually return a "404 Not Found" error
         # instead of a "403 Permission Denied" error. Consequently, using this
-        # option may lead to the deletion of Argo CD applications if the SCM
+        # option may lead to the deletion of Hanzo CD applications if the SCM
         # user associated with the token loses access to the repository.
 
         continueOnRepoNotFoundError: false
@@ -162,10 +162,10 @@ spec:
           - preview
 
         # Filters allow selecting which pull requests to generate for
-        # Include any pull request branch ending with "argocd" 
+        # Include any pull request branch ending with "cd" 
         # and pull request title starting with "feat:". (optional)
         filters:
-        - branchMatch: ".*-argocd"
+        - branchMatch: ".*-cd"
         - titleMatch: "^feat:"
 
         # Specify the project from which to fetch the GitLab merge requests.
@@ -260,7 +260,7 @@ spec:
       source:
         chart: '{{.chart}}'
         # developers may customize app details using JSON files from above repo URL
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         # Path within the repository where Kubernetes manifests are located
         path: applicationset/examples/list-generator/guestbook/{{cluster}}
@@ -275,7 +275,7 @@ spec:
           value: "{{end}}"
       destination:
         # Only one of name or server may be specified: if both are specified, an error is returned.
-        #  Name of the cluster (within Argo CD) to deploy to
+        #  Name of the cluster (within Hanzo CD) to deploy to
         name: production-cluster # cluster is restricted
         #  API Server URL for the cluster
         server: '{{.url}}'

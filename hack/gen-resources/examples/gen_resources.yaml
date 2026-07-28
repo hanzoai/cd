@@ -9,8 +9,8 @@ application:
 cluster:
   samples: 2
   namespacePrefix: vcluster
-  valuesFilePath: /Users/argocd/.kube/util/values.yaml
-  destinationNamespace: argocd
+  valuesFilePath: /Users/cd/.kube/util/values.yaml
+  destinationNamespace: cd
   clusterNamePrefix: test
 
 repository:
@@ -19,4 +19,4 @@ repository:
 project:
   samples: 15
 
-namespace: argocd
+namespace: cd

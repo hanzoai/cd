@@ -13,12 +13,12 @@ import (
 
 func TestTreeViewAppGet(t *testing.T) {
 	var parent v1alpha1.ResourceNode
-	parent.ResourceRef = v1alpha1.ResourceRef{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
+	parent.ResourceRef = v1alpha1.ResourceRef{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
 	objs := make(map[string]v1alpha1.ResourceNode)
 	objs["87f3aab0-f634-4b2c-959a-7ddd30675ed0"] = parent
 	var child v1alpha1.ResourceNode
 	child.ResourceRef = v1alpha1.ResourceRef{Group: "apps", Version: "v1", Kind: "ReplicaSet", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5", UID: "75c30dce-1b66-414f-a86c-573a74be0f40"}
-	child.ParentRefs = []v1alpha1.ResourceRef{{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
+	child.ParentRefs = []v1alpha1.ResourceRef{{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
 
 	objs["75c30dce-1b66-414f-a86c-573a74be0f40"] = child
 
@@ -33,7 +33,7 @@ func TestTreeViewAppGet(t *testing.T) {
 		Message: "No Issues",
 		Name:    "sandbox-rollout-numalogic-demo",
 		Kind:    "Rollout",
-		Group:   "argoproj.io",
+		Group:   "apps.hanzo.ai",
 	}
 
 	buf := &bytes.Buffer{}
@@ -50,12 +50,12 @@ func TestTreeViewAppGet(t *testing.T) {
 
 func TestTreeViewDetailedAppGet(t *testing.T) {
 	var parent v1alpha1.ResourceNode
-	parent.ResourceRef = v1alpha1.ResourceRef{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
+	parent.ResourceRef = v1alpha1.ResourceRef{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
 	objs := make(map[string]v1alpha1.ResourceNode)
 	objs["87f3aab0-f634-4b2c-959a-7ddd30675ed0"] = parent
 	var child v1alpha1.ResourceNode
 	child.ResourceRef = v1alpha1.ResourceRef{Group: "apps", Version: "v1", Kind: "ReplicaSet", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5", UID: "75c30dce-1b66-414f-a86c-573a74be0f40"}
-	child.ParentRefs = []v1alpha1.ResourceRef{{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
+	child.ParentRefs = []v1alpha1.ResourceRef{{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
 	child.Health = &v1alpha1.HealthStatus{Status: "Degraded", Message: "Readiness Gate failed"}
 	objs["75c30dce-1b66-414f-a86c-573a74be0f40"] = child
 
@@ -70,7 +70,7 @@ func TestTreeViewDetailedAppGet(t *testing.T) {
 		Message: "No Issues",
 		Name:    "sandbox-rollout-numalogic-demo",
 		Kind:    "Rollout",
-		Group:   "argoproj.io",
+		Group:   "apps.hanzo.ai",
 	}
 
 	buf := &bytes.Buffer{}
@@ -91,12 +91,12 @@ func TestTreeViewDetailedAppGet(t *testing.T) {
 
 func TestTreeViewAppResources(t *testing.T) {
 	var parent v1alpha1.ResourceNode
-	parent.ResourceRef = v1alpha1.ResourceRef{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
+	parent.ResourceRef = v1alpha1.ResourceRef{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
 	objs := make(map[string]v1alpha1.ResourceNode)
 	objs["87f3aab0-f634-4b2c-959a-7ddd30675ed0"] = parent
 	var child v1alpha1.ResourceNode
 	child.ResourceRef = v1alpha1.ResourceRef{Group: "apps", Version: "v1", Kind: "ReplicaSet", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5", UID: "75c30dce-1b66-414f-a86c-573a74be0f40"}
-	child.ParentRefs = []v1alpha1.ResourceRef{{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
+	child.ParentRefs = []v1alpha1.ResourceRef{{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
 
 	objs["75c30dce-1b66-414f-a86c-573a74be0f40"] = child
 
@@ -122,7 +122,7 @@ func TestTreeViewAppResources(t *testing.T) {
 	assert.Contains(t, output, "ReplicaSet")
 	assert.Contains(t, output, "Rollout")
 	assert.Contains(t, output, "numalogic-rollout")
-	assert.Contains(t, output, "argoproj.io")
+	assert.Contains(t, output, "apps.hanzo.ai")
 	assert.Contains(t, output, "No")
 	assert.Contains(t, output, "Yes")
 	assert.Contains(t, output, "numalogic-rollout-demo-5dcdnk457d5")
@@ -130,12 +130,12 @@ func TestTreeViewAppResources(t *testing.T) {
 
 func TestTreeViewDetailedAppResources(t *testing.T) {
 	var parent v1alpha1.ResourceNode
-	parent.ResourceRef = v1alpha1.ResourceRef{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
+	parent.ResourceRef = v1alpha1.ResourceRef{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}
 	objs := make(map[string]v1alpha1.ResourceNode)
 	objs["87f3aab0-f634-4b2c-959a-7ddd30675ed0"] = parent
 	var child v1alpha1.ResourceNode
 	child.ResourceRef = v1alpha1.ResourceRef{Group: "apps", Version: "v1", Kind: "ReplicaSet", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo-5dcd5457d5", UID: "75c30dce-1b66-414f-a86c-573a74be0f40"}
-	child.ParentRefs = []v1alpha1.ResourceRef{{Group: "argoproj.io", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
+	child.ParentRefs = []v1alpha1.ResourceRef{{Group: "apps.hanzo.ai", Version: "", Kind: "Rollout", Namespace: "sandbox-rollout-numalogic-demo", Name: "numalogic-rollout-demo", UID: "87f3aab0-f634-4b2c-959a-7ddd30675ed0"}}
 	objs["75c30dce-1b66-414f-a86c-573a74be0f40"] = child
 	childMapping := make(map[string][]string)
 	childMapping["87f3aab0-f634-4b2c-959a-7ddd30675ed0"] = []string{"75c30dce-1b66-414f-a86c-573a74be0f40"}
@@ -160,7 +160,7 @@ func TestTreeViewDetailedAppResources(t *testing.T) {
 	assert.Contains(t, output, "ReplicaSet")
 	assert.Contains(t, output, "Rollout")
 	assert.Contains(t, output, "numalogic-rollout")
-	assert.Contains(t, output, "argoproj.io")
+	assert.Contains(t, output, "apps.hanzo.ai")
 	assert.Contains(t, output, "No")
 	assert.Contains(t, output, "Yes")
 	assert.Contains(t, output, "numalogic-rollout-demo-5dcdnk457d5")

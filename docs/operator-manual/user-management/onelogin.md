@@ -9,13 +9,13 @@
 <div style="text-align:center"><img src="../../../assets/argo.png" /></div>
 <!-- markdownlint-enable MD033 -->
 
-# Integrating OneLogin and ArgoCD
+# Integrating OneLogin and Hanzo CD
 
-These instructions will take you through the entire process of getting your ArgoCD application authenticating with OneLogin. You will create a custom OIDC application within OneLogin and configure ArgoCD to use OneLogin for authentication, using UserRoles set in OneLogin to determine privileges in Argo.
+These instructions will take you through the entire process of getting your Hanzo CD application authenticating with OneLogin. You will create a custom OIDC application within OneLogin and configure Hanzo CD to use OneLogin for authentication, using UserRoles set in OneLogin to determine privileges in Argo.
 
 ## Creating and Configuring OneLogin App
 
-For your ArgoCD application to communicate with OneLogin, you will first need to create and configure the OIDC application on the OneLogin side.
+For your Hanzo CD application to communicate with OneLogin, you will first need to create and configure the OIDC application on the OneLogin side.
 
 ### Create OIDC Application
 
@@ -25,7 +25,7 @@ To create the application, do the following:
 2. Click "Add App".
 3. Search for "OpenID Connect" in the search field.
 4. Select the "OpenId Connect (OIDC)" app to create.
-5. Update the "Display Name" field (could be something like "ArgoCD (Production)").
+5. Update the "Display Name" field (could be something like "Hanzo CD (Production)").
 6. Click "Save".
 
 ### Configuring OIDC Application Settings
@@ -37,8 +37,8 @@ Now that the application is created, you can configure the settings of the app.
 Update the "Configuration" settings as follows:
 
 1. Select the "Configuration" tab on the left.
-2. Set the "Login Url" field to https://argocd.myproject.com/auth/login, replacing the hostname with your own.
-3. Set the "Redirect Url" field to https://argocd.myproject.com/auth/callback, replacing the hostname with your own.
+2. Set the "Login Url" field to https://cd.myproject.com/auth/login, replacing the hostname with your own.
+3. Set the "Redirect Url" field to https://cd.myproject.com/auth/callback, replacing the hostname with your own.
 4. Click "Save".
 
 > [!NOTE]
@@ -52,7 +52,7 @@ You can update the "Display Name", "Description", "Notes", or the display images
 
 This tab controls what information is sent to Argo in the token. By default it will contain a Groups field and "Credentials are" is set to "Configured by admin". Leave "Credentials are" as the default.
 
-How the Value of the Groups field is configured will vary based on your needs, but to use OneLogin User roles for ArgoCD privileges, configure the Value of the Groups field with the following:
+How the Value of the Groups field is configured will vary based on your needs, but to use OneLogin User roles for Hanzo CD privileges, configure the Value of the Groups field with the following:
 
 1. Click "Groups". A modal appears.
 2. Set the "Default if no value selected" field to "User Roles".
@@ -77,7 +77,7 @@ To get up and running, you do not need to make modifications to any settings her
 
 #### SSO Tab
 
-This tab contains much of the information needed to be placed into your ArgoCD configuration file (API endpoints, client ID, client secret).
+This tab contains much of the information needed to be placed into your Hanzo CD configuration file (API endpoints, client ID, client secret).
 
 Confirm "Application Type" is set to "Web".
 
@@ -101,24 +101,24 @@ This tab shows which OneLogin users can configure this app.
 
 To get up and running, you do not need to make modifications to any settings here.
 
-## Updating OIDC configuration in ArgoCD
+## Updating OIDC configuration in Hanzo CD
 
 Now that the OIDC application is configured in OneLogin, you can update Argo configuration to communicate with OneLogin, as well as control permissions for those users that authenticate via OneLogin.
 
 ### Tell Argo where OneLogin is
 
-Argo needs to have its config map (argocd-cm) updated in order to communicate with OneLogin. Consider the following yaml:
+Argo needs to have its config map (cd-cm) updated in order to communicate with OneLogin. Consider the following yaml:
 
 ```
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: cd
 data:
-  url: https://<argocd.myproject.com>
+  url: https://<cd.myproject.com>
   oidc.config: |
     name: OneLogin
     issuer: https://<subdomain>.onelogin.com/oidc/2
@@ -142,16 +142,16 @@ The "clientSecret" value is a client secret located in the SSO tab of the OneLog
 
 ### Configure Permissions for OneLogin Auth'd Users
 
-Permissions in ArgoCD can be configured by using the OneLogin role names that are passed in the Groups field in the token. Consider the following yaml in argocd-rbac-cm.yaml:
+Permissions in Hanzo CD can be configured by using the OneLogin role names that are passed in the Groups field in the token. Consider the following yaml in cd-rbac-cm.yaml:
 
 ```
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-rbac-cm
-  namespace: argocd
+  name: cd-rbac-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: cd
 data:
   policy.default: role:readonly
   policy.csv: |
@@ -165,4 +165,4 @@ data:
     g, TestEngineering, role:org-admin
 ```
 
-In OneLogin, a user with user role "TestEngineering" will receive ArgoCD admin privileges when they log in to Argo via OneLogin. All other users will receive the readonly role. The key takeaway here is that "TestEngineering" is passed via the Group field in the token (which is specified in the Parameters tab in OneLogin).
+In OneLogin, a user with user role "TestEngineering" will receive Hanzo CD admin privileges when they log in to Argo via OneLogin. All other users will receive the readonly role. The key takeaway here is that "TestEngineering" is passed via the Group field in the token (which is specified in the Parameters tab in OneLogin).

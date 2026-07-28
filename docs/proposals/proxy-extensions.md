@@ -17,7 +17,7 @@ creation-date: 2022-07-23
 
 ---
 
-# Reverse-Proxy Extensions support for Argo CD
+# Reverse-Proxy Extensions support for Hanzo CD
 
 Enable UI extensions to use a backend service.
 
@@ -37,18 +37,18 @@ Enable UI extensions to use a backend service.
 
 ## Summary
 
-Argo CD currently supports the creation of [UI extensions][1] allowing
+Hanzo CD currently supports the creation of [UI extensions][1] allowing
 developers to define the visual content of the "more" tab inside
 a specific resource. Developers are able to access the resource state to
 build the UI. However, currently it isn't possible to use a backend
 service to provide additional functionality to extensions. This proposal
-defines a new reverse proxy feature in Argo CD, allowing developers to
+defines a new reverse proxy feature in Hanzo CD, allowing developers to
 create a backend service that can be used in UI extensions. Extensions
-backend code will live outside Argo CD main repository.
+backend code will live outside Hanzo CD main repository.
 
 ## Motivation
 
-The initiative to implement the anomaly detection capability in Argo CD
+The initiative to implement the anomaly detection capability in Hanzo CD
 highlighted the need to improve the existing UI extensions feature. The
 new capability will require the UI to have access to data that isn't
 available as part of Application's owned resources. It is necessary to
@@ -58,37 +58,37 @@ information can be displayed.
 ## Goals
 
 The following goals are desired but not necessarily all must be
-implemented in a given Argo CD release:
+implemented in a given Hanzo CD release:
 
-#### [G-1] Argo CD (API Server) must have low performance impact when running extensions
+#### [G-1] Hanzo CD (API Server) must have low performance impact when running extensions
 
-Argo CD API server is a critical component as it serves all APIs used by
-the CLI as well as the UI. The Argo CD team has no control over what is
+Hanzo CD API server is a critical component as it serves all APIs used by
+the CLI as well as the UI. The Hanzo CD team has no control over what is
 going to be executed in extension's backend service. Thus it is important
 that the reverse proxy implementation to cause the lowest possible impact
 in the API server while processing high latency requests.
 
 Possible solutions:
-- Implement a rate limit layer to protect Argo CD API server
+- Implement a rate limit layer to protect Hanzo CD API server
 - Implement configurable different types of timeouts (idle connection,
-  duration, etc) between Argo CD API server and backend services.
+  duration, etc) between Hanzo CD API server and backend services.
 - Implement the reverse proxy as a separate server/pod (needs discussion).
 
 ----
 
-#### [G-2] Argo CD admins should be able to define rbacs to define which users can invoke specific extensions
+#### [G-2] Hanzo CD admins should be able to define rbacs to define which users can invoke specific extensions
 
-Argo CD Admins must be able to define which extensions are allowed to be
-executed by the logged in user. This should be fine grained by Argo CD
+Hanzo CD Admins must be able to define which extensions are allowed to be
+executed by the logged in user. This should be fine grained by Hanzo CD
 project like the current rbac implementation.
 
 ----
 
-#### [G-3] Argo CD deployment should be independent from backend services
+#### [G-3] Hanzo CD deployment should be independent from backend services
 
 Extension developers should be able to deploy their backend services
-independently from Argo CD. An extension can evolve their internal API and
-deploying a new version shouldn't require Argo CD to be updated or
+independently from Hanzo CD. An extension can evolve their internal API and
+deploying a new version shouldn't require Hanzo CD to be updated or
 restarted.
 
 ----
@@ -97,9 +97,9 @@ restarted.
 
 *Not in the first release*
 
-[Argo CD extensions][2] is an `argoproj-labs` project that supports loading
+[Hanzo CD extensions][2] is an `argoproj-labs` project that supports loading
 extensions in runtime. Currently the project is implementing a controller
-that defines and reconciles the custom resource `ArgoCDExtension`. This
+that defines and reconciles the custom resource `Hanzo CDExtension`. This
 CRD should be enhanced to provide the ability to define backend services
 that will be used by the extension. Once configured UI can send requests
 to API server in a specific endpoint. API server will act as a reverse
@@ -108,12 +108,12 @@ backend service.
 
 Example:
 ```yaml 
-apiVersion: argoproj.io/v1alpha1
-kind: ArgoCDExtension
+apiVersion: apps.hanzo.ai/v1alpha1
+kind: Hanzo CDExtension
 metadata:
   name: my-cool-extension
   finalizers:
-    - extensions-finalizer.argocd.argoproj.io
+    - extensions-finalizer.cd.hanzo.ai
 spec:
   sources:
     - git:
@@ -124,31 +124,31 @@ spec:
 ```
 
 **Note**: While this is a nice-to-have, it won't be part of the first proxy
-extension version. This would need to be considered if Argo CD extensions
+extension version. This would need to be considered if Hanzo CD extensions
 eventually get traction.
 
 ----
 
 #### [G-5] Setup multiple backend services for the same extension
 
-In case of one Argo CD instance managing applications in multiple clusters, it
+In case of one Hanzo CD instance managing applications in multiple clusters, it
 will be necessary to configure backend service URLs per cluster for the same
 extension. This should be an optional configuration. If only one URL is
 configured, that one should be used for all clusters.
 
 ----
 
-#### [G-6] Provide safe communication channel between Argo CD API server and extension backend
+#### [G-6] Provide safe communication channel between Hanzo CD API server and extension backend
 
-Argo CD API server should provide configuration for establishing a safe communication
+Hanzo CD API server should provide configuration for establishing a safe communication
 channel with the extension backend. This can be achieved similarly to how Kubernetes
 API Server does to [authenticate with aggregated servers][5] by using certificates.
 
 ## Non-Goals
 
-It isn't in the scope of this proposal to specify commands in the Argo CD
+It isn't in the scope of this proposal to specify commands in the Hanzo CD
 CLI. This proposal covers the reverse-proxy extension spec that will be
-used by Argo CD UI.
+used by Hanzo CD UI.
 
 ## Proposal
 
@@ -157,14 +157,14 @@ used by Argo CD UI.
 The following use cases should be implemented for the conclusion of this
 proposal:
 
-#### [UC-1]: As an Argo CD admin, I want to configure a backend services so it can be used by my UI extension
+#### [UC-1]: As an Hanzo CD admin, I want to configure a backend services so it can be used by my UI extension
 
-Define a new section in the Argo CD configmap ([argocd-cm.yaml][4])
+Define a new section in the Hanzo CD configmap ([cd-cm.yaml][4])
 allowing admins to register and configure new extensions. All enabled
-extensions backend will be available to be invoked by the Argo CD UI under
+extensions backend will be available to be invoked by the Hanzo CD UI under
 the following API base path:
 
-`<argocd-host>/api/v1/extensions/<extension-name>`
+`<cd-host>/api/v1/extensions/<extension-name>`
 
 With the configuration below, the expected behavior is explained in the
 following examples:
@@ -182,19 +182,19 @@ extension.config: |
 
 - **Example 1**:
 
-Argo CD API server acts as a reverse-proxy forwarding http requests as
+Hanzo CD API server acts as a reverse-proxy forwarding http requests as
 follows:
 
 ```
    ┌────────────┐
-   │ Argo CD UI │
+   │ Hanzo CD UI │
    └──────┬─────┘
           │
           │ GET http://argo.com/api/v1/extensions/some-extension
           │
           ▼
  ┌──────────────────┐
- │Argo CD API Server│
+ │Hanzo CD API Server│
  └────────┬─────────┘
           │
           │ GET http://extension-name.com:8080
@@ -207,19 +207,19 @@ follows:
 
 - **Example 2**:
 
-If a backend provides an API under the `/apiv1/metrics` endpoint, Argo CD
+If a backend provides an API under the `/apiv1/metrics` endpoint, Hanzo CD
 should be able to invoke it such as:
 
 ```
    ┌────────────┐
-   │ Argo CD UI │
+   │ Hanzo CD UI │
    └──────┬─────┘
           │
           │ GET http://argo.com/api/v1/extensions/some-extension/apiv1/metrics/123
           │
           ▼
  ┌──────────────────┐
- │Argo CD API Server│
+ │Hanzo CD API Server│
  └────────┬─────────┘
           │
           │ GET http://extension-name.com:8080/apiv1/metrics/123
@@ -232,7 +232,7 @@ should be able to invoke it such as:
 
 - **Example 3**:
 
-In this use-case we have one Argo CD instance connected with different
+In this use-case we have one Hanzo CD instance connected with different
 clusters. There is a requirement defining that every extension instance
 needs to be deployed in each of the target clusters. To address this
 use-case there is a need to configure multiple backend URLs for the
@@ -254,7 +254,7 @@ extension.config: |
 ```
 
 Note that there is an URL configuration per cluster name. The cluster
-name is extracted from the Argo CD cluster secret and must match the
+name is extracted from the Hanzo CD cluster secret and must match the
 field `data.name`. In this case the UI must send the header
 `Argocd-Application-Name` with the full qualified application name
 (`<namespace>/<application-name>`).
@@ -267,13 +267,13 @@ With this information, API Server can check in which cluster it should
 get the backend URL from. This will be done by inspecting the
 Application destination configuration to find the proper cluster name.
 
-The diagram below shows how Argo CD UI could send the request with
+The diagram below shows how Hanzo CD UI could send the request with
 the additional header to get the proxy forwarding it to the proper
 cluster:
 
 ```
    ┌────────────┐
-   │ Argo CD UI │
+   │ Hanzo CD UI │
    └──────┬─────┘
           │
           │ GET http://argo.com/api/v1/extensions/some-extension
@@ -281,7 +281,7 @@ cluster:
           │
           ▼
  ┌──────────────────┐
- │Argo CD API Server│
+ │Hanzo CD API Server│
  └────────┬─────────┘
           │
           │ GET https://extension-name.ppd.cluster.k8s.local:8080
@@ -299,19 +299,19 @@ cluster:
   error (408) should be returned to the browser.
 - Scheme, http verb and request body are forwarded as it is
   received by the API server to the backend service.
-- Headers will be filtered and not forwarded as it is received in Argo CD
+- Headers will be filtered and not forwarded as it is received in Hanzo CD
   API server. Sensitive headers will be removed (e.g. `Cookie`).
 - A new header is added in the forwarded request (`X-Forwarded-Host`) to
   allow ssl redirection.
 - This proposal doesn't specify how backends should implement authz or
   authn. This topic could be discussed as a future enhancement to the
-  proxy extension feature in Argo CD.
+  proxy extension feature in Hanzo CD.
 
 ----
 
-#### [UC-2]: As an Argo CD admin, I want to define extensions rbacs so access permissions can be enforced
+#### [UC-2]: As an Hanzo CD admin, I want to define extensions rbacs so access permissions can be enforced
 
-Extend Argo CD rbac registering a new `ResourceType` for extensions in the
+Extend Hanzo CD rbac registering a new `ResourceType` for extensions in the
 [policy configuration][3]. The current policy permission configuration is
 defined as:
 
@@ -390,9 +390,9 @@ The final RBAC format must be defined and properly documented during implementat
 
 ### Security Considerations
 
-- Argo CD API Server must apply **authn** and **authz** for all incoming
+- Hanzo CD API Server must apply **authn** and **authz** for all incoming
   extensions requests
-- Argo CD must authorize requests coming from UI and check that the
+- Hanzo CD must authorize requests coming from UI and check that the
   authenticated user has access to invoke a specific URL belonging to an
   extension
 
@@ -402,9 +402,9 @@ The final RBAC format must be defined and properly documented during implementat
 
 ## Drawbacks
 
-- Slight increase in Argo CD code base complexity.
+- Slight increase in Hanzo CD code base complexity.
 - Increased security risk.
-- Impact of extensions on overall Argo CD performance (mitigated by rate limiting + idle conn timeout).
+- Impact of extensions on overall Hanzo CD performance (mitigated by rate limiting + idle conn timeout).
 
 ## Open Questions
 
@@ -418,8 +418,8 @@ functionality. If this requirement becomes necessary, it won't be a
 breaking change as it will be more restrictive.
 
 [1]: https://argo-cd.readthedocs.io/en/stable/developer-guide/ui-extensions/
-[2]: https://github.com/argoproj-labs/argocd-extensions
-[3]: https://github.com/argoproj/argo-cd/blob/a23bfc3acaa464cbdeafdbbe66d05a121d5d1fb3/server/rbacpolicy/rbacpolicy.go#L17-L25
-[4]: https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-cm.yaml
+[2]: https://github.com/argoproj-labs/cd-extensions
+[3]: https://github.com/hanzoai/cd/blob/a23bfc3acaa464cbdeafdbbe66d05a121d5d1fb3/server/rbacpolicy/rbacpolicy.go#L17-L25
+[4]: https://argo-cd.readthedocs.io/en/stable/operator-manual/cd-cm.yaml
 [5]: https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#authentication-flow
-[6]: https://github.com/argoproj/argo-cd/pull/10435#discussion_r986941880
+[6]: https://github.com/hanzoai/cd/pull/10435#discussion_r986941880

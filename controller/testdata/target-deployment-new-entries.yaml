@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    argocd.argoproj.io/tracking-id: 'guestbook:apps/Deployment:default/kustomize-guestbook-ui'
+    cd.hanzo.ai/tracking-id: 'guestbook:apps/Deployment:default/kustomize-guestbook-ui'
     iksm-version: '1.0'
   name: kustomize-guestbook-ui
   namespace: default
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: guestbook-ui
-          image: 'quay.io/argoprojlabs/argocd-e2e-container:0.1'
+          image: 'quay.io/argoprojlabs/cd-e2e-container:0.1'
           env:
             - name: SOME_ENV_VAR
               value: some_value

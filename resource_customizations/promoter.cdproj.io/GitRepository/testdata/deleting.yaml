@@ -1,11 +1,11 @@
-apiVersion: promoter.argoproj.io/v1alpha1
+apiVersion: promoter.apps.hanzo.ai/v1alpha1
 kind: GitRepository
 metadata:
   name: app-repo
   namespace: gitops-promoter
   deletionTimestamp: "2025-07-04T12:00:00Z"
   finalizers:
-    - gitrepository.promoter.argoproj.io/finalizer
+    - gitrepository.promoter.apps.hanzo.ai/finalizer
 spec:
   scmProviderRef:
     kind: ScmProvider

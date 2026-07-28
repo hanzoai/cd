@@ -5,17 +5,17 @@
 >
 > This page is now deprecated and serves as an archive only. For up-to-date
 > information, please have a look at our
-> [security policy](https://github.com/argoproj/argo-cd/security/policy) and
-> [published security advisories](https://github.com/argoproj/argo-cd/security/advisories).
+> [security policy](https://github.com/hanzoai/cd/security/policy) and
+> [published security advisories](https://github.com/hanzoai/cd/security/advisories).
 
-As a deployment tool, Argo CD needs to have production access which makes security a very important topic.
+As a deployment tool, Hanzo CD needs to have production access which makes security a very important topic.
 The Argoproj team takes security very seriously and is continuously working on improving it. Learn more about security
 related features in [Security](./operator-manual/security.md) section.
 
 ## Overview of past and current issues
 
 The following table gives a general overview about past and present issues known
-to the Argo CD project. See in the [Known Issues](#known-issues-and-workarounds)
+to the Hanzo CD project. See in the [Known Issues](#known-issues-and-workarounds)
 section if there is a work-around available if you cannot update or if there is
 no fix yet.
 
@@ -33,7 +33,7 @@ no fix yet.
 ## Known Issues And Workarounds
 
 A recent security audit (thanks a lot to [Matt Hamilton](https://github.com/Eriner) of Soluble AI (acquired by https://www.fortinet.com) )
-has revealed several limitations in Argo CD which could compromise security.
+has revealed several limitations in Hanzo CD which could compromise security.
 Most of the issues are related to the built-in user management implementation.
 
 ### CVE-2020-1747, CVE-2020-14343 - PyYAML library susceptible to arbitrary code execution
@@ -47,7 +47,7 @@ Most of the issues are related to the built-in user management implementation.
 **Details:**
 
 PyYAML library susceptible to arbitrary code execution when it processes untrusted YAML files.
-We do not believe Argo CD is affected by this vulnerability, because the impact of CVE-2020-1747 and CVE-2020-14343 is limited to usage of awscli.
+We do not believe Hanzo CD is affected by this vulnerability, because the impact of CVE-2020-1747 and CVE-2020-14343 is limited to usage of awscli.
 The `awscli` only used for AWS IAM authentication, and the endpoint is the AWS API.
 
 ### CVE-2020-5260 - Possible Git credential leak
@@ -60,29 +60,29 @@ The `awscli` only used for AWS IAM authentication, and the endpoint is the AWS A
 
 **Details:**
 
-Argo CD relies on Git for many of its operations. The Git project released a
+Hanzo CD relies on Git for many of its operations. The Git project released a
 [security advisory](https://github.com/git/git/security/advisories/GHSA-qm7j-c969-7j4q)
 on 2020-04-14, describing a serious vulnerability in Git which can lead to credential
 leakage through credential helpers by feeding malicious URLs to the `git clone`
 operation.
 
-We do not believe Argo CD is affected by this vulnerability, because ArgoCD does neither
+We do not believe Hanzo CD is affected by this vulnerability, because Hanzo CD does neither
 make use of Git credential helpers nor does it use `git clone` for repository operations.
 However, we do not know whether our users might have configured Git credential helpers on
 their own and chose to release new images which contain the bug fix for Git.
 
 **Mitigation and/or workaround:**
 
-We strongly recommend to upgrade your ArgoCD installation to either `v1.4.3` (if on v1.4
+We strongly recommend to upgrade your Hanzo CD installation to either `v1.4.3` (if on v1.4
 branch) or `v1.5.2` (if on v1.5 branch) 
 
 
 When you are running `v1.4.x`, you can upgrade to `v1.4.3` by simply changing the image
-tags for `argocd-server`, `argocd-repo-server` and `argocd-controller` to `v1.4.3`. 
+tags for `cd-server`, `cd-repo-server` and `cd-controller` to `v1.4.3`. 
 The `v1.4.3` release does not contain additional functional bug fixes.
 
 Likewise, when you are running `v1.5.x`, you can upgrade to `v1.5.2` by simply changing
-the image tags for `argocd-server`, `argocd-repo-server` and `argocd-controller` to `v1.5.2`.
+the image tags for `cd-server`, `cd-repo-server` and `cd-controller` to `v1.5.2`.
 The `v1.5.2` release does not contain additional functional bug fixes.
 
 ### CVE-2020-11576 - User Enumeration
@@ -99,7 +99,7 @@ Argo version v1.5.0 was vulnerable to a user-enumeration vulnerability which all
 
 **Mitigation and/or workaround:**
 
-Upgrade to ArgoCD v1.5.1 or higher. As a workaround, disable local users and use only SSO authentication.
+Upgrade to Hanzo CD v1.5.1 or higher. As a workaround, disable local users and use only SSO authentication.
 
 ### CVE-2020-8828 - Insecure default administrative password
 
@@ -111,7 +111,7 @@ Upgrade to ArgoCD v1.5.1 or higher. As a workaround, disable local users and use
 
 **Details:**
 
-Argo CD uses the `argocd-server` pod name (ex: `argocd-server-55594fbdb9-ptsf5`) as the default admin password.
+Hanzo CD uses the `cd-server` pod name (ex: `cd-server-55594fbdb9-ptsf5`) as the default admin password.
 
 Kubernetes users able to list pods in the argo namespace are able to retrieve the default password.
 
@@ -135,13 +135,13 @@ or at least changed to a more secure password.
 
 **Details:**
 
-ArgoCD before v1.5.3 does not enforce rate-limiting or other anti-automation mechanisms which would mitigate admin password brute force.
+Hanzo CD before v1.5.3 does not enforce rate-limiting or other anti-automation mechanisms which would mitigate admin password brute force.
 
 **Mitigation and/or workaround:**
 
-Rate-limiting and anti-automation mechanisms for local user accounts have been introduced with ArgoCD v1.5.3.
+Rate-limiting and anti-automation mechanisms for local user accounts have been introduced with Hanzo CD v1.5.3.
 
-As a workaround for mitigation if you cannot upgrade ArgoCD to v1.5.3 yet, we recommend to disable local users and use SSO instead.
+As a workaround for mitigation if you cannot upgrade Hanzo CD to v1.5.3 yet, we recommend to disable local users and use SSO instead.
 
 ### CVE-2020-8826 - Session-fixation
 
@@ -155,7 +155,7 @@ As a workaround for mitigation if you cannot upgrade ArgoCD to v1.5.3 yet, we re
 
 The authentication tokens generated for built-in users have no expiry.
 
-These issues might be acceptable in the controlled isolated environment but not acceptable if Argo CD user interface is
+These issues might be acceptable in the controlled isolated environment but not acceptable if Hanzo CD user interface is
 exposed to the Internet.
 
 **Mitigation and/or workaround:**
@@ -176,10 +176,10 @@ In Argo versions prior to v1.5.0-rc1, it was possible for authenticated Argo use
 
 **Mitigation and/or workaround:**
 
-Upgrade to ArgoCD v1.5.0 or higher. No workaround available
+Upgrade to Hanzo CD v1.5.0 or higher. No workaround available
 
 ## Reporting Vulnerabilities
 
 Please have a look at our
-[security policy](https://github.com/argoproj/argo-cd/security/policy)
-for more details on how to report security vulnerabilities for Argo CD.
+[security policy](https://github.com/hanzoai/cd/security/policy)
+for more details on how to report security vulnerabilities for Hanzo CD.

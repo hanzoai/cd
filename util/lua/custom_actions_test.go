@@ -57,7 +57,7 @@ func (t testNormalizer) Normalize(un *unstructured.Unstructured) error {
 				return fmt.Errorf("failed to normalize %s: %w", un.GetKind(), err)
 			}
 		}
-	case "argoproj.io":
+	case "apps.hanzo.ai":
 		switch un.GetKind() {
 		case "Rollout":
 			if err := unstructured.SetNestedField(un.Object, nil, "spec", "restartAt"); err != nil {
@@ -70,7 +70,7 @@ func (t testNormalizer) Normalize(un *unstructured.Unstructured) error {
 			if err := unstructured.SetNestedField(un.Object, nil, "metadata", "uid"); err != nil {
 				return fmt.Errorf("failed to normalize %s: %w", un.GetKind(), err)
 			}
-			if err := unstructured.SetNestedField(un.Object, nil, "metadata", "annotations", "workflows.argoproj.io/scheduled-time"); err != nil {
+			if err := unstructured.SetNestedField(un.Object, nil, "metadata", "annotations", "workflows.apps.hanzo.ai/scheduled-time"); err != nil {
 				return fmt.Errorf("failed to normalize %s: %w", un.GetKind(), err)
 			}
 		}

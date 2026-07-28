@@ -14,12 +14,12 @@ It is possible for an application to be `OutOfSync` even immediately after a suc
   To work around this, you can order `spec.metrics` in Git in the same order that the controller
   prefers.
 
-In case it is impossible to fix the upstream issue, Argo CD allows you to optionally ignore differences of problematic resources.
+In case it is impossible to fix the upstream issue, Hanzo CD allows you to optionally ignore differences of problematic resources.
 The diffing customization can be configured for single or multiple application resources or at a system level.
 
 ## Application Level Configuration
 
-Argo CD allows ignoring differences at a specific JSON path, using [RFC6902 JSON patches](https://tools.ietf.org/html/rfc6902) and [JQ path expressions](<https://stedolan.github.io/jq/manual/#path(path_expression)>). It is also possible to ignore differences from fields owned by specific managers defined in `metadata.managedFields` in live resources.
+Hanzo CD allows ignoring differences at a specific JSON path, using [RFC6902 JSON patches](https://tools.ietf.org/html/rfc6902) and [JQ path expressions](<https://stedolan.github.io/jq/manual/#path(path_expression)>). It is also possible to ignore differences from fields owned by specific managers defined in `metadata.managedFields` in live resources.
 
 The following sample application is configured to ignore differences in `spec.replicas` for all deployments:
 
@@ -83,7 +83,7 @@ spec:
 ## System-Level Configuration
 
 The comparison of resources with well-known issues can be customized at a system level. Ignored differences can be configured for a specified group and kind
-in `resource.customizations` key of `argocd-cm` ConfigMap. Following is an example of a customization which ignores the `caBundle` field
+in `resource.customizations` key of `cd-cm` ConfigMap. Following is an example of a customization which ignores the `caBundle` field
 of a `MutatingWebhookConfiguration` webhooks:
 
 ```yaml
@@ -94,7 +94,7 @@ data:
     - '.webhooks[]?.clientConfig.caBundle'
 ```
 
-Resource customization can also be configured to ignore all differences made by a `managedField.manager` at the system level. The example below shows how to configure Argo CD to ignore changes made by `kube-controller-manager` in `Deployment` resources.
+Resource customization can also be configured to ignore all differences made by a `managedField.manager` at the system level. The example below shows how to configure Hanzo CD to ignore changes made by `kube-controller-manager` in `Deployment` resources.
 
 ```yaml
 data:
@@ -103,7 +103,7 @@ data:
     - kube-controller-manager
 ```
 
-It is possible to configure `ignoreDifferences` to be applied to all resources in every Application managed by an Argo CD instance. In order to do so, resource customizations can be configured like in the example below:
+It is possible to configure `ignoreDifferences` to be applied to all resources in every Application managed by an Hanzo CD instance. In order to do so, resource customizations can be configured like in the example below:
 
 ```yaml
 data:
@@ -134,13 +134,13 @@ If you rely on the status field being part of your desired state, although this 
 
 ### Ignoring RBAC changes made by AggregateRoles
 
-If you are using [Aggregated ClusterRoles](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) and don't want Argo CD to detect the `rules` changes as drift, you can set `resource.compareoptions.ignoreAggregatedRoles: true`. Then Argo CD will no longer detect these changes as an event that requires syncing.
+If you are using [Aggregated ClusterRoles](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) and don't want Hanzo CD to detect the `rules` changes as drift, you can set `resource.compareoptions.ignoreAggregatedRoles: true`. Then Hanzo CD will no longer detect these changes as an event that requires syncing.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
+  name: cd-cm
 data:
   resource.compareoptions: |
     # disables status field diffing in specified resource types
@@ -153,7 +153,7 @@ Some CRDs are re-using data structures defined in the Kubernetes source base and
 JSON/YAML marshaling. Custom marshalers might serialize CRDs in a slightly different format that causes false
 positives during drift detection.
 
-A typical example is the `argoproj.io/Rollout` CRD that re-using `core/v1/PodSpec` data structure. Pod resource requests
+A typical example is the `apps.hanzo.ai/Rollout` CRD that re-using `core/v1/PodSpec` data structure. Pod resource requests
 might be reformatted by the custom marshaller of `IntOrString` data type:
 
 from:
@@ -173,19 +173,19 @@ resources:
 ```
 
 The solution is to specify which CRDs fields are using built-in Kubernetes types in the `resource.customizations`
-section of `argocd-cm` ConfigMap:
+section of `cd-cm` ConfigMap:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
-  resource.customizations.knownTypeFields.argoproj.io_Rollout: |
+  resource.customizations.knownTypeFields.apps.hanzo.ai_Rollout: |
     - field: spec.template.spec
       type: core/v1/PodSpec
 ```
@@ -197,13 +197,13 @@ The list of supported Kubernetes types is available in [diffing_known_types.txt]
 
 ### JQ Path expression timeout
 
-By default, the evaluation of a JQPathExpression is limited to one second. If you encounter a "JQ patch execution timed out" error message due to a complex JQPathExpression that requires more time to evaluate, you can extend the timeout period by configuring the `ignore.normalizer.jq.timeout` setting within the `argocd-cmd-params-cm` ConfigMap.
+By default, the evaluation of a JQPathExpression is limited to one second. If you encounter a "JQ patch execution timed out" error message due to a complex JQPathExpression that requires more time to evaluate, you can extend the timeout period by configuring the `ignore.normalizer.jq.timeout` setting within the `cd-cmd-params-cm` ConfigMap.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cmd-params-cm
+  name: cd-cmd-params-cm
 data:
   ignore.normalizer.jq.timeout: '5s'
 ```

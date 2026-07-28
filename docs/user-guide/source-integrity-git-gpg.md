@@ -7,31 +7,31 @@ Verify that commits in the source repository are correctly signed with one of th
 > [!NOTE]
 > **A few words about trust**
 >
-> ArgoCD uses a very simple trust model for the keys you import: Once the key
-> is imported, ArgoCD will trust it. ArgoCD does not support more complex
+> Hanzo CD uses a very simple trust model for the keys you import: Once the key
+> is imported, Hanzo CD will trust it. Hanzo CD does not support more complex
 > trust models, and it is not necessary (nor possible) to sign the public keys
-> you are going to import into ArgoCD.
+> you are going to import into Hanzo CD.
 
 > [!NOTE]
 > **Compatibility notice**
 >
 > The GnuPG verification was first introduced in v1.7 as a project-wide constraint configured by `signatureKeys`.
-> As of Argo CD 3.5, it is supported as one of the methods for source integrity verification, but it is using a different declaration format.
+> As of Hanzo CD 3.5, it is supported as one of the methods for source integrity verification, but it is using a different declaration format.
 > Keys configured in `signatureKeys` will continue to be supported, but they cannot be used together with `sourceIntegrity`.
 > See below on how to convert the legacy `signatureKeys` configuration to `sourceIntegrity`.
 
 Verification of GnuPG signatures is only supported with Git repositories. It is
 not possible when using Helm or OCI application sources.
 
-The GnuPG verification requires populating the Argo CD GnuPG keyring, and configuring source integrity policies for your repositories.
+The GnuPG verification requires populating the Hanzo CD GnuPG keyring, and configuring source integrity policies for your repositories.
 
-## Managing Argo CD GnuPG keyring
+## Managing Hanzo CD GnuPG keyring
 
-All the GnuPG keys Argo CD is going to trust must be introduced in its keyring first.
+All the GnuPG keys Hanzo CD is going to trust must be introduced in its keyring first.
 
 ### Keyring RBAC rules
 
-The appropriate resource notation for Argo CD's RBAC implementation to allow
+The appropriate resource notation for Hanzo CD's RBAC implementation to allow
 the managing of GnuPG keys is `gpgkeys`.
 
 To allow *listing* of keys for a role named `role:myrole`, use:
@@ -54,7 +54,7 @@ p, role:myrole, gpgkeys, delete, *, allow
 
 ### Keyring management
 
-You can configure the GnuPG public keys that ArgoCD will use for verification
+You can configure the GnuPG public keys that Hanzo CD will use for verification
 of commit signatures using either the CLI, the web UI or configuring it using
 declarative setup.
 
@@ -66,31 +66,31 @@ declarative setup.
 
 #### Manage public keys using the CLI
 
-To configure GnuPG public keys using the CLI, use the `argocd gpg` command.
+To configure GnuPG public keys using the CLI, use the `cd gpg` command.
 
 ##### Listing all configured keys
 
-To list all configured keys known to ArgoCD, use the `argocd gpg list`
+To list all configured keys known to Hanzo CD, use the `cd gpg list`
 sub-command:
 
 ```bash
-argocd gpg list
+cd gpg list
 ```
 
 ##### Show information about a certain key
 
-To get information about a specific key, use the `argocd gpg get` sub-command:
+To get information about a specific key, use the `cd gpg get` sub-command:
 
 ```bash
-argocd gpg get <key-id>
+cd gpg get <key-id>
 ```
 
 ##### Importing a key
 
-To import a new *public* key to ArgoCD, use the `argocd gpg add` sub-command:
+To import a new *public* key to Hanzo CD, use the `cd gpg add` sub-command:
 
 ```bash
-argocd gpg add --from <path-to-key>
+cd gpg add --from <path-to-key>
 ```
 
 The key to be imported can be either in binary or ASCII-armored format.
@@ -98,10 +98,10 @@ The key to be imported can be either in binary or ASCII-armored format.
 ##### Removing a key from the configuration
 
 To remove a previously configured key from the configuration, use the
-`argocd gpg rm` sub-command:
+`cd gpg rm` sub-command:
 
 ```bash
-argocd gpg rm <key-id>
+cd gpg rm <key-id>
 ```
 
 #### Manage public keys using the Web UI
@@ -115,7 +115,7 @@ imported in ASCII armored format for now.
 
 #### Manage public keys in declarative setup
 
-ArgoCD stores public keys internally in the `argocd-gpg-keys-cm` ConfigMap
+Hanzo CD stores public keys internally in the `cd-gpg-keys-cm` ConfigMap
 resource, with the public GnuPG key's ID as its name and the ASCII armored
 key data as string value, i.e. the entry for the GitHub's web-flow signing
 key would look like follows:
@@ -148,7 +148,7 @@ The GnuPG commit signature verification is configured through one or multiple Gi
 The policies are configured as illustrated:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 spec:
   sourceIntegrity:
@@ -190,7 +190,7 @@ Note this accepts unsigned commits as well as commits with a signature that is i
 
 Verify only the commit/tag pointed to by the target revision of the source.
 If the revision is an annotated tag, it is the tag's signature that is verified, not the commit's signature (i.e. the tag itself must be signed using `git tag -s`).
-Otherwise, if target revision is a branch name, reference name (such as `HEAD`), or a commit SHA Argo CD verifies the commit's GnuPG signature.
+Otherwise, if target revision is a branch name, reference name (such as `HEAD`), or a commit SHA Hanzo CD verifies the commit's GnuPG signature.
 
 ##### Verification mode `strict`
 
@@ -205,7 +205,7 @@ While this can be addressed by re-signing with git rebase, there is a better way
 ###### Commit seal-signing with `strict` mode
 
 A sealing commit is a GnuPG signed commit that works as a "seal of approval" attesting that all its ancestor commits were either signed by a trusted key, or reviewed and trusted by the author of the sealing commit.
-Argo CD verifying GnuPG signatures would then progress only as far back in the history as the most recent "seal" commits in each individual ancestral branch.
+Hanzo CD verifying GnuPG signatures would then progress only as far back in the history as the most recent "seal" commits in each individual ancestral branch.
 
 In practice, a committer first *reviews* all commits that are not signed or signed with untrusted keys from the previous "seal commit" and creates a new, possibly empty commit with a custom Git trailer in its message.
 Such commits can have the following organization-level semantics:
@@ -215,16 +215,16 @@ Such commits can have the following organization-level semantics:
 - "I am removing the GnuPG key of Bob. All his previous commits are trusted, but no new ones will be. Happy retirement, Bob!"
 - "I am replacing my old key with a new one. Trust my commits signed with the old key before this seal commit, but only trust my new key after this seal commit."
 
-To create a seal commit, run `git commit --signoff --gpg-sign --trailer="Argocd-gpg-seal: <justification>"` and push to branch pulled by Argo CD.
+To create a seal commit, run `git commit --signoff --gpg-sign --trailer="Argocd-gpg-seal: <justification>"` and push to branch pulled by Hanzo CD.
 Using seal commits is preferable to rewriting git history as it eliminates the room for eventual rebasing mistakes that would jeopardize either source integrity or correctness of the repository data.
 
 ## Upgrade to Source Integrity Verification
 
 To migrate from the legacy declaration to the new source verification policies, remove `.spec.signatureKeys` and then define desired policies in `.spec.sourceIntegrity.git.policies`.
 
-To achieve the legacy Argo CD verification behavior in a project, use the following config:
+To achieve the legacy Hanzo CD verification behavior in a project, use the following config:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 spec:
   sourceIntegrity:
@@ -238,7 +238,7 @@ spec:
               - "..." # Keys from .spec.signatureKeys
 ```
 
-When `.spec.sourceIntegrity` is not defined but `.spec.signatureKeys` is, Argo CD will do similar conversion behind the scenes.
+When `.spec.sourceIntegrity` is not defined but `.spec.signatureKeys` is, Hanzo CD will do similar conversion behind the scenes.
 Though it is advised to perform the migration as source integrity config allows for greater flexibility, and `.spec.signatureKeys` will be a subject of removal in future releases.
 
 ## Downgrade from Source Integrity Verification
@@ -258,33 +258,33 @@ Note they are being replaced by the source integrity policies, so users are advi
 #### Adding a key ID to the list of allowed keys
 
 To add a key ID to the list of allowed GnuPG keys for a project, you can use
-the `argocd proj add-signature-key` command, i.e. the following command would
+the `cd proj add-signature-key` command, i.e. the following command would
 add the key ID `4AEE18F83AFDEB23` to the project named `myproj`:
 
 ```bash
 # DEPRECATED
-argocd proj add-signature-key myproj 4AEE18F83AFDEB23
+cd proj add-signature-key myproj 4AEE18F83AFDEB23
 ```
 
 #### Removing a key ID from the list of allowed keys
 
 Similarly, you can remove a key ID from the list of allowed GnuPG keys for a
-project using the `argocd proj remove-signature-key` command, i.e. to remove
+project using the `cd proj remove-signature-key` command, i.e. to remove
 the key added above from project `myproj`, use the command:
 
 ```bash
 # DEPRECATED
-argocd proj remove-signature-key myproj 4AEE18F83AFDEB23
+cd proj remove-signature-key myproj 4AEE18F83AFDEB23
 ```
 
 #### Showing allowed key IDs for a project
 
 To see which key IDs are allowed for a given project, you can inspect the
-output of the `argocd proj get` command, i.e. for a project named `gpg`:
+output of the `cd proj get` command, i.e. for a project named `gpg`:
 
 ```bash
 # DEPRECATED
-$ argocd proj get gpg
+$ cd proj get gpg
 Name:                        gpg
 Description:                 GnuPG verification
 Destinations:                *,*
@@ -298,16 +298,16 @@ Orphaned Resources:          disabled
 #### Override list of key IDs
 
 You can also explicitly set the currently allowed keys with one or more new keys
-using the `argocd proj set` command in combination with the `--signature-keys`
+using the `cd proj set` command in combination with the `--signature-keys`
 flag, which you can use to specify a comma separated list of allowed key IDs:
 
 ```bash
 # DEPRECATED
-argocd proj set myproj --signature-keys 4AEE18F83AFDEB23,07E34825A909B250
+cd proj set myproj --signature-keys 4AEE18F83AFDEB23,07E34825A909B250
 ```
 
 The `--signature-keys` flag can also be used on project creation, i.e. the
-`argocd proj create` command.
+`cd proj create` command.
 
 ### Configure using the Web UI (DEPRECATED)
 
@@ -327,17 +327,17 @@ for signature verification. After you have modified your project, click
 
 The GnuPG feature can be completely disabled if desired. In order to disable it,
 set the environment variable `CD_GPG_ENABLED` to `false` for the pod
-templates of the `argocd-server`, `argocd-repo-server`, `argocd-application-controller`
-and `argocd-applicationset-controller` deployment manifests.
+templates of the `cd-server`, `cd-repo-server`, `cd-application-controller`
+and `cd-applicationset-controller` deployment manifests.
 
 After the pods have been restarted, the GnuPG feature is disabled.
 
 ### Inspecting GnuPG key ring
 
 The GnuPG key ring used for signature verification is maintained within the
-pods of `argocd-repo-server`. The keys in the keyring are synchronized to the
-configuration stored in the `argocd-gpg-keys-cm` ConfigMap resource, which is
-volume-mounted to the `argocd-repo-server` pods.
+pods of `cd-repo-server`. The keys in the keyring are synchronized to the
+configuration stored in the `cd-gpg-keys-cm` ConfigMap resource, which is
+volume-mounted to the `cd-repo-server` pods.
 
 > [!NOTE]
 > The GnuPG key ring in the pods is transient and gets recreated from the
@@ -352,22 +352,22 @@ repository server's pods and inspect the key ring, which is located at path
 `/app/config/gpg/keys`
 
 ```bash
-$ kubectl exec -it argocd-repo-server-7d6bdfdf6d-hzqkg bash
-argocd@argocd-repo-server-7d6bdfdf6d-hzqkg:~$ GNUPGHOME=/app/config/gpg/keys gpg --list-keys
+$ kubectl exec -it cd-repo-server-7d6bdfdf6d-hzqkg bash
+cd@cd-repo-server-7d6bdfdf6d-hzqkg:~$ GNUPGHOME=/app/config/gpg/keys gpg --list-keys
 /app/config/gpg/keys/pubring.kbx
 --------------------------------
 pub   rsa2048 2020-06-15 [SC] [expires: 2020-12-12]
       D48F075D818A813C436914BC9324F0D2144753B1
-uid           [ultimate] Anon Ymous (ArgoCD key signing key) <noreply@argoproj.io>
+uid           [ultimate] Anon Ymous (Hanzo CD key signing key) <noreply@apps.hanzo.ai>
 
 pub   rsa2048 2017-08-16 [SC]
       5DE3E0509C47EA3CF04A42D34AEE18F83AFDEB23
 uid           [ultimate] GitHub (web-flow commit signing) <noreply@github.com>
 
-argocd@argocd-repo-server-7d6bdfdf6d-hzqkg:~$
+cd@cd-repo-server-7d6bdfdf6d-hzqkg:~$
 ```
 
 If the key ring stays out of sync with your configuration after you have added
 or removed keys for a longer period of time, you might want to restart your
-`argocd-repo-server` pods. If such a problem persists, please consider raising
+`cd-repo-server` pods. If such a problem persists, please consider raising
 a bug report.

@@ -3,7 +3,7 @@
 The SCM Provider generator uses the API of an SCMaaS provider (eg GitHub) to automatically discover repositories within an organization. This fits well with GitOps layout patterns that split microservices across many repositories.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -30,7 +30,7 @@ spec:
 If your ApplicationSet controller needs to reach SCM provider APIs (GitHub, GitLab, Gitea, Bitbucket Server) through an HTTP/HTTPS proxy, use the dedicated SCM proxy flags:
 
 ```sh
-argocd-applicationset-controller \
+cd-applicationset-controller \
   --scm-proxy-url=http://proxy.corp.example.com:3128 \
   --scm-no-proxy=internal.gitlab.corp.example.com,10.0.0.0/8
 ```  
@@ -48,7 +48,7 @@ These flags can also be set via environment variables:
 The GitHub mode uses the GitHub API to scan an organization in either github.com or GitHub Enterprise.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -92,7 +92,7 @@ Available clone protocols are `ssh` and `https`.
 The GitLab mode uses the GitLab API to scan and organization in either gitlab.com or self-hosted GitLab.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -123,7 +123,7 @@ spec:
         insecure: false
         # Reference to a ConfigMap containing trusted CA certs - useful for self-signed certificates. (optional)
         caRef:
-          configMapName: argocd-tls-certs-cm
+          configMapName: cd-tls-certs-cm
           key: gitlab-ca
   template:
   # ...
@@ -138,7 +138,7 @@ spec:
 * `topic`: filter projects by topic. A single topic is supported by Gitlab API. Defaults to "" (all topics).
 * `tokenRef`: A `Secret` name and key containing the GitLab access token to use for requests. If not specified, will make anonymous requests which have a lower rate limit and can only see public repositories.
 * `insecure`: By default (false) - Skip checking the validity of the SCM's certificate - useful for self-signed TLS certificates.
-* `caRef`: Optional `ConfigMap` name and key containing the GitLab certificates to trust - useful for self-signed TLS certificates. Possibly reference the ArgoCD CM holding the trusted certs.
+* `caRef`: Optional `ConfigMap` name and key containing the GitLab certificates to trust - useful for self-signed TLS certificates. Possibly reference the Hanzo CD CM holding the trusted certs.
 
 For label filtering, the repository topics are used.
 
@@ -150,14 +150,14 @@ As a preferable alternative to setting `insecure` to true, you can configure sel
 
 In order for a self-signed TLS certificate be used by an ApplicationSet's SCM / PR Gitlab Generator, the certificate needs to be mounted on the applicationset-controller. The path of the mounted certificate must be explicitly set using the environment variable `CD_APPLICATIONSET_CONTROLLER_SCM_ROOT_CA_PATH` or alternatively using parameter `--scm-root-ca-path`. The applicationset controller will read the mounted certificate to create the Gitlab client for SCM/PR Providers
 
-This can be achieved conveniently by setting `applicationsetcontroller.scm.root.ca.path` in the argocd-cmd-params-cm ConfigMap. Be sure to restart the ApplicationSet controller after setting this value.
+This can be achieved conveniently by setting `applicationsetcontroller.scm.root.ca.path` in the cd-cmd-params-cm ConfigMap. Be sure to restart the ApplicationSet controller after setting this value.
 
 ## Gitea
 
 The Gitea mode uses the Gitea API to scan organizations in your instance
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -197,7 +197,7 @@ Available clone protocols are `ssh` and `https`.
 Use the Bitbucket Server API (1.0) to scan repos in a project. Note that Bitbucket Server is not to same as Bitbucket Cloud (API 2.0)
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -230,7 +230,7 @@ spec:
         insecure: true
         # Reference to a ConfigMap containing trusted CA certs - useful for self-signed certificates. (optional)
         caRef:
-          configMapName: argocd-tls-certs-cm
+          configMapName: cd-tls-certs-cm
           key: bitbucket-ca
         # Support for filtering by labels is TODO. Bitbucket server labels are not supported for PRs, but they are for repos
   template:
@@ -250,7 +250,7 @@ In case of Bitbucket App Token, go with `bearerToken` section.
 
 In case of self-signed BitBucket Server certificates, the following options can be useful:
 * `insecure`: By default (false) - Skip checking the validity of the SCM's certificate - useful for self-signed TLS certificates.
-* `caRef`: Optional `ConfigMap` name and key containing the BitBucket server certificates to trust - useful for self-signed TLS certificates. Possibly reference the ArgoCD CM holding the trusted certs.
+* `caRef`: Optional `ConfigMap` name and key containing the BitBucket server certificates to trust - useful for self-signed TLS certificates. Possibly reference the Hanzo CD CM holding the trusted certs.
 
 Available clone protocols are `ssh` and `https`.
 
@@ -260,7 +260,7 @@ Uses the Azure DevOps API to look up eligible repositories based on a team proje
 The default Azure DevOps URL is `https://dev.azure.com`, but this can be overridden with the field `azureDevOps.api`.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -295,7 +295,7 @@ spec:
 The Bitbucket mode uses the Bitbucket API V2 to scan a workspace in bitbucket.org.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -331,7 +331,7 @@ Available clone protocols are `ssh` and `https`.
 Uses AWS ResourceGroupsTagging and AWS CodeCommit APIs to scan repos across AWS accounts and regions.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -344,7 +344,7 @@ spec:
           region: us-east-1
           # AWS role to assume to scan repos.
           # default to the environmental role from ApplicationSet controller.
-          role: arn:aws:iam::111111111111:role/argocd-application-set-discovery
+          role: arn:aws:iam::111111111111:role/cd-application-set-discovery
           # If true, scan every branch of every repository. If false, scan only the main branch. Defaults to false.
           allBranches: true
           # AWS resource tags to filter repos with.
@@ -380,7 +380,7 @@ Depending on whether `role` is provided in `awsCodeCommit` property, AWS IAM per
 #### Discover AWS CodeCommit Repositories in the same AWS Account as ApplicationSet Controller
 
 Without specifying `role`, ApplicationSet controller will use its own AWS identity to scan AWS CodeCommit repos.
-This is suitable when you have a simple setup that all AWS CodeCommit repos reside in the same AWS account as your Argo CD.
+This is suitable when you have a simple setup that all AWS CodeCommit repos reside in the same AWS account as your Hanzo CD.
 
 As the ApplicationSet controller AWS identity is used directly for repo discovery, it must be granted below AWS permissions.
 
@@ -412,7 +412,7 @@ All AWS roles must have repo discovery related permissions.
 Filters allow selecting which repositories to generate for. Each filter can declare one or more conditions, all of which must pass. If multiple filters are present, any can match for a repository to be included. If no filters are specified, all repositories will be processed.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -443,7 +443,7 @@ spec:
 As with all generators, several parameters are generated for use within the `ApplicationSet` resource template.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps
@@ -484,7 +484,7 @@ You may pass additional, arbitrary string key-value pairs via the `values` field
 
 In this example, a `name` parameter value is passed. It is interpolated from `organization` and `repository` to generate a different template name.
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: myapps

@@ -7,7 +7,7 @@ User-definitions in Auth0 is out of scope for this guide. Add them directly in A
 
 ## Registering the app with Auth0
 
-Follow the [register app](https://auth0.com/docs/dashboard/guides/applications/register-app-spa) instructions to create the argocd app in Auth0. In the app definition:
+Follow the [register app](https://auth0.com/docs/dashboard/guides/applications/register-app-spa) instructions to create the cd app in Auth0. In the app definition:
 
 * Take note of the _clientId_ and _clientSecret_ values.
 * Register login url as https://your.argoingress.address/login
@@ -25,14 +25,14 @@ The important part to note here is that group-membership is a non-standard claim
 ## Configuring argo
 
 
-### Configure OIDC for ArgoCD
+### Configure OIDC for Hanzo CD
 
-`kubectl edit configmap argocd-cm`
+`kubectl edit configmap cd-cm`
 
 ```
 ...
 data:
-  application.instanceLabelKey: argocd.argoproj.io/instance
+  application.instanceLabelKey: cd.hanzo.ai/instance
   url: https://your.argoingress.address
   oidc.config: |
     name: Auth0
@@ -50,9 +50,9 @@ data:
 ```
 
 
-### Configure RBAC for ArgoCD
+### Configure RBAC for Hanzo CD
 
-`kubectl edit configmap argocd-rbac-cm` (or use helm values).
+`kubectl edit configmap cd-rbac-cm` (or use helm values).
 ```
 ...
 data:
@@ -60,8 +60,8 @@ data:
     # let members with group someProjectGroup handle apps in someProject
     # this can also be defined in the UI in the group-definition to avoid doing it there in the configmap
     p, someProjectGroup, applications, *, someProject/*, allow
-    # let the group membership argocd-admins from OIDC become role:admin - needs to go into the configmap
-    g, argocd-global-admins, role:admin
+    # let the group membership cd-admins from OIDC become role:admin - needs to go into the configmap
+    g, cd-global-admins, role:admin
   policy.default: role:readonly
   # essential to get argo to use groups for RBAC:
   scopes: '[http://your.domain/groups, email]' 

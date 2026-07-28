@@ -617,10 +617,10 @@ func Test_affectedRevisionInfo_appRevisionHasChanged(t *testing.T) {
 		{true, "refs/tags/no-slashes", bitbucketRefChangedPayload("no-slashes"), "bitbucket ref changed branch or tag name without slashes, targetRevision tag prefixed"},
 		{true, "refs/tags/no-slashes", gogsPushPayload("no-slashes"), "gogs push branch or tag name without slashes, targetRevision tag prefixed"},
 
-		// Tests fix for https://github.com/argoproj/argo-cd/security/advisories/GHSA-wp4p-9pxh-cgx2
+		// Tests fix for https://github.com/hanzoai/cd/security/advisories/GHSA-wp4p-9pxh-cgx2
 		{true, "test", gogsclient.PushPayload{Ref: "test", Repo: nil}, "gogs push branch with nil repo in payload"},
 
-		// Testing fix for https://github.com/argoproj/argo-cd/security/advisories/GHSA-gpx4-37g2-c8pv
+		// Testing fix for https://github.com/hanzoai/cd/security/advisories/GHSA-gpx4-37g2-c8pv
 		{false, "test", azuredevops.GitPushEvent{Resource: azuredevops.Resource{RefUpdates: []azuredevops.RefUpdate{}}}, "Azure DevOps malformed push event with no ref updates"},
 
 		{true, "some-ref", bitbucketserver.RepositoryReferenceChangedPayload{
@@ -628,7 +628,7 @@ func Test_affectedRevisionInfo_appRevisionHasChanged(t *testing.T) {
 				{Reference: bitbucketserver.RepositoryReference{ID: "refs/heads/some-ref"}},
 			},
 			Repository: bitbucketserver.Repository{Links: map[string]any{"clone": "boom"}}, // The string "boom" here is what previously caused a panic.
-		}, "bitbucket push branch or tag name, malformed link"}, // https://github.com/argoproj/argo-cd/security/advisories/GHSA-f9gq-prrc-hrhc
+		}, "bitbucket push branch or tag name, malformed link"}, // https://github.com/hanzoai/cd/security/advisories/GHSA-f9gq-prrc-hrhc
 
 		{true, "some-ref", bitbucketserver.RepositoryReferenceChangedPayload{
 			Changes: []bitbucketserver.RepositoryChange{
@@ -804,7 +804,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "cd",
 					Annotations: map[string]string{
-						"cd.argoproj.io/manifest-generate-paths": "deploy",
+						"cd.hanzo.ai/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -829,7 +829,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "cd",
 					Annotations: map[string]string{
-						"cd.argoproj.io/manifest-generate-paths": "manifests",
+						"cd.hanzo.ai/manifest-generate-paths": "manifests",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -854,7 +854,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "cd",
 					Annotations: map[string]string{
-						"cd.argoproj.io/manifest-generate-paths": "manifests;dev/deploy;other/path",
+						"cd.hanzo.ai/manifest-generate-paths": "manifests;dev/deploy;other/path",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -906,7 +906,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "cd",
 					Annotations: map[string]string{
-						"cd.argoproj.io/manifest-generate-paths": "components",
+						"cd.hanzo.ai/manifest-generate-paths": "components",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -988,7 +988,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "cd",
 					Annotations: map[string]string{
-						"cd.argoproj.io/manifest-generate-paths": "deploy",
+						"cd.hanzo.ai/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1017,7 +1017,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "cd",
 					Annotations: map[string]string{
-						"cd.argoproj.io/manifest-generate-paths": "deploy",
+						"cd.hanzo.ai/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1046,7 +1046,7 @@ func TestHandleEvent(t *testing.T) {
 					Name:      "test-app",
 					Namespace: "cd",
 					Annotations: map[string]string{
-						"cd.argoproj.io/manifest-generate-paths": "deploy",
+						"cd.hanzo.ai/manifest-generate-paths": "deploy",
 					},
 				},
 				Spec: v1alpha1.ApplicationSpec{
@@ -1683,7 +1683,7 @@ func verifyAnnotations(t *testing.T, patchData []byte, expectRefresh bool, expec
 	require.True(t, hasAnnotations, "patch should have annotations")
 
 	// Check refresh annotation
-	refreshValue, hasRefresh := annotations["cd.argoproj.io/refresh"]
+	refreshValue, hasRefresh := annotations["cd.hanzo.ai/refresh"]
 	if expectRefresh {
 		assert.True(t, hasRefresh, "should have refresh annotation")
 		assert.Equal(t, "normal", refreshValue, "refresh annotation should be 'normal'")
@@ -1692,7 +1692,7 @@ func verifyAnnotations(t *testing.T, patchData []byte, expectRefresh bool, expec
 	}
 
 	// Check hydrate annotation
-	hydrateValue, hasHydrate := annotations["cd.argoproj.io/hydrate"]
+	hydrateValue, hasHydrate := annotations["cd.hanzo.ai/hydrate"]
 	if expectHydrate {
 		assert.True(t, hasHydrate, "should have hydrate annotation")
 		assert.Equal(t, "normal", hydrateValue, "hydrate annotation should be 'normal'")

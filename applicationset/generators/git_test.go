@@ -1308,7 +1308,7 @@ cluster:
 			expectedError: nil,
 		},
 		{
-			name:           "test to verify the solution for Git File Generator Problem", // https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/applicationset/Generators-Git-File-Globbing.md#git-file-generator-globbing
+			name:           "test to verify the solution for Git File Generator Problem", // https://github.com/hanzoai/cd/blob/master/docs/operator-manual/applicationset/Generators-Git-File-Globbing.md#git-file-generator-globbing
 			files:          []v1alpha1.GitFileGeneratorItem{{Path: "cluster-charts/*/*/values.yaml"}, {Path: "cluster-charts/*/values.yaml", Exclude: true}},
 			includePattern: []string{"cluster-charts/*/*/values.yaml"},
 			excludePattern: []string{"cluster-charts/*/values.yaml"},
@@ -2422,7 +2422,7 @@ func TestGitGenerator_GenerateParams(t *testing.T) {
 			},
 			callGetDirectories: false,
 			expected:           []map[string]any{{"path": "app1", "path.basename": "app1", "path.basenameNormalized": "app1", "path[0]": "app1", "values.foo": "bar"}},
-			expectedError:      errors.New("error getting project project: appprojects.argoproj.io \"project\" not found"),
+			expectedError:      errors.New("error getting project project: appprojects.apps.hanzo.ai \"project\" not found"),
 		},
 		{
 			name: "Project field is not templated - verify that project is passed through to repo-server as-is",

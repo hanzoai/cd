@@ -1,19 +1,19 @@
-# `argocd-applicationset-controller` Command Reference
+# `cd-applicationset-controller` Command Reference
 
-## argocd-applicationset-controller
+## cd-applicationset-controller
 
-Starts Argo CD ApplicationSet controller
+Starts Hanzo CD ApplicationSet controller
 
 ```
-argocd-applicationset-controller [flags]
+cd-applicationset-controller [flags]
 ```
 
 ### Options
 
 ```
       --allowed-scm-providers strings             The list of allowed custom SCM provider API URLs. This restriction does not apply to SCM or PR generators which do not accept a custom API URL. (Default: Empty = all)
-      --applicationset-namespaces strings         Argo CD applicationset namespaces
-      --argocd-repo-server string                 Argo CD repo server address (default "argocd-repo-server:8081")
+      --applicationset-namespaces strings         Hanzo CD applicationset namespaces
+      --cd-repo-server string                 Hanzo CD repo server address (default "cd-repo-server:8081")
       --as string                                 Username to impersonate for the operation
       --as-group stringArray                      Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
       --as-uid string                             UID to impersonate for the operation
@@ -34,14 +34,14 @@ argocd-applicationset-controller [flags]
       --enable-policy-override                    For security reason if 'policy' is set, it is not possible to override it at applicationSet level. 'allow-policy-override' allows user to define their own policy (default true)
       --enable-progressive-syncs                  Enable use of the experimental progressive syncs feature.
       --enable-scm-providers                      Enable retrieving information from SCM providers, used by the SCM and PR generators (Default: true) (default true)
-  -h, --help                                      help for argocd-applicationset-controller
+  -h, --help                                      help for cd-applicationset-controller
       --insecure-skip-tls-verify                  If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
       --kubeconfig string                         Path to a kube config. Only required if out-of-cluster
       --logformat string                          Set the logging format. One of: json|text (default "json")
       --loglevel string                           Set the logging level. One of: debug|info|warn|error (default "info")
       --max-resources-status-count int            Max number of resources stored in appset status. (default 5000)
       --metrics-addr string                       The address the metric endpoint binds to. (default ":8080")
-      --metrics-applicationset-labels strings     List of Application labels that will be added to the argocd_applicationset_labels metric
+      --metrics-applicationset-labels strings     List of Application labels that will be added to the cd_applicationset_labels metric
   -n, --namespace string                          If present, the namespace scope for this CLI request
       --password string                           Password for basic authentication to the API server
       --policy string                             Modify how application is synced between the generator and the cluster. Default is '' (empty), which means AppSets default to 'sync', but they may override that default. Setting an explicit value prevents AppSet-level overrides, unless --allow-policy-override is enabled. Explicit options are: 'sync' (create & update & delete), 'create-only', 'create-update' (no deletion), 'create-delete' (no update)
@@ -61,7 +61,7 @@ argocd-applicationset-controller [flags]
       --server string                             The address and port of the Kubernetes API server
       --tls-server-name string                    If provided, this name will be used to validate server certificate. If this is not provided, hostname used to contact the server is used.
       --token string                              Bearer token for authentication to the API server
-      --token-ref-strict-mode                     Set to true to require secrets referenced by SCM providers to have the argocd.argoproj.io/secret-type=scm-creds label set (Default: false)
+      --token-ref-strict-mode                     Set to true to require secrets referenced by SCM providers to have the cd.hanzo.ai/secret-type=scm-creds label set (Default: false)
       --user string                               The name of the kubeconfig user to use
       --username string                           Username for basic authentication to the API server
       --webhook-addr string                       The address the webhook endpoint binds to. (default ":7000")

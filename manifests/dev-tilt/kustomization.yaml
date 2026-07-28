@@ -1,5 +1,5 @@
-# This manifest is used by Tilt to deploy the argocd resources to the cluster.
-namespace: argocd
+# This manifest is used by Tilt to deploy the cd resources to the cluster.
+namespace: cd
 
 resources:
   - namespace.yaml
@@ -11,7 +11,7 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: argocd-server
+      name: cd-server
     patch: |-
       - op: remove
         path: /spec/template/spec/containers/0/securityContext
@@ -25,11 +25,11 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: argocd-repo-server
+      name: cd-repo-server
     patch: |-
       - op: replace
         path: /spec/template/spec/initContainers/0/image
-        value: argocd-job
+        value: cd-job
       - op: remove
         path: /spec/template/spec/containers/0/securityContext
       - op: remove
@@ -44,7 +44,7 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: argocd-commit-server
+      name: cd-commit-server
     patch: |-
       - op: remove
         path: /spec/template/spec/containers/0/securityContext
@@ -58,7 +58,7 @@ patches:
       group: apps
       version: v1
       kind: StatefulSet
-      name: argocd-application-controller
+      name: cd-application-controller
     patch: |-
       - op: remove
         path: /spec/template/spec/containers/0/securityContext
@@ -71,18 +71,18 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: argocd-dex-server
+      name: cd-dex-server
     patch: |-
       - op: replace
         path: /spec/template/spec/initContainers/0/image
-        value: argocd-job
+        value: cd-job
       - op: remove
         path: /spec/template/spec/initContainers/0/securityContext
   - target:
       group: apps
       version: v1
       kind: Deployment
-      name: argocd-notifications-controller
+      name: cd-notifications-controller
     patch: |-
       - op: remove
         path: /spec/template/spec/containers/0/securityContext
@@ -100,7 +100,7 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: argocd-applicationset-controller
+      name: cd-applicationset-controller
     patch: |-
       - op: remove
         path: /spec/template/spec/containers/0/securityContext
@@ -114,10 +114,10 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: argocd-redis
+      name: cd-redis
     patch: |-
       - op: replace
         path: /spec/template/spec/initContainers/0/image
-        value: argocd-job
+        value: cd-job
       - op: remove
         path: /spec/template/spec/initContainers/0/securityContext

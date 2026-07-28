@@ -1,15 +1,15 @@
-Here you can find some examples of what you can do with the notifications service in Argo CD.
+Here you can find some examples of what you can do with the notifications service in Hanzo CD.
 
 ## Getting notified when a sync occurs and understanding how your resources changed
 
-With Argo CD you can build a notification system that tells you when a sync occurred and what it changed. 
+With Hanzo CD you can build a notification system that tells you when a sync occurred and what it changed. 
 To get notified via webhook when a sync occurs you can add the following trigger:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.webhook.on-deployed-webhook: |
     url: <your-webhook-url>
@@ -34,11 +34,11 @@ data:
 This, as explained in the [triggers section](triggers.md#avoid-sending-same-notification-too-often), will generate a notification when the app is synced and healthy. We then need to create a subscription for the webhook integration:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.argoproj.io/subscribe.on-deployed-trigger.on-deployed-webhook: ""
+    notifications.apps.hanzo.ai/subscribe.on-deployed-trigger.on-deployed-webhook: ""
 ```
 
 You can test that this works and see how the response looks by adding any webhook site and syncing our application. Here you can see that we receive a list of resources, with a message and some properties of them. For example:
@@ -56,7 +56,7 @@ You can test that this works and see how the response looks by adding any webhoo
       "kind": "Deployment",
       "message": "deployment.apps/test configured",
       "name": "test",
-      "namespace": "argocd",
+      "namespace": "cd",
       "status": "Synced",
       "syncPhase": "Sync",
       "version": "v1"
@@ -67,7 +67,7 @@ You can test that this works and see how the response looks by adding any webhoo
       "kind": "HorizontalPodAutoscaler",
       "message": "horizontalpodautoscaler.autoscaling/test-hpa unchanged",
       "name": "test-hpa",
-      "namespace": "argocd",
+      "namespace": "cd",
       "status": "Synced",
       "syncPhase": "Sync",
       "version": "v2"
@@ -101,7 +101,7 @@ Here we can use a similar setup as the one above, but change the receiver to be 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.slack: |
     token: <your-slack-bot-token>

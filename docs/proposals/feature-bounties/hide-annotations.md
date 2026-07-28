@@ -1,4 +1,4 @@
-# Proposal: Allow Hiding Certain Annotations in the Argo CD Web UI
+# Proposal: Allow Hiding Certain Annotations in the Hanzo CD Web UI
 
 Based on this issue: https://github.com/argoproj/argo-cd/issues/15693
 
@@ -9,7 +9,7 @@ Award amount: $100
 > [!NOTE]
 > This is the proposed solution. The accepted PR may differ from this proposal.
 
-Add a new config item in argocd-cm:
+Add a new config item in cd-cm:
 
 ```yaml
 hide.secret.annotations: |

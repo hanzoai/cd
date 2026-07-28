@@ -22,7 +22,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.argoproj.io/subscribe.on-deployment-ready.awssqs: "overwrite-myqueue"
+    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.awssqs: "overwrite-myqueue"
 ```
 
 * ConfigMap
@@ -30,7 +30,7 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.awssqs: |
     region: "us-east-2"
@@ -81,7 +81,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.argoproj.io/subscribe.on-deployment-ready.awssqs: ""
+    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.awssqs: ""
 ```
 
 * ConfigMap
@@ -89,7 +89,7 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-notifications-cm
+  name: cd-notifications-cm
 data:
   service.awssqs: |
     queue: "myqueue"

@@ -5,7 +5,7 @@ metadata:
     - addons.cluster.x-k8s.io
   generation: 2
   labels:
-    app.argocd.io/instance: clustername
+    app.cd.io/instance: clustername
   name: clustername-resource-set
   namespace: capi-managed-cluster
 spec:

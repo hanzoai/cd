@@ -1,11 +1,11 @@
-# `argocd-dex gendexcfg` Command Reference
+# `cd-dex gendexcfg` Command Reference
 
-## argocd-dex gendexcfg
+## cd-dex gendexcfg
 
-Generates a dex config from Argo CD settings
+Generates a dex config from Hanzo CD settings
 
 ```
-argocd-dex gendexcfg [flags]
+cd-dex gendexcfg [flags]
 ```
 
 ### Options
@@ -40,5 +40,5 @@ argocd-dex gendexcfg [flags]
 
 ### SEE ALSO
 
-* [argocd-dex](argocd-dex.md)	 - argocd-dex tools used by Argo CD
+* [cd-dex](cd-dex.md)	 - cd-dex tools used by Hanzo CD
 

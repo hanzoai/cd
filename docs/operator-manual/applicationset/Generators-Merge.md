@@ -12,7 +12,7 @@ As an example, imagine that we have two clusters:
 - A `production` cluster (at `https://2.4.6.8`)
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-git
@@ -47,7 +47,7 @@ spec:
     spec:
       project: '{{index .metadata.labels "environment"}}'
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: app
         helm:
@@ -61,7 +61,7 @@ spec:
         namespace: default
 ```
 
-The base Cluster generator scans the [set of clusters defined in Argo CD](Generators-Cluster.md), finds the staging and production cluster secrets, and produces two corresponding sets of parameters:
+The base Cluster generator scans the [set of clusters defined in Hanzo CD](Generators-Cluster.md), finds the staging and production cluster secrets, and produces two corresponding sets of parameters:
 ```yaml
 - name: staging
   server: https://1.2.3.4
@@ -74,7 +74,7 @@ The base Cluster generator scans the [set of clusters defined in Argo CD](Genera
   values.redis: 'false'
 ```
 
-The override Cluster generator scans the [set of clusters defined in Argo CD](Generators-Cluster.md), finds the staging cluster secret (which has the required label), and produces the following parameters:
+The override Cluster generator scans the [set of clusters defined in Hanzo CD](Generators-Cluster.md), finds the staging cluster secret (which has the required label), and produces the following parameters:
 ```yaml
 - name: staging
   server: https://1.2.3.4
@@ -119,7 +119,7 @@ Some generators support additional values and interpolating from generated varia
 
 The following example combines discovered clusters and a git repository by cluster labels and the branch name:
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-git

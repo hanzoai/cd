@@ -1,10 +1,10 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: CronWorkflow
 metadata:
   annotations:
-    cronworkflows.argoproj.io/last-used-schedule: CRON_TZ=America/Los_Angeles * * * * *
+    cronworkflows.apps.hanzo.ai/last-used-schedule: CRON_TZ=America/Los_Angeles * * * * *
   labels:
-    workflows.argoproj.io/controller-instanceid: test-instance
+    workflows.apps.hanzo.ai/controller-instanceid: test-instance
     app.kubernetes.io/instance: test
   name: hello-world
   namespace: default

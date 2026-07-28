@@ -1,8 +1,8 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: CronWorkflow
 metadata:
   name: test-cron-wf
-  namespace: argocd
+  namespace: cd
 spec:
   entrypoint: sampleEntryPoint
 status:

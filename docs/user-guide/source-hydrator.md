@@ -10,7 +10,7 @@ Tools like Helm and Kustomize allow users to express their Kubernetes manifests 
 (keeping it DRY - Don't Repeat Yourself). However, these tools can obscure the actual Kubernetes manifests that are
 applied to the cluster.
 
-The *rendered manifest pattern* is a feature of Argo CD that allows users to push the hydrated manifests to git before syncing them to the cluster. This
+The *rendered manifest pattern* is a feature of Hanzo CD that allows users to push the hydrated manifests to git before syncing them to the cluster. This
 allows users to see the actual Kubernetes manifests that are applied to the cluster.
 
 ## Enabling the Source Hydrator
@@ -18,22 +18,22 @@ allows users to see the actual Kubernetes manifests that are applied to the clus
 The source hydrator is disabled by default.
 
 To enable the source hydrator, you need to enable the "commit server" component and set the `hydrator.enabled` field in
-`argocd-cmd-params-cm` ConfigMap to `"true"`.
+`cd-cmd-params-cm` ConfigMap to `"true"`.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cmd-params-cm
-  namespace: argocd
+  name: cd-cmd-params-cm
+  namespace: cd
 data:
   hydrator.enabled: "true"
 ```
 
 > [!IMPORTANT]
-> After updating the ConfigMap, you must restart the Argo CD controller and API server for the changes to take effect.
+> After updating the ConfigMap, you must restart the Hanzo CD controller and API server for the changes to take effect.
 
-If you are using one of the `*-install.yaml` manifests to install Argo CD, you can use the 
+If you are using one of the `*-install.yaml` manifests to install Hanzo CD, you can use the 
 `*-install-with-hydrator.yaml` version of that file instead.
 
 For example,
@@ -51,16 +51,16 @@ With hydrator:    https://raw.githubusercontent.com/argoproj/argo-cd/stable/mani
 ## Using the Source Hydrator
 
 To use the source hydrator, you must first install a push and a pull secret. This example uses a GitHub App for authentication, but
-you can use [any authentication method that Argo CD supports for repository access](../operator-manual/declarative-setup.md#repositories).
+you can use [any authentication method that Hanzo CD supports for repository access](../operator-manual/declarative-setup.md#repositories).
 
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
   name: my-push-secret
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository-write
+    cd.hanzo.ai/secret-type: repository-write
 type: Opaque
 stringData:
   url: "https://github.com/<your org or user>/<your repo>"
@@ -75,9 +75,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: my-pull-secret
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 type: Opaque
 stringData:
   url: "https://github.com/<your org or user>/<your repo>"
@@ -90,13 +90,13 @@ stringData:
 ```
 
 The only difference between the secrets above, besides the resource name, is that the push secret contains the label
-`argocd.argoproj.io/secret-type: repository-write`, which causes the Secret to be used for pushing manifests to git
-instead of pulling from Git. Argo CD requires different secrets for pushing and pulling to provide better isolation.
+`cd.hanzo.ai/secret-type: repository-write`, which causes the Secret to be used for pushing manifests to git
+instead of pulling from Git. Hanzo CD requires different secrets for pushing and pulling to provide better isolation.
 
 Once your secrets are installed, set the `spec.sourceHydrator` field of the Application. For example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app
@@ -111,9 +111,9 @@ spec:
       path: helm-guestbook
 ```
 
-In this example, the hydrated manifests will be pushed to the `environments/dev` branch of the `argocd-example-apps`
-repository. The `drySource` field tells Argo CD where your original, unrendered configuration lives.
-This can be a Helm chart, a Kustomize directory, or plain manifests. Argo CD reads this source, renders the final Kubernetes
+In this example, the hydrated manifests will be pushed to the `environments/dev` branch of the `cd-example-apps`
+repository. The `drySource` field tells Hanzo CD where your original, unrendered configuration lives.
+This can be a Helm chart, a Kustomize directory, or plain manifests. Hanzo CD reads this source, renders the final Kubernetes
 manifests from it, and then writes those hydrated manifests into the location specified by `syncSource.path`.
 
 ### Separate destination repository
@@ -122,7 +122,7 @@ By default, hydrated manifests are written to the same Git repository as the dry
 hydrate into a different repository. When `syncSource.repoURL` is omitted, it defaults to `drySource.repoURL`.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app
@@ -150,7 +150,7 @@ When using source hydration, the `syncSource.path` field is required and must al
 directory in the repository. Setting the path to the repository root (for example `"."` or `""`) is not
 supported. This ensures that hydration is always scoped to a dedicated subdirectory, which avoids unintentionally overwriting or removing files that may exist in the repository root.
 
-During each hydration run, Argo CD overwrites the files it generates (such as `manifest.yaml`) in the application's configured path, but it does **not** delete other files already present in that path. Stale files from a previous hydration that are not overwritten will remain in the output directory. 
+During each hydration run, Hanzo CD overwrites the files it generates (such as `manifest.yaml`) in the application's configured path, but it does **not** delete other files already present in that path. Stale files from a previous hydration that are not overwritten will remain in the output directory. 
 
 Because the generated `manifest.yaml` is fully rewritten on every run, resources that were removed from the dry source disappear from it and are pruned on the next sync (when the `prune` sync option is enabled); however, extra leftover files are not removed automatically.
 
@@ -190,7 +190,7 @@ The source hydrator supports various source types through inline configuration o
 You can use Helm charts by specifying the `helm` field in the `drySource`:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-helm-app
@@ -217,7 +217,7 @@ spec:
 For Kustomize applications, use the `kustomize` field:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-kustomize-app
@@ -242,7 +242,7 @@ spec:
 For plain directory applications with specific options, use the `directory` field:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-directory-app
@@ -264,7 +264,7 @@ spec:
 You can also use Config Management Plugins by specifying the `plugin` field:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-plugin-app
@@ -297,7 +297,7 @@ To use the source hydrator to push to a "staging" branch, set the `spec.sourceHy
 Application. For example:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: my-app
@@ -318,14 +318,14 @@ spec:
       targetBranch: environments/dev-next
 ```
 
-In this example, the hydrated manifests will be pushed to the `environments/dev-next` branch, and Argo CD will not sync
+In this example, the hydrated manifests will be pushed to the `environments/dev-next` branch, and Hanzo CD will not sync
 the changes until something moves them to the `environments/dev` branch.
 
 You could use a CI action to move the hydrated manifests from the `hydrateTo` branch to the `syncSource` branch. To
 introduce a gating mechanism, you could require a Pull Request to be opened to merge the changes from the `hydrateTo`
 branch to the `syncSource` branch.
 
-Argo CD will only push changes to the `hydrateTo` branch, it will not create a PR or otherwise facilitate moving those 
+Hanzo CD will only push changes to the `hydrateTo` branch, it will not create a PR or otherwise facilitate moving those 
 changes to the `syncSource` branch. You will need to use your own tooling to move the changes from the `hydrateTo` 
 branch to the `syncSource` branch.
 
@@ -432,7 +432,7 @@ All trailers are optional. If a trailer is not specified, the corresponding fiel
 
 ## Commit Message Template
 
-The commit message is generated using a [Go text/template](https://pkg.go.dev/text/template), optionally configured by the user via the argocd-cm ConfigMap. The template is rendered using the values from `hydrator.metadata`. The template can be multi-line, allowing users to define a subject line, body and optional trailers. To define the commit message template, you need to set the `sourceHydrator.commitMessageTemplate` field in argocd-cm ConfigMap.
+The commit message is generated using a [Go text/template](https://pkg.go.dev/text/template), optionally configured by the user via the cd-cm ConfigMap. The template is rendered using the values from `hydrator.metadata`. The template can be multi-line, allowing users to define a subject line, body and optional trailers. To define the commit message template, you need to set the `sourceHydrator.commitMessageTemplate` field in cd-cm ConfigMap.
 
 The template can invoke functions from the [Sprig function library](https://github.com/Masterminds/sprig).
 
@@ -440,8 +440,8 @@ The template can invoke functions from the [Sprig function library](https://gith
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
 data:
   sourceHydrator.commitMessageTemplate: |
     {{.metadata.drySha | trunc 7}}: {{ .metadata.subject }}
@@ -461,9 +461,9 @@ data:
 
 ## README Template
 
-The hydration README is generated using a [Go text/template](https://pkg.go.dev/text/template), optionally configured by the user via the `argocd-cm` ConfigMap. The template is rendered using the values from `hydrator.metadata` and can be multi-line to define structured documentation. This allows users to customize how the hydration process and references are documented.
+The hydration README is generated using a [Go text/template](https://pkg.go.dev/text/template), optionally configured by the user via the `cd-cm` ConfigMap. The template is rendered using the values from `hydrator.metadata` and can be multi-line to define structured documentation. This allows users to customize how the hydration process and references are documented.
 
-To define the README template, set the `sourceHydrator.readmeMessageTemplate` field in the `argocd-cm` ConfigMap.
+To define the README template, set the `sourceHydrator.readmeMessageTemplate` field in the `cd-cm` ConfigMap.
 
 The template may also use functions from the [Sprig function library](https://github.com/Masterminds/sprig).
 
@@ -471,8 +471,8 @@ The template may also use functions from the [Sprig function library](https://gi
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
 data:
   sourceHydrator.readmeMessageTemplate: |
     # Manifest Hydration
@@ -500,21 +500,21 @@ data:
 
 ## Commit Author Configuration
 
-You can customize the git commit author name and email used by the source hydrator when committing hydrated manifests. This is configured via the `argocd-cm` ConfigMap.
+You can customize the git commit author name and email used by the source hydrator when committing hydrated manifests. This is configured via the `cd-cm` ConfigMap.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
 data:
   commit.author.name: "GitOps Bot"
   commit.author.email: "gitops@company.com"
 ```
 
 **Configuration Keys:**
-* `commit.author.name`: The git commit author name (defaults to `"Argo CD"` if not set)
+* `commit.author.name`: The git commit author name (defaults to `"Hanzo CD"` if not set)
 * `commit.author.email`: The git commit author email (defaults to `"argo-cd@example.com"` if not set)
 
 Both values are optional. If only one is configured, the configured value will be used and the other will use its default.
@@ -530,9 +530,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: private-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repo-write-creds
+    cd.hanzo.ai/secret-type: repo-write-creds
 stringData:
   type: git
   url: https://github.com/argoproj
@@ -578,7 +578,7 @@ When hydration fails, the application remains in the `Failed` phase and the erro
 
 ## Forcing Hydration with the `hydrate` Annotation
 
-Argo CD uses the `argocd.argoproj.io/hydrate` annotation to request that an Application's dry source be
+Hanzo CD uses the `cd.hanzo.ai/hydrate` annotation to request that an Application's dry source be
 checked and hydrated (if necessary) outside of the normal commit-detection flow. The application controller
 consumes and removes the annotation as soon as it has processed it, so it will not normally persist on the
 Application.
@@ -593,10 +593,10 @@ The annotation takes one of two values:
 > [!NOTE]
 > Only the exact value `hard` is special-cased. Any other value is treated as `normal`.
 
-Argo CD sets this annotation automatically in a few situations:
+Hanzo CD sets this annotation automatically in a few situations:
 
-* **Manual or API refresh.** `argocd app get <app> --refresh` (and the equivalent API call) sets it to `normal`;
-  `argocd app get <app> --hard-refresh` sets it to `hard`.
+* **Manual or API refresh.** `cd app get <app> --refresh` (and the equivalent API call) sets it to `normal`;
+  `cd app get <app> --hard-refresh` sets it to `hard`.
 * **Dry-source webhooks.** A webhook event affecting the `drySource` repository sets it to `normal`, so the dry
   source is checked right away instead of waiting for the next periodic reconciliation.
 
@@ -606,8 +606,8 @@ You can also set the annotation yourself to force a re-hydration, for example to
 touch the dry source repository):
 
 ```shell
-kubectl patch application my-app -n argocd --type merge \
-  -p '{"metadata": {"annotations": {"argocd.argoproj.io/hydrate": "hard"}}}'
+kubectl patch application my-app -n cd --type merge \
+  -p '{"metadata": {"annotations": {"cd.hanzo.ai/hydrate": "hard"}}}'
 ```
 
 > [!NOTE]
@@ -665,7 +665,7 @@ the `AppProject`. See [Source Integrity Verification](source-integrity.md) for h
 [Git GnuPG verification](source-integrity-git-gpg.md)).
 
 The hydrator **does not** sign the commits it pushes to git, so if signature verification is enabled for the
-hydrated branch, those commits will fail verification when Argo CD attempts to sync the hydrated manifests.
+hydrated branch, those commits will fail verification when Hanzo CD attempts to sync the hydrated manifests.
 
 ### Project-Scoped Push Secrets
 
@@ -673,9 +673,9 @@ If all the Applications for a given destination repo/branch are under the same p
 available project-scoped push secrets. If two Applications for a given repo/branch are in different projects, then the
 hydrator will not be able to use a project-scoped push secret and will require a global push secret.
 
-### Multiple Argo CD Instances Hydrating to One Branch
+### Multiple Hanzo CD Instances Hydrating to One Branch
 
-A hydrated repository and branch should be owned by a single Argo CD instance. Two separate Argo CD instances that
+A hydrated repository and branch should be owned by a single Hanzo CD instance. Two separate Hanzo CD instances that
 share the same `drySource` and write hydrated manifests to the **same** `syncSource` repository and branch are not
 supported: the hydrator records hydration state in a per-dry-commit git note on the destination branch, so once one
 instance records a commit, the other instance will short-circuit and leave its manifests stale. Hydrate each instance
@@ -686,7 +686,7 @@ to its own branch instead.
 ### Handle Secrets on the Destination Cluster
 
 Do not use the source hydrator with any tool that injects secrets into your manifests as part of the hydration process
-(for example, Helm with SOPS or the Argo CD Vault Plugin). These secrets would be committed to git. Instead, use a
+(for example, Helm with SOPS or the Hanzo CD Vault Plugin). These secrets would be committed to git. Instead, use a
 secrets operator that populates the secret values on the destination cluster.
 
 ## Best Practices
@@ -706,7 +706,7 @@ Examples of non-deterministic hydration:
 
 ### Enable Branch Protection
 
-Argo CD should be the only thing pushing hydrated manifests to the hydrated branches. To prevent other tools or users
+Hanzo CD should be the only thing pushing hydrated manifests to the hydrated branches. To prevent other tools or users
 from pushing to the hydrated branches, enable branch protection in your SCM.
 
 It is best practice to prefix the hydrated branches with a common prefix, such as `environments/`. This makes it easier
@@ -714,7 +714,7 @@ to configure branch protection rules on the destination repository.
 
 > [!NOTE]
 > To maintain reproducibility and determinism in the Hydrator’s output,
-> Argo CD-specific metadata (such as `argocd.argoproj.io/tracking-id`) is
+> Hanzo CD-specific metadata (such as `cd.hanzo.ai/tracking-id`) is
 > not written to Git during hydration. These annotations are added dynamically
 > during application sync and comparison.
 

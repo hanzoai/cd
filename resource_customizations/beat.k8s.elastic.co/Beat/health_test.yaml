@@ -21,9 +21,9 @@ tests:
   inputPath: testdata/ready_red.yaml
 - healthStatus:
     status: Unknown
-    message: "Elastic Beat status is unknown. Ensure your ArgoCD is current and then check for/file a bug report: https://github.com/argoproj/argo-cd/issues"
+    message: "Elastic Beat status is unknown. Ensure your Hanzo CD is current and then check for/file a bug report: https://github.com/argoproj/argo-cd/issues"
   inputPath: testdata/unknown.yaml
 - healthStatus:
     status: Unknown
-    message: "Elastic Beat status is unknown. Ensure your ArgoCD is current and then check for/file a bug report: https://github.com/argoproj/argo-cd/issues"
+    message: "Elastic Beat status is unknown. Ensure your Hanzo CD is current and then check for/file a bug report: https://github.com/argoproj/argo-cd/issues"
   inputPath: testdata/invalid.yaml

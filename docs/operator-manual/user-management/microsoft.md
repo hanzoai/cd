@@ -12,7 +12,7 @@
 #### Add a new Entra ID App registration
 
 1. From the `Microsoft Entra ID` > `App registrations` menu, choose `+ New registration`
-2. Enter a `Name` for the application (e.g. `Argo CD`).
+2. Enter a `Name` for the application (e.g. `Hanzo CD`).
 3. Specify who can use the application (e.g. `Accounts in this organizational directory only`).
 4. Enter Redirect URI (optional) as follows (replacing `my-argo-cd-url` with your Argo URL), then choose `Add`.
       - **Platform:** `Web`
@@ -20,7 +20,7 @@
 5. When registration finishes, the Azure portal displays the app registration's Overview pane. You see the Application (client) ID.
       ![Azure App registration's Overview](../../assets/azure-app-registration-overview.png "Azure App registration's Overview")
 
-#### Configure additional platform settings for ArgoCD CLI
+#### Configure additional platform settings for Hanzo CD CLI
 
 1. In the Azure portal, in App registrations, select your application.
 2. Under Manage, select Authentication.
@@ -31,19 +31,19 @@
 
 #### Add credentials a new Entra ID App registration
 ##### Using Workload Identity Federation (Recommended)
-1.  **Label the Pods:** Add the `azure.workload.identity/use: "true"` label to the `argocd-server` pods.
-2. **Add Annotation to Service Account:** Add `azure.workload.identity/client-id: "$CLIENT_ID"` annotation to the `argocd-server` service account using the details from application created in previous step.
+1.  **Label the Pods:** Add the `azure.workload.identity/use: "true"` label to the `cd-server` pods.
+2. **Add Annotation to Service Account:** Add `azure.workload.identity/client-id: "$CLIENT_ID"` annotation to the `cd-server` service account using the details from application created in previous step.
 3. From the `Certificates & secrets` menu, navigate to `Federated credentials`, then choose `+ Add credential`
 4. Choose `Federated credential scenario` as `Kubernetes Accessing Azure resources`
    - Enter Cluster Issuer URL, refer to [retrieve the OIDC issuer URL](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#retrieve-the-oidc-issuer-url) documentation
-   - Enter namespace as the namespace where the argocd is deployed
-   - Enter service account name as `argocd-server`
+   - Enter namespace as the namespace where the cd is deployed
+   - Enter service account name as `cd-server`
    - Enter a unique name
    - Click Add.
 
 ##### Using Client Secret
 1. From the `Certificates & secrets` menu, choose `+ New client secret`
-2. Enter a `Name` for the secret (e.g. `ArgoCD-SSO`).
+2. Enter a `Name` for the secret (e.g. `Hanzo CD-SSO`).
       - Make sure to copy and save generated value. This is a value for the `client_secret`.
       ![Azure App registration's Secret](../../assets/azure-app-registration-secret.png "Azure App registration's Secret")
 
@@ -57,19 +57,19 @@
 
 ### Associate an Entra ID group to your Entra ID App registration
 
-1. From the `Microsoft Entra ID` > `Enterprise applications` menu, search the App that you created (e.g. `Argo CD`).
+1. From the `Microsoft Entra ID` > `Enterprise applications` menu, search the App that you created (e.g. `Hanzo CD`).
       - An Enterprise application with the same name of the Entra ID App registration is created when you add a new Entra ID App registration.
 2. From the `Users and groups` menu of the app, add any users or groups requiring access to the service.
    ![Azure Enterprise SAML Users](../../assets/azure-enterprise-users.png "Azure Enterprise SAML Users")
 
 ### Configure Argo to use the new Entra ID App registration
 
-1. Edit `argocd-cm` and configure the `data.oidc.config` and `data.url` section:
+1. Edit `cd-cm` and configure the `data.oidc.config` and `data.url` section:
 
-            ConfigMap -> argocd-cm
+            ConfigMap -> cd-cm
 
             data:
-               url: https://argocd.example.com/ # Replace with the external base URL of your Argo CD
+               url: https://cd.example.com/ # Replace with the external base URL of your Hanzo CD
                oidc.config: |
                      name: Azure
                      issuer: https://login.microsoftonline.com/{directory_tenant_id}/v2.0
@@ -86,17 +86,17 @@
                         - profile
                         - email
 
-2. Skip this step if using azure workload identity. Edit `argocd-secret` and configure the `data.oidc.azure.clientSecret` section:
+2. Skip this step if using azure workload identity. Edit `cd-secret` and configure the `data.oidc.azure.clientSecret` section:
 
-            Secret -> argocd-secret
+            Secret -> cd-secret
 
             data:
                oidc.azure.clientSecret: {client_secret | base64_encoded}
 
-3. Edit `argocd-rbac-cm` to configure permissions. Use group ID from Azure for assigning roles
+3. Edit `cd-rbac-cm` to configure permissions. Use group ID from Azure for assigning roles
       [RBAC Configurations](../rbac.md)
 
-            ConfigMap -> argocd-rbac-cm
+            ConfigMap -> cd-rbac-cm
 
             policy.default: role:readonly
             policy.csv: |
@@ -122,7 +122,7 @@
                g, "84ce98d1-e359-4f3b-85af-985b458de3c6", role:org-admin
             scopes: '[groups, email]'
 
-   Refer to [operator-manual/argocd-rbac-cm.yaml](https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-rbac-cm.yaml) for all of the available variables.
+   Refer to [operator-manual/cd-rbac-cm.yaml](https://github.com/hanzoai/cd/blob/master/docs/operator-manual/cd-rbac-cm.yaml) for all of the available variables.
 
 ## Azure AD Groups Overflow Resolution (200+ Groups)
 
@@ -131,9 +131,9 @@
 Azure AD / Entra ID access tokens can contain a maximum of 200 groups. When a user belongs to more
 than 200 groups, Azure AD sets overflow indicators (`_claim_names` and `_claim_sources`) in the ID
 token instead of including the `groups` claim. This causes users to have no group-based RBAC
-permissions in Argo CD.
+permissions in Hanzo CD.
 
-Argo CD can automatically detect this overflow and resolve it by calling the Microsoft Graph API to
+Hanzo CD can automatically detect this overflow and resolve it by calling the Microsoft Graph API to
 fetch the complete list of group memberships.
 
 ### Prerequisites
@@ -145,7 +145,7 @@ fetch the complete list of group memberships.
 
 ### Configuration
 
-Add the following to your `argocd-cm` ConfigMap under `oidc.config`:
+Add the following to your `cd-cm` ConfigMap under `oidc.config`:
 
 ```yaml
 oidc.config: |
@@ -181,7 +181,7 @@ azure:
 
 ### How It Works
 
-1. **Detection**: Argo CD checks the ID token for overflow indicators (`_claim_names` and
+1. **Detection**: Hanzo CD checks the ID token for overflow indicators (`_claim_names` and
    `_claim_sources`).
 2. **Scope Check**: Verifies the access token contains the `User.Read` scope.
 3. **Graph API Call**: Calls `POST /me/getMemberGroups` to fetch all group IDs (up to 2048).
@@ -216,7 +216,7 @@ azure:
 
 1. From the `Microsoft Entra ID` > `Enterprise applications` menu, choose `+ New application`
 2. Select `Non-gallery application`
-3. Enter a `Name` for the application (e.g. `Argo CD`), then choose `Add`
+3. Enter a `Name` for the application (e.g. `Hanzo CD`), then choose `Add`
 4. Once the application is created, open it from the `Enterprise applications` menu.
 5. From the `Users and groups` menu of the app, add any users or groups requiring access to the service.
    ![Azure Enterprise SAML Users](../../assets/azure-enterprise-users.png "Azure Enterprise SAML Users")
@@ -234,13 +234,13 @@ azure:
       ![Azure Enterprise SAML Claims](../../assets/azure-enterprise-claims.png "Azure Enterprise SAML Claims")
 8. From the `Single sign-on` menu, download the SAML Signing Certificate (Base64)
       - Base64 encode the contents of the downloaded certificate file, for example:
-      - `$ cat ArgoCD.cer | base64`
+      - `$ cat Hanzo CD.cer | base64`
       - *Keep a copy of the encoded output to be used in the next section.*
 9. From the `Single sign-on` menu, copy the `Login URL` parameter, to be used in the next section.
 
 ### Configure Argo to use the new Entra ID Enterprise App
 
-1. Edit `argocd-cm` and add the following `dex.config` to the data section, replacing the `caData`, `my-argo-cd-url` and `my-login-url` your values from the Entra ID App:
+1. Edit `cd-cm` and add the following `dex.config` to the data section, replacing the `caData`, `my-argo-cd-url` and `my-login-url` your values from the Entra ID App:
 
             data:
               url: https://my-argo-cd-url
@@ -262,7 +262,7 @@ azure:
                     emailAttr: email
                     groupsAttr: Group
 
-2. Edit `argocd-rbac-cm` to configure permissions, similar to example below.
+2. Edit `cd-rbac-cm` to configure permissions, similar to example below.
       - Use Entra ID `Group IDs` for assigning roles.
       - See [RBAC Configurations](../rbac.md) for more detailed scenarios.
 
@@ -280,9 +280,9 @@ azure:
 ## Entra ID App Registration Auth using Dex
 
 Configure a new AD App Registration, as above.
-Then, add the `dex.config` to `argocd-cm`:
+Then, add the `dex.config` to `cd-cm`:
 ```yaml
-ConfigMap -> argocd-cm
+ConfigMap -> cd-cm
 
 data:
     dex.config: |
@@ -300,20 +300,20 @@ data:
 ```
 
 ## Validation
-### Log in to ArgoCD UI using SSO
+### Log in to Hanzo CD UI using SSO
 
-1. Open a new browser tab and enter your ArgoCD URI: https://`<my-argo-cd-url>`
+1. Open a new browser tab and enter your Hanzo CD URI: https://`<my-argo-cd-url>`
    ![Azure SSO Web Log In](../../assets/azure-sso-web-log-in-via-azure.png "Azure SSO Web Log In")
-3. Click `LOGIN VIA AZURE` button to log in with your Microsoft Entra ID account. You’ll see the ArgoCD applications screen.
+3. Click `LOGIN VIA AZURE` button to log in with your Microsoft Entra ID account. You’ll see the Hanzo CD applications screen.
    ![Azure SSO Web Application](../../assets/azure-sso-web-application.png "Azure SSO Web Application")
 4. Navigate to User Info and verify Group ID. Groups will have your group’s Object ID that you added in the `Setup permissions for Entra ID Application` step.
    ![Azure SSO Web User Info](../../assets/azure-sso-web-user-info.png "Azure SSO Web User Info")
 
-### Log in to ArgoCD using CLI
+### Log in to Hanzo CD using CLI
 
 1. Open terminal, execute the below command.
 
-            argocd login <my-argo-cd-url> --grpc-web-root-path / --sso
+            cd login <my-argo-cd-url> --grpc-web-root-path / --sso
 
 2. You will see the below message after entering your credentials from the browser.
    ![Azure SSO CLI Log In](../../assets/azure-sso-cli-log-in-success.png "Azure SSO CLI Log In")
@@ -333,7 +333,7 @@ data:
 
 For Microsoft identity platforms, you can set `domainHint` in `oidc.config` to provide a domain hint during sign-in.
 
-When configured, Argo CD adds `domain_hint=<value>` to the authorization request sent to Microsoft.  
+When configured, Hanzo CD adds `domain_hint=<value>` to the authorization request sent to Microsoft.  
 This can reduce account discovery prompts in multi-tenant or federated environments.
 
 - **Field:** `domainHint`
@@ -347,8 +347,8 @@ Example:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
+  name: cd-cm
+  namespace: cd
 data:
   oidc.config: |
     name: Microsoft

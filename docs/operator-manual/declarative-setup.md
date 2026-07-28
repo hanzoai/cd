@@ -1,30 +1,30 @@
 # Declarative Setup
 
-Argo CD applications, projects and settings can be defined declaratively using Kubernetes manifests. These can be updated using `kubectl apply`, without needing to touch the `argocd` command-line tool.
+Hanzo CD applications, projects and settings can be defined declaratively using Kubernetes manifests. These can be updated using `kubectl apply`, without needing to touch the `cd` command-line tool.
 
 ## Quick Reference
 
-All resources, including `Application` and `AppProject` specs, have to be installed in the Argo CD namespace (by default `argocd`).
+All resources, including `Application` and `AppProject` specs, have to be installed in the Hanzo CD namespace (by default `cd`).
 
 ### Atomic configuration
 
 | Sample File                                                           | Resource Name                                                                      | Kind      | Description                                                                          |
 |-----------------------------------------------------------------------|------------------------------------------------------------------------------------|-----------|--------------------------------------------------------------------------------------|
-| [`argocd-cm.yaml`](argocd-cm-yaml.md)                                 | argocd-cm                                                                          | ConfigMap | General Argo CD configuration                                                        |
-| [`argocd-repositories.yaml`](argocd-repositories-yaml.md)             | my-private-repo / istio-helm-repo / private-helm-repo / private-repo               | Secrets   | Sample repository connection details                                                 |
-| [`argocd-repo-creds.yaml`](argocd-repo-creds-yaml.md)                    | argoproj-https-creds / argoproj-ssh-creds / github-creds / github-enterprise-creds | Secrets   | Sample repository credential templates                                               |
-| [`argocd-cmd-params-cm.yaml`](argocd-cmd-params-cm-yaml.md)           | argocd-cmd-params-cm                                                               | ConfigMap | Argo CD env variables configuration                                                  |
-| [`argocd-secret.yaml`](argocd-secret-yaml.md)                         | argocd-secret                                                                      | Secret    | User Passwords, Certificates (deprecated), Signing Key, Dex secrets, Webhook secrets |
-| [`argocd-rbac-cm.yaml`](argocd-rbac-cm-yaml.md)                       | argocd-rbac-cm                                                                     | ConfigMap | RBAC Configuration                                                                   |
-| [`argocd-tls-certs-cm.yaml`](argocd-tls-certs-cm-yaml.md)             | argocd-tls-certs-cm                                                                | ConfigMap | Custom TLS certificates for connecting Git repositories via HTTPS (v1.2 and later)   |
-| [`argocd-ssh-known-hosts-cm.yaml`](argocd-ssh-known-hosts-cm-yaml.md) | argocd-ssh-known-hosts-cm                                                          | ConfigMap | SSH known hosts data for connecting Git repositories via SSH (v1.2 and later)        |
+| [`cd-cm.yaml`](cd-cm-yaml.md)                                 | cd-cm                                                                          | ConfigMap | General Hanzo CD configuration                                                        |
+| [`cd-repositories.yaml`](cd-repositories-yaml.md)             | my-private-repo / istio-helm-repo / private-helm-repo / private-repo               | Secrets   | Sample repository connection details                                                 |
+| [`cd-repo-creds.yaml`](cd-repo-creds-yaml.md)                    | argoproj-https-creds / argoproj-ssh-creds / github-creds / github-enterprise-creds | Secrets   | Sample repository credential templates                                               |
+| [`cd-cmd-params-cm.yaml`](cd-cmd-params-cm-yaml.md)           | cd-cmd-params-cm                                                               | ConfigMap | Hanzo CD env variables configuration                                                  |
+| [`cd-secret.yaml`](cd-secret-yaml.md)                         | cd-secret                                                                      | Secret    | User Passwords, Certificates (deprecated), Signing Key, Dex secrets, Webhook secrets |
+| [`cd-rbac-cm.yaml`](cd-rbac-cm-yaml.md)                       | cd-rbac-cm                                                                     | ConfigMap | RBAC Configuration                                                                   |
+| [`cd-tls-certs-cm.yaml`](cd-tls-certs-cm-yaml.md)             | cd-tls-certs-cm                                                                | ConfigMap | Custom TLS certificates for connecting Git repositories via HTTPS (v1.2 and later)   |
+| [`cd-ssh-known-hosts-cm.yaml`](cd-ssh-known-hosts-cm-yaml.md) | cd-ssh-known-hosts-cm                                                          | ConfigMap | SSH known hosts data for connecting Git repositories via SSH (v1.2 and later)        |
 
 For each specific kind of ConfigMap and Secret resource, there is only a single supported resource name (as listed in the above table) - if you need to merge things you need to do it before creating them.
 
 > [!WARNING]
 > **A note about ConfigMap resources**
 >
-> Be sure to annotate your ConfigMap resources using the label `app.kubernetes.io/part-of: argocd`, otherwise Argo CD will not be able to use them.
+> Be sure to annotate your ConfigMap resources using the label `app.kubernetes.io/part-of: cd`, otherwise Hanzo CD will not be able to use them.
 
 ### Multiple configuration objects
 
@@ -32,9 +32,9 @@ For each specific kind of ConfigMap and Secret resource, there is only a single 
 |------------------------------------------------------------------|-------------|--------------------------|
 | [`application.yaml`](../user-guide/application-specification.md) | Application | Example application spec |
 | [`project.yaml`](./project-specification.md)                     | AppProject  | Example project spec     |
-| [`argocd-repositories.yaml`](./argocd-repositories-yaml.md)                                                                | Secret      | Repository credentials   |
+| [`cd-repositories.yaml`](./cd-repositories-yaml.md)                                                                | Secret      | Repository credentials   |
 
-For `Application` and `AppProject` resources, the name of the resource equals the name of the application or project within Argo CD. This also means that application and project names are unique within a given Argo CD installation - you cannot have the same application name for two different applications.
+For `Application` and `AppProject` resources, the name of the resource equals the name of the application or project within Hanzo CD. This also means that application and project names are unique within a given Hanzo CD installation - you cannot have the same application name for two different applications.
 
 ## Applications
 
@@ -47,11 +47,11 @@ in an environment. It is defined by two key pieces of information:
 A minimal Application spec is as follows:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: argocd
+  namespace: cd
 spec:
   project: default
   source:
@@ -63,10 +63,10 @@ spec:
     namespace: guestbook
 ```
 
-See [application.yaml](application.yaml) for additional fields. As long as you have completed the first step of [Getting Started](../getting_started.md#1-install-argo-cd), you can apply this with `kubectl apply -n argocd -f application.yaml` and Argo CD will start deploying the guestbook application.
+See [application.yaml](application.yaml) for additional fields. As long as you have completed the first step of [Getting Started](../getting_started.md#1-install-argo-cd), you can apply this with `kubectl apply -n cd -f application.yaml` and Hanzo CD will start deploying the guestbook application.
 
 > [!NOTE]
-> The namespace must match the namespace of your Argo CD instance - typically this is `argocd`.
+> The namespace must match the namespace of your Hanzo CD instance - typically this is `cd`.
 
 > [!NOTE]
 > When creating an application from a Helm repository, the `chart` attribute must be specified instead of the `path` attribute within `spec.source`.
@@ -80,12 +80,12 @@ spec:
 ```
 
 > [!WARNING]
-> Without the `resources-finalizer.argocd.argoproj.io` finalizer, deleting an application will not delete the resources it manages. To perform a cascading delete, you must add the finalizer. See [App Deletion](../user-guide/app_deletion.md#about-the-deletion-finalizer).
+> Without the `resources-finalizer.cd.hanzo.ai` finalizer, deleting an application will not delete the resources it manages. To perform a cascading delete, you must add the finalizer. See [App Deletion](../user-guide/app_deletion.md#about-the-deletion-finalizer).
 
 ```yaml
 metadata:
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 ```
 
 ### App of Apps
@@ -105,9 +105,9 @@ It is defined by the following key pieces of information:
 * `roles` list of entities with definitions of their access to resources within the project.
 
 > [!WARNING]
-> **Projects which can deploy to the Argo CD namespace grant admin access**
+> **Projects which can deploy to the Hanzo CD namespace grant admin access**
 >
-> If a Project's `destinations` configuration allows deploying to the namespace in which Argo CD is installed, then
+> If a Project's `destinations` configuration allows deploying to the namespace in which Hanzo CD is installed, then
 > Applications under that project have admin-level access. [RBAC access](https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/)
 > to admin-level Projects should be carefully restricted, and push access to allowed `sourceRepos` should be limited
 > to only admins.
@@ -115,14 +115,14 @@ It is defined by the following key pieces of information:
 An example spec is as follows:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   name: my-project
-  namespace: argocd
+  namespace: cd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.cd.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -165,7 +165,7 @@ spec:
     policies:
     - p, proj:my-project:ci-role, applications, sync, my-project/guestbook-dev, allow
     # NOTE: JWT tokens can only be generated by the API server and the token is not persisted
-    # anywhere by Argo CD. It can be prematurely revoked by removing the entry from this list.
+    # anywhere by Hanzo CD. It can be prematurely revoked by removing the entry from this list.
     jwtTokens:
     - iat: 1535390316
 ```
@@ -177,7 +177,7 @@ spec:
 > [!NOTE]
 > Some Git hosters - notably GitLab and possibly on-premise GitLab instances as well - require you to
 > specify the `.git` suffix in the repository URL, otherwise they will send a HTTP 301 redirect to the
-> repository URL suffixed with `.git`. Argo CD will **not** follow these redirects, so you have to
+> repository URL suffixed with `.git`. Hanzo CD will **not** follow these redirects, so you have to
 > adjust your repository URL to be suffixed with `.git`.
 
 Repository details are stored in secrets. To configure a repo, create a secret which contains repository details.
@@ -195,9 +195,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: private-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/private-repo
@@ -213,9 +213,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: private-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: git@github.com:argoproj/my-private-repository.git
@@ -232,9 +232,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: github-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/my-private-repository
@@ -249,9 +249,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: github-enterprise-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://ghe.example.com/argoproj/my-private-repository
@@ -270,9 +270,9 @@ Example for Google Cloud Source repositories:
 kind: Secret
 metadata:
   name: github-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://source.developers.google.com/p/my-google-project/r/my-repo
@@ -282,12 +282,12 @@ stringData:
       "project_id": "my-google-project",
       "private_key_id": "REDACTED",
       "private_key": "-----BEGIN PRIVATE KEY-----\nREDACTED\n-----END PRIVATE KEY-----\n",
-      "client_email": "argocd-service-account@my-google-project.iam.gserviceaccount.com",
+      "client_email": "cd-service-account@my-google-project.iam.gserviceaccount.com",
       "client_id": "REDACTED",
       "auth_uri": "https://accounts.google.com/o/oauth2/auth",
       "token_uri": "https://oauth2.googleapis.com/token",
       "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/argocd-service-account%40my-google-project.iam.gserviceaccount.com"
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cd-service-account%40my-google-project.iam.gserviceaccount.com"
     }
 ```
 
@@ -305,9 +305,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: service-principal-for-azure-public-cloud
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo
@@ -319,9 +319,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: service-principal-for-azure-other-cloud
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo
@@ -340,9 +340,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: first-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/private-repo
@@ -351,9 +351,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: second-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/other-private-repo
@@ -362,9 +362,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: private-repo-creds
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repo-creds
+    cd.hanzo.ai/secret-type: repo-creds
 stringData:
   type: git
   url: https://github.com/argoproj
@@ -374,7 +374,7 @@ stringData:
 
 In the above example, every repository accessed via HTTPS whose URL is prefixed with `https://github.com/argoproj` would use a username stored in the key `username` and a password stored in the key `password` of the secret `private-repo-creds` for connecting to Git.
 
-In order for Argo CD to use a credential template for any given repository, the following conditions must be met:
+In order for Hanzo CD to use a credential template for any given repository, the following conditions must be met:
 
 * The repository must either not be configured at all, or if configured, must not contain any credential information (i.e. contain none of `sshPrivateKey`, `username`, `password` )
 * The URL configured for a credential template (e.g. `https://github.com/argoproj`) must match as prefix for the repository URL (e.g. `https://github.com/argoproj/argocd-example-apps`).
@@ -407,7 +407,7 @@ See the [Helm](#helm) section for the properties that apply to Helm repositories
 
 ### Repositories using self-signed TLS certificates (or are signed by custom CA)
 
-You can manage the TLS certificates used to verify the authenticity of your repository servers in a ConfigMap object named `argocd-tls-certs-cm`. The data section should contain a map, with the repository server's hostname part (not the complete URL) as key, and the certificate(s) in PEM format as data. So, if you connect to a repository with the URL `https://server.example.com/repos/my-repo`, you should use `server.example.com` as key. The certificate data should be either the server's certificate (in case of self-signed certificate) or the certificate of the CA that was used to sign the server's certificate. You can configure multiple certificates for each server, e.g. if you are having a certificate roll-over planned.
+You can manage the TLS certificates used to verify the authenticity of your repository servers in a ConfigMap object named `cd-tls-certs-cm`. The data section should contain a map, with the repository server's hostname part (not the complete URL) as key, and the certificate(s) in PEM format as data. So, if you connect to a repository with the URL `https://server.example.com/repos/my-repo`, you should use `server.example.com` as key. The certificate data should be either the server's certificate (in case of self-signed certificate) or the certificate of the CA that was used to sign the server's certificate. You can configure multiple certificates for each server, e.g. if you are having a certificate roll-over planned.
 
 If there are no dedicated certificates configured for a repository server, the system's default trust store is used for validating the server's repository. This should be good enough for most (if not all) public Git repository services such as GitLab, GitHub and Bitbucket as well as most privately hosted sites which use certificates from well-known CAs, including Let's Encrypt certificates.
 
@@ -417,11 +417,11 @@ An example ConfigMap object:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-tls-certs-cm
-  namespace: argocd
+  name: cd-tls-certs-cm
+  namespace: cd
   labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/name: cd-cm
+    app.kubernetes.io/part-of: cd
 data:
   server.example.com: |
     -----BEGIN CERTIFICATE-----
@@ -462,13 +462,13 @@ data:
 ```
 
 > [!NOTE]
-> The `argocd-tls-certs-cm` ConfigMap will be mounted as a volume at the mount path `/app/config/tls` in the pods of `argocd-server` and `argocd-repo-server`. It will create files for each data key in the mount path directory, so above example would leave the file `/app/config/tls/server.example.com`, which contains the certificate data. It might take a while for changes in the ConfigMap to be reflected in your pods, depending on your Kubernetes configuration.
+> The `cd-tls-certs-cm` ConfigMap will be mounted as a volume at the mount path `/app/config/tls` in the pods of `cd-server` and `cd-repo-server`. It will create files for each data key in the mount path directory, so above example would leave the file `/app/config/tls/server.example.com`, which contains the certificate data. It might take a while for changes in the ConfigMap to be reflected in your pods, depending on your Kubernetes configuration.
 
 ### SSH known host public keys
 
-If you are configuring repositories to use SSH, Argo CD will need to know their SSH public keys. In order for Argo CD to connect via SSH the public key(s) for each repository server must be pre-configured in Argo CD (unlike TLS configuration), otherwise the connections to the repository will fail.
+If you are configuring repositories to use SSH, Hanzo CD will need to know their SSH public keys. In order for Hanzo CD to connect via SSH the public key(s) for each repository server must be pre-configured in Hanzo CD (unlike TLS configuration), otherwise the connections to the repository will fail.
 
-You can manage the SSH known hosts data in the `argocd-ssh-known-hosts-cm` ConfigMap. This ConfigMap contains a single entry, `ssh_known_hosts`, with the public keys of the SSH servers as its value. The value can be filled in from any existing `ssh_known_hosts` file, or from the output of the `ssh-keyscan` utility (which is part of OpenSSH's client package). The basic format is `<server_name> <keytype> <base64-encoded_key>`, one entry per line.
+You can manage the SSH known hosts data in the `cd-ssh-known-hosts-cm` ConfigMap. This ConfigMap contains a single entry, `ssh_known_hosts`, with the public keys of the SSH servers as its value. The value can be filled in from any existing `ssh_known_hosts` file, or from the output of the `ssh-keyscan` utility (which is part of OpenSSH's client package). The basic format is `<server_name> <keytype> <base64-encoded_key>`, one entry per line.
 
 Here is an example of running `ssh-keyscan`:
 ```bash
@@ -491,9 +491,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/name: argocd-ssh-known-hosts-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-ssh-known-hosts-cm
+    app.kubernetes.io/name: cd-ssh-known-hosts-cm
+    app.kubernetes.io/part-of: cd
+  name: cd-ssh-known-hosts-cm
 data:
   ssh_known_hosts: |
     # This file was automatically generated by hack/update-ssh-known-hosts.sh. DO NOT EDIT
@@ -514,11 +514,11 @@ data:
 ```
 
 > [!NOTE]
-> The `argocd-ssh-known-hosts-cm` ConfigMap will be mounted as a volume at the mount path `/app/config/ssh` in the pods of `argocd-server` and `argocd-repo-server`. It will create a file `ssh_known_hosts` in that directory, which contains the SSH known hosts data used by Argo CD for connecting to Git repositories via SSH. It might take a while for changes in the ConfigMap to be reflected in your pods, depending on your Kubernetes configuration.
+> The `cd-ssh-known-hosts-cm` ConfigMap will be mounted as a volume at the mount path `/app/config/ssh` in the pods of `cd-server` and `cd-repo-server`. It will create a file `ssh_known_hosts` in that directory, which contains the SSH known hosts data used by Hanzo CD for connecting to Git repositories via SSH. It might take a while for changes in the ConfigMap to be reflected in your pods, depending on your Kubernetes configuration.
 
 ### Configure repositories with proxy
 
-Proxy for your repository can be specified in the `proxy` field of the repository secret, along with a corresponding `noProxy` config. Argo CD uses this proxy/noProxy config to access the repository and do related helm/kustomize operations. Argo CD looks for the standard proxy environment variables in the repository server if the custom proxy config is absent.
+Proxy for your repository can be specified in the `proxy` field of the repository secret, along with a corresponding `noProxy` config. Hanzo CD uses this proxy/noProxy config to access the repository and do related helm/kustomize operations. Hanzo CD looks for the standard proxy environment variables in the repository server if the custom proxy config is absent.
 
 An example repository with proxy and noProxy:
 
@@ -527,9 +527,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: private-repo
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://github.com/argoproj/private-repo
@@ -539,19 +539,19 @@ stringData:
   username: my-username
 ```
 
-A note on noProxy: Argo CD uses exec to interact with different tools such as helm and kustomize. Not all of these tools support the same noProxy syntax as the [httpproxy go package](https://cs.opensource.google/go/x/net/+/internal-branch.go1.21-vendor:http/httpproxy/proxy.go;l=38-50) does. In case you run in trouble with noProxy not being respected you might want to try using the full domain instead of a wildcard pattern or IP range to find a common syntax that all tools support.
+A note on noProxy: Hanzo CD uses exec to interact with different tools such as helm and kustomize. Not all of these tools support the same noProxy syntax as the [httpproxy go package](https://cs.opensource.google/go/x/net/+/internal-branch.go1.21-vendor:http/httpproxy/proxy.go;l=38-50) does. In case you run in trouble with noProxy not being respected you might want to try using the full domain instead of a wildcard pattern or IP range to find a common syntax that all tools support.
 
 ## Clusters
 
 Cluster credentials are stored in secrets same as repositories or repository credentials. Each secret must have label
-`argocd.argoproj.io/secret-type: cluster`.
+`cd.hanzo.ai/secret-type: cluster`.
 
 The secret data can include the following fields:
 
 * `name` - required, cluster name
 * `server` - required, cluster api server url
 * `namespaces` - optional comma-separated list of namespaces which are accessible in that cluster. Setting namespace values will cause cluster-level resources to be ignored unless `clusterResources` is set to `true`.
-* `clusterResources` - optional boolean string (`"true"` or `"false"`) determining whether Argo CD can manage cluster-level resources on this cluster. This setting is only used when namespaces are restricted using the `namespaces` list.
+* `clusterResources` - optional boolean string (`"true"` or `"false"`) determining whether Hanzo CD can manage cluster-level resources on this cluster. This setting is only used when namespaces are restricted using the `namespaces` list.
 * `project` - optional string to designate this as a project-scoped cluster. Note that defining a project-scoped cluster implicitly adds its namespaces (or a wildcard if `namespaces` is unset) to the project's destination list. See [Project-scoped repositories and clusters](../user-guide/projects.md#project-scoped-repositories-and-clusters) for more details.
 * `config` - required. JSON representation of the following data structure:
 
@@ -599,13 +599,13 @@ disableCompression: boolean
 ```
 
 > [!IMPORTANT]
-> When `namespaces` is set, Argo CD will perform a separate list/watch operation for each namespace. This can cause
+> When `namespaces` is set, Hanzo CD will perform a separate list/watch operation for each namespace. This can cause
 > the Application controller to exceed the maximum number of idle connections allowed for the Kubernetes API server.
 > To resolve this issue, you can increase the `CD_K8S_CLIENT_MAX_IDLE_CONNECTIONS` environment variable in the
 > Application controller.
 
 > [!IMPORTANT]
-> Note that if you specify a command to run under `execProviderConfig`, that command must be available in the Argo CD image. See [BYOI (Build Your Own Image)](custom_tools.md#byoi-build-your-own-image).
+> Note that if you specify a command to run under `execProviderConfig`, that command must be available in the Hanzo CD image. See [BYOI (Build Your Own Image)](custom_tools.md#byoi-build-your-own-image).
 
 Cluster secret example:
 
@@ -615,7 +615,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -633,10 +633,10 @@ stringData:
 ### Skipping Cluster Reconciliation
 
 You can prevent the application controller from reconciling all apps targeting a cluster by annotating its
-secret with `argocd.argoproj.io/skip-reconcile: "true"`. This uses the same annotation as
+secret with `cd.hanzo.ai/skip-reconcile: "true"`. This uses the same annotation as
 [Skip Application Reconcile](../user-guide/skip_reconcile.md), but applied at the cluster level.
 
-The cluster remains visible in API responses (`argocd cluster list`), but the controller treats it as unmanaged.
+The cluster remains visible in API responses (`cd cluster list`), but the controller treats it as unmanaged.
 
 ```yaml
 apiVersion: v1
@@ -644,9 +644,9 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
   annotations:
-    argocd.argoproj.io/skip-reconcile: "true"
+    cd.hanzo.ai/skip-reconcile: "true"
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -664,18 +664,18 @@ stringData:
 To skip an existing cluster:
 
 ```bash
-kubectl -n argocd annotate secret mycluster-secret argocd.argoproj.io/skip-reconcile=true
+kubectl -n cd annotate secret mycluster-secret cd.hanzo.ai/skip-reconcile=true
 ```
 
 To resume reconciliation:
 
 ```bash
-kubectl -n argocd annotate secret mycluster-secret argocd.argoproj.io/skip-reconcile-
+kubectl -n cd annotate secret mycluster-secret cd.hanzo.ai/skip-reconcile-
 ```
 
 ### EKS
 
-EKS cluster secret example using argocd-k8s-auth and [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) and [Pod Identity](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html):
+EKS cluster secret example using cd-k8s-auth and [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) and [Pod Identity](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html):
 
 ```yaml
 apiVersion: v1
@@ -683,7 +683,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: "eks-cluster-name-for-argo"
@@ -703,26 +703,26 @@ stringData:
 
 This setup requires:
 
-1. [IRSA enabled](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) or [Pod Identity agent](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-agent-setup.html) on your Argo CD EKS cluster  
-2. An IAM role ("management role") for your Argo CD EKS cluster that has an appropriate trust policy and permission policies (see below)
-3. A role created for each cluster being added to Argo CD that is assumable by the Argo CD management role
-4. An [Access Entry](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html) within each EKS cluster added to Argo CD that gives the cluster's role (from point 3) RBAC permissions
+1. [IRSA enabled](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) or [Pod Identity agent](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-agent-setup.html) on your Hanzo CD EKS cluster  
+2. An IAM role ("management role") for your Hanzo CD EKS cluster that has an appropriate trust policy and permission policies (see below)
+3. A role created for each cluster being added to Hanzo CD that is assumable by the Hanzo CD management role
+4. An [Access Entry](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html) within each EKS cluster added to Hanzo CD that gives the cluster's role (from point 3) RBAC permissions
 to perform actions within the cluster
-    - Or, alternatively, an entry within the `aws-auth` ConfigMap within the cluster added to Argo CD ([deprecated by EKS](https://docs.aws.amazon.com/eks/latest/userguide/auth-configmap.html))
+    - Or, alternatively, an entry within the `aws-auth` ConfigMap within the cluster added to Hanzo CD ([deprecated by EKS](https://docs.aws.amazon.com/eks/latest/userguide/auth-configmap.html))
 
-#### Argo CD Management Role
+#### Hanzo CD Management Role
 
-The role created for Argo CD (the "management role") will need to have a trust policy suitable for assumption by certain 
-Argo CD Service Accounts *and by itself*.
+The role created for Hanzo CD (the "management role") will need to have a trust policy suitable for assumption by certain 
+Hanzo CD Service Accounts *and by itself*.
 
 The service accounts that need to assume this role are:
 
-- `argocd-application-controller`,
-- `argocd-applicationset-controller`
-- `argocd-server`
+- `cd-application-controller`,
+- `cd-applicationset-controller`
+- `cd-server`
 
 If we create role `arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>` for this purpose, the following
-is an example trust policy suitable for this need. Ensure that the Argo CD cluster has an [IAM OIDC provider configured](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) or [Pod Identity agent running](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-agent-setup.html)
+is an example trust policy suitable for this need. Ensure that the Hanzo CD cluster has an [IAM OIDC provider configured](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) or [Pod Identity agent running](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-agent-setup.html)
 
 **for IRSA:**
 ```json
@@ -752,9 +752,9 @@ is an example trust policy suitable for this need. Ensure that the Argo CD clust
             "Condition": {
                 "StringEquals": {
                     "oidc.eks.<AWS_REGION>.amazonaws.com/id/EXAMPLED539D4633E53DE1B71EXAMPLE:sub": [
-                        "system:serviceaccount:argocd:argocd-application-controller",
-                        "system:serviceaccount:argocd:argocd-applicationset-controller",
-                        "system:serviceaccount:argocd:argocd-server"
+                        "system:serviceaccount:cd:cd-application-controller",
+                        "system:serviceaccount:cd:cd-applicationset-controller",
+                        "system:serviceaccount:cd:cd-server"
                     ],
                     "oidc.eks.<AWS_REGION>.amazonaws.com/id/EXAMPLED539D4633E53DE1B71EXAMPLE:aud": "sts.amazonaws.com"
                 }
@@ -782,12 +782,12 @@ is an example trust policy suitable for this need. Ensure that the Argo CD clust
             "Condition": {
                 "StringEquals": {
                     "aws:RequestTag/kubernetes-namespace": [
-                        "argocd"
+                        "cd"
                     ],
                     "aws:RequestTag/kubernetes-service-account": [
-                        "argocd-server",
-                        "argocd-application-controller",
-                        "argocd-applicationset-controller"
+                        "cd-server",
+                        "cd-application-controller",
+                        "cd-applicationset-controller"
                     ]
                 }
             }
@@ -796,11 +796,11 @@ is an example trust policy suitable for this need. Ensure that the Argo CD clust
 }
 ```
 
-#### Argo CD Service Accounts
+#### Hanzo CD Service Accounts
 
-The 3 service accounts need to be modified to include an annotation with the Argo CD management role ARN.
+The 3 service accounts need to be modified to include an annotation with the Hanzo CD management role ARN.
 
-Here's an example service account configurations for `argocd-application-controller`, `argocd-applicationset-controller`, and `argocd-server`.
+Here's an example service account configurations for `cd-application-controller`, `cd-applicationset-controller`, and `cd-server`.
 
 > [!WARNING]
 > Once the annotations has been set on the service accounts, the application controller and server pods need to be restarted.
@@ -812,37 +812,37 @@ kind: ServiceAccount
 metadata:
   annotations:
     eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
-  name: argocd-application-controller
+  name: cd-application-controller
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
     eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
-  name: argocd-applicationset-controller
+  name: cd-applicationset-controller
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
     eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
-  name: argocd-server
+  name: cd-server
 ```
 
 **for Pod Identity:**  
 ```shell
-aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace argocd --service-account argocd-applicationset-controller --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
-aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace argocd --service-account argocd-application-controller --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
-aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace argocd --service-account argocd-server --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
+aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-applicationset-controller --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
+aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-application-controller --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
+aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-server --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
 ```
 
 #### IAM Permission Policy
 
-The Argo CD management role (`arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>` in our example) additionally
-needs to be allowed to assume a role for each cluster added to Argo CD.
+The Hanzo CD management role (`arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>` in our example) additionally
+needs to be allowed to assume a role for each cluster added to Hanzo CD.
 
-If we create a role named `<IAM_CLUSTER_ROLE>` for an EKS cluster we are adding to Argo CD, we would update the permission 
-policy of the Argo CD management role to include the following:
+If we create a role named `<IAM_CLUSTER_ROLE>` for an EKS cluster we are adding to Hanzo CD, we would update the permission 
+policy of the Hanzo CD management role to include the following:
 
 **for IRSA:**
 ```json
@@ -875,20 +875,20 @@ policy of the Argo CD management role to include the following:
   }
 ```
 
-This allows the Argo CD management role to assume the cluster role.
+This allows the Hanzo CD management role to assume the cluster role.
 
-You can add permissions like above to the Argo CD management role for each cluster being managed by Argo CD (assuming you
+You can add permissions like above to the Hanzo CD management role for each cluster being managed by Hanzo CD (assuming you
 create a new role per cluster).
 
 #### Cluster Role Trust Policies
 
-As stated, each EKS cluster being added to Argo CD should have its own corresponding role. This role should not have any
-permission policies. Instead, it will be used to authenticate against the EKS cluster's API. The Argo CD management role
-assumes this role, and calls the AWS API to get an auth token via argocd-k8s-auth. That token is used when connecting to
+As stated, each EKS cluster being added to Hanzo CD should have its own corresponding role. This role should not have any
+permission policies. Instead, it will be used to authenticate against the EKS cluster's API. The Hanzo CD management role
+assumes this role, and calls the AWS API to get an auth token via cd-k8s-auth. That token is used when connecting to
 the added cluster's API endpoint.
 
-If we create role `arn:aws:iam::<AWS_ACCOUNT_ID>:role/<IAM_CLUSTER_ROLE>` for a cluster being added to Argo CD, we should
-set its trust policy to give the Argo CD management role permission to assume it. Note that we're granting the Argo CD 
+If we create role `arn:aws:iam::<AWS_ACCOUNT_ID>:role/<IAM_CLUSTER_ROLE>` for a cluster being added to Hanzo CD, we should
+set its trust policy to give the Hanzo CD management role permission to assume it. Note that we're granting the Hanzo CD 
 management role permission to assume this role above, but we also need to permit that action via the cluster role's
 trust policy.
 
@@ -938,7 +938,7 @@ to the cluster's API. This EKS permission policy decides what RBAC permissions a
 An [access entry](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html) (and the policy associated to the role) can be created using the following commands:
 
 ```bash
-# For each cluster being added to Argo CD
+# For each cluster being added to Hanzo CD
 aws eks create-access-entry \
     --cluster-name my-eks-cluster-name \
     --principal-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<IAM_CLUSTER_ROLE> \
@@ -952,7 +952,7 @@ aws eks associate-access-policy \
     --principal-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<IAM_CLUSTER_ROLE>
 ```
 
-The above role is granted cluster admin permissions via `AmazonEKSClusterAdminPolicy`. The Argo CD management role that
+The above role is granted cluster admin permissions via `AmazonEKSClusterAdminPolicy`. The Hanzo CD management role that
 assume this role is therefore granted the same cluster admin permissions when it generates an API token when adding the 
 associated EKS cluster.
 
@@ -962,9 +962,9 @@ Instead of using Access Entries, you may need to use the deprecated `aws-auth`.
 
 If so, the `roleARN` of each managed cluster needs to be added to each respective cluster's `aws-auth` config map (see
 [Enabling IAM principal access to your cluster](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html)), as
-well as having an assume role policy which allows it to be assumed by the Argo CD pod role.
+well as having an assume role policy which allows it to be assumed by the Hanzo CD pod role.
 
-An example assume role policy for a cluster which is managed by Argo CD:
+An example assume role policy for a cluster which is managed by Hanzo CD:
 
 ```json
 {
@@ -979,7 +979,7 @@ An example assume role policy for a cluster which is managed by Argo CD:
   }
 ```
 
-Example kube-system/aws-auth configmap for your cluster managed by Argo CD:
+Example kube-system/aws-auth configmap for your cluster managed by Hanzo CD:
 
 ```yaml
 apiVersion: v1
@@ -998,10 +998,10 @@ data:
 Use the role ARN for both `rolearn` and `username`.
 
 #### Alternative EKS Authentication Methods
-In some scenarios it may not be possible to use IRSA, such as when the Argo CD cluster is running on a different cloud
+In some scenarios it may not be possible to use IRSA, such as when the Hanzo CD cluster is running on a different cloud
 provider's platform. In this case, there are two options:
 1. Use `execProviderConfig` to call the AWS authentication mechanism which enables the injection of environment variables to supply credentials
-2. Leverage the new AWS profile option available in Argo CD release 2.10
+2. Leverage the new AWS profile option available in Hanzo CD release 2.10
 
 Both of these options will require the steps involving IAM and the `aws-auth` config map (defined above) to provide the 
 principal with access to the cluster.
@@ -1014,7 +1014,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster
@@ -1024,7 +1024,7 @@ stringData:
   config: |
     {
       "execProviderConfig": {
-        "command": "argocd-k8s-auth",
+        "command": "cd-k8s-auth",
         "args": ["aws", "--cluster-name", "my-eks-cluster"],
         "apiVersion": "client.authentication.k8s.io/v1beta1",
         "env": {
@@ -1054,14 +1054,14 @@ plain text and additionally helps to provide a foundation for key rotation.
 
 ##### Using An AWS Profile For Authentication
 The option to use profiles, added in release 2.10, provides a method for supplying credentials while still using the
-standard Argo CD EKS cluster declaration with an additional command flag that points to an AWS credentials file:
+standard Hanzo CD EKS cluster declaration with an additional command flag that points to an AWS credentials file:
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: "mycluster.com"
@@ -1079,9 +1079,9 @@ stringData:
       }        
     }
 ```
-This will instruct Argo CD to read the file at the provided path and use the credentials defined within to authenticate to AWS. 
-The profile must be mounted in both the `argocd-server` and `argocd-application-controller` components in order for this to work.
-For example, the following values can be defined in a Helm-based Argo CD deployment:
+This will instruct Hanzo CD to read the file at the provided path and use the credentials defined within to authenticate to AWS. 
+The profile must be mounted in both the `cd-server` and `cd-application-controller` components in order for this to work.
+For example, the following values can be defined in a Helm-based Hanzo CD deployment:
 
 ```yaml
 controller:
@@ -1131,7 +1131,7 @@ stringData:
 
 ### GKE
 
-GKE cluster secret example using argocd-k8s-auth and [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity):
+GKE cluster secret example using cd-k8s-auth and [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity):
 
 ```yaml
 apiVersion: v1
@@ -1139,7 +1139,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1147,7 +1147,7 @@ stringData:
   config: |
     {
       "execProviderConfig": {
-        "command": "argocd-k8s-auth",
+        "command": "cd-k8s-auth",
         "args": ["gcp"],
         "apiVersion": "client.authentication.k8s.io/v1beta1"
       },
@@ -1158,11 +1158,11 @@ stringData:
     }
 ```
 
-Note that you must enable Workload Identity on your GKE cluster, create GCP service account with appropriate IAM role and bind it to Kubernetes service account for argocd-application-controller and argocd-server (showing Pod logs on UI). See [Use Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) and [Authenticating to the Kubernetes API server](https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication).
+Note that you must enable Workload Identity on your GKE cluster, create GCP service account with appropriate IAM role and bind it to Kubernetes service account for cd-application-controller and cd-server (showing Pod logs on UI). See [Use Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) and [Authenticating to the Kubernetes API server](https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication).
 
 ### AKS
 
-Azure cluster secret example using argocd-k8s-auth and [kubelogin](https://github.com/Azure/kubelogin).  The option *azure* to the argocd-k8s-auth execProviderConfig encapsulates the *get-token* command for kubelogin.  Depending upon which authentication flow is desired (devicecode, spn, ropc, msi, azurecli, workloadidentity), set the environment variable AAD_LOGIN_METHOD with this value.  Set other appropriate environment variables depending upon which authentication flow is desired.
+Azure cluster secret example using cd-k8s-auth and [kubelogin](https://github.com/Azure/kubelogin).  The option *azure* to the cd-k8s-auth execProviderConfig encapsulates the *get-token* command for kubelogin.  Depending upon which authentication flow is desired (devicecode, spn, ropc, msi, azurecli, workloadidentity), set the environment variable AAD_LOGIN_METHOD with this value.  Set other appropriate environment variables depending upon which authentication flow is desired.
 
 |Variable Name|Description|
 |-------------|-----------|
@@ -1177,7 +1177,7 @@ Azure cluster secret example using argocd-k8s-auth and [kubelogin](https://githu
 |AZURE_AUTHORITY_HOST|Used in the WorkloadIdentityLogin flow|
 |AZURE_FEDERATED_TOKEN_FILE|Used in the WorkloadIdentityLogin flow|
 
-In addition to the environment variables above, argocd-k8s-auth accepts two extra environment variables to set the AAD environment, and to set the AAD server application ID.  The AAD server application ID will default to 6dae42f8-4368-4678-94ff-3960e28e3630 if not specified.  See [Exec Plugin
+In addition to the environment variables above, cd-k8s-auth accepts two extra environment variables to set the AAD environment, and to set the AAD server application ID.  The AAD server application ID will default to 6dae42f8-4368-4678-94ff-3960e28e3630 if not specified.  See [Exec Plugin
 ](https://github.com/Azure/kubelogin/blob/main/docs/book/src/concepts/exec-plugin.md) for details.
 
 |Variable Name|Description|
@@ -1187,13 +1187,13 @@ In addition to the environment variables above, argocd-k8s-auth accepts two extr
 
 This is an example of using the [federated workload login flow](https://github.com/Azure/kubelogin#azure-workload-federated-identity-non-interactive).  The federated token file needs to be mounted as a secret into argoCD, so it can be used in the flow.  The location of the token file needs to be set in the environment variable AZURE_FEDERATED_TOKEN_FILE.
 
-If your AKS cluster utilizes the [Mutating Admission Webhook](https://azure.github.io/azure-workload-identity/docs/installation/mutating-admission-webhook.html) from the Azure Workload Identity project, follow these steps to enable the `argocd-application-controller` and `argocd-server` pods to use the federated identity:
+If your AKS cluster utilizes the [Mutating Admission Webhook](https://azure.github.io/azure-workload-identity/docs/installation/mutating-admission-webhook.html) from the Azure Workload Identity project, follow these steps to enable the `cd-application-controller` and `cd-server` pods to use the federated identity:
 
-1. **Label the Pods**: Add the `azure.workload.identity/use: "true"` label to the `argocd-application-controller` and `argocd-server` pods.
+1. **Label the Pods**: Add the `azure.workload.identity/use: "true"` label to the `cd-application-controller` and `cd-server` pods.
 
-2. **Create Federated Identity Credential**: Generate an Azure federated identity credential for the `argocd-application-controller` and `argocd-server` service accounts. Refer to the [Federated Identity Credential](https://azure.github.io/azure-workload-identity/docs/topics/federated-identity-credential.html) documentation for detailed instructions.
+2. **Create Federated Identity Credential**: Generate an Azure federated identity credential for the `cd-application-controller` and `cd-server` service accounts. Refer to the [Federated Identity Credential](https://azure.github.io/azure-workload-identity/docs/topics/federated-identity-credential.html) documentation for detailed instructions.
 
-3. **Add Annotations to Service Account** Add `"azure.workload.identity/client-id": "$CLIENT_ID"` and `"azure.workload.identity/tenant-id": "$TENANT_ID"` annotations to the `argocd-application-controller` and `argocd-server` service accounts using the details from the federated credential.
+3. **Add Annotations to Service Account** Add `"azure.workload.identity/client-id": "$CLIENT_ID"` and `"azure.workload.identity/tenant-id": "$TENANT_ID"` annotations to the `cd-application-controller` and `cd-server` service accounts using the details from the federated credential.
 
 4. **Set the AZURE_CLIENT_ID**: Update the `AZURE_CLIENT_ID` in the cluster secret to match the client id of the newly created federated identity credential.
 
@@ -1204,7 +1204,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1212,7 +1212,7 @@ stringData:
   config: |
     {
       "execProviderConfig": {
-        "command": "argocd-k8s-auth",
+        "command": "cd-k8s-auth",
         "env": {
           "AAD_ENVIRONMENT_NAME": "AzurePublicCloud",
           "AZURE_CLIENT_ID": "fill in client id",
@@ -1239,7 +1239,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    argocd.argoproj.io/secret-type: cluster
+    cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1247,7 +1247,7 @@ stringData:
   config: |
     {
       "execProviderConfig": {
-        "command": "argocd-k8s-auth",
+        "command": "cd-k8s-auth",
         "env": {
           "AAD_ENVIRONMENT_NAME": "AzurePublicCloud",
           "AZURE_CLIENT_SECRET": "fill in your service principal client secret",
@@ -1272,11 +1272,11 @@ Helm charts can be sourced from a Helm repository or OCI registry.
 This is an example of a Helm chart being sourced from a Helm repository. The `releaseName` property is used to customize the name of the Helm _release_.
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: sealed-secrets
-  namespace: argocd
+  namespace: cd
 spec:
   project: default
   source:
@@ -1293,7 +1293,7 @@ spec:
 Another example using a public OCI helm chart:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   name: nginx
@@ -1317,9 +1317,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: argo-helm
-  namespace: argocd
+  namespace: cd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   name: argo
   url: https://argoproj.github.io/argo-helm
@@ -1339,7 +1339,7 @@ metadata:
   name: oci-helm-chart
   namespace: oci-helm-chart
   labels:
-    argocd.argoproj.io/secret-type: repository
+    cd.hanzo.ai/secret-type: repository
 stringData:
   name: oci-helm-chart
   url: myregistry.example.com
@@ -1349,16 +1349,16 @@ stringData:
 
 ## Resource Exclusion/Inclusion
 
-Resources can be excluded from discovery and sync so that Argo CD is unaware of them. For example, the apiGroup/kind `events.k8s.io/*`, `metrics.k8s.io/*` and `coordination.k8s.io/Lease` are always excluded. Use cases:
+Resources can be excluded from discovery and sync so that Hanzo CD is unaware of them. For example, the apiGroup/kind `events.k8s.io/*`, `metrics.k8s.io/*` and `coordination.k8s.io/Lease` are always excluded. Use cases:
 
 * You have temporal issues and you want to exclude problematic resources.
-* There are many of a kind of resources that impacts Argo CD's performance.
-* Restrict Argo CD's access to certain kinds of resources, e.g. secrets. See [security.md#cluster-rbac](security.md#cluster-rbac).
+* There are many of a kind of resources that impacts Hanzo CD's performance.
+* Restrict Hanzo CD's access to certain kinds of resources, e.g. secrets. See [security.md#cluster-rbac](security.md#cluster-rbac).
 
-To configure this, edit the `argocd-cm` config map:
+To configure this, edit the `cd-cm` config map:
 
 ```shell
-kubectl edit configmap argocd-cm -n argocd
+kubectl edit configmap cd-cm -n cd
 ```
 
 Add `resource.exclusions`, e.g.:
@@ -1420,8 +1420,8 @@ An optional comma-separated list of `metadata.annotations` keys can be configure
 
 ## Auto respect RBAC for controller
 
-Argo CD controller can be restricted from discovering/syncing specific resources using just controller RBAC, without having to manually configure resource exclusions.
-This feature can be enabled by setting `resource.respectRBAC` key in argocd cm, once it is set the controller will automatically stop watching for resources 
+Hanzo CD controller can be restricted from discovering/syncing specific resources using just controller RBAC, without having to manually configure resource exclusions.
+This feature can be enabled by setting `resource.respectRBAC` key in cd cm, once it is set the controller will automatically stop watching for resources 
 that it does not have the permission to list/access. Possible values for `resource.respectRBAC` are:
     - `strict` : This setting checks whether the list call made by controller is forbidden/unauthorized and if it is, it will cross-check the permission by making a `SelfSubjectAccessReview` call for the resource.
     - `normal` : This will only check whether the list call response is forbidden/unauthorized and skip `SelfSubjectAccessReview` call, to minimize any extra api-server calls.
@@ -1434,24 +1434,24 @@ Notes:
 * When set to use `strict` mode controller must have RBAC permission to `create` a `SelfSubjectAccessReview` resource 
 * The `SelfSubjectAccessReview` request will be only made for the `list` verb, it is assumed that if `list` is allowed for a resource then all other permissions are also available to the controller.
 
-Example argocd cm with `resource.respectRBAC` set to `strict`:
+Example cd cm with `resource.respectRBAC` set to `strict`:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
+  name: cd-cm
 data:
   resource.respectRBAC: "strict"
 ```
 
 ## Resource Custom Labels
 
-Custom Labels configured with `resource.customLabels` (comma separated string) will be displayed in the UI (for any resource that defines them). Note that this requires a restart to the Argo CD Application Controller to take effect.
+Custom Labels configured with `resource.customLabels` (comma separated string) will be displayed in the UI (for any resource that defines them). Note that this requires a restart to the Hanzo CD Application Controller to take effect.
 
 ## Labels on Application Events
 
-An optional comma-separated list of `metadata.labels` keys can be configured with `resource.includeEventLabelKeys` to add to Kubernetes events generated for Argo CD Applications. When events are generated for Applications containing the specified labels, the controller adds the matching labels to the event. This establishes an easy link between the event and the application, allowing for filtering using labels. In case of conflict between labels on the Application and AppProject, the Application label values are prioritized and added to the event.
+An optional comma-separated list of `metadata.labels` keys can be configured with `resource.includeEventLabelKeys` to add to Kubernetes events generated for Hanzo CD Applications. When events are generated for Applications containing the specified labels, the controller adds the matching labels to the event. This establishes an easy link between the event and the application, allowing for filtering using labels. In case of conflict between labels on the Application and AppProject, the Application label values are prioritized and added to the event.
 
 ```yaml
   resource.includeEventLabelKeys: team,env*
@@ -1470,17 +1470,17 @@ Both `resource.includeEventLabelKeys` and `resource.excludeEventLabelKeys` suppo
 * SSO configuration details: [SSO](./user-management/index.md)
 * RBAC configuration details: [RBAC](./rbac.md)
 
-## Manage Argo CD Using Argo CD
+## Manage Hanzo CD Using Hanzo CD
 
-Argo CD is able to manage itself since all settings are represented by Kubernetes manifests. The suggested way is to create [Kustomize](https://github.com/kubernetes-sigs/kustomize)
-based application which uses base Argo CD manifests from [https://github.com/argoproj/argo-cd](https://github.com/argoproj/argo-cd/tree/stable/manifests) and apply required changes on top.
+Hanzo CD is able to manage itself since all settings are represented by Kubernetes manifests. The suggested way is to create [Kustomize](https://github.com/kubernetes-sigs/kustomize)
+based application which uses base Hanzo CD manifests from [https://github.com/hanzoai/cd](https://github.com/hanzoai/cd/tree/stable/manifests) and apply required changes on top.
 
 Example of `kustomization.yaml`:
 
 ```yaml
 # additional resources like ingress rules, cluster and repository secrets.
 resources:
-- github.com/argoproj/argo-cd//manifests/cluster-install?ref=stable
+- github.com/hanzoai/cd//manifests/cluster-install?ref=stable
 - clusters-secrets.yaml
 - repos-secrets.yaml
 
@@ -1489,33 +1489,33 @@ patches:
 - path: overlays/argo-cd-cm.yaml
 ```
 
-The live example of self managed Argo CD config is available at [https://cd.apps.argoproj.io](https://cd.apps.argoproj.io) and with configuration
-stored at [argoproj/argoproj-deployments](https://github.com/argoproj/argoproj-deployments/tree/master/argocd).
+The live example of self managed Hanzo CD config is available at [https://cd.apps.apps.hanzo.ai](https://cd.apps.apps.hanzo.ai) and with configuration
+stored at [argoproj/argoproj-deployments](https://github.com/argoproj/argoproj-deployments/tree/master/cd).
 
 > [!NOTE]
-> You will need to sign-in using your GitHub account to get access to [https://cd.apps.argoproj.io](https://cd.apps.argoproj.io)
+> You will need to sign-in using your GitHub account to get access to [https://cd.apps.apps.hanzo.ai](https://cd.apps.apps.hanzo.ai)
 
 ### Server-Side Apply Requirement
 
-When managing Argo CD with Argo CD, you **must** enable the `ServerSideApply=true` sync option. See the [getting started guide](../getting_started.md#1-install-argo-cd) for details on why server-side apply is required.
+When managing Hanzo CD with Hanzo CD, you **must** enable the `ServerSideApply=true` sync option. See the [getting started guide](../getting_started.md#1-install-argo-cd) for details on why server-side apply is required.
 
-Example Application for self-managed Argo CD:
+Example Application for self-managed Hanzo CD:
 
 ```yaml
-apiVersion: argoproj.io/v1alpha1
+apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
-  name: argocd
-  namespace: argocd
+  name: cd
+  namespace: cd
 spec:
   project: default
   source:
-    repoURL: https://github.com/argoproj/argo-cd
+    repoURL: https://github.com/hanzoai/cd
     path: manifests/cluster-install
     targetRevision: stable
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: cd
   syncPolicy:
     automated:
       prune: true
@@ -1525,4 +1525,4 @@ spec:
 ```
 
 > [!NOTE]
-> To customize Argo CD deployments, use Kustomize patches in your configuration repository rather than manually modifying the live resources. See the [sync options documentation](../user-guide/sync-options.md#server-side-apply) for details on field ownership behavior.
+> To customize Hanzo CD deployments, use Kustomize patches in your configuration repository rather than manually modifying the live resources. See the [sync options documentation](../user-guide/sync-options.md#server-side-apply) for details on field ownership behavior.

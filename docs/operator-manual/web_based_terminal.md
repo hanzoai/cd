@@ -1,8 +1,8 @@
 # Web-based Terminal
 
-![Argo CD Terminal](../assets/terminal.png)
+![Hanzo CD Terminal](../assets/terminal.png)
 
-Since v2.4, Argo CD has a web-based terminal that allows you to get a shell inside a running pod just like you would with
+Since v2.4, Hanzo CD has a web-based terminal that allows you to get a shell inside a running pod just like you would with
 `kubectl exec`. It's basically SSH from your browser, full ANSI color support and all! However, for security this feature
 is disabled by default.
 
@@ -13,24 +13,24 @@ Kubernetes), then the user effectively has the same privileges as that ServiceAc
 ## Enabling the terminal
 <!-- Use indented code blocks for the numbered list to prevent breaking the numbering. See #11590 -->
 
-1. In the `argocd-cm` ConfigMap, set the `exec.enabled` key to `"true"`. This enables the exec feature in Argo CD.
+1. In the `cd-cm` ConfigMap, set the `exec.enabled` key to `"true"`. This enables the exec feature in Hanzo CD.
 
     ```
     apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: argocd-cm
+      name: cd-cm
       namespace: <namespace>  # Replace <namespace> with your actual namespace
     data:
       exec.enabled: "true"
     ```
 
-2. Restart Argo CD
+2. Restart Hanzo CD
 
 ### Permissions for Kubernetes <1.31
 Starting in Kubernetes 1.31, the `get` privilege is enough to exec into a container, so no additional permissions are required. Enabling web terminal before Kubernetes 1.31 requires adding additional RBAC permissions.
 
-1. Patch the `argocd-server` Role (if using namespaced Argo) or ClusterRole (if using clustered Argo) to allow `argocd-server`
+1. Patch the `cd-server` Role (if using namespaced Argo) or ClusterRole (if using clustered Argo) to allow `cd-server`
 to `exec` into pods
 
         - apiGroups:
@@ -43,24 +43,24 @@ to `exec` into pods
         
     - For namespaced Argo
          ```
-         kubectl patch role <argocd-server-role-name> -n argocd --type='json' -p='[{"op": "add", "path": "/rules/-", "value": {"apiGroups": ["*"], "resources": ["pods/exec"], "verbs": ["create"]}}]'
+         kubectl patch role <cd-server-role-name> -n cd --type='json' -p='[{"op": "add", "path": "/rules/-", "value": {"apiGroups": ["*"], "resources": ["pods/exec"], "verbs": ["create"]}}]'
          ```
     - For clustered Argo
          ```
-         kubectl patch clusterrole <argocd-server-clusterrole-name> --type='json' -p='[{"op": "add", "path": "/rules/-", "value": {"apiGroups": ["*"], "resources": ["pods/exec"], "verbs": ["create"]}}]'
+         kubectl patch clusterrole <cd-server-clusterrole-name> --type='json' -p='[{"op": "add", "path": "/rules/-", "value": {"apiGroups": ["*"], "resources": ["pods/exec"], "verbs": ["create"]}}]'
          ```
 
 2. Add RBAC rules to allow your users to `create` the `exec` resource i.e. 
 
         p, role:myrole, exec, create, */*, allow 
 
-    This can be added either to the `argocd-cm` `Configmap` manifest or an `AppProject` manifest.
+    This can be added either to the `cd-cm` `Configmap` manifest or an `AppProject` manifest.
 
    See [RBAC Configuration](rbac.md#the-exec-resource) for more info.
 
 ## Changing allowed shells
 
-By default, Argo CD attempts to execute shells in this order:
+By default, Hanzo CD attempts to execute shells in this order:
 
 1. bash
 2. sh
@@ -68,4 +68,4 @@ By default, Argo CD attempts to execute shells in this order:
 4. cmd
 
 If none of the shells are found, the terminal session will fail. To add to or change the allowed shells, change the 
-`exec.shells` key in the `argocd-cm` ConfigMap, separating them with commas.
+`exec.shells` key in the `cd-cm` ConfigMap, separating them with commas.

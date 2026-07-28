@@ -1,12 +1,12 @@
-apiVersion: promoter.argoproj.io/v1alpha1
+apiVersion: promoter.apps.hanzo.ai/v1alpha1
 kind: PullRequest
 metadata:
   finalizers:
     - pullrequest.promoter.argoporoj.io/finalizer
   labels:
-    promoter.argoproj.io/change-transfer-policy: promotion-strategy-wave-0-west-24b5855
-    promoter.argoproj.io/environment: wave-0-west
-    promoter.argoproj.io/promotion-strategy: promotion-strategy
+    promoter.apps.hanzo.ai/change-transfer-policy: promotion-strategy-wave-0-west-24b5855
+    promoter.apps.hanzo.ai/environment: wave-0-west
+    promoter.apps.hanzo.ai/promotion-strategy: promotion-strategy
   name: test-org-test-repo-wave-0-west-next-wave-0-west-ac5b3e8c
   namespace: gitops-promoter
 spec:

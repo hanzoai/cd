@@ -1,7 +1,7 @@
-# argocd-secret.yaml example
+# cd-secret.yaml example
 
-An example of an argocd-secret.yaml file:
+An example of an cd-secret.yaml file:
 
 ```yaml
-{!docs/operator-manual/argocd-secret.yaml!}
+{!docs/operator-manual/cd-secret.yaml!}
 ```

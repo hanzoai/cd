@@ -1,13 +1,13 @@
 message: |
     The sync operation of application {{.app.metadata.name}} has started at {{.app.status.operationState.startedAt}}.
-    Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
+    Sync operation details are available at: {{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true .
 email:
     subject: "Start syncing application {{.app.metadata.name}}."
 slack:
     attachments: |
         [{
           "title": "{{ .app.metadata.name}}",
-          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "title_link":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}",
           "color": "#0DADEA",
           "fields": [
           {
@@ -59,7 +59,7 @@ teams:
           "name":"Open Operation",
           "targets":[{
             "os":"default",
-            "uri":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+            "uri":"{{.context.cdUrl}}/applications/{{.app.metadata.name}}?operation=true"
           }]
         },
         {

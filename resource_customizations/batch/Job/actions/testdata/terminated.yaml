@@ -18,7 +18,7 @@ spec:
 status:
   conditions:
     - lastTransitionTime: '0001-01-01T00:00:00Z'
-      message: Job was terminated explicitly through Argo CD
+      message: Job was terminated explicitly through Hanzo CD
       reason: ManuallyTerminated
       status: 'True'
       type: FailureTarget
