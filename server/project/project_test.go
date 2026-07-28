@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/db"
 
 	"github.com/argoproj/pkg/v2/sync"
@@ -37,20 +37,20 @@ import (
 
 const testNamespace = "default"
 
-var testEnableEventList = argo.DefaultEnableEventList()
+var testEnableEventList = cd.DefaultEnableEventList()
 
 func TestProjectServer(t *testing.T) {
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-cm",
+			Name:      "cd-cm",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      "cd-secret",
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -803,11 +803,11 @@ func TestListEvents(t *testing.T) {
 		kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace: testNamespace,
-				Name:      "argocd-cm",
-				Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+				Name:      "cd-cm",
+				Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 			},
 		}, &corev1.Secret{
-			ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: testNamespace},
+			ObjectMeta: metav1.ObjectMeta{Name: "cd-secret", Namespace: testNamespace},
 			Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 		})
 		settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
@@ -862,11 +862,11 @@ func TestListEvents(t *testing.T) {
 		kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace: testNamespace,
-				Name:      "argocd-cm",
-				Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+				Name:      "cd-cm",
+				Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 			},
 		}, &corev1.Secret{
-			ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: testNamespace},
+			ObjectMeta: metav1.ObjectMeta{Name: "cd-secret", Namespace: testNamespace},
 			Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 		}, event1, event2)
 
@@ -901,11 +901,11 @@ func TestListEvents(t *testing.T) {
 		kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace: testNamespace,
-				Name:      "argocd-cm",
-				Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+				Name:      "cd-cm",
+				Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 			},
 		}, &corev1.Secret{
-			ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: testNamespace},
+			ObjectMeta: metav1.ObjectMeta{Name: "cd-secret", Namespace: testNamespace},
 			Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 		})
 		settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
@@ -929,11 +929,11 @@ func TestListEvents(t *testing.T) {
 		kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace: testNamespace,
-				Name:      "argocd-cm",
-				Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+				Name:      "cd-cm",
+				Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 			},
 		}, &corev1.Secret{
-			ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: testNamespace},
+			ObjectMeta: metav1.ObjectMeta{Name: "cd-secret", Namespace: testNamespace},
 			Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 		})
 		settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)

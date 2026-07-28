@@ -22,7 +22,7 @@ import (
 
 	"github.com/hanzoai/deploy/pkg/apis/application"
 	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/config"
 	"github.com/hanzoai/deploy/util/errors"
 	"github.com/hanzoai/deploy/util/text/label"
@@ -614,7 +614,7 @@ func constructAppsBaseOnName(appName string, labels, annotations, args []string,
 		}
 		appName = args[0]
 	}
-	appName, appNs := argo.ParseFromQualifiedName(appName, "")
+	appName, appNs := cd.ParseFromQualifiedName(appName, "")
 	app = &argoappv1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,

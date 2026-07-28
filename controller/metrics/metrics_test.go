@@ -39,7 +39,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app
-  namespace: argocd
+  namespace: cd
   labels:
     team-name: my-team
     team-bu: bu-id
@@ -64,7 +64,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app-2
-  namespace: argocd
+  namespace: cd
   labels:
     team-name: my-team
     team-bu: bu-id
@@ -99,7 +99,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app-3
-  namespace: argocd
+  namespace: cd
   deletionTimestamp: "2020-03-16T09:17:45Z"
   labels:
     team-name: my-team
@@ -129,7 +129,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app-4
-  namespace: argocd
+  namespace: cd
   labels:
     team-name: my-team
     team-bu: bu-id
@@ -164,7 +164,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app
-  namespace: argocd
+  namespace: cd
 spec:
   destination:
     namespace: dummy-namespace
@@ -184,7 +184,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app
-  namespace: argocd
+  namespace: cd
   labels:
     team-name: my-team
     team-bu: bu-id
@@ -212,7 +212,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app
-  namespace: argocd
+  namespace: cd
   labels:
     team-name: my-team
     team-bu: bu-id
@@ -274,7 +274,7 @@ func newFakeLister(ctx context.Context, fakeAppYAMLs ...string) (context.CancelF
 		fakeApps = append(fakeApps, a)
 	}
 	appClientset := appclientset.NewSimpleClientset(fakeApps...)
-	factory := appinformer.NewSharedInformerFactoryWithOptions(appClientset, 0, appinformer.WithNamespace("argocd"), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
+	factory := appinformer.NewSharedInformerFactoryWithOptions(appClientset, 0, appinformer.WithNamespace("cd"), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
 	appInformer := factory.Argoproj().V1alpha1().Applications().Informer()
 	go appInformer.Run(ctx.Done())
 	if !cache.WaitForCacheSync(ctx.Done(), appInformer.HasSynced) {
@@ -354,19 +354,19 @@ func TestMetrics(t *testing.T) {
 		{
 			applications: []string{fakeApp, fakeApp2, fakeApp3},
 			responseContains: `
-# HELP argocd_app_info Information about application.
-# TYPE argocd_app_info gauge
-argocd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Degraded",name="my-app-3",namespace="argocd",operation="delete",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="OutOfSync"} 1
-argocd_app_info{autosync_enabled="false",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app",namespace="argocd",operation="",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
-argocd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app-2",namespace="argocd",operation="sync",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
+# HELP cd_app_info Information about application.
+# TYPE cd_app_info gauge
+cd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Degraded",name="my-app-3",namespace="cd",operation="delete",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="OutOfSync"} 1
+cd_app_info{autosync_enabled="false",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app",namespace="cd",operation="",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
+cd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app-2",namespace="cd",operation="sync",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
 `,
 		},
 		{
 			applications: []string{fakeDefaultApp},
 			responseContains: `
-# HELP argocd_app_info Information about application.
-# TYPE argocd_app_info gauge
-argocd_app_info{autosync_enabled="false",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app",namespace="argocd",operation="",project="default",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
+# HELP cd_app_info Information about application.
+# TYPE cd_app_info gauge
+cd_app_info{autosync_enabled="false",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app",namespace="cd",operation="",project="default",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
 `,
 		},
 	}
@@ -389,10 +389,10 @@ func TestMetricLabels(t *testing.T) {
 			testCombination: testCombination{
 				applications: []string{fakeApp, fakeApp2, fakeApp3},
 				responseContains: `
-# TYPE argocd_app_labels gauge
-argocd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app",namespace="argocd",project="important-project"} 1
-argocd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-2",namespace="argocd",project="important-project"} 1
-argocd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-3",namespace="argocd",project="important-project"} 1
+# TYPE cd_app_labels gauge
+cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app",namespace="cd",project="important-project"} 1
+cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-2",namespace="cd",project="important-project"} 1
+cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-3",namespace="cd",project="important-project"} 1
 `,
 			},
 		},
@@ -402,10 +402,10 @@ argocd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id"
 			testCombination: testCombination{
 				applications: []string{fakeApp, fakeApp2, fakeApp3},
 				responseContains: `
-# TYPE argocd_app_labels gauge
-argocd_app_labels{label_non_existing="",name="my-app",namespace="argocd",project="important-project"} 1
-argocd_app_labels{label_non_existing="",name="my-app-2",namespace="argocd",project="important-project"} 1
-argocd_app_labels{label_non_existing="",name="my-app-3",namespace="argocd",project="important-project"} 1
+# TYPE cd_app_labels gauge
+cd_app_labels{label_non_existing="",name="my-app",namespace="cd",project="important-project"} 1
+cd_app_labels{label_non_existing="",name="my-app-2",namespace="cd",project="important-project"} 1
+cd_app_labels{label_non_existing="",name="my-app-3",namespace="cd",project="important-project"} 1
 `,
 			},
 		},
@@ -431,9 +431,9 @@ func TestMetricConditions(t *testing.T) {
 			testCombination: testCombination{
 				applications: []string{fakeApp4},
 				responseContains: `
-# HELP argocd_app_condition Report application conditions.
-# TYPE argocd_app_condition gauge
-argocd_app_condition{condition="OrphanedResourceWarning",name="my-app-4",namespace="argocd",project="important-project"} 1
+# HELP cd_app_condition Report application conditions.
+# TYPE cd_app_condition gauge
+cd_app_condition{condition="OrphanedResourceWarning",name="my-app-4",namespace="cd",project="important-project"} 1
 `,
 			},
 		},
@@ -443,9 +443,9 @@ argocd_app_condition{condition="OrphanedResourceWarning",name="my-app-4",namespa
 			testCombination: testCombination{
 				applications: []string{fakeApp4},
 				responseContains: `
-# HELP argocd_app_condition Report application conditions.
-# TYPE argocd_app_condition gauge
-argocd_app_condition{condition="ExcludedResourceWarning",name="my-app-4",namespace="argocd",project="important-project"} 2
+# HELP cd_app_condition Report application conditions.
+# TYPE cd_app_condition gauge
+cd_app_condition{condition="ExcludedResourceWarning",name="my-app-4",namespace="cd",project="important-project"} 2
 `,
 			},
 		},
@@ -455,10 +455,10 @@ argocd_app_condition{condition="ExcludedResourceWarning",name="my-app-4",namespa
 			testCombination: testCombination{
 				applications: []string{fakeApp4},
 				responseContains: `
-# HELP argocd_app_condition Report application conditions.
-# TYPE argocd_app_condition gauge
-argocd_app_condition{condition="OrphanedResourceWarning",name="my-app-4",namespace="argocd",project="important-project"} 1
-argocd_app_condition{condition="ExcludedResourceWarning",name="my-app-4",namespace="argocd",project="important-project"} 2
+# HELP cd_app_condition Report application conditions.
+# TYPE cd_app_condition gauge
+cd_app_condition{condition="OrphanedResourceWarning",name="my-app-4",namespace="cd",project="important-project"} 1
+cd_app_condition{condition="ExcludedResourceWarning",name="my-app-4",namespace="cd",project="important-project"} 2
 `,
 			},
 		},
@@ -479,11 +479,11 @@ func TestMetricsSyncCounter(t *testing.T) {
 	require.NoError(t, err)
 
 	appSyncTotal := `
-# HELP argocd_app_sync_total Number of application syncs.
-# TYPE argocd_app_sync_total counter
-argocd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="argocd",phase="Error",project="important-project"} 1
-argocd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="argocd",phase="Failed",project="important-project"} 1
-argocd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="argocd",phase="Succeeded",project="important-project"} 2
+# HELP cd_app_sync_total Number of application syncs.
+# TYPE cd_app_sync_total counter
+cd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="cd",phase="Error",project="important-project"} 1
+cd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="cd",phase="Failed",project="important-project"} 1
+cd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="cd",phase="Succeeded",project="important-project"} 2
 `
 
 	fakeApp := newFakeApp(fakeApp)
@@ -543,7 +543,7 @@ func TestMetricsSyncDuration(t *testing.T) {
 		assert.Equal(t, http.StatusOK, rr.Code)
 		body := rr.Body.String()
 		log.Println(body)
-		assertMetricsNotPrinted(t, "argocd_app_sync_duration_seconds_total", body)
+		assertMetricsNotPrinted(t, "cd_app_sync_duration_seconds_total", body)
 	})
 
 	t.Run("metric is created when Operation Finished.", func(t *testing.T) {
@@ -557,9 +557,9 @@ func TestMetricsSyncDuration(t *testing.T) {
 		assert.Equal(t, http.StatusOK, rr.Code)
 		body := rr.Body.String()
 		appSyncDurationTotal := `
-# HELP argocd_app_sync_duration_seconds_total Application sync performance in seconds total.
-# TYPE argocd_app_sync_duration_seconds_total counter
-argocd_app_sync_duration_seconds_total{dest_server="https://localhost:6443",name="my-app",namespace="argocd",project="important-project"} 1
+# HELP cd_app_sync_duration_seconds_total Application sync performance in seconds total.
+# TYPE cd_app_sync_duration_seconds_total counter
+cd_app_sync_duration_seconds_total{dest_server="https://localhost:6443",name="my-app",namespace="cd",project="important-project"} 1
 `
 		log.Println(body)
 		assertMetricsPrinted(t, appSyncDurationTotal, body)
@@ -574,18 +574,18 @@ func TestReconcileMetrics(t *testing.T) {
 	require.NoError(t, err)
 
 	appReconcileMetrics := `
-# HELP argocd_app_reconcile Application reconciliation performance in seconds.
-# TYPE argocd_app_reconcile histogram
-argocd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="argocd",le="0.25"} 0
-argocd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="argocd",le="0.5"} 0
-argocd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="argocd",le="1"} 0
-argocd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="argocd",le="2"} 0
-argocd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="argocd",le="4"} 0
-argocd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="argocd",le="8"} 1
-argocd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="argocd",le="16"} 1
-argocd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="argocd",le="+Inf"} 1
-argocd_app_reconcile_sum{dest_server="https://localhost:6443",namespace="argocd"} 5
-argocd_app_reconcile_count{dest_server="https://localhost:6443",namespace="argocd"} 1
+# HELP cd_app_reconcile Application reconciliation performance in seconds.
+# TYPE cd_app_reconcile histogram
+cd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="cd",le="0.25"} 0
+cd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="cd",le="0.5"} 0
+cd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="cd",le="1"} 0
+cd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="cd",le="2"} 0
+cd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="cd",le="4"} 0
+cd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="cd",le="8"} 1
+cd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="cd",le="16"} 1
+cd_app_reconcile_bucket{dest_server="https://localhost:6443",namespace="cd",le="+Inf"} 1
+cd_app_reconcile_sum{dest_server="https://localhost:6443",namespace="cd"} 5
+cd_app_reconcile_count{dest_server="https://localhost:6443",namespace="cd"} 1
 `
 	fakeApp := newFakeApp(fakeApp)
 	metricsServ.IncReconcile(fakeApp, "https://localhost:6443", 5*time.Second)
@@ -608,9 +608,9 @@ func TestOrphanedResourcesMetric(t *testing.T) {
 	require.NoError(t, err)
 
 	expectedMetrics := `
-# HELP argocd_app_orphaned_resources_count Number of orphaned resources per application
-# TYPE argocd_app_orphaned_resources_count gauge
-argocd_app_orphaned_resources_count{name="my-app-4",namespace="argocd",project="important-project"} 1
+# HELP cd_app_orphaned_resources_count Number of orphaned resources per application
+# TYPE cd_app_orphaned_resources_count gauge
+cd_app_orphaned_resources_count{name="my-app-4",namespace="cd",project="important-project"} 1
 `
 	app := newFakeApp(fakeApp4)
 	numOrphanedResources := 1
@@ -634,11 +634,11 @@ func TestMetricsReset(t *testing.T) {
 	require.NoError(t, err)
 
 	appSyncTotal := `
-# HELP argocd_app_sync_total Number of application syncs.
-# TYPE argocd_app_sync_total counter
-argocd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="argocd",phase="Error",project="important-project"} 1
-argocd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="argocd",phase="Failed",project="important-project"} 1
-argocd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="argocd",phase="Succeeded",project="important-project"} 2
+# HELP cd_app_sync_total Number of application syncs.
+# TYPE cd_app_sync_total counter
+cd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="cd",phase="Error",project="important-project"} 1
+cd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="cd",phase="Failed",project="important-project"} 1
+cd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-app",namespace="cd",phase="Succeeded",project="important-project"} 2
 `
 
 	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/metrics", http.NoBody)

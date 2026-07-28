@@ -17,14 +17,14 @@ var (
 	descAppsetLabels        *prometheus.Desc
 	descAppsetDefaultLabels = []string{"namespace", "name"}
 	descAppsetInfo          = prometheus.NewDesc(
-		"argocd_appset_info",
+		"cd_appset_info",
 		"Information about applicationset",
 		append(descAppsetDefaultLabels, "resource_update_status"),
 		nil,
 	)
 
 	descAppsetGeneratedApps = prometheus.NewDesc(
-		"argocd_appset_owned_applications",
+		"cd_appset_owned_applications",
 		"Number of applications owned by the applicationset",
 		descAppsetDefaultLabels,
 		nil,
@@ -45,7 +45,7 @@ type appsetCollector struct {
 func NewApplicationsetMetrics(appsetLister applisters.ApplicationSetLister, appsetLabels []string, appsetFilter func(appset *argoappv1.ApplicationSet) bool) ApplicationsetMetrics {
 	reconcileHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "argocd_appset_reconcile",
+			Name: "cd_appset_reconcile",
 			Help: "Application reconciliation performance in seconds.",
 			// Buckets can be set later on after observing median time
 		},
@@ -75,7 +75,7 @@ func newAppsetCollector(lister applisters.ApplicationSetLister, labels []string,
 
 	if len(labels) > 0 {
 		descAppsetLabels = prometheus.NewDesc(
-			"argocd_appset_labels",
+			"cd_appset_labels",
 			"Applicationset labels translated to Prometheus labels",
 			append(descAppsetDefaultLabels, metricsutil.NormalizeLabels("label", labels)...),
 			nil,

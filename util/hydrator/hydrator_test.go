@@ -12,7 +12,7 @@ import (
 
 func TestGetCommitMetadata(t *testing.T) {
 	t.Parallel()
-	repoURL := "https://github.com/test/argocd-example-apps"
+	repoURL := "https://github.com/test/cd-example-apps"
 	drySHA := "3ff41cc5247197a6caf50216c4c76cc29d78a97d"
 	date := &metav1.Time{Time: metav1.Now().Time}
 	revisionAuthor := "test test@test.com"

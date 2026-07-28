@@ -30,7 +30,7 @@ import (
 )
 
 var message = `testn
-Argocd-reference-commit-repourl: https://github.com/test/argocd-example-apps
+Argocd-reference-commit-repourl: https://github.com/test/cd-example-apps
 Argocd-reference-commit-author: Argocd-reference-commit-author
 Argocd-reference-commit-subject: testhydratormd
 Signed-off-by: testUser <test@gmail.com>`
@@ -371,7 +371,7 @@ func TestHydrator_getTemplatedCommitMessage(t *testing.T) {
 		Commit: &v1alpha1.CommitMetadata{
 			Author:  "testAuthor",
 			Subject: "test",
-			RepoURL: "https://github.com/test/argocd-example-apps",
+			RepoURL: "https://github.com/test/cd-example-apps",
 			SHA:     "3ff41cc5247197a6caf50216c4c76cc29d78a97c",
 		},
 	}
@@ -391,7 +391,7 @@ func TestHydrator_getTemplatedCommitMessage(t *testing.T) {
 		{
 			name: "test template",
 			args: args{
-				repoURL:  "https://github.com/test/argocd-example-apps",
+				repoURL:  "https://github.com/test/cd-example-apps",
 				revision: "3ff41cc5247197a6caf50216c4c76cc29d78a97d",
 				dryCommitMetadata: &v1alpha1.RevisionMetadata{
 					Author: "test test@test.com",
@@ -404,7 +404,7 @@ func TestHydrator_getTemplatedCommitMessage(t *testing.T) {
 				template: settings.CommitMessageTemplate,
 			},
 			want: `3ff41cc: testn
-Argocd-reference-commit-repourl: https://github.com/test/argocd-example-apps
+Argocd-reference-commit-repourl: https://github.com/test/cd-example-apps
 Argocd-reference-commit-author: Argocd-reference-commit-author
 Argocd-reference-commit-subject: testhydratormd
 Signed-off-by: testUser <test@gmail.com>
@@ -416,7 +416,7 @@ Co-authored-by: test test@test.com
 		{
 			name: "test empty template",
 			args: args{
-				repoURL:  "https://github.com/test/argocd-example-apps",
+				repoURL:  "https://github.com/test/cd-example-apps",
 				revision: "3ff41cc5247197a6caf50216c4c76cc29d78a97d",
 				dryCommitMetadata: &v1alpha1.RevisionMetadata{
 					Author: "test test@test.com",

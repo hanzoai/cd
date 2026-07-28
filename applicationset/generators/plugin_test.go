@@ -47,7 +47,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -103,7 +103,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -165,7 +165,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -225,7 +225,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -281,7 +281,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -331,7 +331,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -358,7 +358,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -473,14 +473,14 @@ func TestPluginGenerateParams(t *testing.T) {
 					},
 				},
 			},
-			expectedError: errors.New("error getting plugin from generator: error fetching Secret token: error fetching secret default/argocd-secret: secrets \"argocd-secret\" not found"),
+			expectedError: errors.New("error getting plugin from generator: error fetching Secret token: error fetching secret default/cd-secret: secrets \"cd-secret\" not found"),
 		},
 		{
 			name:      "no configmap",
 			configmap: &corev1.ConfigMap{},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -535,7 +535,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      "cd-secret",
 					Namespace: "default",
 				},
 				Data: map[string][]byte{

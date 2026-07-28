@@ -18,7 +18,7 @@ import (
 	"github.com/hanzoai/deploy/controller/metrics"
 	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
 	"github.com/hanzoai/deploy/util/db"
 )
@@ -132,7 +132,7 @@ func (c *clusterInfoUpdater) getUpdatedClusterInfo(ctx context.Context, apps []*
 				continue
 			}
 		}
-		destServer, err := argo.GetDestinationServer(ctx, a.Spec.Destination, c.db)
+		destServer, err := cd.GetDestinationServer(ctx, a.Spec.Destination, c.db)
 		if err != nil {
 			continue
 		}
@@ -146,7 +146,7 @@ func (c *clusterInfoUpdater) getUpdatedClusterInfo(ctx context.Context, apps []*
 	}
 	if info != nil {
 		clusterInfo.ServerVersion = info.K8SVersion
-		clusterInfo.APIVersions = argo.APIResourcesToStrings(info.APIResources, true)
+		clusterInfo.APIVersions = cd.APIResourcesToStrings(info.APIResources, true)
 		switch {
 		case info.LastCacheSyncTime == nil:
 			clusterInfo.ConnectionState.Status = appv1.ConnectionStatusUnknown

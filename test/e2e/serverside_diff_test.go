@@ -37,7 +37,7 @@ func TestServerSideDiffMasksSecretData(t *testing.T) {
 			ns := app.Spec.Destination.Namespace
 
 			// Establish a second SSA field manager owning the secret's data field.
-			// Without a second manager, argocd-controller is the sole owner and the
+			// Without a second manager, cd-controller is the sole owner and the
 			// SSA dry-run garbage-collects the data fields (since the target manifest
 			// omits them). A second manager retains ownership, so the real values
 			// survive in the dry-run response — the exact condition required for the
@@ -59,7 +59,7 @@ func TestServerSideDiffMasksSecretData(t *testing.T) {
 			// Annotate the app with IncludeMutationWebhook=true — the condition that
 			// bypasses removeWebhookMutation() and exposed real etcd values in the response.
 			_, err = RunCli("app", "patch", app.Name,
-				"--patch", `{"metadata":{"annotations":{"argocd.argoproj.io/compare-options":"IncludeMutationWebhook=true"}}}`,
+				"--patch", `{"metadata":{"annotations":{"cd.argoproj.io/compare-options":"IncludeMutationWebhook=true"}}}`,
 				"--type", "merge",
 			)
 			require.NoError(t, err)

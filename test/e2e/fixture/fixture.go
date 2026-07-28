@@ -50,8 +50,8 @@ const (
 	defaultAdminUsername    = "admin"
 	DefaultTestUserPassword = "password"
 	TestingLabel            = "e2e.argoproj.io"
-	ArgoCDNamespace         = "argocd-e2e"
-	ArgoCDAppNamespace      = "argocd-e2e-external"
+	ArgoCDNamespace         = "cd-e2e"
+	ArgoCDAppNamespace      = "cd-e2e-external"
 
 	// notifications controller, metrics server port
 	defaultNotificationServer = "localhost:9001"
@@ -377,17 +377,17 @@ func RepoBaseURL(urlType RepoURLType) string {
 	return path.Base(RepoURL(urlType))
 }
 
-// Convenience wrapper for updating argocd-cm
+// Convenience wrapper for updating cd-cm
 func updateSettingConfigMap(updater func(cm *corev1.ConfigMap) error) error {
 	return updateGenericConfigMap(common.ArgoCDConfigMapName, updater)
 }
 
-// Convenience wrapper for updating argocd-notifications-cm
+// Convenience wrapper for updating cd-notifications-cm
 func updateNotificationsConfigMap(updater func(cm *corev1.ConfigMap) error) error {
 	return updateGenericConfigMap(common.ArgoCDNotificationsConfigMapName, updater)
 }
 
-// Convenience wrapper for updating argocd-cm-rbac
+// Convenience wrapper for updating cd-cm-rbac
 func updateRBACConfigMap(updater func(cm *corev1.ConfigMap) error) error {
 	return updateGenericConfigMap(common.ArgoCDRBACConfigMapName, updater)
 }
@@ -401,7 +401,7 @@ func configMapsEquivalent(a *corev1.ConfigMap, b *corev1.ConfigMap) bool {
 		(len(a.BinaryData) == 0 && len(b.BinaryData) == 0 || reflect.DeepEqual(a.BinaryData, b.BinaryData))
 }
 
-// Updates a given config map in argocd-e2e namespace
+// Updates a given config map in cd-e2e namespace
 func updateGenericConfigMap(name string, updater func(cm *corev1.ConfigMap) error) error {
 	cm, err := KubeClientset.CoreV1().ConfigMaps(TestNamespace()).Get(context.Background(), name, metav1.GetOptions{})
 	if err != nil {
@@ -698,35 +698,35 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 				metav1.ListOptions{FieldSelector: "metadata.name!=default"})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repo-config
+			// kubectl delete secrets -l cd.argoproj.io/secret-type=repo-config
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepository})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repo-creds
+			// kubectl delete secrets -l cd.argoproj.io/secret-type=repo-creds
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepoCreds})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repository-write
+			// kubectl delete secrets -l cd.argoproj.io/secret-type=repository-write
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepositoryWrite})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=repo-write-creds
+			// kubectl delete secrets -l cd.argoproj.io/secret-type=repo-write-creds
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepoCredsWrite})
 		},
 		func() error {
-			// kubectl delete secrets -l argocd.argoproj.io/secret-type=cluster
+			// kubectl delete secrets -l cd.argoproj.io/secret-type=cluster
 			return KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
@@ -837,7 +837,7 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 			return LoginAs(adminUsername)
 		},
 		func() error {
-			// If /tmp/argocd-e2e-env exists restart app controller with no environment variables
+			// If /tmp/cd-e2e-env exists restart app controller with no environment variables
 			if _, err := os.Stat(e2eEnvVariableFilePath); err == nil {
 				return RestartProcess(ApplicationControllerProcName, nil)
 			}
@@ -1057,7 +1057,7 @@ func RunCliWithStdin(stdin string, isKubeConextOnlyCli bool, args ...string) (st
 		return strings.ReplaceAll(text, authTokenPattern, "--auth-token ******")
 	}
 
-	return RunWithStdinWithRedactor(stdin, "", "../../dist/argocd", redactor, args...)
+	return RunWithStdinWithRedactor(stdin, "", "../../dist/cd", redactor, args...)
 }
 
 // RunCliWithToken executes an Argo CD CLI command using a specific auth token
@@ -1078,7 +1078,7 @@ func RunCliWithToken(authToken string, args ...string) (string, error) {
 		return strings.ReplaceAll(text, authTokenPattern, "--auth-token ******")
 	}
 
-	return RunWithStdinWithRedactor("", "", "../../dist/argocd", redactor, args...)
+	return RunWithStdinWithRedactor("", "", "../../dist/cd", redactor, args...)
 }
 
 // RunCliWithConfigFile executes an Argo CD CLI command using a custom config file
@@ -1095,12 +1095,12 @@ func RunCliWithConfigFile(configPath string, args ...string) (string, error) {
 		return text
 	}
 
-	return RunWithStdinWithRedactor("", "", "../../dist/argocd", redactor, args...)
+	return RunWithStdinWithRedactor("", "", "../../dist/cd", redactor, args...)
 }
 
 // RunPluginCli executes an Argo CD CLI plugin with optional stdin input.
 func RunPluginCli(stdin string, args ...string) (string, error) {
-	return RunWithStdin(stdin, "", "../../dist/argocd", args...)
+	return RunWithStdin(stdin, "", "../../dist/cd", args...)
 }
 
 func Patch(t *testing.T, path string, jsonPatch string) {
@@ -1303,7 +1303,7 @@ func RestartRepoServer(t *testing.T) {
 	if IsRemote() {
 		log.Infof("Waiting for repo server to restart")
 		prefix := os.Getenv("CD_E2E_NAME_PREFIX")
-		workload := "argocd-repo-server"
+		workload := "cd-repo-server"
 		if prefix != "" {
 			workload = prefix + "-repo-server"
 		}
@@ -1321,7 +1321,7 @@ func RestartAPIServer(t *testing.T) {
 	if IsRemote() {
 		log.Infof("Waiting for API server to restart")
 		prefix := os.Getenv("CD_E2E_NAME_PREFIX")
-		workload := "argocd-server"
+		workload := "cd-server"
 		if prefix != "" {
 			workload = prefix + "-server"
 		}
@@ -1404,7 +1404,7 @@ func IsPlainText() bool {
 	return plainText
 }
 
-// SetParamInRBACConfigMap sets the parameter in argocd-rbac-cm config map
+// SetParamInRBACConfigMap sets the parameter in cd-rbac-cm config map
 func SetParamInRBACConfigMap(key, value string) error {
 	return updateRBACConfigMap(func(cm *corev1.ConfigMap) error {
 		cm.Data[key] = value
@@ -1412,7 +1412,7 @@ func SetParamInRBACConfigMap(key, value string) error {
 	})
 }
 
-// SetOIDCConfig sets the oidc.config in argocd-cm config map
+// SetOIDCConfig sets the oidc.config in cd-cm config map
 func SetOIDCConfig(value string) error {
 	return updateSettingConfigMap(func(cm *corev1.ConfigMap) error {
 		cm.Data["oidc.config"] = value

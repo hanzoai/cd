@@ -575,8 +575,8 @@ func TestInterpolatedMatrixGenerate(t *testing.T) {
 				},
 			},
 			expected: []map[string]any{
-				{"path": "examples/git-generator-files-discovery/cluster-config/dev/config.json", "path.basename": "dev", "path.basenameNormalized": "dev", "name": "dev-01", "nameNormalized": "dev-01", "server": "https://dev-01.example.com", "metadata.labels.environment": "dev", "metadata.labels.argocd.argoproj.io/secret-type": "cluster", "project": ""},
-				{"path": "examples/git-generator-files-discovery/cluster-config/prod/config.json", "path.basename": "prod", "path.basenameNormalized": "prod", "name": "prod-01", "nameNormalized": "prod-01", "server": "https://prod-01.example.com", "metadata.labels.environment": "prod", "metadata.labels.argocd.argoproj.io/secret-type": "cluster", "project": ""},
+				{"path": "examples/git-generator-files-discovery/cluster-config/dev/config.json", "path.basename": "dev", "path.basenameNormalized": "dev", "name": "dev-01", "nameNormalized": "dev-01", "server": "https://dev-01.example.com", "metadata.labels.environment": "dev", "metadata.labels.cd.argoproj.io/secret-type": "cluster", "project": ""},
+				{"path": "examples/git-generator-files-discovery/cluster-config/prod/config.json", "path.basename": "prod", "path.basenameNormalized": "prod", "name": "prod-01", "nameNormalized": "prod-01", "server": "https://prod-01.example.com", "metadata.labels.environment": "prod", "metadata.labels.cd.argoproj.io/secret-type": "cluster", "project": ""},
 			},
 			clientError: false,
 		},
@@ -591,7 +591,7 @@ func TestInterpolatedMatrixGenerate(t *testing.T) {
 				Name:      "dev-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"cd.argoproj.io/secret-type": "cluster",
 					"environment":                    "dev",
 				},
 			},
@@ -611,7 +611,7 @@ func TestInterpolatedMatrixGenerate(t *testing.T) {
 				Name:      "prod-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"cd.argoproj.io/secret-type": "cluster",
 					"environment":                    "prod",
 				},
 			},
@@ -729,7 +729,7 @@ func TestInterpolatedMatrixGenerateGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"environment":                    "dev",
-							"argocd.argoproj.io/secret-type": "cluster",
+							"cd.argoproj.io/secret-type": "cluster",
 						},
 					},
 				},
@@ -746,7 +746,7 @@ func TestInterpolatedMatrixGenerateGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"environment":                    "prod",
-							"argocd.argoproj.io/secret-type": "cluster",
+							"cd.argoproj.io/secret-type": "cluster",
 						},
 					},
 				},
@@ -764,7 +764,7 @@ func TestInterpolatedMatrixGenerateGoTemplate(t *testing.T) {
 				Name:      "dev-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"cd.argoproj.io/secret-type": "cluster",
 					"environment":                    "dev",
 				},
 			},
@@ -784,7 +784,7 @@ func TestInterpolatedMatrixGenerateGoTemplate(t *testing.T) {
 				Name:      "prod-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"argocd.argoproj.io/secret-type": "cluster",
+					"cd.argoproj.io/secret-type": "cluster",
 					"environment":                    "prod",
 				},
 			},
@@ -1249,7 +1249,7 @@ func TestInterpolatedMatrixGenerateGoTemplate_ClusterValuesFromFirstGenerator(t 
 	gitGeneratorSpec, genMock, clusterGeneratorSpec := getGenerators()
 
 	fakeClient := fake.NewClientBuilder().WithObjects([]client.Object{clusterSecret()}...).Build()
-	clusterGenerator := NewClusterGenerator(fakeClient, "argocd")
+	clusterGenerator := NewClusterGenerator(fakeClient, "cd")
 
 	matrixGenerator := NewMatrixGenerator(map[string]Generator{
 		"Git":      genMock,
@@ -1286,7 +1286,7 @@ func appSet() *v1alpha1.ApplicationSet {
 	appSet := &v1alpha1.ApplicationSet{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "repro",
-			Namespace: "argocd",
+			Namespace: "cd",
 		},
 		Spec: v1alpha1.ApplicationSetSpec{
 			GoTemplate: true,
@@ -1305,9 +1305,9 @@ func clusterSecret() *corev1.Secret {
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "guestbook-cluster",
-			Namespace: "argocd",
+			Namespace: "cd",
 			Labels: map[string]string{
-				"argocd.argoproj.io/secret-type": "cluster",
+				"cd.argoproj.io/secret-type": "cluster",
 				"environment":                    "guestbook",
 			},
 		},

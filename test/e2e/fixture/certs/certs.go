@@ -12,16 +12,16 @@ import (
 )
 
 // Add a custom CA certificate to the test and also create the certificate file
-// on the file system, so argocd-server and argocd-repo-server can use it.
+// on the file system, so cd-server and cd-repo-server can use it.
 // TODO: Should be moved to the EnsureCleanState since this acts on the controller
 // globally https://github.com/argoproj/argo-cd/issues/24307
 func AddCustomCACert(t *testing.T) {
 	t.Helper()
-	caCertPath, err := filepath.Abs("../fixture/certs/argocd-test-ca.crt")
+	caCertPath, err := filepath.Abs("../fixture/certs/cd-test-ca.crt")
 	require.NoError(t, err)
 	// We need to setup TLS certs according to whether we are running tests
 	// against a local workload (repositories available as localhost) and
-	// against remote workloads (repositories available as argocd-e2e-server)
+	// against remote workloads (repositories available as cd-e2e-server)
 	if fixture.IsLocal() {
 		args := []string{"cert", "add-tls", "localhost", "--upsert", "--from", caCertPath}
 		errors.NewHandler(t).FailOnErr(fixture.RunCli(args...))
@@ -34,7 +34,7 @@ func AddCustomCACert(t *testing.T) {
 		err = os.WriteFile(fixture.TmpDir()+"/app/config/tls/127.0.0.1", certData, 0o644)
 		require.NoError(t, err)
 	} else {
-		args := []string{"cert", "add-tls", "argocd-e2e-server", "--upsert", "--from", caCertPath}
+		args := []string{"cert", "add-tls", "cd-e2e-server", "--upsert", "--from", caCertPath}
 		errors.NewHandler(t).FailOnErr(fixture.RunCli(args...))
 		fixture.RestartAPIServer(t)
 		fixture.RestartRepoServer(t)

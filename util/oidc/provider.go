@@ -64,7 +64,7 @@ func (p *providerImpl) provider() (*gooidc.Provider, error) {
 }
 
 // newGoOIDCProvider creates a new instance of go-oidc.Provider querying the well known oidc
-// configuration path (http://example-argocd.com/api/dex/.well-known/openid-configuration)
+// configuration path (http://example-cd.com/api/dex/.well-known/openid-configuration)
 func (p *providerImpl) newGoOIDCProvider() (*gooidc.Provider, error) {
 	log.Infof("Initializing OIDC provider (issuer: %s)", p.issuerURL)
 	ctx := gooidc.ClientContext(context.Background(), p.client)

@@ -13,6 +13,6 @@ func TestParseSecretKey(t *testing.T) {
 	assert.Equal(t, "$my-token", tokenKey)
 
 	secretName, tokenKey = ParseSecretKey("#my-secret")
-	assert.Equal(t, "argocd-secret", secretName)
+	assert.Equal(t, "cd-secret", secretName)
 	assert.Equal(t, "#my-secret", tokenKey)
 }

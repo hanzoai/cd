@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	userAgent      = "argocd-applicationset"
+	userAgent      = "cd-applicationset"
 	defaultTimeout = 30
 )
 

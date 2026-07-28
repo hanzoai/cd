@@ -10,7 +10,7 @@ import (
 	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	. "github.com/hanzoai/deploy/test/e2e/fixture"
 	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	. "github.com/hanzoai/deploy/util/argo"
+	. "github.com/hanzoai/deploy/util/cd"
 )
 
 func TestMultiSourceAppCreation(t *testing.T) {

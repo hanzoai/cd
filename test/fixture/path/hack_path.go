@@ -17,7 +17,7 @@ func (h AddBinDirToPath) Close() {
 	_ = os.Setenv("PATH", h.originalPath)
 }
 
-// add the hack path which has the argocd binary
+// add the hack path which has the cd binary
 func NewBinDirToPath(t *testing.T) AddBinDirToPath {
 	t.Helper()
 	originalPath := os.Getenv("PATH")

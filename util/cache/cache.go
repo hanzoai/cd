@@ -222,7 +222,7 @@ func AddCacheFlagsToCmd(cmd *cobra.Command, opts ...Options) func() (*Cache, err
 	opt := mergeOptions(opts...)
 	var defaultCacheExpiration time.Duration
 
-	cmd.Flags().StringVar(&redisAddress, opt.FlagPrefix+"redis", env.StringFromEnv(opt.getEnvPrefix()+"KV_SERVER", ""), "Redis server hostname and port (e.g. argocd-redis:6379). ")
+	cmd.Flags().StringVar(&redisAddress, opt.FlagPrefix+"redis", env.StringFromEnv(opt.getEnvPrefix()+"KV_SERVER", ""), "Redis server hostname and port (e.g. cd-redis:6379). ")
 	redisAddressSrc := getFlagVal(cmd, opt, "redis", cmd.Flags().GetString)
 	cmd.Flags().IntVar(&redisDB, opt.FlagPrefix+"redisdb", env.ParseNumFromEnv(opt.getEnvPrefix()+"REDISDB", 0, 0, math.MaxInt32), "Redis database.")
 	redisDBSrc := getFlagVal(cmd, opt, "redisdb", cmd.Flags().GetInt)
@@ -234,7 +234,7 @@ func AddCacheFlagsToCmd(cmd *cobra.Command, opts ...Options) func() (*Cache, err
 			[]string{},
 			",",
 		),
-		"Redis sentinel hostname and port (e.g. argocd-redis-ha-announce-0:6379). ",
+		"Redis sentinel hostname and port (e.g. cd-redis-ha-announce-0:6379). ",
 	)
 	sentinelAddressesSrc := getFlagVal(cmd, opt, "sentinel", cmd.Flags().GetStringArray)
 

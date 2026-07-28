@@ -60,7 +60,7 @@ func (s *secretsRepositoryBackend) CreateRepository(ctx context.Context, reposit
 }
 
 // hasRepoTypeLabel will verify if a secret with the given name exists. If so it will check if
-// the secret has the proper label argocd.argoproj.io/secret-type defined. Will return true if
+// the secret has the proper label cd.argoproj.io/secret-type defined. Will return true if
 // the label is found and false otherwise. Will return false if no secret is found with the given
 // name.
 func (s *secretsRepositoryBackend) hasRepoTypeLabel(secretName string) (bool, error) {

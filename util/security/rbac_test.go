@@ -19,7 +19,7 @@ func Test_AppRBACName(t *testing.T) {
 	}{
 		{
 			"namespace is empty",
-			"argocd",
+			"cd",
 			"default",
 			"",
 			"app",
@@ -27,15 +27,15 @@ func Test_AppRBACName(t *testing.T) {
 		},
 		{
 			"namespace is default namespace",
-			"argocd",
+			"cd",
 			"default",
-			"argocd",
+			"cd",
 			"app",
 			"default/app",
 		},
 		{
 			"namespace is not default namespace",
-			"argocd",
+			"cd",
 			"default",
 			"test",
 			"app",

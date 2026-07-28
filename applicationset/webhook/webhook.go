@@ -72,21 +72,21 @@ type prGeneratorGitlabInfo struct {
 	APIHostname string
 }
 
-func NewWebhookHandler(webhookParallelism int, argocdSettingsMgr *argosettings.SettingsManager, client client.Client, generators map[string]generators.Generator) (*WebhookHandler, error) {
-	// register the webhook secrets stored under "argocd-secret" for verifying incoming payloads
-	argocdSettings, err := argocdSettingsMgr.GetSettings()
+func NewWebhookHandler(webhookParallelism int, cdSettingsMgr *argosettings.SettingsManager, client client.Client, generators map[string]generators.Generator) (*WebhookHandler, error) {
+	// register the webhook secrets stored under "cd-secret" for verifying incoming payloads
+	cdSettings, err := cdSettingsMgr.GetSettings()
 	if err != nil {
-		return nil, fmt.Errorf("failed to get argocd settings: %w", err)
+		return nil, fmt.Errorf("failed to get cd settings: %w", err)
 	}
-	githubHandler, err := github.New(github.Options.Secret(argocdSettings.GetWebhookGitHubSecret()))
+	githubHandler, err := github.New(github.Options.Secret(cdSettings.GetWebhookGitHubSecret()))
 	if err != nil {
 		return nil, fmt.Errorf("unable to init GitHub webhook: %w", err)
 	}
-	gitlabHandler, err := gitlab.New(gitlab.Options.Secret(argocdSettings.GetWebhookGitLabSecret()))
+	gitlabHandler, err := gitlab.New(gitlab.Options.Secret(cdSettings.GetWebhookGitLabSecret()))
 	if err != nil {
 		return nil, fmt.Errorf("unable to init GitLab webhook: %w", err)
 	}
-	azuredevopsHandler, err := azuredevops.New(azuredevops.Options.BasicAuth(argocdSettings.GetWebhookAzureDevOpsUsername(), argocdSettings.GetWebhookAzureDevOpsPassword()))
+	azuredevopsHandler, err := azuredevops.New(azuredevops.Options.BasicAuth(cdSettings.GetWebhookAzureDevOpsUsername(), cdSettings.GetWebhookAzureDevOpsPassword()))
 	if err != nil {
 		return nil, fmt.Errorf("unable to init Azure DevOps webhook: %w", err)
 	}

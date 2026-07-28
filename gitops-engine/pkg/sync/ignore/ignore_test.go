@@ -13,7 +13,7 @@ import (
 )
 
 func newHook(obj *unstructured.Unstructured, hookType common.HookType) *unstructured.Unstructured {
-	return testingutils.Annotate(obj, "argocd.argoproj.io/hook", string(hookType))
+	return testingutils.Annotate(obj, "cd.argoproj.io/hook", string(hookType))
 }
 
 func TestIgnore(t *testing.T) {

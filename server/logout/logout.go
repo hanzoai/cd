@@ -47,7 +47,7 @@ func constructLogoutURL(logoutURL, token, logoutRedirectURL string) string {
 }
 
 // ServeHTTP is the logout handler for Hanzo CD and constructs OIDC logout URL and redirects to it for OIDC issued sessions,
-// and redirects user to '/login' for argocd issued sessions
+// and redirects user to '/login' for cd issued sessions
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var tokenString string
 	var oidcConfig *settings.OIDCConfig
@@ -88,13 +88,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		argocdCookie := http.Cookie{
+		cdCookie := http.Cookie{
 			Name:  cookie.Name,
 			Value: "",
 		}
 
-		argocdCookie.Path = "/" + strings.TrimRight(strings.TrimLeft(h.baseHRef, "/"), "/")
-		w.Header().Add("Set-Cookie", argocdCookie.String())
+		cdCookie.Path = "/" + strings.TrimRight(strings.TrimLeft(h.baseHRef, "/"), "/")
+		w.Header().Add("Set-Cookie", cdCookie.String())
 	}
 
 	claims, _, err := h.verifyToken(r.Context(), tokenString)

@@ -20,12 +20,12 @@ import (
 
 func CertPath(t *testing.T) string {
 	t.Helper()
-	return mustToAbsPath(t, "../fixture/certs/argocd-test-client.crt")
+	return mustToAbsPath(t, "../fixture/certs/cd-test-client.crt")
 }
 
 func CertKeyPath(t *testing.T) string {
 	t.Helper()
-	return mustToAbsPath(t, "../fixture/certs/argocd-test-client.key")
+	return mustToAbsPath(t, "../fixture/certs/cd-test-client.key")
 }
 
 func mustToAbsPath(t *testing.T, relativePath string) string {
@@ -172,9 +172,9 @@ func AddHTTPSCredentialsUserPass(t *testing.T) {
 // AddHTTPSRepoCredentialsTLSClientCert adds E2E  for HTTPS repos to context
 func AddHTTPSCredentialsTLSClientCert(t *testing.T) {
 	t.Helper()
-	certPath, err := filepath.Abs("../fixture/certs/argocd-test-client.crt")
+	certPath, err := filepath.Abs("../fixture/certs/cd-test-client.crt")
 	require.NoError(t, err)
-	keyPath, err := filepath.Abs("../fixture/certs/argocd-test-client.key")
+	keyPath, err := filepath.Abs("../fixture/certs/cd-test-client.key")
 	require.NoError(t, err)
 	args := []string{
 		"repocreds",
@@ -191,9 +191,9 @@ func AddHTTPSCredentialsTLSClientCert(t *testing.T) {
 // AddHelmHTTPSCredentialsTLSClientCert adds credentials for Helm repos to context
 func AddHelmHTTPSCredentialsTLSClientCert(t *testing.T) {
 	t.Helper()
-	certPath, err := filepath.Abs("../fixture/certs/argocd-test-client.crt")
+	certPath, err := filepath.Abs("../fixture/certs/cd-test-client.crt")
 	require.NoError(t, err)
-	keyPath, err := filepath.Abs("../fixture/certs/argocd-test-client.key")
+	keyPath, err := filepath.Abs("../fixture/certs/cd-test-client.key")
 	require.NoError(t, err)
 	args := []string{
 		"repocreds",

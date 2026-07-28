@@ -14,7 +14,7 @@ import (
 
 	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/deploy/pkg/client/clientset/versioned"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/assets"
 	"github.com/hanzoai/deploy/util/security"
 	"github.com/hanzoai/deploy/util/settings"
@@ -107,7 +107,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	reqNs := ""
 	if ns, ok := r.URL.Query()["namespace"]; ok && enabled {
-		if !argo.IsValidNamespaceName(ns[0]) {
+		if !cd.IsValidNamespaceName(ns[0]) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -122,7 +122,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Sample url: http://localhost:8080/api/badge?name=123
 	if name, ok := r.URL.Query()["name"]; ok && enabled && !notFound {
-		if !argo.IsValidAppName(name[0]) {
+		if !cd.IsValidAppName(name[0]) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -150,7 +150,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if apps, err := h.appClientset.ArgoprojV1alpha1().Applications(reqNs).List(r.Context(), metav1.ListOptions{}); err == nil {
-			applicationSet := argo.FilterByProjects(apps.Items, projects)
+			applicationSet := cd.FilterByProjects(apps.Items, projects)
 			for _, a := range applicationSet {
 				if a.Status.Sync.Status != appv1.SyncStatusCodeSynced {
 					status = appv1.SyncStatusCodeOutOfSync

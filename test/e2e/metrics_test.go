@@ -13,7 +13,7 @@ import (
 	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/deploy/test/e2e/fixture"
 	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/errors"
 )
 
@@ -33,7 +33,7 @@ func TestKubectlMetrics(t *testing.T) {
 			assert.Equal(t, ctx.DeploymentNamespace(), app.Spec.Destination.Namespace)
 			assert.Equal(t, KubernetesInternalAPIServerAddr, app.Spec.Destination.Server)
 		}).
-		Expect(Event(argo.EventReasonResourceCreated, "create")).
+		Expect(Event(cd.EventReasonResourceCreated, "create")).
 		And(func(_ *Application) {
 			// app should be listed
 			output, err := fixture.RunCli("app", "list")
@@ -74,20 +74,20 @@ func TestKubectlMetrics(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
-	assert.Contains(t, string(body), "argocd_kubectl_request_duration_seconds", "metrics should have contained argocd_kubectl_request_duration_seconds")
-	assert.Contains(t, string(body), "argocd_kubectl_request_size_bytes", "metrics should have contained argocd_kubectl_request_size_bytes")
-	assert.Contains(t, string(body), "argocd_kubectl_response_size_bytes", "metrics should have contained argocd_kubectl_response_size_bytes")
-	assert.Contains(t, string(body), "argocd_kubectl_rate_limiter_duration_seconds", "metrics should have contained argocd_kubectl_rate_limiter_duration_seconds")
-	assert.Contains(t, string(body), "argocd_kubectl_requests_total", "metrics should have contained argocd_kubectl_requests_total")
+	assert.Contains(t, string(body), "cd_kubectl_request_duration_seconds", "metrics should have contained cd_kubectl_request_duration_seconds")
+	assert.Contains(t, string(body), "cd_kubectl_request_size_bytes", "metrics should have contained cd_kubectl_request_size_bytes")
+	assert.Contains(t, string(body), "cd_kubectl_response_size_bytes", "metrics should have contained cd_kubectl_response_size_bytes")
+	assert.Contains(t, string(body), "cd_kubectl_rate_limiter_duration_seconds", "metrics should have contained cd_kubectl_rate_limiter_duration_seconds")
+	assert.Contains(t, string(body), "cd_kubectl_requests_total", "metrics should have contained cd_kubectl_requests_total")
 
 	/*
 	  The following metrics are not being tested:
-	  - argocd_kubectl_client_cert_rotation_age_seconds: The test doesn't use a client certificate, so this metric doesn't get populated.
-	  - argocd_kubectl_dns_resolution_duration_seconds: It's unclear why this metric isn't populated. Possibly because DNS resolution is short-circuited by the test environment.
-	  - argocd_kubectl_exec_plugin_call_total: The test doesn't use an exec plugin, so this metric doesn't get populated. TODO: add a test using an exec plugin to populate this metric.
-	  - argocd_kubectl_request_retries_total: The test is unlikely to encounter a need to retry requests, so this metric is likely unpopulated.
-	  - argocd_kubectl_transport_cache_entries: The transport cache is only used under certain conditions, which this test doesn't encounter.
-	  - argocd_kubectl_transport_create_calls_total: The transport cache is only used under certain conditions, which this test doesn't encounter.
+	  - cd_kubectl_client_cert_rotation_age_seconds: The test doesn't use a client certificate, so this metric doesn't get populated.
+	  - cd_kubectl_dns_resolution_duration_seconds: It's unclear why this metric isn't populated. Possibly because DNS resolution is short-circuited by the test environment.
+	  - cd_kubectl_exec_plugin_call_total: The test doesn't use an exec plugin, so this metric doesn't get populated. TODO: add a test using an exec plugin to populate this metric.
+	  - cd_kubectl_request_retries_total: The test is unlikely to encounter a need to retry requests, so this metric is likely unpopulated.
+	  - cd_kubectl_transport_cache_entries: The transport cache is only used under certain conditions, which this test doesn't encounter.
+	  - cd_kubectl_transport_create_calls_total: The transport cache is only used under certain conditions, which this test doesn't encounter.
 	*/
 
 	req, err = http.NewRequestWithContext(t.Context(), http.MethodGet, "http://127.0.0.1:8083/metrics", http.NoBody)
@@ -104,11 +104,11 @@ func TestKubectlMetrics(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
-	assert.Contains(t, string(body), "argocd_kubectl_request_duration_seconds", "metrics should have contained argocd_kubectl_request_duration_seconds")
-	assert.Contains(t, string(body), "argocd_kubectl_request_size_bytes", "metrics should have contained argocd_kubectl_request_size_bytes")
-	assert.Contains(t, string(body), "argocd_kubectl_response_size_bytes", "metrics should have contained argocd_kubectl_response_size_bytes")
-	assert.Contains(t, string(body), "argocd_kubectl_rate_limiter_duration_seconds", "metrics should have contained argocd_kubectl_rate_limiter_duration_seconds")
-	assert.Contains(t, string(body), "argocd_kubectl_requests_total", "metrics should have contained argocd_kubectl_requests_total")
+	assert.Contains(t, string(body), "cd_kubectl_request_duration_seconds", "metrics should have contained cd_kubectl_request_duration_seconds")
+	assert.Contains(t, string(body), "cd_kubectl_request_size_bytes", "metrics should have contained cd_kubectl_request_size_bytes")
+	assert.Contains(t, string(body), "cd_kubectl_response_size_bytes", "metrics should have contained cd_kubectl_response_size_bytes")
+	assert.Contains(t, string(body), "cd_kubectl_rate_limiter_duration_seconds", "metrics should have contained cd_kubectl_rate_limiter_duration_seconds")
+	assert.Contains(t, string(body), "cd_kubectl_requests_total", "metrics should have contained cd_kubectl_requests_total")
 	assert.Contains(t, string(body), "grpc_server_handled_total", "metrics should have contained grpc_server_handled_total for all the reflected methods")
 	assert.Contains(t, string(body), "grpc_server_msg_received_total", "metrics should have contained grpc_server_msg_received_total for all the reflected methods")
 }

@@ -205,7 +205,7 @@ func TestClusterMergeGenerator(t *testing.T) {
 												Clusters: &v1alpha1.ClusterGenerator{
 													Selector: metav1.LabelSelector{
 														MatchLabels: map[string]string{
-															"argocd.argoproj.io/secret-type": "cluster",
+															"cd.argoproj.io/secret-type": "cluster",
 														},
 													},
 													Values: map[string]string{

@@ -16,7 +16,7 @@ import (
 
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/deploy/reposerver/apiclient/mocks"
-	service "github.com/hanzoai/deploy/util/notification/argocd"
+	service "github.com/hanzoai/deploy/util/notification/cd"
 )
 
 const (
@@ -30,7 +30,7 @@ func TestInitGetVars(t *testing.T) {
 	notificationsCm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-notifications-cm",
+			Name:      "cd-notifications-cm",
 		},
 		Data: map[string]string{
 			"context":              fmt.Sprintf("%s: %s", testContextKey, testContextKeyValue),
@@ -41,7 +41,7 @@ func TestInitGetVars(t *testing.T) {
 	}
 	notificationsSecret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-notifications-secret",
+			Name:      "cd-notifications-secret",
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -51,29 +51,29 @@ func TestInitGetVars(t *testing.T) {
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-notifications-cm",
+			Name:      "cd-notifications-cm",
 		},
 		Data: notificationsCm.Data,
 	},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "argocd-notifications-secret",
+				Name:      "cd-notifications-secret",
 				Namespace: testNamespace,
 			},
 			Data: notificationsSecret.Data,
 		})
 	mockRepoClient := &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}}
 	dynamicClient := dynamicfake.NewSimpleDynamicClient(runtime.NewScheme())
-	argocdService, err := service.NewArgoCDService(kubeclientset, dynamicClient, testNamespace, mockRepoClient)
+	cdService, err := service.NewArgoCDService(kubeclientset, dynamicClient, testNamespace, mockRepoClient)
 	require.NoError(t, err)
-	t.Cleanup(argocdService.Close)
+	t.Cleanup(cdService.Close)
 	config := api.Config{}
 	testDestination := services.Destination{
 		Service: "webhook",
 	}
 	emptyAppData := map[string]any{}
 
-	varsProvider, _ := initGetVars(argocdService, &config, &notificationsCm, &notificationsSecret)
+	varsProvider, _ := initGetVars(cdService, &config, &notificationsCm, &notificationsSecret)
 
 	t.Run("Vars provider serves Application data on app key", func(t *testing.T) {
 		t.Parallel()
@@ -122,13 +122,13 @@ func TestInitGetVarsAppProject(t *testing.T) {
 	notificationsCm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-notifications-cm",
+			Name:      "cd-notifications-cm",
 		},
 		Data: map[string]string{},
 	}
 	notificationsSecret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-notifications-secret",
+			Name:      "cd-notifications-secret",
 			Namespace: testNamespace,
 		},
 	}
@@ -148,13 +148,13 @@ func TestInitGetVarsAppProject(t *testing.T) {
 		},
 	}
 	dynamicClient := dynamicfake.NewSimpleDynamicClient(scheme, appProject)
-	argocdService, err := service.NewArgoCDService(kubeclientset, dynamicClient, testNamespace, mockRepoClient)
+	cdService, err := service.NewArgoCDService(kubeclientset, dynamicClient, testNamespace, mockRepoClient)
 	require.NoError(t, err)
-	t.Cleanup(argocdService.Close)
+	t.Cleanup(cdService.Close)
 
 	config := api.Config{}
 	testDestination := services.Destination{Service: "webhook"}
-	varsProvider, _ := initGetVars(argocdService, &config, &notificationsCm, &notificationsSecret)
+	varsProvider, _ := initGetVars(cdService, &config, &notificationsCm, &notificationsSecret)
 
 	appData := map[string]any{
 		"spec": map[string]any{

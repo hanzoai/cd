@@ -18,7 +18,7 @@ import (
 	"github.com/hanzoai/deploy/pkg/apiclient/cluster"
 	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	servercache "github.com/hanzoai/deploy/server/cache"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/clusterauth"
 	"github.com/hanzoai/deploy/util/db"
 	"github.com/hanzoai/deploy/util/rbac"
@@ -173,7 +173,7 @@ func (s *Server) Create(ctx context.Context, q *cluster.ClusterCreateRequest) (*
 		case q.Upsert:
 			return s.Update(ctx, &cluster.ClusterUpdateRequest{Cluster: c})
 		default:
-			return nil, status.Error(codes.InvalidArgument, argo.GenerateSpecIsDifferentErrorMessage("cluster", existing, c))
+			return nil, status.Error(codes.InvalidArgument, cd.GenerateSpecIsDifferentErrorMessage("cluster", existing, c))
 		}
 	}
 

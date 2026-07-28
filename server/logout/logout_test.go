@@ -25,8 +25,8 @@ import (
 var (
 	validJWTPattern                      = regexp.MustCompile(`[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+`)
 	baseURL                              = "http://localhost:4000"
-	rootPath                             = "argocd"
-	baseHRef                             = "argocd"
+	rootPath                             = "cd"
+	baseHRef                             = "cd"
 	baseLogoutURL                        = "http://localhost:4000/logout"
 	baseLogoutURLwithToken               = "http://localhost:4000/logout?id_token_hint={{token}}"
 	baseLogoutURLwithRedirectURL         = "http://localhost:4000/logout?post_logout_redirect_uri={{logoutRedirectURL}}"
@@ -37,7 +37,7 @@ var (
 	nonOidcToken                         = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDU1NzQyMTIsImlzcyI6ImFyZ29jZCIsIm5iZiI6MTYwNTU3NDIxMiwic3ViIjoiYWRtaW4ifQ.zDJ4piwWnwsHON-oPusHMXWINlnrRDTQykYogT7afeE"
 	expectedNonOIDCLogoutURL             = "http://localhost:4000"
 	expectedDexLogoutURL                 = "http://localhost:4000"
-	expectedNonOIDCLogoutURLOnSecondHost = "http://argocd.my-corp.tld"
+	expectedNonOIDCLogoutURLOnSecondHost = "http://cd.my-corp.tld"
 	expectedOIDCLogoutURL                = "https://dev-5695098.okta.com/oauth2/v1/logout?id_token_hint=" + oidcToken + "&post_logout_redirect_uri=" + baseURL
 	expectedOIDCLogoutURLWithRootPath    = "https://dev-5695098.okta.com/oauth2/v1/logout?id_token_hint=" + oidcToken + "&post_logout_redirect_uri=" + baseURL + "/" + rootPath
 )
@@ -97,7 +97,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{
@@ -116,7 +116,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -131,7 +131,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{
@@ -148,7 +148,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -163,7 +163,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{
@@ -180,7 +180,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -195,7 +195,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{
@@ -211,7 +211,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -226,12 +226,12 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{
 				"url":            "http://localhost:4000",
-				"additionalUrls": "- http://argocd.my-corp.tld",
+				"additionalUrls": "- http://cd.my-corp.tld",
 			},
 		},
 		&corev1.Secret{
@@ -239,7 +239,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -254,7 +254,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{
@@ -266,7 +266,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -323,7 +323,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 		return &jwt.RegisteredClaims{Issuer: "okta"}, "", nil
 	}
 
-	oidcHandlerWithoutBaseURL := NewHandler(settingsManagerWithOIDCConfigButNoURL, sessionManager, "argocd", baseHRef)
+	oidcHandlerWithoutBaseURL := NewHandler(settingsManagerWithOIDCConfigButNoURL, sessionManager, "cd", baseHRef)
 	oidcHandlerWithoutBaseURL.verifyToken = func(_ context.Context, tokenString string) (jwt.Claims, string, error) {
 		if !validJWTPattern.MatchString(tokenString) {
 			return nil, "", errors.New("invalid jwt")
@@ -332,15 +332,15 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 	}
 
 	dexTokenHeader := make(map[string][]string)
-	dexTokenHeader["Cookie"] = []string{"argocd.token=" + dexToken}
+	dexTokenHeader["Cookie"] = []string{"cd.token=" + dexToken}
 	oidcTokenHeader := make(map[string][]string)
-	oidcTokenHeader["Cookie"] = []string{"argocd.token=" + oidcToken}
+	oidcTokenHeader["Cookie"] = []string{"cd.token=" + oidcToken}
 	nonOidcTokenHeader := make(map[string][]string)
-	nonOidcTokenHeader["Cookie"] = []string{"argocd.token=" + nonOidcToken}
+	nonOidcTokenHeader["Cookie"] = []string{"cd.token=" + nonOidcToken}
 	invalidHeader := make(map[string][]string)
-	invalidHeader["Cookie"] = []string{"argocd.token=" + invalidToken}
+	invalidHeader["Cookie"] = []string{"cd.token=" + invalidToken}
 	emptyHeader := make(map[string][]string)
-	emptyHeader["Cookie"] = []string{"argocd.token="}
+	emptyHeader["Cookie"] = []string{"cd.token="}
 	ctx := t.Context()
 
 	dexRequest, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
@@ -352,7 +352,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 	nonoidcRequest, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
 	require.NoError(t, err)
 	nonoidcRequest.Header = nonOidcTokenHeader
-	nonoidcRequestOnSecondHost, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://argocd.my-corp.tld/api/logout", http.NoBody)
+	nonoidcRequestOnSecondHost, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://cd.my-corp.tld/api/logout", http.NoBody)
 	require.NoError(t, err)
 	nonoidcRequestOnSecondHost.Header = nonOidcTokenHeader
 	require.NoError(t, err)
@@ -484,7 +484,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string]string{
@@ -496,7 +496,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "cd",
 				},
 			},
 			Data: map[string][]byte{
@@ -532,7 +532,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 
 		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
 		require.NoError(t, err)
-		req.Header.Set("Cookie", "argocd.token="+nonOidcToken)
+		req.Header.Set("Cookie", "cd.token="+nonOidcToken)
 
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
@@ -563,7 +563,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 
 		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
 		require.NoError(t, err)
-		req.Header.Set("Cookie", "argocd.token="+nonOidcToken)
+		req.Header.Set("Cookie", "cd.token="+nonOidcToken)
 
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
@@ -592,7 +592,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 
 		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
 		require.NoError(t, err)
-		req.Header.Set("Cookie", "argocd.token="+nonOidcToken)
+		req.Header.Set("Cookie", "cd.token="+nonOidcToken)
 
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
@@ -618,7 +618,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 
 		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
 		require.NoError(t, err)
-		req.Header.Set("Cookie", "argocd.token="+nonOidcToken)
+		req.Header.Set("Cookie", "cd.token="+nonOidcToken)
 
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
@@ -646,7 +646,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 
 		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
 		require.NoError(t, err)
-		req.Header.Set("Cookie", "argocd.token="+nonOidcToken)
+		req.Header.Set("Cookie", "cd.token="+nonOidcToken)
 
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
@@ -677,7 +677,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 
 		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
 		require.NoError(t, err)
-		req.Header.Set("Cookie", "argocd.token="+nonOidcToken)
+		req.Header.Set("Cookie", "cd.token="+nonOidcToken)
 
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
@@ -701,7 +701,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 
 		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://localhost:4000/api/logout", http.NoBody)
 		require.NoError(t, err)
-		req.Header.Set("Cookie", "argocd.token="+nonOidcToken)
+		req.Header.Set("Cookie", "cd.token="+nonOidcToken)
 
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)

@@ -11,7 +11,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	argocdcommon "github.com/hanzoai/deploy/common"
+	cdcommon "github.com/hanzoai/deploy/common"
 
 	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"
@@ -203,7 +203,7 @@ func TestAppProject_IsDestinationPermitted(t *testing.T) {
 		},
 		/**
 		  - name: host-cluster
-		    namespace: '!{kube-system,argocd}'
+		    namespace: '!{kube-system,cd}'
 		    server: 'https://kubernetes.default.svc'
 		  - name: destination-cluster-01
 		    namespace: '*'
@@ -216,7 +216,7 @@ func TestAppProject_IsDestinationPermitted(t *testing.T) {
 		{
 			name: "negated namespace with multiple values",
 			projDest: []ApplicationDestination{
-				{Name: "host-cluster", Server: "https://kubernetes.default.svc", Namespace: "!{kube-system,argocd}"},
+				{Name: "host-cluster", Server: "https://kubernetes.default.svc", Namespace: "!{kube-system,cd}"},
 				{Name: "destination-cluster-01", Server: "https://eks-cluster-endpoint.ap-southeast-1.eks.amazonaws.com", Namespace: "*"},
 			},
 			appDest:     ApplicationDestination{Server: "https://eks-cluster-endpoint.ap-southeast-1.eks.amazonaws.com", Namespace: "kube-system"},
@@ -818,7 +818,7 @@ func TestAppProject_ValidateDestinations(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("must reject duplicate source namespaces", func(t *testing.T) {
-		p.Spec.SourceNamespaces = []string{"argocd", "argocd"}
+		p.Spec.SourceNamespaces = []string{"cd", "cd"}
 		err = p.ValidateProject()
 		require.Error(t, err)
 	})
@@ -4083,7 +4083,7 @@ func Test_validateGroupName(t *testing.T) {
 
 func TestGetCAPath(t *testing.T) {
 	temppath := t.TempDir()
-	cert, err := os.ReadFile("../../../../test/fixture/certs/argocd-test-server.crt")
+	cert, err := os.ReadFile("../../../../test/fixture/certs/cd-test-server.crt")
 	if err != nil {
 		panic(err)
 	}
@@ -4091,7 +4091,7 @@ func TestGetCAPath(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	t.Setenv(argocdcommon.EnvVarTLSDataPath, temppath)
+	t.Setenv(cdcommon.EnvVarTLSDataPath, temppath)
 	validcert := []string{
 		"https://foo.example.com",
 		"oci://foo.example.com",
@@ -4131,7 +4131,7 @@ func TestAppProjectIsSourceNamespacePermitted(t *testing.T) {
 	app1 := &Application{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "app1",
-			Namespace: "argocd",
+			Namespace: "cd",
 		},
 		Spec: ApplicationSpec{},
 	}
@@ -4181,67 +4181,67 @@ func TestAppProjectIsSourceNamespacePermitted(t *testing.T) {
 		proj := &AppProject{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "default",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: AppProjectSpec{
 				SourceNamespaces: []string{"other-ns"},
 			},
 		}
-		// app1 is installed to argocd namespace, controller as well
-		assert.True(t, proj.IsAppNamespacePermitted(app1, "argocd"))
+		// app1 is installed to cd namespace, controller as well
+		assert.True(t, proj.IsAppNamespacePermitted(app1, "cd"))
 		// app2 is installed to some-ns namespace, controller as well
 		assert.True(t, proj.IsAppNamespacePermitted(app2, "some-ns"))
 		// app3 has no namespace set, so will be implicitly created in controller's namespace
-		assert.True(t, proj.IsAppNamespacePermitted(app3, "argocd"))
+		assert.True(t, proj.IsAppNamespacePermitted(app3, "cd"))
 	})
 	t.Run("App not permitted when sourceNamespaces is empty", func(t *testing.T) {
 		proj := &AppProject{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "default",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: AppProjectSpec{
 				SourceNamespaces: []string{},
 			},
 		}
-		// app1 is installed to argocd namespace
-		assert.True(t, proj.IsAppNamespacePermitted(app1, "argocd"))
-		// app2 is installed to some-ns, controller running in argocd
-		assert.False(t, proj.IsAppNamespacePermitted(app2, "argocd"))
+		// app1 is installed to cd namespace
+		assert.True(t, proj.IsAppNamespacePermitted(app1, "cd"))
+		// app2 is installed to some-ns, controller running in cd
+		assert.False(t, proj.IsAppNamespacePermitted(app2, "cd"))
 	})
 
 	t.Run("App permitted when sourceNamespaces has app namespace", func(t *testing.T) {
 		proj := &AppProject{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "default",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: AppProjectSpec{
 				SourceNamespaces: []string{"some-ns"},
 			},
 		}
-		// app2 is installed to some-ns, controller running in argocd
-		assert.True(t, proj.IsAppNamespacePermitted(app2, "argocd"))
-		// app4 is installed to other-ns, controller running in argocd
-		assert.False(t, proj.IsAppNamespacePermitted(app4, "argocd"))
+		// app2 is installed to some-ns, controller running in cd
+		assert.True(t, proj.IsAppNamespacePermitted(app2, "cd"))
+		// app4 is installed to other-ns, controller running in cd
+		assert.False(t, proj.IsAppNamespacePermitted(app4, "cd"))
 	})
 
 	t.Run("App permitted by glob pattern", func(t *testing.T) {
 		proj := &AppProject{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "default",
-				Namespace: "argocd",
+				Namespace: "cd",
 			},
 			Spec: AppProjectSpec{
 				SourceNamespaces: []string{"some-*"},
 			},
 		}
-		// app5 is installed to some-ns1, controller running in argocd
-		assert.True(t, proj.IsAppNamespacePermitted(app5, "argocd"))
-		// app6 is installed to some-ns2, controller running in argocd
-		assert.True(t, proj.IsAppNamespacePermitted(app6, "argocd"))
-		// app7 is installed to someotherns, controller running in argocd
-		assert.False(t, proj.IsAppNamespacePermitted(app7, "argocd"))
+		// app5 is installed to some-ns1, controller running in cd
+		assert.True(t, proj.IsAppNamespacePermitted(app5, "cd"))
+		// app6 is installed to some-ns2, controller running in cd
+		assert.True(t, proj.IsAppNamespacePermitted(app6, "cd"))
+		// app7 is installed to someotherns, controller running in cd
+		assert.False(t, proj.IsAppNamespacePermitted(app7, "cd"))
 	})
 }
 
@@ -4257,29 +4257,29 @@ func Test_RBACName(t *testing.T) {
 			},
 		}
 	}
-	t.Run("App in same namespace as controller when ns is argocd", func(t *testing.T) {
-		a := testApp("argocd", "default")
-		assert.Equal(t, "default/test-app", a.RBACName("argocd"))
+	t.Run("App in same namespace as controller when ns is cd", func(t *testing.T) {
+		a := testApp("cd", "default")
+		assert.Equal(t, "default/test-app", a.RBACName("cd"))
 	})
-	t.Run("App in same namespace as controller when ns is not argocd", func(t *testing.T) {
+	t.Run("App in same namespace as controller when ns is not cd", func(t *testing.T) {
 		a := testApp("some-ns", "default")
 		assert.Equal(t, "default/test-app", a.RBACName("some-ns"))
 	})
-	t.Run("App in different namespace as controller when ns is argocd", func(t *testing.T) {
+	t.Run("App in different namespace as controller when ns is cd", func(t *testing.T) {
 		a := testApp("some-ns", "default")
-		assert.Equal(t, "default/some-ns/test-app", a.RBACName("argocd"))
+		assert.Equal(t, "default/some-ns/test-app", a.RBACName("cd"))
 	})
-	t.Run("App in different namespace as controller when ns is not argocd", func(t *testing.T) {
+	t.Run("App in different namespace as controller when ns is not cd", func(t *testing.T) {
 		a := testApp("some-ns", "default")
 		assert.Equal(t, "default/some-ns/test-app", a.RBACName("other-ns"))
 	})
 	t.Run("App in same namespace as controller when project is not yet set", func(t *testing.T) {
-		a := testApp("argocd", "")
-		assert.Equal(t, "default/test-app", a.RBACName("argocd"))
+		a := testApp("cd", "")
+		assert.Equal(t, "default/test-app", a.RBACName("cd"))
 	})
 	t.Run("App in same namespace as controller when ns is not yet set", func(t *testing.T) {
 		a := testApp("", "")
-		assert.Equal(t, "default/test-app", a.RBACName("argocd"))
+		assert.Equal(t, "default/test-app", a.RBACName("cd"))
 	})
 }
 
@@ -4290,7 +4290,7 @@ func TestGetSummary(t *testing.T) {
 	summary := tree.GetSummary(app)
 	assert.Empty(t, summary.ExternalURLs)
 
-	const annotationName = argocdcommon.AnnotationKeyLinkPrefix + "/my-link"
+	const annotationName = cdcommon.AnnotationKeyLinkPrefix + "/my-link"
 	const url = "https://example.com"
 	app.Annotations = make(map[string]string)
 	app.Annotations[annotationName] = url

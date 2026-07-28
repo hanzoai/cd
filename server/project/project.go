@@ -30,7 +30,7 @@ import (
 	"github.com/hanzoai/deploy/server/deeplinks"
 	serverevents "github.com/hanzoai/deploy/server/events"
 	"github.com/hanzoai/deploy/server/rbacpolicy"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/db"
 	jwtutil "github.com/hanzoai/deploy/util/jwt"
 	"github.com/hanzoai/deploy/util/rbac"
@@ -50,7 +50,7 @@ type Server struct {
 	policyEnf     *rbacpolicy.RBACPolicyEnforcer
 	appclientset  appclientset.Interface
 	kubeclientset kubernetes.Interface
-	auditLogger   *argo.AuditLogger
+	auditLogger   *cd.AuditLogger
 	projectLock   sync.KeyLock
 	sessionMgr    *session.SessionManager
 	projInformer  cache.SharedIndexInformer
@@ -62,7 +62,7 @@ type Server struct {
 func NewServer(ns string, kubeclientset kubernetes.Interface, appclientset appclientset.Interface, enf *rbac.Enforcer, projectLock sync.KeyLock, sessionMgr *session.SessionManager, policyEnf *rbacpolicy.RBACPolicyEnforcer,
 	projInformer cache.SharedIndexInformer, settingsMgr *settings.SettingsManager, db db.ArgoDB, enableK8sEvent []string,
 ) *Server {
-	auditLogger := argo.NewAuditLogger(kubeclientset, ns, "argocd-server", enableK8sEvent)
+	auditLogger := cd.NewAuditLogger(kubeclientset, ns, "cd-server", enableK8sEvent)
 	return &Server{
 		enf: enf, policyEnf: policyEnf, appclientset: appclientset, kubeclientset: kubeclientset, ns: ns, projectLock: projectLock, auditLogger: auditLogger, sessionMgr: sessionMgr,
 		projInformer: projInformer, settingsMgr: settingsMgr, db: db,
@@ -159,7 +159,7 @@ func (s *Server) createToken(ctx context.Context, q *project.ProjectTokenCreateR
 	if err != nil {
 		return nil, err
 	}
-	s.logEvent(ctx, prj, argo.EventReasonResourceCreated, "created token")
+	s.logEvent(ctx, prj, cd.EventReasonResourceCreated, "created token")
 	return &project.ProjectTokenResponse{Token: jwtToken}, nil
 }
 
@@ -243,7 +243,7 @@ func (s *Server) deleteToken(ctx context.Context, q *project.ProjectTokenDeleteR
 	if err != nil {
 		return nil, err
 	}
-	s.logEvent(ctx, prj, argo.EventReasonResourceDeleted, "deleted token")
+	s.logEvent(ctx, prj, cd.EventReasonResourceDeleted, "deleted token")
 
 	return &project.EmptyResponse{}, nil
 }
@@ -269,7 +269,7 @@ func (s *Server) Create(ctx context.Context, q *project.ProjectCreateRequest) (*
 		}
 		if !q.GetUpsert() {
 			if !reflect.DeepEqual(existing.Spec, q.GetProject().Spec) {
-				return nil, status.Error(codes.InvalidArgument, argo.GenerateSpecIsDifferentErrorMessage("project", existing.Spec, q.GetProject().Spec))
+				return nil, status.Error(codes.InvalidArgument, cd.GenerateSpecIsDifferentErrorMessage("project", existing.Spec, q.GetProject().Spec))
 			}
 			return existing, nil
 		}
@@ -280,7 +280,7 @@ func (s *Server) Create(ctx context.Context, q *project.ProjectCreateRequest) (*
 		res, err = s.appclientset.ArgoprojV1alpha1().AppProjects(s.ns).Update(ctx, existing, metav1.UpdateOptions{})
 	}
 	if err == nil {
-		s.logEvent(ctx, res, argo.EventReasonResourceCreated, "created project")
+		s.logEvent(ctx, res, cd.EventReasonResourceCreated, "created project")
 	}
 	return res, err
 }
@@ -306,12 +306,12 @@ func (s *Server) GetDetailedProject(ctx context.Context, q *project.ProjectQuery
 	if err := s.enf.EnforceErr(ctx.Value("claims"), rbac.ResourceProjects, rbac.ActionGet, q.Name); err != nil {
 		return nil, err
 	}
-	proj, repositories, clusters, err := argo.GetAppProjectWithScopedResources(ctx, q.Name, listersv1alpha1.NewAppProjectLister(s.projInformer.GetIndexer()), s.ns, s.settingsMgr, s.db)
+	proj, repositories, clusters, err := cd.GetAppProjectWithScopedResources(ctx, q.Name, listersv1alpha1.NewAppProjectLister(s.projInformer.GetIndexer()), s.ns, s.settingsMgr, s.db)
 	if err != nil {
 		return nil, err
 	}
 	proj.NormalizeJWTTokens()
-	globalProjects := argo.GetGlobalProjects(proj, listersv1alpha1.NewAppProjectLister(s.projInformer.GetIndexer()), s.settingsMgr)
+	globalProjects := cd.GetGlobalProjects(proj, listersv1alpha1.NewAppProjectLister(s.projInformer.GetIndexer()), s.settingsMgr)
 	var apiRepos []*v1alpha1.Repository
 	for _, repo := range repositories {
 		apiRepos = append(apiRepos, repo.Normalize().Sanitized())
@@ -349,7 +349,7 @@ func (s *Server) GetGlobalProjects(ctx context.Context, q *project.ProjectQuery)
 		return nil, err
 	}
 
-	globalProjects := argo.GetGlobalProjects(projOrig, listersv1alpha1.NewAppProjectLister(s.projInformer.GetIndexer()), s.settingsMgr)
+	globalProjects := cd.GetGlobalProjects(projOrig, listersv1alpha1.NewAppProjectLister(s.projInformer.GetIndexer()), s.settingsMgr)
 
 	res := &project.GlobalProjectsResponse{}
 	res.Items = globalProjects
@@ -414,14 +414,14 @@ func (s *Server) Update(ctx context.Context, q *project.ProjectUpdateRequest) (*
 	invalidSrcCount := 0
 	invalidDstCount := 0
 
-	for _, a := range argo.FilterByProjects(appsList.Items, []string{q.Project.Name}) {
+	for _, a := range cd.FilterByProjects(appsList.Items, []string{q.Project.Name}) {
 		if oldProj.IsSourcePermitted(a.Spec.GetSource()) && !q.Project.IsSourcePermitted(a.Spec.GetSource()) {
 			invalidSrcCount++
 		}
 
-		destCluster, err := argo.GetDestinationCluster(ctx, a.Spec.Destination, s.db)
+		destCluster, err := cd.GetDestinationCluster(ctx, a.Spec.Destination, s.db)
 		if err != nil {
-			if err.Error() != argo.ErrDestinationMissing {
+			if err.Error() != cd.ErrDestinationMissing {
 				// If cluster is not found, we should discard this app, as it's most likely already in error
 				continue
 			}
@@ -456,7 +456,7 @@ func (s *Server) Update(ctx context.Context, q *project.ProjectUpdateRequest) (*
 
 	res, err := s.appclientset.ArgoprojV1alpha1().AppProjects(s.ns).Update(ctx, q.Project, metav1.UpdateOptions{})
 	if err == nil {
-		s.logEvent(ctx, res, argo.EventReasonResourceUpdated, "updated project")
+		s.logEvent(ctx, res, cd.EventReasonResourceUpdated, "updated project")
 	}
 	return res, err
 }
@@ -482,13 +482,13 @@ func (s *Server) Delete(ctx context.Context, q *project.ProjectQuery) (*project.
 	if err != nil {
 		return nil, err
 	}
-	apps := argo.FilterByProjects(appsList.Items, []string{q.Name})
+	apps := cd.FilterByProjects(appsList.Items, []string{q.Name})
 	if len(apps) > 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "project is referenced by %d applications", len(apps))
 	}
 	err = s.appclientset.ArgoprojV1alpha1().AppProjects(s.ns).Delete(ctx, q.Name, metav1.DeleteOptions{})
 	if err == nil {
-		s.logEvent(ctx, p, argo.EventReasonResourceDeleted, "deleted project")
+		s.logEvent(ctx, p, cd.EventReasonResourceDeleted, "deleted project")
 	}
 	return &project.EmptyResponse{}, err
 }
@@ -514,7 +514,7 @@ func (s *Server) ListEvents(ctx context.Context, q *project.ProjectQuery) (*even
 }
 
 func (s *Server) logEvent(ctx context.Context, a *v1alpha1.AppProject, reason string, action string) {
-	eventInfo := argo.EventInfo{Type: corev1.EventTypeNormal, Reason: reason}
+	eventInfo := cd.EventInfo{Type: corev1.EventTypeNormal, Reason: reason}
 	user := session.Username(ctx)
 	if user == "" {
 		user = "Unknown user"

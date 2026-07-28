@@ -81,7 +81,7 @@ func ReadLocalConfig(path string) (*LocalConfig, error) {
 	var err error
 	var localconfig LocalConfig
 
-	// check file permission only when argocd config exists
+	// check file permission only when cd config exists
 	if fi, err := os.Stat(path); err == nil {
 		err = getFilePermission(fi)
 		if err != nil {
@@ -281,7 +281,7 @@ func DefaultConfigDir() (string, error) {
 
 	// Legacy config directory
 	// Use it if it already exists
-	legacyConfigDir := path.Join(homeDir, ".argocd")
+	legacyConfigDir := path.Join(homeDir, ".cd")
 
 	if _, err := os.Stat(legacyConfigDir); err == nil {
 		return legacyConfigDir, nil

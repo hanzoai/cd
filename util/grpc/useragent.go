@@ -49,7 +49,7 @@ func userAgentEnforcer(ctx context.Context, clientName string, semVerConstraint 
 	var userAgents []string
 	if md, ok := metadata.FromIncomingContext(ctx); ok {
 		for _, ua := range md["user-agent"] {
-			// ua is a string like "argocd-client/v0.11.0+cde040e grpc-go/1.15.0"
+			// ua is a string like "cd-client/v0.11.0+cde040e grpc-go/1.15.0"
 			userAgents = append(userAgents, strings.Fields(ua)...)
 			break
 		}

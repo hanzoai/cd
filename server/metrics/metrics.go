@@ -27,14 +27,14 @@ type MetricsServer struct {
 var (
 	redisRequestCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_redis_request_total",
+			Name: "cd_redis_request_total",
 			Help: "Number of kubernetes requests executed during application reconciliation.",
 		},
 		[]string{"initiator", "failed"},
 	)
 	redisRequestHistogram = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_redis_request_duration",
+			Name:    "cd_redis_request_duration",
 			Help:    "Redis requests duration.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2},
 		},
@@ -42,14 +42,14 @@ var (
 	)
 	extensionRequestCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_proxy_extension_request_total",
+			Name: "cd_proxy_extension_request_total",
 			Help: "Number of requests sent to configured proxy extensions.",
 		},
 		[]string{"extension", "status"},
 	)
 	extensionRequestDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "argocd_proxy_extension_request_duration_seconds",
+			Name:    "cd_proxy_extension_request_duration_seconds",
 			Help:    "Request duration in seconds between the Hanzo CD API server and the extension backend.",
 			Buckets: []float64{0.1, 0.25, .5, 1, 2, 5, 10},
 		},
@@ -57,14 +57,14 @@ var (
 	)
 	loginRequestCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "argocd_login_request_total",
+			Name: "cd_login_request_total",
 			Help: "Number of login requests to the Hanzo CD API server.",
 		},
 		[]string{"status"},
 	)
 	argoVersion = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "argocd_info",
+			Name: "cd_info",
 			Help: "Hanzo CD version information",
 		},
 		[]string{"version"},
@@ -108,12 +108,12 @@ func NewMetricsServer(host string, port int) *MetricsServer {
 }
 
 func (m *MetricsServer) IncRedisRequest(failed bool) {
-	m.redisRequestCounter.WithLabelValues("argocd-server", strconv.FormatBool(failed)).Inc()
+	m.redisRequestCounter.WithLabelValues("cd-server", strconv.FormatBool(failed)).Inc()
 }
 
 // ObserveRedisRequestDuration observes redis request duration
 func (m *MetricsServer) ObserveRedisRequestDuration(duration time.Duration) {
-	m.redisRequestHistogram.WithLabelValues("argocd-server").Observe(duration.Seconds())
+	m.redisRequestHistogram.WithLabelValues("cd-server").Observe(duration.Seconds())
 }
 
 func (m *MetricsServer) IncExtensionRequestCounter(extension string, status int) {

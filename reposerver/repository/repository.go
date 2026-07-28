@@ -59,7 +59,7 @@ import (
 	"github.com/hanzoai/deploy/reposerver/metrics"
 	"github.com/hanzoai/deploy/util/app/discovery"
 	apppathutil "github.com/hanzoai/deploy/util/app/path"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 	"github.com/hanzoai/deploy/util/cmp"
 	"github.com/hanzoai/deploy/util/git"
 	"github.com/hanzoai/deploy/util/glob"
@@ -77,11 +77,11 @@ import (
 
 const (
 	cachedManifestGenerationPrefix = "Manifest generation error (cached)"
-	helmDepUpMarkerFile            = ".argocd-helm-dep-up"
-	repoSourceFile                 = ".argocd-source.yaml"
-	appSourceFile                  = ".argocd-source-%s.yaml"
+	helmDepUpMarkerFile            = ".cd-helm-dep-up"
+	repoSourceFile                 = ".cd-source.yaml"
+	appSourceFile                  = ".cd-source-%s.yaml"
 	ociPrefix                      = "oci://"
-	skipFileRenderingMarker        = "+argocd:skip-file-rendering"
+	skipFileRenderingMarker        = "+cd:skip-file-rendering"
 )
 
 var ErrExceededMaxCombinedManifestFileSize = errors.New("exceeded max combined manifest file size")
@@ -562,9 +562,9 @@ func (s *Service) runRepoOperation(
 
 func getRepoSanitizerRegex(rootDir string) *regexp.Regexp {
 	// This regex assumes that the sensitive part of the path (the component immediately after "rootDir") contains no
-	// spaces. This assumption allows us to avoid sanitizing "more info" in "/tmp/_argocd-repo/SENSITIVE more info".
+	// spaces. This assumption allows us to avoid sanitizing "more info" in "/tmp/_cd-repo/SENSITIVE more info".
 	//
-	// The no-spaces assumption holds for our actual use case, which is "/tmp/_argocd-repo/{random UUID}". The UUID will
+	// The no-spaces assumption holds for our actual use case, which is "/tmp/_cd-repo/{random UUID}". The UUID will
 	// only ever contain digits and hyphens.
 	return regexp.MustCompile(regexp.QuoteMeta(rootDir) + `/[^ /]*`)
 }
@@ -648,11 +648,11 @@ func (s *Service) GenerateManifest(ctx context.Context, q *apiclient.ManifestReq
 	ctx, span := tracer.Start(ctx, "reposerver.GenerateManifest")
 	if span.IsRecording() {
 		span.SetAttributes(
-			attribute.String("argocd.app.name", q.AppName),
-			attribute.String("argocd.revision", q.Revision),
+			attribute.String("cd.app.name", q.AppName),
+			attribute.String("cd.revision", q.Revision),
 		)
 		if q.Repo != nil {
-			span.SetAttributes(attribute.String("argocd.repo.url", git.SanitizeRepoURL(q.Repo.Repo)))
+			span.SetAttributes(attribute.String("cd.repo.url", git.SanitizeRepoURL(q.Repo.Repo)))
 		}
 	}
 	defer func() { traceutil.EndSpan(span, retErr) }()
@@ -1294,7 +1294,7 @@ func helmTemplate(appPath string, repoRoot string, env *v1alpha1.Env, q *apiclie
 	// contain any underscore characters and must not exceed 53 characters.
 	// We are not interested in the fully qualified application name while
 	// templating, thus, we just use the name part of the identifier.
-	appName, _ := argo.ParseInstanceName(q.AppName, "")
+	appName, _ := cd.ParseInstanceName(q.AppName, "")
 
 	kubeVersion, err := parseKubeVersion(q.ApplicationSource.GetKubeVersionOrDefault(q.KubeVersion))
 	if err != nil {
@@ -1736,7 +1736,7 @@ func WithCMPTarExcludedGlobs(excludedGlobs []string) GenerateManifestOpt {
 }
 
 // WithCMPUseManifestGeneratePaths enables or disables the use of the
-// 'argocd.argoproj.io/manifest-generate-paths' annotation for manifest generation instead of transmit the whole repository.
+// 'cd.argoproj.io/manifest-generate-paths' annotation for manifest generation instead of transmit the whole repository.
 func WithCMPUseManifestGeneratePaths(enabled bool) GenerateManifestOpt {
 	return func(o *generateManifestOpt) {
 		o.cmpUseManifestGeneratePaths = enabled
@@ -1751,7 +1751,7 @@ func GenerateManifests(ctx context.Context, appPath, repoRoot, revision string, 
 	opt := newGenerateManifestOpt(opts...)
 	var targetObjs []*unstructured.Unstructured
 
-	resourceTracking := argo.NewResourceTracking()
+	resourceTracking := cd.NewResourceTracking()
 
 	env := newEnv(q, revision)
 
@@ -1759,7 +1759,7 @@ func GenerateManifests(ctx context.Context, appPath, repoRoot, revision string, 
 	if err != nil {
 		return nil, fmt.Errorf("error getting app source type: %w", err)
 	}
-	span.SetAttributes(attribute.String("argocd.app.source_type", string(appSourceType)))
+	span.SetAttributes(attribute.String("cd.app.source_type", string(appSourceType)))
 	repoURL := ""
 	if q.Repo != nil {
 		repoURL = q.Repo.Repo
@@ -1897,9 +1897,9 @@ func newEnvRepoQuery(q *apiclient.RepoServerAppDetailsQuery, revision string) *v
 // mergeSourceParameters merges parameter overrides from one or more files in
 // the Git repo into the given ApplicationSource objects.
 //
-// If .argocd-source.yaml exists at application's path in repository, it will
+// If .cd-source.yaml exists at application's path in repository, it will
 // be read and merged. If appName is not the empty string, and a file named
-// .argocd-source-<appName>.yaml exists, it will also be read and merged.
+// .cd-source-<appName>.yaml exists, it will also be read and merged.
 func mergeSourceParameters(source *v1alpha1.ApplicationSource, path, appName string) error {
 	repoFilePath := filepath.Join(path, repoSourceFile)
 	overrides := []string{repoFilePath}
@@ -2996,7 +2996,7 @@ func directoryPermissionInitializer(rootPath string) goio.Closer {
 // Returns the 40 character commit SHA after the checkout has been performed
 func (s *Service) checkoutRevision(ctx context.Context, gitClient git.Client, revision string, submoduleEnabled bool, depth int64, clean bool) (_ goio.Closer, retErr error) {
 	ctx, span := tracer.Start(ctx, "reposerver.checkoutRevision")
-	span.SetAttributes(attribute.String("argocd.revision", revision))
+	span.SetAttributes(attribute.String("cd.revision", revision))
 	defer func() { traceutil.EndSpan(span, retErr) }()
 	closer := s.gitRepoInitializer(gitClient.Root())
 	err := checkoutRevision(ctx, gitClient, revision, submoduleEnabled, depth, clean)

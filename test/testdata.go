@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	FakeArgoCDNamespace = "fake-argocd-ns"
+	FakeArgoCDNamespace = "fake-cd-ns"
 	FakeDestNamespace   = "fake-dest-ns"
 	FakeClusterURL      = "https://fake-cluster:443"
 )
@@ -111,7 +111,7 @@ func NewFakeConfigMap() *corev1.ConfigMap {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: make(map[string]string),
@@ -129,7 +129,7 @@ func NewFakeSecret() *corev1.Secret {
 			Name:      common.ArgoCDSecretName,
 			Namespace: FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 		Data: map[string][]byte{

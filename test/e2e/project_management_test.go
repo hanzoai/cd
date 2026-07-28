@@ -17,7 +17,7 @@ import (
 
 	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/deploy/test/e2e/fixture"
-	"github.com/hanzoai/deploy/util/argo"
+	"github.com/hanzoai/deploy/util/cd"
 )
 
 func assertProjHasEvent(t *testing.T, a *v1alpha1.AppProject, message string, reason string) {
@@ -69,7 +69,7 @@ func TestProjectCreation(t *testing.T) {
 	assert.NotNil(t, proj.Spec.OrphanedResources)
 	assert.False(t, proj.Spec.OrphanedResources.IsWarn())
 
-	assertProjHasEvent(t, proj, "create", argo.EventReasonResourceCreated)
+	assertProjHasEvent(t, proj, "create", cd.EventReasonResourceCreated)
 
 	// create a manifest with the same name to upsert
 	newDescription := "Upserted description"
@@ -106,7 +106,7 @@ func TestProjectDeletion(t *testing.T) {
 
 	_, err = fixture.AppClientset.ArgoprojV1alpha1().AppProjects(fixture.TestNamespace()).Get(t.Context(), projectName, metav1.GetOptions{})
 	assert.True(t, errors.IsNotFound(err))
-	assertProjHasEvent(t, proj, "delete", argo.EventReasonResourceDeleted)
+	assertProjHasEvent(t, proj, "delete", cd.EventReasonResourceDeleted)
 }
 
 func TestSetProject(t *testing.T) {
@@ -138,7 +138,7 @@ func TestSetProject(t *testing.T) {
 	assert.NotNil(t, proj.Spec.OrphanedResources)
 	assert.False(t, proj.Spec.OrphanedResources.IsWarn())
 
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
 
 func TestAddProjectDestination(t *testing.T) {
@@ -180,7 +180,7 @@ func TestAddProjectDestination(t *testing.T) {
 
 	assert.Equal(t, "https://192.168.99.100:8443", proj.Spec.Destinations[0].Server)
 	assert.Equal(t, "test1", proj.Spec.Destinations[0].Namespace)
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
 
 func TestAddProjectDestinationWithName(t *testing.T) {
@@ -206,7 +206,7 @@ func TestAddProjectDestinationWithName(t *testing.T) {
 	assert.Empty(t, proj.Spec.Destinations[0].Server)
 	assert.Equal(t, "in-cluster", proj.Spec.Destinations[0].Name)
 	assert.Equal(t, "test1", proj.Spec.Destinations[0].Namespace)
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
 
 func TestRemoveProjectDestination(t *testing.T) {
@@ -240,7 +240,7 @@ func TestRemoveProjectDestination(t *testing.T) {
 	require.NoError(t, err, "Unable to get project")
 	assert.Equal(t, projectName, proj.Name)
 	assert.Empty(t, proj.Spec.Destinations)
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
 
 func TestAddProjectSource(t *testing.T) {
@@ -289,7 +289,7 @@ func TestRemoveProjectSource(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, projectName, proj.Name)
 	assert.Empty(t, proj.Spec.SourceRepos)
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
 
 func TestUseJWTToken(t *testing.T) {
@@ -403,7 +403,7 @@ func TestAddOrphanedIgnore(t *testing.T) {
 	assert.Equal(t, "group", proj.Spec.OrphanedResources.Ignore[0].Group)
 	assert.Equal(t, "kind", proj.Spec.OrphanedResources.Ignore[0].Kind)
 	assert.Equal(t, "name", proj.Spec.OrphanedResources.Ignore[0].Name)
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
 
 func TestRemoveOrphanedIgnore(t *testing.T) {
@@ -441,7 +441,7 @@ func TestRemoveOrphanedIgnore(t *testing.T) {
 	require.NoError(t, err, "Unable to get project")
 	assert.Equal(t, projectName, proj.Name)
 	assert.Empty(t, proj.Spec.OrphanedResources.Ignore)
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
 
 func createAndConfigGlobalProject(ctx context.Context, testName string) error {
@@ -500,7 +500,7 @@ func createAndConfigGlobalProject(ctx context.Context, testName string) error {
               - you
       projectName: %s`
 
-	_, err = fixture.Run("", "kubectl", "patch", "cm", "argocd-cm",
+	_, err = fixture.Run("", "kubectl", "patch", "cm", "cd-cm",
 		"-n", fixture.TestNamespace(),
 		"-p", fmt.Sprintf(globalProjectsSettings, projGlobal.Name))
 	if err != nil {
@@ -630,7 +630,7 @@ func TestSyncWindowSyncOverrun(t *testing.T) {
 	assert.True(t, proj.Spec.SyncWindows[0].SyncOverrun, "First window should still have SyncOverrun enabled")
 	assert.False(t, proj.Spec.SyncWindows[1].SyncOverrun, "Second window should not have SyncOverrun enabled")
 
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
 
 func TestAddProjectDestinationServiceAccount(t *testing.T) {
@@ -830,5 +830,5 @@ func TestAddProjectDestinationServiceAccount(t *testing.T) {
 	assert.Equal(t, "test-ns1", proj.Spec.DestinationServiceAccounts[2].Namespace)
 	assert.Equal(t, "default:test-sa", proj.Spec.DestinationServiceAccounts[2].DefaultServiceAccount)
 
-	assertProjHasEvent(t, proj, "update", argo.EventReasonResourceUpdated)
+	assertProjHasEvent(t, proj, "update", cd.EventReasonResourceUpdated)
 }
