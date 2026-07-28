@@ -52,7 +52,7 @@ spec:
     command: [sh, -c]
     args:
       - |
-        echo "{\"kind\": \"ConfigMap\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"$ARGOCD_APP_NAME\", \"namespace\": \"$ARGOCD_APP_NAMESPACE\", \"annotations\": {\"Foo\": \"$ARGOCD_ENV_FOO\", \"KubeVersion\": \"$KUBE_VERSION\", \"KubeApiVersion\": \"$KUBE_API_VERSIONS\",\"Bar\": \"baz\"}}}"
+        echo "{\"kind\": \"ConfigMap\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"$CD_APP_NAME\", \"namespace\": \"$CD_APP_NAMESPACE\", \"annotations\": {\"Foo\": \"$CD_ENV_FOO\", \"KubeVersion\": \"$KUBE_VERSION\", \"KubeApiVersion\": \"$KUBE_API_VERSIONS\",\"Bar\": \"baz\"}}}"
   # The discovery config is applied to a repository. If every configured discovery tool matches, then the plugin may be
   # used to generate manifests for Applications using the repository. If the discovery config is omitted then the plugin 
   # will not match any application but can still be invoked explicitly by specifying the plugin name in the app spec. 
@@ -168,7 +168,7 @@ data:
       init:
         command: [sh, -c, 'echo "Initializing..."']
       generate:
-        command: [sh, -c, 'echo "{\"kind\": \"ConfigMap\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"$ARGOCD_APP_NAME\", \"namespace\": \"$ARGOCD_APP_NAMESPACE\", \"annotations\": {\"Foo\": \"$ARGOCD_ENV_FOO\", \"KubeVersion\": \"$KUBE_VERSION\", \"KubeApiVersion\": \"$KUBE_API_VERSIONS\",\"Bar\": \"baz\"}}}"']
+        command: [sh, -c, 'echo "{\"kind\": \"ConfigMap\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"$CD_APP_NAME\", \"namespace\": \"$CD_APP_NAMESPACE\", \"annotations\": {\"Foo\": \"$CD_ENV_FOO\", \"KubeVersion\": \"$KUBE_VERSION\", \"KubeApiVersion\": \"$KUBE_API_VERSIONS\",\"Bar\": \"baz\"}}}"']
       discover:
         fileName: "./subdir/s*.yaml"
 ```
@@ -231,10 +231,10 @@ Plugin commands have access to
                 - name: FOO
                   value: bar
                 - name: REV
-                  value: test-$ARGOCD_APP_REVISION
+                  value: test-$CD_APP_REVISION
     
     Before reaching the `init.command`, `generate.command`, and `discover.find.command` commands, Argo CD prefixes all 
-    user-supplied environment variables (#3 above) with `ARGOCD_ENV_`. This prevents users from directly setting 
+    user-supplied environment variables (#3 above) with `CD_ENV_`. This prevents users from directly setting 
     potentially-sensitive environment variables.
 
 4. Parameters in the Application spec:
@@ -251,13 +251,13 @@ Plugin commands have access to
                  map:
                    image.tag: v1.2.3
    
-    The parameters are available as JSON in the `ARGOCD_APP_PARAMETERS` environment variable. The example above would
+    The parameters are available as JSON in the `CD_APP_PARAMETERS` environment variable. The example above would
     produce this JSON:
    
         [{"name": "values-files", "array": ["values-dev.yaml"]}, {"name": "helm-parameters", "map": {"image.tag": "v1.2.3"}}]
    
     !!! note
-        Parameter announcements, even if they specify defaults, are _not_ sent to the plugin in `ARGOCD_APP_PARAMETERS`.
+        Parameter announcements, even if they specify defaults, are _not_ sent to the plugin in `CD_APP_PARAMETERS`.
         Only parameters explicitly set in the Application spec are sent to the plugin. It is up to the plugin to apply
         the same defaults as the ones announced to the UI.
    
@@ -320,8 +320,8 @@ If you don't need to set any environment variables, you can set an empty plugin 
 > respects the timeouts set by the `server.repo.server.timeout.seconds` and `controller.repo.server.timeout.seconds` 
 > items in `argocd-cmd-params-cm`. Increase their values from the default of 60s.
 >
-> Each CMP command will also independently timeout on the `ARGOCD_EXEC_TIMEOUT` set for the CMP sidecar. The default
-> is 90s. So if you increase the repo server timeout greater than 90s, be sure to set `ARGOCD_EXEC_TIMEOUT` on the
+> Each CMP command will also independently timeout on the `CD_EXEC_TIMEOUT` set for the CMP sidecar. The default
+> is 90s. So if you increase the repo server timeout greater than 90s, be sure to set `CD_EXEC_TIMEOUT` on the
 > sidecar.
     
 > [!NOTE]
@@ -334,7 +334,7 @@ If you don't need to set any environment variables, you can set an empty plugin 
 > If a CMP renders blank manifests, and `prune` is set to `true`, Argo CD will automatically remove resources. CMP plugin authors should ensure errors are part of the exit code. Commonly something like `kustomize build . | cat` won't pass errors because of the pipe. Consider setting `set -o pipefail` so anything piped will pass errors on failure.
 
 > [!NOTE]
-> If a CMP command fails to gracefully exit on `ARGOCD_EXEC_TIMEOUT`, it will be forcefully killed after an additional timeout of `ARGOCD_EXEC_FATAL_TIMEOUT`.
+> If a CMP command fails to gracefully exit on `CD_EXEC_TIMEOUT`, it will be forcefully killed after an additional timeout of `CD_EXEC_FATAL_TIMEOUT`.
 
 ## Debugging a CMP
 
@@ -366,7 +366,7 @@ You can set it one of three ways:
 
 1. The `--plugin-tar-exclude` argument on the repo server.
 2. The `reposerver.plugin.tar.exclusions` key if you are using `argocd-cmd-params-cm`
-3. Directly setting `ARGOCD_REPO_SERVER_PLUGIN_TAR_EXCLUSIONS` environment variable on the repo server.
+3. Directly setting `CD_REPO_SERVER_PLUGIN_TAR_EXCLUSIONS` environment variable on the repo server.
 
 For option 1, the flag can be repeated multiple times. For option 2 and 3, you can specify multiple globs by separating
 them with semicolons.
@@ -379,7 +379,7 @@ You can set it one of three ways:
 
 1. The `--plugin-use-manifest-generate-paths` argument on the repo server.
 2. The `reposerver.plugin.use.manifest.generate.paths` key if you are using `argocd-cmd-params-cm`
-3. Directly setting `ARGOCD_REPO_SERVER_PLUGIN_USE_MANIFEST_GENERATE_PATHS` environment variable on the repo server to `true`.
+3. Directly setting `CD_REPO_SERVER_PLUGIN_USE_MANIFEST_GENERATE_PATHS` environment variable on the repo server to `true`.
 
 ## Migrating from argocd-cm plugins
 
@@ -529,7 +529,7 @@ them.
 
 `ASKPASS` requires a socket to be shared between the config management plugin and the reposerver. To mitigate path traversal
 attacks, it's recommended to use a dedicated volume to share the socket, and mount it in the reposerver and sidecar.
-To change the socket path, you must set the `ARGOCD_ASK_PASS_SOCK` environment variable for both containers.
+To change the socket path, you must set the `CD_ASK_PASS_SOCK` environment variable for both containers.
 
 To allow the plugin to access the reposerver git credentials, you can set `provideGitCreds` to `true` in the plugin spec:
 

@@ -75,7 +75,7 @@ func lookupGit(si *v1alpha1.SourceIntegrity, repoURL string) gitFunc {
 		}
 
 		if !_gpgDisabledLoggedAlready && !IsGPGEnabled() {
-			log.Warnf("SourceIntegrity criteria for git+gpg declared, but it is turned off by ARGOCD_GPG_ENABLED")
+			log.Warnf("SourceIntegrity criteria for git+gpg declared, but it is turned off by CD_GPG_ENABLED")
 			_gpgDisabledLoggedAlready = true
 			return nil
 		}
@@ -239,7 +239,7 @@ func gpgProblemMessage(g *v1alpha1.SourceIntegrityGitPolicyGPG, signatureInfo gi
 
 // IsGPGEnabled returns true if the GPG feature is enabled
 func IsGPGEnabled() bool {
-	if en := os.Getenv("ARGOCD_GPG_ENABLED"); strings.EqualFold(en, "false") || strings.EqualFold(en, "no") {
+	if en := os.Getenv("CD_GPG_ENABLED"); strings.EqualFold(en, "false") || strings.EqualFold(en, "no") {
 		return false
 	}
 	return true

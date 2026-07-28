@@ -10,7 +10,7 @@ The test server runs in Docker (`argoproj/argo-cd-ci-builder:v1.0.0`) using gore
 
 ### `start-git.sh`
 
-Starts the Docker container with the test Git server. Mounts the current directory and `ARGOCD_E2E_DIR` (default: `/tmp/argo-e2e`), exposing ports for SSH and HTTP/HTTPS access.
+Starts the Docker container with the test Git server. Mounts the current directory and `CD_E2E_DIR` (default: `/tmp/argo-e2e`), exposing ports for SSH and HTTP/HTTPS access.
 
 ### `start-helm-registry.sh` / `start-authenticated-helm-registry.sh`
 

@@ -126,7 +126,7 @@ const (
 
 func loadOpts(t *testing.T, opts string) {
 	t.Helper()
-	t.Setenv("ARGOCD_OPTS", opts)
+	t.Setenv("CD_OPTS", opts)
 	require.NoError(t, config.LoadFlags())
 }
 

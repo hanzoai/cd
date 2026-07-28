@@ -76,7 +76,7 @@ func (a *Actions) getSharedMockOIDCServer() *mockoidc.MockOIDC {
 		// Create a fresh RSA Private Key for token signing
 		rsaKey, err := rsa.GenerateKey(rand.Reader, 2048)
 		require.NoError(t, err)
-		oidcPort := os.Getenv("ARGOCD_E2E_OIDC_PORT")
+		oidcPort := os.Getenv("CD_E2E_OIDC_PORT")
 		if oidcPort == "" {
 			oidcPort = "5556"
 		}

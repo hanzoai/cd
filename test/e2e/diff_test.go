@@ -271,7 +271,7 @@ func TestHelmRepoDiffLocal(t *testing.T) {
 			appPath := "testdata/helm"
 
 			t.Setenv("XDG_CONFIG_HOME", helmTmp)
-			errors.NewHandler(t).FailOnErr(fixture.Run("", "helm", "repo", "add", "custom-repo", fixture.GetEnvWithDefault("ARGOCD_E2E_HELM_SERVICE", fixture.RepoURL(fixture.RepoURLTypeHelm)),
+			errors.NewHandler(t).FailOnErr(fixture.Run("", "helm", "repo", "add", "custom-repo", fixture.GetEnvWithDefault("CD_E2E_HELM_SERVICE", fixture.RepoURL(fixture.RepoURLTypeHelm)),
 				"--username", fixture.GitUsername,
 				"--password", fixture.GitPassword,
 				"--cert-file", "../fixture/certs/argocd-test-client.crt",

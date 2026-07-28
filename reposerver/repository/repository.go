@@ -1865,15 +1865,15 @@ func newEnv(q *apiclient.ManifestRequest, revision string) *v1alpha1.Env {
 	shortRevision := shortenRevision(revision, 7)
 	shortRevision8 := shortenRevision(revision, 8)
 	return &v1alpha1.Env{
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_NAME", Value: q.AppName},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_NAMESPACE", Value: q.Namespace},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_PROJECT_NAME", Value: q.ProjectName},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_REVISION", Value: revision},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_REVISION_SHORT", Value: shortRevision},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_REVISION_SHORT_8", Value: shortRevision8},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_REPO_URL", Value: q.Repo.Repo},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_PATH", Value: q.ApplicationSource.Path},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_TARGET_REVISION", Value: q.ApplicationSource.TargetRevision},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: q.AppName},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAMESPACE", Value: q.Namespace},
+		&v1alpha1.EnvEntry{Name: "CD_APP_PROJECT_NAME", Value: q.ProjectName},
+		&v1alpha1.EnvEntry{Name: "CD_APP_REVISION", Value: revision},
+		&v1alpha1.EnvEntry{Name: "CD_APP_REVISION_SHORT", Value: shortRevision},
+		&v1alpha1.EnvEntry{Name: "CD_APP_REVISION_SHORT_8", Value: shortRevision8},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_REPO_URL", Value: q.Repo.Repo},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_PATH", Value: q.ApplicationSource.Path},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_TARGET_REVISION", Value: q.ApplicationSource.TargetRevision},
 	}
 }
 
@@ -1886,11 +1886,11 @@ func shortenRevision(revision string, length int) string {
 
 func newEnvRepoQuery(q *apiclient.RepoServerAppDetailsQuery, revision string) *v1alpha1.Env {
 	return &v1alpha1.Env{
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_NAME", Value: q.AppName},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_REVISION", Value: revision},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_REPO_URL", Value: q.Repo.Repo},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_PATH", Value: q.Source.Path},
-		&v1alpha1.EnvEntry{Name: "ARGOCD_APP_SOURCE_TARGET_REVISION", Value: q.Source.TargetRevision},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: q.AppName},
+		&v1alpha1.EnvEntry{Name: "CD_APP_REVISION", Value: revision},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_REPO_URL", Value: q.Repo.Repo},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_PATH", Value: q.Source.Path},
+		&v1alpha1.EnvEntry{Name: "CD_APP_SOURCE_TARGET_REVISION", Value: q.Source.TargetRevision},
 	}
 }
 
@@ -2336,7 +2336,7 @@ func getPluginParamEnvs(envVars []string, plugin *v1alpha1.ApplicationSourcePlug
 		pluginEnv := plugin.Env
 		for _, entry := range pluginEnv {
 			newValue := parsedEnv.Envsubst(entry.Value)
-			env = append(env, fmt.Sprintf("ARGOCD_ENV_%s=%s", entry.Name, newValue))
+			env = append(env, fmt.Sprintf("CD_ENV_%s=%s", entry.Name, newValue))
 		}
 		paramEnv, err := plugin.Parameters.Environ()
 		if err != nil {
@@ -2682,10 +2682,10 @@ func populatePluginAppDetails(ctx context.Context, res *apiclient.RepoAppDetails
 	res.Plugin = &apiclient.PluginAppSpec{}
 
 	envVars := []string{
-		"ARGOCD_APP_NAME=" + q.AppName,
-		"ARGOCD_APP_SOURCE_REPO_URL=" + q.Repo.Repo,
-		"ARGOCD_APP_SOURCE_PATH=" + q.Source.Path,
-		"ARGOCD_APP_SOURCE_TARGET_REVISION=" + q.Source.TargetRevision,
+		"CD_APP_NAME=" + q.AppName,
+		"CD_APP_SOURCE_REPO_URL=" + q.Repo.Repo,
+		"CD_APP_SOURCE_PATH=" + q.Source.Path,
+		"CD_APP_SOURCE_TARGET_REVISION=" + q.Source.TargetRevision,
 	}
 
 	env, err := getPluginParamEnvs(envVars, q.Source.Plugin)

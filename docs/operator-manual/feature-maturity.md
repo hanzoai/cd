@@ -54,20 +54,20 @@ to indicate their stability and maturity. These are the statuses of non-stable f
 | Feature                                   | Resource                                      | Property / Variable                                         | Status |
 | ----------------------------------------- | --------------------------------------------- | ----------------------------------------------------------- | ------ |
 | [AppSet Progressive Syncs][2]             | `ConfigMap/argocd-cmd-params-cm`              | `applicationsetcontroller.enable.progressive.syncs`         | Beta   |
-| [AppSet Progressive Syncs][2]             | `Deployment/argocd-applicationset-controller` | `ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS` | Beta   |
+| [AppSet Progressive Syncs][2]             | `Deployment/argocd-applicationset-controller` | `CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS` | Beta   |
 | [Proxy Extensions][3]                     | `ConfigMap/argocd-cmd-params-cm`              | `server.enable.proxy.extension`                             | Beta   |
-| [Proxy Extensions][3]                     | `Deployment/argocd-server`                    | `ARGOCD_SERVER_ENABLE_PROXY_EXTENSION`                      | Beta   |
+| [Proxy Extensions][3]                     | `Deployment/argocd-server`                    | `CD_SERVER_ENABLE_PROXY_EXTENSION`                      | Beta   |
 | [Proxy Extensions][3]                     | `ConfigMap/argocd-cm`                         | `extension.config`                                          | Beta   |
-| [Dynamic Cluster Distribution][7]         | `Deployment/argocd-application-controller`    | `ARGOCD_ENABLE_DYNAMIC_CLUSTER_DISTRIBUTION`                | Alpha  |
-| [Dynamic Cluster Distribution][7]         | `Deployment/argocd-application-controller`    | `ARGOCD_CONTROLLER_HEARTBEAT_TIME`                          | Alpha  |
+| [Dynamic Cluster Distribution][7]         | `Deployment/argocd-application-controller`    | `CD_ENABLE_DYNAMIC_CLUSTER_DISTRIBUTION`                | Alpha  |
+| [Dynamic Cluster Distribution][7]         | `Deployment/argocd-application-controller`    | `CD_CONTROLLER_HEARTBEAT_TIME`                          | Alpha  |
 | [Cluster Sharding: round-robin][6]        | `ConfigMap/argocd-cmd-params-cm`              | `controller.sharding.algorithm: round-robin`                | Alpha  |
-| [Cluster Sharding: round-robin][6]        | `StatefulSet/argocd-application-controller`   | `ARGOCD_CONTROLLER_SHARDING_ALGORITHM=round-robin`          | Alpha  |
+| [Cluster Sharding: round-robin][6]        | `StatefulSet/argocd-application-controller`   | `CD_CONTROLLER_SHARDING_ALGORITHM=round-robin`          | Alpha  |
 | [Cluster Sharding: consistent-hashing][9] | `ConfigMap/argocd-cmd-params-cm`              | `controller.sharding.algorithm: consistent-hashing`         | Alpha  |
-| [Cluster Sharding: consistent-hashing][9] | `StatefulSet/argocd-application-controller`   | `ARGOCD_CONTROLLER_SHARDING_ALGORITHM=consistent-hashing`   | Alpha  |
+| [Cluster Sharding: consistent-hashing][9] | `StatefulSet/argocd-application-controller`   | `CD_CONTROLLER_SHARDING_ALGORITHM=consistent-hashing`   | Alpha  |
 | [Service Account Impersonation][10]       | `ConfigMap/argocd-cm`                         | `application.sync.impersonation.enabled`                    | Beta   |
 | [Source Hydrator][11]                     | `ConfigMap/argocd-cmd-params-cm`              | `hydrator.enabled`                                          | Beta   |
-| [Source Hydrator][11]                     | `Deployment/argocd-application-controller`    | `ARGOCD_HYDRATOR_ENABLED`                                   | Beta   |
-| [Source Hydrator][11]                     | `Deployment/argocd-server`                    | `ARGOCD_HYDRATOR_ENABLED`                                   | Beta   |
+| [Source Hydrator][11]                     | `Deployment/argocd-application-controller`    | `CD_HYDRATOR_ENABLED`                                   | Beta   |
+| [Source Hydrator][11]                     | `Deployment/argocd-server`                    | `CD_HYDRATOR_ENABLED`                                   | Beta   |
 
 [2]: applicationset/Progressive-Syncs.md
 [3]: ../developer-guide/extensions/proxy-extensions.md

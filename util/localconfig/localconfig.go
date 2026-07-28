@@ -269,7 +269,7 @@ func (l *LocalConfig) IsEmpty() bool {
 // DefaultConfigDir returns the local configuration path for settings such as cached authentication tokens.
 func DefaultConfigDir() (string, error) {
 	// Manually defined config directory
-	configDir := os.Getenv("ARGOCD_CONFIG_DIR")
+	configDir := os.Getenv("CD_CONFIG_DIR")
 	if configDir != "" {
 		return configDir, nil
 	}

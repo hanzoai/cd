@@ -57,7 +57,7 @@ const (
 	defaultNotificationServer = "localhost:9001"
 
 	// ensure all repos are in one directory tree, so we can easily clean them up
-	// TmpDir can be overridden via ARGOCD_E2E_DIR environment variable
+	// TmpDir can be overridden via CD_E2E_DIR environment variable
 	defaultTmpDir      = "/tmp/argo-e2e"
 	repoDir            = "testdata.git"
 	submoduleDir       = "submodule.git"
@@ -79,13 +79,13 @@ const (
 )
 
 const (
-	EnvAdminUsername           = "ARGOCD_E2E_ADMIN_USERNAME"
-	EnvAdminPassword           = "ARGOCD_E2E_ADMIN_PASSWORD"
-	EnvArgoCDServerName        = "ARGOCD_E2E_SERVER_NAME"
-	EnvArgoCDRedisHAProxyName  = "ARGOCD_E2E_REDIS_HAPROXY_NAME"
-	EnvArgoCDRedisName         = "ARGOCD_E2E_REDIS_NAME"
-	EnvArgoCDRepoServerName    = "ARGOCD_E2E_REPO_SERVER_NAME"
-	EnvArgoCDAppControllerName = "ARGOCD_E2E_APPLICATION_CONTROLLER_NAME"
+	EnvAdminUsername           = "CD_E2E_ADMIN_USERNAME"
+	EnvAdminPassword           = "CD_E2E_ADMIN_PASSWORD"
+	EnvArgoCDServerName        = "CD_E2E_SERVER_NAME"
+	EnvArgoCDRedisHAProxyName  = "CD_E2E_KV_HAPROXY_NAME"
+	EnvArgoCDRedisName         = "CD_E2E_KV_NAME"
+	EnvArgoCDRepoServerName    = "CD_E2E_REPO_SERVER_NAME"
+	EnvArgoCDAppControllerName = "CD_E2E_APPLICATION_CONTROLLER_NAME"
 )
 
 var (
@@ -146,17 +146,17 @@ const (
 // TestNamespace returns the namespace where Argo CD E2E test instance will be
 // running in.
 func TestNamespace() string {
-	return GetEnvWithDefault("ARGOCD_E2E_NAMESPACE", ArgoCDNamespace)
+	return GetEnvWithDefault("CD_E2E_NAMESPACE", ArgoCDNamespace)
 }
 
 func AppNamespace() string {
-	return GetEnvWithDefault("ARGOCD_E2E_APP_NAMESPACE", ArgoCDAppNamespace)
+	return GetEnvWithDefault("CD_E2E_APP_NAMESPACE", ArgoCDAppNamespace)
 }
 
 // TmpDir returns the base directory for e2e test data.
-// It can be overridden via the ARGOCD_E2E_DIR environment variable.
+// It can be overridden via the CD_E2E_DIR environment variable.
 func TmpDir() string {
-	return GetEnvWithDefault("ARGOCD_E2E_DIR", defaultTmpDir)
+	return GetEnvWithDefault("CD_E2E_DIR", defaultTmpDir)
 }
 
 // getKubeConfig creates new kubernetes client config using specified config path and config overrides variables
@@ -181,7 +181,7 @@ func GetEnvWithDefault(envName, defaultValue string) string {
 // IsRemote returns true when the tests are being run against a workload that
 // is running in a remote cluster.
 func IsRemote() bool {
-	return env.ParseBoolFromEnv("ARGOCD_E2E_REMOTE", false)
+	return env.ParseBoolFromEnv("CD_E2E_REMOTE", false)
 }
 
 // IsLocal returns when the tests are being run against a local workload
@@ -236,7 +236,7 @@ func init() {
 
 	// Preload a list of tests that should be skipped
 	testsRun = make(map[string]bool)
-	rf := os.Getenv("ARGOCD_E2E_RECORD")
+	rf := os.Getenv("CD_E2E_RECORD")
 	if rf == "" {
 		return
 	}
@@ -315,21 +315,21 @@ func submoduleParentDirectory() string {
 }
 
 const (
-	EnvRepoURLTypeSSH                  = "ARGOCD_E2E_REPO_SSH"
-	EnvRepoURLTypeSSHSubmodule         = "ARGOCD_E2E_REPO_SSH_SUBMODULE"
-	EnvRepoURLTypeSSHSubmoduleParent   = "ARGOCD_E2E_REPO_SSH_SUBMODULE_PARENT"
-	EnvRepoURLTypeHTTPS                = "ARGOCD_E2E_REPO_HTTPS"
-	EnvRepoURLTypeHTTPSOrg             = "ARGOCD_E2E_REPO_HTTPS_ORG"
-	EnvRepoURLTypeHTTPSClientCert      = "ARGOCD_E2E_REPO_HTTPS_CLIENT_CERT"
-	EnvRepoURLTypeHTTPSSubmodule       = "ARGOCD_E2E_REPO_HTTPS_SUBMODULE"
-	EnvRepoURLTypeHTTPSSubmoduleParent = "ARGOCD_E2E_REPO_HTTPS_SUBMODULE_PARENT"
-	EnvRepoURLTypeHelm                 = "ARGOCD_E2E_REPO_HELM"
-	EnvRepoURLDefault                  = "ARGOCD_E2E_REPO_DEFAULT"
+	EnvRepoURLTypeSSH                  = "CD_E2E_REPO_SSH"
+	EnvRepoURLTypeSSHSubmodule         = "CD_E2E_REPO_SSH_SUBMODULE"
+	EnvRepoURLTypeSSHSubmoduleParent   = "CD_E2E_REPO_SSH_SUBMODULE_PARENT"
+	EnvRepoURLTypeHTTPS                = "CD_E2E_REPO_HTTPS"
+	EnvRepoURLTypeHTTPSOrg             = "CD_E2E_REPO_HTTPS_ORG"
+	EnvRepoURLTypeHTTPSClientCert      = "CD_E2E_REPO_HTTPS_CLIENT_CERT"
+	EnvRepoURLTypeHTTPSSubmodule       = "CD_E2E_REPO_HTTPS_SUBMODULE"
+	EnvRepoURLTypeHTTPSSubmoduleParent = "CD_E2E_REPO_HTTPS_SUBMODULE_PARENT"
+	EnvRepoURLTypeHelm                 = "CD_E2E_REPO_HELM"
+	EnvRepoURLDefault                  = "CD_E2E_REPO_DEFAULT"
 )
 
 func RepoURL(urlType RepoURLType) string {
 	// SSH URLs use the container path (defaultTmpDir) because sshd runs inside Docker
-	// where $ARGOCD_E2E_DIR is mounted to /tmp/argo-e2e
+	// where $CD_E2E_DIR is mounted to /tmp/argo-e2e
 	switch urlType {
 	// Git server via SSH
 	case RepoURLTypeSSH:
@@ -981,7 +981,7 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 			}
 
 			if IsRemote() {
-				_, err = Run(repoDirectory(), "git", "remote", "add", "origin", os.Getenv("ARGOCD_E2E_GIT_SERVICE"))
+				_, err = Run(repoDirectory(), "git", "remote", "add", "origin", os.Getenv("CD_E2E_GIT_SERVICE"))
 				if err != nil {
 					return err
 				}
@@ -1253,7 +1253,7 @@ func CreateSubmoduleRepos(t *testing.T, repoType string) {
 	errors.NewHandler(t).FailOnErr(Run(submoduleDirectory(), "git", "commit", "-q", "-m", "initial commit"))
 
 	if IsRemote() {
-		errors.NewHandler(t).FailOnErr(Run(submoduleDirectory(), "git", "remote", "add", "origin", os.Getenv("ARGOCD_E2E_GIT_SERVICE_SUBMODULE")))
+		errors.NewHandler(t).FailOnErr(Run(submoduleDirectory(), "git", "remote", "add", "origin", os.Getenv("CD_E2E_GIT_SERVICE_SUBMODULE")))
 		errors.NewHandler(t).FailOnErr(Run(submoduleDirectory(), "git", "push", "origin", "master", "-f"))
 	}
 
@@ -1263,7 +1263,7 @@ func CreateSubmoduleRepos(t *testing.T, repoType string) {
 	errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "init", "-b", "master"))
 	errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "add", "."))
 	if IsRemote() {
-		errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "submodule", "add", "-b", "master", os.Getenv("ARGOCD_E2E_GIT_SERVICE_SUBMODULE"), "submodule/test"))
+		errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "submodule", "add", "-b", "master", os.Getenv("CD_E2E_GIT_SERVICE_SUBMODULE"), "submodule/test"))
 	} else {
 		t.Setenv("GIT_ALLOW_PROTOCOL", "file")
 		errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "submodule", "add", "-b", "master", "../submodule.git", "submodule/test"))
@@ -1278,7 +1278,7 @@ func CreateSubmoduleRepos(t *testing.T, repoType string) {
 	errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "commit", "-q", "-m", "commit with submodule"))
 
 	if IsRemote() {
-		errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "remote", "add", "origin", os.Getenv("ARGOCD_E2E_GIT_SERVICE_SUBMODULE_PARENT")))
+		errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "remote", "add", "origin", os.Getenv("CD_E2E_GIT_SERVICE_SUBMODULE_PARENT")))
 		errors.NewHandler(t).FailOnErr(Run(submoduleParentDirectory(), "git", "push", "origin", "master", "-f"))
 	}
 }
@@ -1302,7 +1302,7 @@ func RestartRepoServer(t *testing.T) {
 	t.Helper()
 	if IsRemote() {
 		log.Infof("Waiting for repo server to restart")
-		prefix := os.Getenv("ARGOCD_E2E_NAME_PREFIX")
+		prefix := os.Getenv("CD_E2E_NAME_PREFIX")
 		workload := "argocd-repo-server"
 		if prefix != "" {
 			workload = prefix + "-repo-server"
@@ -1320,7 +1320,7 @@ func RestartAPIServer(t *testing.T) {
 	t.Helper()
 	if IsRemote() {
 		log.Infof("Waiting for API server to restart")
-		prefix := os.Getenv("ARGOCD_E2E_NAME_PREFIX")
+		prefix := os.Getenv("CD_E2E_NAME_PREFIX")
 		workload := "argocd-server"
 		if prefix != "" {
 			workload = prefix + "-server"
@@ -1340,12 +1340,12 @@ func LocalOrRemotePath(base string) string {
 }
 
 // SkipOnEnv allows to skip a test when a given environment variable is set.
-// Environment variable names follow the ARGOCD_E2E_SKIP_<suffix> pattern,
+// Environment variable names follow the CD_E2E_SKIP_<suffix> pattern,
 // and must be set to the string value 'true' in order to skip a test.
 func SkipOnEnv(t *testing.T, suffixes ...string) {
 	t.Helper()
 	for _, suffix := range suffixes {
-		e := os.Getenv("ARGOCD_E2E_SKIP_" + suffix)
+		e := os.Getenv("CD_E2E_SKIP_" + suffix)
 		if e == "true" {
 			t.Skip()
 		}
@@ -1368,7 +1368,7 @@ func RecordTestRun(t *testing.T) {
 	if t.Skipped() || t.Failed() {
 		return
 	}
-	rf := os.Getenv("ARGOCD_E2E_RECORD")
+	rf := os.Getenv("CD_E2E_RECORD")
 	if rf == "" {
 		return
 	}

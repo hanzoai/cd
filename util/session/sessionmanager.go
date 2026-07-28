@@ -94,13 +94,13 @@ const (
 	// environment variables to control rate limiter behaviour:
 
 	// Max number of login failures before login delay kicks in
-	envLoginMaxFailCount = "ARGOCD_SESSION_FAILURE_MAX_FAIL_COUNT"
+	envLoginMaxFailCount = "CD_SESSION_FAILURE_MAX_FAIL_COUNT"
 
 	// Number of maximum seconds the login is allowed to delay for. Default: 300 (5 minutes).
-	envLoginFailureWindowSeconds = "ARGOCD_SESSION_FAILURE_WINDOW_SECONDS"
+	envLoginFailureWindowSeconds = "CD_SESSION_FAILURE_WINDOW_SECONDS"
 
 	// Max number of stored usernames
-	envLoginMaxCacheSize = "ARGOCD_SESSION_MAX_CACHE_SIZE"
+	envLoginMaxCacheSize = "CD_SESSION_MAX_CACHE_SIZE"
 )
 
 var InvalidLoginErr = status.Errorf(codes.Unauthenticated, invalidLoginError)

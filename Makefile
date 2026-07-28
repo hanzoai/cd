@@ -54,7 +54,7 @@ else
 DOCKER_NETWORK_ARG :=
 endif
 
-ARGOCD_PROCFILE?=Procfile
+CD_PROCFILE?=Procfile
 
 # pointing to python 3.12 to match https://github.com/argoproj/argo-cd/blob/master/.readthedocs.yaml
 MKDOCS_DOCKER_IMAGE?=python:3.12-alpine
@@ -70,20 +70,20 @@ endif
 
 # You can change the ports where ArgoCD components will be listening on by
 # setting the appropriate environment variables before running make.
-ARGOCD_E2E_APISERVER_PORT?=8080
-ARGOCD_E2E_REPOSERVER_PORT?=8081
-ARGOCD_E2E_REDIS_PORT?=6379
-ARGOCD_E2E_DEX_PORT?=5556
-ARGOCD_E2E_JS_HOST?=localhost
-ARGOCD_E2E_DISABLE_AUTH?=
-ARGOCD_E2E_DIR?=/tmp/argo-e2e
+CD_E2E_APISERVER_PORT?=8080
+CD_E2E_REPOSERVER_PORT?=8081
+CD_E2E_KV_PORT?=6379
+CD_E2E_DEX_PORT?=5556
+CD_E2E_JS_HOST?=localhost
+CD_E2E_DISABLE_AUTH?=
+CD_E2E_DIR?=/tmp/argo-e2e
 
-ARGOCD_E2E_TEST_TIMEOUT?=90m
-ARGOCD_E2E_RERUN_FAILS?=5
+CD_E2E_TEST_TIMEOUT?=90m
+CD_E2E_RERUN_FAILS?=5
 
-ARGOCD_IN_CI?=false
-ARGOCD_TEST_E2E?=true
-ARGOCD_BIN_MODE?=true
+CD_IN_CI?=false
+CD_TEST_E2E?=true
+CD_BIN_MODE?=true
 
 # Depending on where we are (legacy or non-legacy pwd), we need to use
 # different Docker volume mounts for our source tree
@@ -111,21 +111,21 @@ define run-in-test-server
 		-e HOME=/home/user \
 		-e GOPATH=/go \
 		-e GOCACHE=/tmp/go-build-cache \
-		-e ARGOCD_IN_CI=$(ARGOCD_IN_CI) \
-		-e ARGOCD_E2E_TEST=$(ARGOCD_E2E_TEST) \
-		-e ARGOCD_E2E_JS_HOST=$(ARGOCD_E2E_JS_HOST) \
-		-e ARGOCD_E2E_DISABLE_AUTH=$(ARGOCD_E2E_DISABLE_AUTH) \
-		-e ARGOCD_TLS_DATA_PATH=${ARGOCD_TLS_DATA_PATH:-/tmp/argocd-local/tls} \
-		-e ARGOCD_SSH_DATA_PATH=${ARGOCD_SSH_DATA_PATH:-/tmp/argocd-local/ssh} \
-		-e ARGOCD_GPG_DATA_PATH=${ARGOCD_GPG_DATA_PATH:-/tmp/argocd-local/gpg/source} \
-		-e ARGOCD_APPLICATION_NAMESPACES \
+		-e CD_IN_CI=$(CD_IN_CI) \
+		-e CD_E2E_TEST=$(CD_E2E_TEST) \
+		-e CD_E2E_JS_HOST=$(CD_E2E_JS_HOST) \
+		-e CD_E2E_DISABLE_AUTH=$(CD_E2E_DISABLE_AUTH) \
+		-e CD_TLS_DATA_PATH=${CD_TLS_DATA_PATH:-/tmp/argocd-local/tls} \
+		-e CD_SSH_DATA_PATH=${CD_SSH_DATA_PATH:-/tmp/argocd-local/ssh} \
+		-e CD_GPG_DATA_PATH=${CD_GPG_DATA_PATH:-/tmp/argocd-local/gpg/source} \
+		-e CD_APPLICATION_NAMESPACES \
 		-e GITHUB_TOKEN \
 		-v ${DOCKER_SRC_MOUNT} \
 		-v ${GOPATH}/pkg/mod:/go/pkg/mod${VOLUME_MOUNT} \
 		-v ${GOCACHE}:/tmp/go-build-cache${VOLUME_MOUNT} \
 		-v ${HOME}/.kube:/home/user/.kube${VOLUME_MOUNT} \
 		-w ${DOCKER_WORKDIR} \
-		-p ${ARGOCD_E2E_APISERVER_PORT}:8080 \
+		-p ${CD_E2E_APISERVER_PORT}:8080 \
 		-p 4000:4000 \
 		-p 5000:5000 \
 		$(DOCKER_NETWORK_ARG)\
@@ -141,7 +141,7 @@ define run-in-test-client
 		-u $(CONTAINER_UID):$(CONTAINER_GID) \
 		-e HOME=/home/user \
 		-e GOPATH=/go \
-		-e ARGOCD_E2E_K3S=$(ARGOCD_E2E_K3S) \
+		-e CD_E2E_K3S=$(CD_E2E_K3S) \
 		-e GITHUB_TOKEN \
 		-e GOCACHE=/tmp/go-build-cache \
 		-v ${DOCKER_SRC_MOUNT} \
@@ -157,7 +157,7 @@ endef
 
 #
 define exec-in-test-server
-	$(SUDO) $(DOCKER) exec -it -u $(CONTAINER_UID):$(CONTAINER_GID) -e ARGOCD_E2E_RECORD=$(ARGOCD_E2E_RECORD) -e ARGOCD_E2E_K3S=$(ARGOCD_E2E_K3S) argocd-test-server $(1)
+	$(SUDO) $(DOCKER) exec -it -u $(CONTAINER_UID):$(CONTAINER_GID) -e CD_E2E_RECORD=$(CD_E2E_RECORD) -e CD_E2E_K3S=$(CD_E2E_K3S) argocd-test-server $(1)
 endef
 
 PATH:=$(PATH):$(PWD)/hack
@@ -173,8 +173,8 @@ endif
 STATIC_BUILD?=${DEFAULT_STATIC_BUILD}
 # build development images
 DEV_IMAGE?=false
-ARGOCD_GPG_ENABLED?=true
-ARGOCD_E2E_APISERVER_PORT?=8080
+CD_GPG_ENABLED?=true
+CD_E2E_APISERVER_PORT?=8080
 
 ifeq (${COVERAGE_ENABLED}, true)
 # We use this in the cli-local target to enable code coverage for e2e tests.
@@ -487,7 +487,7 @@ test-e2e:
 test-e2e-local: cli-local
 	# NO_PROXY ensures all tests don't go out through a proxy if one is configured on the test system
 	export GO111MODULE=off
-	ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS=$${ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS:-true}  DIST_DIR=${DIST_DIR} RERUN_FAILS=$(ARGOCD_E2E_RERUN_FAILS) PACKAGES="./test/e2e" ARGOCD_E2E_RECORD=${ARGOCD_E2E_RECORD} ARGOCD_CONFIG_DIR=$(HOME)/.config/argocd-e2e ARGOCD_GPG_ENABLED=true NO_PROXY=* ./hack/test.sh -timeout $(ARGOCD_E2E_TEST_TIMEOUT) -v -args -test.gocoverdir="$(PWD)/test-results"
+	CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS=$${CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS:-true}  DIST_DIR=${DIST_DIR} RERUN_FAILS=$(CD_E2E_RERUN_FAILS) PACKAGES="./test/e2e" CD_E2E_RECORD=${CD_E2E_RECORD} CD_CONFIG_DIR=$(HOME)/.config/argocd-e2e CD_GPG_ENABLED=true NO_PROXY=* ./hack/test.sh -timeout $(CD_E2E_TEST_TIMEOUT) -v -args -test.gocoverdir="$(PWD)/test-results"
 
 # Spawns a shell in the test server container for debugging purposes
 debug-test-server: test-tools-image
@@ -502,7 +502,7 @@ debug-test-client: test-tools-image
 start-e2e: test-tools-image
 	$(DOCKER) version
 	mkdir -p ${GOCACHE}
-	$(call run-in-test-server,make ARGOCD_PROCFILE=test/container/Procfile start-e2e-local)
+	$(call run-in-test-server,make CD_PROCFILE=test/container/Procfile start-e2e-local)
 
 # Starts e2e server locally (or within a container)
 .PHONY: start-e2e-local
@@ -514,10 +514,10 @@ start-e2e-local: mod-vendor-local dep-ui-local cli-local
 	kustomize build test/manifests/base | kubectl apply --server-side --force-conflicts -f -
 	kubectl apply -f https://raw.githubusercontent.com/open-cluster-management/api/a6845f2ebcb186ec26b832f60c988537a58f3859/cluster/v1alpha1/0000_04_clusters.open-cluster-management.io_placementdecisions.crd.yaml
 	# Create GPG keys and source directories
-	if test -d $(ARGOCD_E2E_DIR)/app/config/gpg; then rm -rf $(ARGOCD_E2E_DIR)/app/config/gpg/*; fi
-	mkdir -p $(ARGOCD_E2E_DIR)/app/config/gpg/keys && chmod 0700 $(ARGOCD_E2E_DIR)/app/config/gpg/keys
-	mkdir -p $(ARGOCD_E2E_DIR)/app/config/gpg/source && chmod 0700 $(ARGOCD_E2E_DIR)/app/config/gpg/source
-	mkdir -p $(ARGOCD_E2E_DIR)/app/config/plugin && chmod 0700 $(ARGOCD_E2E_DIR)/app/config/plugin
+	if test -d $(CD_E2E_DIR)/app/config/gpg; then rm -rf $(CD_E2E_DIR)/app/config/gpg/*; fi
+	mkdir -p $(CD_E2E_DIR)/app/config/gpg/keys && chmod 0700 $(CD_E2E_DIR)/app/config/gpg/keys
+	mkdir -p $(CD_E2E_DIR)/app/config/gpg/source && chmod 0700 $(CD_E2E_DIR)/app/config/gpg/source
+	mkdir -p $(CD_E2E_DIR)/app/config/plugin && chmod 0700 $(CD_E2E_DIR)/app/config/plugin
 	# create folders to hold go coverage results for each component
 	mkdir -p /tmp/coverage/app-controller
 	mkdir -p /tmp/coverage/api-server
@@ -526,27 +526,27 @@ start-e2e-local: mod-vendor-local dep-ui-local cli-local
 	mkdir -p /tmp/coverage/notification
 	mkdir -p /tmp/coverage/commit-server
 	# set paths for locally managed ssh known hosts and tls certs data
-	ARGOCD_E2E_DIR=$(ARGOCD_E2E_DIR) \
-	ARGOCD_SSH_DATA_PATH=$(ARGOCD_E2E_DIR)/app/config/ssh \
-	ARGOCD_TLS_DATA_PATH=$(ARGOCD_E2E_DIR)/app/config/tls \
-	ARGOCD_GPG_DATA_PATH=$(ARGOCD_E2E_DIR)/app/config/gpg/source \
-	ARGOCD_GNUPGHOME=$(ARGOCD_E2E_DIR)/app/config/gpg/keys \
-	ARGOCD_GPG_ENABLED=$(ARGOCD_GPG_ENABLED) \
-	ARGOCD_PLUGINCONFIGFILEPATH=$(ARGOCD_E2E_DIR)/app/config/plugin \
-	ARGOCD_PLUGINSOCKFILEPATH=$(ARGOCD_E2E_DIR)/app/config/plugin \
-	ARGOCD_GIT_CONFIG=$(PWD)/test/e2e/fixture/gitconfig \
-	ARGOCD_E2E_DISABLE_AUTH=false \
-	ARGOCD_ZJWT_FEATURE_FLAG=always \
-	ARGOCD_IN_CI=$(ARGOCD_IN_CI) \
-	BIN_MODE=$(ARGOCD_BIN_MODE) \
-	ARGOCD_APPLICATION_NAMESPACES=argocd-e2e-external,argocd-e2e-external-2 \
-	ARGOCD_APPLICATIONSET_CONTROLLER_NAMESPACES=argocd-e2e-external,argocd-e2e-external-2 \
-	ARGOCD_APPLICATIONSET_CONTROLLER_TOKENREF_STRICT_MODE=true \
-	ARGOCD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS=http://127.0.0.1:8341,http://127.0.0.1:8342,http://127.0.0.1:8343,http://127.0.0.1:8344 \
-	ARGOCD_E2E_TEST=true \
-	ARGOCD_HYDRATOR_ENABLED=true \
-	ARGOCD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL=1ms \
-		goreman -f $(ARGOCD_PROCFILE) start ${ARGOCD_START}
+	CD_E2E_DIR=$(CD_E2E_DIR) \
+	CD_SSH_DATA_PATH=$(CD_E2E_DIR)/app/config/ssh \
+	CD_TLS_DATA_PATH=$(CD_E2E_DIR)/app/config/tls \
+	CD_GPG_DATA_PATH=$(CD_E2E_DIR)/app/config/gpg/source \
+	CD_GNUPGHOME=$(CD_E2E_DIR)/app/config/gpg/keys \
+	CD_GPG_ENABLED=$(CD_GPG_ENABLED) \
+	CD_PLUGINCONFIGFILEPATH=$(CD_E2E_DIR)/app/config/plugin \
+	CD_PLUGINSOCKFILEPATH=$(CD_E2E_DIR)/app/config/plugin \
+	CD_GIT_CONFIG=$(PWD)/test/e2e/fixture/gitconfig \
+	CD_E2E_DISABLE_AUTH=false \
+	CD_ZJWT_FEATURE_FLAG=always \
+	CD_IN_CI=$(CD_IN_CI) \
+	BIN_MODE=$(CD_BIN_MODE) \
+	CD_APPLICATION_NAMESPACES=argocd-e2e-external,argocd-e2e-external-2 \
+	CD_APPLICATIONSET_CONTROLLER_NAMESPACES=argocd-e2e-external,argocd-e2e-external-2 \
+	CD_APPLICATIONSET_CONTROLLER_TOKENREF_STRICT_MODE=true \
+	CD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS=http://127.0.0.1:8341,http://127.0.0.1:8342,http://127.0.0.1:8343,http://127.0.0.1:8344 \
+	CD_E2E_TEST=true \
+	CD_HYDRATOR_ENABLED=true \
+	CD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL=1ms \
+		goreman -f $(CD_PROCFILE) start ${CD_START}
 	ls -lrt /tmp/coverage
 
 # Cleans VSCode debug.test files from sub-dirs to prevent them from being included in by golang embed
@@ -561,7 +561,7 @@ clean: clean-debug
 .PHONY: start
 start: test-tools-image
 	$(DOCKER) version
-	$(call run-in-test-server,make ARGOCD_PROCFILE=test/container/Procfile start-local ARGOCD_START=${ARGOCD_START})
+	$(call run-in-test-server,make CD_PROCFILE=test/container/Procfile start-local CD_START=${CD_START})
 
 # Starts a local instance of ArgoCD
 .PHONY: start-local
@@ -573,14 +573,14 @@ start-local: mod-vendor-local dep-ui-local cli-local
 	mkdir -p /tmp/argocd-local
 	mkdir -p /tmp/argocd-local/gpg/keys && chmod 0700 /tmp/argocd-local/gpg/keys
 	mkdir -p /tmp/argocd-local/gpg/source
-	REDIS_PASSWORD=$(shell kubectl get secret argocd-redis -o jsonpath='{.data.auth}' | base64 -d) \
-	ARGOCD_ZJWT_FEATURE_FLAG=always \
-	ARGOCD_IN_CI=false \
-	ARGOCD_GPG_ENABLED=$(ARGOCD_GPG_ENABLED) \
-	BIN_MODE=$(ARGOCD_BIN_MODE) \
-	ARGOCD_E2E_TEST=false \
-	ARGOCD_APPLICATION_NAMESPACES=$(ARGOCD_APPLICATION_NAMESPACES) \
-		goreman -f $(ARGOCD_PROCFILE) start ${ARGOCD_START}
+	KV_PASSWORD=$(shell kubectl get secret argocd-redis -o jsonpath='{.data.auth}' | base64 -d) \
+	CD_ZJWT_FEATURE_FLAG=always \
+	CD_IN_CI=false \
+	CD_GPG_ENABLED=$(CD_GPG_ENABLED) \
+	BIN_MODE=$(CD_BIN_MODE) \
+	CD_E2E_TEST=false \
+	CD_APPLICATION_NAMESPACES=$(CD_APPLICATION_NAMESPACES) \
+		goreman -f $(CD_PROCFILE) start ${CD_START}
 
 # Run goreman start with exclude option , provide exclude env variable with list of services
 .PHONY: run

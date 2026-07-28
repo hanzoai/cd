@@ -9,11 +9,11 @@ fi
 
 NAMESPACE=${NAMESPACE:-argocd-e2e}
 
-if test "${ARGOCD_E2E_NAME_PREFIX}" != ""; then
-	CRNAME="${ARGOCD_E2E_NAME_PREFIX}-argocd-application-controller"
-	CRBNAME="${ARGOCD_E2E_NAME_PREFIX}-argocd-application-controller"
-	CONTROLLERSANAME="${ARGOCD_E2E_NAME_PREFIX}-argocd-application-controller"
-	SERVERSANAME="${ARGOCD_E2E_NAME_PREFIX}-argocd-server"
+if test "${CD_E2E_NAME_PREFIX}" != ""; then
+	CRNAME="${CD_E2E_NAME_PREFIX}-argocd-application-controller"
+	CRBNAME="${CD_E2E_NAME_PREFIX}-argocd-application-controller"
+	CONTROLLERSANAME="${CD_E2E_NAME_PREFIX}-argocd-application-controller"
+	SERVERSANAME="${CD_E2E_NAME_PREFIX}-argocd-server"
 else
 	CRNAME="argocd-application-controller"
 	CRBNAME="argocd-application-controller"

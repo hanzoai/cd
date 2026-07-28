@@ -43,11 +43,11 @@ func init() {
 
 func initTimeout() {
 	var err error
-	timeout, err = time.ParseDuration(os.Getenv("ARGOCD_EXEC_TIMEOUT"))
+	timeout, err = time.ParseDuration(os.Getenv("CD_EXEC_TIMEOUT"))
 	if err != nil {
 		timeout = 90 * time.Second
 	}
-	fatalTimeout, err = time.ParseDuration(os.Getenv("ARGOCD_EXEC_FATAL_TIMEOUT"))
+	fatalTimeout, err = time.ParseDuration(os.Getenv("CD_EXEC_FATAL_TIMEOUT"))
 	if err != nil {
 		fatalTimeout = 10 * time.Second
 	}

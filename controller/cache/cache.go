@@ -45,36 +45,36 @@ import (
 
 const (
 	// EnvClusterCacheResyncDuration is the env variable that holds cluster cache re-sync duration
-	EnvClusterCacheResyncDuration = "ARGOCD_CLUSTER_CACHE_RESYNC_DURATION"
+	EnvClusterCacheResyncDuration = "CD_CLUSTER_CACHE_RESYNC_DURATION"
 
 	// EnvClusterCacheWatchResyncDuration is the env variable that holds cluster cache watch re-sync duration
-	EnvClusterCacheWatchResyncDuration = "ARGOCD_CLUSTER_CACHE_WATCH_RESYNC_DURATION"
+	EnvClusterCacheWatchResyncDuration = "CD_CLUSTER_CACHE_WATCH_RESYNC_DURATION"
 
 	// EnvClusterSyncRetryTimeoutDuration is the env variable that holds cluster retry duration when sync error happens
-	EnvClusterSyncRetryTimeoutDuration = "ARGOCD_CLUSTER_SYNC_RETRY_TIMEOUT_DURATION"
+	EnvClusterSyncRetryTimeoutDuration = "CD_CLUSTER_SYNC_RETRY_TIMEOUT_DURATION"
 
 	// EnvClusterCacheListPageSize is the env variable to control size of the list page size when making K8s queries
-	EnvClusterCacheListPageSize = "ARGOCD_CLUSTER_CACHE_LIST_PAGE_SIZE"
+	EnvClusterCacheListPageSize = "CD_CLUSTER_CACHE_LIST_PAGE_SIZE"
 
 	// EnvClusterCacheListPageBufferSize is the env variable to control the number of pages to buffer when making a K8s query to list resources
-	EnvClusterCacheListPageBufferSize = "ARGOCD_CLUSTER_CACHE_LIST_PAGE_BUFFER_SIZE"
+	EnvClusterCacheListPageBufferSize = "CD_CLUSTER_CACHE_LIST_PAGE_BUFFER_SIZE"
 
 	// EnvClusterCacheListSemaphore is the env variable to control size of the list semaphore
 	// This is used to limit the number of concurrent memory consuming operations on the
 	// k8s list queries results across all clusters to avoid memory spikes during cache initialization.
-	EnvClusterCacheListSemaphore = "ARGOCD_CLUSTER_CACHE_LIST_SEMAPHORE"
+	EnvClusterCacheListSemaphore = "CD_CLUSTER_CACHE_LIST_SEMAPHORE"
 
 	// EnvClusterCacheAttemptLimit is the env variable to control the retry limit for listing resources during cluster cache sync
-	EnvClusterCacheAttemptLimit = "ARGOCD_CLUSTER_CACHE_ATTEMPT_LIMIT"
+	EnvClusterCacheAttemptLimit = "CD_CLUSTER_CACHE_ATTEMPT_LIMIT"
 
 	// EnvClusterCacheRetryUseBackoff is the env variable to control whether to use a backoff strategy with the retry during cluster cache sync
-	EnvClusterCacheRetryUseBackoff = "ARGOCD_CLUSTER_CACHE_RETRY_USE_BACKOFF"
+	EnvClusterCacheRetryUseBackoff = "CD_CLUSTER_CACHE_RETRY_USE_BACKOFF"
 
 	// EnvClusterCacheBatchEventsProcessing is the env variable to control whether to enable batch events processing
-	EnvClusterCacheBatchEventsProcessing = "ARGOCD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING"
+	EnvClusterCacheBatchEventsProcessing = "CD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING"
 
 	// EnvClusterCacheEventsProcessingInterval is the env variable to control the interval between processing events when BatchEventsProcessing is enabled
-	EnvClusterCacheEventsProcessingInterval = "ARGOCD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL"
+	EnvClusterCacheEventsProcessingInterval = "CD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL"
 
 	// AnnotationIgnoreResourceUpdates when set to true on an untracked resource,
 	// argo will apply `ignoreResourceUpdates` configuration on it.

@@ -35,7 +35,7 @@ the appropriate tool.
 
 * `argocd-repo-server` uses `git ls-remote` to resolve ambiguous revisions such as `HEAD`, a branch or a tag name. This
   operation happens frequently
-  and might fail. To avoid failed syncs use the `ARGOCD_GIT_ATTEMPTS_COUNT` environment variable to retry failed
+  and might fail. To avoid failed syncs use the `CD_GIT_ATTEMPTS_COUNT` environment variable to retry failed
   requests.
 
 * `argocd-repo-server` Every 3m (by default) Argo CD checks for changes to the app manifests. Argo CD assumes by default
@@ -46,12 +46,12 @@ the appropriate tool.
   Bear in mind that this will negate the benefits of caching if set too low.
 
 * `argocd-repo-server` executes config management tools such as `helm` or `kustomize` and enforces a 90 second timeout.
-  This timeout can be changed by using the `ARGOCD_EXEC_TIMEOUT` env variable. The value should be in the Go time
+  This timeout can be changed by using the `CD_EXEC_TIMEOUT` env variable. The value should be in the Go time
   duration string format, for example, `2m30s`.
 
-* `argocd-repo-server` will issue a `SIGTERM` signal to a command that has elapsed the `ARGOCD_EXEC_TIMEOUT`. In most
+* `argocd-repo-server` will issue a `SIGTERM` signal to a command that has elapsed the `CD_EXEC_TIMEOUT`. In most
   cases, well-behaved commands will exit immediately when receiving the signal. However, if this does not happen,
-  `argocd-repo-server` will wait an additional timeout of `ARGOCD_EXEC_FATAL_TIMEOUT` and then forcefully exit the
+  `argocd-repo-server` will wait an additional timeout of `CD_EXEC_FATAL_TIMEOUT` and then forcefully exit the
   command with a `SIGKILL` to prevent stalling. Note that a failure to exit with `SIGTERM` is usually a bug in either
   the offending command or in the way `argocd-repo-server` calls it and should be reported to the issue tracker for
   further investigation.
@@ -69,7 +69,7 @@ the appropriate tool.
     - `repo` - Git repo URL
     - `request_type` - `ls-remote` or `fetch`.
 
-* `ARGOCD_ENABLE_GRPC_TIME_HISTOGRAM` - Is an environment variable that enables collecting RPC performance metrics.
+* `CD_ENABLE_GRPC_TIME_HISTOGRAM` - Is an environment variable that enables collecting RPC performance metrics.
   Enable it if you need to troubleshoot performance issues. Note: This metric is expensive to both query and store!
 
 ### argocd-application-controller
@@ -112,7 +112,7 @@ get the actual cluster state.
 * If the controller is managing too many clusters and uses too much memory then you can shard clusters across multiple
   controller replicas. To enable sharding, increase the number of replicas in `argocd-application-controller`
   `StatefulSet`
-  and repeat the number of replicas in the `ARGOCD_CONTROLLER_REPLICAS` environment variable. The strategic merge patch
+  and repeat the number of replicas in the `CD_CONTROLLER_REPLICAS` environment variable. The strategic merge patch
   below demonstrates changes required to configure two controller replicas.
 
 * By default, the controller will update the cluster information every 10 seconds. If there is a problem with your
@@ -131,7 +131,7 @@ spec:
       containers:
         - name: argocd-application-controller
           env:
-            - name: ARGOCD_CONTROLLER_REPLICAS
+            - name: CD_CONTROLLER_REPLICAS
               value: "2"
 ```
 
@@ -145,7 +145,7 @@ spec:
       and also reduces cluster or application reshuffling in case of additions or removals of shards or clusters.
 
 The `--sharding-method` parameter can also be overridden by setting the key `controller.sharding.algorithm` in the
-`argocd-cmd-params-cm` `ConfigMap` (preferably) or by setting the `ARGOCD_CONTROLLER_SHARDING_ALGORITHM` environment
+`argocd-cmd-params-cm` `ConfigMap` (preferably) or by setting the `CD_CONTROLLER_SHARDING_ALGORITHM` environment
 variable and by specifying the same possible values.
 
 > [!WARNING]
@@ -184,10 +184,10 @@ stringData:
     }
 ```
 
-* `ARGOCD_ENABLE_GRPC_TIME_HISTOGRAM` - environment variable that enables collecting RPC performance metrics. Enable it
+* `CD_ENABLE_GRPC_TIME_HISTOGRAM` - environment variable that enables collecting RPC performance metrics. Enable it
   if you need to troubleshoot performance issues. Note: This metric is expensive to both query and store!
 
-* `ARGOCD_CLUSTER_CACHE_LIST_PAGE_BUFFER_SIZE` - environment variable controlling the number of pages the controller
+* `CD_CLUSTER_CACHE_LIST_PAGE_BUFFER_SIZE` - environment variable controlling the number of pages the controller
   buffers in memory when performing a list operation against the K8s Api server while syncing the cluster cache. This
   is useful when the cluster contains a large number of resources and cluster sync times exceed the default etcd
   compaction interval timeout. In this scenario, when attempting to sync the cluster cache, the application controller
@@ -195,24 +195,24 @@ stringData:
   value for this environment variable configures the controller with a larger buffer in which to store pre-fetched
   pages which are processed asynchronously, increasing the likelihood that all pages have been pulled before the etcd
   compaction interval timeout expires. In the most extreme case, operators can set this value such that
-  `ARGOCD_CLUSTER_CACHE_LIST_PAGE_SIZE * ARGOCD_CLUSTER_CACHE_LIST_PAGE_BUFFER_SIZE` exceeds the largest resource
+  `CD_CLUSTER_CACHE_LIST_PAGE_SIZE * CD_CLUSTER_CACHE_LIST_PAGE_BUFFER_SIZE` exceeds the largest resource
   count (grouped by k8s api version, the granule of parallelism for list operations). In this case, all resources will
   be buffered in memory -- no api server request will be blocked by processing.
 
-* `ARGOCD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING` - environment variable that enables the controller to collect events
+* `CD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING` - environment variable that enables the controller to collect events
   for Kubernetes resources and process them in a batch. This is useful when the cluster contains a large number of
   resources,
   and the controller is overwhelmed by the number of events. The default value is `true`. `false` would mean that the
   controller
   would process events one by one.
 
-* `ARGOCD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL` - environment variable controlling the interval for processing
+* `CD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL` - environment variable controlling the interval for processing
   events in a batch.
   The valid value is in the format of Go time duration string, e.g. `1ms`, `1s`, `1m`, `1h`. The default value is
   `100ms`.
-  The variable is used only when `ARGOCD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING` is set to `true`.
+  The variable is used only when `CD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING` is set to `true`.
 
-* `ARGOCD_APPLICATION_TREE_SHARD_SIZE` - environment variable controlling the max number of resources stored in one
+* `CD_APPLICATION_TREE_SHARD_SIZE` - environment variable controlling the max number of resources stored in one
   Redis
   key. Splitting application tree into multiple keys helps to reduce the amount of traffic between the controller and
   Redis.
@@ -231,7 +231,7 @@ stringData:
 
 The `argocd-server` is stateless and probably the least likely to cause issues. To ensure there is no downtime during
 upgrades, consider increasing the number of replicas to `3` or more and repeat the number in the
-`ARGOCD_API_SERVER_REPLICAS` environment variable. The strategic merge patch below
+`CD_API_SERVER_REPLICAS` environment variable. The strategic merge patch below
 demonstrates this.
 
 ```yaml
@@ -246,16 +246,16 @@ spec:
       containers:
         - name: argocd-server
           env:
-            - name: ARGOCD_API_SERVER_REPLICAS
+            - name: CD_API_SERVER_REPLICAS
               value: "3"
 ```
 
 **settings:**
 
-* The `ARGOCD_API_SERVER_REPLICAS` environment variable is used to divide [the limit of concurrent login requests (
-  `ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT`)](./user-management/index.md#failed-logins-rate-limiting) between each
+* The `CD_API_SERVER_REPLICAS` environment variable is used to divide [the limit of concurrent login requests (
+  `CD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT`)](./user-management/index.md#failed-logins-rate-limiting) between each
   replica.
-* The `ARGOCD_GRPC_MAX_SIZE_MB` environment variable allows specifying the max size of the server response message in
+* The `CD_GRPC_MAX_SIZE_MB` environment variable allows specifying the max size of the server response message in
   megabytes.
   The default value is 200. You might need to increase this for an Argo CD instance that manages 3000+ applications.
 
@@ -498,7 +498,7 @@ argocd repo edit https://github.com/org/repo.git --webhook-manifest-cache-warm-d
 `argocd-server`:
 
 ```
-ARGOCD_WEBHOOK_MANIFEST_CACHE_WARM_DISABLED=true
+CD_WEBHOOK_MANIFEST_CACHE_WARM_DISABLED=true
 ```
 
 ### Application Sync Timeout & Jitter
@@ -514,7 +514,7 @@ jitter is 1 minute, then the actual timeout will be between 5 and 6 minutes.
 
 To configure the jitter you can set the following environment variables:
 
-* `ARGOCD_RECONCILIATION_JITTER` - The jitter to apply to the sync timeout. Disabled when value is 0. Defaults to 60.
+* `CD_RECONCILIATION_JITTER` - The jitter to apply to the sync timeout. Disabled when value is 0. Defaults to 60.
 
 ### Webhook Reconciliation Jitter
 
@@ -629,9 +629,9 @@ intervals to prevent overwhelming the server or thrashing the network.
 
 The retry logic can be fine-tuned with the following environment variables:
 
-* `ARGOCD_K8SCLIENT_RETRY_MAX` - The maximum number of retries for each request. The request will be dropped after this
+* `CD_K8SCLIENT_RETRY_MAX` - The maximum number of retries for each request. The request will be dropped after this
   count is reached. Defaults to 0 (no retries).
-* `ARGOCD_K8SCLIENT_RETRY_BASE_BACKOFF` - The initial backoff delay on the first retry attempt in ms. Subsequent retries
+* `CD_K8SCLIENT_RETRY_BASE_BACKOFF` - The initial backoff delay on the first retry attempt in ms. Subsequent retries
   will double this backoff time up to a maximum threshold. Defaults to 100ms.
 
 ### Backoff Strategy
