@@ -61,7 +61,7 @@ const payloadQueueSize = 50000
 const panicMsgServer = "panic while processing api-server webhook event"
 
 var (
-	webhookManifestCacheWarmDisabled = os.Getenv("ARGOCD_WEBHOOK_MANIFEST_CACHE_WARM_DISABLED") == "true"
+	webhookManifestCacheWarmDisabled = os.Getenv("CD_WEBHOOK_MANIFEST_CACHE_WARM_DISABLED") == "true"
 	webhookRequestsTotal             = promauto.NewCounterVec(prometheus.CounterOpts{
 		Name: "argocd_webhook_requests_total",
 		Help: "Number of webhook requests received by repo.",

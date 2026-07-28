@@ -18,23 +18,23 @@ import (
 
 func Test_IsGPGEnabled(t *testing.T) {
 	t.Run("true", func(t *testing.T) {
-		t.Setenv("ARGOCD_GPG_ENABLED", "true")
+		t.Setenv("CD_GPG_ENABLED", "true")
 		assert.True(t, IsGPGEnabled())
 	})
 
 	t.Run("false", func(t *testing.T) {
-		t.Setenv("ARGOCD_GPG_ENABLED", "false")
+		t.Setenv("CD_GPG_ENABLED", "false")
 		assert.False(t, IsGPGEnabled())
 	})
 
 	t.Run("empty", func(t *testing.T) {
-		t.Setenv("ARGOCD_GPG_ENABLED", "")
+		t.Setenv("CD_GPG_ENABLED", "")
 		assert.True(t, IsGPGEnabled())
 	})
 }
 
 func Test_GPGDisabledLogging(t *testing.T) {
-	t.Setenv("ARGOCD_GPG_ENABLED", "false")
+	t.Setenv("CD_GPG_ENABLED", "false")
 
 	si := &v1alpha1.SourceIntegrity{Git: &v1alpha1.SourceIntegrityGit{Policies: []*v1alpha1.SourceIntegrityGitPolicy{{
 		Repos: []v1alpha1.SourceIntegrityGitPolicyRepo{{URL: "*"}},
@@ -49,7 +49,7 @@ func Test_GPGDisabledLogging(t *testing.T) {
 	t.Cleanup(logger.CleanupHook)
 
 	fun := lookupGit(si, "https://github.com/argoproj/argo-cd.git")
-	assert.Equal(t, []string{"SourceIntegrity criteria for git+gpg declared, but it is turned off by ARGOCD_GPG_ENABLED"}, logger.GetEntries())
+	assert.Equal(t, []string{"SourceIntegrity criteria for git+gpg declared, but it is turned off by CD_GPG_ENABLED"}, logger.GetEntries())
 	assert.Nil(t, fun)
 
 	// No logs on the second call

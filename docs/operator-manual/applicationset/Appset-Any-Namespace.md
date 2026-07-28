@@ -54,7 +54,7 @@ spec:
   template:
 ```
 
-In order to prevent the scenario above administrator must restrict the urls of the allowed SCM Providers (example: `https://git.mydomain.com/,https://gitlab.mydomain.com/`) by setting the environment variable `ARGOCD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS` to argocd-cmd-params-cm `applicationsetcontroller.allowed.scm.providers`. If another url is used, it will be rejected by the applicationset controller.
+In order to prevent the scenario above administrator must restrict the urls of the allowed SCM Providers (example: `https://git.mydomain.com/,https://gitlab.mydomain.com/`) by setting the environment variable `CD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS` to argocd-cmd-params-cm `applicationsetcontroller.allowed.scm.providers`. If another url is used, it will be rejected by the applicationset controller.
 
 For example:
 ```yaml
@@ -73,7 +73,7 @@ data:
 > The allow-list only applies to SCM providers for which the user may configure a custom `api`. Where an SCM or PR
 > generator does not accept a custom API URL, the provider is implicitly allowed.
 
-If you do not intend to allow users to use the SCM or PR generators, you can disable them entirely by setting the environment variable `ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_SCM_PROVIDERS` to argocd-cmd-params-cm `applicationsetcontroller.enable.scm.providers` to `false`.
+If you do not intend to allow users to use the SCM or PR generators, you can disable them entirely by setting the environment variable `CD_APPLICATIONSET_CONTROLLER_ENABLE_SCM_PROVIDERS` to argocd-cmd-params-cm `applicationsetcontroller.enable.scm.providers` to `false`.
 
 #### `tokenRef` Restrictions
 
@@ -85,7 +85,7 @@ since non-Argo-admins may attempt to reference out-of-bounds secrets in the `arg
 When this mode is enabled, the referenced secret must have a label `argocd.argoproj.io/secret-type` with value
 `scm-creds`.
 
-To enable this mode, set the `ARGOCD_APPLICATIONSET_CONTROLLER_TOKENREF_STRICT_MODE` environment variable to `true` in the
+To enable this mode, set the `CD_APPLICATIONSET_CONTROLLER_TOKENREF_STRICT_MODE` environment variable to `true` in the
 `argocd-application-controller` deployment. You can do this by adding the following to your `argocd-cmd-paramscm`
 ConfigMap:
 
@@ -102,10 +102,10 @@ data:
 
 In order for an ApplicationSet to be managed and reconciled outside the Argo CD's control plane namespace, two prerequisites must match:
 
-1. The namespace list from which `argocd-applicationset-controller` can source `ApplicationSets` must be explicitly set using environment variable `ARGOCD_APPLICATIONSET_CONTROLLER_NAMESPACES` or alternatively using parameter `--applicationset-namespaces`.
+1. The namespace list from which `argocd-applicationset-controller` can source `ApplicationSets` must be explicitly set using environment variable `CD_APPLICATIONSET_CONTROLLER_NAMESPACES` or alternatively using parameter `--applicationset-namespaces`.
 2. The enabled namespaces must be entirely covered by the [App in any namespace](../app-any-namespace.md), otherwise the generated Applications generated outside the allowed Application namespaces won't be reconciled
 
-It can be achieved by setting the environment variable `ARGOCD_APPLICATIONSET_CONTROLLER_NAMESPACES` to argocd-cmd-params-cm `applicationsetcontroller.namespaces`
+It can be achieved by setting the environment variable `CD_APPLICATIONSET_CONTROLLER_NAMESPACES` to argocd-cmd-params-cm `applicationsetcontroller.namespaces`
 
 `ApplicationSets` in different namespaces can be created and managed just like any other `ApplicationSet` in the `argocd` namespace previously, either declaratively or through the Argo CD API (e.g. using the CLI, the web UI, the REST API, etc).
 

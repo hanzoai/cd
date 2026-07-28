@@ -104,7 +104,7 @@ func TestSyncOptionsValidateFalse(t *testing.T) {
 // not present, then validation is performed and we fail during the apply
 func TestSyncOptionsValidateTrue(t *testing.T) {
 	// k3s does not validate at all, so this test does not work
-	if os.Getenv("ARGOCD_E2E_K3S") == "true" {
+	if os.Getenv("CD_E2E_K3S") == "true" {
 		t.SkipNow()
 	}
 	Given(t).

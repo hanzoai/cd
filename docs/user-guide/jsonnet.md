@@ -11,8 +11,8 @@ E.g. via the CLI:
 
 ```bash
 argocd app create APPNAME \
-  --jsonnet-ext-var-str 'app=${ARGOCD_APP_NAME}' \
-  --jsonnet-tla-str 'ns=${ARGOCD_APP_NAMESPACE}' \
+  --jsonnet-ext-var-str 'app=${CD_APP_NAME}' \
+  --jsonnet-tla-str 'ns=${CD_APP_NAMESPACE}' \
   --jsonnet-libs 'vendor'
 ```
 
@@ -23,10 +23,10 @@ Or by declarative syntax:
     jsonnet:
       extVars:
         - name: app
-          value: $ARGOCD_APP_NAME
+          value: $CD_APP_NAME
       tlas:
         - name: ns
-          value: $ARGOCD_APP_NAMESPACE
+          value: $CD_APP_NAMESPACE
       libs:
         - vendor
 ```

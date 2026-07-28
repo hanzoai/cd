@@ -211,7 +211,7 @@ spec:
 ```
 
 The currently-configured parameters (if there are any) will be communicated to both `generate.command` and 
-`parameters.dynamic.command` via an `ARGOCD_APP_PARAMETERS` environment variable. The parameters will be encoded 
+`parameters.dynamic.command` via an `CD_APP_PARAMETERS` environment variable. The parameters will be encoded 
 according to the [parameters serialization format](#how-will-the-cmp-know-what-parameter-values-are-set) defined below.
 
 Passing the parameters to the `parameters.dynamic.command` will allow configuration of parameter discovery. For example,
@@ -262,10 +262,10 @@ spec:
 
 When Argo CD generates manifests (for example, when the user clicks "Hard Refresh" in the UI), Argo CD will send these
 parameters to the CMP as JSON (using the equivalent structure to what's shown above) on an environment variable called
-`ARGOCD_APP_PARAMETERS`.
+`CD_APP_PARAMETERS`.
 
 ```shell
-echo "$ARGOCD_APP_PARAMETERS" | jq
+echo "$CD_APP_PARAMETERS" | jq
 ```
 
 That command, when run by a CMP with the above Application manifest, will print the following:
@@ -587,14 +587,14 @@ spec:
       - -c
       - |
         # Pull one parameter value from the "main" section of the given parameters.
-        CM_NAME_SUFFIX=$(echo "$ARGOCD_APP_PARAMETERS" | jq -r '.["main"][] | select(.name == "cm-name-suffix").value')
+        CM_NAME_SUFFIX=$(echo "$CD_APP_PARAMETERS" | jq -r '.["main"][] | select(.name == "cm-name-suffix").value')
         cat << EOM
         {
           "kind": "ConfigMap",
           "apiVersion": "v1",
           "metadata": {
-            "name": "$ARGOCD_APP_NAME-$CM_NAME_SUFFIX",
-            "namespace": "$ARGOCD_APP_NAMESPACE"
+            "name": "$CD_APP_NAME-$CM_NAME_SUFFIX",
+            "namespace": "$CD_APP_NAMESPACE"
           }
         }
         EOM
@@ -705,9 +705,9 @@ spec:
 
 ```shell
 # Convert the values-files parameter value to a newline-delimited list of Helm CLI arguments.
-ARGUMENTS=$(echo "$ARGOCD_APP_PARAMETERS" | jq -r '.[] | select(.name == "values-files").array | .[] | "--values=" + .')
+ARGUMENTS=$(echo "$CD_APP_PARAMETERS" | jq -r '.[] | select(.name == "values-files").array | .[] | "--values=" + .')
 # Convert JSON parameters to comma-delimited k=v pairs.
-PARAMETERS=$(echo "$ARGOCD_APP_PARAMETERS" | jq -r '.[] | select(.name == "helm-parameters").map | to_entries | map("\(.key)=\(.value)") | .[] | "--set=" + .')
+PARAMETERS=$(echo "$CD_APP_PARAMETERS" | jq -r '.[] | select(.name == "helm-parameters").map | to_entries | map("\(.key)=\(.value)") | .[] | "--set=" + .')
 # Add parameters to the arguments variable.
 ARGUMENTS="$ARGUMENTS\n$PARAMETERS"
 echo "$ARGUMENTS" | xargs helm template .
@@ -715,7 +715,7 @@ echo "$ARGUMENTS" | xargs helm template .
 
 The manifest generation command will be 
 `helm template . --values=a.yaml --values=b.yaml --set=image.repo=alpine --set=image.tag=latest`
-for the following value of `$ARGOCD_APP_PARAMETERS`:
+for the following value of `$CD_APP_PARAMETERS`:
 
 ```json
 [

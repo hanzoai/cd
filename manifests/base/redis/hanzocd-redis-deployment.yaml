@@ -47,9 +47,9 @@ spec:
         - ""
         - "--appendonly"
         - "no"
-        - --requirepass $(REDIS_PASSWORD)
+        - --requirepass $(KV_PASSWORD)
         env:
-          - name: REDIS_PASSWORD
+          - name: KV_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: auth

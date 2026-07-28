@@ -887,7 +887,7 @@ func (ctrl *ApplicationController) hideSecretData(ctx context.Context, destClust
 
 // Run starts the Application CRD controller.
 // normalizeHydrationProcessors clamps the configured number of manifest hydration workers to a safe
-// minimum. The --hydration-processors flag / ARGOCD_APPLICATION_CONTROLLER_HYDRATION_PROCESSORS env var
+// minimum. The --hydration-processors flag / CD_APPLICATION_CONTROLLER_HYDRATION_PROCESSORS env var
 // can be set to 0 or a negative value on the command line (the env default is clamped, but an explicit
 // flag value is not). Starting zero workers would silently stall hydration, so fall back to a single
 // worker and warn. See https://github.com/argoproj/argo-cd/issues/27926.

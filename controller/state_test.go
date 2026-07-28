@@ -1122,7 +1122,7 @@ var projWithSourceIntegrity = v1alpha1.AppProject{
 }
 
 func TestNoSourceIntegrity(t *testing.T) {
-	t.Setenv("ARGOCD_GPG_ENABLED", "true")
+	t.Setenv("CD_GPG_ENABLED", "true")
 
 	{
 		app := newFakeApp()
@@ -1154,7 +1154,7 @@ func TestNoSourceIntegrity(t *testing.T) {
 }
 
 func TestValidSourceIntegrity(t *testing.T) {
-	t.Setenv("ARGOCD_GPG_ENABLED", "true")
+	t.Setenv("CD_GPG_ENABLED", "true")
 
 	// Source integrity required, and it is valid - sync!
 	{
@@ -1250,7 +1250,7 @@ func TestValidSourceIntegrity(t *testing.T) {
 		assert.Contains(t, app.Status.Conditions[0].Message, "The thing have failed to validate!")
 	}
 
-	t.Setenv("ARGOCD_GPG_ENABLED", "false")
+	t.Setenv("CD_GPG_ENABLED", "false")
 
 	// Signature required and local manifests supplied and GPG subsystem is disabled - sync
 	{

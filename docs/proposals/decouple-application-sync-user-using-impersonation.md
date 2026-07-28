@@ -163,7 +163,7 @@ So that, I can use a generic convention of naming service accounts and avoid ass
 
 - Provide a configuration in `argocd-cm`  which can be modified to enable the Impersonation feature. Set `applicationcontroller.enable.impersonation: true` in the Argo CD ConfigMap. Default value of `applicationcontroller.enable.impersonation` would be `false` and user has to explicitly override it to use this feature.
 - Provide an option to override the Impersonation feature using environment variables.
-Set `ARGOCD_APPLICATION_CONTROLLER_ENABLE_IMPERSONATION=true` in the Application controller environment variables. Default value of the environment variable must be `false` and user has to explicitly set it to `true` to use this feature.
+Set `CD_APPLICATION_CONTROLLER_ENABLE_IMPERSONATION=true` in the Application controller environment variables. Default value of the environment variable must be `false` and user has to explicitly set it to `true` to use this feature.
 - Provide an option to enable this feature using a command line flag `--enable-impersonation`. This new argument option needs to be added to the Application controller args.
 - Fix Application Controller `sync.go` to set the Impersonate configuration from the AppProject CR to the `SyncContext` Object (rawConfig and restConfig field, need to understand which config is used for the actual sync and if both configs need to be impersonated.)
 

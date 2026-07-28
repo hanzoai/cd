@@ -23,7 +23,7 @@ spec:
       containers:
       - name: argocd-server
         env:
-        - name: ARGOCD_API_SERVER_REPLICAS
+        - name: CD_API_SERVER_REPLICAS
           value: '2'
         args:
         - /usr/local/bin/argocd-server

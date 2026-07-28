@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	binaryNameEnv = "ARGOCD_BINARY_NAME"
+	binaryNameEnv = "CD_BINARY_NAME"
 )
 
 func init() {

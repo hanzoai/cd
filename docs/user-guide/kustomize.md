@@ -262,7 +262,7 @@ spec:
     kustomize:
       commonAnnotationsEnvsubst: true
       commonAnnotations:
-        app-source: ${ARGOCD_APP_NAME}
+        app-source: ${CD_APP_NAME}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

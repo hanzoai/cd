@@ -17,18 +17,18 @@ Starting v2.9, Argo CD supports a dynamic cluster distribution feature. When rep
 algorithm is re-run to ensure that the clusters are distributed according to the algorithm. If the algorithm is 
 well-balanced, like round-robin, then the shards will be well-balanced.
 
-Previously, the shard count was set via the `ARGOCD_CONTROLLER_REPLICAS` environment variable. Changing the environment 
+Previously, the shard count was set via the `CD_CONTROLLER_REPLICAS` environment variable. Changing the environment 
 variable forced a restart of all application controller pods. Now, the shard count is set via the `replicas` field of the deployment, 
 which does not require a restart of the application controller pods. 
 
 ## Enabling Dynamic Distribution of Clusters
 
-This feature is disabled by default while it is in alpha. In order to utilize the feature, the manifests `manifests/ha/base/controller-deployment/` can be applied as a Kustomize overlay. This overlay sets the StatefulSet replicas to `0` and deploys the application controller as a Deployment. Also, you must set the environment `ARGOCD_ENABLE_DYNAMIC_CLUSTER_DISTRIBUTION` to true when running the Application Controller as a deployment.
+This feature is disabled by default while it is in alpha. In order to utilize the feature, the manifests `manifests/ha/base/controller-deployment/` can be applied as a Kustomize overlay. This overlay sets the StatefulSet replicas to `0` and deploys the application controller as a Deployment. Also, you must set the environment `CD_ENABLE_DYNAMIC_CLUSTER_DISTRIBUTION` to true when running the Application Controller as a deployment.
 
 > [!IMPORTANT]
 > The use of a Deployment instead of a StatefulSet is an implementation detail which may change in future versions of this feature. Therefore, the directory name of the Kustomize overlay may change as well. Monitor the release notes to avoid issues.
 
-Note the introduction of new environment variable `ARGOCD_CONTROLLER_HEARTBEAT_TIME`. The environment variable is explained in [working of Dynamic Distribution Heartbeat Process](#working-of-dynamic-distribution)
+Note the introduction of new environment variable `CD_CONTROLLER_HEARTBEAT_TIME`. The environment variable is explained in [working of Dynamic Distribution Heartbeat Process](#working-of-dynamic-distribution)
 
 ## Working of Dynamic Distribution
 
@@ -48,9 +48,9 @@ HeartbeatTime  : "2009-11-17 20:34:58.651387237 +0000 UTC"
 * `ShardNumber` : Stores the shard number managed by the controller pod
 * `HeartbeatTime`: Stores the last time this heartbeat was updated.
 
-Controller Shard Mapping is updated in the ConfigMap during each readiness probe check of the pod, that is every 10 seconds (otherwise as configured). The controller will acquire the shard during every iteration of readiness probe check and try to update the ConfigMap with the `HeartbeatTime`. The default `HeartbeatDuration` after which the heartbeat should be updated is `10` seconds. If the ConfigMap was not updated for any controller pod for more than `3 * HeartbeatDuration`, then the readiness probe for the application pod is marked as `Unhealthy`. To increase the default `HeartbeatDuration`, you can set the environment variable `ARGOCD_CONTROLLER_HEARTBEAT_TIME` with the desired value.
+Controller Shard Mapping is updated in the ConfigMap during each readiness probe check of the pod, that is every 10 seconds (otherwise as configured). The controller will acquire the shard during every iteration of readiness probe check and try to update the ConfigMap with the `HeartbeatTime`. The default `HeartbeatDuration` after which the heartbeat should be updated is `10` seconds. If the ConfigMap was not updated for any controller pod for more than `3 * HeartbeatDuration`, then the readiness probe for the application pod is marked as `Unhealthy`. To increase the default `HeartbeatDuration`, you can set the environment variable `CD_CONTROLLER_HEARTBEAT_TIME` with the desired value.
 
-The new sharding mechanism does not monitor the environment variable `ARGOCD_CONTROLLER_REPLICAS` but instead reads the replica count directly from the Application Controller Deployment. The controller identifies the change in the number of replicas by comparing the replica count in the Application Controller Deployment and the number of mappings in the `argocd-app-controller-shard-cm` ConfigMap.
+The new sharding mechanism does not monitor the environment variable `CD_CONTROLLER_REPLICAS` but instead reads the replica count directly from the Application Controller Deployment. The controller identifies the change in the number of replicas by comparing the replica count in the Application Controller Deployment and the number of mappings in the `argocd-app-controller-shard-cm` ConfigMap.
 
 In the scenario when the number of Application Controller replicas increases, a new entry is added to the list of mappings in the `argocd-app-controller-shard-cm` ConfigMap and the cluster distribution is triggered to re-distribute the clusters.
 

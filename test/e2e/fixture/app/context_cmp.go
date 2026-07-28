@@ -18,7 +18,7 @@ import (
 func (c *Context) RunningCMPServer(configFile string) *Context {
 	c.T().Helper()
 	startCMPServer(c.T(), configFile)
-	c.T().Setenv("ARGOCD_BINARY_NAME", "argocd")
+	c.T().Setenv("CD_BINARY_NAME", "argocd")
 	return c
 }
 
@@ -27,9 +27,9 @@ func (c *Context) RunningCMPServer(configFile string) *Context {
 func startCMPServer(t *testing.T, configDir string) {
 	t.Helper()
 	pluginSockFilePath := path.Join(fixture.TmpDir(), fixture.PluginSockFilePath)
-	t.Setenv("ARGOCD_BINARY_NAME", "argocd-cmp-server")
-	// ARGOCD_PLUGINSOCKFILEPATH should be set as the same value as repo server env var
-	t.Setenv("ARGOCD_PLUGINSOCKFILEPATH", pluginSockFilePath)
+	t.Setenv("CD_BINARY_NAME", "argocd-cmp-server")
+	// CD_PLUGINSOCKFILEPATH should be set as the same value as repo server env var
+	t.Setenv("CD_PLUGINSOCKFILEPATH", pluginSockFilePath)
 	if _, err := os.Stat(pluginSockFilePath); os.IsNotExist(err) {
 		err := os.Mkdir(pluginSockFilePath, 0o700)
 		require.NoError(t, err)

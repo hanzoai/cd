@@ -37,7 +37,7 @@ spec:
 - Policy `create-delete`: Prevents ApplicationSet controller from modifying Applications. Delete is allowed.
 - Policy `sync`: Create, Update and Delete are allowed.
 
-If the controller parameter `--policy` is set, it takes precedence on the field `applicationsSync`. It is possible to allow per ApplicationSet sync policy by setting variable `ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_POLICY_OVERRIDE` to argocd-cmd-params-cm `applicationsetcontroller.enable.policy.override` or directly with controller parameter `--enable-policy-override` (default to `false`).
+If the controller parameter `--policy` is set, it takes precedence on the field `applicationsSync`. It is possible to allow per ApplicationSet sync policy by setting variable `CD_APPLICATIONSET_CONTROLLER_ENABLE_POLICY_OVERRIDE` to argocd-cmd-params-cm `applicationsetcontroller.enable.policy.override` or directly with controller parameter `--enable-policy-override` (default to `false`).
 
 ### Policy - `create-only`: Prevent ApplicationSet controller from modifying and deleting Applications
 
@@ -327,7 +327,7 @@ By default, the Argo CD notifications and the Argo CD refresh type annotations a
 
 > [!NOTE]
 > One can also set global preserved fields for the controller by passing a comma separated list of annotations and labels to 
-> `ARGOCD_APPLICATIONSET_CONTROLLER_GLOBAL_PRESERVED_ANNOTATIONS` and `ARGOCD_APPLICATIONSET_CONTROLLER_GLOBAL_PRESERVED_LABELS` respectively.
+> `CD_APPLICATIONSET_CONTROLLER_GLOBAL_PRESERVED_ANNOTATIONS` and `CD_APPLICATIONSET_CONTROLLER_GLOBAL_PRESERVED_LABELS` respectively.
 
 ## Debugging unexpected changes to Applications
 
