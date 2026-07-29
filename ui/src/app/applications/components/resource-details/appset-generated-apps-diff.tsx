@@ -121,7 +121,7 @@ export const AppSetGeneratedAppsDiff = (props: AppSetGeneratedAppsDiffProps) => 
                     const ns = key.slice(0, sep);
                     const name = key.slice(sep + 1);
                     return {
-                        group: 'argoproj.io',
+                        group: 'apps.hanzo.ai',
                         kind: 'Application',
                         namespace: ns,
                         name,

@@ -1,6 +1,6 @@
 import {hashCode, isValidManagedByURL} from '../../../shared/utils';
 
-export const NoticeAnnotationPrefix = 'notice.argocd.argoproj.io/';
+export const NoticeAnnotationPrefix = 'notice.apps.hanzo.ai/';
 
 export const NoticeAnnotationContent = `${NoticeAnnotationPrefix}content`;
 export const NoticeAnnotationSeverity = `${NoticeAnnotationPrefix}severity`;

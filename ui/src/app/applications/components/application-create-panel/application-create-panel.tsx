@@ -22,7 +22,7 @@ import {APP_SOURCE_TYPES, normalizeTypeFieldsForSource} from '../shared/app-sour
 const jsonMergePatch = require('json-merge-patch');
 
 const DEFAULT_APP: Partial<models.Application> = {
-    apiVersion: 'argoproj.io/v1alpha1',
+    apiVersion: 'apps.hanzo.ai/v1alpha1',
     kind: 'Application',
     metadata: {
         name: ''

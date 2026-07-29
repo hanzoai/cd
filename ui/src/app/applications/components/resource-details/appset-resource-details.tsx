@@ -121,7 +121,7 @@ export const AppSetResourceDetails = (props: AppSetResourceDetailsProps) => {
             }
         ];
 
-        const extensionTabs = services.extensions.getResourceTabs('argoproj.io', 'ApplicationSet').map((ext, i) => ({
+        const extensionTabs = services.extensions.getResourceTabs('apps.hanzo.ai', 'ApplicationSet').map((ext, i) => ({
             title: ext.title,
             key: `extension-${i}`,
             content: <ext.component resource={{...appSet, status: appSet.status || {}} as any} tree={{nodes: []} as any} application={appSet as any} />,
@@ -135,7 +135,7 @@ export const AppSetResourceDetails = (props: AppSetResourceDetailsProps) => {
         <div style={{width: '100%', height: '100%'}}>
             <div className='resource-details__header'>
                 <div style={{display: 'flex', flexDirection: 'column', marginRight: '15px', alignItems: 'center', fontSize: '12px'}}>
-                    <ResourceIcon group='argoproj.io' kind='ApplicationSet' />
+                    <ResourceIcon group='apps.hanzo.ai' kind='ApplicationSet' />
                     {ResourceLabel({kind: 'ApplicationSet'})}
                 </div>
                 <h1>{appSet.metadata.name}</h1>
