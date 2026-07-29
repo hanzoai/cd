@@ -1,6 +1,7 @@
 package e2e
 
 import (
+	"github.com/hanzoai/deploy/common"
 	"testing"
 	"time"
 
@@ -56,7 +57,7 @@ func TestManagedByURLWithAnnotation(t *testing.T) {
   description: "Open in managing ArgoCD instance"`
 
 			// Update the argocd-cm configmap to include our test deep links and URL
-			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.ArgoCDNamespace).Get(t.Context(), "argocd-cm", metav1.GetOptions{})
+			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.ArgoCDNamespace).Get(t.Context(), common.ArgoCDConfigMapName, metav1.GetOptions{})
 			require.NoError(t, err)
 
 			if configMap.Data == nil {
@@ -105,7 +106,7 @@ func TestManagedByURLWithAnnotation(t *testing.T) {
 		}).
 		And(func(_ *Application) {
 			// Clean up: remove the test deep links configuration
-			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.ArgoCDNamespace).Get(t.Context(), "argocd-cm", metav1.GetOptions{})
+			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.ArgoCDNamespace).Get(t.Context(), common.ArgoCDConfigMapName, metav1.GetOptions{})
 			if err == nil && configMap.Data != nil {
 				delete(configMap.Data, "application.links")
 				delete(configMap.Data, "url")
@@ -132,7 +133,7 @@ func TestManagedByURLFallbackToCurrentInstance(t *testing.T) {
   description: "Open in managing ArgoCD instance"`
 
 			// Update the argocd-cm configmap to include our test deep links and URL
-			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.ArgoCDNamespace).Get(t.Context(), "argocd-cm", metav1.GetOptions{})
+			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.ArgoCDNamespace).Get(t.Context(), common.ArgoCDConfigMapName, metav1.GetOptions{})
 			require.NoError(t, err)
 
 			if configMap.Data == nil {
@@ -194,7 +195,7 @@ func TestManagedByURLFallbackToCurrentInstance(t *testing.T) {
 		}).
 		And(func(_ *Application) {
 			// Clean up: remove the test deep links configuration
-			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.ArgoCDNamespace).Get(t.Context(), "argocd-cm", metav1.GetOptions{})
+			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.ArgoCDNamespace).Get(t.Context(), common.ArgoCDConfigMapName, metav1.GetOptions{})
 			if err == nil && configMap.Data != nil {
 				delete(configMap.Data, "application.links")
 				delete(configMap.Data, "url")

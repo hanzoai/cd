@@ -2,6 +2,7 @@ package settings
 
 import (
 	"fmt"
+	"github.com/hanzoai/deploy/common"
 	"testing"
 
 	"github.com/argoproj/notifications-engine/pkg/api"
@@ -30,7 +31,7 @@ func TestInitGetVars(t *testing.T) {
 	notificationsCm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-notifications-cm",
+			Name:      common.ArgoCDNotificationsConfigMapName,
 		},
 		Data: map[string]string{
 			"context":              fmt.Sprintf("%s: %s", testContextKey, testContextKeyValue),
@@ -41,7 +42,7 @@ func TestInitGetVars(t *testing.T) {
 	}
 	notificationsSecret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-notifications-secret",
+			Name:      common.ArgoCDNotificationsSecretName,
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -51,13 +52,13 @@ func TestInitGetVars(t *testing.T) {
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-notifications-cm",
+			Name:      common.ArgoCDNotificationsConfigMapName,
 		},
 		Data: notificationsCm.Data,
 	},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "argocd-notifications-secret",
+				Name:      common.ArgoCDNotificationsSecretName,
 				Namespace: testNamespace,
 			},
 			Data: notificationsSecret.Data,
@@ -122,13 +123,13 @@ func TestInitGetVarsAppProject(t *testing.T) {
 	notificationsCm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-notifications-cm",
+			Name:      common.ArgoCDNotificationsConfigMapName,
 		},
 		Data: map[string]string{},
 	}
 	notificationsSecret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-notifications-secret",
+			Name:      common.ArgoCDNotificationsSecretName,
 			Namespace: testNamespace,
 		},
 	}

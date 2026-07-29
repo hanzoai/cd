@@ -6,6 +6,9 @@ images:
 - name: ghcr.io/hanzoai/deploy
   newName: ghcr.io/hanzoai/deploy
   newTag: latest
+- name: quay.io/argoproj/argocd
+  newName: ghcr.io/hanzoai/deploy
+  newTag: latest
 resources:
 - ./application-controller
 - ./dex

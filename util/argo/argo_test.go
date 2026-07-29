@@ -60,10 +60,10 @@ func TestGetAppProjectWithNoProjDefined(t *testing.T) {
 
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      argocommon.ArgoCDConfigMapName,
 			Namespace: test.FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 	}
@@ -433,10 +433,10 @@ func TestValidateRepo(t *testing.T) {
 
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      argocommon.ArgoCDConfigMapName,
 			Namespace: test.FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{
@@ -538,9 +538,9 @@ func TestValidateRepo_SourceHydrator(t *testing.T) {
 
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      argocommon.ArgoCDConfigMapName,
 			Namespace: test.FakeArgoCDNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 	}
 	kubeClient := fake.NewClientset(&cm)
@@ -2168,10 +2168,10 @@ func TestGetAppEventLabels(t *testing.T) {
 			t.Parallel()
 			cm := corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-cm",
+					Name:      argocommon.ArgoCDConfigMapName,
 					Namespace: test.FakeArgoCDNamespace,
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "argocd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string]string{

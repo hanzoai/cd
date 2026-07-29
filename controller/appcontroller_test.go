@@ -2889,7 +2889,7 @@ func TestProcessRequestedAppOperation_FailedNoRetries(t *testing.T) {
 	phase, _, _ := unstructured.NestedString(receivedPatch, "status", "operationState", "phase")
 	message, _, _ := unstructured.NestedString(receivedPatch, "status", "operationState", "message")
 	assert.Equal(t, string(synccommon.OperationError), phase)
-	assert.Equal(t, "Failed to load application project: error getting app project \"default\": appproject.argoproj.io \"default\" not found", message)
+	assert.Equal(t, "Failed to load application project: error getting app project \"default\": appproject.apps.hanzo.ai \"default\" not found", message)
 }
 
 func TestProcessRequestedAppOperation_InvalidDestination(t *testing.T) {
@@ -2946,7 +2946,7 @@ func TestProcessRequestedAppOperation_FailedHasRetries(t *testing.T) {
 	message, _, _ := unstructured.NestedString(receivedPatch, "status", "operationState", "message")
 	retryCount, _, _ := unstructured.NestedFloat64(receivedPatch, "status", "operationState", "retryCount")
 	assert.Equal(t, string(synccommon.OperationRunning), phase)
-	assert.Contains(t, message, "Failed to load application project: error getting app project \"invalid-project\": appproject.argoproj.io \"invalid-project\" not found. Retrying attempt #1")
+	assert.Contains(t, message, "Failed to load application project: error getting app project \"invalid-project\": appproject.apps.hanzo.ai \"invalid-project\" not found. Retrying attempt #1")
 	assert.InEpsilon(t, float64(1), retryCount, 0.0001)
 }
 

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/hanzoai/deploy/common"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -47,7 +48,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -103,7 +104,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -165,7 +166,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -225,7 +226,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -281,7 +282,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -331,7 +332,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -358,7 +359,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -480,7 +481,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			configmap: &corev1.ConfigMap{},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -535,7 +536,7 @@ func TestPluginGenerateParams(t *testing.T) {
 			},
 			secret: &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "argocd-secret",
+					Name:      common.ArgoCDSecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{

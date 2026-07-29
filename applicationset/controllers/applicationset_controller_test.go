@@ -53,7 +53,7 @@ func getDefaultTestClientSet(obj ...runtime.Object) *kubefake.Clientset {
 			Name:      argocommon.ArgoCDSecretName,
 			Namespace: "argocd",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -67,7 +67,7 @@ func getDefaultTestClientSet(obj ...runtime.Object) *kubefake.Clientset {
 			Name:      argocommon.ArgoCDConfigMapName,
 			Namespace: "argocd",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -2363,7 +2363,7 @@ func TestDeleteInCluster(t *testing.T) {
 				Name:      obj.Name,
 			}, got)
 
-			assert.EqualError(t, err, fmt.Sprintf("applications.argoproj.io %q not found", obj.Name))
+			assert.EqualError(t, err, fmt.Sprintf("applications.apps.hanzo.ai %q not found", obj.Name))
 		}
 	}
 }

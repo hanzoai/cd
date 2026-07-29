@@ -4,7 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app.kubernetes.io/name: applications.apps.hanzo.ai
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: hanzocd
   name: applications.apps.hanzo.ai
 spec:
   group: apps.hanzo.ai
@@ -7114,7 +7114,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app.kubernetes.io/name: applicationsets.apps.hanzo.ai
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: hanzocd
   name: applicationsets.apps.hanzo.ai
 spec:
   group: apps.hanzo.ai
@@ -30452,7 +30452,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app.kubernetes.io/name: appprojects.apps.hanzo.ai
-    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/part-of: hanzocd
   name: appprojects.apps.hanzo.ai
 spec:
   group: apps.hanzo.ai
@@ -30885,93 +30885,143 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/component: application-controller
-    app.kubernetes.io/name: argocd-application-controller
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
     app.kubernetes.io/part-of: argocd
-  name: argocd-application-controller
+  name: hanzocd-redis-ha
+  namespace: hanzo-cd
+secrets:
+- name: hanzocd-redis
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha-haproxy
+    app.kubernetes.io/part-of: argocd
+  name: hanzocd-redis-ha-haproxy
+  namespace: hanzo-cd
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: application-controller
+    app.kubernetes.io/name: hanzocd-application-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-application-controller
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/component: applicationset-controller
-    app.kubernetes.io/name: argocd-applicationset-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-applicationset-controller
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-applicationset-controller
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/component: commit-server
-    app.kubernetes.io/name: argocd-commit-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-commit-server
+    app.kubernetes.io/name: hanzocd-commit-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-commit-server
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/component: dex-server
-    app.kubernetes.io/name: argocd-dex-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-dex-server
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-dex-server
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/component: notifications-controller
-    app.kubernetes.io/name: argocd-notifications-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-notifications-controller
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha
-secrets:
-- name: argocd-redis
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha-haproxy
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-haproxy
+    app.kubernetes.io/name: hanzocd-notifications-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-controller
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/component: repo-server
-    app.kubernetes.io/name: argocd-repo-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-repo-server
+    app.kubernetes.io/name: hanzocd-repo-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-repo-server
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
     app.kubernetes.io/part-of: argocd
-  name: argocd-server
+  name: hanzocd-redis-ha
+  namespace: hanzo-cd
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
+    app.kubernetes.io/part-of: argocd
+  name: hanzocd-redis-ha-haproxy
+  namespace: hanzo-cd
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resourceNames:
+  - hanzocd-redis
+  resources:
+  - secrets
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  verbs:
+  - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
     app.kubernetes.io/component: application-controller
-    app.kubernetes.io/name: argocd-application-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-application-controller
+    app.kubernetes.io/name: hanzocd-application-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-application-controller
 rules:
 - apiGroups:
   - ""
@@ -31017,9 +31067,9 @@ kind: Role
 metadata:
   labels:
     app.kubernetes.io/component: applicationset-controller
-    app.kubernetes.io/name: argocd-applicationset-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-applicationset-controller
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-applicationset-controller
 rules:
 - apiGroups:
   - apps.hanzo.ai
@@ -31092,9 +31142,9 @@ kind: Role
 metadata:
   labels:
     app.kubernetes.io/component: dex-server
-    app.kubernetes.io/name: argocd-dex-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-dex-server
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-dex-server
 rules:
 - apiGroups:
   - ""
@@ -31111,9 +31161,9 @@ kind: Role
 metadata:
   labels:
     app.kubernetes.io/component: notifications-controller
-    app.kubernetes.io/name: argocd-notifications-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-notifications-controller
+    app.kubernetes.io/name: hanzocd-notifications-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-controller
 rules:
 - apiGroups:
   - apps.hanzo.ai
@@ -31137,7 +31187,7 @@ rules:
 - apiGroups:
   - ""
   resourceNames:
-  - argocd-notifications-cm
+  - hanzocd-notifications-cm
   resources:
   - configmaps
   verbs:
@@ -31145,55 +31195,9 @@ rules:
 - apiGroups:
   - ""
   resourceNames:
-  - argocd-notifications-secret
+  - hanzocd-notifications-secret
   resources:
   - secrets
-  verbs:
-  - get
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - endpoints
-  verbs:
-  - get
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-haproxy
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - create
-- apiGroups:
-  - ""
-  resourceNames:
-  - argocd-redis
-  resources:
-  - secrets
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
-  - endpoints
   verbs:
   - get
 ---
@@ -31202,9 +31206,9 @@ kind: Role
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server
 rules:
 - apiGroups:
   - ""
@@ -31246,9 +31250,9 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/component: application-controller
-    app.kubernetes.io/name: argocd-application-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-application-controller
+    app.kubernetes.io/name: hanzocd-application-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-application-controller
 rules:
 - apiGroups:
   - '*'
@@ -31266,9 +31270,9 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/component: applicationset-controller
-    app.kubernetes.io/name: argocd-applicationset-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-applicationset-controller
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-applicationset-controller
 rules:
 - apiGroups:
   - apps.hanzo.ai
@@ -31341,9 +31345,9 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server
 rules:
 - apiGroups:
   - '*'
@@ -31387,140 +31391,138 @@ rules:
   - jobs
   verbs:
   - create
-- apiGroups:
-  - apps.hanzo.ai
-  resources:
-  - workflows
-  verbs:
-  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
+    app.kubernetes.io/part-of: argocd
+  name: hanzocd-redis-ha
+  namespace: hanzo-cd
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hanzocd-redis-ha
+subjects:
+- kind: ServiceAccount
+  name: hanzocd-redis-ha
+  namespace: hanzo-cd
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
+    app.kubernetes.io/part-of: argocd
+  name: hanzocd-redis-ha-haproxy
+  namespace: hanzo-cd
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hanzocd-redis-ha-haproxy
+subjects:
+- kind: ServiceAccount
+  name: hanzocd-redis-ha-haproxy
+  namespace: hanzo-cd
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: application-controller
-    app.kubernetes.io/name: argocd-application-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-application-controller
+    app.kubernetes.io/name: hanzocd-application-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-application-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argocd-application-controller
+  name: hanzocd-application-controller
 subjects:
 - kind: ServiceAccount
-  name: argocd-application-controller
+  name: hanzocd-application-controller
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: applicationset-controller
-    app.kubernetes.io/name: argocd-applicationset-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-applicationset-controller
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-applicationset-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argocd-applicationset-controller
+  name: hanzocd-applicationset-controller
 subjects:
 - kind: ServiceAccount
-  name: argocd-applicationset-controller
+  name: hanzocd-applicationset-controller
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: dex-server
-    app.kubernetes.io/name: argocd-dex-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-dex-server
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-dex-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argocd-dex-server
+  name: hanzocd-dex-server
 subjects:
 - kind: ServiceAccount
-  name: argocd-dex-server
+  name: hanzocd-dex-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: notifications-controller
-    app.kubernetes.io/name: argocd-notifications-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-notifications-controller
+    app.kubernetes.io/name: hanzocd-notifications-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argocd-notifications-controller
+  name: hanzocd-notifications-controller
 subjects:
 - kind: ServiceAccount
-  name: argocd-notifications-controller
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: argocd-redis-ha
-subjects:
-- kind: ServiceAccount
-  name: argocd-redis-ha
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-haproxy
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: argocd-redis-ha-haproxy
-subjects:
-- kind: ServiceAccount
-  name: argocd-redis-ha-haproxy
+  name: hanzocd-notifications-controller
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argocd-server
+  name: hanzocd-server
 subjects:
 - kind: ServiceAccount
-  name: argocd-server
+  name: hanzocd-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: application-controller
-    app.kubernetes.io/name: argocd-application-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-application-controller
+    app.kubernetes.io/name: hanzocd-application-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-application-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: argocd-application-controller
+  name: hanzocd-application-controller
 subjects:
 - kind: ServiceAccount
-  name: argocd-application-controller
+  name: hanzocd-application-controller
   namespace: argocd
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -31528,16 +31530,16 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: applicationset-controller
-    app.kubernetes.io/name: argocd-applicationset-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-applicationset-controller
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-applicationset-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: argocd-applicationset-controller
+  name: hanzocd-applicationset-controller
 subjects:
 - kind: ServiceAccount
-  name: argocd-applicationset-controller
+  name: hanzocd-applicationset-controller
   namespace: argocd
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -31545,154 +31547,17 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: argocd-server
+  name: hanzocd-server
 subjects:
 - kind: ServiceAccount
-  name: argocd-server
+  name: hanzocd-server
   namespace: argocd
----
-apiVersion: v1
-data:
-  resource.customizations.ignoreResourceUpdates.ConfigMap: |
-    jqPathExpressions:
-      # Ignore the cluster-autoscaler status
-      - '.metadata.annotations."cluster-autoscaler.kubernetes.io/last-updated"'
-      # Ignore the annotation of the legacy Leases election
-      - '.metadata.annotations."control-plane.alpha.kubernetes.io/leader"'
-  resource.customizations.ignoreResourceUpdates.Endpoints: |
-    jsonPointers:
-      - /metadata
-      - /subsets
-  resource.customizations.ignoreResourceUpdates.all: |
-    jsonPointers:
-      - /status
-  resource.customizations.ignoreResourceUpdates.apps_ReplicaSet: |
-    jqPathExpressions:
-      - '.metadata.annotations."deployment.kubernetes.io/desired-replicas"'
-      - '.metadata.annotations."deployment.kubernetes.io/max-replicas"'
-      - '.metadata.annotations."rollout.argoproj.io/desired-replicas"'
-  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
-    jqPathExpressions:
-      - '.metadata.annotations."notified.notifications.argoproj.io"'
-      - '.metadata.annotations."apps.hanzo.ai/refresh"'
-      - '.metadata.annotations."apps.hanzo.ai/hydrate"'
-      - '.operation'
-  resource.customizations.ignoreResourceUpdates.argoproj.io_Rollout: |
-    jqPathExpressions:
-      - '.metadata.annotations."notified.notifications.argoproj.io"'
-  resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler: |
-    jqPathExpressions:
-      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/behavior"'
-      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/conditions"'
-      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/metrics"'
-      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/current-metrics"'
-  resource.customizations.ignoreResourceUpdates.discovery.k8s.io_EndpointSlice: |
-    jsonPointers:
-      - /metadata
-      - /endpoints
-      - /ports
-  resource.exclusions: |
-    ### Network resources created by the Kubernetes control plane and excluded to reduce the number of watched events and UI clutter
-    - apiGroups:
-      - ''
-      - discovery.k8s.io
-      kinds:
-      - Endpoints
-      - EndpointSlice
-    ### Internal Kubernetes resources excluded reduce the number of watched events
-    - apiGroups:
-      - coordination.k8s.io
-      kinds:
-      - Lease
-    ### Internal Kubernetes Authz/Authn resources excluded reduce the number of watched events
-    - apiGroups:
-      - authentication.k8s.io
-      - authorization.k8s.io
-      kinds:
-      - SelfSubjectReview
-      - TokenReview
-      - LocalSubjectAccessReview
-      - SelfSubjectAccessReview
-      - SelfSubjectRulesReview
-      - SubjectAccessReview
-    ### Intermediate Certificate Request excluded reduce the number of watched events
-    - apiGroups:
-      - certificates.k8s.io
-      kinds:
-      - CertificateSigningRequest
-    - apiGroups:
-      - cert-manager.io
-      kinds:
-      - CertificateRequest
-    ### Cilium internal resources excluded reduce the number of watched events and UI Clutter
-    - apiGroups:
-      - cilium.io
-      kinds:
-      - CiliumIdentity
-      - CiliumEndpoint
-      - CiliumEndpointSlice
-    ### Kyverno intermediate and reporting resources excluded reduce the number of watched events and improve performance
-    - apiGroups:
-      - kyverno.io
-      - reports.kyverno.io
-      - wgpolicyk8s.io
-      kinds:
-      - PolicyReport
-      - ClusterPolicyReport
-      - EphemeralReport
-      - ClusterEphemeralReport
-      - AdmissionReport
-      - ClusterAdmissionReport
-      - BackgroundScanReport
-      - ClusterBackgroundScanReport
-      - UpdateRequest
-kind: ConfigMap
-metadata:
-  labels:
-    app.kubernetes.io/name: argocd-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-cm
----
-apiVersion: v1
-data:
-  redis.server: argocd-redis-ha-haproxy:6379
-kind: ConfigMap
-metadata:
-  labels:
-    app.kubernetes.io/name: argocd-cmd-params-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-cmd-params-cm
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  labels:
-    app.kubernetes.io/name: argocd-gpg-keys-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-gpg-keys-cm
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  labels:
-    app.kubernetes.io/component: notifications-controller
-    app.kubernetes.io/name: argocd-notifications-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-notifications-cm
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  labels:
-    app.kubernetes.io/name: argocd-rbac-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-rbac-cm
 ---
 apiVersion: v1
 data:
@@ -31709,8 +31574,8 @@ data:
     REDIS_TLS_PORT=
     SENTINEL_CONF=/data/conf/sentinel.conf
     SENTINEL_TLS_PORT=
-    SERVICE=argocd-redis-ha
-    NAMESPACE="argocd"
+    SERVICE=hanzocd-redis-ha
+    NAMESPACE="hanzo-cd"
     SENTINEL_TLS_REPLICATION_ENABLED=false
     REDIS_TLS_REPLICATION_ENABLED=false
     RESOLVE_HOSTNAMES=false
@@ -31758,7 +31623,7 @@ data:
 
     identify_master() {
         echo "Identifying redis master (get-master-addr-by-name).."
-        echo "  using sentinel (argocd-redis-ha), sentinel group name (argocd)"
+        echo "  using sentinel (hanzocd-redis-ha), sentinel group name (argocd)"
         MASTER="$(sentinel_get_master_retry 3)"
         if [ -n "${MASTER}" ]; then
             echo "  $(date) Found redis master (${MASTER})"
@@ -32038,20 +31903,20 @@ data:
     \ mode tcp\n  option tcp-check\n  tcp-check connect\n  tcp-check send PING\\r\\n\n
     \ tcp-check expect string +PONG\n  tcp-check send SENTINEL\\ get-master-addr-by-name\\
     argocd\\r\\n\n  tcp-check expect string REPLACE_ANNOUNCE0\n  tcp-check send QUIT\\r\\n\n
-    \ server R0 argocd-redis-ha-announce-0:26379 check inter 3s\n  server R1 argocd-redis-ha-announce-1:26379
-    check inter 3s\n  server R2 argocd-redis-ha-announce-2:26379 check inter 3s\n#
+    \ server R0 hanzocd-redis-ha-announce-0:26379 check inter 3s\n  server R1 hanzocd-redis-ha-announce-1:26379
+    check inter 3s\n  server R2 hanzocd-redis-ha-announce-2:26379 check inter 3s\n#
     Check Sentinel and whether they are nominated master\nbackend check_if_redis_is_master_1\n
     \ mode tcp\n  option tcp-check\n  tcp-check connect\n  tcp-check send PING\\r\\n\n
     \ tcp-check expect string +PONG\n  tcp-check send SENTINEL\\ get-master-addr-by-name\\
     argocd\\r\\n\n  tcp-check expect string REPLACE_ANNOUNCE1\n  tcp-check send QUIT\\r\\n\n
-    \ server R0 argocd-redis-ha-announce-0:26379 check inter 3s\n  server R1 argocd-redis-ha-announce-1:26379
-    check inter 3s\n  server R2 argocd-redis-ha-announce-2:26379 check inter 3s\n#
+    \ server R0 hanzocd-redis-ha-announce-0:26379 check inter 3s\n  server R1 hanzocd-redis-ha-announce-1:26379
+    check inter 3s\n  server R2 hanzocd-redis-ha-announce-2:26379 check inter 3s\n#
     Check Sentinel and whether they are nominated master\nbackend check_if_redis_is_master_2\n
     \ mode tcp\n  option tcp-check\n  tcp-check connect\n  tcp-check send PING\\r\\n\n
     \ tcp-check expect string +PONG\n  tcp-check send SENTINEL\\ get-master-addr-by-name\\
     argocd\\r\\n\n  tcp-check expect string REPLACE_ANNOUNCE2\n  tcp-check send QUIT\\r\\n\n
-    \ server R0 argocd-redis-ha-announce-0:26379 check inter 3s\n  server R1 argocd-redis-ha-announce-1:26379
-    check inter 3s\n  server R2 argocd-redis-ha-announce-2:26379 check inter 3s\n\n#
+    \ server R0 hanzocd-redis-ha-announce-0:26379 check inter 3s\n  server R1 hanzocd-redis-ha-announce-1:26379
+    check inter 3s\n  server R2 hanzocd-redis-ha-announce-2:26379 check inter 3s\n\n#
     decide redis backend to use\n#master\nfrontend ft_redis_master\n  bind :6379 \n
     \ use_backend bk_redis_master\n# Check all redis servers to see if they think
     they are master\nbackend bk_redis_master\n  mode tcp\n  option tcp-check\n  tcp-check
@@ -32059,11 +31924,11 @@ data:
     \ tcp-check send PING\\r\\n\n  tcp-check expect string +PONG\n  tcp-check send
     info\\ replication\\r\\n\n  tcp-check expect string role:master\n  tcp-check send
     QUIT\\r\\n\n  tcp-check expect string +OK\n  use-server R0 if { srv_is_up(R0)
-    } { nbsrv(check_if_redis_is_master_0) ge 2 }\n  server R0 argocd-redis-ha-announce-0:6379
+    } { nbsrv(check_if_redis_is_master_0) ge 2 }\n  server R0 hanzocd-redis-ha-announce-0:6379
     check inter 3s fall 1 rise 1\n  use-server R1 if { srv_is_up(R1) } { nbsrv(check_if_redis_is_master_1)
-    ge 2 }\n  server R1 argocd-redis-ha-announce-1:6379 check inter 3s fall 1 rise
+    ge 2 }\n  server R1 hanzocd-redis-ha-announce-1:6379 check inter 3s fall 1 rise
     1\n  use-server R2 if { srv_is_up(R2) } { nbsrv(check_if_redis_is_master_2) ge
-    2 }\n  server R2 argocd-redis-ha-announce-2:6379 check inter 3s fall 1 rise 1\nfrontend
+    2 }\n  server R2 hanzocd-redis-ha-announce-2:6379 check inter 3s fall 1 rise 1\nfrontend
     stats\n  mode http\n  bind :9101 \n  http-request use-service prometheus-exporter
     if { path /metrics }\n  stats enable\n  stats uri /stats\n  stats refresh 10s\n#
     Additional configuration\nglobal\n  maxconn 4096\n"
@@ -32071,32 +31936,32 @@ data:
     HAPROXY_CONF=/data/haproxy.cfg
     cp /readonly/haproxy.cfg "$HAPROXY_CONF"
     for loop in $(seq 1 10); do
-      getent hosts argocd-redis-ha-announce-0 && break
-      echo "Waiting for service argocd-redis-ha-announce-0 to be ready ($loop) ..." && sleep 1
+      getent hosts hanzocd-redis-ha-announce-0 && break
+      echo "Waiting for service hanzocd-redis-ha-announce-0 to be ready ($loop) ..." && sleep 1
     done
-    ANNOUNCE_IP0=$(getent hosts "argocd-redis-ha-announce-0" | awk '{ print $1 }')
+    ANNOUNCE_IP0=$(getent hosts "hanzocd-redis-ha-announce-0" | awk '{ print $1 }')
     if [ -z "$ANNOUNCE_IP0" ]; then
-      echo "Could not resolve the announce address for argocd-redis-ha-announce-0"
+      echo "Could not resolve the announce address for hanzocd-redis-ha-announce-0"
       exit 1
     fi
     sed -i "s/REPLACE_ANNOUNCE0/$ANNOUNCE_IP0/" "$HAPROXY_CONF"
     for loop in $(seq 1 10); do
-      getent hosts argocd-redis-ha-announce-1 && break
-      echo "Waiting for service argocd-redis-ha-announce-1 to be ready ($loop) ..." && sleep 1
+      getent hosts hanzocd-redis-ha-announce-1 && break
+      echo "Waiting for service hanzocd-redis-ha-announce-1 to be ready ($loop) ..." && sleep 1
     done
-    ANNOUNCE_IP1=$(getent hosts "argocd-redis-ha-announce-1" | awk '{ print $1 }')
+    ANNOUNCE_IP1=$(getent hosts "hanzocd-redis-ha-announce-1" | awk '{ print $1 }')
     if [ -z "$ANNOUNCE_IP1" ]; then
-      echo "Could not resolve the announce address for argocd-redis-ha-announce-1"
+      echo "Could not resolve the announce address for hanzocd-redis-ha-announce-1"
       exit 1
     fi
     sed -i "s/REPLACE_ANNOUNCE1/$ANNOUNCE_IP1/" "$HAPROXY_CONF"
     for loop in $(seq 1 10); do
-      getent hosts argocd-redis-ha-announce-2 && break
-      echo "Waiting for service argocd-redis-ha-announce-2 to be ready ($loop) ..." && sleep 1
+      getent hosts hanzocd-redis-ha-announce-2 && break
+      echo "Waiting for service hanzocd-redis-ha-announce-2 to be ready ($loop) ..." && sleep 1
     done
-    ANNOUNCE_IP2=$(getent hosts "argocd-redis-ha-announce-2" | awk '{ print $1 }')
+    ANNOUNCE_IP2=$(getent hosts "hanzocd-redis-ha-announce-2" | awk '{ print $1 }')
     if [ -z "$ANNOUNCE_IP2" ]; then
-      echo "Could not resolve the announce address for argocd-redis-ha-announce-2"
+      echo "Could not resolve the announce address for hanzocd-redis-ha-announce-2"
       exit 1
     fi
     sed -i "s/REPLACE_ANNOUNCE2/$ANNOUNCE_IP2/" "$HAPROXY_CONF"
@@ -32114,8 +31979,8 @@ data:
     REDIS_TLS_PORT=
     SENTINEL_CONF=/data/conf/sentinel.conf
     SENTINEL_TLS_PORT=
-    SERVICE=argocd-redis-ha
-    NAMESPACE="argocd"
+    SERVICE=hanzocd-redis-ha
+    NAMESPACE="hanzo-cd"
     SENTINEL_TLS_REPLICATION_ENABLED=false
     REDIS_TLS_REPLICATION_ENABLED=false
     RESOLVE_HOSTNAMES=false
@@ -32160,7 +32025,7 @@ data:
 
     identify_master() {
         echo "Identifying redis master (get-master-addr-by-name).."
-        echo "  using sentinel (argocd-redis-ha), sentinel group name (argocd)"
+        echo "  using sentinel (hanzocd-redis-ha), sentinel group name (argocd)"
         MASTER="$(sentinel_get_master_retry 3)"
         if [ -n "${MASTER}" ]; then
             echo "  $(date) Found redis master (${MASTER})"
@@ -32450,9 +32315,10 @@ kind: ConfigMap
 metadata:
   labels:
     app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
+    app.kubernetes.io/name: hanzocd-redis-ha
     app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-configmap
+  name: hanzocd-redis-ha-configmap
+  namespace: hanzo-cd
 ---
 apiVersion: v1
 data:
@@ -32522,9 +32388,147 @@ kind: ConfigMap
 metadata:
   labels:
     app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
+    app.kubernetes.io/name: hanzocd-redis-ha
     app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-health-configmap
+  name: hanzocd-redis-ha-health-configmap
+  namespace: hanzo-cd
+---
+apiVersion: v1
+data:
+  resource.customizations.ignoreResourceUpdates.ConfigMap: |
+    jqPathExpressions:
+      # Ignore the cluster-autoscaler status
+      - '.metadata.annotations."cluster-autoscaler.kubernetes.io/last-updated"'
+      # Ignore the annotation of the legacy Leases election
+      - '.metadata.annotations."control-plane.alpha.kubernetes.io/leader"'
+  resource.customizations.ignoreResourceUpdates.Endpoints: |
+    jsonPointers:
+      - /metadata
+      - /subsets
+  resource.customizations.ignoreResourceUpdates.all: |
+    jsonPointers:
+      - /status
+  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
+    jqPathExpressions:
+      - '.metadata.annotations."notified.notifications.argoproj.io"'
+      - '.metadata.annotations."apps.hanzo.ai/refresh"'
+      - '.metadata.annotations."apps.hanzo.ai/hydrate"'
+      - '.operation'
+  resource.customizations.ignoreResourceUpdates.apps_ReplicaSet: |
+    jqPathExpressions:
+      - '.metadata.annotations."deployment.kubernetes.io/desired-replicas"'
+      - '.metadata.annotations."deployment.kubernetes.io/max-replicas"'
+      - '.metadata.annotations."rollout.argoproj.io/desired-replicas"'
+  resource.customizations.ignoreResourceUpdates.argoproj.io_Rollout: |
+    jqPathExpressions:
+      - '.metadata.annotations."notified.notifications.argoproj.io"'
+  resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler: |
+    jqPathExpressions:
+      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/behavior"'
+      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/conditions"'
+      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/metrics"'
+      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/current-metrics"'
+  resource.customizations.ignoreResourceUpdates.discovery.k8s.io_EndpointSlice: |
+    jsonPointers:
+      - /metadata
+      - /endpoints
+      - /ports
+  resource.exclusions: |
+    ### Network resources created by the Kubernetes control plane and excluded to reduce the number of watched events and UI clutter
+    - apiGroups:
+      - ''
+      - discovery.k8s.io
+      kinds:
+      - Endpoints
+      - EndpointSlice
+    ### Internal Kubernetes resources excluded reduce the number of watched events
+    - apiGroups:
+      - coordination.k8s.io
+      kinds:
+      - Lease
+    ### Internal Kubernetes Authz/Authn resources excluded reduce the number of watched events
+    - apiGroups:
+      - authentication.k8s.io
+      - authorization.k8s.io
+      kinds:
+      - SelfSubjectReview
+      - TokenReview
+      - LocalSubjectAccessReview
+      - SelfSubjectAccessReview
+      - SelfSubjectRulesReview
+      - SubjectAccessReview
+    ### Intermediate Certificate Request excluded reduce the number of watched events
+    - apiGroups:
+      - certificates.k8s.io
+      kinds:
+      - CertificateSigningRequest
+    - apiGroups:
+      - cert-manager.io
+      kinds:
+      - CertificateRequest
+    ### Cilium internal resources excluded reduce the number of watched events and UI Clutter
+    - apiGroups:
+      - cilium.io
+      kinds:
+      - CiliumIdentity
+      - CiliumEndpoint
+      - CiliumEndpointSlice
+    ### Kyverno intermediate and reporting resources excluded reduce the number of watched events and improve performance
+    - apiGroups:
+      - kyverno.io
+      - reports.kyverno.io
+      - wgpolicyk8s.io
+      kinds:
+      - PolicyReport
+      - ClusterPolicyReport
+      - EphemeralReport
+      - ClusterEphemeralReport
+      - AdmissionReport
+      - ClusterAdmissionReport
+      - BackgroundScanReport
+      - ClusterBackgroundScanReport
+      - UpdateRequest
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-cm
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-cm
+---
+apiVersion: v1
+data:
+  redis.server: hanzocd-redis-ha-haproxy:6379
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-cmd-params-cm
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-cmd-params-cm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-gpg-keys-cm
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-gpg-keys-cm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: notifications-controller
+    app.kubernetes.io/name: hanzocd-notifications-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-cm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-rbac-cm
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-rbac-cm
 ---
 apiVersion: v1
 data:
@@ -32547,45 +32551,167 @@ data:
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/name: argocd-ssh-known-hosts-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-ssh-known-hosts-cm
+    app.kubernetes.io/name: hanzocd-ssh-known-hosts-cm
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-ssh-known-hosts-cm
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/name: argocd-tls-certs-cm
-    app.kubernetes.io/part-of: argocd
-  name: argocd-tls-certs-cm
+    app.kubernetes.io/name: hanzocd-tls-certs-cm
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-tls-certs-cm
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   labels:
     app.kubernetes.io/component: notifications-controller
-    app.kubernetes.io/name: argocd-notifications-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-notifications-secret
+    app.kubernetes.io/name: hanzocd-notifications-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-secret
 type: Opaque
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   labels:
-    app.kubernetes.io/name: argocd-secret
-    app.kubernetes.io/part-of: argocd
-  name: argocd-secret
+    app.kubernetes.io/name: hanzocd-secret
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-secret
 type: Opaque
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/component: applicationset-controller
-    app.kubernetes.io/name: argocd-applicationset-controller
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
     app.kubernetes.io/part-of: argocd
-  name: argocd-applicationset-controller
+  name: hanzocd-redis-ha
+  namespace: hanzo-cd
+spec:
+  clusterIP: None
+  ports:
+  - name: tcp-server
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  - name: tcp-sentinel
+    port: 26379
+    protocol: TCP
+    targetPort: sentinel
+  selector:
+    app.kubernetes.io/name: hanzocd-redis-ha
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
+    app.kubernetes.io/part-of: argocd
+  name: hanzocd-redis-ha-announce-0
+  namespace: hanzo-cd
+spec:
+  ports:
+  - name: tcp-server
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  - name: tcp-sentinel
+    port: 26379
+    protocol: TCP
+    targetPort: sentinel
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/name: hanzocd-redis-ha
+    statefulset.kubernetes.io/pod-name: hanzocd-redis-ha-server-0
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
+    app.kubernetes.io/part-of: argocd
+  name: hanzocd-redis-ha-announce-1
+  namespace: hanzo-cd
+spec:
+  ports:
+  - name: tcp-server
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  - name: tcp-sentinel
+    port: 26379
+    protocol: TCP
+    targetPort: sentinel
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/name: hanzocd-redis-ha
+    statefulset.kubernetes.io/pod-name: hanzocd-redis-ha-server-1
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha
+    app.kubernetes.io/part-of: argocd
+  name: hanzocd-redis-ha-announce-2
+  namespace: hanzo-cd
+spec:
+  ports:
+  - name: tcp-server
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  - name: tcp-sentinel
+    port: 26379
+    protocol: TCP
+    targetPort: sentinel
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/name: hanzocd-redis-ha
+    statefulset.kubernetes.io/pod-name: hanzocd-redis-ha-server-2
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis-ha-haproxy
+    app.kubernetes.io/part-of: argocd
+  name: hanzocd-redis-ha-haproxy
+  namespace: hanzo-cd
+spec:
+  ports:
+  - name: tcp-haproxy
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  - name: http-exporter-port
+    port: 9101
+    protocol: TCP
+    targetPort: metrics-port
+  selector:
+    app.kubernetes.io/name: hanzocd-redis-ha-haproxy
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: applicationset-controller
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-applicationset-controller
 spec:
   ports:
   - name: webhook
@@ -32597,16 +32723,16 @@ spec:
     protocol: TCP
     targetPort: metrics
   selector:
-    app.kubernetes.io/name: argocd-applicationset-controller
+    app.kubernetes.io/name: hanzocd-applicationset-controller
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: commit-server
-    app.kubernetes.io/name: argocd-commit-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-commit-server
+    app.kubernetes.io/name: hanzocd-commit-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-commit-server
 spec:
   ports:
   - name: server
@@ -32618,16 +32744,16 @@ spec:
     protocol: TCP
     targetPort: 8087
   selector:
-    app.kubernetes.io/name: argocd-commit-server
+    app.kubernetes.io/name: hanzocd-commit-server
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: dex-server
-    app.kubernetes.io/name: argocd-dex-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-dex-server
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-dex-server
 spec:
   ports:
   - appProtocol: TCP
@@ -32644,16 +32770,16 @@ spec:
     protocol: TCP
     targetPort: 5558
   selector:
-    app.kubernetes.io/name: argocd-dex-server
+    app.kubernetes.io/name: hanzocd-dex-server
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: metrics
-    app.kubernetes.io/name: argocd-metrics
-    app.kubernetes.io/part-of: argocd
-  name: argocd-metrics
+    app.kubernetes.io/name: hanzocd-metrics
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-metrics
 spec:
   ports:
   - name: metrics
@@ -32661,16 +32787,16 @@ spec:
     protocol: TCP
     targetPort: 8082
   selector:
-    app.kubernetes.io/name: argocd-application-controller
+    app.kubernetes.io/name: hanzocd-application-controller
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: notifications-controller
-    app.kubernetes.io/name: argocd-notifications-controller-metrics
-    app.kubernetes.io/part-of: argocd
-  name: argocd-notifications-controller-metrics
+    app.kubernetes.io/name: hanzocd-notifications-controller-metrics
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-controller-metrics
 spec:
   ports:
   - name: metrics
@@ -32678,133 +32804,16 @@ spec:
     protocol: TCP
     targetPort: 9001
   selector:
-    app.kubernetes.io/name: argocd-notifications-controller
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha
-spec:
-  clusterIP: None
-  ports:
-  - name: tcp-server
-    port: 6379
-    protocol: TCP
-    targetPort: redis
-  - name: tcp-sentinel
-    port: 26379
-    protocol: TCP
-    targetPort: sentinel
-  selector:
-    app.kubernetes.io/name: argocd-redis-ha
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-announce-0
-spec:
-  ports:
-  - name: tcp-server
-    port: 6379
-    protocol: TCP
-    targetPort: redis
-  - name: tcp-sentinel
-    port: 26379
-    protocol: TCP
-    targetPort: sentinel
-  publishNotReadyAddresses: true
-  selector:
-    app.kubernetes.io/name: argocd-redis-ha
-    statefulset.kubernetes.io/pod-name: argocd-redis-ha-server-0
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-announce-1
-spec:
-  ports:
-  - name: tcp-server
-    port: 6379
-    protocol: TCP
-    targetPort: redis
-  - name: tcp-sentinel
-    port: 26379
-    protocol: TCP
-    targetPort: sentinel
-  publishNotReadyAddresses: true
-  selector:
-    app.kubernetes.io/name: argocd-redis-ha
-    statefulset.kubernetes.io/pod-name: argocd-redis-ha-server-1
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-announce-2
-spec:
-  ports:
-  - name: tcp-server
-    port: 6379
-    protocol: TCP
-    targetPort: redis
-  - name: tcp-sentinel
-    port: 26379
-    protocol: TCP
-    targetPort: sentinel
-  publishNotReadyAddresses: true
-  selector:
-    app.kubernetes.io/name: argocd-redis-ha
-    statefulset.kubernetes.io/pod-name: argocd-redis-ha-server-2
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha-haproxy
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-haproxy
-spec:
-  ports:
-  - name: tcp-haproxy
-    port: 6379
-    protocol: TCP
-    targetPort: redis
-  - name: http-exporter-port
-    port: 9101
-    protocol: TCP
-    targetPort: metrics-port
-  selector:
-    app.kubernetes.io/name: argocd-redis-ha-haproxy
-  type: ClusterIP
+    app.kubernetes.io/name: hanzocd-notifications-controller
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: repo-server
-    app.kubernetes.io/name: argocd-repo-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-repo-server
+    app.kubernetes.io/name: hanzocd-repo-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-repo-server
 spec:
   ports:
   - name: server
@@ -32816,16 +32825,16 @@ spec:
     protocol: TCP
     targetPort: 8084
   selector:
-    app.kubernetes.io/name: argocd-repo-server
+    app.kubernetes.io/name: hanzocd-repo-server
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server
 spec:
   ports:
   - name: http
@@ -32837,16 +32846,16 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/name: hanzocd-server
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server-metrics
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server-metrics
+    app.kubernetes.io/name: hanzocd-server-metrics
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server-metrics
 spec:
   ports:
   - name: metrics
@@ -32854,780 +32863,42 @@ spec:
     protocol: TCP
     targetPort: 8083
   selector:
-    app.kubernetes.io/name: argocd-server
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: applicationset-controller
-    app.kubernetes.io/name: argocd-applicationset-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-applicationset-controller
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-applicationset-controller
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: argocd-applicationset-controller
-    spec:
-      containers:
-      - args:
-        - /usr/local/bin/argocd-applicationset-controller
-        env:
-        - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.grpc.enable.txt.service.config
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_GLOBAL_PRESERVED_ANNOTATIONS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.global.preserved.annotations
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_GLOBAL_PRESERVED_LABELS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.global.preserved.labels
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_LEADER_ELECTION
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.enable.leader.election
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER
-          valueFrom:
-            configMapKeyRef:
-              key: repo.server
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_POLICY
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.policy
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_POLICY_OVERRIDE
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.enable.policy.override
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_DEBUG
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.debug
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_LOGFORMAT
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.log.format
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_LOGLEVEL
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.log.level
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
-          valueFrom:
-            configMapKeyRef:
-              key: log.format.timestamp
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_CLIENT_QPS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.k8s.client.qps
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_CLIENT_BURST
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.k8s.client.burst
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_CLIENT_MAX_IDLE_CONNECTIONS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.k8s.client.max.idle.connections
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_TCP_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.k8s.tcp.timeout
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_TCP_KEEPALIVE
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.k8s.tcp.keepalive
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_TLS_HANDSHAKE_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.k8s.tls.handshake.timeout
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_TCP_IDLE_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.k8s.tcp.idle.timeout
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_DRY_RUN
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.dryrun
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_GIT_MODULES_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.enable.git.submodule
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.enable.progressive.syncs
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_TOKENREF_STRICT_MODE
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.enable.tokenref.strict.mode
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_NEW_GIT_FILE_GLOBBING
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.enable.new.git.file.globbing
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_PLAINTEXT
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.repo.server.plaintext
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_STRICT_TLS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.repo.server.strict.tls
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_CA_CERT_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.repo.server.ca.cert.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.repo.server.client.cert.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.repo.server.client.cert.key.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_TIMEOUT_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.repo.server.timeout.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_CONCURRENT_RECONCILIATIONS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.concurrent.reconciliations.max
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_NAMESPACES
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.namespaces
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_SCM_ROOT_CA_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.scm.root.ca.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.allowed.scm.providers
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_SCM_PROVIDERS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.enable.scm.providers
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_GITHUB_API_METRICS
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.enable.github.api.metrics
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_WEBHOOK_PARALLELISM_LIMIT
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.webhook.parallelism.limit
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REQUEUE_AFTER
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.requeue.after
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATIONSET_CONTROLLER_MAX_RESOURCES_STATUS_COUNT
-          valueFrom:
-            configMapKeyRef:
-              key: applicationsetcontroller.status.max.resources.count
-              name: argocd-cmd-params-cm
-              optional: true
-        image: quay.io/argoproj/argocd:latest
-        imagePullPolicy: Always
-        name: argocd-applicationset-controller
-        ports:
-        - containerPort: 7000
-          name: webhook
-        - containerPort: 8080
-          name: metrics
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          seccompProfile:
-            type: RuntimeDefault
-        volumeMounts:
-        - mountPath: /app/config/ssh
-          name: ssh-known-hosts
-        - mountPath: /app/config/tls
-          name: tls-certs
-        - mountPath: /app/config/gpg/source
-          name: gpg-keys
-        - mountPath: /app/config/gpg/keys
-          name: gpg-keyring
-        - mountPath: /tmp
-          name: tmp
-        - mountPath: /app/config/reposerver/tls
-          name: argocd-repo-server-tls
-        - mountPath: /app/config/reposerver/mtls
-          name: argocd-repo-server-mtls
-        - mountPath: /home/argocd/params
-          name: argocd-cmd-params-cm
-      nodeSelector:
-        kubernetes.io/os: linux
-      serviceAccountName: argocd-applicationset-controller
-      volumes:
-      - configMap:
-          name: argocd-ssh-known-hosts-cm
-        name: ssh-known-hosts
-      - configMap:
-          name: argocd-tls-certs-cm
-        name: tls-certs
-      - configMap:
-          name: argocd-gpg-keys-cm
-        name: gpg-keys
-      - emptyDir: {}
-        name: gpg-keyring
-      - emptyDir: {}
-        name: tmp
-      - name: argocd-repo-server-tls
-        secret:
-          items:
-          - key: tls.crt
-            path: tls.crt
-          - key: tls.key
-            path: tls.key
-          - key: ca.crt
-            path: ca.crt
-          optional: true
-          secretName: argocd-repo-server-tls
-      - name: argocd-repo-server-mtls
-        secret:
-          items:
-          - key: client.crt
-            path: client.crt
-          - key: client.key
-            path: client.key
-          - key: server-ca.crt
-            path: server-ca.crt
-          optional: true
-          secretName: argocd-repo-server-mtls
-      - configMap:
-          items:
-          - key: applicationsetcontroller.profile.enabled
-            path: profiler.enabled
-          name: argocd-cmd-params-cm
-          optional: true
-        name: argocd-cmd-params-cm
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: commit-server
-    app.kubernetes.io/name: argocd-commit-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-commit-server
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-commit-server
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: argocd-commit-server
-    spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: argocd-commit-server
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/part-of: argocd
-              topologyKey: kubernetes.io/hostname
-            weight: 5
-      automountServiceAccountToken: false
-      containers:
-      - args:
-        - /usr/local/bin/argocd-commit-server
-        env:
-        - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
-          valueFrom:
-            configMapKeyRef:
-              key: commitserver.grpc.enable.txt.service.config
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_COMMIT_SERVER_LISTEN_ADDRESS
-          valueFrom:
-            configMapKeyRef:
-              key: commitserver.listen.address
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_COMMIT_SERVER_METRICS_LISTEN_ADDRESS
-          valueFrom:
-            configMapKeyRef:
-              key: commitserver.metrics.listen.address
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_COMMIT_SERVER_LOGFORMAT
-          valueFrom:
-            configMapKeyRef:
-              key: commitserver.log.format
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_COMMIT_SERVER_LOGLEVEL
-          valueFrom:
-            configMapKeyRef:
-              key: commitserver.log.level
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
-          valueFrom:
-            configMapKeyRef:
-              key: log.format.timestamp
-              name: argocd-cmd-params-cm
-              optional: true
-        image: quay.io/argoproj/argocd:latest
-        imagePullPolicy: Always
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /healthz?full=true
-            port: 8087
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          timeoutSeconds: 5
-        name: argocd-commit-server
-        ports:
-        - containerPort: 8086
-        - containerPort: 8087
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 8087
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          seccompProfile:
-            type: RuntimeDefault
-        volumeMounts:
-        - mountPath: /app/config/ssh
-          name: ssh-known-hosts
-        - mountPath: /app/config/tls
-          name: tls-certs
-        - mountPath: /app/config/gpg/source
-          name: gpg-keys
-        - mountPath: /app/config/gpg/keys
-          name: gpg-keyring
-        - mountPath: /tmp
-          name: tmp
-      serviceAccountName: argocd-commit-server
-      volumes:
-      - configMap:
-          name: argocd-ssh-known-hosts-cm
-        name: ssh-known-hosts
-      - configMap:
-          name: argocd-tls-certs-cm
-        name: tls-certs
-      - configMap:
-          name: argocd-gpg-keys-cm
-        name: gpg-keys
-      - emptyDir: {}
-        name: gpg-keyring
-      - emptyDir: {}
-        name: tmp
-      - name: argocd-commit-server-tls
-        secret:
-          items:
-          - key: tls.crt
-            path: tls.crt
-          - key: tls.key
-            path: tls.key
-          - key: ca.crt
-            path: ca.crt
-          optional: true
-          secretName: argocd-commit-server-tls
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: dex-server
-    app.kubernetes.io/name: argocd-dex-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-dex-server
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-dex-server
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: argocd-dex-server
-    spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/part-of: argocd
-              topologyKey: kubernetes.io/hostname
-            weight: 5
-      containers:
-      - command:
-        - /shared/argocd-dex
-        - rundex
-        env:
-        - name: ARGOCD_DEX_SERVER_LOGFORMAT
-          valueFrom:
-            configMapKeyRef:
-              key: dexserver.log.format
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_DEX_SERVER_LOGLEVEL
-          valueFrom:
-            configMapKeyRef:
-              key: dexserver.log.level
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
-          valueFrom:
-            configMapKeyRef:
-              key: log.format.timestamp
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_DEX_SERVER_DISABLE_TLS
-          valueFrom:
-            configMapKeyRef:
-              key: dexserver.disable.tls
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: DEX_CONTINUE_ON_CONNECTOR_FAILURE
-          valueFrom:
-            configMapKeyRef:
-              key: dexserver.connector.failure.continue
-              name: argocd-cmd-params-cm
-              optional: true
-        image: ghcr.io/dexidp/dex:v2.45.0
-        imagePullPolicy: Always
-        name: dex
-        ports:
-        - containerPort: 5556
-        - containerPort: 5557
-        - containerPort: 5558
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 1001
-          seccompProfile:
-            type: RuntimeDefault
-        volumeMounts:
-        - mountPath: /shared
-          name: static-files
-        - mountPath: /tmp
-          name: dexconfig
-        - mountPath: /tls
-          name: argocd-dex-server-tls
-      initContainers:
-      - command:
-        - /bin/cp
-        - -n
-        - /usr/local/bin/argocd
-        - /shared/argocd-dex
-        image: quay.io/argoproj/argocd:latest
-        imagePullPolicy: Always
-        name: copyutil
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          seccompProfile:
-            type: RuntimeDefault
-        volumeMounts:
-        - mountPath: /shared
-          name: static-files
-        - mountPath: /tmp
-          name: dexconfig
-      nodeSelector:
-        kubernetes.io/os: linux
-      serviceAccountName: argocd-dex-server
-      volumes:
-      - emptyDir: {}
-        name: static-files
-      - emptyDir: {}
-        name: dexconfig
-      - name: argocd-dex-server-tls
-        secret:
-          items:
-          - key: tls.crt
-            path: tls.crt
-          - key: tls.key
-            path: tls.key
-          - key: ca.crt
-            path: ca.crt
-          optional: true
-          secretName: argocd-dex-server-tls
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: notifications-controller
-    app.kubernetes.io/name: argocd-notifications-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-notifications-controller
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-notifications-controller
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: argocd-notifications-controller
-    spec:
-      containers:
-      - args:
-        - /usr/local/bin/argocd-notifications
-        env:
-        - name: ARGOCD_NOTIFICATIONS_CONTROLLER_LOGFORMAT
-          valueFrom:
-            configMapKeyRef:
-              key: notificationscontroller.log.format
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_NOTIFICATIONS_CONTROLLER_LOGLEVEL
-          valueFrom:
-            configMapKeyRef:
-              key: notificationscontroller.log.level
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT
-          valueFrom:
-            configMapKeyRef:
-              key: notificationscontroller.processors.count
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
-          valueFrom:
-            configMapKeyRef:
-              key: log.format.timestamp
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_NAMESPACES
-          valueFrom:
-            configMapKeyRef:
-              key: application.namespaces
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_NOTIFICATION_CONTROLLER_SELF_SERVICE_NOTIFICATION_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: notificationscontroller.selfservice.enabled
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_PLAINTEXT
-          valueFrom:
-            configMapKeyRef:
-              key: notificationscontroller.repo.server.plaintext
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CA_CERT_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: notificationscontroller.repo.server.ca.cert.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: notificationscontroller.repo.server.client.cert.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: notificationscontroller.repo.server.client.cert.key.path
-              name: argocd-cmd-params-cm
-              optional: true
-        image: quay.io/argoproj/argocd:latest
-        imagePullPolicy: Always
-        livenessProbe:
-          tcpSocket:
-            port: 9001
-        name: argocd-notifications-controller
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /app/config/tls
-          name: tls-certs
-        - mountPath: /app/config/reposerver/tls
-          name: argocd-repo-server-tls
-        - mountPath: /app/config/reposerver/mtls
-          name: argocd-repo-server-mtls
-        workingDir: /app
-      nodeSelector:
-        kubernetes.io/os: linux
-      securityContext:
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
-      serviceAccountName: argocd-notifications-controller
-      volumes:
-      - configMap:
-          name: argocd-tls-certs-cm
-        name: tls-certs
-      - name: argocd-repo-server-tls
-        secret:
-          items:
-          - key: tls.crt
-            path: tls.crt
-          - key: tls.key
-            path: tls.key
-          - key: ca.crt
-            path: ca.crt
-          optional: true
-          secretName: argocd-repo-server-tls
-      - name: argocd-repo-server-mtls
-        secret:
-          items:
-          - key: client.crt
-            path: client.crt
-          - key: client.key
-            path: client.key
-          - key: server-ca.crt
-            path: server-ca.crt
-          optional: true
-          secretName: argocd-repo-server-mtls
+    app.kubernetes.io/name: hanzocd-server
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha-haproxy
+    app.kubernetes.io/name: hanzocd-redis-ha-haproxy
     app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-haproxy
+  name: hanzocd-redis-ha-haproxy
+  namespace: hanzo-cd
 spec:
   replicas: 3
   revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-redis-ha-haproxy
+      app.kubernetes.io/name: hanzocd-redis-ha-haproxy
   strategy:
     type: RollingUpdate
   template:
     metadata:
       annotations:
-        checksum/config: cda181423e5fd3b17fbdaa2433890ba317affcdb717c9c12ec3ded1fd6875177
+        checksum/config: 1e254a4bcaa6c89b1a091f572d20ccddb1e8848e13f7898aa14c8ee34bd7b9f0
         prometheus.io/path: /metrics
         prometheus.io/port: "9101"
         prometheus.io/scrape: "true"
       labels:
-        app.kubernetes.io/name: argocd-redis-ha-haproxy
-      name: argocd-redis-ha-haproxy
+        app.kubernetes.io/name: hanzocd-redis-ha-haproxy
+      name: hanzocd-redis-ha-haproxy
     spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
-                app.kubernetes.io/name: argocd-redis-ha-haproxy
+                app.kubernetes.io/name: hanzocd-redis-ha-haproxy
             topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: true
       containers:
@@ -33636,7 +32907,7 @@ spec:
           valueFrom:
             secretKeyRef:
               key: auth
-              name: argocd-redis
+              name: hanzocd-redis
         image: public.ecr.aws/docker/library/haproxy:3.0.8-alpine
         imagePullPolicy: IfNotPresent
         lifecycle: {}
@@ -33678,7 +32949,7 @@ spec:
         - argocd
         - admin
         - redis-initial-password
-        image: quay.io/argoproj/argocd:latest
+        image: ghcr.io/hanzoai/deploy:latest
         imagePullPolicy: IfNotPresent
         name: secret-init
         securityContext:
@@ -33715,10 +32986,10 @@ spec:
         fsGroup: 99
         runAsNonRoot: true
         runAsUser: 99
-      serviceAccountName: argocd-redis-ha-haproxy
+      serviceAccountName: hanzocd-redis-ha-haproxy
       volumes:
       - configMap:
-          name: argocd-redis-ha-configmap
+          name: hanzocd-redis-ha-configmap
         name: config-volume
       - emptyDir: {}
         name: shared-socket
@@ -33729,19 +33000,352 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: repo-server
-    app.kubernetes.io/name: argocd-repo-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-repo-server
+    app.kubernetes.io/component: applicationset-controller
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-applicationset-controller
 spec:
-  replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-repo-server
+      app.kubernetes.io/name: hanzocd-applicationset-controller
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: argocd-repo-server
+        app.kubernetes.io/name: hanzocd-applicationset-controller
+    spec:
+      containers:
+      - args:
+        - /usr/local/bin/hanzocd-applicationset-controller
+        env:
+        - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.grpc.enable.txt.service.config
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_GLOBAL_PRESERVED_ANNOTATIONS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.global.preserved.annotations
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_GLOBAL_PRESERVED_LABELS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.global.preserved.labels
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_LEADER_ELECTION
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.leader.election
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER
+          valueFrom:
+            configMapKeyRef:
+              key: repo.server
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_POLICY
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.policy
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_POLICY_OVERRIDE
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.policy.override
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_DEBUG
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.debug
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_LOGFORMAT
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.log.format
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_LOGLEVEL
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.log.level
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_CLIENT_QPS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.k8s.client.qps
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_CLIENT_BURST
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.k8s.client.burst
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_CLIENT_MAX_IDLE_CONNECTIONS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.k8s.client.max.idle.connections
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_TCP_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.k8s.tcp.timeout
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_TCP_KEEPALIVE
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.k8s.tcp.keepalive
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_TLS_HANDSHAKE_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.k8s.tls.handshake.timeout
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_TCP_IDLE_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.k8s.tcp.idle.timeout
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_DRY_RUN
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.dryrun
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_GIT_MODULES_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.git.submodule
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.progressive.syncs
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_TOKENREF_STRICT_MODE
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.tokenref.strict.mode
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_NEW_GIT_FILE_GLOBBING
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.new.git.file.globbing
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_PLAINTEXT
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.repo.server.plaintext
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_STRICT_TLS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.repo.server.strict.tls
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_CA_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.repo.server.ca.cert.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.repo.server.client.cert.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.repo.server.client.cert.key.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REPO_SERVER_TIMEOUT_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.repo.server.timeout.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_CONCURRENT_RECONCILIATIONS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.concurrent.reconciliations.max
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_NAMESPACES
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.namespaces
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_SCM_ROOT_CA_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.scm.root.ca.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.allowed.scm.providers
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_SCM_PROVIDERS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.scm.providers
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_GITHUB_API_METRICS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.github.api.metrics
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_WEBHOOK_PARALLELISM_LIMIT
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.webhook.parallelism.limit
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_REQUEUE_AFTER
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.requeue.after
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_MAX_RESOURCES_STATUS_COUNT
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.status.max.resources.count
+              name: hanzocd-cmd-params-cm
+              optional: true
+        image: ghcr.io/hanzoai/deploy:latest
+        imagePullPolicy: Always
+        name: hanzocd-applicationset-controller
+        ports:
+        - containerPort: 7000
+          name: webhook
+        - containerPort: 8080
+          name: metrics
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /app/config/ssh
+          name: ssh-known-hosts
+        - mountPath: /app/config/tls
+          name: tls-certs
+        - mountPath: /app/config/gpg/source
+          name: gpg-keys
+        - mountPath: /app/config/gpg/keys
+          name: gpg-keyring
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /app/config/reposerver/tls
+          name: hanzocd-repo-server-tls
+        - mountPath: /app/config/reposerver/mtls
+          name: hanzocd-repo-server-mtls
+        - mountPath: /home/argocd/params
+          name: hanzocd-cmd-params-cm
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: hanzocd-applicationset-controller
+      volumes:
+      - configMap:
+          name: hanzocd-ssh-known-hosts-cm
+        name: ssh-known-hosts
+      - configMap:
+          name: hanzocd-tls-certs-cm
+        name: tls-certs
+      - configMap:
+          name: hanzocd-gpg-keys-cm
+        name: gpg-keys
+      - emptyDir: {}
+        name: gpg-keyring
+      - emptyDir: {}
+        name: tmp
+      - name: hanzocd-repo-server-tls
+        secret:
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+          - key: ca.crt
+            path: ca.crt
+          optional: true
+          secretName: hanzocd-repo-server-tls
+      - name: hanzocd-repo-server-mtls
+        secret:
+          items:
+          - key: client.crt
+            path: client.crt
+          - key: client.key
+            path: client.key
+          - key: server-ca.crt
+            path: server-ca.crt
+          optional: true
+          secretName: hanzocd-repo-server-mtls
+      - configMap:
+          items:
+          - key: applicationsetcontroller.profile.enabled
+            path: profiler.enabled
+          name: hanzocd-cmd-params-cm
+          optional: true
+        name: hanzocd-cmd-params-cm
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: commit-server
+    app.kubernetes.io/name: hanzocd-commit-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-commit-server
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-commit-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-commit-server
     spec:
       affinity:
         podAntiAffinity:
@@ -33749,293 +33353,699 @@ spec:
           - podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: argocd-repo-server
-              topologyKey: topology.kubernetes.io/zone
+                  app.kubernetes.io/name: hanzocd-commit-server
+              topologyKey: kubernetes.io/hostname
             weight: 100
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app.kubernetes.io/name: argocd-repo-server
-            topologyKey: kubernetes.io/hostname
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/part-of: hanzocd
+              topologyKey: kubernetes.io/hostname
+            weight: 5
       automountServiceAccountToken: false
       containers:
       - args:
-        - /usr/local/bin/argocd-repo-server
+        - /usr/local/bin/hanzocd-commit-server
         env:
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: auth
-              name: argocd-redis
         - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
           valueFrom:
             configMapKeyRef:
-              key: reposerver.grpc.enable.txt.service.config
-              name: argocd-cmd-params-cm
+              key: commitserver.grpc.enable.txt.service.config
+              name: hanzocd-cmd-params-cm
               optional: true
-        - name: ARGOCD_RECONCILIATION_TIMEOUT
+        - name: ARGOCD_COMMIT_SERVER_LISTEN_ADDRESS
           valueFrom:
             configMapKeyRef:
-              key: timeout.reconciliation
-              name: argocd-cm
+              key: commitserver.listen.address
+              name: hanzocd-cmd-params-cm
               optional: true
-        - name: ARGOCD_REPO_SERVER_LOGFORMAT
+        - name: ARGOCD_COMMIT_SERVER_METRICS_LISTEN_ADDRESS
           valueFrom:
             configMapKeyRef:
-              key: reposerver.log.format
-              name: argocd-cmd-params-cm
+              key: commitserver.metrics.listen.address
+              name: hanzocd-cmd-params-cm
               optional: true
-        - name: ARGOCD_REPO_SERVER_LOGLEVEL
+        - name: ARGOCD_COMMIT_SERVER_LOGFORMAT
           valueFrom:
             configMapKeyRef:
-              key: reposerver.log.level
-              name: argocd-cmd-params-cm
+              key: commitserver.log.format
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_COMMIT_SERVER_LOGLEVEL
+          valueFrom:
+            configMapKeyRef:
+              key: commitserver.log.level
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_LOG_FORMAT_TIMESTAMP
           valueFrom:
             configMapKeyRef:
               key: log.format.timestamp
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
+              optional: true
+        image: ghcr.io/hanzoai/deploy:latest
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz?full=true
+            port: 8087
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+        name: hanzocd-commit-server
+        ports:
+        - containerPort: 8086
+        - containerPort: 8087
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8087
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /app/config/ssh
+          name: ssh-known-hosts
+        - mountPath: /app/config/tls
+          name: tls-certs
+        - mountPath: /app/config/gpg/source
+          name: gpg-keys
+        - mountPath: /app/config/gpg/keys
+          name: gpg-keyring
+        - mountPath: /tmp
+          name: tmp
+      serviceAccountName: hanzocd-commit-server
+      volumes:
+      - configMap:
+          name: hanzocd-ssh-known-hosts-cm
+        name: ssh-known-hosts
+      - configMap:
+          name: hanzocd-tls-certs-cm
+        name: tls-certs
+      - configMap:
+          name: hanzocd-gpg-keys-cm
+        name: gpg-keys
+      - emptyDir: {}
+        name: gpg-keyring
+      - emptyDir: {}
+        name: tmp
+      - name: hanzocd-commit-server-tls
+        secret:
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+          - key: ca.crt
+            path: ca.crt
+          optional: true
+          secretName: hanzocd-commit-server-tls
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: dex-server
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-dex-server
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-dex-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-dex-server
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/part-of: hanzocd
+              topologyKey: kubernetes.io/hostname
+            weight: 5
+      containers:
+      - command:
+        - /shared/hanzocd-dex
+        - rundex
+        env:
+        - name: ARGOCD_DEX_SERVER_LOGFORMAT
+          valueFrom:
+            configMapKeyRef:
+              key: dexserver.log.format
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_DEX_SERVER_LOGLEVEL
+          valueFrom:
+            configMapKeyRef:
+              key: dexserver.log.level
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_DEX_SERVER_DISABLE_TLS
+          valueFrom:
+            configMapKeyRef:
+              key: dexserver.disable.tls
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: DEX_CONTINUE_ON_CONNECTOR_FAILURE
+          valueFrom:
+            configMapKeyRef:
+              key: dexserver.connector.failure.continue
+              name: hanzocd-cmd-params-cm
+              optional: true
+        image: ghcr.io/dexidp/dex:v2.45.0
+        imagePullPolicy: Always
+        name: dex
+        ports:
+        - containerPort: 5556
+        - containerPort: 5557
+        - containerPort: 5558
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /shared
+          name: static-files
+        - mountPath: /tmp
+          name: dexconfig
+        - mountPath: /tls
+          name: hanzocd-dex-server-tls
+      initContainers:
+      - command:
+        - /bin/cp
+        - -n
+        - /usr/local/bin/argocd
+        - /shared/hanzocd-dex
+        image: ghcr.io/hanzoai/deploy:latest
+        imagePullPolicy: Always
+        name: copyutil
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /shared
+          name: static-files
+        - mountPath: /tmp
+          name: dexconfig
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: hanzocd-dex-server
+      volumes:
+      - emptyDir: {}
+        name: static-files
+      - emptyDir: {}
+        name: dexconfig
+      - name: hanzocd-dex-server-tls
+        secret:
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+          - key: ca.crt
+            path: ca.crt
+          optional: true
+          secretName: hanzocd-dex-server-tls
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: notifications-controller
+    app.kubernetes.io/name: hanzocd-notifications-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-controller
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-notifications-controller
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-notifications-controller
+    spec:
+      containers:
+      - args:
+        - /usr/local/bin/hanzocd-notifications
+        env:
+        - name: ARGOCD_NOTIFICATIONS_CONTROLLER_LOGFORMAT
+          valueFrom:
+            configMapKeyRef:
+              key: notificationscontroller.log.format
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_NOTIFICATIONS_CONTROLLER_LOGLEVEL
+          valueFrom:
+            configMapKeyRef:
+              key: notificationscontroller.log.level
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_NOTIFICATION_CONTROLLER_PROCESSORS_COUNT
+          valueFrom:
+            configMapKeyRef:
+              key: notificationscontroller.processors.count
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_NAMESPACES
+          valueFrom:
+            configMapKeyRef:
+              key: application.namespaces
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_NOTIFICATION_CONTROLLER_SELF_SERVICE_NOTIFICATION_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              key: notificationscontroller.selfservice.enabled
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_PLAINTEXT
+          valueFrom:
+            configMapKeyRef:
+              key: notificationscontroller.repo.server.plaintext
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CA_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: notificationscontroller.repo.server.ca.cert.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: notificationscontroller.repo.server.client.cert.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_NOTIFICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: notificationscontroller.repo.server.client.cert.key.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        image: ghcr.io/hanzoai/deploy:latest
+        imagePullPolicy: Always
+        livenessProbe:
+          tcpSocket:
+            port: 9001
+        name: hanzocd-notifications-controller
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /app/config/tls
+          name: tls-certs
+        - mountPath: /app/config/reposerver/tls
+          name: hanzocd-repo-server-tls
+        - mountPath: /app/config/reposerver/mtls
+          name: hanzocd-repo-server-mtls
+        workingDir: /app
+      nodeSelector:
+        kubernetes.io/os: linux
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: hanzocd-notifications-controller
+      volumes:
+      - configMap:
+          name: hanzocd-tls-certs-cm
+        name: tls-certs
+      - name: hanzocd-repo-server-tls
+        secret:
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+          - key: ca.crt
+            path: ca.crt
+          optional: true
+          secretName: hanzocd-repo-server-tls
+      - name: hanzocd-repo-server-mtls
+        secret:
+          items:
+          - key: client.crt
+            path: client.crt
+          - key: client.key
+            path: client.key
+          - key: server-ca.crt
+            path: server-ca.crt
+          optional: true
+          secretName: hanzocd-repo-server-mtls
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: repo-server
+    app.kubernetes.io/name: hanzocd-repo-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-repo-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-repo-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-repo-server
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: hanzocd-repo-server
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: hanzocd-repo-server
+            topologyKey: kubernetes.io/hostname
+      automountServiceAccountToken: false
+      containers:
+      - args:
+        - /usr/local/bin/hanzocd-repo-server
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: auth
+              name: hanzocd-redis
+        - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              key: reposerver.grpc.enable.txt.service.config
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_RECONCILIATION_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: timeout.reconciliation
+              name: hanzocd-cm
+              optional: true
+        - name: ARGOCD_REPO_SERVER_LOGFORMAT
+          valueFrom:
+            configMapKeyRef:
+              key: reposerver.log.format
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_REPO_SERVER_LOGLEVEL
+          valueFrom:
+            configMapKeyRef:
+              key: reposerver.log.level
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_PARALLELISM_LIMIT
           valueFrom:
             configMapKeyRef:
               key: reposerver.parallelism.limit
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_LISTEN_ADDRESS
           valueFrom:
             configMapKeyRef:
               key: reposerver.listen.address
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_LISTEN_METRICS_ADDRESS
           valueFrom:
             configMapKeyRef:
               key: reposerver.metrics.listen.address
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_DISABLE_TLS
           valueFrom:
             configMapKeyRef:
               key: reposerver.disable.tls
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_TLS_MIN_VERSION
           valueFrom:
             configMapKeyRef:
               key: reposerver.tls.minversion
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_TLS_MAX_VERSION
           valueFrom:
             configMapKeyRef:
               key: reposerver.tls.maxversion
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_TLS_CIPHERS
           valueFrom:
             configMapKeyRef:
               key: reposerver.tls.ciphers
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_CLIENT_CA_PATH
           valueFrom:
             configMapKeyRef:
               key: reposerver.client.ca.path
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_CACHE_EXPIRATION
           valueFrom:
             configMapKeyRef:
               key: reposerver.repo.cache.expiration
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDIS_SERVER
           valueFrom:
             configMapKeyRef:
               key: redis.server
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDIS_SENTINEL_HOSTS
           valueFrom:
             configMapKeyRef:
               key: redis.sentinel.hosts
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDIS_SENTINEL_MASTER
           valueFrom:
             configMapKeyRef:
               key: redis.sentinel.master
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDIS_COMPRESSION
           valueFrom:
             configMapKeyRef:
               key: redis.compression
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDISDB
           valueFrom:
             configMapKeyRef:
               key: redis.db
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REDIS_KEY_PREFIX
           valueFrom:
             configMapKeyRef:
               key: redis.key.prefix
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_DEFAULT_CACHE_EXPIRATION
           valueFrom:
             configMapKeyRef:
               key: reposerver.default.cache.expiration
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_OTLP_ADDRESS
           valueFrom:
             configMapKeyRef:
               key: otlp.address
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_OTLP_INSECURE
           valueFrom:
             configMapKeyRef:
               key: otlp.insecure
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_OTLP_HEADERS
           valueFrom:
             configMapKeyRef:
               key: otlp.headers
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_OTLP_ATTRS
           valueFrom:
             configMapKeyRef:
               key: otlp.attrs
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_OTLP_SAMPLE_RATIO
           valueFrom:
             configMapKeyRef:
               key: otlp.sample.ratio
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_MAX_COMBINED_DIRECTORY_MANIFESTS_SIZE
           valueFrom:
             configMapKeyRef:
               key: reposerver.max.combined.directory.manifests.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_PLUGIN_TAR_EXCLUSIONS
           valueFrom:
             configMapKeyRef:
               key: reposerver.plugin.tar.exclusions
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_PLUGIN_USE_MANIFEST_GENERATE_PATHS
           valueFrom:
             configMapKeyRef:
               key: reposerver.plugin.use.manifest.generate.paths
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_ALLOW_OUT_OF_BOUNDS_SYMLINKS
           valueFrom:
             configMapKeyRef:
               key: reposerver.allow.oob.symlinks
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_STREAMED_MANIFEST_MAX_TAR_SIZE
           valueFrom:
             configMapKeyRef:
               key: reposerver.streamed.manifest.max.tar.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_STREAMED_MANIFEST_MAX_EXTRACTED_SIZE
           valueFrom:
             configMapKeyRef:
               key: reposerver.streamed.manifest.max.extracted.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_HELM_MANIFEST_MAX_EXTRACTED_SIZE
           valueFrom:
             configMapKeyRef:
               key: reposerver.helm.manifest.max.extracted.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_DISABLE_HELM_MANIFEST_MAX_EXTRACTED_SIZE
           valueFrom:
             configMapKeyRef:
               key: reposerver.disable.helm.manifest.max.extracted.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_OCI_MANIFEST_MAX_EXTRACTED_SIZE
           valueFrom:
             configMapKeyRef:
               key: reposerver.oci.manifest.max.extracted.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_DISABLE_OCI_MANIFEST_MAX_EXTRACTED_SIZE
           valueFrom:
             configMapKeyRef:
               key: reposerver.disable.oci.manifest.max.extracted.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_OCI_LAYER_MEDIA_TYPES
           valueFrom:
             configMapKeyRef:
               key: reposerver.oci.layer.media.types
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REVISION_CACHE_LOCK_TIMEOUT
           valueFrom:
             configMapKeyRef:
               key: reposerver.revision.cache.lock.timeout
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_GIT_MODULES_ENABLED
           valueFrom:
             configMapKeyRef:
               key: reposerver.enable.git.submodule
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_GIT_LS_REMOTE_PARALLELISM_LIMIT
           valueFrom:
             configMapKeyRef:
               key: reposerver.git.lsremote.parallelism.limit
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_GIT_REQUEST_TIMEOUT
           valueFrom:
             configMapKeyRef:
               key: reposerver.git.request.timeout
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_ENABLE_BUILTIN_GIT_CONFIG
           valueFrom:
             configMapKeyRef:
               key: reposerver.enable.builtin.git.config
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_GRPC_MAX_SIZE_MB
           valueFrom:
             configMapKeyRef:
               key: reposerver.grpc.max.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_INCLUDE_HIDDEN_DIRECTORIES
           valueFrom:
             configMapKeyRef:
               key: reposerver.include.hidden.directories
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_HELM_USER_AGENT
           valueFrom:
             configMapKeyRef:
               key: reposerver.helm.user.agent
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: HELM_CACHE_HOME
           value: /helm-working-dir
@@ -34043,7 +34053,7 @@ spec:
           value: /helm-working-dir
         - name: HELM_DATA_HOME
           value: /helm-working-dir
-        image: quay.io/argoproj/argocd:latest
+        image: ghcr.io/hanzoai/deploy:latest
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -34053,7 +34063,7 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 30
           timeoutSeconds: 5
-        name: argocd-repo-server
+        name: hanzocd-repo-server
         ports:
         - containerPort: 8081
         - containerPort: 8084
@@ -34082,9 +34092,9 @@ spec:
         - mountPath: /app/config/gpg/keys
           name: gpg-keyring
         - mountPath: /app/config/reposerver/tls
-          name: argocd-repo-server-tls
+          name: hanzocd-repo-server-tls
         - mountPath: /app/config/reposerver/mtls
-          name: argocd-repo-server-mtls
+          name: hanzocd-repo-server-mtls
         - mountPath: /tmp
           name: tmp
         - mountPath: /helm-working-dir
@@ -34094,11 +34104,11 @@ spec:
       initContainers:
       - args:
         - /bin/cp /usr/local/bin/argocd /var/run/argocd/argocd && /bin/ln -sf /var/run/argocd/argocd
-          /var/run/argocd/argocd-cmp-server
+          /var/run/argocd/hanzocd-cmp-server
         command:
         - sh
         - -c
-        image: quay.io/argoproj/argocd:latest
+        image: ghcr.io/hanzoai/deploy:latest
         name: copyutil
         securityContext:
           allowPrivilegeEscalation: false
@@ -34114,16 +34124,16 @@ spec:
           name: var-files
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: argocd-repo-server
+      serviceAccountName: hanzocd-repo-server
       volumes:
       - configMap:
-          name: argocd-ssh-known-hosts-cm
+          name: hanzocd-ssh-known-hosts-cm
         name: ssh-known-hosts
       - configMap:
-          name: argocd-tls-certs-cm
+          name: hanzocd-tls-certs-cm
         name: tls-certs
       - configMap:
-          name: argocd-gpg-keys-cm
+          name: hanzocd-gpg-keys-cm
         name: gpg-keys
       - emptyDir: {}
         name: gpg-keyring
@@ -34131,7 +34141,7 @@ spec:
         name: tmp
       - emptyDir: {}
         name: helm-working-dir
-      - name: argocd-repo-server-tls
+      - name: hanzocd-repo-server-tls
         secret:
           items:
           - key: tls.crt
@@ -34141,14 +34151,14 @@ spec:
           - key: ca.crt
             path: ca.crt
           optional: true
-          secretName: argocd-repo-server-tls
-      - name: argocd-repo-server-mtls
+          secretName: hanzocd-repo-server-tls
+      - name: hanzocd-repo-server-mtls
         secret:
           items:
           - key: client-ca.crt
             path: client-ca.crt
           optional: true
-          secretName: argocd-repo-server-mtls
+          secretName: hanzocd-repo-server-mtls
       - emptyDir: {}
         name: var-files
       - emptyDir: {}
@@ -34157,27 +34167,27 @@ spec:
           items:
           - key: reposerver.profile.enabled
             path: profiler.enabled
-          name: argocd-cmd-params-cm
+          name: hanzocd-cmd-params-cm
           optional: true
-        name: argocd-cmd-params-cm
+        name: hanzocd-cmd-params-cm
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-server
+      app.kubernetes.io/name: hanzocd-server
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: argocd-server
+        app.kubernetes.io/name: hanzocd-server
     spec:
       affinity:
         podAntiAffinity:
@@ -34185,17 +34195,17 @@ spec:
           - podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: argocd-server
+                  app.kubernetes.io/name: hanzocd-server
               topologyKey: topology.kubernetes.io/zone
             weight: 100
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
-                app.kubernetes.io/name: argocd-server
+                app.kubernetes.io/name: hanzocd-server
             topologyKey: kubernetes.io/hostname
       containers:
       - args:
-        - /usr/local/bin/argocd-server
+        - /usr/local/bin/hanzocd-server
         env:
         - name: ARGOCD_API_SERVER_REPLICAS
           value: "2"
@@ -34203,392 +34213,392 @@ spec:
           valueFrom:
             secretKeyRef:
               key: auth
-              name: argocd-redis
+              name: hanzocd-redis
         - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
           valueFrom:
             configMapKeyRef:
               key: server.grpc.enable.txt.service.config
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_INSECURE
           valueFrom:
             configMapKeyRef:
               key: server.insecure
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_BASEHREF
           valueFrom:
             configMapKeyRef:
               key: server.basehref
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_ROOTPATH
           valueFrom:
             configMapKeyRef:
               key: server.rootpath
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_LOGFORMAT
           valueFrom:
             configMapKeyRef:
               key: server.log.format
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_LOG_LEVEL
           valueFrom:
             configMapKeyRef:
               key: server.log.level
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8S_CLIENT_QPS
           valueFrom:
             configMapKeyRef:
               key: server.k8s.client.qps
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8S_CLIENT_BURST
           valueFrom:
             configMapKeyRef:
               key: server.k8s.client.burst
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8S_CLIENT_MAX_IDLE_CONNECTIONS
           valueFrom:
             configMapKeyRef:
               key: server.k8s.client.max.idle.connections
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8S_TCP_TIMEOUT
           valueFrom:
             configMapKeyRef:
               key: server.k8s.tcp.timeout
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8S_TCP_KEEPALIVE
           valueFrom:
             configMapKeyRef:
               key: server.k8s.tcp.keepalive
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8S_TLS_HANDSHAKE_TIMEOUT
           valueFrom:
             configMapKeyRef:
               key: server.k8s.tls.handshake.timeout
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8S_TCP_IDLE_TIMEOUT
           valueFrom:
             configMapKeyRef:
               key: server.k8s.tcp.idle.timeout
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_REPO_SERVER
           valueFrom:
             configMapKeyRef:
               key: repo.server
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_DEX_SERVER
           valueFrom:
             configMapKeyRef:
               key: server.dex.server
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_DISABLE_AUTH
           valueFrom:
             configMapKeyRef:
               key: server.disable.auth
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_ENABLE_GZIP
           valueFrom:
             configMapKeyRef:
               key: server.enable.gzip
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_REPO_SERVER_TIMEOUT_SECONDS
           valueFrom:
             configMapKeyRef:
               key: server.repo.server.timeout.seconds
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_X_FRAME_OPTIONS
           valueFrom:
             configMapKeyRef:
               key: server.x.frame.options
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_CONTENT_SECURITY_POLICY
           valueFrom:
             configMapKeyRef:
               key: server.content.security.policy
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_REPO_SERVER_PLAINTEXT
           valueFrom:
             configMapKeyRef:
               key: server.repo.server.plaintext
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_REPO_SERVER_STRICT_TLS
           valueFrom:
             configMapKeyRef:
               key: server.repo.server.strict.tls
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_REPO_SERVER_CA_CERT_PATH
           valueFrom:
             configMapKeyRef:
               key: server.repo.server.ca.cert.path
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_REPO_SERVER_CLIENT_CERT_PATH
           valueFrom:
             configMapKeyRef:
               key: server.repo.server.client.cert.path
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_REPO_SERVER_CLIENT_CERT_KEY_PATH
           valueFrom:
             configMapKeyRef:
               key: server.repo.server.client.cert.key.path
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_DEX_SERVER_PLAINTEXT
           valueFrom:
             configMapKeyRef:
               key: server.dex.server.plaintext
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_DEX_SERVER_STRICT_TLS
           valueFrom:
             configMapKeyRef:
               key: server.dex.server.strict.tls
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_TLS_MIN_VERSION
           valueFrom:
             configMapKeyRef:
               key: server.tls.minversion
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_TLS_MAX_VERSION
           valueFrom:
             configMapKeyRef:
               key: server.tls.maxversion
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_TLS_CIPHERS
           valueFrom:
             configMapKeyRef:
               key: server.tls.ciphers
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_CONNECTION_STATUS_CACHE_EXPIRATION
           valueFrom:
             configMapKeyRef:
               key: server.connection.status.cache.expiration
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_OIDC_CACHE_EXPIRATION
           valueFrom:
             configMapKeyRef:
               key: server.oidc.cache.expiration
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_STATIC_ASSETS
           valueFrom:
             configMapKeyRef:
               key: server.staticassets
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APP_STATE_CACHE_EXPIRATION
           valueFrom:
             configMapKeyRef:
               key: server.app.state.cache.expiration
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDIS_SERVER
           valueFrom:
             configMapKeyRef:
               key: redis.server
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDIS_SENTINEL_HOSTS
           valueFrom:
             configMapKeyRef:
               key: redis.sentinel.hosts
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDIS_SENTINEL_MASTER
           valueFrom:
             configMapKeyRef:
               key: redis.sentinel.master
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDIS_COMPRESSION
           valueFrom:
             configMapKeyRef:
               key: redis.compression
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: REDISDB
           valueFrom:
             configMapKeyRef:
               key: redis.db
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REDIS_KEY_PREFIX
           valueFrom:
             configMapKeyRef:
               key: redis.key.prefix
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_DEFAULT_CACHE_EXPIRATION
           valueFrom:
             configMapKeyRef:
               key: server.default.cache.expiration
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_MAX_COOKIE_NUMBER
           valueFrom:
             configMapKeyRef:
               key: server.http.cookie.maxnumber
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_LISTEN_ADDRESS
           valueFrom:
             configMapKeyRef:
               key: server.listen.address
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_METRICS_LISTEN_ADDRESS
           valueFrom:
             configMapKeyRef:
               key: server.metrics.listen.address
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_OTLP_ADDRESS
           valueFrom:
             configMapKeyRef:
               key: otlp.address
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_OTLP_INSECURE
           valueFrom:
             configMapKeyRef:
               key: otlp.insecure
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_OTLP_HEADERS
           valueFrom:
             configMapKeyRef:
               key: otlp.headers
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_OTLP_ATTRS
           valueFrom:
             configMapKeyRef:
               key: otlp.attrs
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_OTLP_SAMPLE_RATIO
           valueFrom:
             configMapKeyRef:
               key: otlp.sample.ratio
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APPLICATION_NAMESPACES
           valueFrom:
             configMapKeyRef:
               key: application.namespaces
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_ENABLE_PROXY_EXTENSION
           valueFrom:
             configMapKeyRef:
               key: server.enable.proxy.extension
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8SCLIENT_RETRY_MAX
           valueFrom:
             configMapKeyRef:
               key: server.k8sclient.retry.max
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_K8SCLIENT_RETRY_BASE_BACKOFF
           valueFrom:
             configMapKeyRef:
               key: server.k8sclient.retry.base.backoff
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_API_CONTENT_TYPES
           valueFrom:
             configMapKeyRef:
               key: server.api.content.types
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_WEBHOOK_PARALLELISM_LIMIT
           valueFrom:
             configMapKeyRef:
               key: server.webhook.parallelism.limit
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_GLOB_CACHE_SIZE
           valueFrom:
             configMapKeyRef:
               key: server.glob.cache.size
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SERVER_WEBHOOK_REFRESH_WORKERS
           valueFrom:
             configMapKeyRef:
               key: server.webhook.refresh.workers
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_NEW_GIT_FILE_GLOBBING
           valueFrom:
             configMapKeyRef:
               key: applicationsetcontroller.enable.new.git.file.globbing
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APPLICATIONSET_CONTROLLER_SCM_ROOT_CA_PATH
           valueFrom:
             configMapKeyRef:
               key: applicationsetcontroller.scm.root.ca.path
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS
           valueFrom:
             configMapKeyRef:
               key: applicationsetcontroller.allowed.scm.providers
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_SCM_PROVIDERS
           valueFrom:
             configMapKeyRef:
               key: applicationsetcontroller.enable.scm.providers
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_GITHUB_API_METRICS
           valueFrom:
             configMapKeyRef:
               key: applicationsetcontroller.enable.github.api.metrics
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_HYDRATOR_ENABLED
           valueFrom:
             configMapKeyRef:
               key: hydrator.enabled
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
         - name: ARGOCD_SYNC_WITH_REPLACE_ALLOWED
           valueFrom:
             configMapKeyRef:
               key: server.sync.replace.allowed
-              name: argocd-cmd-params-cm
+              name: hanzocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:latest
+        image: ghcr.io/hanzoai/deploy:latest
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -34597,7 +34607,7 @@ spec:
           initialDelaySeconds: 3
           periodSeconds: 30
           timeoutSeconds: 5
-        name: argocd-server
+        name: hanzocd-server
         ports:
         - containerPort: 8080
         - containerPort: 8083
@@ -34622,32 +34632,32 @@ spec:
         - mountPath: /app/config/tls
           name: tls-certs
         - mountPath: /app/config/server/tls
-          name: argocd-repo-server-tls
+          name: hanzocd-repo-server-tls
         - mountPath: /app/config/reposerver/mtls
-          name: argocd-repo-server-mtls
+          name: hanzocd-repo-server-mtls
         - mountPath: /app/config/dex/tls
-          name: argocd-dex-server-tls
+          name: hanzocd-dex-server-tls
         - mountPath: /home/argocd
           name: plugins-home
         - mountPath: /tmp
           name: tmp
         - mountPath: /home/argocd/params
-          name: argocd-cmd-params-cm
+          name: hanzocd-cmd-params-cm
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: argocd-server
+      serviceAccountName: hanzocd-server
       volumes:
       - emptyDir: {}
         name: plugins-home
       - emptyDir: {}
         name: tmp
       - configMap:
-          name: argocd-ssh-known-hosts-cm
+          name: hanzocd-ssh-known-hosts-cm
         name: ssh-known-hosts
       - configMap:
-          name: argocd-tls-certs-cm
+          name: hanzocd-tls-certs-cm
         name: tls-certs
-      - name: argocd-repo-server-tls
+      - name: hanzocd-repo-server-tls
         secret:
           items:
           - key: tls.crt
@@ -34657,8 +34667,8 @@ spec:
           - key: ca.crt
             path: ca.crt
           optional: true
-          secretName: argocd-repo-server-tls
-      - name: argocd-dex-server-tls
+          secretName: hanzocd-repo-server-tls
+      - name: hanzocd-dex-server-tls
         secret:
           items:
           - key: tls.crt
@@ -34666,8 +34676,8 @@ spec:
           - key: ca.crt
             path: ca.crt
           optional: true
-          secretName: argocd-dex-server-tls
-      - name: argocd-repo-server-mtls
+          secretName: hanzocd-dex-server-tls
+      - name: hanzocd-repo-server-mtls
         secret:
           items:
           - key: client.crt
@@ -34677,526 +34687,44 @@ spec:
           - key: server-ca.crt
             path: server-ca.crt
           optional: true
-          secretName: argocd-repo-server-mtls
+          secretName: hanzocd-repo-server-mtls
       - configMap:
           items:
           - key: server.profile.enabled
             path: profiler.enabled
-          name: argocd-cmd-params-cm
+          name: hanzocd-cmd-params-cm
           optional: true
-        name: argocd-cmd-params-cm
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  labels:
-    app.kubernetes.io/component: application-controller
-    app.kubernetes.io/name: argocd-application-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-application-controller
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-application-controller
-  serviceName: argocd-application-controller
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: argocd-application-controller
-    spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: argocd-application-controller
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/part-of: argocd
-              topologyKey: kubernetes.io/hostname
-            weight: 5
-      containers:
-      - args:
-        - /usr/local/bin/argocd-application-controller
-        env:
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: auth
-              name: argocd-redis
-        - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
-          valueFrom:
-            configMapKeyRef:
-              key: controller.grpc.enable.txt.service.config
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_CONTROLLER_REPLICAS
-          value: "1"
-        - name: ARGOCD_RECONCILIATION_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: timeout.reconciliation
-              name: argocd-cm
-              optional: true
-        - name: ARGOCD_HARD_RECONCILIATION_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: timeout.hard.reconciliation
-              name: argocd-cm
-              optional: true
-        - name: ARGOCD_RECONCILIATION_JITTER
-          valueFrom:
-            configMapKeyRef:
-              key: timeout.reconciliation.jitter
-              name: argocd-cm
-              optional: true
-        - name: ARGOCD_REPO_ERROR_GRACE_PERIOD_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.repo.error.grace.period.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER
-          valueFrom:
-            configMapKeyRef:
-              key: repo.server
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_TIMEOUT_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.repo.server.timeout.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_STATUS_PROCESSORS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.status.processors
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_OPERATION_PROCESSORS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.operation.processors
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_HYDRATION_PROCESSORS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.hydration.processors
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_LOGFORMAT
-          valueFrom:
-            configMapKeyRef:
-              key: controller.log.format
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_LOGLEVEL
-          valueFrom:
-            configMapKeyRef:
-              key: controller.log.level
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
-          valueFrom:
-            configMapKeyRef:
-              key: log.format.timestamp
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_CLIENT_QPS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8s.client.qps
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_CLIENT_BURST
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8s.client.burst
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_CLIENT_MAX_IDLE_CONNECTIONS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8s.client.max.idle.connections
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_TCP_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8s.tcp.timeout
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_TCP_KEEPALIVE
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8s.tcp.keepalive
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_TLS_HANDSHAKE_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8s.tls.handshake.timeout
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8S_TCP_IDLE_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8s.tcp.idle.timeout
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_CACHE_EXPIRATION
-          valueFrom:
-            configMapKeyRef:
-              key: controller.metrics.cache.expiration
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_APPLICATION_LABELS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.metrics.application.labels
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_APPLICATION_CONDITIONS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.metrics.application.conditions
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_CLUSTER_LABELS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.metrics.cluster.labels
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_TIMEOUT_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.self.heal.timeout.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_BACKOFF_TIMEOUT_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.self.heal.backoff.timeout.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_BACKOFF_FACTOR
-          valueFrom:
-            configMapKeyRef:
-              key: controller.self.heal.backoff.factor
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_BACKOFF_CAP_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.self.heal.backoff.cap.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_BACKOFF_COOLDOWN_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.self.heal.backoff.cooldown.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_SYNC_WAVE_DELAY
-          valueFrom:
-            configMapKeyRef:
-              key: controller.sync.wave.delay.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_SYNC_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: controller.sync.timeout.seconds
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_PLAINTEXT
-          valueFrom:
-            configMapKeyRef:
-              key: controller.repo.server.plaintext
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_STRICT_TLS
-          valueFrom:
-            configMapKeyRef:
-              key: controller.repo.server.strict.tls
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_CA_CERT_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: controller.repo.server.ca.cert.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: controller.repo.server.client.cert.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
-          valueFrom:
-            configMapKeyRef:
-              key: controller.repo.server.client.cert.key.path
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_PERSIST_RESOURCE_HEALTH
-          valueFrom:
-            configMapKeyRef:
-              key: controller.resource.health.persist
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APP_STATE_CACHE_EXPIRATION
-          valueFrom:
-            configMapKeyRef:
-              key: controller.app.state.cache.expiration
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: REDIS_SERVER
-          valueFrom:
-            configMapKeyRef:
-              key: redis.server
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: REDIS_SENTINEL_HOSTS
-          valueFrom:
-            configMapKeyRef:
-              key: redis.sentinel.hosts
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: REDIS_SENTINEL_MASTER
-          valueFrom:
-            configMapKeyRef:
-              key: redis.sentinel.master
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: REDIS_COMPRESSION
-          valueFrom:
-            configMapKeyRef:
-              key: redis.compression
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: REDISDB
-          valueFrom:
-            configMapKeyRef:
-              key: redis.db
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_REDIS_KEY_PREFIX
-          valueFrom:
-            configMapKeyRef:
-              key: redis.key.prefix
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_DEFAULT_CACHE_EXPIRATION
-          valueFrom:
-            configMapKeyRef:
-              key: controller.default.cache.expiration
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_ADDRESS
-          valueFrom:
-            configMapKeyRef:
-              key: otlp.address
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_INSECURE
-          valueFrom:
-            configMapKeyRef:
-              key: otlp.insecure
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_HEADERS
-          valueFrom:
-            configMapKeyRef:
-              key: otlp.headers
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_ATTRS
-          valueFrom:
-            configMapKeyRef:
-              key: otlp.attrs
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_SAMPLE_RATIO
-          valueFrom:
-            configMapKeyRef:
-              key: otlp.sample.ratio
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_NAMESPACES
-          valueFrom:
-            configMapKeyRef:
-              key: application.namespaces
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_CONTROLLER_SHARDING_ALGORITHM
-          valueFrom:
-            configMapKeyRef:
-              key: controller.sharding.algorithm
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_KUBECTL_PARALLELISM_LIMIT
-          valueFrom:
-            configMapKeyRef:
-              key: controller.kubectl.parallelism.limit
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8SCLIENT_RETRY_MAX
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8sclient.retry.max
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_K8SCLIENT_RETRY_BASE_BACKOFF
-          valueFrom:
-            configMapKeyRef:
-              key: controller.k8sclient.retry.base.backoff
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_SERVER_SIDE_DIFF
-          valueFrom:
-            configMapKeyRef:
-              key: controller.diff.server.side
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_IGNORE_NORMALIZER_JQ_TIMEOUT
-          valueFrom:
-            configMapKeyRef:
-              key: controller.ignore.normalizer.jq.timeout
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_HYDRATOR_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              key: hydrator.enabled
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING
-          valueFrom:
-            configMapKeyRef:
-              key: controller.cluster.cache.batch.events.processing
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL
-          valueFrom:
-            configMapKeyRef:
-              key: controller.cluster.cache.events.processing.interval
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: ARGOCD_APPLICATION_CONTROLLER_COMMIT_SERVER
-          valueFrom:
-            configMapKeyRef:
-              key: commit.server
-              name: argocd-cmd-params-cm
-              optional: true
-        - name: KUBECACHEDIR
-          value: /tmp/kubecache
-        image: quay.io/argoproj/argocd:latest
-        imagePullPolicy: Always
-        name: argocd-application-controller
-        ports:
-        - containerPort: 8082
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 8082
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          seccompProfile:
-            type: RuntimeDefault
-        volumeMounts:
-        - mountPath: /app/config/controller/tls
-          name: argocd-repo-server-tls
-        - mountPath: /app/config/reposerver/mtls
-          name: argocd-repo-server-mtls
-        - mountPath: /home/argocd
-          name: argocd-home
-        - mountPath: /home/argocd/params
-          name: argocd-cmd-params-cm
-        - mountPath: /tmp
-          name: argocd-application-controller-tmp
-        workingDir: /home/argocd
-      nodeSelector:
-        kubernetes.io/os: linux
-      serviceAccountName: argocd-application-controller
-      volumes:
-      - emptyDir: {}
-        name: argocd-home
-      - emptyDir: {}
-        name: argocd-application-controller-tmp
-      - name: argocd-repo-server-tls
-        secret:
-          items:
-          - key: tls.crt
-            path: tls.crt
-          - key: tls.key
-            path: tls.key
-          - key: ca.crt
-            path: ca.crt
-          optional: true
-          secretName: argocd-repo-server-tls
-      - name: argocd-repo-server-mtls
-        secret:
-          items:
-          - key: client.crt
-            path: client.crt
-          - key: client.key
-            path: client.key
-          - key: server-ca.crt
-            path: server-ca.crt
-          optional: true
-          secretName: argocd-repo-server-mtls
-      - configMap:
-          items:
-          - key: controller.profile.enabled
-            path: profiler.enabled
-          name: argocd-cmd-params-cm
-          optional: true
-        name: argocd-cmd-params-cm
+        name: hanzocd-cmd-params-cm
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
     app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
+    app.kubernetes.io/name: hanzocd-redis-ha
     app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-server
+  name: hanzocd-redis-ha-server
+  namespace: hanzo-cd
 spec:
   podManagementPolicy: OrderedReady
   replicas: 3
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-redis-ha
-  serviceName: argocd-redis-ha
+      app.kubernetes.io/name: hanzocd-redis-ha
+  serviceName: hanzocd-redis-ha
   template:
     metadata:
       annotations:
-        checksum/init-config: cb9ebad11d288a7327d836f5f0fa63a61806e11078082ffaf78cd15e5b6f04fa
+        checksum/init-config: 4f7972f27c641d27f3270b124c3ed216dac949182fcc05750d0d09cd8b72a158
       labels:
-        app.kubernetes.io/name: argocd-redis-ha
+        app.kubernetes.io/name: hanzocd-redis-ha
     spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
-                app.kubernetes.io/name: argocd-redis-ha
+                app.kubernetes.io/name: hanzocd-redis-ha
             topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: false
       containers:
@@ -35209,7 +34737,7 @@ spec:
           valueFrom:
             secretKeyRef:
               key: auth
-              name: argocd-redis
+              name: hanzocd-redis
         image: public.ecr.aws/docker/library/redis:8.6.4-alpine
         imagePullPolicy: IfNotPresent
         lifecycle:
@@ -35280,7 +34808,7 @@ spec:
           valueFrom:
             secretKeyRef:
               key: auth
-              name: argocd-redis
+              name: hanzocd-redis
         image: public.ecr.aws/docker/library/redis:8.6.4-alpine
         imagePullPolicy: IfNotPresent
         lifecycle:
@@ -35346,16 +34874,16 @@ spec:
         - sh
         env:
         - name: SENTINEL_ID_0
-          value: 3c0d9c0320bb34888c2df5757c718ce6ca992ce6
+          value: 5ffd03139d83b1a77be6be1b1d524d4c692f23be
         - name: SENTINEL_ID_1
-          value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
+          value: 9b46a6f0067b11706e270fa4baa804877d57ca1d
         - name: SENTINEL_ID_2
-          value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
+          value: 0c4181fb6f4f8cc766787f0c766217c8710d4a6a
         - name: AUTH
           valueFrom:
             secretKeyRef:
               key: auth
-              name: argocd-redis
+              name: hanzocd-redis
         image: public.ecr.aws/docker/library/redis:8.6.4-alpine
         imagePullPolicy: IfNotPresent
         livenessProbe:
@@ -35402,16 +34930,16 @@ spec:
         - sh
         env:
         - name: SENTINEL_ID_0
-          value: 3c0d9c0320bb34888c2df5757c718ce6ca992ce6
+          value: 5ffd03139d83b1a77be6be1b1d524d4c692f23be
         - name: SENTINEL_ID_1
-          value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
+          value: 9b46a6f0067b11706e270fa4baa804877d57ca1d
         - name: SENTINEL_ID_2
-          value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
+          value: 0c4181fb6f4f8cc766787f0c766217c8710d4a6a
         - name: AUTH
           valueFrom:
             secretKeyRef:
               key: auth
-              name: argocd-redis
+              name: hanzocd-redis
         image: public.ecr.aws/docker/library/redis:8.6.4-alpine
         imagePullPolicy: IfNotPresent
         name: config-init
@@ -35433,29 +34961,512 @@ spec:
         fsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
-      serviceAccountName: argocd-redis-ha
+      serviceAccountName: hanzocd-redis-ha
       terminationGracePeriodSeconds: 60
       volumes:
       - configMap:
-          name: argocd-redis-ha-configmap
+          name: hanzocd-redis-ha-configmap
         name: config
       - configMap:
           defaultMode: 493
-          name: argocd-redis-ha-health-configmap
+          name: hanzocd-redis-ha-health-configmap
         name: health
       - emptyDir: {}
         name: data
   updateStrategy:
     type: RollingUpdate
 ---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: application-controller
+    app.kubernetes.io/name: hanzocd-application-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-application-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-application-controller
+  serviceName: hanzocd-application-controller
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-application-controller
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: hanzocd-application-controller
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/part-of: hanzocd
+              topologyKey: kubernetes.io/hostname
+            weight: 5
+      containers:
+      - args:
+        - /usr/local/bin/hanzocd-application-controller
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: auth
+              name: hanzocd-redis
+        - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              key: controller.grpc.enable.txt.service.config
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_CONTROLLER_REPLICAS
+          value: "1"
+        - name: ARGOCD_RECONCILIATION_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: timeout.reconciliation
+              name: hanzocd-cm
+              optional: true
+        - name: ARGOCD_HARD_RECONCILIATION_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: timeout.hard.reconciliation
+              name: hanzocd-cm
+              optional: true
+        - name: ARGOCD_RECONCILIATION_JITTER
+          valueFrom:
+            configMapKeyRef:
+              key: timeout.reconciliation.jitter
+              name: hanzocd-cm
+              optional: true
+        - name: ARGOCD_REPO_ERROR_GRACE_PERIOD_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.repo.error.grace.period.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER
+          valueFrom:
+            configMapKeyRef:
+              key: repo.server
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_TIMEOUT_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.repo.server.timeout.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_STATUS_PROCESSORS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.status.processors
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_OPERATION_PROCESSORS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.operation.processors
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_HYDRATION_PROCESSORS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.hydration.processors
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_LOGFORMAT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.log.format
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_LOGLEVEL
+          valueFrom:
+            configMapKeyRef:
+              key: controller.log.level
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_CLIENT_QPS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8s.client.qps
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_CLIENT_BURST
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8s.client.burst
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_CLIENT_MAX_IDLE_CONNECTIONS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8s.client.max.idle.connections
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_TCP_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8s.tcp.timeout
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_TCP_KEEPALIVE
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8s.tcp.keepalive
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_TLS_HANDSHAKE_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8s.tls.handshake.timeout
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8S_TCP_IDLE_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8s.tcp.idle.timeout
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_CACHE_EXPIRATION
+          valueFrom:
+            configMapKeyRef:
+              key: controller.metrics.cache.expiration
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_APPLICATION_LABELS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.metrics.application.labels
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_APPLICATION_CONDITIONS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.metrics.application.conditions
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_CLUSTER_LABELS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.metrics.cluster.labels
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_TIMEOUT_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.self.heal.timeout.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_BACKOFF_TIMEOUT_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.self.heal.backoff.timeout.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_BACKOFF_FACTOR
+          valueFrom:
+            configMapKeyRef:
+              key: controller.self.heal.backoff.factor
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_BACKOFF_CAP_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.self.heal.backoff.cap.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_BACKOFF_COOLDOWN_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.self.heal.backoff.cooldown.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_SYNC_WAVE_DELAY
+          valueFrom:
+            configMapKeyRef:
+              key: controller.sync.wave.delay.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_SYNC_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.sync.timeout.seconds
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_PLAINTEXT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.repo.server.plaintext
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_STRICT_TLS
+          valueFrom:
+            configMapKeyRef:
+              key: controller.repo.server.strict.tls
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_CA_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: controller.repo.server.ca.cert.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: controller.repo.server.client.cert.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_CLIENT_CERT_KEY_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: controller.repo.server.client.cert.key.path
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_PERSIST_RESOURCE_HEALTH
+          valueFrom:
+            configMapKeyRef:
+              key: controller.resource.health.persist
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APP_STATE_CACHE_EXPIRATION
+          valueFrom:
+            configMapKeyRef:
+              key: controller.app.state.cache.expiration
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: REDIS_SERVER
+          valueFrom:
+            configMapKeyRef:
+              key: redis.server
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: REDIS_SENTINEL_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              key: redis.sentinel.hosts
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: REDIS_SENTINEL_MASTER
+          valueFrom:
+            configMapKeyRef:
+              key: redis.sentinel.master
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: REDIS_COMPRESSION
+          valueFrom:
+            configMapKeyRef:
+              key: redis.compression
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: REDISDB
+          valueFrom:
+            configMapKeyRef:
+              key: redis.db
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_REDIS_KEY_PREFIX
+          valueFrom:
+            configMapKeyRef:
+              key: redis.key.prefix
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_DEFAULT_CACHE_EXPIRATION
+          valueFrom:
+            configMapKeyRef:
+              key: controller.default.cache.expiration
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.address
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_INSECURE
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.insecure
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_HEADERS
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.headers
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_ATTRS
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.attrs
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_SAMPLE_RATIO
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.sample.ratio
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_NAMESPACES
+          valueFrom:
+            configMapKeyRef:
+              key: application.namespaces
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_CONTROLLER_SHARDING_ALGORITHM
+          valueFrom:
+            configMapKeyRef:
+              key: controller.sharding.algorithm
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_KUBECTL_PARALLELISM_LIMIT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.kubectl.parallelism.limit
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8SCLIENT_RETRY_MAX
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8sclient.retry.max
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_K8SCLIENT_RETRY_BASE_BACKOFF
+          valueFrom:
+            configMapKeyRef:
+              key: controller.k8sclient.retry.base.backoff
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_SERVER_SIDE_DIFF
+          valueFrom:
+            configMapKeyRef:
+              key: controller.diff.server.side
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_IGNORE_NORMALIZER_JQ_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.ignore.normalizer.jq.timeout
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_HYDRATOR_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              key: hydrator.enabled
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING
+          valueFrom:
+            configMapKeyRef:
+              key: controller.cluster.cache.batch.events.processing
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              key: controller.cluster.cache.events.processing.interval
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_COMMIT_SERVER
+          valueFrom:
+            configMapKeyRef:
+              key: commit.server
+              name: hanzocd-cmd-params-cm
+              optional: true
+        - name: KUBECACHEDIR
+          value: /tmp/kubecache
+        image: ghcr.io/hanzoai/deploy:latest
+        imagePullPolicy: Always
+        name: hanzocd-application-controller
+        ports:
+        - containerPort: 8082
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8082
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /app/config/controller/tls
+          name: hanzocd-repo-server-tls
+        - mountPath: /app/config/reposerver/mtls
+          name: hanzocd-repo-server-mtls
+        - mountPath: /home/argocd
+          name: hanzocd-home
+        - mountPath: /home/argocd/params
+          name: hanzocd-cmd-params-cm
+        - mountPath: /tmp
+          name: hanzocd-application-controller-tmp
+        workingDir: /home/argocd
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: hanzocd-application-controller
+      volumes:
+      - emptyDir: {}
+        name: hanzocd-home
+      - emptyDir: {}
+        name: hanzocd-application-controller-tmp
+      - name: hanzocd-repo-server-tls
+        secret:
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+          - key: ca.crt
+            path: ca.crt
+          optional: true
+          secretName: hanzocd-repo-server-tls
+      - name: hanzocd-repo-server-mtls
+        secret:
+          items:
+          - key: client.crt
+            path: client.crt
+          - key: client.key
+            path: client.key
+          - key: server-ca.crt
+            path: server-ca.crt
+          optional: true
+          secretName: hanzocd-repo-server-mtls
+      - configMap:
+          items:
+          - key: controller.profile.enabled
+            path: profiler.enabled
+          name: hanzocd-cmd-params-cm
+          optional: true
+        name: hanzocd-cmd-params-cm
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: application-controller
-    app.kubernetes.io/name: argocd-application-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-application-controller-network-policy
+    app.kubernetes.io/name: hanzocd-application-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-application-controller-network-policy
 spec:
   ingress:
   - from:
@@ -35464,7 +35475,7 @@ spec:
     - port: 8082
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-application-controller
+      app.kubernetes.io/name: hanzocd-application-controller
   policyTypes:
   - Ingress
 ---
@@ -35473,9 +35484,9 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: applicationset-controller
-    app.kubernetes.io/name: argocd-applicationset-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-applicationset-controller-network-policy
+    app.kubernetes.io/name: hanzocd-applicationset-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-applicationset-controller-network-policy
 spec:
   ingress:
   - from:
@@ -35487,7 +35498,7 @@ spec:
       protocol: TCP
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-applicationset-controller
+      app.kubernetes.io/name: hanzocd-applicationset-controller
   policyTypes:
   - Ingress
 ---
@@ -35496,15 +35507,15 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: commit-server
-    app.kubernetes.io/name: argocd-commit-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-commit-server-network-policy
+    app.kubernetes.io/name: hanzocd-commit-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-commit-server-network-policy
 spec:
   ingress:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-application-controller
+          app.kubernetes.io/name: hanzocd-application-controller
     ports:
     - port: 8086
       protocol: TCP
@@ -35514,7 +35525,7 @@ spec:
     - port: 8087
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-commit-server
+      app.kubernetes.io/name: hanzocd-commit-server
   policyTypes:
   - Ingress
 ---
@@ -35523,15 +35534,15 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: dex-server
-    app.kubernetes.io/name: argocd-dex-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-dex-server-network-policy
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-dex-server-network-policy
 spec:
   ingress:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-server
+          app.kubernetes.io/name: hanzocd-server
     ports:
     - port: 5556
       protocol: TCP
@@ -35544,7 +35555,7 @@ spec:
       protocol: TCP
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-dex-server
+      app.kubernetes.io/name: hanzocd-dex-server
   policyTypes:
   - Ingress
 ---
@@ -35553,9 +35564,9 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: notifications-controller
-    app.kubernetes.io/name: argocd-notifications-controller
-    app.kubernetes.io/part-of: argocd
-  name: argocd-notifications-controller-network-policy
+    app.kubernetes.io/name: hanzocd-notifications-controller
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-notifications-controller-network-policy
 spec:
   ingress:
   - from:
@@ -35565,7 +35576,7 @@ spec:
       protocol: TCP
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-notifications-controller
+      app.kubernetes.io/name: hanzocd-notifications-controller
   policyTypes:
   - Ingress
 ---
@@ -35574,21 +35585,21 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha-haproxy
+    app.kubernetes.io/name: hanzocd-redis-ha-haproxy
     app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-proxy-network-policy
+  name: hanzocd-redis-ha-proxy-network-policy
 spec:
   ingress:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-server
+          app.kubernetes.io/name: hanzocd-server
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-repo-server
+          app.kubernetes.io/name: hanzocd-repo-server
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-application-controller
+          app.kubernetes.io/name: hanzocd-application-controller
     ports:
     - port: 6379
       protocol: TCP
@@ -35601,7 +35612,7 @@ spec:
       protocol: TCP
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-redis-ha-haproxy
+      app.kubernetes.io/name: hanzocd-redis-ha-haproxy
   policyTypes:
   - Ingress
 ---
@@ -35610,9 +35621,9 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis-ha
+    app.kubernetes.io/name: hanzocd-redis-ha
     app.kubernetes.io/part-of: argocd
-  name: argocd-redis-ha-server-network-policy
+  name: hanzocd-redis-ha-server-network-policy
 spec:
   egress:
   - ports:
@@ -35623,7 +35634,7 @@ spec:
     to:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-redis-ha
+          app.kubernetes.io/name: hanzocd-redis-ha
   - ports:
     - port: 53
       protocol: UDP
@@ -35633,10 +35644,10 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-redis-ha-haproxy
+          app.kubernetes.io/name: hanzocd-redis-ha-haproxy
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-redis-ha
+          app.kubernetes.io/name: hanzocd-redis-ha
     ports:
     - port: 6379
       protocol: TCP
@@ -35644,7 +35655,7 @@ spec:
       protocol: TCP
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-redis-ha
+      app.kubernetes.io/name: hanzocd-redis-ha
   policyTypes:
   - Ingress
   - Egress
@@ -35654,24 +35665,24 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: repo-server
-    app.kubernetes.io/name: argocd-repo-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-repo-server-network-policy
+    app.kubernetes.io/name: hanzocd-repo-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-repo-server-network-policy
 spec:
   ingress:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-server
+          app.kubernetes.io/name: hanzocd-server
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-application-controller
+          app.kubernetes.io/name: hanzocd-application-controller
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-notifications-controller
+          app.kubernetes.io/name: hanzocd-notifications-controller
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-applicationset-controller
+          app.kubernetes.io/name: hanzocd-applicationset-controller
     ports:
     - port: 8081
       protocol: TCP
@@ -35681,7 +35692,7 @@ spec:
     - port: 8084
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-repo-server
+      app.kubernetes.io/name: hanzocd-repo-server
   policyTypes:
   - Ingress
 ---
@@ -35690,14 +35701,14 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server-network-policy
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+  name: hanzocd-server-network-policy
 spec:
   ingress:
   - {}
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-server
+      app.kubernetes.io/name: hanzocd-server
   policyTypes:
   - Ingress

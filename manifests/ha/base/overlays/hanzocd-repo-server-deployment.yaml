@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: argocd-repo-server
+  name: hanzocd-repo-server
 spec:
   replicas: 2
   template:
@@ -11,16 +11,16 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
-                app.kubernetes.io/name: argocd-repo-server
+                app.kubernetes.io/name: hanzocd-repo-server
             topologyKey: kubernetes.io/hostname
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 100
             podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: argocd-repo-server
+                  app.kubernetes.io/name: hanzocd-repo-server
               topologyKey: topology.kubernetes.io/zone
       containers:
-      - name: argocd-repo-server
+      - name: hanzocd-repo-server
         args:
-        - /usr/local/bin/argocd-repo-server
+        - /usr/local/bin/hanzocd-repo-server

@@ -265,7 +265,7 @@ func TestProjectSourceIntegrityListCommand(t *testing.T) {
 			sourceIntegrity: dummySourceIntegrity(),
 			projectName:     "not-a-project",
 			expectedStdout:  "",
-			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.argoproj.io \"not-a-project\" not found\n",
+			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.apps.hanzo.ai \"not-a-project\" not found\n",
 		},
 	}
 
@@ -273,7 +273,7 @@ func TestProjectSourceIntegrityListCommand(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			projects := mockProjectClient(t)
 			mockProjectGet(projects, projectName, dummyProject(projectName, tc.sourceIntegrity), nil).Maybe()
-			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.argoproj.io "not-a-project" not found`)).Maybe()
+			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.apps.hanzo.ai "not-a-project" not found`)).Maybe()
 
 			cmd := NewProjectSourceIntegrityGitPoliciesListCommand(&argocdclient.ClientOptions{})
 			out, stderr, _ := runCmd(t, cmd, tc.projectName)
@@ -432,7 +432,7 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 			name:            "Update policy with invalid project name",
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{"not-a-project", "0", "--gpg-mode=strict", "--yes"},
-			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.argoproj.io \"not-a-project\" not found\n",
+			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.apps.hanzo.ai \"not-a-project\" not found\n",
 		},
 		{
 			name:            "Update policy with invalid ID",
@@ -470,7 +470,7 @@ func TestProjectSourceIntegrityUpdateCommand(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			projects := mockProjectClient(t)
 			mockProjectGet(projects, projectName, dummyProject(projectName, tc.sourceIntegrity), nil).Maybe()
-			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.argoproj.io "not-a-project" not found`)).Maybe()
+			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.apps.hanzo.ai "not-a-project" not found`)).Maybe()
 			projects.On("Update", mock.Anything, mock.Anything).Return(nil, nil).Maybe()
 
 			cmd := NewProjectSourceIntegrityGitPoliciesUpdateCommand(&argocdclient.ClientOptions{})
@@ -567,7 +567,7 @@ func TestProjectSourceIntegrityDeleteCommand(t *testing.T) {
 			name:            "Delete policy with invalid project name",
 			sourceIntegrity: dummySourceIntegrity(),
 			args:            []string{"not-a-project", "--yes", "0"},
-			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.argoproj.io \"not-a-project\" not found\n",
+			expectedStderr:  "Error: failed getting project \"not-a-project\": rpc error: code = NotFound desc = appprojects.apps.hanzo.ai \"not-a-project\" not found\n",
 		},
 		{
 			name:            "Delete policy with invalid ID",
@@ -593,7 +593,7 @@ func TestProjectSourceIntegrityDeleteCommand(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			projects := mockProjectClient(t)
 			mockProjectGet(projects, projectName, dummyProject(projectName, tc.sourceIntegrity), nil).Maybe()
-			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.argoproj.io "not-a-project" not found`)).Maybe()
+			mockProjectGet(projects, "not-a-project", nil, errors.New(`rpc error: code = NotFound desc = appprojects.apps.hanzo.ai "not-a-project" not found`)).Maybe()
 			projects.On("Update", mock.Anything, mock.Anything).Return(nil, nil).Maybe()
 
 			cmd := NewProjectSourceIntegrityGitPoliciesDeleteCommand(&argocdclient.ClientOptions{})

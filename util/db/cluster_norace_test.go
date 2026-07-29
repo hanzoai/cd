@@ -26,7 +26,7 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -36,7 +36,7 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -82,7 +82,7 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -92,7 +92,7 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -138,7 +138,7 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -148,7 +148,7 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -176,7 +176,7 @@ func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{"cluster.inClusterEnabled": "false"},
@@ -186,7 +186,7 @@ func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{

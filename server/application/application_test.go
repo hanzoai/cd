@@ -16,13 +16,13 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 
+	"github.com/argoproj/pkg/v2/sync"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
 	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
 	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
 	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
 	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/kubetest"
-	"github.com/argoproj/pkg/v2/sync"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -164,15 +164,15 @@ func newTestAppServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforcer),
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: additionalConfig,
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -351,14 +351,14 @@ func newTestAppServerWithEnforcerConfigureWithBenchmark(b *testing.B, f func(*rb
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{
@@ -2404,7 +2404,7 @@ func TestSyncRBACSettingsError(t *testing.T) {
 	// override settings manager to return error
 	brokenclientset := fake.NewClientset(&corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{

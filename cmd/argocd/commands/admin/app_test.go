@@ -62,7 +62,7 @@ func TestGetReconcileResults_Refresh(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 	}
@@ -71,7 +71,7 @@ func TestGetReconcileResults_Refresh(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{

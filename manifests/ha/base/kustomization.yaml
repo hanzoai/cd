@@ -3,15 +3,15 @@ kind: Kustomization
 
 
 patches:
-- path: overlays/argocd-repo-server-deployment.yaml
-- path: overlays/argocd-server-deployment.yaml
-- path: overlays/argocd-application-controller-statefulset.yaml
-- path: overlays/argocd-cmd-params-cm.yaml
+- path: overlays/hanzocd-repo-server-deployment.yaml
+- path: overlays/hanzocd-server-deployment.yaml
+- path: overlays/hanzocd-application-controller-statefulset.yaml
+- path: overlays/hanzocd-cmd-params-cm.yaml
 
 
 images:
 - name: quay.io/argoproj/argocd
-  newName: quay.io/argoproj/argocd
+  newName: ghcr.io/hanzoai/deploy
   newTag: latest
 resources:
 - ../../base/application-controller

@@ -225,7 +225,7 @@ func TestRejectCreationForInClusterWhenDisabled(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{"cluster.inClusterEnabled": "false"},
@@ -235,7 +235,7 @@ func TestRejectCreationForInClusterWhenDisabled(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -302,7 +302,7 @@ func TestGetCluster(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -312,7 +312,7 @@ func TestGetCluster(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{"cluster.inClusterEnabled": "false"},
@@ -322,7 +322,7 @@ func TestGetCluster(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -434,7 +434,7 @@ func TestListClusters(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -444,7 +444,7 @@ func TestListClusters(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{"cluster.inClusterEnabled": "false"},
@@ -454,7 +454,7 @@ func TestListClusters(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -560,7 +560,7 @@ func TestGetClusterServersByName(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -570,7 +570,7 @@ func TestGetClusterServersByName(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -583,7 +583,7 @@ func TestGetClusterServersByName(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{"cluster.inClusterEnabled": "false"},
@@ -666,7 +666,7 @@ func TestGetClusterServersByName_IsInClusterEnabledLazyLoad(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 		Data: map[string][]byte{
 			"admin.password":   nil,
@@ -731,7 +731,7 @@ func TestCreateCluster_MissingServerSecretKey(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -741,7 +741,7 @@ func TestCreateCluster_MissingServerSecretKey(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -779,7 +779,7 @@ func TestCreateCluster_MissingServerSecretKey(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: fakeNamespace,
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string]string{"cluster.inClusterEnabled": "false"},
@@ -803,7 +803,7 @@ func TestListClusters_MissingServerSecretKey(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -813,7 +813,7 @@ func TestListClusters_MissingServerSecretKey(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -851,7 +851,7 @@ func TestGetClusterServersByName_MissingServerSecretKey(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -861,7 +861,7 @@ func TestGetClusterServersByName_MissingServerSecretKey(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -903,7 +903,7 @@ func TestClusterRaceConditionClusterSecrets(t *testing.T) {
 				Name:      common.ArgoCDConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string]string{},
@@ -913,7 +913,7 @@ func TestClusterRaceConditionClusterSecrets(t *testing.T) {
 				Name:      common.ArgoCDSecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "argocd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string][]byte{

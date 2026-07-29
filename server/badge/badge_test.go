@@ -2,6 +2,7 @@ package badge
 
 import (
 	"fmt"
+	"github.com/hanzoai/deploy/common"
 	"image/color"
 	"net/http"
 	"net/http/httptest"
@@ -23,7 +24,7 @@ import (
 
 func argoCDSecret() *corev1.Secret {
 	return &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{Name: "argocd-secret", Namespace: "default"},
+		ObjectMeta: metav1.ObjectMeta{Name: common.ArgoCDSecretName, Namespace: "default"},
 		Data: map[string][]byte{
 			"admin.password":   []byte("test"),
 			"server.secretkey": []byte("test"),
@@ -34,10 +35,10 @@ func argoCDSecret() *corev1.Secret {
 func argoCDCm() *corev1.ConfigMap {
 	return &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{

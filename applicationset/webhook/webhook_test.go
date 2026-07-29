@@ -791,14 +791,14 @@ func fakeAppWithMatrixAndPullRequestGeneratorWithPluginGenerator(name, namespace
 func newFakeClient(ns string) *kubefake.Clientset {
 	s := runtime.NewScheme()
 	s.AddKnownTypes(v1alpha1.SchemeGroupVersion, &v1alpha1.ApplicationSet{})
-	return kubefake.NewClientset(&corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: "argocd-cm", Namespace: ns, Labels: map[string]string{
-		"app.kubernetes.io/part-of": "argocd",
+	return kubefake.NewClientset(&corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: common.ArgoCDConfigMapName, Namespace: ns, Labels: map[string]string{
+		"app.kubernetes.io/part-of": "hanzocd",
 	}}}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDSecretName,
 			Namespace: ns,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{

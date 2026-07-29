@@ -49,7 +49,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
@@ -59,7 +59,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -110,7 +110,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 		Data: map[string]string{},
 	}
@@ -118,7 +118,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 		Data: map[string][]byte{"admin.password": nil, "server.secretkey": nil},
 	}
@@ -165,7 +165,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 		Data: map[string]string{},
 	}
@@ -173,7 +173,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDSecretName,
 			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "argocd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 		Data: map[string][]byte{"admin.password": nil, "server.secretkey": nil},
 	}

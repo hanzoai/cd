@@ -372,7 +372,10 @@ func getPolicyConfigMap(ctx context.Context, client kubernetes.Interface, namesp
 // checkPolicy checks whether given subject is allowed to execute specified
 // action against specified resource
 func checkPolicy(subject, action, resource, subResource, builtinPolicy, userPolicy, defaultRole, matchMode string, strict bool) bool {
-	enf := rbac.NewEnforcer(nil, "argocd", "argocd-rbac-cm", nil)
+	// Offline policy check: the clientset is nil, so the namespace and configmap
+	// name are never read from the cluster. The name still comes from the constant
+	// so it cannot disagree with the one the server actually loads.
+	enf := rbac.NewEnforcer(nil, "argocd", common.ArgoCDRBACConfigMapName, nil)
 	enf.SetDefaultRole(defaultRole)
 	enf.SetMatchMode(matchMode)
 	if builtinPolicy != "" {
