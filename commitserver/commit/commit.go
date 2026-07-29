@@ -9,11 +9,11 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/commitserver/apiclient"
-	"github.com/hanzoai/deploy/commitserver/metrics"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/io/files"
+	"github.com/hanzoai/cd/commitserver/apiclient"
+	"github.com/hanzoai/cd/commitserver/metrics"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/io/files"
 )
 
 const (

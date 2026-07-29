@@ -17,8 +17,8 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/errors"
 
 	// load the gcp plugin (required to authenticate against GKE clusters).
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"

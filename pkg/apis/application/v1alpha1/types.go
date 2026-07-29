@@ -22,9 +22,9 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	synccommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/cespare/xxhash/v2"
 	"github.com/robfig/cron/v3"
 	log "github.com/sirupsen/logrus"
@@ -43,13 +43,13 @@ import (
 	"k8s.io/client-go/tools/clientcmd/api"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/util/rbac"
+	"github.com/hanzoai/cd/util/rbac"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/helm"
-	utilhttp "github.com/hanzoai/deploy/util/http"
-	"github.com/hanzoai/deploy/util/security"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/helm"
+	utilhttp "github.com/hanzoai/cd/util/http"
+	"github.com/hanzoai/cd/util/security"
 )
 
 // Note: Application and ApplicationSet share the same field structure (TypeMeta, ObjectMeta, spec, status)

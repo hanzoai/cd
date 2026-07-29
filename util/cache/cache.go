@@ -16,9 +16,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/common"
-	certutil "github.com/hanzoai/deploy/util/cert"
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/common"
+	certutil "github.com/hanzoai/cd/util/cert"
+	"github.com/hanzoai/cd/util/env"
 )
 
 const (

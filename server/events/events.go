@@ -3,7 +3,7 @@ package events
 import (
 	corev1 "k8s.io/api/core/v1"
 
-	eventspb "github.com/hanzoai/deploy/pkg/apiclient/events"
+	eventspb "github.com/hanzoai/cd/pkg/apiclient/events"
 )
 
 // K8sEventListToAPIEventList converts a Kubernetes EventList into the typed

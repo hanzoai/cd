@@ -9,14 +9,14 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	"github.com/hanzoai/deploy/cmd/cd/commands/utils"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	gpgkeypkg "github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/templates"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	"github.com/hanzoai/cd/cmd/cd/commands/utils"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	gpgkeypkg "github.com/hanzoai/cd/pkg/apiclient/gpgkey"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/templates"
 )
 
 // NewGPGCommand returns a new instance of an `cd repo` command

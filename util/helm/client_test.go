@@ -23,9 +23,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v2"
 
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/workloadidentity"
-	"github.com/hanzoai/deploy/util/workloadidentity/mocks"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/workloadidentity"
+	"github.com/hanzoai/cd/util/workloadidentity/mocks"
 )
 
 type fakeIndexCache struct {

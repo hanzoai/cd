@@ -7,10 +7,10 @@ package mocks
 import (
 	"context"
 
-	"github.com/hanzoai/deploy/pkg/apiclient/application"
-	"github.com/hanzoai/deploy/pkg/apiclient/events"
-	"github.com/hanzoai/deploy/pkg/apiclient/project"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apiclient/application"
+	"github.com/hanzoai/cd/pkg/apiclient/events"
+	"github.com/hanzoai/cd/pkg/apiclient/project"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	mock "github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
 )

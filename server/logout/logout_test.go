@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/session"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/session"
+	"github.com/hanzoai/cd/util/settings"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/require"

@@ -8,11 +8,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned/fake"
+	"github.com/hanzoai/cd/util/settings"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"

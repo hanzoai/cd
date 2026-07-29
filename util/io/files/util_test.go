@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/hanzoai/deploy/util/io/files"
+	"github.com/hanzoai/cd/util/io/files"
 )
 
 func TestRelativePath(t *testing.T) {

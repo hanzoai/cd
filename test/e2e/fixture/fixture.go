@@ -32,16 +32,16 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apiclient"
-	sessionpkg "github.com/hanzoai/deploy/pkg/apiclient/session"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/errors"
-	grpcutil "github.com/hanzoai/deploy/util/grpc"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apiclient"
+	sessionpkg "github.com/hanzoai/cd/pkg/apiclient/session"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/errors"
+	grpcutil "github.com/hanzoai/cd/util/grpc"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 const (

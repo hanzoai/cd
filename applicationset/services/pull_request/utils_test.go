@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestFilterBranchMatchBadRegexp(t *testing.T) {

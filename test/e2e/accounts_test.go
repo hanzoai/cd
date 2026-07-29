@@ -12,14 +12,14 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	"github.com/hanzoai/deploy/pkg/apiclient/account"
-	"github.com/hanzoai/deploy/pkg/apiclient/session"
-	. "github.com/hanzoai/deploy/test/e2e/fixture"
-	accountFixture "github.com/hanzoai/deploy/test/e2e/fixture/account"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
-	jwtutil "github.com/hanzoai/deploy/util/jwt"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	"github.com/hanzoai/cd/pkg/apiclient/account"
+	"github.com/hanzoai/cd/pkg/apiclient/session"
+	. "github.com/hanzoai/cd/test/e2e/fixture"
+	accountFixture "github.com/hanzoai/cd/test/e2e/fixture/account"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
+	jwtutil "github.com/hanzoai/cd/util/jwt"
 )
 
 func TestCreateAndUseAccount(t *testing.T) {

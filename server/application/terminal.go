@@ -7,7 +7,7 @@ import (
 	"slices"
 	"time"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -19,14 +19,14 @@ import (
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	"k8s.io/streaming/pkg/httpstream"
 
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/rbac"
-	"github.com/hanzoai/deploy/util/security"
-	util_session "github.com/hanzoai/deploy/util/session"
-	"github.com/hanzoai/deploy/util/settings"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	applisters "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/rbac"
+	"github.com/hanzoai/cd/util/security"
+	util_session "github.com/hanzoai/cd/util/session"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 type terminalHandler struct {

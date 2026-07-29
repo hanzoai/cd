@@ -3,7 +3,7 @@ package controllers
 import (
 	"testing"
 
-	argocommon "github.com/hanzoai/deploy/common"
+	argocommon "github.com/hanzoai/cd/common"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -17,7 +17,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 type mockAddRateLimitingInterface struct {

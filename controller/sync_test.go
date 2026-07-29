@@ -10,9 +10,9 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync"
-	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync"
+	synccommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
@@ -21,14 +21,14 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/controller/testdata"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/cd/diff"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/controller/testdata"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/cd/diff"
+	"github.com/hanzoai/cd/util/cd/normalizers"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 type fakeDiscovery struct {

@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	cacheutil "github.com/hanzoai/deploy/util/cache"
-	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	cacheutil "github.com/hanzoai/cd/util/cache"
+	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 )
 
 type fixtures struct {

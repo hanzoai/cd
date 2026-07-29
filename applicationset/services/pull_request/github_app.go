@@ -4,9 +4,9 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/hanzoai/deploy/applicationset/services/github_app_auth"
-	"github.com/hanzoai/deploy/applicationset/services/internal/github_app"
-	appsetutils "github.com/hanzoai/deploy/applicationset/utils"
+	"github.com/hanzoai/cd/applicationset/services/github_app_auth"
+	"github.com/hanzoai/cd/applicationset/services/internal/github_app"
+	appsetutils "github.com/hanzoai/cd/applicationset/utils"
 )
 
 func NewGithubAppService(ctx context.Context, g github_app_auth.Authentication, url, owner, repo string, labels []string, optionalHTTPClient ...*http.Client) (PullRequestService, error) {

@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 var ErrDisallowedSecretAccess = fmt.Errorf("secret must have label %q=%q", common.LabelKeySecretType, common.LabelValueSecretTypeSCMCreds)

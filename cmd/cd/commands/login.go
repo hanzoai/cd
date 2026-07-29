@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	jwtutil "github.com/hanzoai/deploy/util/jwt"
+	jwtutil "github.com/hanzoai/cd/util/jwt"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/golang-jwt/jwt/v5"
@@ -21,18 +21,18 @@ import (
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	sessionpkg "github.com/hanzoai/deploy/pkg/apiclient/session"
-	settingspkg "github.com/hanzoai/deploy/pkg/apiclient/settings"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/errors"
-	grpc_util "github.com/hanzoai/deploy/util/grpc"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/localconfig"
-	oidcutil "github.com/hanzoai/deploy/util/oidc"
-	"github.com/hanzoai/deploy/util/rand"
-	oidcconfig "github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	sessionpkg "github.com/hanzoai/cd/pkg/apiclient/session"
+	settingspkg "github.com/hanzoai/cd/pkg/apiclient/settings"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/errors"
+	grpc_util "github.com/hanzoai/cd/util/grpc"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/localconfig"
+	oidcutil "github.com/hanzoai/cd/util/oidc"
+	"github.com/hanzoai/cd/util/rand"
+	oidcconfig "github.com/hanzoai/cd/util/settings"
 )
 
 // NewLoginCommand returns a new instance of `cd login` command

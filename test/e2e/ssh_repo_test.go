@@ -3,10 +3,10 @@ package e2e
 import (
 	"testing"
 
-	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	. "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
 )
 
 func TestCanAccessInsecureSSHRepo(t *testing.T) {

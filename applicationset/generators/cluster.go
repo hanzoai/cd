@@ -11,9 +11,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/hanzoai/deploy/applicationset/utils"
-	"github.com/hanzoai/deploy/common"
-	argoappsetv1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/applicationset/utils"
+	"github.com/hanzoai/cd/common"
+	argoappsetv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 var _ Generator = (*ClusterGenerator)(nil)

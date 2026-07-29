@@ -15,8 +15,8 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/glob"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/glob"
 )
 
 const (

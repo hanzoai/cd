@@ -7,9 +7,9 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/client-go/rest"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/tracing"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/tracing"
 )
 
 // NewNoopSettings returns cache settings that has not health customizations and don't filter any resources

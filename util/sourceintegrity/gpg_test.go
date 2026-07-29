@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/test"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/test"
 )
 
 const (

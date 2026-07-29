@@ -8,7 +8,7 @@ import (
 	"runtime/debug"
 	"syscall"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -16,13 +16,13 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/yaml"
 
-	cmdutil "github.com/hanzoai/deploy/cmd/util"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/dex"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/settings"
-	"github.com/hanzoai/deploy/util/tls"
+	cmdutil "github.com/hanzoai/cd/cmd/util"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/dex"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/settings"
+	"github.com/hanzoai/cd/util/tls"
 )
 
 func NewCommand() *cobra.Command {

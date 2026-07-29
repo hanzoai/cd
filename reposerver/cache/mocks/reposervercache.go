@@ -8,8 +8,8 @@ import (
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/mock"
 
-	cacheutil "github.com/hanzoai/deploy/util/cache"
-	cacheutilmocks "github.com/hanzoai/deploy/util/cache/mocks"
+	cacheutil "github.com/hanzoai/cd/util/cache"
+	cacheutilmocks "github.com/hanzoai/cd/util/cache/mocks"
 )
 
 type MockCacheType int

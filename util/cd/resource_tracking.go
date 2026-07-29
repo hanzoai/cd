@@ -6,12 +6,12 @@ import (
 	"regexp"
 	"strings"
 
-	kubeutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	kubeutil "github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/kube"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/kube"
 )
 
 var (

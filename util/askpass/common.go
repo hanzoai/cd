@@ -1,7 +1,7 @@
 package askpass
 
 import (
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/util/env"
 )
 
 var SocketPath = "/tmp/reposerver-ask-pass.sock"

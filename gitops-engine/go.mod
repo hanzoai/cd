@@ -1,4 +1,4 @@
-module github.com/hanzoai/deploy/gitops-engine
+module github.com/hanzoai/cd/gitops-engine
 
 go 1.26.1
 

@@ -3,21 +3,21 @@ package commands
 import (
 	"fmt"
 
-	"github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/cd/util/cache"
 
 	"github.com/spf13/cobra"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/admin"
-	"github.com/hanzoai/deploy/cmd/cd/commands/initialize"
-	cmdutil "github.com/hanzoai/deploy/cmd/util"
-	"github.com/hanzoai/deploy/common"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/config"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/localconfig"
+	"github.com/hanzoai/cd/cmd/cd/commands/admin"
+	"github.com/hanzoai/cd/cmd/cd/commands/initialize"
+	cmdutil "github.com/hanzoai/cd/cmd/util"
+	"github.com/hanzoai/cd/common"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/config"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/localconfig"
 )
 
 func init() {

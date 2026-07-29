@@ -9,7 +9,7 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 )
 
 const (

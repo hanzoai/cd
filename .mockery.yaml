@@ -2,61 +2,61 @@ dir: '{{.InterfaceDir}}/mocks'
 filename: '{{.InterfaceName}}.go'
 include-auto-generated: true # Needed since mockery 3.6.1
 packages:
-  github.com/hanzoai/deploy/applicationset/generators:
+  github.com/hanzoai/cd/applicationset/generators:
     interfaces:
       Generator: {}
-  github.com/hanzoai/deploy/applicationset/services:
+  github.com/hanzoai/cd/applicationset/services:
     interfaces:
       Repos: {}
-  github.com/hanzoai/deploy/applicationset/services/scm_provider:
+  github.com/hanzoai/cd/applicationset/services/scm_provider:
     interfaces:
       AWSCodeCommitClient: {}
       AWSTaggingClient: {}
       AzureDevOpsClientFactory: {}
-  github.com/hanzoai/deploy/applicationset/utils:
+  github.com/hanzoai/cd/applicationset/utils:
     interfaces:
       Renderer: {}
-  github.com/hanzoai/deploy/commitserver/apiclient:
+  github.com/hanzoai/cd/commitserver/apiclient:
     interfaces:
       CommitServiceClient: {}
-  github.com/hanzoai/deploy/commitserver/commit:
+  github.com/hanzoai/cd/commitserver/commit:
     interfaces:
       RepoClientFactory: {}
-  github.com/hanzoai/deploy/controller/cache:
+  github.com/hanzoai/cd/controller/cache:
     interfaces:
       LiveStateCache: {}
-  github.com/hanzoai/deploy/controller/hydrator:
+  github.com/hanzoai/cd/controller/hydrator:
     interfaces:
       Dependencies: {}
       RepoGetter: {}
-  github.com/hanzoai/deploy/pkg/apiclient/application:
+  github.com/hanzoai/cd/pkg/apiclient/application:
     interfaces:
       ApplicationServiceClient: {}
-  github.com/hanzoai/deploy/pkg/apiclient/cluster:
+  github.com/hanzoai/cd/pkg/apiclient/cluster:
     interfaces:
       ClusterServiceClient: {}
       ClusterServiceServer: {}
-  github.com/hanzoai/deploy/pkg/apiclient/gpgkey:
+  github.com/hanzoai/cd/pkg/apiclient/gpgkey:
     interfaces:
       GPGKeyServiceClient: {}
-  github.com/hanzoai/deploy/pkg/apiclient/project:
+  github.com/hanzoai/cd/pkg/apiclient/project:
     interfaces:
       ProjectServiceClient: {}
-  github.com/hanzoai/deploy/pkg/apiclient/session:
+  github.com/hanzoai/cd/pkg/apiclient/session:
     interfaces:
       SessionServiceClient: {}
       SessionServiceServer: {}
-  github.com/hanzoai/deploy/pkg/client/clientset/versioned/typed/application/v1alpha1:
+  github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1:
     interfaces:
       AppProjectInterface: {}
-  github.com/hanzoai/deploy/reposerver/apiclient:
+  github.com/hanzoai/cd/reposerver/apiclient:
     interfaces:
       RepoServerServiceClient: {}
       RepoServerService_GenerateManifestWithFilesClient: {}
-  github.com/hanzoai/deploy/server/broadcast:
+  github.com/hanzoai/cd/server/broadcast:
     interfaces:
       Broadcaster: {}
-  github.com/hanzoai/deploy/server/extension:
+  github.com/hanzoai/cd/server/extension:
     interfaces:
       ApplicationGetter: {}
       ExtensionMetricsRegistry: {}
@@ -64,32 +64,32 @@ packages:
       RbacEnforcer: {}
       SettingsGetter: {}
       UserGetter: {}
-  github.com/hanzoai/deploy/util/db:
+  github.com/hanzoai/cd/util/db:
     interfaces:
       ArgoDB: {}
       RepoCredsDB: {}
-  github.com/hanzoai/deploy/util/git:
+  github.com/hanzoai/cd/util/git:
     interfaces:
       Client: {}
-  github.com/hanzoai/deploy/util/helm:
+  github.com/hanzoai/cd/util/helm:
     interfaces:
       Client: {}
-  github.com/hanzoai/deploy/util/io:
+  github.com/hanzoai/cd/util/io:
     interfaces:
       TempPaths: {}
-  github.com/hanzoai/deploy/util/notification/cd:
+  github.com/hanzoai/cd/util/notification/cd:
     interfaces:
       Service: {}
-  github.com/hanzoai/deploy/util/oci:
+  github.com/hanzoai/cd/util/oci:
     interfaces:
       Client: {}
-  github.com/hanzoai/deploy/util/workloadidentity:
+  github.com/hanzoai/cd/util/workloadidentity:
     interfaces:
       TokenProvider: {}
-  github.com/hanzoai/deploy/gitops-engine/pkg/cache:
+  github.com/hanzoai/cd/gitops-engine/pkg/cache:
     interfaces:
       ClusterCache: {}
-  github.com/hanzoai/deploy/gitops-engine/pkg/diff:
+  github.com/hanzoai/cd/gitops-engine/pkg/diff:
     interfaces:
       ServerSideDryRunner: {}
   github.com/go-logr/logr:

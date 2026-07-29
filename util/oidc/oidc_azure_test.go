@@ -11,10 +11,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/util"
-	"github.com/hanzoai/deploy/util/cache"
-	"github.com/hanzoai/deploy/util/crypto"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/util"
+	"github.com/hanzoai/cd/util/cache"
+	"github.com/hanzoai/cd/util/crypto"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func createTestJWT(t *testing.T, claims jwt.MapClaims) string {

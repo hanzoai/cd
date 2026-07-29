@@ -19,10 +19,10 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/hanzoai/deploy/common"
-	cderrors "github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/rand"
+	"github.com/hanzoai/cd/common"
+	cderrors "github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/rand"
 )
 
 const (

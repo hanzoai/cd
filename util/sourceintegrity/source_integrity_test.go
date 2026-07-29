@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/git"
-	gitmocks "github.com/hanzoai/deploy/util/git/mocks"
-	utilTest "github.com/hanzoai/deploy/util/test"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/git"
+	gitmocks "github.com/hanzoai/cd/util/git/mocks"
+	utilTest "github.com/hanzoai/cd/util/test"
 )
 
 func Test_IsGPGEnabled(t *testing.T) {

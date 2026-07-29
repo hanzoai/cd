@@ -8,9 +8,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/cmpserver/plugin"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/cmpserver/plugin"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 // RunningCMPServer starts a CMP server with the given config directory and waits for it to be ready.

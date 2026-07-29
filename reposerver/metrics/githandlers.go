@@ -7,8 +7,8 @@ import (
 
 	"golang.org/x/sync/semaphore"
 
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/git"
 )
 
 var (

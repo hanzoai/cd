@@ -10,8 +10,8 @@ package applicationset
 import (
 	context "context"
 	fmt "fmt"
-	events "github.com/hanzoai/deploy/pkg/apiclient/events"
-	v1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	events "github.com/hanzoai/cd/pkg/apiclient/events"
+	v1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	proto "github.com/gogo/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"

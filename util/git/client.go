@@ -40,12 +40,12 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 
-	"github.com/hanzoai/deploy/common"
-	certutil "github.com/hanzoai/deploy/util/cert"
-	"github.com/hanzoai/deploy/util/env"
-	executil "github.com/hanzoai/deploy/util/exec"
-	"github.com/hanzoai/deploy/util/proxy"
-	"github.com/hanzoai/deploy/util/versions"
+	"github.com/hanzoai/cd/common"
+	certutil "github.com/hanzoai/cd/util/cert"
+	"github.com/hanzoai/cd/util/env"
+	executil "github.com/hanzoai/cd/util/exec"
+	"github.com/hanzoai/cd/util/proxy"
+	"github.com/hanzoai/cd/util/versions"
 )
 
 var (

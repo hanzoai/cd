@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"maps"
 
-	"github.com/hanzoai/deploy/controller/hydrator/types"
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	argoutil "github.com/hanzoai/deploy/util/cd"
+	"github.com/hanzoai/cd/controller/hydrator/types"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	argoutil "github.com/hanzoai/cd/util/cd"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"

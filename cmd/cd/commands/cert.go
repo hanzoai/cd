@@ -13,14 +13,14 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	"github.com/hanzoai/deploy/cmd/cd/commands/utils"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	certificatepkg "github.com/hanzoai/deploy/pkg/apiclient/certificate"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	certutil "github.com/hanzoai/deploy/util/cert"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	"github.com/hanzoai/cd/cmd/cd/commands/utils"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	certificatepkg "github.com/hanzoai/cd/pkg/apiclient/certificate"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	certutil "github.com/hanzoai/cd/util/cert"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // NewCertCommand returns a new instance of an `cd repo` command

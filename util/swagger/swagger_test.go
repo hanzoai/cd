@@ -9,7 +9,7 @@ import (
 	"github.com/go-openapi/loads"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/util/assets"
+	"github.com/hanzoai/cd/util/assets"
 )
 
 func TestSwaggerUI(t *testing.T) {

@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hanzoai/deploy/util/rand"
+	"github.com/hanzoai/cd/util/rand"
 
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 // TestContext defines the interface for test-specific state that enables parallel test execution.

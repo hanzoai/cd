@@ -18,7 +18,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 
-	argoappsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	argoappsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestRenderTemplateParams(t *testing.T) {

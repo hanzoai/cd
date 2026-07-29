@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hanzoai/deploy/util/assets"
-	"github.com/hanzoai/deploy/util/glob"
-	jwtutil "github.com/hanzoai/deploy/util/jwt"
+	"github.com/hanzoai/cd/util/assets"
+	"github.com/hanzoai/cd/util/glob"
+	jwtutil "github.com/hanzoai/cd/util/jwt"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"

@@ -20,7 +20,7 @@ VERSION="v1alpha1"
 
 openapi-gen \
   --go-header-file "${PROJECT_ROOT}/hack/custom-boilerplate.go.txt" \
-  --output-pkg github.com/hanzoai/deploy/pkg/apis/application/${VERSION} \
+  --output-pkg github.com/hanzoai/cd/pkg/apis/application/${VERSION} \
   --report-filename pkg/apis/api-rules/violation_exceptions.list \
   --output-dir "${GOPATH}/src" \
   "$@"

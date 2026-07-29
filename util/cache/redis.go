@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hanzoai/deploy/util/env"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/util/env"
+	utilio "github.com/hanzoai/cd/util/io"
 
 	rediscache "github.com/go-redis/cache/v9"
 	"github.com/redis/go-redis/v9"

@@ -1,6 +1,6 @@
 package commit
 
-import "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+import "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 // getCredentialType returns the type of credential used by the repository.
 func getCredentialType(repo *v1alpha1.Repository) string {

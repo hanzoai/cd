@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/kubetest"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/kubetest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -21,18 +21,18 @@ import (
 	"k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 
-	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
-	"github.com/hanzoai/deploy/pkg/client/informers/externalversions/application/v1alpha1"
-	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/reposerver/apiclient/mocks"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/db"
-	dbmocks "github.com/hanzoai/deploy/util/db/mocks"
-	"github.com/hanzoai/deploy/util/settings"
+	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned/fake"
+	"github.com/hanzoai/cd/pkg/client/informers/externalversions/application/v1alpha1"
+	applisters "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/reposerver/apiclient/mocks"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/db"
+	dbmocks "github.com/hanzoai/cd/util/db/mocks"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func TestRefreshApp(t *testing.T) {

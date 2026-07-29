@@ -3,9 +3,9 @@ package admin
 import (
 	"testing"
 
-	clustermocks "github.com/hanzoai/deploy/gitops-engine/pkg/cache/mocks"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	clustermocks "github.com/hanzoai/cd/gitops-engine/pkg/cache/mocks"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -15,18 +15,18 @@ import (
 	kubefake "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/hanzoai/deploy/common"
-	statecache "github.com/hanzoai/deploy/controller/cache"
-	cachemocks "github.com/hanzoai/deploy/controller/cache/mocks"
-	"github.com/hanzoai/deploy/controller/metrics"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appfake "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
-	cdclient "github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/reposerver/apiclient/mocks"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	statecache "github.com/hanzoai/cd/controller/cache"
+	cachemocks "github.com/hanzoai/cd/controller/cache/mocks"
+	"github.com/hanzoai/cd/controller/metrics"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appfake "github.com/hanzoai/cd/pkg/client/clientset/versioned/fake"
+	cdclient "github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/reposerver/apiclient/mocks"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/cd/normalizers"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func TestGetReconcileResults(t *testing.T) {

@@ -10,8 +10,8 @@ package settings
 import (
 	context "context"
 	fmt "fmt"
-	v1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	oidc "github.com/hanzoai/deploy/server/settings/oidc"
+	v1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	oidc "github.com/hanzoai/cd/server/settings/oidc"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"

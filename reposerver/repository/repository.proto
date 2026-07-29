@@ -1,9 +1,9 @@
 syntax = "proto3";
-option go_package = "github.com/hanzoai/deploy/reposerver/apiclient";
+option go_package = "github.com/hanzoai/cd/reposerver/apiclient";
 
 package repository;
 
-import "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1/generated.proto";
+import "github.com/hanzoai/cd/pkg/apis/application/v1alpha1/generated.proto";
 import "google/protobuf/empty.proto";
 
 // ManifestRequest is a query for manifest generation.

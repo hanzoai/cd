@@ -18,10 +18,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
-	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd"
-	argodiff "github.com/hanzoai/deploy/util/cd/diff"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
+	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd"
+	argodiff "github.com/hanzoai/cd/util/cd/diff"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 )
 
 var appEquality = conversion.EqualitiesOrDie(

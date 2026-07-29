@@ -14,8 +14,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/io/files"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/io/files"
 )
 
 func TestTgz(t *testing.T) {

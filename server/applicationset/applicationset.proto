@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/hanzoai/deploy/pkg/apiclient/applicationset";
+option go_package = "github.com/hanzoai/cd/pkg/apiclient/applicationset";
 
 
 // ApplicationSet Service
@@ -8,8 +8,8 @@ option go_package = "github.com/hanzoai/deploy/pkg/apiclient/applicationset";
 package applicationset;
 
 import "google/api/annotations.proto";
-import "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1/generated.proto";
-import "github.com/hanzoai/deploy/server/events/events.proto";
+import "github.com/hanzoai/cd/pkg/apis/application/v1alpha1/generated.proto";
+import "github.com/hanzoai/cd/server/events/events.proto";
 
 // ApplicationSetGetQuery is a query for applicationset resources
 message ApplicationSetGetQuery {

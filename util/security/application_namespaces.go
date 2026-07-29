@@ -3,7 +3,7 @@ package security
 import (
 	"fmt"
 
-	"github.com/hanzoai/deploy/util/glob"
+	"github.com/hanzoai/cd/util/glob"
 )
 
 func IsNamespaceEnabled(namespace string, serverNamespace string, enabledNamespaces []string) bool {

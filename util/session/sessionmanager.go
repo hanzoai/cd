@@ -25,17 +25,17 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/hanzoai/deploy/server/rbacpolicy"
+	"github.com/hanzoai/cd/server/rbacpolicy"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/dex"
-	"github.com/hanzoai/deploy/util/env"
-	httputil "github.com/hanzoai/deploy/util/http"
-	jwtutil "github.com/hanzoai/deploy/util/jwt"
-	oidcutil "github.com/hanzoai/deploy/util/oidc"
-	passwordutil "github.com/hanzoai/deploy/util/password"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/cd/util/dex"
+	"github.com/hanzoai/cd/util/env"
+	httputil "github.com/hanzoai/cd/util/http"
+	jwtutil "github.com/hanzoai/cd/util/jwt"
+	oidcutil "github.com/hanzoai/cd/util/oidc"
+	passwordutil "github.com/hanzoai/cd/util/password"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // SessionManager generates and validates JWT tokens for login sessions.
@@ -109,7 +109,7 @@ var InvalidLoginErr = status.Errorf(codes.Unauthenticated, invalidLoginError)
 var tracer trace.Tracer
 
 func init() {
-	tracer = otel.Tracer("github.com/hanzoai/deploy/util/session")
+	tracer = otel.Tracer("github.com/hanzoai/cd/util/session")
 }
 
 // Returns the maximum cache size as number of entries

@@ -1,4 +1,4 @@
-PACKAGE=github.com/hanzoai/deploy/common
+PACKAGE=github.com/hanzoai/cd/common
 CURRENT_DIR=$(shell pwd)
 DIST_DIR=${CURRENT_DIR}/dist
 CLI_NAME=hanzocd

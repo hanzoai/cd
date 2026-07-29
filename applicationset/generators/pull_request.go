@@ -12,10 +12,10 @@ import (
 	"github.com/gosimple/slug"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/applicationset/services"
-	pullrequest "github.com/hanzoai/deploy/applicationset/services/pull_request"
-	"github.com/hanzoai/deploy/applicationset/utils"
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/applicationset/services"
+	pullrequest "github.com/hanzoai/cd/applicationset/services/pull_request"
+	"github.com/hanzoai/cd/applicationset/utils"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 const (

@@ -7,15 +7,15 @@ import (
 	gohttp "net/http"
 	"strings"
 
-	"github.com/hanzoai/deploy/util/kube"
+	"github.com/hanzoai/cd/util/kube"
 
-	"github.com/hanzoai/deploy/util/vendored/grpc-http"
+	"github.com/hanzoai/cd/util/vendored/grpc-http"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	//nolint:staticcheck
 	"github.com/golang/protobuf/proto"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 // appFields is a map of fields that can be selected from an application.

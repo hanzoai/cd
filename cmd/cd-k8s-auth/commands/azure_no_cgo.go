@@ -11,7 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/util/workloadidentity"
+	"github.com/hanzoai/cd/util/workloadidentity"
 )
 
 func newAzureCommand() *cobra.Command {

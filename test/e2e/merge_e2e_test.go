@@ -8,11 +8,11 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/applicationsets"
-	"github.com/hanzoai/deploy/test/e2e/fixture/applicationsets/utils"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/cd/test/e2e/fixture/applicationsets"
+	"github.com/hanzoai/cd/test/e2e/fixture/applicationsets/utils"
 
-	"github.com/hanzoai/deploy/pkg/apis/application"
+	"github.com/hanzoai/cd/pkg/apis/application"
 )
 
 func TestListMergeGenerator(t *testing.T) {

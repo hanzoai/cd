@@ -19,10 +19,10 @@ import (
 	kubefake "k8s.io/client-go/kubernetes/fake"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	dbmocks "github.com/hanzoai/deploy/util/db/mocks"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	dbmocks "github.com/hanzoai/cd/util/db/mocks"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func TestGetShardByID_NotEmptyID(t *testing.T) {

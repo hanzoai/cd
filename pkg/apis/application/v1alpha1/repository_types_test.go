@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/helm"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/helm"
 )
 
 func TestGetGitCredsShouldReturnAzureWorkloadIdentityCredsIfSpecified(t *testing.T) {

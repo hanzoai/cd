@@ -1,9 +1,9 @@
 syntax = "proto3";
-option go_package = "github.com/hanzoai/deploy/cmpserver/apiclient";
+option go_package = "github.com/hanzoai/cd/cmpserver/apiclient";
 
 package plugin;
 
-import "github.com/hanzoai/deploy/reposerver/repository/repository.proto";
+import "github.com/hanzoai/cd/reposerver/repository/repository.proto";
 import "google/protobuf/empty.proto";
 
 // AppStreamRequest is the request object used to send the application's

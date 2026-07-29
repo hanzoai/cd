@@ -15,11 +15,11 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	"github.com/hanzoai/deploy/applicationset/generators"
-	appsetmetrics "github.com/hanzoai/deploy/applicationset/metrics"
-	"github.com/hanzoai/deploy/applicationset/services/mocks"
-	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/applicationset/generators"
+	appsetmetrics "github.com/hanzoai/cd/applicationset/metrics"
+	"github.com/hanzoai/cd/applicationset/services/mocks"
+	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func TestRequeueAfter(t *testing.T) {

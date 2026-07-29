@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	utilio "github.com/hanzoai/deploy/util/io"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // execute given action and return false if action have not completed within 1 second

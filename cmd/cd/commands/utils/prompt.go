@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/cd/util/cli"
 )
 
 type Prompt struct {

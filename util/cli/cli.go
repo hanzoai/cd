@@ -16,7 +16,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/text"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	"github.com/google/shlex"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -28,10 +28,10 @@ import (
 	"k8s.io/kubectl/pkg/util/term"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
-	utillog "github.com/hanzoai/deploy/util/log"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
+	utillog "github.com/hanzoai/cd/util/log"
 )
 
 // NewVersionCmd returns a new `version` command to be used as a sub-command to root

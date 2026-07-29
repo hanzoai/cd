@@ -13,15 +13,15 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	"github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
-	projectpkg "github.com/hanzoai/deploy/pkg/apiclient/project"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cli"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/sourceintegrity"
-	"github.com/hanzoai/deploy/util/templates"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	"github.com/hanzoai/cd/pkg/apiclient/gpgkey"
+	projectpkg "github.com/hanzoai/cd/pkg/apiclient/project"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cli"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/sourceintegrity"
+	"github.com/hanzoai/cd/util/templates"
 )
 
 const (

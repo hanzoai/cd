@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/hanzoai/deploy/pkg/apiclient/version";
+option go_package = "github.com/hanzoai/cd/pkg/apiclient/version";
 
 // Version Service
 //

@@ -18,20 +18,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/cache"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/cache/mocks"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/cache"
+	"github.com/hanzoai/cd/gitops-engine/pkg/cache/mocks"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/mock"
 	"k8s.io/client-go/kubernetes/fake"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/controller/metrics"
-	"github.com/hanzoai/deploy/controller/sharding"
-	"github.com/hanzoai/deploy/pkg/apis/application"
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	dbmocks "github.com/hanzoai/deploy/util/db/mocks"
-	argosettings "github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/controller/metrics"
+	"github.com/hanzoai/cd/controller/sharding"
+	"github.com/hanzoai/cd/pkg/apis/application"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	dbmocks "github.com/hanzoai/cd/util/db/mocks"
+	argosettings "github.com/hanzoai/cd/util/settings"
 )
 
 type netError string

@@ -6,13 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	repositorypkg "github.com/hanzoai/deploy/pkg/apiclient/repository"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	"github.com/hanzoai/deploy/test/e2e/fixture/app"
-	"github.com/hanzoai/deploy/test/e2e/fixture/repos"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
+	repositorypkg "github.com/hanzoai/cd/pkg/apiclient/repository"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	"github.com/hanzoai/cd/test/e2e/fixture/app"
+	"github.com/hanzoai/cd/test/e2e/fixture/repos"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 func TestAddRemovePublicRepo(t *testing.T) {

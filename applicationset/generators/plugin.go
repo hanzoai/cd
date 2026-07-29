@@ -13,10 +13,10 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/settings"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/settings"
 
-	"github.com/hanzoai/deploy/applicationset/services/plugin"
+	"github.com/hanzoai/cd/applicationset/services/plugin"
 )
 
 const (

@@ -7,8 +7,8 @@ package mocks
 import (
 	"context"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/db"
 	mock "github.com/stretchr/testify/mock"
 )
 

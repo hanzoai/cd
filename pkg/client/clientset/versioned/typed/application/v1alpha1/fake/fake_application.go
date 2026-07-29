@@ -3,8 +3,8 @@
 package fake
 
 import (
-	v1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	applicationv1alpha1 "github.com/hanzoai/deploy/pkg/client/clientset/versioned/typed/application/v1alpha1"
+	v1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	applicationv1alpha1 "github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1"
 	gentype "k8s.io/client-go/gentype"
 )
 

@@ -11,16 +11,16 @@ import (
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/hanzoai/deploy/util/proxy"
+	"github.com/hanzoai/cd/util/proxy"
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/applicationset/services"
-	"github.com/hanzoai/deploy/applicationset/services/github_app_auth"
-	"github.com/hanzoai/deploy/applicationset/services/scm_provider"
-	"github.com/hanzoai/deploy/applicationset/utils"
-	"github.com/hanzoai/deploy/common"
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/applicationset/services"
+	"github.com/hanzoai/cd/applicationset/services/github_app_auth"
+	"github.com/hanzoai/cd/applicationset/services/scm_provider"
+	"github.com/hanzoai/cd/applicationset/utils"
+	"github.com/hanzoai/cd/common"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 var _ Generator = (*SCMProviderGenerator)(nil)

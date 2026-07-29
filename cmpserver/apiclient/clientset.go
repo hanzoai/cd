@@ -5,8 +5,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/env"
 
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	log "github.com/sirupsen/logrus"
@@ -14,8 +14,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	grpc_util "github.com/hanzoai/deploy/util/grpc"
-	utilio "github.com/hanzoai/deploy/util/io"
+	grpc_util "github.com/hanzoai/cd/util/grpc"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // MaxGRPCMessageSize contains max grpc message size

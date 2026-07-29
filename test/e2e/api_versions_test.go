@@ -3,8 +3,8 @@ package e2e
 import (
 	"testing"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
 )
 
 func TestAppSyncWrongVersion(t *testing.T) {

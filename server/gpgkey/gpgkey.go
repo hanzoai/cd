@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	gpgkeypkg "github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/rbac"
-	"github.com/hanzoai/deploy/util/sourceintegrity"
+	gpgkeypkg "github.com/hanzoai/cd/pkg/apiclient/gpgkey"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/rbac"
+	"github.com/hanzoai/cd/util/sourceintegrity"
 )
 
 // Server provides a service of type GPGKeyService

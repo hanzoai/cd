@@ -11,9 +11,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/localconfig"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/localconfig"
 )
 
 // NewContextCommand returns a new instance of an `cd ctx` command

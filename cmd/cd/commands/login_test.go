@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	utilio "github.com/hanzoai/deploy/util/io"
+	utilio "github.com/hanzoai/cd/util/io"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"

@@ -10,11 +10,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 
-	"github.com/hanzoai/deploy/common"
-	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/rbac"
-	settings_util "github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/rbac"
+	settings_util "github.com/hanzoai/cd/util/settings"
 )
 
 func init() {

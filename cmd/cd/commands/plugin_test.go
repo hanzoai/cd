@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

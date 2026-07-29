@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -21,12 +21,12 @@ import (
 
 	"k8s.io/utils/ptr"
 
-	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
-	applicationmocks "github.com/hanzoai/deploy/pkg/apiclient/application/mocks"
-	settingspkg "github.com/hanzoai/deploy/pkg/apiclient/settings"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	repoapiclient "github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
+	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
+	applicationmocks "github.com/hanzoai/cd/pkg/apiclient/application/mocks"
+	settingspkg "github.com/hanzoai/cd/pkg/apiclient/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	repoapiclient "github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 )
 
 // Test data helpers

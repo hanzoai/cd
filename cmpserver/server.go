@@ -20,13 +20,13 @@ import (
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/hanzoai/deploy/cmpserver/apiclient"
-	"github.com/hanzoai/deploy/cmpserver/plugin"
-	"github.com/hanzoai/deploy/common"
-	versionpkg "github.com/hanzoai/deploy/pkg/apiclient/version"
-	"github.com/hanzoai/deploy/server/version"
-	"github.com/hanzoai/deploy/util/errors"
-	grpc_util "github.com/hanzoai/deploy/util/grpc"
+	"github.com/hanzoai/cd/cmpserver/apiclient"
+	"github.com/hanzoai/cd/cmpserver/plugin"
+	"github.com/hanzoai/cd/common"
+	versionpkg "github.com/hanzoai/cd/pkg/apiclient/version"
+	"github.com/hanzoai/cd/server/version"
+	"github.com/hanzoai/cd/util/errors"
+	grpc_util "github.com/hanzoai/cd/util/grpc"
 )
 
 // ArgoCDCMPServer is the config management plugin server implementation

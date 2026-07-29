@@ -10,7 +10,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/cd/util/cli"
 
 	log "github.com/sirupsen/logrus"
 )

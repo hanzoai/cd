@@ -12,13 +12,13 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/utils"
-	"github.com/hanzoai/deploy/common"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	"github.com/hanzoai/deploy/util/cli"
-	errutil "github.com/hanzoai/deploy/util/errors"
-	grpc_util "github.com/hanzoai/deploy/util/grpc"
-	"github.com/hanzoai/deploy/util/localconfig"
+	"github.com/hanzoai/cd/cmd/cd/commands/utils"
+	"github.com/hanzoai/cd/common"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	"github.com/hanzoai/cd/util/cli"
+	errutil "github.com/hanzoai/cd/util/errors"
+	grpc_util "github.com/hanzoai/cd/util/grpc"
+	"github.com/hanzoai/cd/util/localconfig"
 )
 
 // NewLogoutCommand returns a new instance of `cd logout` command

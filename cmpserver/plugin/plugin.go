@@ -16,15 +16,15 @@ import (
 
 	"github.com/golang/protobuf/ptypes/empty"
 
-	"github.com/hanzoai/deploy/cmpserver/apiclient"
-	"github.com/hanzoai/deploy/common"
-	repoclient "github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/util/buffered_context"
-	"github.com/hanzoai/deploy/util/cmp"
-	argoexec "github.com/hanzoai/deploy/util/exec"
-	"github.com/hanzoai/deploy/util/io/files"
+	"github.com/hanzoai/cd/cmpserver/apiclient"
+	"github.com/hanzoai/cd/common"
+	repoclient "github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/util/buffered_context"
+	"github.com/hanzoai/cd/util/cmp"
+	argoexec "github.com/hanzoai/cd/util/exec"
+	"github.com/hanzoai/cd/util/io/files"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	securejoin "github.com/cyphar/filepath-securejoin"
 	"github.com/mattn/go-zglob"
 	log "github.com/sirupsen/logrus"

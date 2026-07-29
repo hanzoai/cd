@@ -9,7 +9,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	log "github.com/sirupsen/logrus"
 
-	utilio "github.com/hanzoai/deploy/util/io"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 const (

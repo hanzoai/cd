@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	accountFixture "github.com/hanzoai/deploy/test/e2e/fixture/account"
-	"github.com/hanzoai/deploy/test/e2e/fixture/app"
-	clusterFixture "github.com/hanzoai/deploy/test/e2e/fixture/cluster"
-	"github.com/hanzoai/deploy/util/errors"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	accountFixture "github.com/hanzoai/cd/test/e2e/fixture/account"
+	"github.com/hanzoai/cd/test/e2e/fixture/app"
+	clusterFixture "github.com/hanzoai/cd/test/e2e/fixture/cluster"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 func TestClusterList(t *testing.T) {

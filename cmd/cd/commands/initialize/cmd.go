@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/cd/util/cli"
 )
 
 func RetrieveContextIfChanged(contextFlag *pflag.Flag) string {

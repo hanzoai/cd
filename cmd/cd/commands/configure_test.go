@@ -4,12 +4,12 @@ import (
 	"os"
 	"testing"
 
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/util/localconfig"
+	"github.com/hanzoai/cd/util/localconfig"
 )
 
 func TestNewConfigureCommand_PromptsEnabled_DefaultTrue(t *testing.T) {

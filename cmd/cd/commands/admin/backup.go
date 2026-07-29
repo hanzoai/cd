@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -20,13 +20,13 @@ import (
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/utils"
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/localconfig"
-	secutil "github.com/hanzoai/deploy/util/security"
+	"github.com/hanzoai/cd/cmd/cd/commands/utils"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/localconfig"
+	secutil "github.com/hanzoai/cd/util/security"
 )
 
 // NewExportCommand defines a new command for exporting Kubernetes and Hanzo CD resources.

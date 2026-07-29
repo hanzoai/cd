@@ -4,10 +4,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	"github.com/hanzoai/deploy/test/e2e/fixture/applicationsets/utils"
-	"github.com/hanzoai/deploy/test/e2e/fixture/gpgkeys"
-	"github.com/hanzoai/deploy/test/e2e/fixture/repos"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	"github.com/hanzoai/cd/test/e2e/fixture/applicationsets/utils"
+	"github.com/hanzoai/cd/test/e2e/fixture/gpgkeys"
+	"github.com/hanzoai/cd/test/e2e/fixture/repos"
 )
 
 // Context implements the "given" part of given/when/then

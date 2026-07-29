@@ -30,16 +30,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/oauth2"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/server/settings/oidc"
-	"github.com/hanzoai/deploy/util/cache"
-	"github.com/hanzoai/deploy/util/crypto"
-	"github.com/hanzoai/deploy/util/dex"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/server/settings/oidc"
+	"github.com/hanzoai/cd/util/cache"
+	"github.com/hanzoai/cd/util/crypto"
+	"github.com/hanzoai/cd/util/dex"
 
-	httputil "github.com/hanzoai/deploy/util/http"
-	jwtutil "github.com/hanzoai/deploy/util/jwt"
-	"github.com/hanzoai/deploy/util/rand"
-	"github.com/hanzoai/deploy/util/settings"
+	httputil "github.com/hanzoai/cd/util/http"
+	jwtutil "github.com/hanzoai/cd/util/jwt"
+	"github.com/hanzoai/cd/util/rand"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 var ErrInvalidRedirectURL = errors.New("invalid return URL")
@@ -48,7 +48,7 @@ var ErrInvalidRedirectURL = errors.New("invalid return URL")
 var tracer trace.Tracer
 
 func init() {
-	tracer = otel.Tracer("github.com/hanzoai/deploy/util/oidc")
+	tracer = otel.Tracer("github.com/hanzoai/cd/util/oidc")
 }
 
 const (

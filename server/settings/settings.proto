@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/hanzoai/deploy/pkg/apiclient/settings";
+option go_package = "github.com/hanzoai/cd/pkg/apiclient/settings";
 
 // Settings Service
 //
@@ -8,8 +8,8 @@ package cluster;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1/generated.proto";
-import "github.com/hanzoai/deploy/server/settings/oidc/claims.proto";
+import "github.com/hanzoai/cd/pkg/apis/application/v1alpha1/generated.proto";
+import "github.com/hanzoai/cd/server/settings/oidc/claims.proto";
 
 // SettingsQuery is a query for Hanzo CD settings
 message SettingsQuery {

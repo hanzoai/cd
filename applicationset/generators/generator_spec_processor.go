@@ -7,11 +7,11 @@ import (
 	"github.com/jeremywohl/flatten"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/hanzoai/deploy/applicationset/utils"
+	"github.com/hanzoai/cd/applicationset/utils"
 
 	"k8s.io/apimachinery/pkg/labels"
 
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 	"dario.cat/mergo"
 	log "github.com/sirupsen/logrus"

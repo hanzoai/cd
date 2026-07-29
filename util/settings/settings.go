@@ -33,17 +33,17 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"sigs.k8s.io/yaml"
 
-	enginecache "github.com/hanzoai/deploy/gitops-engine/pkg/cache"
-	timeutil "github.com/hanzoai/deploy/util/vendored/time"
+	enginecache "github.com/hanzoai/cd/gitops-engine/pkg/cache"
+	timeutil "github.com/hanzoai/cd/util/vendored/time"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/server/settings/oidc"
-	"github.com/hanzoai/deploy/util"
-	"github.com/hanzoai/deploy/util/crypto"
-	"github.com/hanzoai/deploy/util/kube"
-	"github.com/hanzoai/deploy/util/password"
-	tlsutil "github.com/hanzoai/deploy/util/tls"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/server/settings/oidc"
+	"github.com/hanzoai/cd/util"
+	"github.com/hanzoai/cd/util/crypto"
+	"github.com/hanzoai/cd/util/kube"
+	"github.com/hanzoai/cd/util/password"
+	tlsutil "github.com/hanzoai/cd/util/tls"
 )
 
 var CommitMessageTemplate = `{{.metadata.drySha | trunc 7}}: {{ .metadata.subject }}

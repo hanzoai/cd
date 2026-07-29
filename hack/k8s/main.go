@@ -9,9 +9,9 @@ import (
 
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/util/errors"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 )
 

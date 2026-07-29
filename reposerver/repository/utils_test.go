@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/cd/reposerver/apiclient"
 )
 
 func TestGetCommonRootPath(t *testing.T) {

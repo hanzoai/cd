@@ -9,13 +9,13 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	"github.com/hanzoai/deploy/cmd/cd/commands/utils"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	projectpkg "github.com/hanzoai/deploy/pkg/apiclient/project"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	"github.com/hanzoai/cd/cmd/cd/commands/utils"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	projectpkg "github.com/hanzoai/cd/pkg/apiclient/project"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // NewProjectWindowsCommand returns a new instance of the `cd proj windows` command

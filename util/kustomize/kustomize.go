@@ -17,17 +17,17 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/util/io"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	certutil "github.com/hanzoai/deploy/util/cert"
-	executil "github.com/hanzoai/deploy/util/exec"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/proxy"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	certutil "github.com/hanzoai/cd/util/cert"
+	executil "github.com/hanzoai/cd/util/exec"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/proxy"
 )
 
 // Image represents a Docker image in the format NAME[:TAG].

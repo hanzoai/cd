@@ -14,12 +14,12 @@ import (
 	"go.yaml.in/yaml/v3"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/commitserver/apiclient"
-	"github.com/hanzoai/deploy/common"
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/hydrator"
-	"github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/commitserver/apiclient"
+	"github.com/hanzoai/cd/common"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/hydrator"
+	"github.com/hanzoai/cd/util/io"
 )
 
 var sprigFuncMap = sprig.GenericFuncMap() // a singleton for better performance

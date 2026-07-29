@@ -31,15 +31,15 @@ import (
 	"k8s.io/klog/v2/textlogger"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
-	resourceutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/resource"
-	kubeutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
+	resourceutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
+	kubeutil "github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 )
 
-var tracer = otel.Tracer("github.com/hanzoai/deploy/gitops-engine/pkg/sync")
+var tracer = otel.Tracer("github.com/hanzoai/cd/gitops-engine/pkg/sync")
 
 // taskTraceAttrs returns the standard cd.resource.* span attributes for a sync task.
 func taskTraceAttrs(t *syncTask) []attribute.KeyValue {

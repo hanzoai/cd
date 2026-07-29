@@ -17,7 +17,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/util/env"
 )
 
 // Argo CD component names

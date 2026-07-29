@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/cd/util/cache"
 )
 
 type MockCacheClient struct {

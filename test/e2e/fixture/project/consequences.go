@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/hanzoai/deploy/pkg/apiclient/project"
+	"github.com/hanzoai/cd/pkg/apiclient/project"
 
-	"github.com/hanzoai/deploy/test/e2e/fixture"
+	"github.com/hanzoai/cd/test/e2e/fixture"
 )
 
 // this implements the "then" part of given/when/then

@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/pkg/apiclient/session"
+	"github.com/hanzoai/cd/pkg/apiclient/session"
 
-	"github.com/hanzoai/deploy/pkg/apiclient/account"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/pkg/apiclient/account"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // this implements the "then" part of given/when/then

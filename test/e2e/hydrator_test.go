@@ -6,11 +6,11 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
 
-	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	. "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 )
 
 func restrictedDefaultProjectSpec() AppProjectSpec {

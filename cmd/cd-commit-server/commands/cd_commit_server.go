@@ -13,17 +13,17 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc/health/grpc_health_v1"
 
-	cmdutil "github.com/hanzoai/deploy/cmd/util"
-	"github.com/hanzoai/deploy/commitserver"
-	"github.com/hanzoai/deploy/commitserver/apiclient"
-	"github.com/hanzoai/deploy/commitserver/metrics"
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/askpass"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/healthz"
-	utilio "github.com/hanzoai/deploy/util/io"
+	cmdutil "github.com/hanzoai/cd/cmd/util"
+	"github.com/hanzoai/cd/commitserver"
+	"github.com/hanzoai/cd/commitserver/apiclient"
+	"github.com/hanzoai/cd/commitserver/metrics"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/askpass"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/healthz"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // NewCommand returns a new instance of an cd-commit-server command

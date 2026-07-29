@@ -1,7 +1,7 @@
 syntax = "proto3";
-option go_package = "github.com/hanzoai/deploy/commitserver/apiclient";
+option go_package = "github.com/hanzoai/cd/commitserver/apiclient";
 
-import "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1/generated.proto";
+import "github.com/hanzoai/cd/pkg/apis/application/v1alpha1/generated.proto";
 
 // CommitHydratedManifestsRequest is the request to commit hydrated manifests to a repository.
 message CommitHydratedManifestsRequest {

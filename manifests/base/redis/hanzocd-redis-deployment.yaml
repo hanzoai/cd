@@ -20,7 +20,7 @@ spec:
             - cd
             - admin
             - redis-initial-password
-          image: ghcr.io/hanzoai/deploy:latest
+          image: ghcr.io/hanzoai/cd:latest
           imagePullPolicy: IfNotPresent
           name: secret-init
           securityContext:

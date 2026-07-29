@@ -5,7 +5,7 @@ import (
 	"net/http/pprof"
 	"os"
 
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/util/env"
 )
 
 var enableProfilerFilePath = env.StringFromEnv("CD_ENABLE_PROFILER_FILE_PATH", "/home/cd/params/profiler.enabled")

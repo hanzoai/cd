@@ -7,14 +7,14 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	utilio "github.com/hanzoai/cd/util/io"
 
-	sessionmgr "github.com/hanzoai/deploy/util/session"
+	sessionmgr "github.com/hanzoai/cd/util/session"
 
-	settingspkg "github.com/hanzoai/deploy/pkg/apiclient/settings"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/settings"
+	settingspkg "github.com/hanzoai/cd/pkg/apiclient/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // Server provides a Settings service

@@ -3,16 +3,16 @@ package e2e
 import (
 	"testing"
 
-	"github.com/hanzoai/deploy/test/e2e/fixture"
+	"github.com/hanzoai/cd/test/e2e/fixture"
 
-	"github.com/hanzoai/deploy/pkg/apiclient/project"
+	"github.com/hanzoai/cd/pkg/apiclient/project"
 
 	"github.com/stretchr/testify/assert"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	accountFixture "github.com/hanzoai/deploy/test/e2e/fixture/account"
-	projectFixture "github.com/hanzoai/deploy/test/e2e/fixture/project"
-	repoFixture "github.com/hanzoai/deploy/test/e2e/fixture/repos"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	accountFixture "github.com/hanzoai/cd/test/e2e/fixture/account"
+	projectFixture "github.com/hanzoai/cd/test/e2e/fixture/project"
+	repoFixture "github.com/hanzoai/cd/test/e2e/fixture/repos"
 )
 
 func TestCreateRepositoryWithProject(t *testing.T) {

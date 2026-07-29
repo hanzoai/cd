@@ -10,7 +10,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/util/io/files"
+	"github.com/hanzoai/cd/util/io/files"
 )
 
 func CloseAndDelete(f *os.File) {

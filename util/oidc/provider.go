@@ -15,8 +15,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/oauth2"
 
-	"github.com/hanzoai/deploy/util/security"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/util/security"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // Provider is a wrapper around go-oidc provider to also provide the following features:

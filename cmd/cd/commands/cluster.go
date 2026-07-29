@@ -18,17 +18,17 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	cmdutil "github.com/hanzoai/deploy/cmd/util"
-	"github.com/hanzoai/deploy/common"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	clusterpkg "github.com/hanzoai/deploy/pkg/apiclient/cluster"
-	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/clusterauth"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/text/label"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	cmdutil "github.com/hanzoai/cd/cmd/util"
+	"github.com/hanzoai/cd/common"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	clusterpkg "github.com/hanzoai/cd/pkg/apiclient/cluster"
+	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/clusterauth"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/text/label"
 )
 
 const (

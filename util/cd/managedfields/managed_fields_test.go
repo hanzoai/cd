@@ -10,10 +10,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/scheme"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/scheme"
 
-	"github.com/hanzoai/deploy/util/cd/managedfields"
-	"github.com/hanzoai/deploy/util/cd/testdata"
+	"github.com/hanzoai/cd/util/cd/managedfields"
+	"github.com/hanzoai/cd/util/cd/testdata"
 )
 
 func TestNormalize(t *testing.T) {

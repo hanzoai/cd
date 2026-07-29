@@ -15,14 +15,14 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apiclient/account"
-	"github.com/hanzoai/deploy/server/rbacpolicy"
-	"github.com/hanzoai/deploy/util/password"
-	"github.com/hanzoai/deploy/util/rbac"
-	"github.com/hanzoai/deploy/util/security"
-	"github.com/hanzoai/deploy/util/session"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apiclient/account"
+	"github.com/hanzoai/cd/server/rbacpolicy"
+	"github.com/hanzoai/cd/util/password"
+	"github.com/hanzoai/cd/util/rbac"
+	"github.com/hanzoai/cd/util/security"
+	"github.com/hanzoai/cd/util/session"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // Server provides a Session service

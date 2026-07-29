@@ -4,15 +4,15 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/hanzoai/deploy/util/cd"
+	"github.com/hanzoai/cd/util/cd"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	repocredspkg "github.com/hanzoai/deploy/pkg/apiclient/repocreds"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/rbac"
+	repocredspkg "github.com/hanzoai/cd/pkg/apiclient/repocreds"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/rbac"
 )
 
 // Server provides a Repository service

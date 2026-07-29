@@ -19,8 +19,8 @@ import (
 	informersv1 "k8s.io/client-go/informers/core/v1"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util"
 )
 
 func (db *db) listSecretsByType(types ...string) ([]*corev1.Secret, error) {

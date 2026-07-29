@@ -7,7 +7,7 @@ package mocks
 import (
 	"context"
 
-	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/cd/reposerver/apiclient"
 	mock "github.com/stretchr/testify/mock"
 	"google.golang.org/grpc/metadata"
 )

@@ -10,7 +10,7 @@ import (
 
 	"code.gitea.io/sdk/gitea"
 
-	"github.com/hanzoai/deploy/util/proxy"
+	"github.com/hanzoai/cd/util/proxy"
 )
 
 type GiteaProvider struct {
