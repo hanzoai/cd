@@ -2,7 +2,7 @@ module github.com/argoproj/argo-cd/v3
 
 // Do NOT bump this unless we use features that are only available on the new version.
 // If you want to update the BUILD version, just update go versions in the release workflows.
-go 1.26.4
+go 1.26.5
 
 require (
 	code.gitea.io/sdk/gitea v0.25.1
