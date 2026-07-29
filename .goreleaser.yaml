@@ -89,7 +89,7 @@ release:
   footer: |
     **Full Changelog**: https://github.com/{{ .Env.GORELEASER_CURRENT_REPOSITORY }}/compare/{{ .PreviousTag }}...{{ .Tag }}
 
-    <a href="https://argoproj.github.io/cd/"><img src="https://raw.githubusercontent.com/argoproj/argo-site/master/content/pages/cd/gitops-cd.png" width="25%" ></a>
+    <a href="https://hanzoai.github.io/cd/"><img src="https://raw.githubusercontent.com/hanzoai/argo-site/master/content/pages/cd/gitops-cd.png" width="25%" ></a>
 
 snapshot: #### To be removed for PR
   version_template: '2.6.0'

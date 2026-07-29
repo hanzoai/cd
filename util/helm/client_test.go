@@ -53,13 +53,13 @@ func TestIndex(t *testing.T) {
 		require.Error(t, err)
 	})
 	t.Run("Stable", func(t *testing.T) {
-		client := NewClient("https://argoproj.github.io/argo-helm", HelmCreds{}, false, "", "")
+		client := NewClient("https://charts.hanzo.ai", HelmCreds{}, false, "", "")
 		index, err := client.GetIndex(t.Context(), false, 10000)
 		require.NoError(t, err)
 		assert.NotNil(t, index)
 	})
 	t.Run("BasicAuth", func(t *testing.T) {
-		client := NewClient("https://argoproj.github.io/argo-helm", HelmCreds{
+		client := NewClient("https://charts.hanzo.ai", HelmCreds{
 			Username: "my-password",
 			Password: "my-username",
 		}, false, "", "")
@@ -74,7 +74,7 @@ func TestIndex(t *testing.T) {
 		err := yaml.NewEncoder(&data).Encode(fakeIndex)
 		require.NoError(t, err)
 
-		client := NewClient("https://argoproj.github.io/argo-helm", HelmCreds{}, false, "", "", WithIndexCache(&fakeIndexCache{data: data.Bytes()}))
+		client := NewClient("https://charts.hanzo.ai", HelmCreds{}, false, "", "", WithIndexCache(&fakeIndexCache{data: data.Bytes()}))
 		index, err := client.GetIndex(t.Context(), false, 10000)
 
 		require.NoError(t, err)
@@ -82,7 +82,7 @@ func TestIndex(t *testing.T) {
 	})
 
 	t.Run("Limited", func(t *testing.T) {
-		client := NewClient("https://argoproj.github.io/argo-helm", HelmCreds{}, false, "", "")
+		client := NewClient("https://charts.hanzo.ai", HelmCreds{}, false, "", "")
 		_, err := client.GetIndex(t.Context(), false, 100)
 
 		assert.ErrorContains(t, err, "unexpected end of stream")
@@ -90,7 +90,7 @@ func TestIndex(t *testing.T) {
 }
 
 func Test_nativeHelmChart_ExtractChart(t *testing.T) {
-	client := NewClient("https://argoproj.github.io/argo-helm", HelmCreds{}, false, "", "")
+	client := NewClient("https://charts.hanzo.ai", HelmCreds{}, false, "", "")
 	path, closer, err := client.ExtractChart(t.Context(), "argo-cd", "0.7.1", false, math.MaxInt64, true)
 	require.NoError(t, err)
 	defer utilio.Close(closer)
@@ -100,13 +100,13 @@ func Test_nativeHelmChart_ExtractChart(t *testing.T) {
 }
 
 func Test_nativeHelmChart_ExtractChartWithLimiter(t *testing.T) {
-	client := NewClient("https://argoproj.github.io/argo-helm", HelmCreds{}, false, "", "")
+	client := NewClient("https://charts.hanzo.ai", HelmCreds{}, false, "", "")
 	_, _, err := client.ExtractChart(t.Context(), "argo-cd", "0.7.1", false, 100, false)
 	require.Error(t, err, "error while iterating on tar reader: unexpected EOF")
 }
 
 func Test_nativeHelmChart_ExtractChart_insecure(t *testing.T) {
-	client := NewClient("https://argoproj.github.io/argo-helm", HelmCreds{InsecureSkipVerify: true}, false, "", "")
+	client := NewClient("https://charts.hanzo.ai", HelmCreds{InsecureSkipVerify: true}, false, "", "")
 	path, closer, err := client.ExtractChart(t.Context(), "argo-cd", "0.7.1", false, math.MaxInt64, true)
 	require.NoError(t, err)
 	defer utilio.Close(closer)

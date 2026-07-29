@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/hanzoai/cd/common"
 	"io"
 	"log"
 	"net/http"
@@ -32,7 +33,7 @@ func NewRepoGenerator(clientSet *kubernetes.Clientset) Generator {
 }
 
 func fetchRepos(ctx context.Context, token string, page int) ([]Repo, error) {
-	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://api.github.com/repos/argoproj/argocd-example-apps/forks?per_page=100&page=%v", page), http.NoBody)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://api.github.com/repos/hanzoai/argocd-example-apps/forks?per_page=100&page=%v", page), http.NoBody)
 	req.Header.Set("Authorization", token)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -94,10 +95,10 @@ func (rg *RepoGenerator) Generate(opts *util.GenerateOpts) error {
 				Namespace:    opts.Namespace,
 				Labels: map[string]string{
 					"app.kubernetes.io/generated-by": "cd-generator",
-					"cd.hanzo.ai/secret-type": "repository",
+					"apps.hanzo.ai/secret-type":      "repository",
 				},
 				Annotations: map[string]string{
-					"managed-by": "cd.hanzo.ai",
+					"managed-by": common.AnnotationValueManagedByArgoCD,
 				},
 			},
 			Data: map[string][]byte{

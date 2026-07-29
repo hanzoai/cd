@@ -39,8 +39,8 @@ jobs:
 
       - name: Copy source code to GOPATH
         run: |
-          mkdir -p ~/go/src/github.com/argoproj
-          cp -a ../argo-cd ~/go/src/github.com/argoproj
+          mkdir -p ~/go/src/github.com/hanzoai
+          cp -a ../argo-cd ~/go/src/github.com/hanzoai
 
       - name: Run script to bump the version
         run: |

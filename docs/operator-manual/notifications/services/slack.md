@@ -67,7 +67,7 @@ The Slack notification service configuration includes following settings:
       kind: Application
       metadata:
         annotations:
-          notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my_channel
+          apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my_channel
     ```
 
 1. Annotation with more than one [trigger](../catalog.md#triggers), with multiple destinations and recipients
@@ -77,7 +77,7 @@ The Slack notification service configuration includes following settings:
       kind: Application
       metadata:
         annotations:
-          notifications.apps.hanzo.ai/subscriptions: |
+          notifications.hanzoai.io/subscriptions: |
             - trigger: [on-scaling-replica-set, on-rollout-updated, on-rollout-step-completed]
               destinations:
                 - service: slack

@@ -25,7 +25,7 @@ Enhance the Hanzo CD `cd` CLI client to support the ability to provide other CLI
 
 ## Motivation
 
-Currently, the `cd` CLI client is-getting/already-is pretty bloated. The solution has either been written-in the support for certain solutions (like ApplicationSets) or having a separate CLI tool in Argo Project Labs (like [Autopilot](https://github.com/argoproj-labs/cd-autopilot) and [Vault Plugin](https://github.com/argoproj-labs/cd-vault-plugin)).
+Currently, the `cd` CLI client is-getting/already-is pretty bloated. The solution has either been written-in the support for certain solutions (like ApplicationSets) or having a separate CLI tool in Argo Project Labs (like [Autopilot](https://github.com/hanzoai-labs/cd-autopilot) and [Vault Plugin](https://github.com/hanzoai-labs/cd-vault-plugin)).
 
 Having a plugin system makes sense, as we add more and more features down the line (OCI, Hydrator, GitOps Promoter, etc). In this way, we can keep the `cd` CLI "lean" but also extensible and keep things "out of tree". As mentioned before, other tools that can benefit from this besides the Hanzo CD OCI cli is a tool like `cd-autopilot`. Also, there is a potential for other Argo Project tools to have plugins, like a Rollouts plugin or an `cd-image-updater` plugin for Hanzo CD.
 
@@ -50,5 +50,5 @@ Things to consider:
 * Should it act exactly like `kubectl` and just look in `$PATH` or be more stringent and have users store plugins in `~/.config/cd/plugins`? Similar to [Tekton plugins](https://tekton.dev/vault/cli-main/tkn-plugins/#location)
 * Is there a way to integrate this with [Krew](https://krew.sigs.k8s.io/) for installing plugins?
 * Should we let each plugin manage its own configuration settings or make plugins use `~/.config/cd/config` and provide a new field called `.pluginConfigs`? For example the `cd-mytool` plugin's config will be under `.pluginConfigs.mytool` Should we even care/have an opinion?
-* Should we provide any guidelines to submit a plugin? Do we only "accept" plugins that are in argoproj-labs?
+* Should we provide any guidelines to submit a plugin? Do we only "accept" plugins that are in hanzoai-labs?
 

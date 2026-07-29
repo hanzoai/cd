@@ -34,7 +34,7 @@ kubectl delete app APPNAME
 To perform a cascade delete set the finalizer, e.g. using `kubectl patch`:
 
 ```bash
-kubectl patch app APPNAME  -p '{"metadata": {"finalizers": ["resources-finalizer.cd.hanzo.ai"]}}' --type merge
+kubectl patch app APPNAME  -p '{"metadata": {"finalizers": ["resources-finalizer.apps.hanzo.ai"]}}' --type merge
 kubectl delete app APPNAME
 ```
 
@@ -44,9 +44,9 @@ kubectl delete app APPNAME
 metadata:
   finalizers:
     # The default behaviour is foreground cascading deletion
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
     # Alternatively, you can use background cascading deletion
-    # - resources-finalizer.cd.hanzo.ai/background
+    # - resources-finalizer.apps.hanzo.ai/background
 ```
 
 When deleting an Application with this finalizer, the Hanzo CD application controller will perform a cascading delete of the Application's resources.
@@ -54,7 +54,7 @@ When deleting an Application with this finalizer, the Hanzo CD application contr
 Adding the finalizer enables cascading deletes when implementing [the App of Apps pattern](../operator-manual/cluster-bootstrapping.md#cascading-deletion).
 
 The default propagation policy for cascading deletion is [foreground cascading deletion](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#foreground-deletion).
-Hanzo CD performs [background cascading deletion](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#background-deletion) when `resources-finalizer.cd.hanzo.ai/background` is set.
+Hanzo CD performs [background cascading deletion](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#background-deletion) when `resources-finalizer.apps.hanzo.ai/background` is set.
 
 When you invoke `cd app delete` with `--cascade`, the finalizer is added automatically.
 You can set the propagation policy with `--propagation-policy <foreground|background>`.
@@ -128,7 +128,7 @@ When deleting an application through the UI, you can choose from three propagati
 > **Important for Non-Cascading Deletes**
 >
 > When you select **Non-Cascading**, Hanzo CD will:
-> - Remove the `resources-finalizer.cd.hanzo.ai` finalizer from the Application
+> - Remove the `resources-finalizer.apps.hanzo.ai` finalizer from the Application
 > - Delete only the Application resource
 > - Leave all managed resources (Pods, Services, Deployments, etc.) running in the cluster
 >

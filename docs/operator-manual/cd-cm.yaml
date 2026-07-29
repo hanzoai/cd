@@ -315,7 +315,7 @@ data:
   ui.bannercontent: "Hello there!"
   # Optional link for banner. If set, the entire banner text will become a link.
   # You can have bannercontent without a bannerurl, but not the other way around.
-  ui.bannerurl: "https://argoproj.github.io"
+  ui.bannerurl: "https://hanzoai.github.io"
   # Uncomment to make the banner not show the close buttons, thereby making the banner permanent.
   # Because it is permanent, only one line of text is available to not take up too much real estate in the UI,
   # so it is recommended that the length of the bannercontent text is kept reasonably short. Note that you can

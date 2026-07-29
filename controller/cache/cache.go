@@ -78,7 +78,7 @@ const (
 
 	// AnnotationIgnoreResourceUpdates when set to true on an untracked resource,
 	// argo will apply `ignoreResourceUpdates` configuration on it.
-	AnnotationIgnoreResourceUpdates = "cd.hanzo.ai/ignore-resource-updates"
+	AnnotationIgnoreResourceUpdates = "apps.hanzo.ai/ignore-resource-updates"
 )
 
 // GitOps engine cluster cache tuning options
@@ -400,16 +400,16 @@ func skipResourceUpdate(oldInfo, newInfo *ResourceInfo) bool {
 // If there's an app name from resource tracking, or if this is itself an app, we should generate a hash.
 // Otherwise, the hashing should be skipped to save CPU time.
 func shouldHashManifest(appName string, gvk schema.GroupVersionKind, un *unstructured.Unstructured) bool {
-	// Only hash if the resource belongs to an app OR cd.hanzo.ai/ignore-resource-updates is present and set to true
+	// Only hash if the resource belongs to an app OR apps.hanzo.ai/ignore-resource-updates is present and set to true
 	// Best      - Only hash for resources that are part of an app or their dependencies
 	// (current) - Only hash for resources that are part of an app + all apps that might be from an ApplicationSet
 	// Orphan    - If orphan is enabled, hash should be made on all resource of that namespace and a config to disable it
 	// Worst     - Hash all resources watched by Argo
 	isTrackedResource := appName != "" || (gvk.Group == application.Group && gvk.Kind == application.ApplicationKind)
 
-	// If the resource is not a tracked resource, we will look up cd.hanzo.ai/ignore-resource-updates and decide
+	// If the resource is not a tracked resource, we will look up apps.hanzo.ai/ignore-resource-updates and decide
 	// whether we generate hash or not.
-	// If cd.hanzo.ai/ignore-resource-updates is presented and is true, return true
+	// If apps.hanzo.ai/ignore-resource-updates is presented and is true, return true
 	// Else return false
 	if !isTrackedResource {
 		if val, ok := un.GetAnnotations()[AnnotationIgnoreResourceUpdates]; ok {
@@ -532,7 +532,7 @@ func (c *liveStateCache) getCluster(cluster *appv1.Cluster) (clustercache.Cluste
 	// Controller dynamically fetches all resource types available on the cluster
 	// using a discovery API that may contain deprecated APIs.
 	// This causes log flooding when managing a large number of clusters.
-	// https://github.com/argoproj/argo-cd/issues/11973
+	// https://github.com/hanzoai/cd/issues/11973
 	// However, we can safely suppress deprecation warnings
 	// because we do not rely on resources with a particular API group or version.
 	// https://kubernetes.io/blog/2020/09/03/warnings/#customize-client-handling

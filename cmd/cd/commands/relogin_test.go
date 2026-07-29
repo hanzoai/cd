@@ -101,7 +101,7 @@ func TestNewReloginCommandWithClientOptions(t *testing.T) {
 	assert.Equal(t, 8085, port, "Unexpected default value for --sso-port flag")
 }
 
-// TestReloginUsesArgocdContext is a regression test for https://github.com/argoproj/argo-cd/issues/28453.
+// TestReloginUsesArgocdContext is a regression test for https://github.com/hanzoai/cd/issues/28453.
 // It verifies that `cd relogin --cd-context <name>` contacts the correct server and
 // persists the refreshed token under the correct context entry, even when that context differs
 // from the active current-context.

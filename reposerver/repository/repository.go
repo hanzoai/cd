@@ -540,7 +540,7 @@ func (s *Service) runRepoOperation(
 		}
 
 		// Computed and passed to preserve API backwards compatibility only. Decisions are made based on SourceIntegrityResult.
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+		// TODO: Remove deprecated https://github.com/hanzoai/cd/issues/27695
 		if gitClient.IsAnnotatedTag(ctx, revision) {
 			rev = unresolvedRevision
 		} else {
@@ -1022,7 +1022,7 @@ func (s *Service) runManifestGenAsync(ctx context.Context, repoRoot, commitSHA, 
 	}
 	manifestGenResult.Revision = commitSHA
 	manifestGenResult.SourceIntegrityResult = opContext.sourceIntegrityResult
-	// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+	// TODO: Remove deprecated https://github.com/hanzoai/cd/issues/27695
 	manifestGenResult.VerifyResult = opContext.verificationResult // nolint:staticcheck
 	err = s.cache.SetManifests(manifestKey, &manifestGenCacheEntry)
 	if err != nil {
@@ -1174,13 +1174,13 @@ func getHelmRepos(appPath string, repositories []*v1alpha1.Repository, helmRepoC
 				repo.InsecureOCIForceHttp = repositoryCredential.InsecureOCIForceHttp
 			} else if repo.EnableOCI {
 				// finally if repo is OCI and no credentials found, use the first OCI credential matching by hostname
-				// see https://github.com/argoproj/argo-cd/issues/14636
+				// see https://github.com/hanzoai/cd/issues/14636
 				for _, cred := range repositories {
 					if _, err = url.Parse("oci://" + dep.Repo); err != nil {
 						continue
 					}
 					// if the repo is OCI, don't match the repository URL exactly, but only as a dependent repository prefix just like in the getRepoCredential function
-					// see https://github.com/argoproj/argo-cd/issues/12436
+					// see https://github.com/hanzoai/cd/issues/12436
 					if cred.EnableOCI && (strings.HasPrefix(dep.Repo, cred.Repo) || strings.HasPrefix(cred.Repo, dep.Repo)) || (cred.Type == "oci" && (strings.HasPrefix("oci://"+dep.Repo, cred.Repo) || strings.HasPrefix(cred.Repo, "oci://"+dep.Repo))) {
 						repo.Username = cred.Username
 						repo.Password = cred.Password
@@ -1736,7 +1736,7 @@ func WithCMPTarExcludedGlobs(excludedGlobs []string) GenerateManifestOpt {
 }
 
 // WithCMPUseManifestGeneratePaths enables or disables the use of the
-// 'cd.hanzo.ai/manifest-generate-paths' annotation for manifest generation instead of transmit the whole repository.
+// 'apps.hanzo.ai/manifest-generate-paths' annotation for manifest generation instead of transmit the whole repository.
 func WithCMPUseManifestGeneratePaths(enabled bool) GenerateManifestOpt {
 	return func(o *generateManifestOpt) {
 		o.cmpUseManifestGeneratePaths = enabled
@@ -2735,7 +2735,7 @@ func (s *Service) GetRevisionMetadata(ctx context.Context, q *apiclient.RepoServ
 		// The SourceIntegrity criteria could have changed since this was cached - it could have been added, removed, or changed.
 		// If present in request or the cached version, treat this as a cache miss.
 		sourceIntegrity := q.SourceIntegrity != nil || metadata.SourceIntegrityResult != nil
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+		// TODO: Remove deprecated https://github.com/hanzoai/cd/issues/27695
 		signatureChecking := q.CheckSignature || metadata.SignatureInfo != "" // nolint:staticcheck
 		if !sourceIntegrity && !signatureChecking {
 			log.Infof("revision metadata cache hit: %s/%s", q.Repo.Repo, q.Revision)
@@ -2801,7 +2801,7 @@ func (s *Service) GetRevisionMetadata(ctx context.Context, q *apiclient.RepoServ
 		Message:               m.Message,
 		References:            relatedRevisions,
 		SourceIntegrityResult: sourceIntegrityResult,
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+		// TODO: Remove deprecated https://github.com/hanzoai/cd/issues/27695
 		SignatureInfo: legacySignatureInfo, // nolint:staticcheck
 	}
 	_ = s.cache.SetRevisionMetadata(q.Repo.Repo, q.Revision, metadata)
@@ -3040,7 +3040,7 @@ func fetch(ctx context.Context, gitClient git.Client, targetRevisions []string, 
 		}
 		return nil
 	}
-	// Fetching with no revision first. Fetching with an explicit version can cause repo bloat. https://github.com/argoproj/argo-cd/issues/8845
+	// Fetching with no revision first. Fetching with an explicit version can cause repo bloat. https://github.com/hanzoai/cd/issues/8845
 	err := gitClient.Fetch(ctx, "", 0)
 	if err != nil {
 		return err
@@ -3077,7 +3077,7 @@ func checkoutRevision(ctx context.Context, gitClient git.Client, revision string
 		if depth > 0 {
 			err = gitClient.Fetch(ctx, revision, depth)
 		} else {
-			// Fetching with no revision first. Fetching with an explicit version can cause repo bloat. https://github.com/argoproj/argo-cd/issues/8845
+			// Fetching with no revision first. Fetching with an explicit version can cause repo bloat. https://github.com/hanzoai/cd/issues/8845
 			err = gitClient.Fetch(ctx, "", depth)
 		}
 

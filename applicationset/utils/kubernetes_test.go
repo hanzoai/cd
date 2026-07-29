@@ -9,7 +9,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestGetSecretRef(t *testing.T) {
@@ -25,12 +25,12 @@ func TestGetSecretRef(t *testing.T) {
 
 	cases := []struct {
 		name, namespace, token string
-		ref                    *argoprojiov1alpha1.SecretRef
+		ref                    *appv1alpha1.SecretRef
 		hasError               bool
 	}{
 		{
 			name:      "valid ref",
-			ref:       &argoprojiov1alpha1.SecretRef{SecretName: "test-secret", Key: "my-token"},
+			ref:       &appv1alpha1.SecretRef{SecretName: "test-secret", Key: "my-token"},
 			namespace: "test",
 			token:     "secret",
 			hasError:  false,
@@ -44,21 +44,21 @@ func TestGetSecretRef(t *testing.T) {
 		},
 		{
 			name:      "wrong name",
-			ref:       &argoprojiov1alpha1.SecretRef{SecretName: "other", Key: "my-token"},
+			ref:       &appv1alpha1.SecretRef{SecretName: "other", Key: "my-token"},
 			namespace: "test",
 			token:     "",
 			hasError:  true,
 		},
 		{
 			name:      "wrong key",
-			ref:       &argoprojiov1alpha1.SecretRef{SecretName: "test-secret", Key: "other-token"},
+			ref:       &appv1alpha1.SecretRef{SecretName: "test-secret", Key: "other-token"},
 			namespace: "test",
 			token:     "",
 			hasError:  true,
 		},
 		{
 			name:      "wrong namespace",
-			ref:       &argoprojiov1alpha1.SecretRef{SecretName: "test-secret", Key: "my-token"},
+			ref:       &appv1alpha1.SecretRef{SecretName: "test-secret", Key: "my-token"},
 			namespace: "other",
 			token:     "",
 			hasError:  true,
@@ -92,12 +92,12 @@ func TestGetConfigMapData(t *testing.T) {
 
 	cases := []struct {
 		name, namespace, data string
-		ref                   *argoprojiov1alpha1.ConfigMapKeyRef
+		ref                   *appv1alpha1.ConfigMapKeyRef
 		hasError              bool
 	}{
 		{
 			name:      "valid ref",
-			ref:       &argoprojiov1alpha1.ConfigMapKeyRef{ConfigMapName: "test-configmap", Key: "my-data"},
+			ref:       &appv1alpha1.ConfigMapKeyRef{ConfigMapName: "test-configmap", Key: "my-data"},
 			namespace: "test",
 			data:      "configmap-data",
 			hasError:  false,
@@ -111,21 +111,21 @@ func TestGetConfigMapData(t *testing.T) {
 		},
 		{
 			name:      "wrong name",
-			ref:       &argoprojiov1alpha1.ConfigMapKeyRef{ConfigMapName: "other", Key: "my-data"},
+			ref:       &appv1alpha1.ConfigMapKeyRef{ConfigMapName: "other", Key: "my-data"},
 			namespace: "test",
 			data:      "",
 			hasError:  true,
 		},
 		{
 			name:      "wrong key",
-			ref:       &argoprojiov1alpha1.ConfigMapKeyRef{ConfigMapName: "test-configmap", Key: "other-data"},
+			ref:       &appv1alpha1.ConfigMapKeyRef{ConfigMapName: "test-configmap", Key: "other-data"},
 			namespace: "test",
 			data:      "",
 			hasError:  true,
 		},
 		{
 			name:      "wrong namespace",
-			ref:       &argoprojiov1alpha1.ConfigMapKeyRef{ConfigMapName: "test-configmap", Key: "my-data"},
+			ref:       &appv1alpha1.ConfigMapKeyRef{ConfigMapName: "test-configmap", Key: "my-data"},
 			namespace: "other",
 			data:      "",
 			hasError:  true,

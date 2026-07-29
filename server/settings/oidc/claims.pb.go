@@ -86,7 +86,7 @@ func (m *Claim) GetValues() []string {
 }
 
 func init() {
-	proto.RegisterType((*Claim)(nil), "github.com.argoproj.argo_cd.server.settings.oidc.Claim")
+	proto.RegisterType((*Claim)(nil), "github.com.hanzoai.argo_cd.server.settings.oidc.Claim")
 }
 
 func init() { proto.RegisterFile("server/settings/oidc/claims.proto", fileDescriptor_7d353f964edf8c0f) }

@@ -141,7 +141,7 @@ spec:
          app: canary-demo
       spec:
         containers:
-        - image: argoproj/rollouts-demo:yellow
+        - image: hanzoai/rollouts-demo:yellow
           name: canary-demo
           volumeMounts:
           - name: config-volume

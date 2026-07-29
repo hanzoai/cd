@@ -24,7 +24,7 @@ func Given(t *testing.T) *Context {
 
 	state := fixture.EnsureCleanState(t)
 
-	// TODO: Appset EnsureCleanState specific logic should be moved to the main EnsureCleanState function (https://github.com/argoproj/argo-cd/issues/24307)
+	// TODO: Appset EnsureCleanState specific logic should be moved to the main EnsureCleanState function (https://github.com/hanzoai/cd/issues/24307)
 	utils.EnsureCleanState(t)
 
 	return &Context{TestState: state}

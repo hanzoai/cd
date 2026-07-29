@@ -3,14 +3,14 @@ kind: Job
 metadata:
   name: my-hook
   annotations:
-    cd.hanzo.ai/hook: Sync
+    apps.hanzo.ai/hook: Sync
 spec:
   template:
     spec:
       containers:
         - command:
             - "true"
-          image: quay.io/argoprojlabs/cd-e2e-container:0.1
+          image: ghcr.io/hanzoai/e2e-container:0.1
           imagePullPolicy: IfNotPresent
           name: main
       restartPolicy: Never

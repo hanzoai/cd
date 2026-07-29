@@ -86,7 +86,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    cd.hanzo.ai/compare-options: ServerSideDiff=true
+    apps.hanzo.ai/compare-options: ServerSideDiff=true
 ...
 ```
 
@@ -101,7 +101,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    cd.hanzo.ai/compare-options: ServerSideDiff=false
+    apps.hanzo.ai/compare-options: ServerSideDiff=false
 ...
 ```
 
@@ -119,7 +119,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    cd.hanzo.ai/compare-options: IncludeMutationWebhook=true
+    apps.hanzo.ai/compare-options: IncludeMutationWebhook=true
 ...
 ```
 
@@ -132,10 +132,10 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    cd.hanzo.ai/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+    apps.hanzo.ai/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
 ...
 ```
 
-[1]: https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta
+[1]: https://github.com/hanzoai/hanzoai/blob/main/community/feature-status.md#beta
 [2]: https://github.com/kubernetes-sigs/structured-merge-diff
 [3]: https://kubernetes.io/docs/reference/using-api/api-concepts/#resourceversion-in-metadata

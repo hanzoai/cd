@@ -2,7 +2,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    cd.hanzo.ai/tracking-id: 'app-of-apps:apps.hanzo.ai/Application:cd/argo-workflows'
+    apps.hanzo.ai/tracking-id: 'app-of-apps:apps.hanzo.ai/Application:cd/argo-workflows'
   name: argo-workflows
   namespace: cd
 spec:
@@ -72,7 +72,7 @@ spec:
         workflow:
           serviceAccount:
             create: true
-    repoURL: 'https://argoproj.github.io/argo-helm'
+    repoURL: 'https://charts.hanzo.ai'
     targetRevision: 0.45.27
   syncPolicy:
     automated:

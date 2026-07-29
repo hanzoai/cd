@@ -1,6 +1,6 @@
 # Feature Maturity
 
-Hanzo CD features may be marked with a certain [status](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md)
+Hanzo CD features may be marked with a certain [status](https://github.com/hanzoai/hanzoai/blob/main/community/feature-status.md)
 to indicate their stability and maturity. These are the statuses of non-stable features in Hanzo CD:
 
 > [!CAUTION]
@@ -33,7 +33,7 @@ to indicate their stability and maturity. These are the statuses of non-stable f
 
 | Feature                         | Property                                                                                | Status |
 | ------------------------------- | --------------------------------------------------------------------------------------- | ------ |
-| [Skip Application Reconcile][4] | `metadata.annotations[cd.hanzo.ai/skip-reconcile]`                               | Alpha  |
+| [Skip Application Reconcile][4] | `metadata.annotations[apps.hanzo.ai/skip-reconcile]`                               | Alpha  |
 | [Source Hydrator][11]           | `spec.sourceHydrator.*`                                                                 | Beta   |
 
 ### AppProject CRD

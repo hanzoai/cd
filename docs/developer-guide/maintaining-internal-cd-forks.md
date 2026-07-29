@@ -8,18 +8,18 @@ This section will also help Hanzo CD maintainers to test the release process in 
 
 ## Understanding where and which upstream images are published
 
-Official upstream release tags (`vX.Y.Z*`) publish their multi-platform images and the corresponding provenance attestations—to `quay.io/argoproj/cd` (or whatever registry a fork configures via `IMAGE_*` variables).  
-Upstream master builds continue to refresh the `latest` tag in the same primary registry, while also pushing commit-tagged images (and their provenance) to `ghcr.io/argoproj/argo-cd/cd` so `cd.apps.apps.hanzo.ai` can pin exact SHAs.  
+Official upstream release tags (`vX.Y.Z*`) publish their multi-platform images and the corresponding provenance attestations—to `ghcr.io/hanzoai/cd` (or whatever registry a fork configures via `IMAGE_*` variables).  
+Upstream master builds continue to refresh the `latest` tag in the same primary registry, while also pushing commit-tagged images (and their provenance) to `ghcr.io/hanzoai/cd/cd` so `cd.apps.apps.hanzo.ai` can pin exact SHAs.  
 Forks inherit the same behavior but target their customized registries/namespaces and do not deploy to `cd.apps.apps.hanzo.ai`.
 
 ## Publishing custom images from forked master branches
 
-Fork builds can publish their own containers once workflow variables point at your registry/namespace instead of `argoproj`.
+Fork builds can publish their own containers once workflow variables point at your registry/namespace instead of `hanzoai`.
 
 ### Configuring GitHub Actions variables
 Adjust the variables below to match your setup (overriding `IMAGE_NAMESPACE` is required, because it flips the workflows out of “upstream” mode):
 
-- `IMAGE_NAMESPACE` – defaults to `argoproj` (overriding required)
+- `IMAGE_NAMESPACE` – defaults to `hanzoai` (overriding required)
 - `IMAGE_REPOSITORY` – defaults to `cd` (may need overriding)
 - `GHCR_NAMESPACE` – defaults to `${{ github.repository }}`, which translates to `<YOUR_GITHUB_USERNAME>/<YOUR_FORK_REPO>`, rarely needs overriding)
 - `GHCR_REPOSITORY` – defaults to `cd` (may need overriding)

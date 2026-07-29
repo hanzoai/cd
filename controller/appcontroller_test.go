@@ -312,7 +312,7 @@ data:
 kind: Secret
 metadata:
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
   name: some-secret
   namespace: ` + test.FakeArgoCDNamespace + `
 type: Opaque
@@ -332,7 +332,7 @@ spec:
   project: default
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
   syncPolicy:
     automated: {}
 status:
@@ -356,7 +356,7 @@ status:
       revision: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       source:
         path: some/path
-        repoURL: https://github.com/argoproj/argocd-example-apps.git
+        repoURL: https://git.hanzo.ai/hanzo/example-apps.git
 `
 
 var fakeMultiSourceApp = `
@@ -376,11 +376,11 @@ spec:
     helm:
       valueFiles:
       - $values_test/values.yaml
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
   - path: some/other/path
-    repoURL: https://github.com/argoproj/argocd-example-apps-fake.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps-fake.git
   - ref: values_test
-    repoURL: https://github.com/argoproj/argocd-example-apps-fake-ref.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps-fake-ref.git
   syncPolicy:
     automated: {}
 status:
@@ -413,11 +413,11 @@ status:
         helm:
           valueFiles:
           - $values_test/values.yaml
-        repoURL: https://github.com/argoproj/argocd-example-apps.git
+        repoURL: https://git.hanzo.ai/hanzo/example-apps.git
       - path: some/other/path
-        repoURL: https://github.com/argoproj/argocd-example-apps-fake.git
+        repoURL: https://git.hanzo.ai/hanzo/example-apps-fake.git
       - ref: values_test
-        repoURL: https://github.com/argoproj/argocd-example-apps-fake-ref.git
+        repoURL: https://git.hanzo.ai/hanzo/example-apps-fake-ref.git
 `
 
 var fakeAppWithDestName = `
@@ -434,7 +434,7 @@ spec:
   project: default
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
   syncPolicy:
     automated: {}
 `
@@ -454,7 +454,7 @@ spec:
   project: default
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
   syncPolicy:
     automated: {}
 `
@@ -481,7 +481,7 @@ var fakePreDeleteHook = `
       "app.kubernetes.io/instance": "my-app"
     },
     "annotations": {
-      "cd.hanzo.ai/hook": "PreDelete"
+      "apps.hanzo.ai/hook": "PreDelete"
     }
   },
   "spec": {
@@ -512,8 +512,8 @@ var fakePostDeleteHook = `
       "app.kubernetes.io/instance": "my-app"
     },
     "annotations": {
-      "cd.hanzo.ai/hook": "PostDelete",
-      "cd.hanzo.ai/hook-delete-policy": "HookSucceeded"
+      "apps.hanzo.ai/hook": "PostDelete",
+      "apps.hanzo.ai/hook-delete-policy": "HookSucceeded"
     }
   },
   "spec": {
@@ -548,8 +548,8 @@ var fakeServiceAccount = `
     "name": "hook-serviceaccount",
     "namespace": "default",
     "annotations": {
-      "cd.hanzo.ai/hook": "PostDelete",
-      "cd.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "apps.hanzo.ai/hook": "PostDelete",
+      "apps.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   }
 }
@@ -563,8 +563,8 @@ var fakeRole = `
     "name": "hook-role",
     "namespace": "default",
     "annotations": {
-      "cd.hanzo.ai/hook": "PostDelete",
-      "cd.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "apps.hanzo.ai/hook": "PostDelete",
+      "apps.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   },
   "rules": [
@@ -585,8 +585,8 @@ var fakeRoleBinding = `
     "name": "hook-rolebinding",
     "namespace": "default",
     "annotations": {
-      "cd.hanzo.ai/hook": "PostDelete",
-      "cd.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
+      "apps.hanzo.ai/hook": "PostDelete",
+      "apps.hanzo.ai/hook-delete-policy": "BeforeHookCreation,HookSucceeded"
     }
   },
   "roleRef": {
@@ -705,7 +705,7 @@ func TestAutoSync(t *testing.T) {
 	}
 	cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 	assert.Nil(t, cond)
-	app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+	app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.NotNil(t, app.Operation)
 	assert.NotNil(t, app.Operation.Sync)
@@ -722,7 +722,7 @@ func TestAutoSyncEnabledSetToTrue(t *testing.T) {
 	}
 	cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 	assert.Nil(t, cond)
-	app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+	app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.NotNil(t, app.Operation)
 	assert.NotNil(t, app.Operation.Sync)
@@ -743,7 +743,7 @@ func TestAutoSyncMultiSourceWithoutSelfHeal(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook-1", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -758,7 +758,7 @@ func TestAutoSyncMultiSourceWithoutSelfHeal(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook-1", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotNil(t, app.Operation)
 	})
@@ -783,7 +783,7 @@ func TestAutoSyncManifestGeneratePathsNewCommit(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, syncStatus.Status == v1alpha1.SyncStatusCodeOutOfSync)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		require.NotNil(t, app.Operation)
 		require.NotNil(t, app.Operation.Sync)
@@ -803,7 +803,7 @@ func TestAutoSyncManifestGeneratePathsNewCommit(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, syncStatus.Status == v1alpha1.SyncStatusCodeOutOfSync)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -846,7 +846,7 @@ func TestSkipAutoSync(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -861,7 +861,7 @@ func TestSkipAutoSync(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -877,7 +877,7 @@ func TestSkipAutoSync(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -893,7 +893,7 @@ func TestSkipAutoSync(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -910,7 +910,7 @@ func TestSkipAutoSync(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -936,7 +936,7 @@ func TestSkipAutoSync(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 		assert.NotNil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -960,7 +960,7 @@ func TestSkipAutoSync(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 		assert.NotNil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -976,7 +976,7 @@ func TestSkipAutoSync(t *testing.T) {
 			{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync, RequiresPruning: true},
 		}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Nil(t, app.Operation)
 	})
@@ -1012,7 +1012,7 @@ func TestAutoSyncIndicateError(t *testing.T) {
 	}
 	cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 	assert.NotNil(t, cond)
-	app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+	app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.Nil(t, app.Operation)
 }
@@ -1056,7 +1056,7 @@ func TestAutoSyncParameterOverrides(t *testing.T) {
 		ctrl := newFakeController(t.Context(), &fakeData{apps: []runtime.Object{app}}, nil)
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotNil(t, app.Operation)
 	})
@@ -1087,7 +1087,7 @@ func TestAutoSyncParameterOverrides(t *testing.T) {
 		}
 		cond, _ := ctrl.autoSync(t.Context(), app, &syncStatus, []v1alpha1.ResourceStatus{{Name: "guestbook", Kind: kube.DeploymentKind, Status: v1alpha1.SyncStatusCodeOutOfSync}}, true)
 		assert.Nil(t, cond)
-		app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
+		app, err := ctrl.applicationClientset.AppV1alpha1().Applications(test.FakeArgoCDNamespace).Get(t.Context(), "my-app", metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotNil(t, app.Operation)
 	})
@@ -1301,7 +1301,7 @@ func TestFinalizeAppDeletion(t *testing.T) {
 	})
 
 	t.Run("PreDelete_HookIsCreatedForLongAppName", func(t *testing.T) {
-		// Regression test for https://github.com/argoproj/argo-cd/issues/27527.
+		// Regression test for https://github.com/hanzoai/cd/issues/27527.
 		// When the app name (or instance name) exceeds Kubernetes' 63-character
 		// label limit, the pre-delete hook must still be created with a
 		// truncated app instance label so the API server doesn't reject it.
@@ -3216,7 +3216,7 @@ func TestProcessRequestedAppOperation_SyncTimeout(t *testing.T) {
 
 			ctrl.processRequestedAppOperation(app)
 
-			app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.ObjectMeta.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
+			app, err := ctrl.applicationClientset.AppV1alpha1().Applications(app.ObjectMeta.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 			assert.Equal(t, tc.expectedPhase, app.Status.OperationState.Phase)
 			assert.Equal(t, tc.expectedMessage, app.Status.OperationState.Message)
@@ -3687,7 +3687,7 @@ func Test_syncDeleteOption(t *testing.T) {
 	})
 	t.Run("with delete set to false object is retained", func(t *testing.T) {
 		cmObj := kube.MustToUnstructured(&cm)
-		cmObj.SetAnnotations(map[string]string{"cd.hanzo.ai/sync-options": "Delete=false"})
+		cmObj.SetAnnotations(map[string]string{"apps.hanzo.ai/sync-options": "Delete=false"})
 		assert.False(t, ctrl.shouldBeDeleted(app, cmObj))
 	})
 	t.Run("with delete set to false object is retained", func(t *testing.T) {
@@ -3707,7 +3707,7 @@ func Test_syncDeleteOption(t *testing.T) {
 		newApp := app.DeepCopy()
 		newApp.Spec.SyncPolicy.SyncOptions = []string{"Delete=false"}
 		cmObj := kube.MustToUnstructured(&cm)
-		cmObj.SetAnnotations(map[string]string{"cd.hanzo.ai/sync-options": "Delete=foo"})
+		cmObj.SetAnnotations(map[string]string{"apps.hanzo.ai/sync-options": "Delete=foo"})
 		assert.True(t, ctrl.shouldBeDeleted(newApp, cmObj))
 	})
 }
@@ -3722,7 +3722,7 @@ func TestAddControllerNamespace(t *testing.T) {
 
 		ctrl.processAppRefreshQueueItem()
 
-		updatedApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(ctrl.namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
+		updatedApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(ctrl.namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Equal(t, test.FakeArgoCDNamespace, updatedApp.Status.ControllerNamespace)
 	})
@@ -3741,7 +3741,7 @@ func TestAddControllerNamespace(t *testing.T) {
 
 		ctrl.processAppRefreshQueueItem()
 
-		updatedApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(appNamespace).Get(t.Context(), app.Name, metav1.GetOptions{})
+		updatedApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(appNamespace).Get(t.Context(), app.Name, metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.Equal(t, test.FakeArgoCDNamespace, updatedApp.Status.ControllerNamespace)
 	})
@@ -4089,7 +4089,7 @@ func TestPersistAppStatus_AnnotationManagement(t *testing.T) {
 		ctrl.persistReconciliationStatus(t.Context(), origApp, newStatus)
 
 		// Verify the patch was created correctly
-		patchedApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
+		patchedApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
 		require.NoError(t, err)
 
 		// Refresh annotation should be deleted
@@ -4130,7 +4130,7 @@ func TestPersistAppStatus_AnnotationManagement(t *testing.T) {
 		ctrl.persistAppStatus(t.Context(), origApp, newStatus, newAnnotations)
 
 		// Verify the patch was created correctly
-		patchedApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
+		patchedApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
 		require.NoError(t, err)
 
 		// Hydrate annotation should be deleted

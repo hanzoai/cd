@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Beta Feature (Since v3.5.0)**
 >
-> This is a [beta-quality](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta)
+> This is a [beta-quality](https://github.com/hanzoai/hanzoai/blob/main/community/feature-status.md#beta)
 > feature that pushes hydrated manifests to git before syncing them to the cluster.
 
 Tools like Helm and Kustomize allow users to express their Kubernetes manifests in a more concise and reusable way
@@ -39,8 +39,8 @@ If you are using one of the `*-install.yaml` manifests to install Hanzo CD, you 
 For example,
 
 ```
-Without hydrator: https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-With hydrator:    https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install-with-hydrator.yaml
+Without hydrator: https://raw.githubusercontent.com/hanzoai/cd/stable/manifests/install.yaml
+With hydrator:    https://raw.githubusercontent.com/hanzoai/cd/stable/manifests/install-with-hydrator.yaml
 ```
 
 > [!IMPORTANT]
@@ -60,7 +60,7 @@ metadata:
   name: my-push-secret
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository-write
+    apps.hanzo.ai/secret-type: repository-write
 type: Opaque
 stringData:
   url: "https://github.com/<your org or user>/<your repo>"
@@ -77,7 +77,7 @@ metadata:
   name: my-pull-secret
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 type: Opaque
 stringData:
   url: "https://github.com/<your org or user>/<your repo>"
@@ -90,7 +90,7 @@ stringData:
 ```
 
 The only difference between the secrets above, besides the resource name, is that the push secret contains the label
-`cd.hanzo.ai/secret-type: repository-write`, which causes the Secret to be used for pushing manifests to git
+`apps.hanzo.ai/secret-type: repository-write`, which causes the Secret to be used for pushing manifests to git
 instead of pulling from Git. Hanzo CD requires different secrets for pushing and pulling to provide better isolation.
 
 Once your secrets are installed, set the `spec.sourceHydrator` field of the Application. For example:
@@ -103,7 +103,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       path: helm-guestbook
       targetRevision: HEAD
     syncSource:
@@ -197,7 +197,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       path: helm-guestbook
       targetRevision: HEAD
       helm:
@@ -224,7 +224,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       path: kustomize-guestbook
       targetRevision: HEAD
       kustomize:
@@ -249,7 +249,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       path: guestbook
       targetRevision: HEAD
       directory:
@@ -271,7 +271,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       path: my-plugin-app
       targetRevision: HEAD
       plugin:
@@ -308,7 +308,7 @@ spec:
     namespace: default
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       path: helm-guestbook
       targetRevision: HEAD
     syncSource:
@@ -521,7 +521,7 @@ Both values are optional. If only one is configured, the configured value will b
 
 ### Credential Templates
 
-Credential templates allow a single credential to be used for multiple repositories. The source hydrator supports credential templates. For example, if you setup credential templates for the URL prefix `https://github.com/argoproj`, these credentials will be used for all repositories with this URL as prefix (e.g. `https://github.com/argoproj/argocd-example-apps`) that do not have their own credentials configured.
+Credential templates allow a single credential to be used for multiple repositories. The source hydrator supports credential templates. For example, if you setup credential templates for the URL prefix `https://github.com/hanzoai`, these credentials will be used for all repositories with this URL as prefix (e.g. `https://git.hanzo.ai/hanzo/example-apps`) that do not have their own credentials configured.
 For more information, please refer to [Credential templates](private-repositories.md#credential-templates).
 An example of repo-write-creds secret.
 
@@ -532,10 +532,10 @@ metadata:
   name: private-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repo-write-creds
+    apps.hanzo.ai/secret-type: repo-write-creds
 stringData:
   type: git
-  url: https://github.com/argoproj
+  url: https://github.com/hanzoai
   password: my-password
   username: my-username
 ```
@@ -578,7 +578,7 @@ When hydration fails, the application remains in the `Failed` phase and the erro
 
 ## Forcing Hydration with the `hydrate` Annotation
 
-Hanzo CD uses the `cd.hanzo.ai/hydrate` annotation to request that an Application's dry source be
+Hanzo CD uses the `apps.hanzo.ai/hydrate` annotation to request that an Application's dry source be
 checked and hydrated (if necessary) outside of the normal commit-detection flow. The application controller
 consumes and removes the annotation as soon as it has processed it, so it will not normally persist on the
 Application.
@@ -607,7 +607,7 @@ touch the dry source repository):
 
 ```shell
 kubectl patch application my-app -n cd --type merge \
-  -p '{"metadata": {"annotations": {"cd.hanzo.ai/hydrate": "hard"}}}'
+  -p '{"metadata": {"annotations": {"apps.hanzo.ai/hydrate": "hard"}}}'
 ```
 
 > [!NOTE]
@@ -650,7 +650,7 @@ the dry commits for which the hydrator actually ran; it does not advance for dry
 If you consume `hydrator.metadata` notes, account for this: only dry commits that match an Application's
 `manifest-generate-paths` (or all dry commits, when the annotation is unset) are attested on its hydrated branch.
 
-A planned enhancement ([#28556](https://github.com/argoproj/argo-cd/issues/28556)) will add a lightweight
+A planned enhancement ([#28556](https://github.com/hanzoai/cd/issues/28556)) will add a lightweight
 commit-server endpoint to advance the git note without a full hydration run (no repo-server render or manifest
 disk compare).
 
@@ -714,7 +714,7 @@ to configure branch protection rules on the destination repository.
 
 > [!NOTE]
 > To maintain reproducibility and determinism in the Hydrator’s output,
-> Hanzo CD-specific metadata (such as `cd.hanzo.ai/tracking-id`) is
+> Hanzo CD-specific metadata (such as `apps.hanzo.ai/tracking-id`) is
 > not written to Git during hydration. These annotations are added dynamically
 > during application sync and comparison.
 

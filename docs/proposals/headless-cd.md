@@ -92,11 +92,11 @@ In order to make this possible the static assets have been embedded into Hanzo C
 ### Merge Hanzo CD Util
 
 The potential users of "headless" mode will benefit from `cd-util` commands. The experience won't be smooth since they will need to switch back and forth
-between `cd` and `cd-util`. Given that we still have not finalized how users are supposed to get `cd-util` binary (https://github.com/argoproj/argo-cd/issues/5307)
+between `cd` and `cd-util`. Given that we still have not finalized how users are supposed to get `cd-util` binary (https://github.com/hanzoai/cd/issues/5307)
 it is proposed to deprecate `cd-util` and merge in into `cd` CLI under admin subcommand:
 
 ```
-cd admin app generate-spec guestbook --repo https://github.com/argoproj/argocd-example-apps
+cd admin app generate-spec guestbook --repo https://git.hanzo.ai/hanzo/example-apps
 ```
 
 ### Use cases

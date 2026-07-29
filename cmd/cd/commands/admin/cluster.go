@@ -27,9 +27,9 @@ import (
 	cdclient "github.com/hanzoai/cd/pkg/apiclient"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/pkg/client/clientset/versioned"
-	"github.com/hanzoai/cd/util/cd"
 	cacheutil "github.com/hanzoai/cd/util/cache"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/clusterauth"
 	"github.com/hanzoai/cd/util/db"
@@ -86,7 +86,7 @@ func loadClusters(ctx context.Context, kubeClient kubernetes.Interface, appClien
 	if err != nil {
 		return nil, err
 	}
-	appItems, err := appClient.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{})
+	appItems, err := appClient.AppV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -268,7 +268,7 @@ func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.Cli
 	if err != nil {
 		return fmt.Errorf("error listing clusters: %w", err)
 	}
-	appItems, err := appClient.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{})
+	appItems, err := appClient.AppV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return fmt.Errorf("error listing application: %w", err)
 	}

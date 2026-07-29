@@ -107,7 +107,7 @@ func (h *ApplicationSourceHelm) ValuesIsEmpty() bool {
 // String returns a human-readable representation of ApplicationSourceHelm.
 // It replaces the suppressed auto-generated stringer so that
 // ValuesObject is rendered as YAML rather than as a raw byte-array
-// See https://github.com/argoproj/argo-cd/issues/18342
+// See https://github.com/hanzoai/cd/issues/18342
 //
 // The format mirrors what gogo-proto produces for every other field, so the
 // only observable difference is the ValuesObject rendering. If new fields are

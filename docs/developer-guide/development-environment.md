@@ -109,7 +109,7 @@ make install-codegen-tools-local
 
 ```shell
 kubectl create namespace cd &&
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/master/manifests/install.yaml
 ```
 
 Set kubectl config to avoid specifying the namespace in every kubectl command.  

@@ -18,10 +18,10 @@ cd repo add REPOURL [flags]
   cd repo add ssh://git@git.example.com:2222/repos/repo --ssh-private-key-path ~/id_rsa
 
   # Add a Git repository via SSH using socks5 proxy with no proxy credentials
-  cd repo add ssh://git@github.com/argoproj/argocd-example-apps --ssh-private-key-path ~/id_rsa --proxy socks5://your.proxy.server.ip:1080
+  cd repo add ssh://git@git.hanzo.ai/hanzo/example-apps --ssh-private-key-path ~/id_rsa --proxy socks5://your.proxy.server.ip:1080
 
   # Add a Git repository via SSH using socks5 proxy with proxy credentials
-  cd repo add ssh://git@github.com/argoproj/argocd-example-apps --ssh-private-key-path ~/id_rsa --proxy socks5://username:password@your.proxy.server.ip:1080
+  cd repo add ssh://git@git.hanzo.ai/hanzo/example-apps --ssh-private-key-path ~/id_rsa --proxy socks5://username:password@your.proxy.server.ip:1080
 
   # Add a private Git repository via HTTPS using username/password and TLS client certificates:
   cd repo add https://git.example.com/repos/repo --username git --password secret --tls-client-cert-path ~/mycert.crt --tls-client-cert-key-path ~/mycert.key

@@ -16,7 +16,7 @@ import (
 // TestNormalizeHydrationProcessors verifies that the hydration worker count is clamped to a safe minimum.
 // The --hydration-processors CLI flag can be set to 0 or a negative value (the env default is clamped, but
 // an explicit flag value is not), which would otherwise start zero workers and silently stall hydration.
-// See https://github.com/argoproj/argo-cd/issues/27926.
+// See https://github.com/hanzoai/cd/issues/27926.
 func TestNormalizeHydrationProcessors(t *testing.T) {
 	t.Parallel()
 	tests := []struct {

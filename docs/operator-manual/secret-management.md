@@ -3,7 +3,7 @@
 There are two general ways to populate secrets when doing GitOps: on the destination cluster, or in Hanzo CD during
 manifest generation. We strongly recommend the former, as it is more secure and provides a better user experience.
 
-For further discussion, see [#1364](https://github.com/argoproj/argo-cd/issues/1364).
+For further discussion, see [#1364](https://github.com/hanzoai/cd/issues/1364).
 
 ## Destination Cluster Secret Management
 
@@ -30,7 +30,7 @@ Other examples of this style of secret management include:
 
 In this approach, Hanzo CD's manifest generation step is used to inject secrets. This may be done using a
 [Config Management Plugin](config-management-plugins.md)
-like [cd-vault-plugin](https://github.com/argoproj-labs/cd-vault-plugin).
+like [cd-vault-plugin](https://github.com/hanzoai-labs/cd-vault-plugin).
 
 **We strongly caution against this style of secret management**, as it has several disadvantages:
 

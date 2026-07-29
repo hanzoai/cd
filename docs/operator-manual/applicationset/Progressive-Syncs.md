@@ -4,7 +4,7 @@
 > **Beta Feature (Since v3.3.0)**
 >
 
-    This feature is in the [Beta](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta) stage. It is generally considered stable, but there may be unhandled edge cases.
+    This feature is in the [Beta](https://github.com/hanzoai/hanzoai/blob/main/community/feature-status.md#beta) stage. It is generally considered stable, but there may be unhandled edge cases.
     This feature allows you to control the order in which the ApplicationSet controller will create or update the Applications
     owned by an ApplicationSet resource. 
 
@@ -13,7 +13,7 @@
 The Progressive Syncs feature set is intended to be light and flexible. The feature only interacts with the health of managed Applications. It is not intended to support direct integrations with other Rollout controllers (such as the native ReplicaSet controller or Argo Rollouts).
 
 - Progressive Syncs watch for the managed Application resources to become "Healthy" before proceeding to the next stage.
-- Deployments, DaemonSets, StatefulSets, and [Argo Rollouts](https://argoproj.github.io/argo-rollouts/) are all supported, because the Application enters a "Progressing" state while pods are being rolled out. In fact, any resource with a health check that can report a "Progressing" status is supported.
+- Deployments, DaemonSets, StatefulSets, and [Argo Rollouts](https://hanzoai.github.io/argo-rollouts/) are all supported, because the Application enters a "Progressing" state while pods are being rolled out. In fact, any resource with a health check that can report a "Progressing" status is supported.
 - [Hanzo CD Resource Hooks](../../user-guide/sync-waves.md) are supported. We recommend this approach for users that need advanced functionality when an Argo Rollout cannot be used, such as smoke testing after a DaemonSet change.
 
 ## Enabling Progressive Syncs

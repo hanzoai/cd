@@ -4,5 +4,5 @@ kind: ConfigMap
 metadata:
   name: invalid-cm
   annotations:
-    cd.hanzo.ai/sync-options: Validate=false
+    apps.hanzo.ai/sync-options: Validate=false
 invalidKey: this-fails

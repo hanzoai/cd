@@ -97,7 +97,7 @@ func (c *Consequences) apps() []v1alpha1.Application {
 	}
 
 	fixtureClient := utils.GetE2EFixtureK8sClient(c.context.T())
-	list, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(namespace).List(context.Background(), metav1.ListOptions{})
+	list, err := fixtureClient.AppClientset.AppV1alpha1().Applications(namespace).List(context.Background(), metav1.ListOptions{})
 	errors.CheckError(err)
 
 	if list == nil {

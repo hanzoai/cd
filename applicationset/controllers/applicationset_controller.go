@@ -65,9 +65,9 @@ import (
 
 const (
 	// Rather than importing the whole cd-notifications controller, just copying the const here
-	//   https://github.com/argoproj-labs/cd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/subscriptions.go#L12
-	//   https://github.com/argoproj-labs/cd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/state.go#L17
-	NotifiedAnnotationKey             = "notified.notifications.apps.hanzo.ai"
+	//   https://github.com/hanzoai-labs/cd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/subscriptions.go#L12
+	//   https://github.com/hanzoai-labs/cd-notifications/blob/33d345fa838829bb50fca5c08523aba380d2c12b/pkg/controller/state.go#L17
+	NotifiedAnnotationKey             = "apps.hanzo.ai/notified"
 	ReconcileRequeueOnValidationError = time.Minute * 3
 	ReverseDeletionOrder              = "Reverse"
 	AllAtOnceDeletionOrder            = "AllAtOnce"
@@ -93,7 +93,7 @@ type ApplicationSetReconciler struct {
 	Scheme               *runtime.Scheme
 	Recorder             record.EventRecorder
 	Generators           map[string]generators.Generator
-	DB               db.DB
+	DB                   db.DB
 	KubeClientset        kubernetes.Interface
 	Policy               argov1alpha1.ApplicationsSyncPolicy
 	EnablePolicyOverride bool
@@ -747,8 +747,8 @@ func (r *ApplicationSetReconciler) createOrUpdateInCluster(ctx context.Context, 
 				}
 
 				// Preserve specially treated argo cd annotations:
-				// * https://github.com/argoproj/applicationset/issues/180
-				// * https://github.com/argoproj/argo-cd/issues/10500
+				// * https://github.com/hanzoai/applicationset/issues/180
+				// * https://github.com/hanzoai/cd/issues/10500
 				preservedAnnotations = append(preservedAnnotations, defaultPreservedAnnotations...)
 
 				for _, key := range preservedAnnotations {

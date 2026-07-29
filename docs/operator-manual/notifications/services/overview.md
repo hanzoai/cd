@@ -32,8 +32,8 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.workspace1: my-channel
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.workspace2: my-channel
+    apps.hanzo.ai/subscribe.on-sync-succeeded.workspace1: my-channel
+    apps.hanzo.ai/subscribe.on-sync-succeeded.workspace2: my-channel
 ```
 
 ## Service Types

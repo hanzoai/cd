@@ -1294,7 +1294,7 @@ func (m *appStateManager) persistRevisionHistory(
 	if err != nil {
 		return fmt.Errorf("error marshaling revision history patch: %w", err)
 	}
-	_, err = m.appclientset.ArgoprojV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+	_, err = m.appclientset.AppV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 	return err
 }
 
@@ -1342,7 +1342,7 @@ func NewAppStateManager(
 // It returns true when all of the properties of the tracking id (app name, namespace,
 // group and kind) match the properties of the live object, or if the tracking method
 // used does not provide the required properties for matching.
-// Reference: https://github.com/argoproj/argo-cd/issues/8683
+// Reference: https://github.com/hanzoai/cd/issues/8683
 func (m *appStateManager) isSelfReferencedObj(live, config *unstructured.Unstructured, appName string, trackingMethod v1alpha1.TrackingMethod, installationID string) bool {
 	if live == nil {
 		return true

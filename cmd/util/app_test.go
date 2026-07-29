@@ -360,8 +360,8 @@ func Test_setAppSpecOptions(t *testing.T) {
 		assert.Equal(t, []string{"v1", "v2"}, f.spec.Source.Helm.APIVersions)
 	})
 	t.Run("source hydrator", func(t *testing.T) {
-		require.NoError(t, f.SetFlag("dry-source-repo", "https://github.com/argoproj/argocd-example-apps"))
-		assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", f.spec.SourceHydrator.DrySource.RepoURL)
+		require.NoError(t, f.SetFlag("dry-source-repo", "https://git.hanzo.ai/hanzo/example-apps"))
+		assert.Equal(t, "https://git.hanzo.ai/hanzo/example-apps", f.spec.SourceHydrator.DrySource.RepoURL)
 
 		require.NoError(t, f.SetFlag("dry-source-path", "apps"))
 		assert.Equal(t, "apps", f.spec.SourceHydrator.DrySource.Path)
@@ -457,7 +457,7 @@ metadata:
   name: sth1
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   destination:
     namespace: sth
@@ -478,7 +478,7 @@ metadata:
   name: sth2
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   destination:
     namespace: sth

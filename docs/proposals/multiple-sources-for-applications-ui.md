@@ -25,7 +25,7 @@ This is the proposal for the UI changes to support multiple sources for an Appli
 
 Related Issues:
 * [Proposal: Support multiple sources for an application](https://github.com/hanzoai/cd/blob/master/docs/proposals/multiple-sources-for-applications.md)
-* [Issue for the Proposal: Support multiple sources for an application](https://github.com/argoproj/argo-cd/issues/677)
+* [Issue for the Proposal: Support multiple sources for an application](https://github.com/hanzoai/cd/issues/677)
 
 ## Summary
 
@@ -151,7 +151,7 @@ Jorge has submitted a [PR](https://github.com/hanzoai/cd/pull/14124) for rollbac
 This can be treated as a separate, independent proposal.
 
 Other related changes pertain to the Last Synced Details. The Sync Details panel needs to be updated to show sync info
-from multiple sources.  See [Issue 13215](https://github.com/argoproj/argo-cd/issues/13215).
+from multiple sources.  See [Issue 13215](https://github.com/hanzoai/cd/issues/13215).
 
 ### New App Dialog
 

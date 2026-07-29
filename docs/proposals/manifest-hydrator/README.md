@@ -29,10 +29,10 @@ metadata:
   name: cd-example-apps
   labels:
     # Note that this is "repository-push" instead of "repository". The same secret should never be used for both push and pull access.
-    cd.hanzo.ai/secret-type: repository-push
+    apps.hanzo.ai/secret-type: repository-push
 type: Opaque
 stringData:
-  url: https://github.com/argoproj/argocd-example-apps.git
+  url: https://git.hanzo.ai/hanzo/example-apps.git
   username: '****'
   password: '****'
 ```

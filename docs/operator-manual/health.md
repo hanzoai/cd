@@ -28,7 +28,7 @@ with at least one value for `hostname` or `IP`.
 
 ### Argocd App
 
-The health assessment of `apps.hanzo.ai/Application` CRD has been removed in cd 1.8 (see [#3781](https://github.com/argoproj/argo-cd/issues/3781) for more information).
+The health assessment of `apps.hanzo.ai/Application` CRD has been removed in cd 1.8 (see [#3781](https://github.com/hanzoai/cd/issues/3781) for more information).
 You might need to restore it if you are using app-of-apps pattern and orchestrating synchronization using sync waves. Add the following resource customization in
 `cd-cm` ConfigMap:
 
@@ -81,7 +81,7 @@ If the CRD status is in [kstatus](https://github.com/kubernetes-sigs/cli-utils/b
 
 #### Using K8s observedGeneration field
 If the CRD uses the [observedGeneration](https://alenkacz.medium.com/kubernetes-operator-best-practices-implementing-observedgeneration-250728868792) field correctly and it is present in the `status` sub-resource, please use this field in the health check. Using this field in calculating the CRD health is important for preventing situations in which the health status in Hanzo CD may flap if Hanzo CD is evaluating the health status before the CRD controller finished reconciling the changed CR.   
-This is an [example](https://github.com/hanzoai/cd/blob/stable/resource_customizations/apps.hanzo.ai/Rollout/health.lua) of using this field in a health check.  
+This is an [example](https://github.com/hanzoai/cd/blob/stable/resource_customizations/hanzoai.io/Rollout/health.lua) of using this field in a health check.  
 
 ### Configuring Custom Health Checks
 
@@ -249,7 +249,7 @@ The following resources have Go-based health checks:
 * apps/Deployment
 * apps/ReplicaSet
 * apps/StatefulSet
-* apps.hanzo.ai/Workflow
+* hanzoai.io/Workflow
 * autoscaling/HorizontalPodAutoscaler
 * batch/Job
 * extensions/Ingress
@@ -291,14 +291,14 @@ App (healthy)
 ```
 ## Ignoring Child Resource Health Check in Applications
 
-To ignore the health check of an immediate child resource within an Application, set the annotation `cd.hanzo.ai/ignore-healthcheck` to `true`. For example:
+To ignore the health check of an immediate child resource within an Application, set the annotation `apps.hanzo.ai/ignore-healthcheck` to `true`. For example:
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    cd.hanzo.ai/ignore-healthcheck: "true"
+    apps.hanzo.ai/ignore-healthcheck: "true"
 ```
 
 By doing this, the health status of the Deployment will not affect the health of its parent Application.

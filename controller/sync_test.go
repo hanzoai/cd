@@ -85,7 +85,7 @@ func TestPersistRevisionHistory(t *testing.T) {
 	// Ensure we record spec.source into sync result
 	assert.Equal(t, app.Spec.GetSource(), opState.SyncResult.Source)
 
-	updatedApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
+	updatedApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
 	require.NoError(t, err)
 	require.Len(t, updatedApp.Status.History, 1)
 	assert.Equal(t, app.Spec.GetSource(), updatedApp.Status.History[0].Source)
@@ -174,7 +174,7 @@ func TestPersistRevisionHistoryRollback(t *testing.T) {
 	// Ensure we record opState's source into sync result
 	assert.Equal(t, source, opState.SyncResult.Source)
 
-	updatedApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
+	updatedApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace).Get(t.Context(), app.Name, metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.Len(t, updatedApp.Status.History, 1)
 	assert.Equal(t, source, updatedApp.Status.History[0].Source)
@@ -972,7 +972,7 @@ func TestNormalizeTargetResourcesCRDs(t *testing.T) {
 	})
 }
 
-// TestNormalizeTargetResourcesPDBSelector reproduces https://github.com/argoproj/argo-cd/issues/18232
+// TestNormalizeTargetResourcesPDBSelector reproduces https://github.com/hanzoai/cd/issues/18232
 // When a PDB (policy/v1) has an ignoreDifferences rule for a matchLabels sub-field and
 // RespectIgnoreDifferences=true is set, normalizeTargetResources should only patch the
 // ignored field — not clobber the entire selector due to patchStrategy:"replace".
@@ -2112,7 +2112,7 @@ func TestClientSideApplyMigration(t *testing.T) {
 		// Add custom manager annotation if specified
 		if customManager != "" {
 			app.Annotations = map[string]string{
-				"cd.hanzo.ai/client-side-apply-migration-manager": customManager,
+				"apps.hanzo.ai/client-side-apply-migration-manager": customManager,
 			}
 		}
 

@@ -61,7 +61,7 @@ cd-applicationset-controller [flags]
       --server string                             The address and port of the Kubernetes API server
       --tls-server-name string                    If provided, this name will be used to validate server certificate. If this is not provided, hostname used to contact the server is used.
       --token string                              Bearer token for authentication to the API server
-      --token-ref-strict-mode                     Set to true to require secrets referenced by SCM providers to have the cd.hanzo.ai/secret-type=scm-creds label set (Default: false)
+      --token-ref-strict-mode                     Set to true to require secrets referenced by SCM providers to have the apps.hanzo.ai/secret-type=scm-creds label set (Default: false)
       --user string                               The name of the kubeconfig user to use
       --username string                           Username for basic authentication to the API server
       --webhook-addr string                       The address the webhook endpoint binds to. (default ":7000")

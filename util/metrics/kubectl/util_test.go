@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// Test_resolveK8sRequestVerb is adapted from: https://github.com/argoproj/pkg/blob/f5a0a066030558f089fa645dc6546ddc5917bad5/kubeclientmetrics/metric_test.go
+// Test_resolveK8sRequestVerb is adapted from: https://github.com/hanzoai/pkg/blob/f5a0a066030558f089fa645dc6546ddc5917bad5/kubeclientmetrics/metric_test.go
 func Test_resolveK8sRequestVerb(t *testing.T) {
 	testData := []struct {
 		testName string

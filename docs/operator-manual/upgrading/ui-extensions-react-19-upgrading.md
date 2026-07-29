@@ -61,8 +61,8 @@ React 19. Most actively maintained libraries already have one.
 The following pull requests apply this fix and are useful templates for
 other extension repositories:
 
-- [argoproj-labs/cd-ephemeral-access#141](https://github.com/argoproj-labs/cd-ephemeral-access/pull/141) — Ephemeral Access extension.
-- [argoproj-labs/rollout-extension#104](https://github.com/argoproj-labs/rollout-extension/pull/104) — Argo Rollouts extension.
+- [hanzoai-labs/cd-ephemeral-access#141](https://github.com/hanzoai-labs/cd-ephemeral-access/pull/141) — Ephemeral Access extension.
+- [hanzoai-labs/rollout-extension#104](https://github.com/hanzoai-labs/rollout-extension/pull/104) — Argo Rollouts extension.
 
 ## Globals exposed by the Hanzo CD UI
 

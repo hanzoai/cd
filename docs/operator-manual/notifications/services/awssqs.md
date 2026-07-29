@@ -22,7 +22,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.awssqs: "overwrite-myqueue"
+    apps.hanzo.ai/subscribe.on-deployment-ready.awssqs: "overwrite-myqueue"
 ```
 
 * ConfigMap
@@ -81,7 +81,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.awssqs: ""
+    apps.hanzo.ai/subscribe.on-deployment-ready.awssqs: ""
 ```
 
 * ConfigMap

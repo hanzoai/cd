@@ -28,7 +28,7 @@ data:
   server: "https://kubernetes.default.svc"
 metadata:
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 # (...)
 ```
 
@@ -50,7 +50,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://git.hanzo.ai/hanzo/example-apps/
         targetRevision: HEAD
         path: guestbook
       destination:
@@ -96,7 +96,7 @@ data:
   # (... fields as above ...)
 metadata:
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
     staging: "true"
 # (...)
 ```
@@ -118,7 +118,7 @@ spec:
   - clusters:
       selector:
         matchLabels:
-          cd.hanzo.ai/secret-type: cluster
+          apps.hanzo.ai/secret-type: cluster
         # The cluster generator also supports matchExpressions.
         #matchExpressions:
         #  - key: staging
@@ -127,7 +127,7 @@ spec:
         #      - "true"
 ```
 
-This selector will not match the default local cluster, since the default local cluster does not have a Secret (and thus does not have the `cd.hanzo.ai/secret-type` label on that secret). Any cluster selector that selects on that label will automatically exclude the default local cluster.
+This selector will not match the default local cluster, since the default local cluster does not have a Secret (and thus does not have the `apps.hanzo.ai/secret-type` label on that secret). Any cluster selector that selects on that label will automatically exclude the default local cluster.
 
 However, if you do wish to target both local and non-local clusters, while also using label matching, you can create a secret for the local cluster within the Hanzo CD web UI:
 
@@ -137,13 +137,13 @@ However, if you do wish to target both local and non-local clusters, while also 
 4. Leave all other fields unchanged.
 5. Click *Save*.
 
-These steps might seem counterintuitive, but the act of changing one of the default values for the local cluster causes the Hanzo CD Web UI to create a new secret for this cluster. In the Hanzo CD namespace, you should now see a Secret resource named `cluster-(cluster suffix)` with label `cd.hanzo.ai/secret-type": "cluster"`. You may also create a local [cluster secret declaratively](../declarative-setup.md#clusters), or with the CLI using `cd cluster add "(context name)" --in-cluster`, rather than through the Web UI.
+These steps might seem counterintuitive, but the act of changing one of the default values for the local cluster causes the Hanzo CD Web UI to create a new secret for this cluster. In the Hanzo CD namespace, you should now see a Secret resource named `cluster-(cluster suffix)` with label `apps.hanzo.ai/secret-type": "cluster"`. You may also create a local [cluster secret declaratively](../declarative-setup.md#clusters), or with the CLI using `cd cluster add "(context name)" --in-cluster`, rather than through the Web UI.
 
 ### Fetch clusters based on their K8s version
 
-There is also the possibility to fetch clusters based upon their Kubernetes version. To do this, the label `cd.hanzo.ai/auto-label-cluster-info` needs to be set to `true` on the cluster secret. 
+There is also the possibility to fetch clusters based upon their Kubernetes version. To do this, the label `apps.hanzo.ai/auto-label-cluster-info` needs to be set to `true` on the cluster secret. 
 Once that has been set, the controller will dynamically label the cluster secret with the Kubernetes version it is running on. To retrieve that value, you need to use the
-`cd.hanzo.ai/kubernetes-version`, as the example below demonstrates:
+`apps.hanzo.ai/kubernetes-version`, as the example below demonstrates:
 
 ```yaml
 spec:
@@ -152,10 +152,10 @@ spec:
   - clusters:
       selector:
         matchLabels:
-          cd.hanzo.ai/kubernetes-version: v1.28.1
+          apps.hanzo.ai/kubernetes-version: v1.28.1
         # matchExpressions are also supported.
         #matchExpressions:
-        #  - key: cd.hanzo.ai/kubernetes-version
+        #  - key: apps.hanzo.ai/kubernetes-version
         #    operator: In
         #    values:
         #      - "v1.27.1"
@@ -192,7 +192,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://git.hanzo.ai/hanzo/example-apps/
         # The cluster values field for each generator will be substituted here:
         targetRevision: '{{.values.revision}}'
         path: guestbook
@@ -244,7 +244,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://git.hanzo.ai/hanzo/example-apps/
         # The cluster values field for each generator will be substituted here:
         targetRevision: '{{.values.revision}}'
         path: guestbook
@@ -275,7 +275,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://git.hanzo.ai/hanzo/example-apps/
         # The cluster values field for each generator will be substituted here:
         targetRevision: 'HEAD'
         path: helm-guestbook
@@ -302,7 +302,7 @@ metadata:
 spec:
   project: "my-project"
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps/
+    repoURL: https://git.hanzo.ai/hanzo/example-apps/
     targetRevision: 'HEAD'
     path: helm-guestbook
     helm:

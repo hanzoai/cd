@@ -127,7 +127,7 @@ func ParseDurationFromEnv(env string, defaultValue, minimum, maximum time.Durati
 	}
 	dur, err := time.ParseDuration(str)
 	if err != nil {
-		// provides backwards compatibility for durations defined in days, see: https://github.com/argoproj/argo-cd/issues/24740
+		// provides backwards compatibility for durations defined in days, see: https://github.com/hanzoai/cd/issues/24740
 		durPtr, err2 := timeutil.ParseDuration(str)
 		if err2 != nil {
 			log.Warnf("Could not parse '%s' as a duration from environment %s", str, env)

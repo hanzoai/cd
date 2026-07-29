@@ -14,11 +14,11 @@ metadata:
     cd-notif-onSyncRunning.slack-disabled: ""
     cd-notif-onSyncStatusUnknown.slack-disabled: ""
     cd-notif-onSyncSucceeded.slack-disabled: ""
-    cd.hanzo.ai/compare-options: ServerSideDiff=true
-    cd.hanzo.ai/manifest-generate-paths: .;/chart
+    apps.hanzo.ai/compare-options: ServerSideDiff=true
+    apps.hanzo.ai/manifest-generate-paths: .;/chart
   creationTimestamp: "2024-03-04T21:30:33Z"
   finalizers:
-  - resources-finalizer.cd.hanzo.ai
+  - resources-finalizer.apps.hanzo.ai
   generation: 263
   labels:
     cloud_provider: gcp

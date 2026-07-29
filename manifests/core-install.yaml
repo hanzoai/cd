@@ -31166,7 +31166,7 @@ data:
       - /status
   resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
     jqPathExpressions:
-      - '.metadata.annotations."notified.notifications.apps.hanzo.ai"'
+      - '.metadata.annotations."apps.hanzo.ai/notified"'
       - '.metadata.annotations."apps.hanzo.ai/refresh"'
       - '.metadata.annotations."apps.hanzo.ai/hydrate"'
       - '.operation'
@@ -31174,10 +31174,6 @@ data:
     jqPathExpressions:
       - '.metadata.annotations."deployment.kubernetes.io/desired-replicas"'
       - '.metadata.annotations."deployment.kubernetes.io/max-replicas"'
-      - '.metadata.annotations."rollout.apps.hanzo.ai/desired-replicas"'
-  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Rollout: |
-    jqPathExpressions:
-      - '.metadata.annotations."notified.notifications.apps.hanzo.ai"'
   resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler: |
     jqPathExpressions:
       - '.metadata.annotations."autoscaling.alpha.kubernetes.io/behavior"'
@@ -32176,8 +32172,7 @@ spec:
           name: plugins
       initContainers:
       - args:
-        - /bin/cp /usr/local/bin/cd /var/run/cd/cd && /bin/ln -sf /var/run/cd/cd
-          /var/run/cd/hanzocd-cmp-server
+        - /bin/cp /usr/local/bin/cd /var/run/cd/cd && /bin/ln -sf /var/run/cd/cd /var/run/cd/hanzocd-cmp-server
         command:
         - sh
         - -c

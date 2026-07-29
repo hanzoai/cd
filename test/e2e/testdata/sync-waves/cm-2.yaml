@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: cm-2
   annotations:
-    cd.hanzo.ai/sync-wave: "2"
+    apps.hanzo.ai/sync-wave: "2"

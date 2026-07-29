@@ -45,10 +45,10 @@ After you modify the `default` project, any application that attempts to use it 
 
 ### Creating Projects
 
-Additional projects can be created to give separate teams different levels of access to namespaces. The following command creates a new project `myproject` which can deploy applications to namespace `mynamespace` of cluster `https://kubernetes.default.svc`. The permitted Git source repository is set to `https://github.com/argoproj/argocd-example-apps.git` repository.
+Additional projects can be created to give separate teams different levels of access to namespaces. The following command creates a new project `myproject` which can deploy applications to namespace `mynamespace` of cluster `https://kubernetes.default.svc`. The permitted Git source repository is set to `https://git.hanzo.ai/hanzo/example-apps.git` repository.
 
 ```bash
-cd proj create myproject -d https://kubernetes.default.svc,mynamespace -s https://github.com/argoproj/argocd-example-apps.git
+cd proj create myproject -d https://kubernetes.default.svc,mynamespace -s https://git.hanzo.ai/hanzo/example-apps.git
 ```
 
 ### Managing Projects
@@ -72,8 +72,8 @@ Declaratively we can do something like this:
 ```yaml
 spec:
   sourceRepos:
-    # Do not use the test repo in argoproj
-    - '!ssh://git@GITHUB.com:argoproj/test'
+    # Do not use the test repo in hanzoai
+    - '!ssh://git@GITHUB.com:hanzoai/test'
     # Nor any Gitlab repo under group/ 
     - '!https://gitlab.com/group/**'
     # Any other repo is fine though
@@ -355,12 +355,12 @@ kind: Secret
 metadata:
   name: cd-example-apps
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 type: Opaque
 stringData:
   project: my-project1                                     # Project scoped 
   name: cd-example-apps
-  url: https://github.com/argoproj/argocd-example-apps.git
+  url: https://git.hanzo.ai/hanzo/example-apps.git
   username: ****
   password: ****
 ```
@@ -379,7 +379,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com

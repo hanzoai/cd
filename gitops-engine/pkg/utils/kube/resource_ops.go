@@ -257,7 +257,7 @@ func (k *kubectlResourceOperations) rbacReconcile(ctx context.Context, obj *unst
 		// Therefore, we skip namespace existence checks for cluster-scoped RBAC
 		// resources and allow reconcile to run without a namespace.
 		//
-		// https://github.com/argoproj/argo-cd/issues/24833
+		// https://github.com/hanzoai/cd/issues/24833
 		clusterScoped := obj.GetKind() == "ClusterRole" || obj.GetKind() == "ClusterRoleBinding"
 		if dryRunStrategy == cmdutil.DryRunNone && obj.GetNamespace() != "" && !clusterScoped {
 			_, err = kubeClient.CoreV1().Namespaces().Get(ctx, obj.GetNamespace(), metav1.GetOptions{})

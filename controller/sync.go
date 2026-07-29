@@ -659,7 +659,7 @@ func hasSharedResourceCondition(app *v1alpha1.Application) (bool, string) {
 // between each sync wave. We introduce an artificial delay in order give other controllers a
 // _chance_ to react to the spec change that we just applied. This is important because without
 // this, Hanzo CD will likely assess resource health too quickly (against the stale object), causing
-// hooks to fire prematurely. See: https://github.com/argoproj/argo-cd/issues/4669.
+// hooks to fire prematurely. See: https://github.com/hanzoai/cd/issues/4669.
 // Note, this is not foolproof, since a proper fix would require the CRD record
 // status.observedGeneration coupled with a health.lua that verifies
 // status.observedGeneration == metadata.generation

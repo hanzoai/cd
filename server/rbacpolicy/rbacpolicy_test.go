@@ -208,25 +208,25 @@ func Test_getProjectFromRequest(t *testing.T) {
 			name:     "valid project/repo string",
 			resource: "repositories",
 			action:   "create",
-			arg:      newFakeProj().Name + "/https://github.com/argoproj/argocd-example-apps",
+			arg:      newFakeProj().Name + "/https://git.hanzo.ai/hanzo/example-apps",
 		},
 		{
 			name:     "applicationsets with project/repo string",
 			resource: "applicationsets",
 			action:   "create",
-			arg:      newFakeProj().Name + "/https://github.com/argoproj/argocd-example-apps",
+			arg:      newFakeProj().Name + "/https://git.hanzo.ai/hanzo/example-apps",
 		},
 		{
 			name:     "applicationsets with project/repo string",
 			resource: "applicationsets",
 			action:   "*",
-			arg:      newFakeProj().Name + "/https://github.com/argoproj/argocd-example-apps",
+			arg:      newFakeProj().Name + "/https://git.hanzo.ai/hanzo/example-apps",
 		},
 		{
 			name:     "applicationsets with project/repo string",
 			resource: "applicationsets",
 			action:   "get",
-			arg:      newFakeProj().Name + "/https://github.com/argoproj/argocd-example-apps",
+			arg:      newFakeProj().Name + "/https://git.hanzo.ai/hanzo/example-apps",
 		},
 	}
 

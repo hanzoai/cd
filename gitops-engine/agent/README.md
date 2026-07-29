@@ -7,8 +7,8 @@ The main difference is that the agent is syncing one Git repository into the sam
 
 ## Quick Start
 
-By default, the agent is configured to use manifests from [guestbook](https://github.com/argoproj/argocd-example-apps/tree/master/guestbook)
-directory in https://github.com/argoproj/argocd-example-apps repository.
+By default, the agent is configured to use manifests from [guestbook](https://git.hanzo.ai/hanzo/example-apps/tree/master/guestbook)
+directory in https://git.hanzo.ai/hanzo/example-apps repository.
 
 The agent supports two modes:
 
@@ -20,7 +20,7 @@ The agent supports two modes:
 Install the agent with the default settings using the command below. Done!
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/argoproj/gitops-engine/master/agent/manifests/install-namespaced.yaml 
+kubectl apply -f https://raw.githubusercontent.com/hanzoai/gitops-engine/master/agent/manifests/install-namespaced.yaml 
 kubectl rollout status deploy/gitops-agent
 ```
 
@@ -47,7 +47,7 @@ The cluster mode grants full cluster access to the GitOps Agent. Use the followi
 
 ```bash
 kubectl create ns gitops-agent
-kubectl apply -f https://raw.githubusercontent.com/argoproj/gitops-engine/master/agent/manifests/install.yaml -n gitops-agent
+kubectl apply -f https://raw.githubusercontent.com/hanzoai/gitops-engine/master/agent/manifests/install.yaml -n gitops-agent
 ```
 
 ### Customize Git Repository

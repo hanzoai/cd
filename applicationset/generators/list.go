@@ -9,7 +9,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 var _ Generator = (*ListGenerator)(nil)
@@ -21,15 +21,15 @@ func NewListGenerator() Generator {
 	return g
 }
 
-func (g *ListGenerator) GetRequeueAfter(_ *argoprojiov1alpha1.ApplicationSetGenerator) time.Duration {
+func (g *ListGenerator) GetRequeueAfter(_ *appv1alpha1.ApplicationSetGenerator) time.Duration {
 	return NoRequeueAfter
 }
 
-func (g *ListGenerator) GetTemplate(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) *argoprojiov1alpha1.ApplicationSetTemplate {
+func (g *ListGenerator) GetTemplate(appSetGenerator *appv1alpha1.ApplicationSetGenerator) *appv1alpha1.ApplicationSetTemplate {
 	return &appSetGenerator.List.Template
 }
 
-func (g *ListGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator, appSet *argoprojiov1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
+func (g *ListGenerator) GenerateParams(appSetGenerator *appv1alpha1.ApplicationSetGenerator, appSet *appv1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
 	if appSetGenerator == nil {
 		return nil, ErrEmptyAppSetGenerator
 	}

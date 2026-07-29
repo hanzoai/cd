@@ -890,7 +890,7 @@ func (ctrl *ApplicationController) hideSecretData(ctx context.Context, destClust
 // minimum. The --hydration-processors flag / CD_APPLICATION_CONTROLLER_HYDRATION_PROCESSORS env var
 // can be set to 0 or a negative value on the command line (the env default is clamped, but an explicit
 // flag value is not). Starting zero workers would silently stall hydration, so fall back to a single
-// worker and warn. See https://github.com/argoproj/argo-cd/issues/27926.
+// worker and warn. See https://github.com/hanzoai/cd/issues/27926.
 func normalizeHydrationProcessors(hydrationProcessors int) int {
 	if hydrationProcessors < 1 {
 		log.Warnf("hydration-processors was set to %d; hydration requires at least one worker, using 1 instead", hydrationProcessors)
@@ -971,7 +971,7 @@ func (ctrl *ApplicationController) Run(ctx context.Context, statusProcessors int
 		// app needs hydration and, if so, enqueue the (deduped) hydration key. The Hydrating
 		// status mark and all subsequent per-app status writes live on the hydration queue side,
 		// so this worker is just an enqueuer and a single goroutine is sufficient
-		// (https://github.com/argoproj/argo-cd/issues/27926).
+		// (https://github.com/hanzoai/cd/issues/27926).
 		go wait.Until(func() {
 			for ctrl.processAppHydrateQueueItem() {
 			}
@@ -1076,7 +1076,7 @@ func (ctrl *ApplicationController) processAppOperationQueueItem() (processNext b
 		// If we get here, we are about to process an operation, but we cannot rely on informer since it might have stale data.
 		// So always retrieve the latest version to ensure it is not stale to avoid unnecessary syncing.
 		// We cannot rely on informer since applications might be updated by both application controller and api server.
-		freshApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.ObjectMeta.Namespace).Get(context.Background(), app.Name, metav1.GetOptions{})
+		freshApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(app.ObjectMeta.Namespace).Get(context.Background(), app.Name, metav1.GetOptions{})
 		if err != nil {
 			logCtx.WithError(err).Error("Failed to retrieve latest application state")
 			return processNext
@@ -1207,7 +1207,7 @@ func (ctrl *ApplicationController) removeProjectFinalizer(proj *appv1.AppProject
 			"finalizers": proj.Finalizers,
 		},
 	})
-	_, err := ctrl.applicationClientset.ArgoprojV1alpha1().AppProjects(ctrl.namespace).Patch(context.Background(), proj.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+	_, err := ctrl.applicationClientset.AppV1alpha1().AppProjects(ctrl.namespace).Patch(context.Background(), proj.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 	return err
 }
 
@@ -1248,7 +1248,7 @@ func (ctrl *ApplicationController) finalizeApplicationDeletion(ctx context.Conte
 	defer func() { traceutil.EndSpan(span, retErr) }()
 	logCtx := log.WithFields(applog.GetAppLogFields(app))
 	// Get refreshed application info, since informer app copy might be stale
-	app, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace).Get(ctx, app.Name, metav1.GetOptions{})
+	app, err := ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace).Get(ctx, app.Name, metav1.GetOptions{})
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			logCtx.WithError(err).Error("Unable to get refreshed application info prior deleting resources")
@@ -1446,7 +1446,7 @@ func (ctrl *ApplicationController) updateFinalizers(app *appv1.Application) erro
 		},
 	})
 
-	_, err = ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+	_, err = ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 	return err
 }
 
@@ -1468,7 +1468,7 @@ func (ctrl *ApplicationController) setAppCondition(app *appv1.Application, condi
 		},
 	})
 	if err == nil {
-		_, err = ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+		_, err = ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 	}
 	if err != nil {
 		logCtx.WithError(err).Error("Unable to set application condition")
@@ -1598,7 +1598,7 @@ func (ctrl *ApplicationController) processRequestedAppOperation(app *appv1.Appli
 	case synccommon.OperationRunning:
 		// It's possible for an app to be terminated while we were operating on it. We do not want
 		// to clobber the Terminated state with Running. Get the latest app state to check for this.
-		freshApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace).Get(ctx, app.Name, metav1.GetOptions{})
+		freshApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace).Get(ctx, app.Name, metav1.GetOptions{})
 		if err == nil {
 			if freshApp.Status.OperationState != nil && freshApp.Status.OperationState.Phase == synccommon.OperationTerminating {
 				state.Phase = synccommon.OperationTerminating
@@ -1756,7 +1756,7 @@ func (ctrl *ApplicationController) writeBackToInformer(app *appv1.Application) {
 
 // PatchAppWithWriteBack patches an application and writes it back to the informer cache
 func (ctrl *ApplicationController) PatchAppWithWriteBack(ctx context.Context, name, ns string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *appv1.Application, err error) {
-	patchedApp, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(ns).Patch(ctx, name, pt, data, opts, subresources...)
+	patchedApp, err := ctrl.applicationClientset.AppV1alpha1().Applications(ns).Patch(ctx, name, pt, data, opts, subresources...)
 	if err != nil {
 		return patchedApp, err
 	}
@@ -2451,7 +2451,7 @@ func (ctrl *ApplicationController) autoSync(ctx context.Context, app *appv1.Appl
 		}
 	}
 
-	appIf := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(app.Namespace)
+	appIf := ctrl.applicationClientset.AppV1alpha1().Applications(app.Namespace)
 	ts.AddCheckpoint("get_applications_ms")
 	start := time.Now()
 	updatedApp, err := cd.SetAppOperation(appIf, app.Name, &op)
@@ -2606,7 +2606,7 @@ func (ctrl *ApplicationController) newApplicationInformerAndLister() (cache.Shar
 			ListFunc: func(options metav1.ListOptions) (apiruntime.Object, error) {
 				// We are only interested in apps that exist in namespaces the
 				// user wants to be enabled.
-				appList, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(watchNamespace).List(context.TODO(), options)
+				appList, err := ctrl.applicationClientset.AppV1alpha1().Applications(watchNamespace).List(context.TODO(), options)
 				if err != nil {
 					return nil, err
 				}
@@ -2620,7 +2620,7 @@ func (ctrl *ApplicationController) newApplicationInformerAndLister() (cache.Shar
 				return appList, nil
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
-				return ctrl.applicationClientset.ArgoprojV1alpha1().Applications(watchNamespace).Watch(context.TODO(), options)
+				return ctrl.applicationClientset.AppV1alpha1().Applications(watchNamespace).Watch(context.TODO(), options)
 			},
 		},
 		&appv1.Application{},
@@ -2850,7 +2850,7 @@ func (ctrl *ApplicationController) getAppList(options metav1.ListOptions) (*appv
 		watchNamespace = ""
 	}
 
-	appList, err := ctrl.applicationClientset.ArgoprojV1alpha1().Applications(watchNamespace).List(context.TODO(), options)
+	appList, err := ctrl.applicationClientset.AppV1alpha1().Applications(watchNamespace).List(context.TODO(), options)
 	if err != nil {
 		return nil, err
 	}

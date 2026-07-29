@@ -13,7 +13,7 @@ import (
 )
 
 func newHook(obj *unstructured.Unstructured, hookType common.HookType) *unstructured.Unstructured {
-	return testingutils.Annotate(obj, "cd.hanzo.ai/hook", string(hookType))
+	return testingutils.Annotate(obj, "apps.hanzo.ai/hook", string(hookType))
 }
 
 func TestIgnore(t *testing.T) {

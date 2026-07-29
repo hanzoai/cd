@@ -189,14 +189,14 @@ func TestTransForm(t *testing.T) {
 				MatchLabels: map[string]string{"server": "https://production-01.example.com"},
 			},
 			expected: []map[string]any{{
-				"metadata.annotations.foo.example.com":           "production",
-				"metadata.labels.cd.hanzo.ai/secret-type": "cluster",
-				"metadata.labels.environment":                    "production",
-				"metadata.labels.org":                            "bar",
-				"name":                                           "production_01/west",
-				"nameNormalized":                                 "production-01-west",
-				"server":                                         "https://production-01.example.com",
-				"project":                                        "",
+				"metadata.annotations.foo.example.com":      "production",
+				"metadata.labels.apps.hanzo.ai/secret-type": "cluster",
+				"metadata.labels.environment":               "production",
+				"metadata.labels.org":                       "bar",
+				"name":                                      "production_01/west",
+				"nameNormalized":                            "production-01-west",
+				"server":                                    "https://production-01.example.com",
+				"project":                                   "",
 			}},
 		},
 		{
@@ -205,14 +205,14 @@ func TestTransForm(t *testing.T) {
 				MatchLabels: map[string]string{"server": "https://some-really-long-url-that-will-exceed-63-characters.com"},
 			},
 			expected: []map[string]any{{
-				"metadata.annotations.foo.example.com":           "production",
-				"metadata.labels.cd.hanzo.ai/secret-type": "cluster",
-				"metadata.labels.environment":                    "production",
-				"metadata.labels.org":                            "bar",
-				"name":                                           "some-really-long-server-url",
-				"nameNormalized":                                 "some-really-long-server-url",
-				"server":                                         "https://some-really-long-url-that-will-exceed-63-characters.com",
-				"project":                                        "",
+				"metadata.annotations.foo.example.com":      "production",
+				"metadata.labels.apps.hanzo.ai/secret-type": "cluster",
+				"metadata.labels.environment":               "production",
+				"metadata.labels.org":                       "bar",
+				"name":                                      "some-really-long-server-url",
+				"nameNormalized":                            "some-really-long-server-url",
+				"server":                                    "https://some-really-long-url-that-will-exceed-63-characters.com",
+				"project":                                   "",
 			}},
 		},
 	}
@@ -268,9 +268,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"cd.hanzo.ai/secret-type": "cluster",
-						"environment":                    "production",
-						"org":                            "bar",
+						"apps.hanzo.ai/secret-type": "cluster",
+						"environment":               "production",
+						"org":                       "bar",
 					},
 					"annotations": map[string]string{
 						"foo.example.com": "production",
@@ -290,9 +290,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"cd.hanzo.ai/secret-type": "cluster",
-						"environment":                    "staging",
-						"org":                            "foo",
+						"apps.hanzo.ai/secret-type": "cluster",
+						"environment":               "staging",
+						"org":                       "foo",
 					},
 					"annotations": map[string]string{
 						"foo.example.com": "staging",
@@ -322,9 +322,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "production",
+							"org":                       "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -338,9 +338,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "production",
+							"org":                       "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -359,7 +359,7 @@ func TestTransFormGoTemplate(t *testing.T) {
 		{
 			name: "slash key in label",
 			selector: &metav1.LabelSelector{
-				MatchLabels: map[string]string{"metadata.labels.cd.hanzo.ai/secret-type": "cluster"},
+				MatchLabels: map[string]string{"metadata.labels.apps.hanzo.ai/secret-type": "cluster"},
 			},
 			expected: []map[string]any{
 				{
@@ -369,9 +369,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "staging",
+							"org":                       "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -385,9 +385,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "production",
+							"org":                       "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -401,9 +401,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "production",
+							"org":                       "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -425,9 +425,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"project":        "",
 				"metadata": map[string]any{
 					"labels": map[string]string{
-						"cd.hanzo.ai/secret-type": "cluster",
-						"environment":                    "staging",
-						"org":                            "foo",
+						"apps.hanzo.ai/secret-type": "cluster",
+						"environment":               "staging",
+						"org":                       "foo",
 					},
 					"annotations": map[string]string{
 						"foo.example.com": "staging",
@@ -493,9 +493,9 @@ func getMockClusterGenerator() Generator {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "staging",
-					"org":                            "foo",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "staging",
+					"org":                       "foo",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "staging",
@@ -517,9 +517,9 @@ func getMockClusterGenerator() Generator {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "production",
+					"org":                       "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -541,9 +541,9 @@ func getMockClusterGenerator() Generator {
 				Name:      "some-really-long-server-url",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "production",
+					"org":                       "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -621,10 +621,10 @@ func TestInterpolateGenerator(t *testing.T) {
 		Clusters: &argov1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"path-basename":                  "{{path.basename}}",
-					"path-zero":                      "{{path[0]}}",
-					"path-full":                      "{{path}}",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"path-basename":             "{{path.basename}}",
+					"path-zero":                 "{{path[0]}}",
+					"path-full":                 "{{path}}",
 				},
 			},
 		},
@@ -675,11 +675,11 @@ func TestInterpolateGenerator_go(t *testing.T) {
 		Clusters: &argov1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"path-basename":                  "{{base .path.path}}",
-					"path-zero":                      "{{index .path.segments 0}}",
-					"path-full":                      "{{.path.path}}",
-					"kubernetes.io/environment":      `{{default "foo" .my_label}}`,
+					"apps.hanzo.ai/secret-type": "cluster",
+					"path-basename":             "{{base .path.path}}",
+					"path-zero":                 "{{index .path.segments 0}}",
+					"path-full":                 "{{.path.path}}",
+					"kubernetes.io/environment": `{{default "foo" .my_label}}`,
 				},
 			},
 		},

@@ -153,7 +153,7 @@ jobs:
         if: failure()
         run: |
           gh pr comment ${INPUTS_PR_NUMBER} \
-            --body "❌ Cherry-pick failed for ${INPUTS_VERSION_NUMBER}. Please check the [workflow logs](https://github.com/argoproj/argo-cd/actions/runs/${GITHUB_RUN_ID}) for details."
+            --body "❌ Cherry-pick failed for ${INPUTS_VERSION_NUMBER}. Please check the [workflow logs](https://github.com/hanzoai/cd/actions/runs/${GITHUB_RUN_ID}) for details."
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           INPUTS_PR_NUMBER: ${{ inputs.pr_number }}

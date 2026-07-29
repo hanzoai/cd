@@ -6,7 +6,7 @@
     resources:
       - secrets
     resourceNames:
-      - cd-redis
+      - hanzocd-redis
     verbs:
       - get
 - op: add

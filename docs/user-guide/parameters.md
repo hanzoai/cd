@@ -76,14 +76,14 @@ Example:
 ```yaml
 kustomize:
   images:
-    - quay.io/argoprojlabs/cd-e2e-container:0.2
+    - ghcr.io/hanzoai/e2e-container:0.2
 ```
 
 The `.cd-source` is trying to solve two following main use cases:
 
 - Provide the unified way to "override" application parameters in Git and enable the "write back" feature
-for projects like [cd-image-updater](https://github.com/argoproj-labs/cd-image-updater).
-- Support "discovering" applications in the Git repository by projects like [applicationset](https://github.com/argoproj/applicationset)
+for projects like [cd-image-updater](https://github.com/hanzoai-labs/cd-image-updater).
+- Support "discovering" applications in the Git repository by projects like [applicationset](https://github.com/hanzoai/applicationset)
 (see [git files generator](https://github.com/hanzoai/cd/blob/master/applicationset/examples/git-generator-files-discovery/git-generator-files.yaml))
 
 You can also store parameter overrides in an application specific file, if you

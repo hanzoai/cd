@@ -92,7 +92,7 @@ func (ctrl *ApplicationController) RequestAppRefresh(appName string, appNamespac
 
 	// This function is called for each app after a hydrate operation is completed so that the app controller can pick
 	// up the newly-hydrated changes. So we pass nil hydrateType to avoid a hydrate loop.
-	_, err := argoutil.RefreshApp(ctrl.applicationClientset.ArgoprojV1alpha1().Applications(appNamespace), appName, appv1.RefreshTypeNormal, nil)
+	_, err := argoutil.RefreshApp(ctrl.applicationClientset.AppV1alpha1().Applications(appNamespace), appName, appv1.RefreshTypeNormal, nil)
 	if err != nil {
 		return fmt.Errorf("failed to request app refresh: %w", err)
 	}

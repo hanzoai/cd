@@ -7,19 +7,19 @@ import (
 
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/config"
 )
 
-func ConstructApplicationSet(fileURL string) ([]*argoprojiov1alpha1.ApplicationSet, error) {
+func ConstructApplicationSet(fileURL string) ([]*appv1alpha1.ApplicationSet, error) {
 	if fileURL != "" {
 		return constructAppsetFromFileURL(fileURL)
 	}
 	return nil, nil
 }
 
-func constructAppsetFromFileURL(fileURL string) ([]*argoprojiov1alpha1.ApplicationSet, error) {
-	appset := make([]*argoprojiov1alpha1.ApplicationSet, 0)
+func constructAppsetFromFileURL(fileURL string) ([]*appv1alpha1.ApplicationSet, error) {
+	appset := make([]*appv1alpha1.ApplicationSet, 0)
 	// read uri
 	err := readAppsetFromURI(fileURL, &appset)
 	if err != nil {
@@ -29,7 +29,7 @@ func constructAppsetFromFileURL(fileURL string) ([]*argoprojiov1alpha1.Applicati
 	return appset, nil
 }
 
-func readAppsetFromURI(fileURL string, appset *[]*argoprojiov1alpha1.ApplicationSet) error {
+func readAppsetFromURI(fileURL string, appset *[]*appv1alpha1.ApplicationSet) error {
 	readFilePayload := func() ([]byte, error) {
 		parsedURL, err := url.ParseRequestURI(fileURL)
 		if err != nil || (parsedURL.Scheme != "http" && parsedURL.Scheme != "https") {
@@ -46,14 +46,14 @@ func readAppsetFromURI(fileURL string, appset *[]*argoprojiov1alpha1.Application
 	return readAppset(yml, appset)
 }
 
-func readAppset(yml []byte, appsets *[]*argoprojiov1alpha1.ApplicationSet) error {
+func readAppset(yml []byte, appsets *[]*appv1alpha1.ApplicationSet) error {
 	yamls, err := kube.SplitYAMLToString(yml)
 	if err != nil {
 		return fmt.Errorf("error splitting YAML to string: %w", err)
 	}
 
 	for _, yml := range yamls {
-		var appset argoprojiov1alpha1.ApplicationSet
+		var appset appv1alpha1.ApplicationSet
 		err = config.Unmarshal([]byte(yml), &appset)
 		if err != nil {
 			return fmt.Errorf("error unmarshalling appset: %w", err)

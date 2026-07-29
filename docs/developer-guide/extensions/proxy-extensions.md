@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Beta Feature (Since 2.7.0)**
 >
-> This feature is in the [Beta](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta) stage.
+> This feature is in the [Beta](https://github.com/hanzoai/hanzoai/blob/main/community/feature-status.md#beta) stage.
 > It is generally considered stable, but there may be unhandled edge cases.
 
 ## Overview
@@ -389,6 +389,6 @@ In the example above, all requests sent to
 the [cd-secret](../../operator-manual/cd-secret-yaml.md) with
 key `some-extension.authorization.header`
 
-[1]: https://github.com/argoproj/argoproj/blob/master/community/feature-status.md
+[1]: https://github.com/hanzoai/hanzoai/blob/master/community/feature-status.md
 [2]: https://argo-cd.readthedocs.io/en/stable/operator-manual/cd-cm.yaml
 [3]: ../../operator-manual/rbac.md#the-extensions-resource

@@ -84,7 +84,7 @@ func TestSetApplicationHealth(t *testing.T) {
 	assert.Empty(t, healthCauses)
 	app.Status.Health.Status = healthStatus
 
-	// now we set the `cd.hanzo.ai/ignore-healthcheck: "true"` annotation on the job's target.
+	// now we set the `apps.hanzo.ai/ignore-healthcheck: "true"` annotation on the job's target.
 	// The app is considered healthy
 	failedJob.SetAnnotations(nil)
 	failedJobIgnoreHealthcheck := resourceFromFile("./testdata/job-failed-ignore-healthcheck.yaml")

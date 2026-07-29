@@ -53,7 +53,7 @@ spec:
         - /tmp/git/repo
         - --path
         - guestbook
-        image: argoproj/gitops-agent:latest
+        image: hanzoai/gitops-agent:latest
         name: gitops-agent
         volumeMounts:
         - mountPath: /tmp/git
@@ -65,7 +65,7 @@ spec:
         - repo
         env:
         - name: GIT_SYNC_REPO
-          value: https://github.com/argoproj/argocd-example-apps
+          value: https://git.hanzo.ai/hanzo/example-apps
         image: registry.k8s.io/git-sync:v3.1.6
         name: git-sync
         volumeMounts:

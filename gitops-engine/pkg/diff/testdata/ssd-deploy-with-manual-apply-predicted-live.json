@@ -4,13 +4,13 @@
   "metadata": {
     "annotations": {
       "deployment.kubernetes.io/revision": "4",
-      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"labels\":{\"app\":\"manual-apply-app\",\"applications.argoproj.io/app-name\":\"manual-apply-app\"},\"name\":\"manual-apply-test-deployment\",\"namespace\":\"default\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"manual-apply-test\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"manual-apply-test\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"nginx:latest\",\"name\":\"main-container\",\"ports\":[{\"containerPort\":80,\"name\":\"http\"}],\"resources\":{\"limits\":{\"memory\":\"100Mi\"}}},{\"image\":\"spurin/idle:latest\",\"name\":\"idle\",\"ports\":[{\"containerPort\":8080,\"name\":\"web\",\"protocol\":\"TCP\"}]}]}}}}\n"
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"labels\":{\"app\":\"manual-apply-app\",\"applications.apps.hanzo.ai/app-name\":\"manual-apply-app\"},\"name\":\"manual-apply-test-deployment\",\"namespace\":\"default\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"manual-apply-test\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"manual-apply-test\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"nginx:latest\",\"name\":\"main-container\",\"ports\":[{\"containerPort\":80,\"name\":\"http\"}],\"resources\":{\"limits\":{\"memory\":\"100Mi\"}}},{\"image\":\"spurin/idle:latest\",\"name\":\"idle\",\"ports\":[{\"containerPort\":8080,\"name\":\"web\",\"protocol\":\"TCP\"}]}]}}}}\n"
     },
     "creationTimestamp": "2025-02-25T00:20:45Z",
     "generation": 5,
     "labels": {
       "app": "manual-apply-app",
-      "applications.argoproj.io/app-name": "manual-apply-app",
+      "applications.apps.hanzo.ai/app-name": "manual-apply-app",
       "mutation-test": "FROM-MUTATION-WEBHOOK"
     },
     "managedFields": [
@@ -21,7 +21,7 @@
           "f:metadata": {
             "f:labels": {
               "f:app": {},
-              "f:applications.argoproj.io/app-name": {}
+              "f:applications.apps.hanzo.ai/app-name": {}
             }
           },
           "f:spec": {
@@ -76,7 +76,7 @@
             "f:labels": {
               ".": {},
               "f:app": {},
-              "f:applications.argoproj.io/app-name": {}
+              "f:applications.apps.hanzo.ai/app-name": {}
             }
           },
           "f:spec": {

@@ -127,7 +127,7 @@ func UnstructuredToAppInstanceValue(un *unstructured.Unstructured, appName, name
 // label value. Inputs that are already within the limit are returned as-is
 // without trailing-character validation; callers that need a fully validated
 // label should validate separately.
-// See https://github.com/argoproj/argo-cd/issues/18237.
+// See https://github.com/hanzoai/cd/issues/18237.
 func TruncateLabel(val string) (string, error) {
 	if len(val) <= LabelMaxLength {
 		return val, nil

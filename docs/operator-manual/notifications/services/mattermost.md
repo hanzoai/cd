@@ -49,7 +49,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.<trigger-name>.mattermost: <channel-id>
+    apps.hanzo.ai/subscribe.<trigger-name>.mattermost: <channel-id>
 ```
 
 ## Templates

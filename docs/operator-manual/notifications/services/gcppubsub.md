@@ -19,7 +19,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.gcppubsub: "override-topic"
+    apps.hanzo.ai/subscribe.on-deployment-ready.gcppubsub: "override-topic"
 ```
 
 ConfigMap:
@@ -59,7 +59,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.gcppubsub: ""
+    apps.hanzo.ai/subscribe.on-deployment-ready.gcppubsub: ""
 ```
 
 ConfigMap:

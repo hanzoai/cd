@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestFilterRepoMatch(t *testing.T) {
@@ -28,7 +28,7 @@ func TestFilterRepoMatch(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			RepositoryMatch: new("n|hr"),
 		},
@@ -58,7 +58,7 @@ func TestFilterLabelMatch(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			LabelMatch: new("^prod-.*$"),
 		},
@@ -85,7 +85,7 @@ func TestFilterPathExists(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			PathsExist: []string{"two"},
 		},
@@ -111,7 +111,7 @@ func TestFilterPathDoesntExists(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			PathsDoNotExist: []string{"two"},
 		},
@@ -130,7 +130,7 @@ func TestFilterRepoMatchBadRegexp(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			RepositoryMatch: new("("),
 		},
@@ -148,7 +148,7 @@ func TestFilterLabelMatchBadRegexp(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			LabelMatch: new("("),
 		},
@@ -183,7 +183,7 @@ func TestFilterBranchMatch(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			BranchMatch: new("w"),
 		},
@@ -215,7 +215,7 @@ func TestMultiFilterAnd(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			RepositoryMatch: new("w"),
 			LabelMatch:      new("^prod-.*$"),
@@ -245,7 +245,7 @@ func TestMultiFilterOr(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{
 		{
 			RepositoryMatch: new("e"),
 		},
@@ -279,7 +279,7 @@ func TestNoFilters(t *testing.T) {
 			},
 		},
 	}
-	filters := []argoprojiov1alpha1.SCMProviderGeneratorFilter{}
+	filters := []appv1alpha1.SCMProviderGeneratorFilter{}
 	repos, err := ListRepos(t.Context(), provider, filters, "")
 	require.NoError(t, err)
 	assert.Len(t, repos, 3)

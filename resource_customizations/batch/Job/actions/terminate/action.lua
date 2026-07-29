@@ -21,7 +21,7 @@ if obj.status ~= nil then
     obj.status.conditions = obj.status.conditions or {}
     table.insert(obj.status.conditions, {
       lastTransitionTime = os.date("!%Y-%m-%dT%XZ"),
-      message = "Job was terminated explicitly through Argo CD",
+      message = "Job was terminated explicitly through Hanzo CD",
       reason = "ManuallyTerminated",
       status = "True",
       type = "FailureTarget"

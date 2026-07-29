@@ -106,7 +106,7 @@ func (a *ArgoCDWebhookHandler) HandleRegistryEvent(event *RegistryEvent) {
 				app.Name, repoURL, revision,
 			)
 
-			namespacedAppInterface := a.appClientset.ArgoprojV1alpha1().
+			namespacedAppInterface := a.appClientset.AppV1alpha1().
 				Applications(app.Namespace)
 
 			ht := v1alpha1.HydrateTypeNormal

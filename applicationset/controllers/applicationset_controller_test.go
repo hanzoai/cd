@@ -784,7 +784,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 			},
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/issues/9101#issuecomment-1191138278
+			// For this use case: https://github.com/hanzoai/cd/issues/9101#issuecomment-1191138278
 			name: "Ensure that ignored targetRevision difference doesn't cause an update, even if another field changes",
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
@@ -980,7 +980,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 			},
 		},
 		{
-			name: "Demonstrate limitation of MergePatch", // Maybe we can fix this in Argo CD 3.0: https://github.com/argoproj/argo-cd/issues/15975
+			name: "Demonstrate limitation of MergePatch", // Maybe we can fix this in Argo CD 3.0: https://github.com/hanzoai/cd/issues/15975
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
@@ -1728,7 +1728,7 @@ func TestRemoveFinalizerOnInvalidDestination_FinalizerTypes(t *testing.T) {
 				Recorder:      record.NewFakeRecorder(10),
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
-				DB:        argodb,
+				DB:            argodb,
 			}
 			clusterList, err := utils.ListClusters(clusterInformer)
 			require.NoError(t, err)
@@ -1894,7 +1894,7 @@ func TestRemoveFinalizerOnInvalidDestination_DestinationTypes(t *testing.T) {
 				Recorder:      record.NewFakeRecorder(10),
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
-				DB:        argodb,
+				DB:            argodb,
 			}
 
 			clusterList, err := utils.ListClusters(clusterInformer)
@@ -2649,7 +2649,7 @@ func TestValidateGeneratedApplications(t *testing.T) {
 				Scheme:          scheme,
 				Recorder:        record.NewFakeRecorder(1),
 				Generators:      map[string]generators.Generator{},
-				DB:          argodb,
+				DB:              argodb,
 				ArgoCDNamespace: "namespace",
 				KubeClientset:   kubeclientset,
 				Metrics:         metrics,
@@ -2696,7 +2696,7 @@ func TestReconcilerValidationProjectErrorBehaviour(t *testing.T) {
 					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
-					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://git.hanzo.ai/hanzo/example-apps", Path: "guestbook"},
 					Project:     "{{.project}}",
 					Destination: v1alpha1.ApplicationDestination{Server: "https://kubernetes.default.svc"},
 				},
@@ -2722,7 +2722,7 @@ func TestReconcilerValidationProjectErrorBehaviour(t *testing.T) {
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		DB:          argodb,
+		DB:              argodb,
 		KubeClientset:   kubeclientset,
 		Policy:          v1alpha1.ApplicationsSyncPolicySync,
 		ArgoCDNamespace: "cd",
@@ -3229,7 +3229,7 @@ func TestSetApplicationSetStatusCondition(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				DB:        argodb,
+				DB:            argodb,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -3278,7 +3278,7 @@ func applicationsUpdateSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
-					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://git.hanzo.ai/hanzo/example-apps", Path: "guestbook"},
 					Project:     "default",
 					Destination: v1alpha1.ApplicationDestination{Server: "{{url}}"},
 				},
@@ -3322,7 +3322,7 @@ func applicationsUpdateSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		DB:               argodb,
+		DB:                   argodb,
 		ArgoCDNamespace:      "cd",
 		KubeClientset:        kubeclientset,
 		Policy:               v1alpha1.ApplicationsSyncPolicySync,
@@ -3452,7 +3452,7 @@ func TestReconcilePopulatesResourcesStatusOnFirstRun(t *testing.T) {
 					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
-					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://git.hanzo.ai/hanzo/example-apps", Path: "guestbook"},
 					Project:     "default",
 					Destination: v1alpha1.ApplicationDestination{Server: "{{url}}"},
 				},
@@ -3496,7 +3496,7 @@ func TestReconcilePopulatesResourcesStatusOnFirstRun(t *testing.T) {
 		Renderer:        &utils.Render{},
 		Recorder:        record.NewFakeRecorder(1),
 		Generators:      map[string]generators.Generator{"List": generators.NewListGenerator()},
-		DB:          argodb,
+		DB:              argodb,
 		ArgoCDNamespace: "cd",
 		KubeClientset:   kubeclientset,
 		Policy:          v1alpha1.ApplicationsSyncPolicySync,
@@ -3566,7 +3566,7 @@ func applicationsDeleteSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
-					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://git.hanzo.ai/hanzo/example-apps", Path: "guestbook"},
 					Project:     "default",
 					Destination: v1alpha1.ApplicationDestination{Server: "{{url}}"},
 				},
@@ -3611,7 +3611,7 @@ func applicationsDeleteSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		DB:               argodb,
+		DB:                   argodb,
 		ArgoCDNamespace:      "cd",
 		KubeClientset:        kubeclientset,
 		Policy:               v1alpha1.ApplicationsSyncPolicySync,
@@ -3782,7 +3782,7 @@ func TestPolicies(t *testing.T) {
 							},
 						},
 						Spec: v1alpha1.ApplicationSpec{
-							Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+							Source:      &v1alpha1.ApplicationSource{RepoURL: "https://git.hanzo.ai/hanzo/example-apps", Path: "guestbook"},
 							Project:     "default",
 							Destination: v1alpha1.ApplicationDestination{Server: "https://kubernetes.default.svc"},
 						},
@@ -3808,7 +3808,7 @@ func TestPolicies(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				DB:          argodb,
+				DB:              argodb,
 				ArgoCDNamespace: "cd",
 				KubeClientset:   kubeclientset,
 				Policy:          policy,
@@ -4011,7 +4011,7 @@ func TestSetApplicationSetApplicationStatus(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				DB:        argodb,
+				DB:            argodb,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -4279,7 +4279,7 @@ func TestUpdateResourceStatus(t *testing.T) {
 				Scheme:                  scheme,
 				Recorder:                record.NewFakeRecorder(1),
 				Generators:              map[string]generators.Generator{},
-				DB:                  argodb,
+				DB:                      argodb,
 				KubeClientset:           kubeclientset,
 				Metrics:                 metrics,
 				MaxResourcesStatusCount: cc.maxResourcesStatusCount,
@@ -4369,7 +4369,7 @@ func TestResourceStatusAreOrdered(t *testing.T) {
 				Scheme:        scheme,
 				Recorder:      record.NewFakeRecorder(1),
 				Generators:    map[string]generators.Generator{},
-				DB:        argodb,
+				DB:            argodb,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -5308,7 +5308,7 @@ func TestReconcileAddsFinalizer_WhenDeletionOrderReverse(t *testing.T) {
 				Renderer:               &utils.Render{},
 				Recorder:               record.NewFakeRecorder(1),
 				Generators:             map[string]generators.Generator{},
-				DB:                 argodb,
+				DB:                     argodb,
 				KubeClientset:          kubeclientset,
 				Metrics:                metrics,
 				EnableProgressiveSyncs: cc.progressiveSyncEnabled,
@@ -5389,7 +5389,7 @@ func TestReconcileProgressiveSyncDisabled(t *testing.T) {
 				Renderer:               &utils.Render{},
 				Recorder:               record.NewFakeRecorder(1),
 				Generators:             map[string]generators.Generator{},
-				DB:                 argodb,
+				DB:                     argodb,
 				KubeClientset:          kubeclientset,
 				Metrics:                metrics,
 				EnableProgressiveSyncs: cc.enableProgressiveSyncs,

@@ -1309,7 +1309,7 @@ func (sc *syncContext) shouldUseServerSideApply(targetObj *unstructured.Unstruct
 	// if it is a dry run, disable server side apply, as the goal is to validate only the
 	// yaml correctness of the rendered manifests.
 	// running dry-run in server mode breaks the auto create namespace feature
-	// https://github.com/argoproj/argo-cd/issues/13874
+	// https://github.com/hanzoai/cd/issues/13874
 	if sc.dryRun || dryRun {
 		return false
 	}

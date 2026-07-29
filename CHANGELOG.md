@@ -28,7 +28,7 @@
 
 ### Bug fixes
 
-fix: Support files in cd.hanzo.ai/manifest-generate-paths annotation (#9908)
+fix: Support files in apps.hanzo.ai/manifest-generate-paths annotation (#9908)
 fix: terminal websocket write lock to avoid races (#10011)
 fix: updated all a tags to Link tags in app summary (#9777)
 fix: e2e test to use func from clusterauth instead creating one with old logic (#9989)
@@ -342,8 +342,8 @@ From the [GHSA-2m7h-86qq-fp4v](https://github.com/hanzoai/cd/security/advisories
 
 ### Hanzo CD ApplicationSet and Notifications are now part of Hanzo CD
 
-Two popular [Argoproj Labs](https://github.com/argoproj-labs) projects [Hanzo CD ApplicationSet](https://github.com/argoproj/applicationset) and
-[Hanzo CD Notifications](https://github.com/argoproj-labs/cd-notifications) are now part of Hanzo CD! The default Hanzo CD installation manifests now
+Two popular [Argoproj Labs](https://github.com/hanzoai-labs) projects [Hanzo CD ApplicationSet](https://github.com/hanzoai/applicationset) and
+[Hanzo CD Notifications](https://github.com/hanzoai-labs/cd-notifications) are now part of Hanzo CD! The default Hanzo CD installation manifests now
 bundle both projects out of the box. Going forward you can expect more tightened integration of these projects into Hanzo CD.
 
 ### New sync and diff strategies
@@ -643,7 +643,7 @@ More information can be found in the related
 - fix: Escape proj in regex (#7985)
 - fix: Default value for retry validation #8055 (#8064)
 - fix: Sync window panel is crashed if resource name not contain letters (#8053)
-- fix: Upgrade github.com/argoproj/gitops-engine to v0.5.2
+- fix: Upgrade github.com/hanzoai/gitops-engine to v0.5.2
 - fix: Retry disabled text (#8004)
 - fix: Opening app details shows UI error on some apps (#8016) (#8019)
 - fix: Correctly handle project field during partial cluster update (#7994)
@@ -675,7 +675,7 @@ improved plugin manifests discovery.
 
 Hanzo CD has traditionally tracked the resources it manages by the well-known "app.kubernetes.io/instance" property.
 While using this property works ok in simple scenarios, it also has several limitations. Hanzo CD now allows you to use
-a new annotation (cd.hanzo.ai/tracking-id) for tracking your resources. Using this annotation is a much more flexible approach
+a new annotation (apps.hanzo.ai/tracking-id) for tracking your resources. Using this annotation is a much more flexible approach
 as there are no conflicts with other Kubernetes tools, and you can easily install multiple Hanzo CD instances on the same clusters.
 
 ### Bug Fixes and Performance Enhancements
@@ -969,7 +969,7 @@ Want to notify your Hanzo CD users of upcoming changes? Just specify the notific
 ### Core Features
 
 * The new sync option `PrunePropagationPolicy=background` allows using background deletion during syncing
-* New application finalizer `resources-finalizer.cd.hanzo.ai:background` allows using background deletion when the application is deleted
+* New application finalizer `resources-finalizer.apps.hanzo.ai:background` allows using background deletion when the application is deleted
 * The new sync option `ApplyOutOfSyncOnly=true` allows skipping syncing resources that are already in the desired state.
 * The new sync option `PruneLast=true` allows deferring resource pruning until the last synchronization phase after all other resources are synced and healthy.
 
@@ -1056,7 +1056,7 @@ might provide 10x performance improvement of manifests generation.
 ### Annotation Based Path Detection
 
 The feature that allows specifying which source repository directories influence the application manifest generation
-using the `cd.hanzo.ai/manifest-generate-paths` annotation. The annotation improves the Git webhook handler
+using the `apps.hanzo.ai/manifest-generate-paths` annotation. The annotation improves the Git webhook handler
 behavior. The webhook avoids related applications reconciliation if no related files have been changed by the Git commit
 and even allows to skip manifests generation for new commit by re-using generation manifests for the previous commit.
 
@@ -1069,11 +1069,11 @@ as needed using a single Hanzo CD instance.
 
 Besides performance improvements, Hanzo CD got a lot of usability enhancements and new features:
 
-* Namespace and CRD creation [#4354](https://github.com/argoproj/argo-cd/issues/4354)
-* Unknown fields of built-in K8S types [#1787](https://github.com/argoproj/argo-cd/issues/1787)
-* Endpoints Diffing [#1816](https://github.com/argoproj/argo-cd/issues/1816)
-* Better compatibility with Helm Hooks [#1816](https://github.com/argoproj/argo-cd/issues/1816)
-* App-of-Apps Health Assessment [#3781](https://github.com/argoproj/argo-cd/issues/3781)
+* Namespace and CRD creation [#4354](https://github.com/hanzoai/cd/issues/4354)
+* Unknown fields of built-in K8S types [#1787](https://github.com/hanzoai/cd/issues/1787)
+* Endpoints Diffing [#1816](https://github.com/hanzoai/cd/issues/1816)
+* Better compatibility with Helm Hooks [#1816](https://github.com/hanzoai/cd/issues/1816)
+* App-of-Apps Health Assessment [#3781](https://github.com/hanzoai/cd/issues/3781)
 
 ## Global Projects
 
@@ -1086,17 +1086,17 @@ inherit global project rules using Kubernetes labels.
 
 The Hanzo CD user interface is an important part of a project and we keep working hard on improving the user experience. Here is an incomplete list of implemented improvements:
 
-* Improved Applications Filters [#4622](https://github.com/argoproj/argo-cd/issues/4622)
-* Git tags and branches autocompletion [#4713](https://github.com/argoproj/argo-cd/issues/4713)
-* Project Details Page [#4400](https://github.com/argoproj/argo-cd/issues/4400)
-* New version information panel [#4376](https://github.com/argoproj/argo-cd/issues/4376)
-* Progress Indicators [#4411](https://github.com/argoproj/argo-cd/issues/4411)
-* External links annotations [#4380](https://github.com/argoproj/argo-cd/issues/4380) and more!
+* Improved Applications Filters [#4622](https://github.com/hanzoai/cd/issues/4622)
+* Git tags and branches autocompletion [#4713](https://github.com/hanzoai/cd/issues/4713)
+* Project Details Page [#4400](https://github.com/hanzoai/cd/issues/4400)
+* New version information panel [#4376](https://github.com/hanzoai/cd/issues/4376)
+* Progress Indicators [#4411](https://github.com/hanzoai/cd/issues/4411)
+* External links annotations [#4380](https://github.com/hanzoai/cd/issues/4380) and more!
 
 ## Config Management Tools Enhancements
 
-* OCI Based Repositories [#4018](https://github.com/argoproj/argo-cd/issues/4018)
-* Configurable Helm Versions [#4111](https://github.com/argoproj/argo-cd/issues/4111)
+* OCI Based Repositories [#4018](https://github.com/hanzoai/cd/issues/4018)
+* Configurable Helm Versions [#4111](https://github.com/hanzoai/cd/issues/4111)
 
 ## Bug fixes and under the hood changes
 
@@ -1229,7 +1229,7 @@ The enhancement allows configuring an exception list in Orphaned Resources setti
 
 ### GitOps Engine
 
-As part of 1.6 release, the core Hanzo CD functionality has been moved into [GitOps Engine](https://github.com/argoproj/gitops-engine).
+As part of 1.6 release, the core Hanzo CD functionality has been moved into [GitOps Engine](https://github.com/hanzoai/gitops-engine).
 GitOps Engine is a reusable library that empowers you to quickly build specialized tools that implement specific GitOps
 use cases, such as bootstrapping a Kubernetes cluster, or decentralized management of namespaces.
 
@@ -1309,8 +1309,8 @@ This patch release introduces a set of enhancements and bug fixes. Here are most
 #### Multiple Kustomize Versions
 
 The bundled Kustomize version had been upgraded to v3.5.4. Hanzo CD allows changing bundled version using
-[custom image or init container](https://argoproj.github.io/argo-cd/operator-manual/custom_tools/). 
-This [feature](https://argoproj.github.io/argo-cd/user-guide/kustomize/#custom-kustomize-versions)
+[custom image or init container](https://hanzoai.github.io/argo-cd/operator-manual/custom_tools/). 
+This [feature](https://hanzoai.github.io/argo-cd/user-guide/kustomize/#custom-kustomize-versions)
 enables bundling multiple Kustomize versions at the same time and allows end-users to specify the required version per application.
 
 #### Custom Root Path
@@ -1318,22 +1318,22 @@ enables bundling multiple Kustomize versions at the same time and allows end-use
 The feature allows accessing Hanzo CD UI and API using a custom root path(for example https://myhostname/cd).
 This enables running Hanzo CD behind a proxy that takes care of user authentication (such as Ambassador) or hosting
 multiple Hanzo CD using the same hostname. A set of bug fixes and enhancements had been implemented to makes it easier.
-Use new `--rootpath` [flag](https://argoproj.github.io/argo-cd/operator-manual/ingress/#cd-server-and-ui-root-path-v153) to enable the feature.
+Use new `--rootpath` [flag](https://hanzoai.github.io/argo-cd/operator-manual/ingress/#cd-server-and-ui-root-path-v153) to enable the feature.
 
 ### Login Rate Limiting
 
 The feature prevents a built-in user password brute force attack and addresses the known 
-[vulnerability](https://argoproj.github.io/argo-cd/security_considerations/#cve-2020-8827-insufficient-anti-automationanti-brute-force).
+[vulnerability](https://hanzoai.github.io/argo-cd/security_considerations/#cve-2020-8827-insufficient-anti-automationanti-brute-force).
 
 ### Settings Management Tools
 
-A new set of [CLI commands](https://argoproj.github.io/argo-cd/operator-manual/troubleshooting/) that simplify configuring Hanzo CD.
+A new set of [CLI commands](https://hanzoai.github.io/argo-cd/operator-manual/troubleshooting/) that simplify configuring Hanzo CD.
 Using the CLI you can test settings changes offline without affecting running Hanzo CD instance and have ability to troubleshot diffing
 customizations, custom resource health checks, and more.
 
 ### Other
 
-* New Project and Application CRD settings ([#2900](https://github.com/argoproj/argo-cd/issues/2900), [#2873](https://github.com/argoproj/argo-cd/issues/2873)) that allows customizing Hanzo CD behavior.
+* New Project and Application CRD settings ([#2900](https://github.com/hanzoai/cd/issues/2900), [#2873](https://github.com/hanzoai/cd/issues/2873)) that allows customizing Hanzo CD behavior.
 * Upgraded Dex (v2.22.0) enables seamless [SSO integration](https://www.openshift.com/blog/openshift-authentication-integration-with-cd) with OpenShift.
 
 
@@ -1376,7 +1376,7 @@ customizations, custom resource health checks, and more.
 #### Critical security fix
 
 This release contains a critical security fix. Please refer to the
-[security document](https://argoproj.github.io/argo-cd/security_considerations/#CVE-2020-5260-possible-git-credential-leak)
+[security document](https://hanzoai.github.io/argo-cd/security_considerations/#CVE-2020-5260-possible-git-credential-leak)
 for more information.
 
 **Upgrading is strongly recommended**
@@ -1386,7 +1386,7 @@ for more information.
 #### Critical security fix
 
 This release contains a critical security fix. Please refer to the
-[security document](https://argoproj.github.io/argo-cd/security_considerations/#CVE-2020-5260-possible-git-credential-leak)
+[security document](https://hanzoai.github.io/argo-cd/security_considerations/#CVE-2020-5260-possible-git-credential-leak)
 for more information.
 
 ## v1.5.1 (2020-04-06)
@@ -1432,7 +1432,7 @@ As part of this release, the bundled Redis was upgraded to version 4.3.4 with en
 The HA proxy replaced the sentinel and provides more reliable Redis connection.
 
 > After publishing 1.5.0 release we've discovered that default HAProxy settings might cause intermittent failures.
-> See [argo-cd#3358](https://github.com/argoproj/argo-cd/issues/3358)
+> See [argo-cd#3358](https://github.com/hanzoai/cd/issues/3358)
 
 #### Windows CLI
 
@@ -1448,10 +1448,10 @@ The legacy example Grafana dashboard is available at [examples/dashboard-legacy.
 ####  Known issues
 Last-minute bugs that will be addressed in 1.5.1 shortly:
  
-* https://github.com/argoproj/argo-cd/issues/3336
-* https://github.com/argoproj/argo-cd/issues/3319
-* https://github.com/argoproj/argo-cd/issues/3339
-* https://github.com/argoproj/argo-cd/issues/3358
+* https://github.com/hanzoai/cd/issues/3336
+* https://github.com/hanzoai/cd/issues/3319
+* https://github.com/hanzoai/cd/issues/3339
+* https://github.com/hanzoai/cd/issues/3358
 
 #### Enhancements
 * feat: support helm3 (#2383) (#3178)
@@ -1470,7 +1470,7 @@ Last-minute bugs that will be addressed in 1.5.1 shortly:
 #### Bug Fixes
 
 - fix: app reconciliation fails with panic: index out of (#3233)
-- fix: upgrade argoproj/pkg version to fix leaked sensitive information in logs (#3230)
+- fix: upgrade hanzoai/pkg version to fix leaked sensitive information in logs (#3230)
 - fix: set MaxCallSendMsgSize to MaxGRPCMessageSize for the GRPC caller (#3117)
 - fix: stop caching helm index (#3193)
 - fix: dex proxy should forward request to dex preserving the basehref (#3165)
@@ -1539,10 +1539,10 @@ The v1.4.0 is a stability release that brings multiple bug fixes, security, perf
 #### Security
 A number of security enhancements and features have been implemented (thanks to [@jannfis](https://github.com/jannfis) for driving it! ):
 * **Repository Credential Templates Management UI/CLI**. Now you can use Hanzo CD CLI or UI to configure
-[credentials template](https://argoproj.github.io/argo-cd/user-guide/private-repositories/#credential-templates) for multiple repositories!
+[credentials template](https://hanzoai.github.io/argo-cd/user-guide/private-repositories/#credential-templates) for multiple repositories!
 * **X-Frame-Options header on serving static assets**. The X-Frame-Options prevents third party sites to trick users into interacting with the application.
 * **Tighten AppProject RBAC enforcement**. We've improved the enforcement of access rules specified in the
-[application project](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#projects) configuration.
+[application project](https://hanzoai.github.io/argo-cd/operator-manual/declarative-setup/#projects) configuration.
 
 #### Namespace Isolation
 With the namespace isolation feature, you are no longer have to give full read-only cluster access to the Hanzo CD. Instead, you can give access only to selected namespaces with-in
@@ -1560,16 +1560,16 @@ The Hanzo CD no longer fork/exec `kubectl` to apply resource changes in the targ
 CPU and Memory usage of large Hanzo CD instances.
 
 #### Resources Health based Hook Status
-The existing Hanzo CD [resource hooks](https://argoproj.github.io/argo-cd/user-guide/resource_hooks/) feature allows running custom logic during the syncing process. You can mark
+The existing Hanzo CD [resource hooks](https://hanzoai.github.io/argo-cd/user-guide/resource_hooks/) feature allows running custom logic during the syncing process. You can mark
 any Kubernetes resource as a hook and Hanzo CD assess hook status if resource is a `Pod`, `Job` or `Argo Workflow`. In the v1.4.0 release Hanzo CD is going to leverage resource
-[health assessment](https://argoproj.github.io/argo-cd/operator-manual/health/) to get sync hook status. This allows using any custom CRD as a sync hook and leverage custom health
+[health assessment](https://hanzoai.github.io/argo-cd/operator-manual/health/) to get sync hook status. This allows using any custom CRD as a sync hook and leverage custom health
 check logic.
 
 #### Manifest Generation
 * **Track Helm Charts By Semantic Version**. You've been able to track charts hosted in Git repositories using branches to tags. This is now possible for Helm charts. You no longer
  need to choose the exact version, such as v1.4.0 ,instead you can use a semantic version constraint such as v1.4.* and the latest version that matches will be installed.
 * **Build Environment Variables**. Feature allows config management tool to get access to app details during manifest generation via
-[environment variables](https://argoproj.github.io/argo-cd/user-guide/build-environment/).
+[environment variables](https://hanzoai.github.io/argo-cd/user-guide/build-environment/).
 * **Git submodules**. Hanzo CD is going to automatically fetch sub-modules if your repository has `.gitmodules` directory.
 
 #### UI and CLI
@@ -1753,7 +1753,7 @@ There may be instances when you want to control the times during which an Hanzo 
 * Support for in-line block from helm chart values (#1930)
 * Request OIDC groups claim if groups scope is not supported (#1956)
 * Add a maintenance window for Applications with automated syncing (#1995)
-* Support `cd.hanzo.ai/hook-delete-policy: BeforeHookCreation` (#2036)
+* Support `apps.hanzo.ai/hook-delete-policy: BeforeHookCreation` (#2036)
 * Support setting Helm string parameters using CLI/UI (#2078)
 * Config management plugin environment variable UI/CLI support (#2203)
 * Helm: auto-detect URLs (#2260)
@@ -2009,36 +2009,36 @@ systems by making it easier to find other components inside and outside Hanzo CD
 
 #### Enhancements
 
-- Sync waves [#1544](https://github.com/argoproj/argo-cd/issues/1544)
-- Adds Prune=false and IgnoreExtraneous options [#1629](https://github.com/argoproj/argo-cd/issues/1629)
-- Forward Git credentials to config management plugins [#1628](https://github.com/argoproj/argo-cd/issues/1628)
-- Improve Kustomize 2 parameters UI [#1609](https://github.com/argoproj/argo-cd/issues/1609)
-- Adds `cd logout` [#1210](https://github.com/argoproj/argo-cd/issues/1210)
-- Make it possible to set Helm release name different from Hanzo CD app name.  [#1066](https://github.com/argoproj/argo-cd/issues/1066)
+- Sync waves [#1544](https://github.com/hanzoai/cd/issues/1544)
+- Adds Prune=false and IgnoreExtraneous options [#1629](https://github.com/hanzoai/cd/issues/1629)
+- Forward Git credentials to config management plugins [#1628](https://github.com/hanzoai/cd/issues/1628)
+- Improve Kustomize 2 parameters UI [#1609](https://github.com/hanzoai/cd/issues/1609)
+- Adds `cd logout` [#1210](https://github.com/hanzoai/cd/issues/1210)
+- Make it possible to set Helm release name different from Hanzo CD app name.  [#1066](https://github.com/hanzoai/cd/issues/1066)
 - Add ability to specify system namespace during cluster add operation [#1661](https://github.com/hanzoai/cd/pull/1661) 
 - Make listener and metrics ports configurable [#1647](https://github.com/hanzoai/cd/pull/1647) 
-- Using SSH keys to authenticate kustomize bases from git [#827](https://github.com/argoproj/argo-cd/issues/827)
-- Adds `cd app sync APPNAME --async` [#1728](https://github.com/argoproj/argo-cd/issues/1728)
-- Allow users to define app specific urls to expose in the UI [#1677](https://github.com/argoproj/argo-cd/issues/1677)
-- Error view instead of blank page in UI [#1375](https://github.com/argoproj/argo-cd/issues/1375)
-- Project Editor: Whitelisted Cluster Resources doesn't strip whitespace [#1693](https://github.com/argoproj/argo-cd/issues/1693)
+- Using SSH keys to authenticate kustomize bases from git [#827](https://github.com/hanzoai/cd/issues/827)
+- Adds `cd app sync APPNAME --async` [#1728](https://github.com/hanzoai/cd/issues/1728)
+- Allow users to define app specific urls to expose in the UI [#1677](https://github.com/hanzoai/cd/issues/1677)
+- Error view instead of blank page in UI [#1375](https://github.com/hanzoai/cd/issues/1375)
+- Project Editor: Whitelisted Cluster Resources doesn't strip whitespace [#1693](https://github.com/hanzoai/cd/issues/1693)
 - Eliminate unnecessary git interactions for top-level resource changes (#1919)
 - Ability to rotate the bearer token used to manage external clusters (#1084)
 
 #### Bug Fixes
 
-- Project Editor: Whitelisted Cluster Resources doesn't strip whitespace [#1693](https://github.com/argoproj/argo-cd/issues/1693)
-- \[ui small bug\] menu position outside block [#1711](https://github.com/argoproj/argo-cd/issues/1711)
-- UI will crash when create application without destination namespace [#1701](https://github.com/argoproj/argo-cd/issues/1701)
-- Hanzo CD synchronization failed due to internal error [#1697](https://github.com/argoproj/argo-cd/issues/1697)
-- Replicasets ordering is not stable on app tree view [#1668](https://github.com/argoproj/argo-cd/issues/1668)
-- Stuck processor on App Controller after deleting application with incomplete operation [#1665](https://github.com/argoproj/argo-cd/issues/1665)
-- Role edit page fails with JS error [#1662](https://github.com/argoproj/argo-cd/issues/1662)
-- failed parsing on parameters with comma [#1660](https://github.com/argoproj/argo-cd/issues/1660)
+- Project Editor: Whitelisted Cluster Resources doesn't strip whitespace [#1693](https://github.com/hanzoai/cd/issues/1693)
+- \[ui small bug\] menu position outside block [#1711](https://github.com/hanzoai/cd/issues/1711)
+- UI will crash when create application without destination namespace [#1701](https://github.com/hanzoai/cd/issues/1701)
+- Hanzo CD synchronization failed due to internal error [#1697](https://github.com/hanzoai/cd/issues/1697)
+- Replicasets ordering is not stable on app tree view [#1668](https://github.com/hanzoai/cd/issues/1668)
+- Stuck processor on App Controller after deleting application with incomplete operation [#1665](https://github.com/hanzoai/cd/issues/1665)
+- Role edit page fails with JS error [#1662](https://github.com/hanzoai/cd/issues/1662)
+- failed parsing on parameters with comma [#1660](https://github.com/hanzoai/cd/issues/1660)
 - Handle nil obj when processing custom actions [#1700](https://github.com/hanzoai/cd/pull/1700)
 - Account for missing fields in Rollout HealthStatus [#1699](https://github.com/hanzoai/cd/pull/1699) 
-- Sync operation unnecessary waits for a healthy state of all resources [#1715](https://github.com/argoproj/argo-cd/issues/1715)
-- failed parsing on parameters with comma [#1660](https://github.com/argoproj/argo-cd/issues/1660)
+- Sync operation unnecessary waits for a healthy state of all resources [#1715](https://github.com/hanzoai/cd/issues/1715)
+- failed parsing on parameters with comma [#1660](https://github.com/hanzoai/cd/issues/1660)
 - cd app sync hangs when cluster is not configured (#1935)
 - Do not allow app-of-app child app's Missing status to affect parent (#1954)
 - Hanzo CD don't handle well k8s objects which size exceeds 1mb (#1685)

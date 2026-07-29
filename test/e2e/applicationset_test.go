@@ -69,7 +69,7 @@ func TestSimpleListGeneratorExternalNamespace(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -94,7 +94,7 @@ func TestSimpleListGeneratorExternalNamespace(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -167,7 +167,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -191,7 +191,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -220,7 +220,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -254,7 +254,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -348,7 +348,7 @@ func TestSimpleListGenerator(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -371,7 +371,7 @@ func TestSimpleListGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -437,7 +437,7 @@ func TestSimpleListGeneratorGoTemplate(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -460,7 +460,7 @@ func TestSimpleListGeneratorGoTemplate(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -526,7 +526,7 @@ func TestRenderHelmValuesObject(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "helm-guestbook",
 				Helm: &v1alpha1.ApplicationSourceHelm{
@@ -553,7 +553,7 @@ func TestRenderHelmValuesObject(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "helm-guestbook",
 						Helm: &v1alpha1.ApplicationSourceHelm{
@@ -601,7 +601,7 @@ func TestTemplatePatch(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -628,7 +628,7 @@ func TestTemplatePatch(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -720,7 +720,7 @@ func TestUpdateHelmValuesObject(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "helm-guestbook",
 				Helm: &v1alpha1.ApplicationSourceHelm{
@@ -747,7 +747,7 @@ func TestUpdateHelmValuesObject(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "helm-guestbook",
 						Helm: &v1alpha1.ApplicationSourceHelm{
@@ -802,7 +802,7 @@ func TestSyncPolicyCreateUpdate(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -828,7 +828,7 @@ func TestSyncPolicyCreateUpdate(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -912,7 +912,7 @@ func TestSyncPolicyCreateDelete(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -934,7 +934,7 @@ func TestSyncPolicyCreateDelete(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -1007,7 +1007,7 @@ func TestSyncPolicyCreateOnly(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -1032,7 +1032,7 @@ func TestSyncPolicyCreateOnly(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -1098,30 +1098,30 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		switch r.RequestURI {
-		case "/api/v3/orgs/argoproj/repos?per_page=100":
+		case "/api/v3/orgs/hanzoai/repos?per_page=100":
 			_, err := io.WriteString(w, `[
 				{
 				  "id": 1296269,
 				  "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
 				  "name": "argo-cd",
-				  "full_name": "argoproj/argo-cd",
+				  "full_name": "hanzoai/cd",
 				  "owner": {
-					"login": "argoproj",
+					"login": "hanzoai",
 					"id": 1,
 					"node_id": "MDQ6VXNlcjE=",
-					"avatar_url": "https://github.com/images/error/argoproj_happy.gif",
+					"avatar_url": "https://github.com/images/error/hanzoai_happy.gif",
 					"gravatar_id": "",
-					"url": "https://api.github.com/users/argoproj",
-					"html_url": "https://github.com/argoproj",
-					"followers_url": "https://api.github.com/users/argoproj/followers",
-					"following_url": "https://api.github.com/users/argoproj/following{/other_user}",
-					"gists_url": "https://api.github.com/users/argoproj/gists{/gist_id}",
-					"starred_url": "https://api.github.com/users/argoproj/starred{/owner}{/repo}",
-					"subscriptions_url": "https://api.github.com/users/argoproj/subscriptions",
-					"organizations_url": "https://api.github.com/users/argoproj/orgs",
-					"repos_url": "https://api.github.com/users/argoproj/repos",
-					"events_url": "https://api.github.com/users/argoproj/events{/privacy}",
-					"received_events_url": "https://api.github.com/users/argoproj/received_events",
+					"url": "https://api.github.com/users/hanzoai",
+					"html_url": "https://github.com/hanzoai",
+					"followers_url": "https://api.github.com/users/hanzoai/followers",
+					"following_url": "https://api.github.com/users/hanzoai/following{/other_user}",
+					"gists_url": "https://api.github.com/users/hanzoai/gists{/gist_id}",
+					"starred_url": "https://api.github.com/users/hanzoai/starred{/owner}{/repo}",
+					"subscriptions_url": "https://api.github.com/users/hanzoai/subscriptions",
+					"organizations_url": "https://api.github.com/users/hanzoai/orgs",
+					"repos_url": "https://api.github.com/users/hanzoai/repos",
+					"events_url": "https://api.github.com/users/hanzoai/events{/privacy}",
+					"received_events_url": "https://api.github.com/users/hanzoai/received_events",
 					"type": "User",
 					"site_admin": false
 				  },
@@ -1129,47 +1129,47 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 				  "html_url": "https://github.com/hanzoai/cd",
 				  "description": "This your first repo!",
 				  "fork": false,
-				  "url": "https://api.github.com/repos/argoproj/argo-cd",
-				  "archive_url": "https://api.github.com/repos/argoproj/argo-cd/{archive_format}{/ref}",
-				  "assignees_url": "https://api.github.com/repos/argoproj/argo-cd/assignees{/user}",
-				  "blobs_url": "https://api.github.com/repos/argoproj/argo-cd/git/blobs{/sha}",
-				  "branches_url": "https://api.github.com/repos/argoproj/argo-cd/branches{/branch}",
-				  "collaborators_url": "https://api.github.com/repos/argoproj/argo-cd/collaborators{/collaborator}",
-				  "comments_url": "https://api.github.com/repos/argoproj/argo-cd/comments{/number}",
-				  "commits_url": "https://api.github.com/repos/argoproj/argo-cd/commits{/sha}",
-				  "compare_url": "https://api.github.com/repos/argoproj/argo-cd/compare/{base}...{head}",
-				  "contents_url": "https://api.github.com/repos/argoproj/argo-cd/contents/{path}",
-				  "contributors_url": "https://api.github.com/repos/argoproj/argo-cd/contributors",
-				  "deployments_url": "https://api.github.com/repos/argoproj/argo-cd/deployments",
-				  "downloads_url": "https://api.github.com/repos/argoproj/argo-cd/downloads",
-				  "events_url": "https://api.github.com/repos/argoproj/argo-cd/events",
-				  "forks_url": "https://api.github.com/repos/argoproj/argo-cd/forks",
-				  "git_commits_url": "https://api.github.com/repos/argoproj/argo-cd/git/commits{/sha}",
-				  "git_refs_url": "https://api.github.com/repos/argoproj/argo-cd/git/refs{/sha}",
-				  "git_tags_url": "https://api.github.com/repos/argoproj/argo-cd/git/tags{/sha}",
+				  "url": "https://api.github.com/repos/hanzoai/cd",
+				  "archive_url": "https://api.github.com/repos/hanzoai/cd/{archive_format}{/ref}",
+				  "assignees_url": "https://api.github.com/repos/hanzoai/cd/assignees{/user}",
+				  "blobs_url": "https://api.github.com/repos/hanzoai/cd/git/blobs{/sha}",
+				  "branches_url": "https://api.github.com/repos/hanzoai/cd/branches{/branch}",
+				  "collaborators_url": "https://api.github.com/repos/hanzoai/cd/collaborators{/collaborator}",
+				  "comments_url": "https://api.github.com/repos/hanzoai/cd/comments{/number}",
+				  "commits_url": "https://api.github.com/repos/hanzoai/cd/commits{/sha}",
+				  "compare_url": "https://api.github.com/repos/hanzoai/cd/compare/{base}...{head}",
+				  "contents_url": "https://api.github.com/repos/hanzoai/cd/contents/{path}",
+				  "contributors_url": "https://api.github.com/repos/hanzoai/cd/contributors",
+				  "deployments_url": "https://api.github.com/repos/hanzoai/cd/deployments",
+				  "downloads_url": "https://api.github.com/repos/hanzoai/cd/downloads",
+				  "events_url": "https://api.github.com/repos/hanzoai/cd/events",
+				  "forks_url": "https://api.github.com/repos/hanzoai/cd/forks",
+				  "git_commits_url": "https://api.github.com/repos/hanzoai/cd/git/commits{/sha}",
+				  "git_refs_url": "https://api.github.com/repos/hanzoai/cd/git/refs{/sha}",
+				  "git_tags_url": "https://api.github.com/repos/hanzoai/cd/git/tags{/sha}",
 				  "git_url": "git:github.com/hanzoai/cd.git",
-				  "issue_comment_url": "https://api.github.com/repos/argoproj/argo-cd/issues/comments{/number}",
-				  "issue_events_url": "https://api.github.com/repos/argoproj/argo-cd/issues/events{/number}",
-				  "issues_url": "https://api.github.com/repos/argoproj/argo-cd/issues{/number}",
-				  "keys_url": "https://api.github.com/repos/argoproj/argo-cd/keys{/key_id}",
-				  "labels_url": "https://api.github.com/repos/argoproj/argo-cd/labels{/name}",
-				  "languages_url": "https://api.github.com/repos/argoproj/argo-cd/languages",
-				  "merges_url": "https://api.github.com/repos/argoproj/argo-cd/merges",
-				  "milestones_url": "https://api.github.com/repos/argoproj/argo-cd/milestones{/number}",
-				  "notifications_url": "https://api.github.com/repos/argoproj/argo-cd/notifications{?since,all,participating}",
-				  "pulls_url": "https://api.github.com/repos/argoproj/argo-cd/pulls{/number}",
-				  "releases_url": "https://api.github.com/repos/argoproj/argo-cd/releases{/id}",
-				  "ssh_url": "git@github.com:argoproj/argo-cd.git",
-				  "stargazers_url": "https://api.github.com/repos/argoproj/argo-cd/stargazers",
-				  "statuses_url": "https://api.github.com/repos/argoproj/argo-cd/statuses/{sha}",
-				  "subscribers_url": "https://api.github.com/repos/argoproj/argo-cd/subscribers",
-				  "subscription_url": "https://api.github.com/repos/argoproj/argo-cd/subscription",
-				  "tags_url": "https://api.github.com/repos/argoproj/argo-cd/tags",
-				  "teams_url": "https://api.github.com/repos/argoproj/argo-cd/teams",
-				  "trees_url": "https://api.github.com/repos/argoproj/argo-cd/git/trees{/sha}",
+				  "issue_comment_url": "https://api.github.com/repos/hanzoai/cd/issues/comments{/number}",
+				  "issue_events_url": "https://api.github.com/repos/hanzoai/cd/issues/events{/number}",
+				  "issues_url": "https://api.github.com/repos/hanzoai/cd/issues{/number}",
+				  "keys_url": "https://api.github.com/repos/hanzoai/cd/keys{/key_id}",
+				  "labels_url": "https://api.github.com/repos/hanzoai/cd/labels{/name}",
+				  "languages_url": "https://api.github.com/repos/hanzoai/cd/languages",
+				  "merges_url": "https://api.github.com/repos/hanzoai/cd/merges",
+				  "milestones_url": "https://api.github.com/repos/hanzoai/cd/milestones{/number}",
+				  "notifications_url": "https://api.github.com/repos/hanzoai/cd/notifications{?since,all,participating}",
+				  "pulls_url": "https://api.github.com/repos/hanzoai/cd/pulls{/number}",
+				  "releases_url": "https://api.github.com/repos/hanzoai/cd/releases{/id}",
+				  "ssh_url": "git@github.com:hanzoai/cd.git",
+				  "stargazers_url": "https://api.github.com/repos/hanzoai/cd/stargazers",
+				  "statuses_url": "https://api.github.com/repos/hanzoai/cd/statuses/{sha}",
+				  "subscribers_url": "https://api.github.com/repos/hanzoai/cd/subscribers",
+				  "subscription_url": "https://api.github.com/repos/hanzoai/cd/subscription",
+				  "tags_url": "https://api.github.com/repos/hanzoai/cd/tags",
+				  "teams_url": "https://api.github.com/repos/hanzoai/cd/teams",
+				  "trees_url": "https://api.github.com/repos/hanzoai/cd/git/trees{/sha}",
 				  "clone_url": "https://github.com/hanzoai/cd.git",
-				  "mirror_url": "git:git.example.com/argoproj/argo-cd",
-				  "hooks_url": "https://api.github.com/repos/argoproj/argo-cd/hooks",
+				  "mirror_url": "git:git.example.com/hanzoai/cd",
+				  "hooks_url": "https://api.github.com/repos/hanzoai/cd/hooks",
 				  "svn_url": "https://svn.github.com/hanzoai/cd",
 				  "homepage": "https://github.com",
 				  "language": null,
@@ -1181,7 +1181,7 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 				  "open_issues_count": 0,
 				  "is_template": false,
 				  "topics": [
-					"argoproj",
+					"hanzoai",
 					"atom",
 					"electron",
 					"api"
@@ -1208,13 +1208,13 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/argo-cd/branches?per_page=100":
+		case "/api/v3/repos/hanzoai/cd/branches?per_page=100":
 			_, err := io.WriteString(w, `[
 				{
 				  "name": "master",
 				  "commit": {
 					"sha": "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
-					"url": "https://api.github.com/repos/argoproj/argo-cd/commits/c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc"
+					"url": "https://api.github.com/repos/hanzoai/cd/commits/c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc"
 				  },
 				  "protected": true,
 				  "protection": {
@@ -1226,14 +1226,14 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 					  ]
 					}
 				  },
-				  "protection_url": "https://api.github.com/repos/argoproj/hello-world/branches/master/protection"
+				  "protection_url": "https://api.github.com/repos/hanzoai/hello-world/branches/master/protection"
 				}
 			  ]
 			`)
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/argo-cd/contents/pkg?ref=master":
+		case "/api/v3/repos/hanzoai/cd/contents/pkg?ref=master":
 			_, err := io.WriteString(w, `{
 				"type": "file",
 				"encoding": "base64",
@@ -1255,7 +1255,7 @@ func githubSCMMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request)
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/argo-cd/branches/master":
+		case "/api/v3/repos/hanzoai/cd/branches/master":
 			_, err := io.WriteString(w, `{
 				"name": "master",
 				"commit": {
@@ -1318,7 +1318,7 @@ func TestSimpleSCMProviderGenerator(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "git@github.com:argoproj/argo-cd.git",
+				RepoURL:        "git@github.com:hanzoai/cd.git",
 				TargetRevision: "master",
 				Path:           "guestbook",
 			},
@@ -1352,7 +1352,7 @@ func TestSimpleSCMProviderGenerator(t *testing.T) {
 				{
 					SCMProvider: &v1alpha1.SCMProviderGenerator{
 						Github: &v1alpha1.SCMProviderGeneratorGithub{
-							Organization: "argoproj",
+							Organization: "hanzoai",
 							API:          ts.URL,
 						},
 						Filters: []v1alpha1.SCMProviderGeneratorFilter{
@@ -1387,7 +1387,7 @@ func TestSimpleSCMProviderGeneratorGoTemplate(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "git@github.com:argoproj/argo-cd.git",
+				RepoURL:        "git@github.com:hanzoai/cd.git",
 				TargetRevision: "master",
 				Path:           "guestbook",
 			},
@@ -1422,7 +1422,7 @@ func TestSimpleSCMProviderGeneratorGoTemplate(t *testing.T) {
 				{
 					SCMProvider: &v1alpha1.SCMProviderGenerator{
 						Github: &v1alpha1.SCMProviderGeneratorGithub{
-							Organization: "argoproj",
+							Organization: "hanzoai",
 							API:          ts.URL,
 						},
 						Filters: []v1alpha1.SCMProviderGeneratorFilter{
@@ -1451,7 +1451,7 @@ func TestSCMProviderGeneratorSCMProviderNotAllowed(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "git@github.com:argoproj/argo-cd.git",
+				RepoURL:        "git@github.com:hanzoai/cd.git",
 				TargetRevision: "master",
 				Path:           "guestbook",
 			},
@@ -1486,7 +1486,7 @@ func TestSCMProviderGeneratorSCMProviderNotAllowed(t *testing.T) {
 				{
 					SCMProvider: &v1alpha1.SCMProviderGenerator{
 						Github: &v1alpha1.SCMProviderGeneratorGithub{
-							Organization: "argoproj",
+							Organization: "hanzoai",
 							API:          "http://myservice.mynamespace.svc.cluster.local",
 						},
 						Filters: []v1alpha1.SCMProviderGeneratorFilter{
@@ -1521,7 +1521,7 @@ func TestCustomApplicationFinalizers(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -1544,7 +1544,7 @@ func TestCustomApplicationFinalizers(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -1585,7 +1585,7 @@ func TestCustomApplicationFinalizersGoTemplate(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -1609,7 +1609,7 @@ func TestCustomApplicationFinalizersGoTemplate(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -1696,7 +1696,7 @@ func TestSimpleSCMProviderGeneratorTokenRefStrictOk(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "git@github.com:argoproj/argo-cd.git",
+				RepoURL:        "git@github.com:hanzoai/cd.git",
 				TargetRevision: "master",
 				Path:           "guestbook",
 			},
@@ -1746,7 +1746,7 @@ func TestSimpleSCMProviderGeneratorTokenRefStrictOk(t *testing.T) {
 				{
 					SCMProvider: &v1alpha1.SCMProviderGenerator{
 						Github: &v1alpha1.SCMProviderGeneratorGithub{
-							Organization: "argoproj",
+							Organization: "hanzoai",
 							API:          ts.URL,
 							TokenRef: &v1alpha1.SecretRef{
 								SecretName: secretName,
@@ -1795,7 +1795,7 @@ func TestSimpleSCMProviderGeneratorTokenRefStrictKo(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "git@github.com:argoproj/argo-cd.git",
+				RepoURL:        "git@github.com:hanzoai/cd.git",
 				TargetRevision: "master",
 				Path:           "guestbook",
 			},
@@ -1846,7 +1846,7 @@ func TestSimpleSCMProviderGeneratorTokenRefStrictKo(t *testing.T) {
 				{
 					SCMProvider: &v1alpha1.SCMProviderGenerator{
 						Github: &v1alpha1.SCMProviderGeneratorGithub{
-							Organization: "argoproj",
+							Organization: "hanzoai",
 							API:          ts.URL,
 							TokenRef: &v1alpha1.SecretRef{
 								SecretName: secretName,
@@ -2121,7 +2121,7 @@ func TestApplicationSetAPIListResourceEvents(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -2168,7 +2168,7 @@ func TestApplicationSetHealthStatusCLI(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},

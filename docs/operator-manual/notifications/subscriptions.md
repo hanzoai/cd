@@ -1,4 +1,4 @@
-The subscription to Hanzo CD application events can be defined using `notifications.apps.hanzo.ai/subscribe.<trigger>.<service>: <recipient>` annotation.
+The subscription to Hanzo CD application events can be defined using `apps.hanzo.ai/subscribe.<trigger>.<service>: <recipient>` annotation.
 For example, the following annotation subscribes two Slack channels to notifications about every successful synchronization of the Hanzo CD application:
 
 ```yaml
@@ -6,7 +6,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my-channel1;my-channel2
+    apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my-channel1;my-channel2
 ```
 
 The annotation key consists of following parts:
@@ -22,7 +22,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: AppProject
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my-channel1;my-channel2
+    apps.hanzo.ai/subscribe.on-sync-succeeded.slack: my-channel1;my-channel2
 ```
 
 ## Default Subscriptions

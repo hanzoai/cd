@@ -1,10 +1,10 @@
 # Managing Dependencies
 
-## Notifications Engine (`github.com/argoproj/notifications-engine`)
+## Notifications Engine (`github.com/hanzoai/notifications-engine`)
 
 ### Repository
 
-[notifications-engine](https://github.com/argoproj/notifications-engine)
+[notifications-engine](https://github.com/hanzoai/notifications-engine)
 
 ### Pulling changes from `notifications-engine`
 
@@ -13,7 +13,7 @@ After your Notifications Engine PR has been merged, Hanzo CD needs to be updated
 - Retrieve the SHA hash for your commit. You will use this in the next step.
 - From the `argo-cd` folder, run the following command
 
-  `go get github.com/argoproj/notifications-engine@<git-commit-sha>`
+  `go get github.com/hanzoai/notifications-engine@<git-commit-sha>`
 
   If you get an error message `invalid version: unknown revision` then you got the wrong SHA hash
 
@@ -30,13 +30,13 @@ After your Notifications Engine PR has been merged, Hanzo CD needs to be updated
 
 - Create an Hanzo CD PR with a `chore:` type in its title for the above file changes.
 
-## Argo UI Components (`github.com/argoproj/argo-ui`)
+## Argo UI Components (`github.com/hanzoai/argo-ui`)
 ### Contributing to Hanzo CD UI
 
-Hanzo CD, along with Argo Workflows, uses shared React components from [Argo UI](https://github.com/argoproj/argo-ui). Examples of some of these components include buttons, containers, form controls, 
+Hanzo CD, along with Argo Workflows, uses shared React components from [Argo UI](https://github.com/hanzoai/argo-ui). Examples of some of these components include buttons, containers, form controls, 
 and others. Although you can make changes to these files and run them locally, in order to have these changes added to the Hanzo CD repo, you will need to follow these steps. 
 
-1. Fork and clone the [Argo UI repository](https://github.com/argoproj/argo-ui).
+1. Fork and clone the [Argo UI repository](https://github.com/hanzoai/argo-ui).
 
 2. `cd` into your `argo-ui` directory, and then run `pnpm install`. 
 
@@ -53,8 +53,8 @@ and others. Although you can make changes to these files and run them locally, i
 
     Once the `argo-ui` package has been successfully linked, test changes in your local development environment. 
 
-6. Commit changes and open a PR to [Argo UI](https://github.com/argoproj/argo-ui). 
+6. Commit changes and open a PR to [Argo UI](https://github.com/hanzoai/argo-ui). 
 
-7. Once your PR has been merged in Argo UI, `cd` into your `argo-cd/ui` folder and run `pnpm add git+https://github.com/argoproj/argo-ui.git`. This will update the commit SHA in the `ui/pnpm-lock.yaml` file to use the latest master commit for argo-ui. 
+7. Once your PR has been merged in Argo UI, `cd` into your `argo-cd/ui` folder and run `pnpm add git+https://github.com/hanzoai/argo-ui.git`. This will update the commit SHA in the `ui/pnpm-lock.yaml` file to use the latest master commit for argo-ui. 
 
 8. Submit changes to `ui/pnpm-lock.yaml` in a PR to Hanzo CD. 

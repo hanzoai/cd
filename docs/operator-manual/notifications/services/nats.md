@@ -19,7 +19,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-deployment-ready.nats: "mytopic"
+    apps.hanzo.ai/subscribe.on-deployment-ready.nats: "mytopic"
 ```
 
 * ConfigMap

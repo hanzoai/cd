@@ -10,7 +10,7 @@ Presets can reference other presets. (read more about [shared presets](https://d
 ```json
 {
   "extends": [
-    "github>argoproj/argo-cd//renovate-presets/custom-managers/bash.json5"
+    "github>hanzoai/cd//renovate-presets/custom-managers/bash.json5"
 ]
 }
 ```
@@ -28,7 +28,7 @@ Benefits:
 	{
 	  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	  "extends": [
-	    "github>argoproj/renovate-presets//argoproj/argo-cd/renovate.json5"
+	    "github>hanzoai/renovate-presets//hanzoai/cd/renovate.json5"
 	  ],
 	  // rules are empty and this file won't need to be modified again.
 	  "packageRules": []
@@ -48,7 +48,7 @@ Example of repo structure :
 ├── custom-managers/
 │   ├── bash.json5
 │   └── yaml.json5
-└── argoproj/ # organization
+└── hanzoai/ # organization
     ├── argo-cd/ # repository
     │   ├── devtools.json5 # rules specific to the devtool (CI and dev environment...)
     │   ├── docs.json5 # rules specific to the docs folder.

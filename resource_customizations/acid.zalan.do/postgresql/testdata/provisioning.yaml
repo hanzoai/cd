@@ -2,8 +2,8 @@ apiVersion: acid.zalan.do/v1
 kind: postgresql
 metadata:
   annotations:
-    cd.hanzo.ai/sync-wave: '1'
-    cd.hanzo.ai/tracking-id: foobar-db:acid.zalan.do/postgresql:foo/foobar-db
+    apps.hanzo.ai/sync-wave: '1'
+    apps.hanzo.ai/tracking-id: foobar-db:acid.zalan.do/postgresql:foo/foobar-db
   name: foobar-db
   namespace: foo
 spec:

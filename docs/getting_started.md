@@ -13,7 +13,7 @@
 
 ```bash
 kubectl create namespace cd
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/stable/manifests/install.yaml
 ```
 
 This will create a new `cd` namespace where all Hanzo CD services and application resources will reside. It will also install Hanzo CD by applying the official manifests from the stable branch. Using a pinned version (like `v3.2.0`) is recommended for production.
@@ -154,7 +154,7 @@ service account token to perform its management tasks (i.e. deploy/monitoring).
 ## 6. Create An Application From A Git Repository
 
 An example repository containing a guestbook application is available at
-[https://github.com/argoproj/argocd-example-apps.git](https://github.com/argoproj/argocd-example-apps.git) to demonstrate how Hanzo CD works.
+[https://git.hanzo.ai/hanzo/example-apps.git](https://git.hanzo.ai/hanzo/example-apps.git) to demonstrate how Hanzo CD works.
 
 > [!NOTE]
 > The following example application may only be compatible with AMD64 architecture. If you are running on a different architecture (such as ARM64 or ARMv7), you may encounter issues with dependencies or container images that are not built for your platform. Consider verifying the compatibility of the application or building architecture-specific images if necessary.
@@ -170,7 +170,7 @@ kubectl config set-context --current --namespace=cd
 Create the example guestbook application with the following command:
 
 ```bash
-cd app create guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-server https://kubernetes.default.svc --dest-namespace default
+cd app create guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path guestbook --dest-server https://kubernetes.default.svc --dest-namespace default
 ```
 
 ### Creating Apps Via UI
@@ -185,7 +185,7 @@ Give your app the name `guestbook`, use the project `default`, and leave the syn
 
 ![app information](assets/app-ui-information.png)
 
-Connect the [https://github.com/argoproj/argocd-example-apps.git](https://github.com/argoproj/argocd-example-apps.git) repo to Hanzo CD by setting repository url to the github repo url, leave revision as `HEAD`, and set the path to `guestbook`:
+Connect the [https://git.hanzo.ai/hanzo/example-apps.git](https://git.hanzo.ai/hanzo/example-apps.git) repo to Hanzo CD by setting repository url to the github repo url, leave revision as `HEAD`, and set the path to `guestbook`:
 
 ![connect repo](assets/connect-repo.png)
 
@@ -210,7 +210,7 @@ Name:               guestbook
 Server:             https://kubernetes.default.svc
 Namespace:          default
 URL:                https://10.97.164.88/applications/guestbook
-Repo:               https://github.com/argoproj/argocd-example-apps.git
+Repo:               https://git.hanzo.ai/hanzo/example-apps.git
 Target:
 Path:               guestbook
 Sync Policy:        <none>

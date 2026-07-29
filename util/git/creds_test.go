@@ -638,20 +638,20 @@ func TestExtractOrgFromRepoURL(t *testing.T) {
 		expected    string
 		expectError bool
 	}{
-		{"HTTPS URL", "https://github.com/hanzoai/cd", "argoproj", false},
-		{"HTTPS URL with .git", "https://github.com/hanzoai/cd.git", "argoproj", false},
-		{"HTTPS URL with port", "https://github.com:443/argoproj/argo-cd.git", "argoproj", false},
-		{"SSH URL", "git@github.com:argoproj/argo-cd.git", "argoproj", false},
-		{"SSH URL without .git", "git@github.com:argoproj/argo-cd", "argoproj", false},
-		{"SSH URL with ssh:// prefix", "ssh://git@github.com:argoproj/argo-cd.git", "argoproj", false},
-		{"SSH URL with port", "ssh://git@github.com:22/argoproj/argo-cd.git", "argoproj", false},
+		{"HTTPS URL", "https://github.com/hanzoai/cd", "hanzoai", false},
+		{"HTTPS URL with .git", "https://github.com/hanzoai/cd.git", "hanzoai", false},
+		{"HTTPS URL with port", "https://github.com:443/hanzoai/cd.git", "hanzoai", false},
+		{"SSH URL", "git@github.com:hanzoai/cd.git", "hanzoai", false},
+		{"SSH URL without .git", "git@github.com:hanzoai/cd", "hanzoai", false},
+		{"SSH URL with ssh:// prefix", "ssh://git@github.com:hanzoai/cd.git", "hanzoai", false},
+		{"SSH URL with port", "ssh://git@github.com:22/hanzoai/cd.git", "hanzoai", false},
 		{"GitHub Enterprise HTTPS", "https://github.example.com/myorg/myrepo.git", "myorg", false},
 		{"GitHub Enterprise SSH", "git@github.example.com:myorg/myrepo.git", "myorg", false},
-		{"Case insensitive", "https://github.com/ArgoPROJ/argo-cd", "argoproj", false}, // Test case sensitivity
+		{"Case insensitive", "https://github.com/ArgoPROJ/argo-cd", "hanzoai", false}, // Test case sensitivity
 		{"Invalid URL", "not-a-url", "", true},
 		{"Empty string", "", "", true},
 		{"URL without org/repo", "https://github.com", "", true},
-		{"URL with only org", "https://github.com/argoproj", "", true},
+		{"URL with only org", "https://github.com/hanzoai", "", true},
 	}
 
 	for _, tt := range tests {

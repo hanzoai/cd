@@ -1,51 +1,51 @@
 # All
-** @argoproj/argocd-approvers
+** @hanzoai/argocd-approvers
 
 # Docs
-/docs/**     @argoproj/argocd-approvers @argoproj/argocd-approvers-docs
-/USERS.md    @argoproj/argocd-approvers @argoproj/argocd-approvers-docs
-/README.md   @argoproj/argocd-approvers @argoproj/argocd-approvers-docs
-/mkdocs.yml  @argoproj/argocd-approvers @argoproj/argocd-approvers-docs
+/docs/**     @hanzoai/argocd-approvers @hanzoai/argocd-approvers-docs
+/USERS.md    @hanzoai/argocd-approvers @hanzoai/argocd-approvers-docs
+/README.md   @hanzoai/argocd-approvers @hanzoai/argocd-approvers-docs
+/mkdocs.yml  @hanzoai/argocd-approvers @hanzoai/argocd-approvers-docs
 
 # CI
-/.github/**               @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/.goreleaser.yaml         @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
+/.github/**               @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/.goreleaser.yaml         @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
 
 # Build / e2e testing
-Procfile                  @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-Makefile                  @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-Dockerfile                @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-Dockerfile.*              @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-.dockerignore             @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/Tiltfile                 @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/entrypoint.sh            @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
+Procfile                  @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+Makefile                  @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+Dockerfile                @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+Dockerfile.*              @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+.dockerignore             @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/Tiltfile                 @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/entrypoint.sh            @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
 
 # Security/code quality scanners/bots config
-/.golangci.yaml           @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/.codecov.yml             @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/.snyk                    @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/SECURITY-INSIGHTS.yml    @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/renovate.json            @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/renovate-presets/**      @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/sonar-project.properties @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
+/.golangci.yaml           @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/.codecov.yml             @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/.snyk                    @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/SECURITY-INSIGHTS.yml    @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/renovate.json            @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/renovate-presets/**      @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/sonar-project.properties @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
 
 # Assorted stuff in hack/ with exclusions for not CI/build related paths
-/hack/                          @argoproj/argocd-approvers @argoproj/argocd-approvers-ci
-/hack/gen-docs/                 @argoproj/argocd-approvers
-/hack/migrate-gitops-engine/    @argoproj/argocd-approvers
-/hack/gen-resources/            @argoproj/argocd-approvers
-/hack/known_types/              @argoproj/argocd-approvers
-/hack/admonitions-to-alerts.sh  @argoproj/argocd-approvers
-/hack/generate-actions-list.sh  @argoproj/argocd-approvers
-/hack/git-ask-pass.sh           @argoproj/argocd-approvers
-/hack/git-verify-wrapper.sh     @argoproj/argocd-approvers
+/hack/                          @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ci
+/hack/gen-docs/                 @hanzoai/argocd-approvers
+/hack/migrate-gitops-engine/    @hanzoai/argocd-approvers
+/hack/gen-resources/            @hanzoai/argocd-approvers
+/hack/known_types/              @hanzoai/argocd-approvers
+/hack/admonitions-to-alerts.sh  @hanzoai/argocd-approvers
+/hack/generate-actions-list.sh  @hanzoai/argocd-approvers
+/hack/git-ask-pass.sh           @hanzoai/argocd-approvers
+/hack/git-verify-wrapper.sh     @hanzoai/argocd-approvers
 
 # CLI
-/cmd/argocd/** @argoproj/argocd-approvers @argoproj/argocd-approvers-cli
-/cmd/main.go @argoproj/argocd-approvers @argoproj/argocd-approvers-cli
-# Also include @argoproj/argocd-approvers-docs to avoid requiring CLI approvers for docs-only PRs.
-/docs/operator-manual/ @argoproj/argocd-approvers @argoproj/argocd-approvers-docs @argoproj/argocd-approvers-cli
+/cmd/argocd/** @hanzoai/argocd-approvers @hanzoai/argocd-approvers-cli
+/cmd/main.go @hanzoai/argocd-approvers @hanzoai/argocd-approvers-cli
+# Also include @hanzoai/argocd-approvers-docs to avoid requiring CLI approvers for docs-only PRs.
+/docs/operator-manual/ @hanzoai/argocd-approvers @hanzoai/argocd-approvers-docs @hanzoai/argocd-approvers-cli
 
 # UI
-/ui/**      @argoproj/argocd-approvers @argoproj/argocd-approvers-ui
-/ui-test/** @argoproj/argocd-approvers @argoproj/argocd-approvers-ui
+/ui/**      @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ui
+/ui-test/** @hanzoai/argocd-approvers @hanzoai/argocd-approvers-ui

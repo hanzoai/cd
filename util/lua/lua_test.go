@@ -18,8 +18,8 @@ import (
 )
 
 const objJSON = `
-apiVersion: apps.hanzo.ai/v1alpha1
-kind: Rollout
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
 metadata:
   labels:
     app.kubernetes.io/instance: helm-guestbook
@@ -202,7 +202,7 @@ func TestGetHealthScriptWithOverride(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"apps.hanzo.ai/Rollout": {
+			"external-secrets.io/ExternalSecret": {
 				HealthLua:   newHealthStatusFunction,
 				UseOpenLibs: false,
 			},
@@ -219,7 +219,7 @@ func TestGetHealthScriptWithKindWildcardOverride(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"apps.hanzo.ai/*": {
+			"external-secrets.io/*": {
 				HealthLua:   newHealthStatusFunction,
 				UseOpenLibs: false,
 			},
@@ -237,7 +237,7 @@ func TestGetHealthScriptWithGroupWildcardOverride(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"*.io/Rollout": {
+			"*.io/ExternalSecret": {
 				HealthLua:   newHealthStatusFunction,
 				UseOpenLibs: false,
 			},
@@ -293,7 +293,7 @@ func TestGetResourceActionPredefined(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{}
 
-	action, err := vm.GetResourceAction(testObj, "resume")
+	action, err := vm.GetResourceAction(testObj, "refresh")
 	require.NoError(t, err)
 	assert.NotEmpty(t, action)
 }
@@ -317,7 +317,7 @@ func TestGetResourceActionWithOverride(t *testing.T) {
 
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"apps.hanzo.ai/Rollout": {
+			"external-secrets.io/ExternalSecret": {
 				Actions: string(grpc.MustMarshal(appv1.ResourceActions{
 					Definitions: []appv1.ResourceActionDefinition{
 						test,
@@ -355,7 +355,7 @@ func TestGetResourceActionDiscoveryWithOverride(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"apps.hanzo.ai/Rollout": {
+			"external-secrets.io/ExternalSecret": {
 				Actions: string(grpc.MustMarshal(appv1.ResourceActions{
 					ActionDiscoveryLua: validDiscoveryLua,
 				})),
@@ -372,7 +372,7 @@ func TestGetResourceActionsWithBuiltInActionsFlag(t *testing.T) {
 	testObj := StrToUnstructured(objJSON)
 	vm := VM{
 		ResourceOverrides: map[string]appv1.ResourceOverride{
-			"apps.hanzo.ai/Rollout": {
+			"external-secrets.io/ExternalSecret": {
 				Actions: string(grpc.MustMarshal(appv1.ResourceActions{
 					ActionDiscoveryLua:  validDiscoveryLua,
 					MergeBuiltinActions: true,
@@ -487,8 +487,8 @@ return obj
 `
 
 const expectedLuaUpdatedResult = `
-apiVersion: apps.hanzo.ai/v1alpha1
-kind: Rollout
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
 metadata:
   labels:
     app.kubernetes.io/instance: helm-guestbook

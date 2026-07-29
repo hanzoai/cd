@@ -117,7 +117,7 @@ func NewHydrator(dependencies Dependencies, statusRefreshTimeout time.Duration, 
 // hands the same key to two workers concurrently, ProcessHydrationQueueItem holds exclusive
 // ownership of the entire app group when it runs — there is no possibility of a worker observing a
 // partial view of the group, so the status update is safe under parallel hydration workers
-// (https://github.com/argoproj/argo-cd/issues/27926).
+// (https://github.com/hanzoai/cd/issues/27926).
 //
 // It's likely that multiple applications will trigger hydration at the same time. The hydration
 // queue key is meant to dedupe these requests.
@@ -180,7 +180,7 @@ func getHydrationQueueKey(app *appv1.Application) types.HydrationQueueKey {
 // The hydration workqueue is a rate-limiting queue keyed by hydration key, which guarantees the same key is never
 // handed to two workers at once. So at the start of this function we hold exclusive ownership over the entire app
 // group sharing this key. That ownership is what makes the per-app status updates safe even when multiple hydration
-// workers are running in parallel (https://github.com/argoproj/argo-cd/issues/27926): there is no possibility of a
+// workers are running in parallel (https://github.com/hanzoai/cd/issues/27926): there is no possibility of a
 // worker observing a partial view of the group, so we can mark every app Hydrating up front and keep their statuses in
 // lockstep with the single commit produced by hydrate().
 func (h *Hydrator) ProcessHydrationQueueItem(hydrationKey types.HydrationQueueKey) {
@@ -205,7 +205,7 @@ func (h *Hydrator) ProcessHydrationQueueItem(hydrationKey types.HydrationQueueKe
 	// Atomically mark every app in this group as Hydrating before doing any work. The workqueue's
 	// per-key dedup means no other worker can be touching this group concurrently, so it is safe to
 	// do the status writes here rather than in ProcessAppHydrateQueueItem
-	// (https://github.com/argoproj/argo-cd/issues/27926).
+	// (https://github.com/hanzoai/cd/issues/27926).
 	h.markAppsHydrating(apps)
 
 	// validate all the applications to make sure they are all correctly configured.
@@ -295,7 +295,7 @@ func (h *Hydrator) ProcessHydrationQueueItem(hydrationKey types.HydrationQueueKe
 // the change. It is called from ProcessHydrationQueueItem, where the hydration workqueue's per-key
 // dedup gives the caller exclusive ownership of the app group — there is no possibility of another
 // worker mutating these apps' hydration phase concurrently
-// (https://github.com/argoproj/argo-cd/issues/27926).
+// (https://github.com/hanzoai/cd/issues/27926).
 //
 // Apps already in the Hydrating phase are left alone. That happens on a needsRefresh re-entry
 // (statusRefreshTimeout elapsed while the previous attempt was in-flight) and also on the very
@@ -458,7 +458,7 @@ func (h *Hydrator) hydrate(ctx context.Context, logCtx *log.Entry, apps []*appv1
 		eg.Go(func() error {
 			// Use goroutine-local variables here. Assigning to the function-scoped pathDetails/err
 			// from multiple errgroup goroutines is a data race (and can append the wrong path under
-			// the mutex). See https://github.com/argoproj/argo-cd/issues/27926.
+			// the mutex). See https://github.com/hanzoai/cd/issues/27926.
 			_, pathDetails, err := h.getManifests(egCtx, app, targetRevision, projects[app.Spec.Project])
 			mu.Lock()
 			defer mu.Unlock()

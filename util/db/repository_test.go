@@ -26,7 +26,7 @@ var repoArgoCD = &corev1.Secret{
 	},
 	Data: map[string][]byte{
 		"name":     []byte("SomeRepo"),
-		"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+		"url":      []byte("git@github.com:hanzoai/cd.git"),
 		"username": []byte("someUsername"),
 		"password": []byte("somePassword"),
 		"type":     []byte("git"),
@@ -46,7 +46,7 @@ var repoArgoProj = &corev1.Secret{
 	},
 	Data: map[string][]byte{
 		"name":     []byte("OtherRepo"),
-		"url":      []byte("git@github.com:argoproj/argoproj.git"),
+		"url":      []byte("git@github.com:hanzoai/hanzoai.git"),
 		"username": []byte("someUsername"),
 		"password": []byte("somePassword"),
 		"type":     []byte("git"),
@@ -66,7 +66,7 @@ var repoArgoCDWrite = &corev1.Secret{
 	},
 	Data: map[string][]byte{
 		"name":     []byte("SomeRepo"),
-		"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+		"url":      []byte("git@github.com:hanzoai/cd.git"),
 		"username": []byte("someUsername"),
 		"password": []byte("somePassword"),
 		"type":     []byte("git"),
@@ -86,7 +86,7 @@ var repoArgoProjWrite = &corev1.Secret{
 	},
 	Data: map[string][]byte{
 		"name":     []byte("OtherRepo"),
-		"url":      []byte("git@github.com:argoproj/argoproj.git"),
+		"url":      []byte("git@github.com:hanzoai/hanzoai.git"),
 		"username": []byte("someUsername"),
 		"password": []byte("somePassword"),
 		"type":     []byte("git"),
@@ -105,7 +105,7 @@ func TestDb_CreateRepository(t *testing.T) {
 
 	input := &appsv1.Repository{
 		Name:     "TestRepo",
-		Repo:     "git@github.com:argoproj/argo-cd.git",
+		Repo:     "git@github.com:hanzoai/cd.git",
 		Username: "someUsername",
 		Password: "somePassword",
 	}
@@ -134,20 +134,20 @@ func TestDb_GetRepository(t *testing.T) {
 		settingsMgr:   settingsManager,
 	}
 
-	repository, err := testee.GetRepository(t.Context(), "git@github.com:argoproj/argoproj.git", "")
+	repository, err := testee.GetRepository(t.Context(), "git@github.com:hanzoai/hanzoai.git", "")
 	require.NoError(t, err)
 	require.NotNil(t, repository)
 	assert.Equal(t, "OtherRepo", repository.Name)
 
-	repository, err = testee.GetRepository(t.Context(), "git@github.com:argoproj/argo-cd.git", "")
+	repository, err = testee.GetRepository(t.Context(), "git@github.com:hanzoai/cd.git", "")
 	require.NoError(t, err)
 	require.NotNil(t, repository)
 	assert.Equal(t, "SomeRepo", repository.Name)
 
-	repository, err = testee.GetRepository(t.Context(), "git@github.com:argoproj/not-existing.git", "")
+	repository, err = testee.GetRepository(t.Context(), "git@github.com:hanzoai/not-existing.git", "")
 	require.NoError(t, err)
 	assert.NotNil(t, repository)
-	assert.Equal(t, "git@github.com:argoproj/not-existing.git", repository.Repo)
+	assert.Equal(t, "git@github.com:hanzoai/not-existing.git", repository.Repo)
 }
 
 func TestDb_GetWriteRepository(t *testing.T) {
@@ -160,12 +160,12 @@ func TestDb_GetWriteRepository(t *testing.T) {
 		settingsMgr:   settingsManager,
 	}
 
-	repository, err := testee.GetWriteRepository(t.Context(), "git@github.com:argoproj/argoproj.git", "")
+	repository, err := testee.GetWriteRepository(t.Context(), "git@github.com:hanzoai/hanzoai.git", "")
 	require.NoError(t, err)
 	require.NotNil(t, repository)
 	assert.Equal(t, "OtherRepo", repository.Name)
 
-	repository, err = testee.GetWriteRepository(t.Context(), "git@github.com:argoproj/argo-cd.git", "")
+	repository, err = testee.GetWriteRepository(t.Context(), "git@github.com:hanzoai/cd.git", "")
 	require.NoError(t, err)
 	require.NotNil(t, repository)
 	assert.Equal(t, "SomeRepo", repository.Name)
@@ -181,7 +181,7 @@ func TestDb_GetWriteRepository_SecretNotFound_DefaultRepo(t *testing.T) {
 		settingsMgr:   settingsManager,
 	}
 
-	repository, err := testee.GetWriteRepository(t.Context(), "git@github.com:argoproj/argo-cd.git", "")
+	repository, err := testee.GetWriteRepository(t.Context(), "git@github.com:hanzoai/cd.git", "")
 	require.NoError(t, err)
 	require.NotNil(t, repository)
 	assert.Empty(t, repository.Name)
@@ -206,7 +206,7 @@ func TestDb_UpdateRepository(t *testing.T) {
 	t.Parallel()
 	secretRepository := &appsv1.Repository{
 		Name:     "SomeRepo",
-		Repo:     "git@github.com:argoproj/argo-cd.git",
+		Repo:     "git@github.com:hanzoai/cd.git",
 		Username: "someUsername",
 		Password: "somePassword",
 		Type:     "git",
@@ -246,10 +246,10 @@ func TestDb_DeleteRepository(t *testing.T) {
 		settingsMgr:   settingsManager,
 	}
 
-	err := testee.DeleteRepository(t.Context(), "git@github.com:argoproj/argoproj.git", "")
+	err := testee.DeleteRepository(t.Context(), "git@github.com:hanzoai/hanzoai.git", "")
 	require.NoError(t, err)
 
-	err = testee.DeleteRepository(t.Context(), "git@github.com:argoproj/argo-cd.git", "")
+	err = testee.DeleteRepository(t.Context(), "git@github.com:hanzoai/cd.git", "")
 	require.NoError(t, err)
 
 	_, err = clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), "some-repo-secret", metav1.GetOptions{})
@@ -268,7 +268,7 @@ func TestDb_GetRepositoryCredentials(t *testing.T) {
 		},
 		Data: map[string][]byte{
 			"type":     []byte("git"),
-			"url":      []byte("git@github.com:argoproj"),
+			"url":      []byte("git@github.com:hanzoai"),
 			"username": []byte("someUsername"),
 			"password": []byte("somePassword"),
 		},
@@ -292,10 +292,10 @@ func TestDb_GetRepositoryCredentials(t *testing.T) {
 	clientset := getClientset(gitHubRepoCredsSecret, gitLabRepoCredsSecret)
 	testee := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
-	repoCreds, err := testee.GetRepositoryCredentials(t.Context(), "git@github.com:argoproj/argoproj.git")
+	repoCreds, err := testee.GetRepositoryCredentials(t.Context(), "git@github.com:hanzoai/hanzoai.git")
 	require.NoError(t, err)
 	require.NotNil(t, repoCreds)
-	assert.Equal(t, "git@github.com:argoproj", repoCreds.URL)
+	assert.Equal(t, "git@github.com:hanzoai", repoCreds.URL)
 
 	repoCreds, err = testee.GetRepositoryCredentials(t.Context(), "git@gitlab.com:someorg/foobar.git")
 	require.NoError(t, err)
@@ -314,19 +314,19 @@ func TestRepoURLToSecretName(t *testing.T) {
 		secretName string
 		project    string
 	}{{
-		repoURL:    "git://git@github.com:argoproj/ARGO-cd.git",
+		repoURL:    "git://git@github.com:hanzoai/ARGO-cd.git",
 		secretName: "repo-83273445",
 		project:    "",
 	}, {
-		repoURL:    "git://git@github.com:argoproj/ARGO-cd.git",
+		repoURL:    "git://git@github.com:hanzoai/ARGO-cd.git",
 		secretName: "repo-2733415816",
 		project:    "foobar",
 	}, {
-		repoURL:    "https://github.com/argoproj/ARGO-cd",
+		repoURL:    "https://github.com/hanzoai/ARGO-cd",
 		secretName: "repo-1890113693",
 		project:    "",
 	}, {
-		repoURL:    "https://github.com/argoproj/ARGO-cd",
+		repoURL:    "https://github.com/hanzoai/ARGO-cd",
 		secretName: "repo-4161185408",
 		project:    "foobar",
 	}, {
@@ -346,11 +346,11 @@ func TestRepoURLToSecretName(t *testing.T) {
 		secretName: "repo-1474166686",
 		project:    "foobar",
 	}, {
-		repoURL:    "https://github.com/argoproj/argo_cd.git",
+		repoURL:    "https://github.com/hanzoai/argo_cd.git",
 		secretName: "repo-1049844989",
 		project:    "",
 	}, {
-		repoURL:    "https://github.com/argoproj/argo_cd.git",
+		repoURL:    "https://github.com/hanzoai/argo_cd.git",
 		secretName: "repo-3916272608",
 		project:    "foobar",
 	}, {
@@ -371,10 +371,10 @@ func TestRepoURLToSecretName(t *testing.T) {
 
 func Test_CredsURLToSecretName(t *testing.T) {
 	tables := map[string]string{
-		"git://git@github.com:argoproj":  "creds-2483499391",
-		"git://git@github.com:argoproj/": "creds-1465032944",
-		"git@github.com:argoproj":        "creds-2666065091",
-		"git@github.com:argoproj/":       "creds-346879876",
+		"git://git@github.com:hanzoai":  "creds-2483499391",
+		"git://git@github.com:hanzoai/": "creds-1465032944",
+		"git@github.com:hanzoai":        "creds-2666065091",
+		"git@github.com:hanzoai/":       "creds-346879876",
 	}
 
 	for k, v := range tables {
@@ -394,7 +394,7 @@ func Test_GetProjectRepositories(t *testing.T) {
 		},
 		Data: map[string][]byte{
 			"type":    []byte("git"),
-			"url":     []byte("git@github.com:argoproj/argo-cd"),
+			"url":     []byte("git@github.com:hanzoai/cd"),
 			"project": []byte("some-project"),
 		},
 	}
@@ -409,7 +409,7 @@ func Test_GetProjectRepositories(t *testing.T) {
 		},
 		Data: map[string][]byte{
 			"type": []byte("git"),
-			"url":  []byte("git@github.com:argoproj/argo-cd"),
+			"url":  []byte("git@github.com:hanzoai/cd"),
 		},
 	}
 
@@ -419,5 +419,5 @@ func Test_GetProjectRepositories(t *testing.T) {
 	repos, err := argoDB.GetProjectRepositories("some-project")
 	require.NoError(t, err)
 	assert.Len(t, repos, 1)
-	assert.Equal(t, "git@github.com:argoproj/argo-cd", repos[0].Repo)
+	assert.Equal(t, "git@github.com:hanzoai/cd", repos[0].Repo)
 }

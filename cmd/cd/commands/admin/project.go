@@ -183,7 +183,7 @@ func NewUpdatePolicyRuleCommand() *cobra.Command {
 
 			modification, err := getModification(modificationType, resource, scope, permission)
 			errors.CheckError(err)
-			projIf := appclients.ArgoprojV1alpha1().AppProjects(namespace)
+			projIf := appclients.AppV1alpha1().AppProjects(namespace)
 
 			err = updateProjects(ctx, projIf, projectGlob, rolePattern, action, modification, dryRun)
 			errors.CheckError(err)

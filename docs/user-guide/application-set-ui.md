@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Alpha Feature (Since v3.5.0)**
 >
-> This is an [alpha](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#alpha) feature.
+> This is an [alpha](https://github.com/hanzoai/hanzoai/blob/main/community/feature-status.md#alpha) feature.
 > The look, behavior, and APIs it consumes may change in future releases or be removed in backwards-incompatible ways.
 
 The Hanzo CD Web UI includes views for ApplicationSets, with a list page, a

@@ -16,7 +16,7 @@ import (
 
 	"github.com/hanzoai/cd/applicationset/utils"
 	"github.com/hanzoai/cd/common"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 // clusterSecretEventHandler is used when watching Secrets to check if they are Hanzo CD Cluster Secrets, and if so
@@ -61,7 +61,7 @@ func (h *clusterSecretEventHandler) queueRelatedAppGenerators(ctx context.Contex
 		"name":      object.GetName(),
 	}).Info("processing event for cluster secret")
 
-	appSetList := &argoprojiov1alpha1.ApplicationSetList{}
+	appSetList := &appv1alpha1.ApplicationSetList{}
 	err := h.Client.List(ctx, appSetList)
 	if err != nil {
 		h.Log.WithError(err).Error("unable to list ApplicationSets")
@@ -124,7 +124,7 @@ func (h *clusterSecretEventHandler) queueRelatedAppGenerators(ctx context.Contex
 }
 
 // nestedGeneratorsHaveClusterGenerator iterate over provided nested generators to check if they have a cluster generator.
-func nestedGeneratorsHaveClusterGenerator(generators []argoprojiov1alpha1.ApplicationSetNestedGenerator) (bool, error) {
+func nestedGeneratorsHaveClusterGenerator(generators []appv1alpha1.ApplicationSetNestedGenerator) (bool, error) {
 	for _, generator := range generators {
 		if ok, err := nestedGeneratorHasClusterGenerator(generator); ok || err != nil {
 			return ok, err
@@ -134,13 +134,13 @@ func nestedGeneratorsHaveClusterGenerator(generators []argoprojiov1alpha1.Applic
 }
 
 // nestedGeneratorHasClusterGenerator checks if the provided generator has a cluster generator.
-func nestedGeneratorHasClusterGenerator(nested argoprojiov1alpha1.ApplicationSetNestedGenerator) (bool, error) {
+func nestedGeneratorHasClusterGenerator(nested appv1alpha1.ApplicationSetNestedGenerator) (bool, error) {
 	if nested.Clusters != nil {
 		return true, nil
 	}
 
 	if nested.Matrix != nil {
-		nestedMatrix, err := argoprojiov1alpha1.ToNestedMatrixGenerator(nested.Matrix)
+		nestedMatrix, err := appv1alpha1.ToNestedMatrixGenerator(nested.Matrix)
 		if err != nil {
 			return false, fmt.Errorf("unable to get nested matrix generator: %w", err)
 		}
@@ -154,7 +154,7 @@ func nestedGeneratorHasClusterGenerator(nested argoprojiov1alpha1.ApplicationSet
 	}
 
 	if nested.Merge != nil {
-		nestedMerge, err := argoprojiov1alpha1.ToNestedMergeGenerator(nested.Merge)
+		nestedMerge, err := appv1alpha1.ToNestedMergeGenerator(nested.Merge)
 		if err != nil {
 			return false, fmt.Errorf("unable to get nested merge generator: %w", err)
 		}

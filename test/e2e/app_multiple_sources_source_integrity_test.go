@@ -92,7 +92,7 @@ func TestMultiSourceSourceIntegritySomeFailed(t *testing.T) {
 		Path:    guestbookPath,
 		Name:    "guestbook",
 	}, {
-		RepoURL:        "https://github.com/argoproj/argocd-example-apps",
+		RepoURL:        "https://git.hanzo.ai/hanzo/example-apps",
 		Path:           "blue-green",
 		TargetRevision: "53e28ff20cc530b9ada2173fbbd64d48338583ba", // picking a precise commit so tests have a known signature
 		Name:           "blue-green",

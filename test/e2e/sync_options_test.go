@@ -86,7 +86,7 @@ func TestSyncWithCreateNamespaceAndDryRunError(t *testing.T) {
 }
 
 // TestSyncOptionsValidateFalse verifies we can disable validation during kubectl apply, using the
-// 'cd.hanzo.ai/sync-options: Validate=false' sync option
+// 'apps.hanzo.ai/sync-options: Validate=false' sync option
 func TestSyncOptionsValidateFalse(t *testing.T) {
 	Given(t).
 		Path("sync-options-validate-false").
@@ -96,11 +96,11 @@ func TestSyncOptionsValidateFalse(t *testing.T) {
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded))
 	// NOTE: it is a bug that we do not detect this as OutOfSync. This is because we
-	// are dropping fields as part of remarshalling. See: https://github.com/argoproj/argo-cd/issues/1787
+	// are dropping fields as part of remarshalling. See: https://github.com/hanzoai/cd/issues/1787
 	// Expect(SyncStatusIs(SyncStatusCodeOutOfSync))
 }
 
-// TestSyncOptionsValidateTrue verifies when 'cd.hanzo.ai/sync-options: Validate=false' is
+// TestSyncOptionsValidateTrue verifies when 'apps.hanzo.ai/sync-options: Validate=false' is
 // not present, then validation is performed and we fail during the apply
 func TestSyncOptionsValidateTrue(t *testing.T) {
 	// k3s does not validate at all, so this test does not work
@@ -171,7 +171,7 @@ func TestSyncWithApplyOutOfSyncOnly(t *testing.T) {
 		Then().
 		// Only one resource should be in sync result
 		Expect(ResourceResultNumbering(1)).
-		Expect(ResourceResultIs(ResourceResult{Group: "apps", Version: "v1", Kind: "Deployment", Namespace: ns, Name: "guestbook-ui", Message: "deployment.apps/guestbook-ui configured", SyncPhase: SyncPhaseSync, HookPhase: OperationRunning, Status: ResultCodeSynced, Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.2"}}))
+		Expect(ResourceResultIs(ResourceResult{Group: "apps", Version: "v1", Kind: "Deployment", Namespace: ns, Name: "guestbook-ui", Message: "deployment.apps/guestbook-ui configured", SyncPhase: SyncPhaseSync, HookPhase: OperationRunning, Status: ResultCodeSynced, Images: []string{"ghcr.io/hanzoai/e2e-container:0.2"}}))
 }
 
 func TestSyncWithSkipHook(t *testing.T) {
@@ -186,7 +186,7 @@ func TestSyncWithSkipHook(t *testing.T) {
 		Expect(SyncStatusIs(SyncStatusCodeSynced)).
 		// app should remain synced when app has skipped annotation even if git change detected
 		When().
-		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "cd.hanzo.ai/hook": "Skip" }}]`).
+		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "apps.hanzo.ai/hook": "Skip" }}]`).
 		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "replace", "path": "/spec/replicas", "value": 1 }]`).
 		Refresh(RefreshTypeNormal).
 		Then().
@@ -219,7 +219,7 @@ func TestSyncWithForceReplace(t *testing.T) {
 		// and does not get stuck in terminating state
 		When().
 		PatchFile("guestbook-ui-deployment.yaml", fmt.Sprintf(`[{ "op": "add", "path": "/metadata/finalizers", "value": [%q]}]`, TestFinalizer)).
-		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "cd.hanzo.ai/sync-options": "Force=true,Replace=true" }}]`).
+		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/metadata/annotations", "value": { "apps.hanzo.ai/sync-options": "Force=true,Replace=true" }}]`).
 		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "add", "path": "/spec/selector/matchLabels/env", "value": "e2e" }, { "op": "add", "path": "/spec/template/metadata/labels/env", "value": "e2e" }]`).
 		PatchFile("guestbook-ui-deployment.yaml", `[{ "op": "replace", "path": "/spec/replicas", "value": 2 }]`).
 		Refresh(RefreshTypeNormal).

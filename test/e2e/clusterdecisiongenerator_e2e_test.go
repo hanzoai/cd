@@ -30,7 +30,7 @@ func TestSimpleClusterDecisionResourceGeneratorExternalNamespace(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -67,7 +67,7 @@ func TestSimpleClusterDecisionResourceGeneratorExternalNamespace(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -134,7 +134,7 @@ func TestSimpleClusterDecisionResourceGenerator(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -170,7 +170,7 @@ func TestSimpleClusterDecisionResourceGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -233,7 +233,7 @@ func TestSimpleClusterDecisionResourceGeneratorAddingCluster(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -278,7 +278,7 @@ func TestSimpleClusterDecisionResourceGeneratorAddingCluster(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -325,7 +325,7 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterSecret(t *testing.
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -371,7 +371,7 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterSecret(t *testing.
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -419,7 +419,7 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterFromResource(t *te
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -472,7 +472,7 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterFromResource(t *te
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},

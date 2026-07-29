@@ -37,13 +37,13 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "dev",
 			},
 			Finalizers: []string{
-				"resources-finalizer.cd.hanzo.ai",
+				"resources-finalizer.apps.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				Path:           "guestbook",
 				TargetRevision: "HEAD",
 			},
@@ -66,13 +66,13 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "staging",
 			},
 			Finalizers: []string{
-				"resources-finalizer.cd.hanzo.ai",
+				"resources-finalizer.apps.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				Path:           "guestbook",
 				TargetRevision: "HEAD",
 			},
@@ -94,13 +94,13 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 				"environment": "prod",
 			},
 			Finalizers: []string{
-				"resources-finalizer.cd.hanzo.ai",
+				"resources-finalizer.apps.hanzo.ai",
 			},
 		},
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				Path:           "guestbook",
 				TargetRevision: "HEAD",
 			},
@@ -130,7 +130,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							Path:           "guestbook",
 							TargetRevision: "HEAD",
 						},
@@ -309,7 +309,7 @@ func TestProgressiveSyncHealthGating(t *testing.T) {
 		ExpectWithDuration(CheckProgressiveSyncStatusCodeOfApplications(expectedStatusWave1), TransitionTimeout).
 		And(func() {
 			// Patch deployment to use valid image
-			fixture.Patch(t, "progressive-sync/dev/deployment.yaml", `[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value": "quay.io/argoprojlabs/cd-e2e-container:0.1"}]`)
+			fixture.Patch(t, "progressive-sync/dev/deployment.yaml", `[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value": "ghcr.io/hanzoai/e2e-container:0.1"}]`)
 			// Refresh the app to detect git changes
 			_, err := fixture.RunCli("app", "get", "prog-dev", "--refresh")
 			require.NoError(t, err)
@@ -319,7 +319,7 @@ func TestProgressiveSyncHealthGating(t *testing.T) {
 		ExpectWithDuration(CheckProgressiveSyncStatusCodeOfApplications(expectedStatusWave2), TransitionTimeout).
 		And(func() {
 			// Patch deployment to use valid image
-			fixture.Patch(t, "progressive-sync/staging/deployment.yaml", `[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value": "quay.io/argoprojlabs/cd-e2e-container:0.1"}]`)
+			fixture.Patch(t, "progressive-sync/staging/deployment.yaml", `[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value": "ghcr.io/hanzoai/e2e-container:0.1"}]`)
 			// Refresh the app to detect git changes
 			_, err := fixture.RunCli("app", "get", "prog-staging", "--refresh")
 			require.NoError(t, err)
@@ -329,7 +329,7 @@ func TestProgressiveSyncHealthGating(t *testing.T) {
 		ExpectWithDuration(CheckProgressiveSyncStatusCodeOfApplications(expectedStatusWave3), TransitionTimeout).
 		And(func() {
 			// Patch deployment to use valid image
-			fixture.Patch(t, "progressive-sync/prod/deployment.yaml", `[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value": "quay.io/argoprojlabs/cd-e2e-container:0.1"}]`)
+			fixture.Patch(t, "progressive-sync/prod/deployment.yaml", `[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value": "ghcr.io/hanzoai/e2e-container:0.1"}]`)
 			// Refresh the app to detect git changes
 			_, err := fixture.RunCli("app", "get", "prog-prod", "--refresh")
 			require.NoError(t, err)
@@ -638,7 +638,7 @@ var appSetWithReverseDeletionOrder = v1alpha1.ApplicationSet{
 					"environment": "{{.environment}}",
 				},
 				Finalizers: []string{
-					"resources-finalizer.cd.hanzo.ai",
+					"resources-finalizer.apps.hanzo.ai",
 					"test.e2e.apps.hanzo.ai/wait-for-verification",
 				},
 			},
@@ -684,7 +684,7 @@ var appSetWithReverseDeletionOrder = v1alpha1.ApplicationSet{
 
 func generateExpectedApp(prefix string, path string, name string, envVar string, testFinalizer string) v1alpha1.Application {
 	finalizers := []string{
-		"resources-finalizer.cd.hanzo.ai",
+		"resources-finalizer.apps.hanzo.ai",
 	}
 	if testFinalizer != "" {
 		finalizers = append(finalizers, testFinalizer)

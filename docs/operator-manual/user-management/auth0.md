@@ -32,7 +32,7 @@ The important part to note here is that group-membership is a non-standard claim
 ```
 ...
 data:
-  application.instanceLabelKey: cd.hanzo.ai/instance
+  application.instanceLabelKey: apps.hanzo.ai/instance
   url: https://your.argoingress.address
   oidc.config: |
     name: Auth0

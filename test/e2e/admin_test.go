@@ -75,9 +75,9 @@ func TestBackupExportImport(t *testing.T) {
 		Then().
 		AndCLIOutput(func(_ string, err error) {
 			require.NoError(t, err, "import finished with error")
-			_, err = fixture.AppClientset.ArgoprojV1alpha1().Applications(appTestNamespace.GetNamespace()).Get(t.Context(), appTestNamespace.GetName(), metav1.GetOptions{})
+			_, err = fixture.AppClientset.AppV1alpha1().Applications(appTestNamespace.GetNamespace()).Get(t.Context(), appTestNamespace.GetName(), metav1.GetOptions{})
 			require.NoError(t, err, "failed getting test namespace application after import")
-			_, err = fixture.AppClientset.ArgoprojV1alpha1().Applications(appOtherNamespace.GetNamespace()).Get(t.Context(), appOtherNamespace.GetName(), metav1.GetOptions{})
+			_, err = fixture.AppClientset.AppV1alpha1().Applications(appOtherNamespace.GetNamespace()).Get(t.Context(), appOtherNamespace.GetName(), metav1.GetOptions{})
 			require.NoError(t, err, "failed getting app namespace application after import")
 		})
 }

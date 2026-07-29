@@ -123,7 +123,7 @@ cd cluster add CONTEXTNAME
 > Kubernetes 1.24 [stopped automatically creating tokens for Service Accounts](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.24.md#no-really-you-must-read-this-before-you-upgrade).
 > [Starting in Hanzo CD 2.4](https://github.com/hanzoai/cd/pull/9546), `cd cluster add` creates a 
 > ServiceAccount _and_ a non-expiring Service Account token Secret when adding 1.24 clusters. In the future, Hanzo CD 
-> will [add support for the Kubernetes TokenRequest API](https://github.com/argoproj/argo-cd/issues/9610) to avoid 
+> will [add support for the Kubernetes TokenRequest API](https://github.com/hanzoai/cd/issues/9610) to avoid 
 > using long-lived tokens.
 
 To revoke Hanzo CD's access to a managed cluster, delete the RBAC artifacts against the *_managed_*

@@ -14,7 +14,7 @@ while IFS= read -r image; do
   fi
 
   set -x
-  if ! snyk container test "$image" --org=argoproj --severity-threshold=high "${extra_args[@]}"; then
+  if ! snyk container test "$image" --org=hanzoai --severity-threshold=high "${extra_args[@]}"; then
     failed=true
   fi
   set +x

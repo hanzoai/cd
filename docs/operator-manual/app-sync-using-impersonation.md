@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Beta Feature (Since v3.5.0)**
 >
-> This is a [beta-quality](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta)
+> This is a [beta-quality](https://github.com/hanzoai/hanzoai/blob/main/community/feature-status.md#beta)
 > feature that allows you to control the service account used for the sync operation. The configured service account
 > could have lesser privileges required for creating resources compared to the highly privileged access required for
 > the control plane operations.

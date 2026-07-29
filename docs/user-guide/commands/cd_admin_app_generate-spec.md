@@ -13,22 +13,22 @@ cd admin app generate-spec APPNAME [flags]
 ```
 
 	# Generate declarative config for a directory app
-	cd admin app generate-spec guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
+	cd admin app generate-spec guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
 
 	# Generate declarative config for a Jsonnet app
-	cd admin app generate-spec jsonnet-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path jsonnet-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --jsonnet-ext-str replicas=2
+	cd admin app generate-spec jsonnet-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path jsonnet-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --jsonnet-ext-str replicas=2
 
 	# Generate declarative config for a Helm app
-	cd admin app generate-spec helm-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path helm-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set replicaCount=2
+	cd admin app generate-spec helm-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path helm-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set replicaCount=2
 
 	# Generate declarative config for a Helm app from a Helm repo
 	cd admin app generate-spec nginx-ingress --repo https://charts.helm.sh/stable --helm-chart nginx-ingress --revision 1.24.3 --dest-namespace default --dest-server https://kubernetes.default.svc
 
 	# Generate declarative config for a Kustomize app
-	cd admin app generate-spec kustomize-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image quay.io/argoprojlabs/cd-e2e-container:0.1
+	cd admin app generate-spec kustomize-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image ghcr.io/hanzoai/e2e-container:0.1
 
 	# Generate declarative config for a app using a custom tool:
-	cd admin app generate-spec kasane --repo https://github.com/argoproj/argocd-example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane
+	cd admin app generate-spec kasane --repo https://git.hanzo.ai/hanzo/example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane
 
 ```
 

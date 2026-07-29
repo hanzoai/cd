@@ -5,7 +5,7 @@ metadata:
   finalizers:
     - finalizer.keda.sh
   labels:
-    cd.hanzo.ai/instance: keda-default
+    apps.hanzo.ai/instance: keda-default
   name: keda-with-fallback
   namespace: keda
   resourceVersion: '160591443'

@@ -41,7 +41,7 @@ cd-repo-server [flags]
       --otlp-sample-ratio float                        Fraction of traces to sample, from 0.0 (none) to 1.0 (all). Parent-based, so downstream services honor the upstream sampling decision (default 1)
       --parallelismlimit int                           Limit on number of concurrent manifests generate requests. Any value less the 1 means no limit.
       --plugin-tar-exclude stringArray                 Globs to filter when sending tarballs to plugins.
-      --plugin-use-manifest-generate-paths             Pass the resources described in cd.hanzo.ai/manifest-generate-paths value to the cmpserver to generate the application manifests.
+      --plugin-use-manifest-generate-paths             Pass the resources described in apps.hanzo.ai/manifest-generate-paths value to the cmpserver to generate the application manifests.
       --port int                                       Listen on given port for incoming connections (default 8081)
       --redis string                                   Redis server hostname and port (e.g. cd-redis:6379). 
       --redis-ca-certificate string                    Path to Redis server CA certificate (e.g. /etc/certs/redis/ca.crt). If not specified, system trusted CAs will be used for server certificate validation.

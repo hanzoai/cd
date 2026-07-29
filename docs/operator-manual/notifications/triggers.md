@@ -123,8 +123,8 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.slack: my-channel
-    notifications.apps.hanzo.ai/subscribe.mattermost: my-mattermost-channel
+    apps.hanzo.ai/subscribe.slack: my-channel
+    apps.hanzo.ai/subscribe.mattermost: my-mattermost-channel
 ```
 
 ## Functions

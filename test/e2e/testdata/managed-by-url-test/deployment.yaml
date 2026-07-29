@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: managed-by-url-test
-        image: quay.io/argoprojlabs/cd-e2e-container:0.2
+        image: ghcr.io/hanzoai/e2e-container:0.2
         ports:
         - containerPort: 80

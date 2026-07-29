@@ -51,7 +51,7 @@ spec:
   project: important-project
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
 status:
   sync:
     status: Synced
@@ -76,7 +76,7 @@ spec:
   project: important-project
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
   syncPolicy:
     automated:
       selfHeal: false
@@ -112,7 +112,7 @@ spec:
   project: important-project
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
   syncPolicy:
     automated:
       selfHeal: true
@@ -141,7 +141,7 @@ spec:
   project: important-project
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
 status:
   sync:
     status: OutOfSync
@@ -171,7 +171,7 @@ spec:
     name: cluster1
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
 status:
   sync:
     status: Synced
@@ -196,7 +196,7 @@ spec:
   project: important-project
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
 status:
   sync:
     status: OutOfSync
@@ -224,7 +224,7 @@ spec:
   project: important-project
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
 status:
   sync:
     status: Synced
@@ -356,9 +356,9 @@ func TestMetrics(t *testing.T) {
 			responseContains: `
 # HELP cd_app_info Information about application.
 # TYPE cd_app_info gauge
-cd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Degraded",name="my-app-3",namespace="cd",operation="delete",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="OutOfSync"} 1
-cd_app_info{autosync_enabled="false",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app",namespace="cd",operation="",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
-cd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app-2",namespace="cd",operation="sync",project="important-project",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
+cd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Degraded",name="my-app-3",namespace="cd",operation="delete",project="important-project",repo="https://git.hanzo.ai/hanzo/example-apps",sync_status="OutOfSync"} 1
+cd_app_info{autosync_enabled="false",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app",namespace="cd",operation="",project="important-project",repo="https://git.hanzo.ai/hanzo/example-apps",sync_status="Synced"} 1
+cd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app-2",namespace="cd",operation="sync",project="important-project",repo="https://git.hanzo.ai/hanzo/example-apps",sync_status="Synced"} 1
 `,
 		},
 		{
@@ -366,7 +366,7 @@ cd_app_info{autosync_enabled="true",dest_namespace="dummy-namespace",dest_server
 			responseContains: `
 # HELP cd_app_info Information about application.
 # TYPE cd_app_info gauge
-cd_app_info{autosync_enabled="false",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app",namespace="cd",operation="",project="default",repo="https://github.com/argoproj/argocd-example-apps",sync_status="Synced"} 1
+cd_app_info{autosync_enabled="false",dest_namespace="dummy-namespace",dest_server="https://localhost:6443",health_status="Healthy",name="my-app",namespace="cd",operation="",project="default",repo="https://git.hanzo.ai/hanzo/example-apps",sync_status="Synced"} 1
 `,
 		},
 	}
@@ -390,9 +390,9 @@ func TestMetricLabels(t *testing.T) {
 				applications: []string{fakeApp, fakeApp2, fakeApp3},
 				responseContains: `
 # TYPE cd_app_labels gauge
-cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app",namespace="cd",project="important-project"} 1
-cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-2",namespace="cd",project="important-project"} 1
-cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-3",namespace="cd",project="important-project"} 1
+cd_app_labels{label_apps_hanzo_ai_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app",namespace="cd",project="important-project"} 1
+cd_app_labels{label_apps_hanzo_ai_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-2",namespace="cd",project="important-project"} 1
+cd_app_labels{label_apps_hanzo_ai_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-3",namespace="cd",project="important-project"} 1
 `,
 			},
 		},

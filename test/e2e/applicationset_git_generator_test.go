@@ -46,7 +46,7 @@ func TestSimpleGitDirectoryGenerator(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           name,
 				},
@@ -76,7 +76,7 @@ func TestSimpleGitDirectoryGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "{{path}}",
 						},
@@ -89,7 +89,7 @@ func TestSimpleGitDirectoryGenerator(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL: "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL: "https://git.hanzo.ai/hanzo/example-apps.git",
 							Directories: []v1alpha1.GitDirectoryGeneratorItem{
 								{
 									Path: "*guestbook*",
@@ -152,7 +152,7 @@ func TestSimpleGitDirectoryGeneratorGoTemplate(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           name,
 				},
@@ -183,7 +183,7 @@ func TestSimpleGitDirectoryGeneratorGoTemplate(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "{{.path.path}}",
 						},
@@ -196,7 +196,7 @@ func TestSimpleGitDirectoryGeneratorGoTemplate(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL: "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL: "https://git.hanzo.ai/hanzo/example-apps.git",
 							Directories: []v1alpha1.GitDirectoryGeneratorItem{
 								{
 									Path: "*guestbook*",
@@ -264,7 +264,7 @@ func TestSimpleGitDirectoryGeneratorGPGEnabledUnsignedCommits(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           name,
 				},
@@ -293,7 +293,7 @@ func TestSimpleGitDirectoryGeneratorGPGEnabledUnsignedCommits(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: project,
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "{{path}}",
 						},
@@ -361,7 +361,7 @@ func TestSimpleGitDirectoryGeneratorGPGEnabledWithoutKnownKeys(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           name,
 				},
@@ -392,7 +392,7 @@ func TestSimpleGitDirectoryGeneratorGPGEnabledWithoutKnownKeys(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: project,
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "{{path}}",
 						},
@@ -459,7 +459,7 @@ func TestSimpleGitFilesGenerator(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           "guestbook",
 				},
@@ -489,7 +489,7 @@ func TestSimpleGitFilesGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -502,7 +502,7 @@ func TestSimpleGitFilesGenerator(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL: "https://github.com/argoproj/applicationset.git",
+							RepoURL: "https://github.com/hanzoai/applicationset.git",
 							Files: []v1alpha1.GitFileGeneratorItem{
 								{
 									Path: "examples/git-generator-files-discovery/cluster-config/**/config.json",
@@ -570,7 +570,7 @@ func TestSimpleGitFilesGeneratorGPGEnabledUnsignedCommits(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: project,
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           "guestbook",
 				},
@@ -603,7 +603,7 @@ func TestSimpleGitFilesGeneratorGPGEnabledUnsignedCommits(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: project,
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -672,7 +672,7 @@ func TestSimpleGitFilesGeneratorGPGEnabledWithoutKnownKeys(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: project,
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           "guestbook",
 				},
@@ -702,7 +702,7 @@ func TestSimpleGitFilesGeneratorGPGEnabledWithoutKnownKeys(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: project,
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -765,7 +765,7 @@ func TestSimpleGitFilesGeneratorGoTemplate(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           "guestbook",
 				},
@@ -796,7 +796,7 @@ func TestSimpleGitFilesGeneratorGoTemplate(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -809,7 +809,7 @@ func TestSimpleGitFilesGeneratorGoTemplate(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL: "https://github.com/argoproj/applicationset.git",
+							RepoURL: "https://github.com/hanzoai/applicationset.git",
 							Files: []v1alpha1.GitFileGeneratorItem{
 								{
 									Path: "examples/git-generator-files-discovery/cluster-config/**/config.json",
@@ -869,7 +869,7 @@ func TestSimpleGitFilesPreserveResourcesOnDeletion(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -890,7 +890,7 @@ func TestSimpleGitFilesPreserveResourcesOnDeletion(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL: "https://github.com/argoproj/applicationset.git",
+							RepoURL: "https://github.com/hanzoai/applicationset.git",
 							Files: []v1alpha1.GitFileGeneratorItem{
 								{
 									Path: "examples/git-generator-files-discovery/cluster-config/**/config.json",
@@ -927,7 +927,7 @@ func TestSimpleGitFilesPreserveResourcesOnDeletionGoTemplate(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -948,7 +948,7 @@ func TestSimpleGitFilesPreserveResourcesOnDeletionGoTemplate(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL: "https://github.com/argoproj/applicationset.git",
+							RepoURL: "https://github.com/hanzoai/applicationset.git",
 							Files: []v1alpha1.GitFileGeneratorItem{
 								{
 									Path: "examples/git-generator-files-discovery/cluster-config/**/config.json",

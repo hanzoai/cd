@@ -5,8 +5,8 @@ contact_links:
     url: https://argo-cd.readthedocs.io/
     about: Much help can be found in the docs
   - name: Ask a question
-    url: https://github.com/argoproj/argo-cd/discussions/new
+    url: https://github.com/hanzoai/cd/discussions/new
     about: Ask a question or start a discussion about Hanzo CD
   - name: Chat on Slack
-    url: https://argoproj.github.io/community/join-slack
+    url: https://hanzoai.github.io/community/join-slack
     about: Maybe chatting with the community can help

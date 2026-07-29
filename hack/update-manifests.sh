@@ -22,7 +22,7 @@ IMAGE_REPOSITORY="${IMAGE_REPOSITORY:-argocd}"
 # Apply defaults if needed
 if [[ -n $IMAGE_REGISTRY ]];then
     if [[ -z $IMAGE_NAMESPACE ]]; then
-	echo "IMAGE_NAMESPACE must be set when IMAGE_REGISTRY is set (e.g. IMAGE_NAMESPACE=argoproj)" >&2
+	echo "IMAGE_NAMESPACE must be set when IMAGE_REGISTRY is set (e.g. IMAGE_NAMESPACE=hanzoai)" >&2
 	exit 1
     fi
     # both registry and namespace set, nothing to do
@@ -30,7 +30,7 @@ else  # registry not set
     if [[ -z $IMAGE_NAMESPACE ]]; then
 	# Neither namespace nor registry given - apply the default values
 	IMAGE_REGISTRY="${IMAGE_REGISTRY:-quay.io}"
-	IMAGE_NAMESPACE="${IMAGE_NAMESPACE:-argoproj}"
+	IMAGE_NAMESPACE="${IMAGE_NAMESPACE:-hanzoai}"
     fi
     # If namespace is set, then it's an image without registry or
     # registry is given as part of namespace (old convention)
@@ -57,13 +57,13 @@ detect_current_image() {
 
 # Determine source image (what to replace)
 DETECTED_IMAGE=$(detect_current_image "${SRCROOT}/manifests/base/kustomization.yaml")
-if [ -n "$DETECTED_IMAGE" ] && [ "$DETECTED_IMAGE" != "quay.io/argoproj/argocd" ]; then
+if [ -n "$DETECTED_IMAGE" ] && [ "$DETECTED_IMAGE" != "ghcr.io/hanzoai/argocd" ]; then
   # Found a custom image in manifests (subsequent release scenario)
   SOURCE_IMAGE_NAME="$DETECTED_IMAGE"
   echo "Detected existing custom image in manifests: $SOURCE_IMAGE_NAME"
 else
   # Use default source image (fresh fork or manual override)
-  SOURCE_IMAGE_NAME="quay.io/argoproj/argocd"
+  SOURCE_IMAGE_NAME="ghcr.io/hanzoai/argocd"
   echo "Using default source image: $SOURCE_IMAGE_NAME"
 fi
 
@@ -90,7 +90,7 @@ which "$KUSTOMIZE"
 echo "=== Manifest Generation Configuration ==="
 echo "Source image (to replace): ${SOURCE_IMAGE_NAME}"
 echo "Target image (replace with): ${FULL_IMAGE_NAME}:${IMAGE_TAG}"
-if [ "$DETECTED_IMAGE" != "quay.io/argoproj/argocd" ] && [ -n "$DETECTED_IMAGE" ]; then
+if [ "$DETECTED_IMAGE" != "ghcr.io/hanzoai/argocd" ] && [ -n "$DETECTED_IMAGE" ]; then
   echo "Scenario: Subsequent release (updating existing custom image)"
 else
   echo "Scenario: First release or local development"

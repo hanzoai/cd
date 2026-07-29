@@ -1,4 +1,4 @@
--- GatewayClass health check for Argo CD
+-- GatewayClass health check for Hanzo CD
 --
 -- GatewayClass is a cluster-scoped Gateway API resource whose readiness is
 -- expressed through .status.conditions[type=Accepted].
@@ -10,7 +10,7 @@
 --   False   – controller rejects this class (e.g. invalid parameters)
 --   Unknown – controller has not yet reconciled (default initial state, reason=Pending)
 --
--- Argo CD health mapping:
+-- Hanzo CD health mapping:
 --   Accepted=True              -> Healthy
 --   Accepted=False             -> Degraded
 --   Accepted=Unknown / absent  -> Progressing

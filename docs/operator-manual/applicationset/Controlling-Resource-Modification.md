@@ -94,7 +94,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   finalizers:
-  - resources-finalizer.cd.hanzo.ai
+  - resources-finalizer.apps.hanzo.ai
 spec:
   # (...)
 ```
@@ -199,7 +199,7 @@ spec:
 ```
 
 > [!NOTE]
-> [Future improvements](https://github.com/argoproj/argo-cd/issues/15975) to the ApplicationSet controller may 
+> [Future improvements](https://github.com/hanzoai/cd/issues/15975) to the ApplicationSet controller may 
 > eliminate this problem. For example, the `ref` field might be made a merge key, allowing the ApplicationSet 
 > controller to generate and use a StrategicMergePatch instead of a MergePatch. You could then target a specific 
 > source by `ref`, ignore changes to a field in that source, and changes to other sources would not cause the ignored 
@@ -271,7 +271,7 @@ Applicable for applicationset versions less than 0.4.0.
 ```bash
 # Clone the repository
 
-git clone https://github.com/argoproj/applicationset
+git clone https://github.com/hanzoai/applicationset
 
 # Checkout the version that corresponds to the one you have installed.
 git checkout "(version of applicationset)"

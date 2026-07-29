@@ -188,7 +188,7 @@ func TestNamespacedAppCreation(t *testing.T) {
 		When().
 		// ensure that update replaces spec and merge labels and annotations
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.MergePatchType, []byte(`{"metadata": {"labels": { "test": "label" }, "annotations": { "test": "annotation" }}}`), metav1.PatchOptions{}))
 		}).
 		CreateApp("--upsert").
@@ -418,7 +418,7 @@ func TestNamespacedAppRollbackSuccessful(t *testing.T) {
 			}}
 			patch, _, err := diff.CreateTwoWayMergePatch(app, appWithHistory, &Application{})
 			require.NoError(t, err)
-			app, err = fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+			app, err = fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 			require.NoError(t, err)
 
 			// sync app and make sure it reaches InSync state
@@ -918,7 +918,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/e2e-container:0.2")
 		}).
 		Given().
 		LocalPath(guestbookPathLocal).
@@ -929,7 +929,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 81")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.3")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/e2e-container:0.3")
 		}).
 		Given().
 		LocalPath("").
@@ -940,7 +940,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/e2e-container:0.2")
 		})
 }
 
@@ -1190,7 +1190,7 @@ func TestNamespacedPermissionWithScopedRepo(t *testing.T) {
 		SetTrackingMethod("annotation").
 		SetAppNamespace(fixture.AppNamespace()).
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.hanzo.ai/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1226,7 +1226,7 @@ func TestNamespacedPermissionDeniedWithScopedRepo(t *testing.T) {
 		SetAppNamespace(fixture.AppNamespace()).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.hanzo.ai/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		IgnoreErrors().
 		CreateApp().
 		Then().
@@ -1240,7 +1240,7 @@ func TestNamespacedSyncOptionPruneFalse(t *testing.T) {
 		SetTrackingMethod("annotation").
 		SetAppNamespace(fixture.AppNamespace()).
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.hanzo.ai/sync-options": "Prune=false"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Prune=false"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1274,7 +1274,7 @@ func TestNamespacedSyncOptionValidateFalse(t *testing.T) {
 		// client error. K8s API changed error message w/ 1.25, so for now, we need to check both
 		Expect(ErrorRegex("error validating data|of type int32", "")).
 		When().
-		PatchFile("deployment.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.hanzo.ai/sync-options": "Validate=false"}}]`).
+		PatchFile("deployment.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Validate=false"}}]`).
 		Sync().
 		Then().
 		// server error
@@ -1289,7 +1289,7 @@ func TestNamespacedCompareOptionIgnoreExtraneous(t *testing.T) {
 		SetAppNamespace(fixture.AppNamespace()).
 		Path("two-nice-pods").
 		When().
-		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.hanzo.ai/compare-options": "IgnoreExtraneous"}}]`).
+		PatchFile("pod-1.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/compare-options": "IgnoreExtraneous"}}]`).
 		CreateApp().
 		Sync().
 		Then().
@@ -1620,7 +1620,7 @@ func TestNamespacedCreateAppWithNoNameSpaceForGlobalResource(t *testing.T) {
 		CreateWithNoNameSpace().
 		Then().
 		And(func(app *Application) {
-			app, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			app, err := fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 			assert.Empty(t, app.Status.Conditions)
 		})
@@ -1642,7 +1642,7 @@ func TestNamespacedCreateAppWithNoNameSpaceWhenRequired(t *testing.T) {
 		Refresh(RefreshTypeNormal).
 		Then().
 		And(func(app *Application) {
-			updatedApp, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			updatedApp, err := fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 
 			assert.Len(t, updatedApp.Status.Conditions, 2)
@@ -1668,7 +1668,7 @@ func TestNamespacedCreateAppWithNoNameSpaceWhenRequired2(t *testing.T) {
 		Refresh(RefreshTypeNormal).
 		Then().
 		And(func(app *Application) {
-			updatedApp, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			updatedApp, err := fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 
 			assert.Len(t, updatedApp.Status.Conditions, 2)
@@ -1827,12 +1827,12 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 			assert.Empty(t, app.Status.Conditions)
 
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "cd.hanzo.ai/tracking-id")
-			delete(ns.Annotations, "cd.hanzo.ai/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
 
 			assert.Equal(t, map[string]string{"foo": "bar"}, ns.Labels)
-			assert.Equal(t, map[string]string{"bar": "bat", "cd.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"bar": "bat", "apps.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"foo": "bar"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Labels)
 			assert.Equal(t, map[string]string{"bar": "bat"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		})).
@@ -1841,7 +1841,7 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		Expect(ResourceSyncStatusWithNamespaceIs("Deployment", "guestbook-ui", updatedNamespace, SyncStatusCodeSynced)).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "replace", "path": "/spec/syncPolicy/managedNamespaceMetadata/labels", "value": {"new":"label"} }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -1849,18 +1849,18 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		Expect(Success("")).
 		Expect(Namespace(updatedNamespace, func(app *Application, ns *corev1.Namespace) {
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "cd.hanzo.ai/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
-			delete(ns.Annotations, "cd.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 
 			assert.Equal(t, map[string]string{"new": "label"}, ns.Labels)
-			assert.Equal(t, map[string]string{"bar": "bat", "cd.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"bar": "bat", "apps.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"new": "label"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Labels)
 			assert.Equal(t, map[string]string{"bar": "bat"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "replace", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations", "value": {"new":"custom-annotation"} }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -1868,12 +1868,12 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		Expect(Success("")).
 		Expect(Namespace(updatedNamespace, func(app *Application, ns *corev1.Namespace) {
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "cd.hanzo.ai/tracking-id")
-			delete(ns.Annotations, "cd.hanzo.ai/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
 
 			assert.Equal(t, map[string]string{"new": "label"}, ns.Labels)
-			assert.Equal(t, map[string]string{"new": "custom-annotation", "cd.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"new": "custom-annotation", "apps.hanzo.ai/sync-options": "ServerSideApply=true"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"new": "label"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Labels)
 			assert.Equal(t, map[string]string{"new": "custom-annotation"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		}))
@@ -1919,9 +1919,9 @@ func TestNamespacedNamespaceAutoCreationWithMetadataAndNsManifest(t *testing.T) 
 		Expect(Success("")).
 		Expect(Namespace(namespace, func(_ *Application, ns *corev1.Namespace) {
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "cd.hanzo.ai/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
 			delete(ns.Labels, "kubectl.kubernetes.io/last-applied-configuration")
-			delete(ns.Annotations, "cd.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
 
 			// The application namespace manifest takes precedence over what is in managedNamespaceMetadata
@@ -2003,16 +2003,16 @@ metadata:
 			assert.Empty(t, app.Status.Conditions)
 
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "cd.hanzo.ai/tracking-id")
-			delete(ns.Annotations, "cd.hanzo.ai/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
 
 			assert.Equal(t, map[string]string{"foo": "bar"}, ns.Labels)
-			assert.Equal(t, map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true", "bar": "bat"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"apps.hanzo.ai/sync-options": "ServerSideApply=true", "bar": "bat"}, ns.Annotations)
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "add", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations/something", "value": "hmm" }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -2022,17 +2022,17 @@ metadata:
 			assert.Empty(t, app.Status.Conditions)
 
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "cd.hanzo.ai/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
-			delete(ns.Annotations, "cd.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 
 			assert.Equal(t, map[string]string{"foo": "bar"}, ns.Labels)
-			assert.Equal(t, map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true", "something": "hmm", "bar": "bat"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"apps.hanzo.ai/sync-options": "ServerSideApply=true", "something": "hmm", "bar": "bat"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"something": "hmm", "bar": "bat"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "remove", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations/something" }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -2042,12 +2042,12 @@ metadata:
 			assert.Empty(t, app.Status.Conditions)
 
 			delete(ns.Labels, "kubernetes.io/metadata.name")
-			delete(ns.Labels, "cd.hanzo.ai/tracking-id")
+			delete(ns.Labels, "apps.hanzo.ai/tracking-id")
 			delete(ns.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
-			delete(ns.Annotations, "cd.hanzo.ai/tracking-id")
+			delete(ns.Annotations, "apps.hanzo.ai/tracking-id")
 
 			assert.Equal(t, map[string]string{"foo": "bar"}, ns.Labels)
-			assert.Equal(t, map[string]string{"cd.hanzo.ai/sync-options": "ServerSideApply=true", "bar": "bat"}, ns.Annotations)
+			assert.Equal(t, map[string]string{"apps.hanzo.ai/sync-options": "ServerSideApply=true", "bar": "bat"}, ns.Annotations)
 			assert.Equal(t, map[string]string{"bar": "bat"}, app.Spec.SyncPolicy.ManagedNamespaceMetadata.Annotations)
 		})).
 		Expect(OperationPhaseIs(OperationSucceeded)).Expect(ResourceHealthWithNamespaceIs("Deployment", "guestbook-ui", updatedNamespace, health.HealthStatusHealthy)).
@@ -2061,7 +2061,7 @@ func TestNamespacedFailedSyncWithRetry(t *testing.T) {
 		SetTrackingMethod("annotation").
 		Path("hook").
 		When().
-		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"cd.hanzo.ai/hook": "PreSync"}}]`).
+		PatchFile("hook.yaml", `[{"op": "replace", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/hook": "PreSync"}}]`).
 		// make hook fail
 		PatchFile("hook.yaml", `[{"op": "replace", "path": "/spec/containers/0/command", "value": ["false"]}]`).
 		CreateApp().
@@ -2098,7 +2098,7 @@ func TestNamespacedCreateFromPartialFile(t *testing.T) {
   annotations:
     annotations.local/from-file: file
   finalizers:
-  - resources-finalizer.cd.hanzo.ai
+  - resources-finalizer.apps.hanzo.ai
 spec:
   syncPolicy:
     automated:
@@ -2213,7 +2213,7 @@ definitions:
 }
 
 func TestNamespacedAppLogs(t *testing.T) {
-	t.SkipNow() // Too flaky. https://github.com/argoproj/argo-cd/issues/13834
+	t.SkipNow() // Too flaky. https://github.com/hanzoai/cd/issues/13834
 	fixture.SkipOnEnv(t, "OPENSHIFT")
 	Given(t).
 		SetAppNamespace(fixture.AppNamespace()).
@@ -2277,7 +2277,7 @@ func TestNamespacedSyncOptionReplace(t *testing.T) {
 		SetTrackingMethod("annotation").
 		Path("config-map").
 		When().
-		PatchFile("config-map.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"cd.hanzo.ai/sync-options": "Replace=true"}}]`).
+		PatchFile("config-map.yaml", `[{"op": "add", "path": "/metadata/annotations", "value": {"apps.hanzo.ai/sync-options": "Replace=true"}}]`).
 		CreateApp().
 		Sync().
 		Then().

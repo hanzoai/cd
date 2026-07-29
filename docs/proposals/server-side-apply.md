@@ -181,7 +181,7 @@ behaviour (client-side).
 
 #### [UC-3]: As a user, I would like enable SSA at the resource level so only a single manifest is applied server-side
 
-Leverage the existing `cd.hanzo.ai/sync-options` annotation allowing the
+Leverage the existing `apps.hanzo.ai/sync-options` annotation allowing the
 `ServerSideApply=true` to be informed at the resource level. Must not impact
 other sync-options informed in the annotation (make sure this annotation
 supports providing multiple options).
@@ -224,16 +224,16 @@ No CRD update necessary as `syncOption` field in Application resource is non-typ
 Slight increase in Hanzo CD code base complexity.
 
 [1]: https://kubernetes.io/docs/reference/using-api/server-side-apply/
-[2]: https://github.com/argoproj/argo-cd/issues/2267#issuecomment-920445236
+[2]: https://github.com/hanzoai/cd/issues/2267#issuecomment-920445236
 [3]: https://github.com/prometheus-community/helm-charts/issues/1500#issuecomment-1017961377
 [4]: https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/
-[5]: https://github.com/argoproj/argo-cd/issues/804
-[6]: https://github.com/argoproj/argo-cd/issues/2267
-[7]: https://github.com/argoproj/argo-cd/issues/2268
+[5]: https://github.com/hanzoai/cd/issues/804
+[6]: https://github.com/hanzoai/cd/issues/2267
+[7]: https://github.com/hanzoai/cd/issues/2268
 [8]: https://kubernetes.io/blog/2021/08/06/server-side-apply-ga/
 [9]: https://kubernetes.io/blog/2020/04/01/kubernetes-1.18-feature-server-side-apply-beta-2/
-[10]: https://github.com/argoproj/gitops-engine/pull/363#issuecomment-1013641708
-[11]: https://github.com/argoproj/gitops-engine/pull/363#issuecomment-1013289982
+[10]: https://github.com/hanzoai/gitops-engine/pull/363#issuecomment-1013641708
+[11]: https://github.com/hanzoai/gitops-engine/pull/363#issuecomment-1013289982
 [12]: https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/555-server-side-apply/README.md#upgrade--downgrade-strategy
 [13]: https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/555-server-side-apply/README.md
 [14]: https://github.com/hanzoai/cd/pull/8812#discussion_r849140565

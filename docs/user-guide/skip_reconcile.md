@@ -3,12 +3,12 @@
 > [!WARNING]
 > **Alpha Feature (Since v2.7.0)**
 >
-> This is an experimental, [alpha-quality](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#alpha) feature.
+> This is an experimental, [alpha-quality](https://github.com/hanzoai/hanzoai/blob/main/community/feature-status.md#alpha) feature.
 > The primary use case is to provide integration with third party projects.
 > This feature may be removed in future releases or modified in backwards-incompatible ways.
 
 Hanzo CD allows users to stop an Application from reconciling.
-The skip reconcile option is configured with the `cd.hanzo.ai/skip-reconcile: "true"` annotation.
+The skip reconcile option is configured with the `apps.hanzo.ai/skip-reconcile: "true"` annotation.
 When the Application is configured to skip reconcile,
 all processing is stopped for the Application.
 During the period of time when the Application is not processing,
@@ -23,7 +23,7 @@ See the below example for enabling an Application to skip reconcile:
 ```yaml
 metadata:
   annotations:
-    cd.hanzo.ai/skip-reconcile: "true"
+    apps.hanzo.ai/skip-reconcile: "true"
 ```
 
 See the below example for an Application that is newly created with the skip reconcile enabled:
@@ -33,7 +33,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    cd.hanzo.ai/skip-reconcile: "true"
+    apps.hanzo.ai/skip-reconcile: "true"
   name: guestbook
   namespace: cd
 spec:
@@ -43,7 +43,7 @@ spec:
   project: default
   source:
     path: guestbook
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
 ```
 

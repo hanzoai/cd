@@ -231,7 +231,7 @@ export class App extends React.Component<
     public render() {
         if (this.state.error != null) {
             const stack = this.state.error.stack;
-            const url = 'https://github.com/argoproj/argo-cd/issues/new?labels=bug&template=bug_report.md';
+            const url = 'https://github.com/hanzoai/cd/issues/new?labels=bug&template=bug_report.md';
 
             return (
                 <React.Fragment>

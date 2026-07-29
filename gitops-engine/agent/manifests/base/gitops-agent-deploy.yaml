@@ -21,7 +21,7 @@ spec:
             - /tmp/git/repo
             - --path
             - guestbook
-          image: argoproj/gitops-agent:latest
+          image: hanzoai/gitops-agent:latest
           volumeMounts:
             - name: git
               mountPath: /tmp/git
@@ -29,7 +29,7 @@ spec:
         - name: git-sync
           env:
             - name: GIT_SYNC_REPO
-              value: https://github.com/argoproj/argocd-example-apps
+              value: https://git.hanzo.ai/hanzo/example-apps
           args:
             - --webhook-url
             - http://localhost:9001/api/v1/sync

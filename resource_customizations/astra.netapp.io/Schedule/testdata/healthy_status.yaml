@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: "2024-04-15T20:46:16Z"
   generation: 2
   labels:
-    cd.hanzo.ai/instance: ghost-demo
+    apps.hanzo.ai/instance: ghost-demo
   name: ghost-daily
   namespace: astra-connector
   ownerReferences:

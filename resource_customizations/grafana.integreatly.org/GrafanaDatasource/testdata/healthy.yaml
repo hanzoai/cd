@@ -2,8 +2,8 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   annotations:
-    cd.hanzo.ai/sync-wave: '3'
-    cd.hanzo.ai/tracking-id: foobar-admin:grafana.integreatly.org/GrafanaDatasource:foo/cluster-local
+    apps.hanzo.ai/sync-wave: '3'
+    apps.hanzo.ai/tracking-id: foobar-admin:grafana.integreatly.org/GrafanaDatasource:foo/cluster-local
   creationTimestamp: '2024-10-07T09:37:21Z'
   generation: 1
   name: cluster-local

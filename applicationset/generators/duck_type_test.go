@@ -15,7 +15,7 @@ import (
 	kubefake "k8s.io/client-go/kubernetes/fake"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/test"
 	"github.com/hanzoai/cd/util/settings"
 )
@@ -37,9 +37,9 @@ func TestGenerateParamsForDuckType(t *testing.T) {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "staging",
-					"org":                            "foo",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "staging",
+					"org":                       "foo",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "staging",
@@ -61,9 +61,9 @@ func TestGenerateParamsForDuckType(t *testing.T) {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "production",
+					"org":                       "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -332,15 +332,15 @@ func TestGenerateParamsForDuckType(t *testing.T) {
 
 			duckTypeGenerator := NewDuckTypeGenerator(t.Context(), fakeDynClient, appClientset, "namespace", clusterInformer)
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := appv1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{},
+				Spec: appv1alpha1.ApplicationSetSpec{},
 			}
 
-			got, err := duckTypeGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-				ClusterDecisionResource: &argoprojiov1alpha1.DuckTypeGenerator{
+			got, err := duckTypeGenerator.GenerateParams(&appv1alpha1.ApplicationSetGenerator{
+				ClusterDecisionResource: &appv1alpha1.DuckTypeGenerator{
 					ConfigMapRef:  "my-configmap",
 					Name:          testCase.resourceName,
 					LabelSelector: testCase.labelSelector,
@@ -369,9 +369,9 @@ func TestGenerateParamsForDuckTypeGoTemplate(t *testing.T) {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "staging",
-					"org":                            "foo",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "staging",
+					"org":                       "foo",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "staging",
@@ -393,9 +393,9 @@ func TestGenerateParamsForDuckTypeGoTemplate(t *testing.T) {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "production",
+					"org":                       "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -633,17 +633,17 @@ func TestGenerateParamsForDuckTypeGoTemplate(t *testing.T) {
 
 			duckTypeGenerator := NewDuckTypeGenerator(t.Context(), fakeDynClient, appClientset, "namespace", clusterInformer)
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := appv1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
+				Spec: appv1alpha1.ApplicationSetSpec{
 					GoTemplate: true,
 				},
 			}
 
-			got, err := duckTypeGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-				ClusterDecisionResource: &argoprojiov1alpha1.DuckTypeGenerator{
+			got, err := duckTypeGenerator.GenerateParams(&appv1alpha1.ApplicationSetGenerator{
+				ClusterDecisionResource: &appv1alpha1.DuckTypeGenerator{
 					ConfigMapRef:  "my-configmap",
 					Name:          testCase.resourceName,
 					LabelSelector: testCase.labelSelector,

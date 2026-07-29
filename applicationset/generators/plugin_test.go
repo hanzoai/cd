@@ -18,7 +18,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
 	"github.com/hanzoai/cd/applicationset/services/plugin"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestPluginGenerateParams(t *testing.T) {
@@ -78,8 +78,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					"key2.key2_2.key2_2_1": "val2_2_1",
 					"key3":                 "123",
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -140,8 +140,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					"values.valuekey1":     "valuevalue1",
 					"values.valuekey2":     "templated-val1",
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -200,8 +200,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					},
 					"key3": float64(123),
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -256,8 +256,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					"key3":                 "123",
 					"pkey2":                "valplugin",
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -288,7 +288,7 @@ func TestPluginGenerateParams(t *testing.T) {
 					"plugin.token": []byte("my-secret"),
 				},
 			},
-			inputParameters: argoprojiov1alpha1.PluginParameters{},
+			inputParameters: appv1alpha1.PluginParameters{},
 			gotemplate:      false,
 			content: []byte(`{"output": {
 				"parameters": [{
@@ -416,8 +416,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					"key3":                 "123",
 					"pkey2":                "valplugin",
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -464,8 +464,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					"key2.key2_2.key2_2_1": "val2_2_1",
 					"key3":                 "123",
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -511,8 +511,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					"key2.key2_2.key2_2_1": "val2_2_1",
 					"key3":                 "123",
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -566,8 +566,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					"key2.key2_2.key2_2_1": "val2_2_1",
 					"key3":                 "123",
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -613,8 +613,8 @@ func TestPluginGenerateParams(t *testing.T) {
 					"key2.key2_2.key2_2_1": "val2_2_1",
 					"key3":                 "123",
 					"generator": map[string]any{
-						"input": argoprojiov1alpha1.PluginInput{
-							Parameters: argoprojiov1alpha1.PluginParameters{
+						"input": appv1alpha1.PluginInput{
+							Parameters: appv1alpha1.PluginParameters{
 								"pkey1": {Raw: []byte(`"val1"`)},
 								"pkey2": {Raw: []byte(`"val2"`)},
 							},
@@ -628,10 +628,10 @@ func TestPluginGenerateParams(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.name, func(t *testing.T) {
-			generatorConfig := argoprojiov1alpha1.ApplicationSetGenerator{
-				Plugin: &argoprojiov1alpha1.PluginGenerator{
-					ConfigMapRef: argoprojiov1alpha1.PluginConfigMapRef{Name: testCase.configmap.Name},
-					Input: argoprojiov1alpha1.PluginInput{
+			generatorConfig := appv1alpha1.ApplicationSetGenerator{
+				Plugin: &appv1alpha1.PluginGenerator{
+					ConfigMapRef: appv1alpha1.PluginConfigMapRef{Name: testCase.configmap.Name},
+					Input: appv1alpha1.PluginInput{
 						Parameters: testCase.inputParameters,
 					},
 					Values: testCase.values,
@@ -666,11 +666,11 @@ func TestPluginGenerateParams(t *testing.T) {
 
 			pluginGenerator := NewPluginGenerator(fakeClientWithCache, "default")
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := appv1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
+				Spec: appv1alpha1.ApplicationSetSpec{
 					GoTemplate: testCase.gotemplate,
 				},
 			}

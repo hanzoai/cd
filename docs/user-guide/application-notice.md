@@ -17,16 +17,16 @@ resource — no Hanzo CD restart or ConfigMap change is required.
 
 ## Annotations
 
-All notice annotations use the `notice.cd.hanzo.ai/` prefix.
+All notice annotations use the `notice.apps.hanzo.ai/` prefix.
 
 | Annotation                                  | Required | Default | Description                                                                                              |
 |---------------------------------------------|----------|---------|----------------------------------------------------------------------------------------------------------|
-| `notice.cd.hanzo.ai/content`         | Yes      | —       | Plain-text notice message. Truncated at 500 characters.                                                  |
-| `notice.cd.hanzo.ai/severity`        | No       | `info`  | One of `info`, `warning`, `critical`. Drives banner color and the default icon. Unknown values fall back to `info`. |
-| `notice.cd.hanzo.ai/url`             | No       | —       | If set, the banner text and icon link to this URL. Must be `http://` or `https://`. Other schemes are rejected. |
-| `notice.cd.hanzo.ai/permanent`       | No       | `false` | When `"true"`, the banner cannot be dismissed by users. Mirrors `ui.bannerpermanent` semantics.          |
-| `notice.cd.hanzo.ai/icon`            | No       | severity-derived | Override the icon. Must be one of the allowlisted FontAwesome classes; unknown values fall back to the severity default. |
-| `notice.cd.hanzo.ai/scope`           | No       | `both`  | One of `banner`, `icon`, `both`. Use to suppress either surface.                                         |
+| `notice.apps.hanzo.ai/content`         | Yes      | —       | Plain-text notice message. Truncated at 500 characters.                                                  |
+| `notice.apps.hanzo.ai/severity`        | No       | `info`  | One of `info`, `warning`, `critical`. Drives banner color and the default icon. Unknown values fall back to `info`. |
+| `notice.apps.hanzo.ai/url`             | No       | —       | If set, the banner text and icon link to this URL. Must be `http://` or `https://`. Other schemes are rejected. |
+| `notice.apps.hanzo.ai/permanent`       | No       | `false` | When `"true"`, the banner cannot be dismissed by users. Mirrors `ui.bannerpermanent` semantics.          |
+| `notice.apps.hanzo.ai/icon`            | No       | severity-derived | Override the icon. Must be one of the allowlisted FontAwesome classes; unknown values fall back to the severity default. |
+| `notice.apps.hanzo.ai/scope`           | No       | `both`  | One of `banner`, `icon`, `both`. Use to suppress either surface.                                         |
 
 ### Severity defaults
 
@@ -55,7 +55,7 @@ metadata:
   name: guestbook
   namespace: cd
   annotations:
-    notice.cd.hanzo.ai/content: "Scheduled DB maintenance on 2026-06-01 02:00 UTC"
+    notice.apps.hanzo.ai/content: "Scheduled DB maintenance on 2026-06-01 02:00 UTC"
 spec:
   # ...
 ```
@@ -65,10 +65,10 @@ Deprecation notice with a runbook link, marked permanent:
 ```yaml
 metadata:
   annotations:
-    notice.cd.hanzo.ai/content:   "Deprecated — migrate to v2 by 2026-08-01"
-    notice.cd.hanzo.ai/severity:  "warning"
-    notice.cd.hanzo.ai/url:       "https://wiki.example.com/v2-migration"
-    notice.cd.hanzo.ai/permanent: "true"
+    notice.apps.hanzo.ai/content:   "Deprecated — migrate to v2 by 2026-08-01"
+    notice.apps.hanzo.ai/severity:  "warning"
+    notice.apps.hanzo.ai/url:       "https://wiki.example.com/v2-migration"
+    notice.apps.hanzo.ai/permanent: "true"
 ```
 
 List-icon-only hint (no page banner):
@@ -76,10 +76,10 @@ List-icon-only hint (no page banner):
 ```yaml
 metadata:
   annotations:
-    notice.cd.hanzo.ai/content:  "Owned by team-payments"
-    notice.cd.hanzo.ai/severity: "info"
-    notice.cd.hanzo.ai/scope:    "icon"
-    notice.cd.hanzo.ai/icon:     "fa-life-ring"
+    notice.apps.hanzo.ai/content:  "Owned by team-payments"
+    notice.apps.hanzo.ai/severity: "info"
+    notice.apps.hanzo.ai/scope:    "icon"
+    notice.apps.hanzo.ai/icon:     "fa-life-ring"
 ```
 
 ## Where it appears
@@ -89,6 +89,6 @@ metadata:
 - The icon is shown next to the application name in both the tile and list
   views of the applications page; hovering it reveals the notice content.
 - By default the banner can be dismissed for the current user. Setting
-  `notice.cd.hanzo.ai/permanent` to `"true"` removes the dismiss
+  `notice.apps.hanzo.ai/permanent` to `"true"` removes the dismiss
   control so the banner stays visible. The list/tile icon is always shown
   while the notice exists.

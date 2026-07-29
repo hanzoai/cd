@@ -11,7 +11,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
 	"github.com/hanzoai/cd/applicationset/utils"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -40,9 +40,9 @@ func TestGenerateParams(t *testing.T) {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "staging",
-					"org":                            "foo",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "staging",
+					"org":                       "foo",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "staging",
@@ -64,9 +64,9 @@ func TestGenerateParams(t *testing.T) {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "production",
+					"org":                       "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -107,12 +107,12 @@ func TestGenerateParams(t *testing.T) {
 				{"values.lol1": "lol", "values.lol2": "{{values.lol1}}{{values.lol1}}", "values.lol3": "{{values.lol2}}{{values.lol2}}{{values.lol2}}", "values.foo": "bar", "values.bar": "{{ metadata.annotations.foo.example.com }}", "values.no-op": "{{ this-does-not-exist }}", "values.bat": "{{ metadata.labels.environment }}", "values.aaa": "https://kubernetes.default.svc", "nameNormalized": "in-cluster", "name": "in-cluster", "server": "https://kubernetes.default.svc", "project": ""},
 				{
 					"values.lol1": "lol", "values.lol2": "{{values.lol1}}{{values.lol1}}", "values.lol3": "{{values.lol2}}{{values.lol2}}{{values.lol2}}", "values.foo": "bar", "values.bar": "production", "values.no-op": "{{ this-does-not-exist }}", "values.bat": "production", "values.aaa": "https://production-01.example.com", "name": "production_01/west", "nameNormalized": "production-01-west", "server": "https://production-01.example.com", "metadata.labels.environment": "production", "metadata.labels.org": "bar",
-					"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
+					"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
 				},
 
 				{
 					"values.lol1": "lol", "values.lol2": "{{values.lol1}}{{values.lol1}}", "values.lol3": "{{values.lol2}}{{values.lol2}}{{values.lol2}}", "values.foo": "bar", "values.bar": "staging", "values.no-op": "{{ this-does-not-exist }}", "values.bat": "staging", "values.aaa": "https://staging-01.example.com", "name": "staging-01", "nameNormalized": "staging-01", "server": "https://staging-01.example.com", "metadata.labels.environment": "staging", "metadata.labels.org": "foo",
-					"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
+					"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
 				},
 			},
 			clientError:   false,
@@ -122,19 +122,19 @@ func TestGenerateParams(t *testing.T) {
 			name: "secret type label selector",
 			selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 				},
 			},
 			values: nil,
 			expected: []map[string]any{
 				{
 					"name": "production_01/west", "nameNormalized": "production-01-west", "server": "https://production-01.example.com", "metadata.labels.environment": "production", "metadata.labels.org": "bar",
-					"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
+					"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
 				},
 
 				{
 					"name": "staging-01", "nameNormalized": "staging-01", "server": "https://staging-01.example.com", "metadata.labels.environment": "staging", "metadata.labels.org": "foo",
-					"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
+					"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
 				},
 			},
 			clientError:   false,
@@ -153,7 +153,7 @@ func TestGenerateParams(t *testing.T) {
 			expected: []map[string]any{
 				{
 					"values.foo": "bar", "name": "production_01/west", "nameNormalized": "production-01-west", "server": "https://production-01.example.com", "metadata.labels.environment": "production", "metadata.labels.org": "bar",
-					"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
+					"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
 				},
 			},
 			clientError:   false,
@@ -179,11 +179,11 @@ func TestGenerateParams(t *testing.T) {
 			expected: []map[string]any{
 				{
 					"values.foo": "bar", "name": "staging-01", "nameNormalized": "staging-01", "server": "https://staging-01.example.com", "metadata.labels.environment": "staging", "metadata.labels.org": "foo",
-					"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
+					"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
 				},
 				{
 					"values.foo": "bar", "name": "production_01/west", "nameNormalized": "production-01-west", "server": "https://production-01.example.com", "metadata.labels.environment": "production", "metadata.labels.org": "bar",
-					"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
+					"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
 				},
 			},
 			clientError:   false,
@@ -212,7 +212,7 @@ func TestGenerateParams(t *testing.T) {
 			expected: []map[string]any{
 				{
 					"values.name": "baz", "name": "staging-01", "nameNormalized": "staging-01", "server": "https://staging-01.example.com", "metadata.labels.environment": "staging", "metadata.labels.org": "foo",
-					"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
+					"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
 				},
 			},
 			clientError:   false,
@@ -245,12 +245,12 @@ func TestGenerateParams(t *testing.T) {
 						{"values.lol1": "lol", "values.lol2": "{{values.lol1}}{{values.lol1}}", "values.lol3": "{{values.lol2}}{{values.lol2}}{{values.lol2}}", "values.foo": "bar", "values.bar": "{{ metadata.annotations.foo.example.com }}", "values.no-op": "{{ this-does-not-exist }}", "values.bat": "{{ metadata.labels.environment }}", "values.aaa": "https://kubernetes.default.svc", "nameNormalized": "in-cluster", "name": "in-cluster", "server": "https://kubernetes.default.svc", "project": ""},
 						{
 							"values.lol1": "lol", "values.lol2": "{{values.lol1}}{{values.lol1}}", "values.lol3": "{{values.lol2}}{{values.lol2}}{{values.lol2}}", "values.foo": "bar", "values.bar": "production", "values.no-op": "{{ this-does-not-exist }}", "values.bat": "production", "values.aaa": "https://production-01.example.com", "name": "production_01/west", "nameNormalized": "production-01-west", "server": "https://production-01.example.com", "metadata.labels.environment": "production", "metadata.labels.org": "bar",
-							"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
+							"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
 						},
 
 						{
 							"values.lol1": "lol", "values.lol2": "{{values.lol1}}{{values.lol1}}", "values.lol3": "{{values.lol2}}{{values.lol2}}{{values.lol2}}", "values.foo": "bar", "values.bar": "staging", "values.no-op": "{{ this-does-not-exist }}", "values.bat": "staging", "values.aaa": "https://staging-01.example.com", "name": "staging-01", "nameNormalized": "staging-01", "server": "https://staging-01.example.com", "metadata.labels.environment": "staging", "metadata.labels.org": "foo",
-							"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
+							"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
 						},
 					},
 				},
@@ -282,11 +282,11 @@ func TestGenerateParams(t *testing.T) {
 					"clusters": []map[string]any{
 						{
 							"values.foo": "bar", "name": "production_01/west", "nameNormalized": "production-01-west", "server": "https://production-01.example.com", "metadata.labels.environment": "production", "metadata.labels.org": "bar",
-							"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
+							"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "production", "project": "prod-project",
 						},
 						{
 							"values.foo": "bar", "name": "staging-01", "nameNormalized": "staging-01", "server": "https://staging-01.example.com", "metadata.labels.environment": "staging", "metadata.labels.org": "foo",
-							"metadata.labels.cd.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
+							"metadata.labels.apps.hanzo.ai/secret-type": "cluster", "metadata.annotations.foo.example.com": "staging", "project": "",
 						},
 					},
 				},
@@ -306,15 +306,15 @@ func TestGenerateParams(t *testing.T) {
 
 			clusterGenerator := NewClusterGenerator(cl, "namespace")
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := appv1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{},
+				Spec: appv1alpha1.ApplicationSetSpec{},
 			}
 
-			got, err := clusterGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-				Clusters: &argoprojiov1alpha1.ClusterGenerator{
+			got, err := clusterGenerator.GenerateParams(&appv1alpha1.ApplicationSetGenerator{
+				Clusters: &appv1alpha1.ClusterGenerator{
 					Selector: testCase.selector,
 					Values:   testCase.values,
 					FlatList: testCase.isFlatMode,
@@ -355,9 +355,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 				Name:      "staging-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "staging",
-					"org":                            "foo",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "staging",
+					"org":                       "foo",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "staging",
@@ -379,9 +379,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 				Name:      "production-01",
 				Namespace: "namespace",
 				Labels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"apps.hanzo.ai/secret-type": "cluster",
+					"environment":               "production",
+					"org":                       "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -425,9 +425,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "production",
+							"org":                       "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -451,9 +451,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "staging",
+							"org":                       "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -494,7 +494,7 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 			name: "secret type label selector",
 			selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
+					"apps.hanzo.ai/secret-type": "cluster",
 				},
 			},
 			values: nil,
@@ -506,9 +506,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "production",
+							"org":                       "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -522,9 +522,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "staging",
+							"org":                       "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -553,9 +553,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "production",
+							"org":                       "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -594,9 +594,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "production",
+							"org":                       "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -613,9 +613,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "staging",
+							"org":                       "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -657,9 +657,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"project":        "",
 					"metadata": map[string]any{
 						"labels": map[string]string{
-							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"apps.hanzo.ai/secret-type": "cluster",
+							"environment":               "staging",
+							"org":                       "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -721,9 +721,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 							"project":        "",
 							"metadata": map[string]any{
 								"labels": map[string]string{
-									"cd.hanzo.ai/secret-type": "cluster",
-									"environment":                    "production",
-									"org":                            "bar",
+									"apps.hanzo.ai/secret-type": "cluster",
+									"environment":               "production",
+									"org":                       "bar",
 								},
 								"annotations": map[string]string{
 									"foo.example.com": "production",
@@ -747,9 +747,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 							"project":        "",
 							"metadata": map[string]any{
 								"labels": map[string]string{
-									"cd.hanzo.ai/secret-type": "cluster",
-									"environment":                    "staging",
-									"org":                            "foo",
+									"apps.hanzo.ai/secret-type": "cluster",
+									"environment":               "staging",
+									"org":                       "foo",
 								},
 								"annotations": map[string]string{
 									"foo.example.com": "staging",
@@ -800,9 +800,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 							"project":        "",
 							"metadata": map[string]any{
 								"labels": map[string]string{
-									"cd.hanzo.ai/secret-type": "cluster",
-									"environment":                    "production",
-									"org":                            "bar",
+									"apps.hanzo.ai/secret-type": "cluster",
+									"environment":               "production",
+									"org":                       "bar",
 								},
 								"annotations": map[string]string{
 									"foo.example.com": "production",
@@ -819,9 +819,9 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 							"project":        "",
 							"metadata": map[string]any{
 								"labels": map[string]string{
-									"cd.hanzo.ai/secret-type": "cluster",
-									"environment":                    "staging",
-									"org":                            "foo",
+									"apps.hanzo.ai/secret-type": "cluster",
+									"environment":               "staging",
+									"org":                       "foo",
 								},
 								"annotations": map[string]string{
 									"foo.example.com": "staging",
@@ -849,17 +849,17 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 
 			clusterGenerator := NewClusterGenerator(cl, "namespace")
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := appv1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
+				Spec: appv1alpha1.ApplicationSetSpec{
 					GoTemplate: true,
 				},
 			}
 
-			got, err := clusterGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-				Clusters: &argoprojiov1alpha1.ClusterGenerator{
+			got, err := clusterGenerator.GenerateParams(&appv1alpha1.ApplicationSetGenerator{
+				Clusters: &appv1alpha1.ClusterGenerator{
 					Selector: testCase.selector,
 					Values:   testCase.values,
 					FlatList: testCase.isFlatMode,
