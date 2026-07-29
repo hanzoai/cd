@@ -162,7 +162,7 @@ describe('ResourceIcon', () => {
         });
 
         it('should show applicationset icon for kind=ApplicationSet', () => {
-            renderResourceIcon('argoproj.io', 'ApplicationSet');
+            renderResourceIcon('apps.hanzo.ai', 'ApplicationSet');
             const icon = document.querySelector('i.argo-icon-applicationset') as HTMLElement;
             expect(icon).toBeTruthy();
             expect(icon).toHaveClass('resource-icon__font-icon');
