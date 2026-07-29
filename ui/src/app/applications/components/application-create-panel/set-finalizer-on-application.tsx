@@ -6,7 +6,7 @@ export const SetFinalizerOnApplication = ReactForm.FormField((props: {fieldApi: 
     const {
         fieldApi: {getValue, setValue}
     } = props;
-    const finalizerVal = 'resources-finalizer.argocd.argoproj.io';
+    const finalizerVal = 'resources-finalizer.apps.hanzo.ai';
     const currentValue = getValue() || [];
     const index = currentValue.findIndex((item: string) => item === finalizerVal);
     const isChecked = index < 0 ? false : true;

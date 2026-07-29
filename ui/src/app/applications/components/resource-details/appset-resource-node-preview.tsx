@@ -15,7 +15,7 @@ function toAppSet(raw: any, fallbackMeta?: {name?: string; namespace?: string}):
         return raw as models.ApplicationSet;
     }
     return {
-        apiVersion: 'argoproj.io/v1alpha1',
+        apiVersion: 'apps.hanzo.ai/v1alpha1',
         kind: 'ApplicationSet',
         metadata: {
             name: fallbackMeta?.name || '',

@@ -285,7 +285,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                         .map(item => item.split('|'))
                         // Drop entries whose URL uses an unsafe protocol (e.g. javascript:, data:,
                         // vbscript:) to prevent XSS via attacker-controlled
-                        // link.argocd.argoproj.io/* annotations on managed resources.
+                        // link.apps.hanzo.ai/* annotations on managed resources.
                         .filter(parts => isValidURL(parts.length > 1 ? parts[1] : parts[0]))
                         .map((parts, i) => (
                             <div className='application-summary__links-row'>
@@ -590,7 +590,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                         {
                             name: app.metadata.name,
                             namespace: app.metadata.namespace,
-                            group: 'argoproj.io',
+                            group: 'apps.hanzo.ai',
                             kind: 'Application',
                             version: 'v1alpha1'
                         } as models.ResourceNode,

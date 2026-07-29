@@ -254,7 +254,7 @@ export function compareNodes(first: ResourceTreeNode, second: ResourceTreeNode) 
 }
 
 function appNodeKey(app: models.AbstractApplication) {
-    return nodeKey({group: 'argoproj.io', kind: app.kind, name: app.metadata.name, namespace: app.metadata.namespace});
+    return nodeKey({group: 'apps.hanzo.ai', kind: app.kind, name: app.metadata.name, namespace: app.metadata.namespace});
 }
 
 function renderFilteredNode(node: {count: number} & dagre.Node, onClearFilter: () => any) {
@@ -1010,7 +1010,7 @@ export const ApplicationResourceTree = (props: ApplicationResourceTreeProps) => 
         name: props.app.metadata.name,
         namespace: props.app.metadata.namespace,
         resourceVersion: props.app.metadata.resourceVersion,
-        group: 'argoproj.io',
+        group: 'apps.hanzo.ai',
         version: '',
         // @ts-expect-error its not any
         children: [],
@@ -1034,7 +1034,7 @@ export const ApplicationResourceTree = (props: ApplicationResourceTreeProps) => 
               kind: 'ApplicationSet',
               name: appSetRef.name,
               namespace: props.app.metadata.namespace,
-              group: 'argoproj.io',
+              group: 'apps.hanzo.ai',
               version: '',
               children: [] as string[],
               status: null as string,
@@ -1317,7 +1317,7 @@ export const ApplicationResourceTree = (props: ApplicationResourceTreeProps) => 
             processNode(node, node);
         });
         graph.setNode(appNodeKey(props.app), {...appNode, width: NODE_WIDTH, height: NODE_HEIGHT});
-        const appSetKey = appSetNode ? nodeKey({group: 'argoproj.io', kind: 'ApplicationSet', name: appSetRef.name, namespace: props.app.metadata.namespace}) : null;
+        const appSetKey = appSetNode ? nodeKey({group: 'apps.hanzo.ai', kind: 'ApplicationSet', name: appSetRef.name, namespace: props.app.metadata.namespace}) : null;
         if (appSetKey) {
             graph.setNode(appSetKey, {...appSetNode, width: NODE_WIDTH, height: NODE_HEIGHT});
             graph.setEdge(appSetKey, appNodeKey(props.app));
