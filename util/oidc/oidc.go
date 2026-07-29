@@ -83,7 +83,7 @@ type ClientApp struct {
 	useAzureWorkloadIdentity bool
 	// Callback URL for OAuth2 responses (e.g. https://cd.example.com/auth/callback)
 	redirectURI string
-	// URL of the issuer (e.g. https://cd.example.com/api/dex)
+	// URL of the issuer (e.g. https://cd.example.com/v1/dex)
 	issuerURL string
 	// The URL endpoint at which the Hanzo CD server is accessed.
 	baseHRef string

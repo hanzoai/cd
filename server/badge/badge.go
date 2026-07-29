@@ -120,7 +120,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		reqNs = h.namespace
 	}
 
-	// Sample url: http://localhost:8080/api/badge?name=123
+	// Sample url: http://localhost:8080/v1/badge?name=123
 	if name, ok := r.URL.Query()["name"]; ok && enabled && !notFound {
 		if !cd.IsValidAppName(name[0]) {
 			w.WriteHeader(http.StatusBadRequest)
@@ -141,7 +141,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			notFound = true
 		}
 	}
-	// Sample url: http://localhost:8080/api/badge?project=default
+	// Sample url: http://localhost:8080/v1/badge?project=default
 	if projects, ok := r.URL.Query()["project"]; ok && enabled && !notFound {
 		for _, p := range projects {
 			if errs := validation.NameIsDNSLabel(strings.ToLower(p), false); p != "" && len(errs) != 0 {
@@ -167,7 +167,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	// Sample url: http://localhost:8080/api/badge?name=123&revision=true
+	// Sample url: http://localhost:8080/v1/badge?name=123&revision=true
 	if revisionParam, ok := r.URL.Query()["revision"]; ok && enabled && strings.EqualFold(revisionParam[0], "true") {
 		revisionEnabled = true
 	}

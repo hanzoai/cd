@@ -38,24 +38,24 @@ message GnuPGPublicKeyResponse {}
 service GPGKeyService {
   // List all available repository certificates
   rpc List(GnuPGPublicKeyQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.GnuPGPublicKeyList) {
-    option (google.api.http).get = "/api/v1/gpgkeys";
+    option (google.api.http).get = "/v1/gpgkeys";
   }
 
   // Get information about specified GPG public key from the server
   rpc Get(GnuPGPublicKeyQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.GnuPGPublicKey) {
-    option (google.api.http).get = "/api/v1/gpgkeys/{keyID}";
+    option (google.api.http).get = "/v1/gpgkeys/{keyID}";
   }
 
   // Create one or more GPG public keys in the server's configuration
   rpc Create(GnuPGPublicKeyCreateRequest) returns (GnuPGPublicKeyCreateResponse) {
     option (google.api.http) = {
-      post: "/api/v1/gpgkeys"
+      post: "/v1/gpgkeys"
       body: "publickey"
     };
   }
 
   // Delete specified GPG public key from the server's configuration
   rpc Delete(GnuPGPublicKeyQuery) returns (GnuPGPublicKeyResponse) {
-    option (google.api.http).delete = "/api/v1/gpgkeys";
+    option (google.api.http).delete = "/v1/gpgkeys";
   }
 }

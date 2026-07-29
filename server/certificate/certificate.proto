@@ -33,19 +33,19 @@ message RepositoryCertificateResponse {}
 service CertificateService {
   // List all available repository certificates
   rpc ListCertificates(RepositoryCertificateQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
-    option (google.api.http).get = "/api/v1/certificates";
+    option (google.api.http).get = "/v1/certificates";
   }
 
   // Creates repository certificates on the server 
   rpc CreateCertificate(RepositoryCertificateCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
     option (google.api.http) = {
-      post: "/api/v1/certificates"
+      post: "/v1/certificates"
       body: "certificates"
     };
   }
 
   // Delete the certificates that match the RepositoryCertificateQuery
   rpc DeleteCertificate(RepositoryCertificateQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
-    option (google.api.http).delete = "/api/v1/certificates";
+    option (google.api.http).delete = "/v1/certificates";
   }
 }

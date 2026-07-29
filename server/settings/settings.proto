@@ -99,11 +99,11 @@ service SettingsService {
 
     // Get returns Hanzo CD settings
     rpc Get(SettingsQuery) returns (Settings) {
-        option (google.api.http).get = "/api/v1/settings";
+        option (google.api.http).get = "/v1/settings";
     }
 
     // Get returns Hanzo CD plugins
     rpc GetPlugins(SettingsQuery) returns (SettingsPluginsResponse) {
-        option (google.api.http).get = "/api/v1/settings/plugins";
+        option (google.api.http).get = "/v1/settings/plugins";
     }
 }

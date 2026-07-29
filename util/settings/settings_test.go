@@ -1161,10 +1161,10 @@ userInfoBaseURL: "://users.example.com"
 
 func TestRedirectURL(t *testing.T) {
 	cases := map[string][]string{
-		"https://localhost:4000":         {"https://localhost:4000/auth/callback", "https://localhost:4000/api/dex/callback"},
-		"https://localhost:4000/":        {"https://localhost:4000/auth/callback", "https://localhost:4000/api/dex/callback"},
-		"https://localhost:4000/cd":  {"https://localhost:4000/cd/auth/callback", "https://localhost:4000/cd/api/dex/callback"},
-		"https://localhost:4000/cd/": {"https://localhost:4000/cd/auth/callback", "https://localhost:4000/cd/api/dex/callback"},
+		"https://localhost:4000":         {"https://localhost:4000/auth/callback", "https://localhost:4000/v1/dex/callback"},
+		"https://localhost:4000/":        {"https://localhost:4000/auth/callback", "https://localhost:4000/v1/dex/callback"},
+		"https://localhost:4000/cd":  {"https://localhost:4000/cd/auth/callback", "https://localhost:4000/cd/v1/dex/callback"},
+		"https://localhost:4000/cd/": {"https://localhost:4000/cd/auth/callback", "https://localhost:4000/cd/v1/dex/callback"},
 	}
 	for given, expected := range cases {
 		settings := ArgoCDSettings{URL: given}

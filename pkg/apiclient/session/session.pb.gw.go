@@ -283,11 +283,11 @@ func RegisterSessionServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_SessionService_GetUserInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "session", "userinfo"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_SessionService_GetUserInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "session", "userinfo"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_SessionService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "session"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_SessionService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "session"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_SessionService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "session"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_SessionService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "session"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

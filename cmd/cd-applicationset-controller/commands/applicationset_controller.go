@@ -332,7 +332,7 @@ func NewCommand() *cobra.Command {
 
 func startWebhookServer(webhookHandler *webhook.WebhookHandler, webhookAddr string) {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api/webhook", webhookHandler.Handler)
+	mux.HandleFunc("/v1/webhook", webhookHandler.Handler)
 	go func() {
 		log.Infof("Starting webhook server %s", webhookAddr)
 		err := http.ListenAndServe(webhookAddr, mux)

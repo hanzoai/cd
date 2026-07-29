@@ -12,7 +12,7 @@
     "version": "version not set"
   },
   "paths": {
-    "/api/v1/account": {
+    "/v1/account": {
       "get": {
         "tags": [
           "AccountService"
@@ -35,7 +35,7 @@
         }
       }
     },
-    "/api/v1/account/can-i/{resource}/{action}/{subresource}": {
+    "/v1/account/can-i/{resource}/{action}/{subresource}": {
       "get": {
         "tags": [
           "AccountService"
@@ -78,7 +78,7 @@
         }
       }
     },
-    "/api/v1/account/password": {
+    "/v1/account/password": {
       "put": {
         "tags": [
           "AccountService"
@@ -111,7 +111,7 @@
         }
       }
     },
-    "/api/v1/account/{name}": {
+    "/v1/account/{name}": {
       "get": {
         "tags": [
           "AccountService"
@@ -142,7 +142,7 @@
         }
       }
     },
-    "/api/v1/account/{name}/token": {
+    "/v1/account/{name}/token": {
       "post": {
         "tags": [
           "AccountService"
@@ -181,7 +181,7 @@
         }
       }
     },
-    "/api/v1/account/{name}/token/{id}": {
+    "/v1/account/{name}/token/{id}": {
       "delete": {
         "tags": [
           "AccountService"
@@ -218,7 +218,7 @@
         }
       }
     },
-    "/api/v1/applications": {
+    "/v1/applications": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -340,7 +340,7 @@
         }
       }
     },
-    "/api/v1/applications/manifestsWithFiles": {
+    "/v1/applications/manifestsWithFiles": {
       "post": {
         "tags": [
           "ApplicationService"
@@ -374,7 +374,7 @@
         }
       }
     },
-    "/api/v1/applications/{appName}/server-side-diff": {
+    "/v1/applications/{appName}/server-side-diff": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -424,7 +424,7 @@
         }
       }
     },
-    "/api/v1/applications/{application.metadata.name}": {
+    "/v1/applications/{application.metadata.name}": {
       "put": {
         "tags": [
           "ApplicationService"
@@ -474,7 +474,7 @@
         }
       }
     },
-    "/api/v1/applications/{applicationName}/managed-resources": {
+    "/v1/applications/{applicationName}/managed-resources": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -540,7 +540,7 @@
         }
       }
     },
-    "/api/v1/applications/{applicationName}/resource-tree": {
+    "/v1/applications/{applicationName}/resource-tree": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -606,7 +606,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}": {
+    "/v1/applications/{name}": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -774,7 +774,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/events": {
+    "/v1/applications/{name}/events": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -830,7 +830,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/links": {
+    "/v1/applications/{name}/links": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -871,7 +871,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/logs": {
+    "/v1/applications/{name}/logs": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1002,7 +1002,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/manifests": {
+    "/v1/applications/{name}/manifests": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1072,7 +1072,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/operation": {
+    "/v1/applications/{name}/operation": {
       "delete": {
         "tags": [
           "ApplicationService"
@@ -1113,7 +1113,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/pods/{podName}/logs": {
+    "/v1/applications/{name}/pods/{podName}/logs": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1245,7 +1245,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/resource": {
+    "/v1/applications/{name}/resource": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1462,7 +1462,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/resource/actions": {
+    "/v1/applications/{name}/resource/actions": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1601,7 +1601,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/resource/actions/v2": {
+    "/v1/applications/{name}/resource/actions/v2": {
       "post": {
         "tags": [
           "ApplicationService"
@@ -1640,7 +1640,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/resource/links": {
+    "/v1/applications/{name}/resource/links": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1706,7 +1706,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/revisions/{revision}/chartdetails": {
+    "/v1/applications/{name}/revisions/{revision}/chartdetails": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1770,7 +1770,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/revisions/{revision}/metadata": {
+    "/v1/applications/{name}/revisions/{revision}/metadata": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1834,7 +1834,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/revisions/{revision}/ocimetadata": {
+    "/v1/applications/{name}/revisions/{revision}/ocimetadata": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -1898,7 +1898,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/rollback": {
+    "/v1/applications/{name}/rollback": {
       "post": {
         "tags": [
           "ApplicationService"
@@ -1937,7 +1937,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/spec": {
+    "/v1/applications/{name}/spec": {
       "put": {
         "tags": [
           "ApplicationService"
@@ -1991,7 +1991,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/sync": {
+    "/v1/applications/{name}/sync": {
       "post": {
         "tags": [
           "ApplicationService"
@@ -2030,7 +2030,7 @@
         }
       }
     },
-    "/api/v1/applications/{name}/syncwindows": {
+    "/v1/applications/{name}/syncwindows": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -2071,7 +2071,7 @@
         }
       }
     },
-    "/api/v1/applicationsets": {
+    "/v1/applicationsets": {
       "get": {
         "tags": [
           "ApplicationSetService"
@@ -2159,7 +2159,7 @@
         }
       }
     },
-    "/api/v1/applicationsets/generate": {
+    "/v1/applicationsets/generate": {
       "post": {
         "tags": [
           "ApplicationSetService"
@@ -2192,7 +2192,7 @@
         }
       }
     },
-    "/api/v1/applicationsets/{name}": {
+    "/v1/applicationsets/{name}": {
       "get": {
         "tags": [
           "ApplicationSetService"
@@ -2265,7 +2265,7 @@
         }
       }
     },
-    "/api/v1/applicationsets/{name}/events": {
+    "/v1/applicationsets/{name}/events": {
       "get": {
         "tags": [
           "ApplicationSetService"
@@ -2303,7 +2303,7 @@
         }
       }
     },
-    "/api/v1/applicationsets/{name}/resource-tree": {
+    "/v1/applicationsets/{name}/resource-tree": {
       "get": {
         "tags": [
           "ApplicationSetService"
@@ -2340,7 +2340,7 @@
         }
       }
     },
-    "/api/v1/certificates": {
+    "/v1/certificates": {
       "get": {
         "tags": [
           "CertificateService"
@@ -2462,7 +2462,7 @@
         }
       }
     },
-    "/api/v1/clusters": {
+    "/v1/clusters": {
       "get": {
         "tags": [
           "ClusterService"
@@ -2545,7 +2545,7 @@
         }
       }
     },
-    "/api/v1/clusters/{id.value}": {
+    "/v1/clusters/{id.value}": {
       "get": {
         "tags": [
           "ClusterService"
@@ -2692,7 +2692,7 @@
         }
       }
     },
-    "/api/v1/clusters/{id.value}/invalidate-cache": {
+    "/v1/clusters/{id.value}/invalidate-cache": {
       "post": {
         "tags": [
           "ClusterService"
@@ -2724,7 +2724,7 @@
         }
       }
     },
-    "/api/v1/clusters/{id.value}/rotate-auth": {
+    "/v1/clusters/{id.value}/rotate-auth": {
       "post": {
         "tags": [
           "ClusterService"
@@ -2756,7 +2756,7 @@
         }
       }
     },
-    "/api/v1/gpgkeys": {
+    "/v1/gpgkeys": {
       "get": {
         "tags": [
           "GPGKeyService"
@@ -2854,7 +2854,7 @@
         }
       }
     },
-    "/api/v1/gpgkeys/{keyID}": {
+    "/v1/gpgkeys/{keyID}": {
       "get": {
         "tags": [
           "GPGKeyService"
@@ -2886,7 +2886,7 @@
         }
       }
     },
-    "/api/v1/notifications/services": {
+    "/v1/notifications/services": {
       "get": {
         "tags": [
           "NotificationService"
@@ -2909,7 +2909,7 @@
         }
       }
     },
-    "/api/v1/notifications/templates": {
+    "/v1/notifications/templates": {
       "get": {
         "tags": [
           "NotificationService"
@@ -2932,7 +2932,7 @@
         }
       }
     },
-    "/api/v1/notifications/triggers": {
+    "/v1/notifications/triggers": {
       "get": {
         "tags": [
           "NotificationService"
@@ -2955,7 +2955,7 @@
         }
       }
     },
-    "/api/v1/projects": {
+    "/v1/projects": {
       "get": {
         "tags": [
           "ProjectService"
@@ -3016,7 +3016,7 @@
         }
       }
     },
-    "/api/v1/projects/{name}": {
+    "/v1/projects/{name}": {
       "get": {
         "tags": [
           "ProjectService"
@@ -3076,7 +3076,7 @@
         }
       }
     },
-    "/api/v1/projects/{name}/detailed": {
+    "/v1/projects/{name}/detailed": {
       "get": {
         "tags": [
           "ProjectService"
@@ -3107,7 +3107,7 @@
         }
       }
     },
-    "/api/v1/projects/{name}/events": {
+    "/v1/projects/{name}/events": {
       "get": {
         "tags": [
           "ProjectService"
@@ -3138,7 +3138,7 @@
         }
       }
     },
-    "/api/v1/projects/{name}/globalprojects": {
+    "/v1/projects/{name}/globalprojects": {
       "get": {
         "tags": [
           "ProjectService"
@@ -3169,7 +3169,7 @@
         }
       }
     },
-    "/api/v1/projects/{name}/links": {
+    "/v1/projects/{name}/links": {
       "get": {
         "tags": [
           "ProjectService"
@@ -3200,7 +3200,7 @@
         }
       }
     },
-    "/api/v1/projects/{name}/syncwindows": {
+    "/v1/projects/{name}/syncwindows": {
       "get": {
         "tags": [
           "ProjectService"
@@ -3231,7 +3231,7 @@
         }
       }
     },
-    "/api/v1/projects/{project.metadata.name}": {
+    "/v1/projects/{project.metadata.name}": {
       "put": {
         "tags": [
           "ProjectService"
@@ -3271,7 +3271,7 @@
         }
       }
     },
-    "/api/v1/projects/{project}/roles/{role}/token": {
+    "/v1/projects/{project}/roles/{role}/token": {
       "post": {
         "tags": [
           "ProjectService"
@@ -3316,7 +3316,7 @@
         }
       }
     },
-    "/api/v1/projects/{project}/roles/{role}/token/{iat}": {
+    "/v1/projects/{project}/roles/{role}/token/{iat}": {
       "delete": {
         "tags": [
           "ProjectService"
@@ -3365,7 +3365,7 @@
         }
       }
     },
-    "/api/v1/repocreds": {
+    "/v1/repocreds": {
       "get": {
         "tags": [
           "RepoCredsService"
@@ -3434,7 +3434,7 @@
         }
       }
     },
-    "/api/v1/repocreds/{creds.url}": {
+    "/v1/repocreds/{creds.url}": {
       "put": {
         "tags": [
           "RepoCredsService"
@@ -3474,7 +3474,7 @@
         }
       }
     },
-    "/api/v1/repocreds/{url}": {
+    "/v1/repocreds/{url}": {
       "delete": {
         "tags": [
           "RepoCredsService"
@@ -3505,7 +3505,7 @@
         }
       }
     },
-    "/api/v1/repositories": {
+    "/v1/repositories": {
       "get": {
         "tags": [
           "RepositoryService"
@@ -3592,7 +3592,7 @@
         }
       }
     },
-    "/api/v1/repositories/{repo.repo}": {
+    "/v1/repositories/{repo.repo}": {
       "put": {
         "tags": [
           "RepositoryService"
@@ -3632,7 +3632,7 @@
         }
       }
     },
-    "/api/v1/repositories/{repo}": {
+    "/v1/repositories/{repo}": {
       "get": {
         "tags": [
           "RepositoryService"
@@ -3718,7 +3718,7 @@
         }
       }
     },
-    "/api/v1/repositories/{repo}/apps": {
+    "/v1/repositories/{repo}/apps": {
       "get": {
         "tags": [
           "RepositoryService"
@@ -3764,7 +3764,7 @@
         }
       }
     },
-    "/api/v1/repositories/{repo}/helmcharts": {
+    "/v1/repositories/{repo}/helmcharts": {
       "get": {
         "tags": [
           "RepositoryService"
@@ -3808,7 +3808,7 @@
         }
       }
     },
-    "/api/v1/repositories/{repo}/oci-tags": {
+    "/v1/repositories/{repo}/oci-tags": {
       "get": {
         "tags": [
           "RepositoryService"
@@ -3851,7 +3851,7 @@
         }
       }
     },
-    "/api/v1/repositories/{repo}/refs": {
+    "/v1/repositories/{repo}/refs": {
       "get": {
         "tags": [
           "RepositoryService"
@@ -3894,7 +3894,7 @@
         }
       }
     },
-    "/api/v1/repositories/{repo}/validate": {
+    "/v1/repositories/{repo}/validate": {
       "post": {
         "tags": [
           "RepositoryService"
@@ -4081,7 +4081,7 @@
         }
       }
     },
-    "/api/v1/repositories/{source.repoURL}/appdetails": {
+    "/v1/repositories/{source.repoURL}/appdetails": {
       "post": {
         "tags": [
           "RepositoryService"
@@ -4121,7 +4121,7 @@
         }
       }
     },
-    "/api/v1/session": {
+    "/v1/session": {
       "post": {
         "tags": [
           "SessionService"
@@ -4175,7 +4175,7 @@
         }
       }
     },
-    "/api/v1/session/userinfo": {
+    "/v1/session/userinfo": {
       "get": {
         "tags": [
           "SessionService"
@@ -4198,7 +4198,7 @@
         }
       }
     },
-    "/api/v1/settings": {
+    "/v1/settings": {
       "get": {
         "tags": [
           "SettingsService"
@@ -4221,7 +4221,7 @@
         }
       }
     },
-    "/api/v1/settings/plugins": {
+    "/v1/settings/plugins": {
       "get": {
         "tags": [
           "SettingsService"
@@ -4244,7 +4244,7 @@
         }
       }
     },
-    "/api/v1/stream/applications": {
+    "/v1/stream/applications": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -4334,7 +4334,7 @@
         }
       }
     },
-    "/api/v1/stream/applications/{applicationName}/resource-tree": {
+    "/v1/stream/applications/{applicationName}/resource-tree": {
       "get": {
         "tags": [
           "ApplicationService"
@@ -4409,7 +4409,7 @@
         }
       }
     },
-    "/api/v1/stream/applicationsets": {
+    "/v1/stream/applicationsets": {
       "get": {
         "tags": [
           "ApplicationSetService"
@@ -4472,7 +4472,7 @@
         }
       }
     },
-    "/api/v1/write-repocreds": {
+    "/v1/write-repocreds": {
       "get": {
         "tags": [
           "RepoCredsService"
@@ -4541,7 +4541,7 @@
         }
       }
     },
-    "/api/v1/write-repocreds/{creds.url}": {
+    "/v1/write-repocreds/{creds.url}": {
       "put": {
         "tags": [
           "RepoCredsService"
@@ -4581,7 +4581,7 @@
         }
       }
     },
-    "/api/v1/write-repocreds/{url}": {
+    "/v1/write-repocreds/{url}": {
       "delete": {
         "tags": [
           "RepoCredsService"
@@ -4612,7 +4612,7 @@
         }
       }
     },
-    "/api/v1/write-repositories": {
+    "/v1/write-repositories": {
       "get": {
         "tags": [
           "RepositoryService"
@@ -4699,7 +4699,7 @@
         }
       }
     },
-    "/api/v1/write-repositories/{repo.repo}": {
+    "/v1/write-repositories/{repo.repo}": {
       "put": {
         "tags": [
           "RepositoryService"
@@ -4739,7 +4739,7 @@
         }
       }
     },
-    "/api/v1/write-repositories/{repo}": {
+    "/v1/write-repositories/{repo}": {
       "get": {
         "tags": [
           "RepositoryService"
@@ -4825,7 +4825,7 @@
         }
       }
     },
-    "/api/v1/write-repositories/{repo}/validate": {
+    "/v1/write-repositories/{repo}/validate": {
       "post": {
         "tags": [
           "RepositoryService"
@@ -5012,7 +5012,7 @@
         }
       }
     },
-    "/api/version": {
+    "/v1/version": {
       "get": {
         "tags": [
           "VersionService"

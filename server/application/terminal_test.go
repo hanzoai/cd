@@ -320,7 +320,7 @@ func TestTerminalHandler_ServeHTTP_empty_params(t *testing.T) {
 					paramsArray = append(paramsArray, key+"="+value)
 				}
 				paramsString := strings.Join(paramsArray, "&")
-				request := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "https://cd.example.com/api/v1/terminal?"+paramsString, http.NoBody)
+				request := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "https://cd.example.com/terminal?"+paramsString, http.NoBody)
 				recorder := httptest.NewRecorder()
 				handler.ServeHTTP(recorder, request)
 				response := recorder.Result()
@@ -332,7 +332,7 @@ func TestTerminalHandler_ServeHTTP_empty_params(t *testing.T) {
 
 func TestTerminalHandler_ServeHTTP_disallowed_namespace(t *testing.T) {
 	handler := terminalHandler{namespace: "cd", enabledNamespaces: []string{"allowed"}}
-	request := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "https://cd.example.com/api/v1/terminal?pod=valid&container=valid&appName=valid&projectName=valid&namespace=test&appNamespace=disallowed", http.NoBody)
+	request := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "https://cd.example.com/terminal?pod=valid&container=valid&appName=valid&projectName=valid&namespace=test&appNamespace=disallowed", http.NoBody)
 	recorder := httptest.NewRecorder()
 	handler.ServeHTTP(recorder, request)
 	response := recorder.Result()

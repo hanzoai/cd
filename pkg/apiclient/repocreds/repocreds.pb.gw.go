@@ -852,21 +852,21 @@ func RegisterRepoCredsServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 }
 
 var (
-	pattern_RepoCredsService_ListRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "repocreds"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_RepoCredsService_ListRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "repocreds"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_RepoCredsService_ListWriteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "write-repocreds"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_RepoCredsService_ListWriteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "write-repocreds"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_RepoCredsService_CreateRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "repocreds"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_RepoCredsService_CreateRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "repocreds"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_RepoCredsService_CreateWriteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "write-repocreds"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_RepoCredsService_CreateWriteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "write-repocreds"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_RepoCredsService_UpdateRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "repocreds", "creds.url"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_RepoCredsService_UpdateRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "repocreds", "creds.url"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_RepoCredsService_UpdateWriteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "write-repocreds", "creds.url"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_RepoCredsService_UpdateWriteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "write-repocreds", "creds.url"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_RepoCredsService_DeleteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "repocreds", "url"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_RepoCredsService_DeleteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "repocreds", "url"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_RepoCredsService_DeleteWriteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "write-repocreds", "url"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_RepoCredsService_DeleteWriteRepositoryCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "write-repocreds", "url"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

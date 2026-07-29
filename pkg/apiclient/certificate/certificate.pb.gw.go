@@ -337,11 +337,11 @@ func RegisterCertificateServiceHandlerClient(ctx context.Context, mux *runtime.S
 }
 
 var (
-	pattern_CertificateService_ListCertificates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "certificates"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_CertificateService_ListCertificates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "certificates"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_CertificateService_CreateCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "certificates"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_CertificateService_CreateCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "certificates"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_CertificateService_DeleteCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "certificates"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_CertificateService_DeleteCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "certificates"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

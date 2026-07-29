@@ -49,8 +49,8 @@ func TLSConfig(tlsConfig *DexTLSConfig) *tls.Config {
 
 // NewDexHTTPReverseProxy returns a reverse proxy to the Dex server. Dex is assumed to be configured
 // with the external issuer URL muxed to the same path configured in server.go. In other words, if
-// Hanzo CD API server wants to proxy requests at /api/dex, then the dex config yaml issuer URL should
-// also be /api/dex (e.g. issuer: https://cd.example.com/api/dex)
+// Hanzo CD API server wants to proxy requests at /v1/dex, then the dex config yaml issuer URL should
+// also be /v1/dex (e.g. issuer: https://cd.example.com/v1/dex)
 func NewDexHTTPReverseProxy(serverAddr string, baseHRef string, tlsConfig *DexTLSConfig) func(writer http.ResponseWriter, request *http.Request) {
 	fullAddr := DexServerAddressWithProtocol(serverAddr, tlsConfig)
 

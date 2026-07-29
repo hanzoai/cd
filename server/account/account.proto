@@ -77,37 +77,37 @@ service AccountService {
 
 	// CanI checks if the current account has permission to perform an action
 	rpc CanI(CanIRequest) returns (CanIResponse) {
-		option (google.api.http).get = "/api/v1/account/can-i/{resource}/{action}/{subresource=**}";
+		option (google.api.http).get = "/v1/account/can-i/{resource}/{action}/{subresource=**}";
 	}
 
 	// UpdatePassword updates an account's password to a new value
 	rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse) {
 		option (google.api.http) = {
-			put: "/api/v1/account/password"
+			put: "/v1/account/password"
 			body: "*"
 		};
 	}
 
 	// ListAccounts returns the list of accounts
 	rpc ListAccounts(ListAccountRequest) returns (AccountsList) {
-		option (google.api.http).get = "/api/v1/account";
+		option (google.api.http).get = "/v1/account";
 	}
 
 	// GetAccount returns an account
 	rpc GetAccount(GetAccountRequest) returns (Account) {
-		option (google.api.http).get = "/api/v1/account/{name}";
+		option (google.api.http).get = "/v1/account/{name}";
 	}
 
 	// CreateToken creates a token
 	rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/account/{name}/token"
+			post: "/v1/account/{name}/token"
 			body: "*"
 		};
 	}
 
 	// DeleteToken deletes a token
 	rpc DeleteToken(DeleteTokenRequest) returns (EmptyResponse) {
-		option (google.api.http).delete = "/api/v1/account/{name}/token/{id}";
+		option (google.api.http).delete = "/v1/account/{name}/token/{id}";
 	}
 }

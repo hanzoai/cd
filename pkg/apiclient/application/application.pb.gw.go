@@ -3611,69 +3611,69 @@ func RegisterApplicationServiceHandlerClient(ctx context.Context, mux *runtime.S
 }
 
 var (
-	pattern_ApplicationService_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "applications"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "applications"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_ListResourceEvents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "events"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_ListResourceEvents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "events"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_Watch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "stream", "applications"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_Watch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "stream", "applications"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "applications"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "applications"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "applications", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "applications", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_GetApplicationSyncWindows_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "syncwindows"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_GetApplicationSyncWindows_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "syncwindows"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_RevisionMetadata_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"api", "v1", "applications", "name", "revisions", "revision", "metadata"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_RevisionMetadata_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"v1", "applications", "name", "revisions", "revision", "metadata"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_RevisionChartDetails_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"api", "v1", "applications", "name", "revisions", "revision", "chartdetails"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_RevisionChartDetails_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"v1", "applications", "name", "revisions", "revision", "chartdetails"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_GetOCIMetadata_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"api", "v1", "applications", "name", "revisions", "revision", "ocimetadata"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_GetOCIMetadata_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"v1", "applications", "name", "revisions", "revision", "ocimetadata"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_GetManifests_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "manifests"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_GetManifests_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "manifests"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_GetManifestsWithFiles_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "applications", "manifestsWithFiles"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_GetManifestsWithFiles_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "applications", "manifestsWithFiles"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "applications", "application.metadata.name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "applications", "application.metadata.name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_UpdateSpec_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "spec"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_UpdateSpec_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "spec"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_Patch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "applications", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_Patch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "applications", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "applications", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "applications", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_Sync_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "sync"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_Sync_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "sync"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_ManagedResources_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "applicationName", "managed-resources"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_ManagedResources_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "applicationName", "managed-resources"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_ServerSideDiff_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "appName", "server-side-diff"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_ServerSideDiff_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "appName", "server-side-diff"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_ResourceTree_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "applicationName", "resource-tree"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_ResourceTree_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "applicationName", "resource-tree"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_WatchResourceTree_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"api", "v1", "stream", "applications", "applicationName", "resource-tree"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_WatchResourceTree_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "stream", "applications", "applicationName", "resource-tree"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_Rollback_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "rollback"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_Rollback_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "rollback"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_TerminateOperation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "operation"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_TerminateOperation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "operation"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_GetResource_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "resource"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_GetResource_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "resource"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_PatchResource_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "resource"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_PatchResource_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "resource"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_ListResourceActions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "applications", "name", "resource", "actions"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_ListResourceActions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1", "applications", "name", "resource", "actions"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_RunResourceAction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "applications", "name", "resource", "actions"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_RunResourceAction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1", "applications", "name", "resource", "actions"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_RunResourceActionV2_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5, 2, 6}, []string{"api", "v1", "applications", "name", "resource", "actions", "v2"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_RunResourceActionV2_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5}, []string{"v1", "applications", "name", "resource", "actions", "v2"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_DeleteResource_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "resource"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_DeleteResource_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "resource"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_PodLogs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"api", "v1", "applications", "name", "pods", "podName", "logs"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_PodLogs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"v1", "applications", "name", "pods", "podName", "logs"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_PodLogs_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "logs"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_PodLogs_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "logs"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_ListLinks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "applications", "name", "links"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_ListLinks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "applications", "name", "links"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ApplicationService_ListResourceLinks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "applications", "name", "resource", "links"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ApplicationService_ListResourceLinks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1", "applications", "name", "resource", "links"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

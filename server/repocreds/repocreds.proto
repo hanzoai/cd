@@ -40,18 +40,18 @@ service RepoCredsService {
 
 	// ListRepositoryCredentials gets a list of all configured repository credential sets
 	rpc ListRepositoryCredentials(RepoCredsQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepoCredsList) {
-		option (google.api.http).get = "/api/v1/repocreds";
+		option (google.api.http).get = "/v1/repocreds";
 	}
 
 	//ListWriteRepositoryCredentials gets a list of all configured repository credential sets that have write access
 	rpc ListWriteRepositoryCredentials(RepoCredsQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepoCredsList) {
-		option (google.api.http).get = "/api/v1/write-repocreds";
+		option (google.api.http).get = "/v1/write-repocreds";
 	}
 
 	// CreateRepositoryCredentials creates a new repository credential set
 	rpc CreateRepositoryCredentials(RepoCredsCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepoCreds) {
 		option (google.api.http) = {
-			post: "/api/v1/repocreds"
+			post: "/v1/repocreds"
 			body: "creds"
 		};
 	}
@@ -59,7 +59,7 @@ service RepoCredsService {
 	// CreateWriteRepositoryCredentials creates a new repository credential set with write access
 	rpc CreateWriteRepositoryCredentials(RepoCredsCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepoCreds) {
 		option (google.api.http) = {
-			post: "/api/v1/write-repocreds"
+			post: "/v1/write-repocreds"
 			body: "creds"
 		};
 	}
@@ -67,7 +67,7 @@ service RepoCredsService {
 	// UpdateRepositoryCredentials updates a repository credential set
 	rpc UpdateRepositoryCredentials(RepoCredsUpdateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepoCreds) {
 		option (google.api.http) = {
-			put: "/api/v1/repocreds/{creds.url}"
+			put: "/v1/repocreds/{creds.url}"
 			body: "creds"
 		};
 	}
@@ -75,18 +75,18 @@ service RepoCredsService {
 	// UpdateWriteRepositoryCredentials updates a repository credential set with write access
 	rpc UpdateWriteRepositoryCredentials(RepoCredsUpdateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepoCreds) {
 		option (google.api.http) = {
-			put: "/api/v1/write-repocreds/{creds.url}"
+			put: "/v1/write-repocreds/{creds.url}"
 			body: "creds"
 		};
 	}
 
 	// DeleteRepositoryCredentials deletes a repository credential set from the configuration
 	rpc DeleteRepositoryCredentials(RepoCredsDeleteRequest) returns (RepoCredsResponse) {
-		option (google.api.http).delete = "/api/v1/repocreds/{url}";
+		option (google.api.http).delete = "/v1/repocreds/{url}";
 	}
 
 	// DeleteWriteRepositoryCredentials deletes a repository credential set with write access from the configuration
 	rpc DeleteWriteRepositoryCredentials(RepoCredsDeleteRequest) returns (RepoCredsResponse) {
-		option (google.api.http).delete = "/api/v1/write-repocreds/{url}";
+		option (google.api.http).delete = "/v1/write-repocreds/{url}";
 	}
 }

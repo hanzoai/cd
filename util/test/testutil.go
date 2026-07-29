@@ -117,15 +117,15 @@ func dexMockHandler(t *testing.T, url string) func(http.ResponseWriter, *http.Re
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		switch r.RequestURI {
-		case "/api/dex/.well-known/openid-configuration":
+		case "/v1/dex/.well-known/openid-configuration":
 			_, err := fmt.Fprintf(w, `
 {
-  "issuer": "%[1]s/api/dex",
-  "authorization_endpoint": "%[1]s/api/dex/auth",
-  "token_endpoint": "%[1]s/api/dex/token",
-  "jwks_uri": "%[1]s/api/dex/keys",
-  "userinfo_endpoint": "%[1]s/api/dex/userinfo",
-  "device_authorization_endpoint": "%[1]s/api/dex/device/code",
+  "issuer": "%[1]s/v1/dex",
+  "authorization_endpoint": "%[1]s/v1/dex/auth",
+  "token_endpoint": "%[1]s/v1/dex/token",
+  "jwks_uri": "%[1]s/v1/dex/keys",
+  "userinfo_endpoint": "%[1]s/v1/dex/userinfo",
+  "device_authorization_endpoint": "%[1]s/v1/dex/device/code",
   "grant_types_supported": ["authorization_code"],
   "response_types_supported": ["code"],
   "subject_types_supported": ["public"],
@@ -136,7 +136,7 @@ func dexMockHandler(t *testing.T, url string) func(http.ResponseWriter, *http.Re
   "claims_supported": ["sub", "aud", "exp"]
 }`, url)
 			require.NoError(t, err)
-		case "/api/dex/keys":
+		case "/v1/dex/keys":
 			pubKey, err := jwt.ParseRSAPublicKeyFromPEM(Cert)
 			require.NoError(t, err)
 			jwks := jose.JSONWebKeySet{

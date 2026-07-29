@@ -161,7 +161,7 @@ const (
 // Dex related constants
 const (
 	// DexAPIEndpoint is the endpoint where we serve the Dex API server
-	DexAPIEndpoint = "/api/dex"
+	DexAPIEndpoint = "/v1/dex"
 	// LoginEndpoint is Argo CD's shorthand login endpoint which redirects to dex's OAuth 2.0 provider's consent page
 	LoginEndpoint = "/auth/login"
 	// LogoutEndpoint is Argo CD's shorthand logout endpoint which invalidates OIDC session after logout
@@ -169,7 +169,7 @@ const (
 	// CallbackEndpoint is Argo CD's final callback endpoint we reach after OAuth 2.0 login flow has been completed
 	CallbackEndpoint = "/auth/callback"
 	// DexCallbackEndpoint is Argo CD's final callback endpoint when Dex is configured
-	DexCallbackEndpoint = "/api/dex/callback"
+	DexCallbackEndpoint = "/v1/dex/callback"
 	// ArgoCDClientAppName is name of the Oauth client app used when registering our web app to dex
 	ArgoCDClientAppName = "Argo CD"
 	// ArgoCDClientAppID is the Oauth client ID we will use when registering our app to dex

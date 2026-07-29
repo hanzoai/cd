@@ -91,7 +91,7 @@ func ssoAdminContext(ctx context.Context, iat time.Time) context.Context {
 	//nolint:staticcheck
 	return context.WithValue(ctx, "claims", &jwt.RegisteredClaims{
 		Subject:  "admin",
-		Issuer:   "https://mycdhost.com/api/dex",
+		Issuer:   "https://mycdhost.com/v1/dex",
 		IssuedAt: jwt.NewNumericDate(iat),
 	})
 }

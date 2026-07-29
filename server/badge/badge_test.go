@@ -102,7 +102,7 @@ func TestHandlerFeatureIsEnabled(t *testing.T) {
 	t.Parallel()
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(testApp()), settingsMgr, "default", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -134,63 +134,63 @@ func TestHandlerFeatureProjectIsEnabled(t *testing.T) {
 	}{
 		{
 			createApplications([]string{"Healthy:Synced", "Healthy:Synced"}, []string{"default", "default"}, "test"),
-			http.StatusOK, "/api/badge?project=default", "test", "Healthy", "Synced", Green, Green,
+			http.StatusOK, "/v1/badge?project=default", "test", "Healthy", "Synced", Green, Green,
 		},
 		{
 			createApplications([]string{"Healthy:Synced", "Healthy:OutOfSync"}, []string{"test-project", "test-project"}, "default"),
-			http.StatusOK, "/api/badge?project=test-project", "default", "Healthy", "OutOfSync", Green, Orange,
+			http.StatusOK, "/v1/badge?project=test-project", "default", "Healthy", "OutOfSync", Green, Orange,
 		},
 		{
 			createApplications([]string{"Healthy:Synced", "Degraded:Synced"}, []string{"default", "default"}, "test"),
-			http.StatusOK, "/api/badge?project=default", "test", "Degraded", "Synced", Red, Green,
+			http.StatusOK, "/v1/badge?project=default", "test", "Degraded", "Synced", Red, Green,
 		},
 		{
 			createApplications([]string{"Healthy:Synced", "Degraded:OutOfSync"}, []string{"test-project", "test-project"}, "default"),
-			http.StatusOK, "/api/badge?project=test-project", "default", "Degraded", "OutOfSync", Red, Orange,
+			http.StatusOK, "/v1/badge?project=test-project", "default", "Degraded", "OutOfSync", Red, Orange,
 		},
 		{
 			createApplications([]string{"Healthy:Synced", "Healthy:Synced"}, []string{"test-project", "default"}, "test"),
-			http.StatusOK, "/api/badge?project=default&project=test-project", "test", "Healthy", "Synced", Green, Green,
+			http.StatusOK, "/v1/badge?project=default&project=test-project", "test", "Healthy", "Synced", Green, Green,
 		},
 		{
 			createApplications([]string{"Healthy:OutOfSync", "Healthy:Synced"}, []string{"test-project", "default"}, "default"),
-			http.StatusOK, "/api/badge?project=default&project=test-project", "default", "Healthy", "OutOfSync", Green, Orange,
+			http.StatusOK, "/v1/badge?project=default&project=test-project", "default", "Healthy", "OutOfSync", Green, Orange,
 		},
 		{
 			createApplications([]string{"Degraded:Synced", "Healthy:Synced"}, []string{"test-project", "default"}, "test"),
-			http.StatusOK, "/api/badge?project=default&project=test-project", "test", "Degraded", "Synced", Red, Green,
+			http.StatusOK, "/v1/badge?project=default&project=test-project", "test", "Degraded", "Synced", Red, Green,
 		},
 		{
 			createApplications([]string{"Degraded:OutOfSync", "Healthy:OutOfSync"}, []string{"test-project", "default"}, "default"),
-			http.StatusOK, "/api/badge?project=default&project=test-project", "default", "Degraded", "OutOfSync", Red, Orange,
+			http.StatusOK, "/v1/badge?project=default&project=test-project", "default", "Degraded", "OutOfSync", Red, Orange,
 		},
 		{
 			createApplications([]string{"Unknown:Unknown", "Unknown:Unknown"}, []string{"test-project", "default"}, "default"),
-			http.StatusOK, "/api/badge?project=", "default", "Unknown", "Unknown", Purple, Purple,
+			http.StatusOK, "/v1/badge?project=", "default", "Unknown", "Unknown", Purple, Purple,
 		},
 		{
 			createApplications([]string{"Unknown:Unknown", "Unknown:Unknown"}, []string{"test-project", "default"}, "default"),
-			http.StatusBadRequest, "/api/badge?project=test$project", "default", "Unknown", "Unknown", Purple, Purple,
+			http.StatusBadRequest, "/v1/badge?project=test$project", "default", "Unknown", "Unknown", Purple, Purple,
 		},
 		{
 			createApplications([]string{"Unknown:Unknown", "Unknown:Unknown"}, []string{"test-project", "default"}, "default"),
-			http.StatusOK, "/api/badge?project=unknown", "default", "Unknown", "Unknown", Purple, Purple,
+			http.StatusOK, "/v1/badge?project=unknown", "default", "Unknown", "Unknown", Purple, Purple,
 		},
 		{
 			createApplications([]string{"Unknown:Unknown", "Unknown:Unknown"}, []string{"test-project", "default"}, "default"),
-			http.StatusBadRequest, "/api/badge?name=foo_bar", "default", "Unknown", "Unknown", Purple, Purple,
+			http.StatusBadRequest, "/v1/badge?name=foo_bar", "default", "Unknown", "Unknown", Purple, Purple,
 		},
 		{
 			createApplications([]string{"Unknown:Unknown", "Unknown:Unknown"}, []string{"test-project", "default"}, "default"),
-			http.StatusOK, "/api/badge?name=foobar", "default", "Not Found", "", Purple, Purple,
+			http.StatusOK, "/v1/badge?name=foobar", "default", "Not Found", "", Purple, Purple,
 		},
 		{
 			createApplicationsWithName([]string{"Healthy:Synced"}, []string{"default"}, "test", "test.application"),
-			http.StatusOK, "/api/badge?name=test.application-0", "test", "Healthy", "Synced", Green, Green,
+			http.StatusOK, "/v1/badge?name=test.application-0", "test", "Healthy", "Synced", Green, Green,
 		},
 		{
 			createApplicationsWithName([]string{"Healthy:Synced"}, []string{"default"}, "test", "test.invalid_name"),
-			http.StatusBadRequest, "/api/badge?name=test.invalid_name-0", "test", "Healthy", "Synced", Green, Green,
+			http.StatusBadRequest, "/v1/badge?name=test.invalid_name-0", "test", "Healthy", "Synced", Green, Green,
 		},
 	}
 	for _, tt := range projectTests {
@@ -230,7 +230,7 @@ func TestHandlerNamespacesIsEnabled(t *testing.T) {
 		t.Parallel()
 		settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 		handler := NewHandler(appclientset.NewSimpleClientset(testApp2()), settingsMgr, "default", []string{"cd-test"})
-		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&namespace=cd-test", http.NoBody)
+		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&namespace=cd-test", http.NoBody)
 		require.NoError(t, err)
 
 		rr := httptest.NewRecorder()
@@ -252,7 +252,7 @@ func TestHandlerNamespacesIsEnabled(t *testing.T) {
 		t.Parallel()
 		settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 		handler := NewHandler(appclientset.NewSimpleClientset(testApp2()), settingsMgr, "default", []string{"cd-test"})
-		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&namespace=kube-system", http.NoBody)
+		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&namespace=kube-system", http.NoBody)
 		require.NoError(t, err)
 
 		rr := httptest.NewRecorder()
@@ -270,7 +270,7 @@ func TestHandlerNamespacesIsEnabled(t *testing.T) {
 		t.Parallel()
 		settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 		handler := NewHandler(appclientset.NewSimpleClientset(testApp2()), settingsMgr, "default", []string{"cd-test"})
-		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&namespace=kube()system", http.NoBody)
+		req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&namespace=kube()system", http.NoBody)
 		require.NoError(t, err)
 
 		rr := httptest.NewRecorder()
@@ -284,7 +284,7 @@ func TestHandlerFeatureIsEnabledKeepFullRevisionIsEnabled(t *testing.T) {
 	t.Parallel()
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(testApp3()), settingsMgr, "cd-test", []string{""})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&revision=true&keepFullRevision=true", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&revision=true&keepFullRevision=true", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -306,7 +306,7 @@ func TestHandlerFeatureIsEnabledKeepFullRevisionIsDisabled(t *testing.T) {
 	t.Parallel()
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(testApp3()), settingsMgr, "cd-test", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&revision=true&keepFullRevision=false", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&revision=true&keepFullRevision=false", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -328,7 +328,7 @@ func TestHandlerFeatureIsEnabledKeepFullRevisionAndWidthIsEnabled(t *testing.T) 
 	t.Parallel()
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(testApp3()), settingsMgr, "cd-test", []string{""})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&revision=true&keepFullRevision=true&width=500", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&revision=true&keepFullRevision=true&width=500", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -403,7 +403,7 @@ func TestHandlerFeatureIsEnabledRevisionIsEnabled(t *testing.T) {
 	t.Parallel()
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(testApp()), settingsMgr, "default", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&revision=true", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&revision=true", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -428,7 +428,7 @@ func TestHandlerRevisionIsEnabledNoOperationState(t *testing.T) {
 
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(app), settingsMgr, "default", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&revision=true", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&revision=true", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -453,7 +453,7 @@ func TestHandlerRevisionIsEnabledShortCommitSHA(t *testing.T) {
 
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(app), settingsMgr, "default", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&revision=true", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&revision=true", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -471,7 +471,7 @@ func TestHandlerRevisionIsEnabledMultipleSources(t *testing.T) {
 
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(app), settingsMgr, "default", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&revision=true", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&revision=true", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -489,7 +489,7 @@ func TestHandlerFeatureIsDisabled(t *testing.T) {
 
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewSimpleClientset(argoCDCmDisabled, argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(testApp()), settingsMgr, "default", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -511,7 +511,7 @@ func TestHandlerApplicationNameInBadgeIsEnabled(t *testing.T) {
 	t.Parallel()
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewSimpleClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(testApp()), settingsMgr, "default", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app&showAppName=true", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app&showAppName=true", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -539,7 +539,7 @@ func TestHandlerApplicationNameInBadgeIsDisabled(t *testing.T) {
 	t.Parallel()
 	settingsMgr := settings.NewSettingsManager(t.Context(), fake.NewSimpleClientset(argoCDCm(), argoCDSecret()), "default")
 	handler := NewHandler(appclientset.NewSimpleClientset(testApp()), settingsMgr, "default", []string{})
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/api/badge?name=test-app", http.NoBody)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/v1/badge?name=test-app", http.NoBody)
 	require.NoError(t, err)
 
 	rr := httptest.NewRecorder()

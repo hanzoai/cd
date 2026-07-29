@@ -469,7 +469,7 @@ cd account session-token -o json
 
 # Use in scripts
 export CD_AUTH_TOKEN=$(cd account session-token)
-curl -H "Authorization: Bearer $CD_AUTH_TOKEN" $CD_SERVER/api/v1/applications`,
+curl -H "Authorization: Bearer $CD_AUTH_TOKEN" $CD_SERVER/v1/applications`,
 		Run: func(_ *cobra.Command, _ []string) {
 			// Create client first - this handles token refresh automatically
 			_, err := cdclient.NewClient(clientOpts)

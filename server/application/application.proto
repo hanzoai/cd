@@ -355,61 +355,61 @@ service ApplicationService {
 
 	// List returns list of applications
 	rpc List(ApplicationQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationList) {
-		option (google.api.http).get = "/api/v1/applications";
+		option (google.api.http).get = "/v1/applications";
 	}
 
 	// ListResourceEvents returns a list of event resources
 	rpc ListResourceEvents(ApplicationResourceEventsQuery) returns (events.EventList) {
-		option (google.api.http).get = "/api/v1/applications/{name}/events";
+		option (google.api.http).get = "/v1/applications/{name}/events";
 	}
 
 	// Watch returns stream of application change events
 	rpc Watch(ApplicationQuery) returns (stream github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationWatchEvent) {
-		option (google.api.http).get = "/api/v1/stream/applications";
+		option (google.api.http).get = "/v1/stream/applications";
 	}
 
 	// Create creates an application
 	rpc Create (ApplicationCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Application) {
 		option (google.api.http) = {
-			post: "/api/v1/applications"
+			post: "/v1/applications"
 			body: "application"
 		};
 	}
 
 	// Get returns an application by name
 	rpc Get (ApplicationQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Application) {
-		option (google.api.http).get = "/api/v1/applications/{name}";
+		option (google.api.http).get = "/v1/applications/{name}";
 	}
 
 	// Get returns sync windows of the application
 	rpc GetApplicationSyncWindows (ApplicationSyncWindowsQuery) returns (ApplicationSyncWindowsResponse) {
-		option (google.api.http).get = "/api/v1/applications/{name}/syncwindows";
+		option (google.api.http).get = "/v1/applications/{name}/syncwindows";
 	}
 
 	// Get the meta-data (author, date, tags, message) for a specific revision of the application
 	rpc RevisionMetadata (RevisionMetadataQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RevisionMetadata) {
-		option (google.api.http).get = "/api/v1/applications/{name}/revisions/{revision}/metadata";
+		option (google.api.http).get = "/v1/applications/{name}/revisions/{revision}/metadata";
 	}
 
 	// Get the chart metadata (description, maintainers, home) for a specific revision of the application
 	rpc RevisionChartDetails (RevisionMetadataQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ChartDetails) {
-		option (google.api.http).get = "/api/v1/applications/{name}/revisions/{revision}/chartdetails";
+		option (google.api.http).get = "/v1/applications/{name}/revisions/{revision}/chartdetails";
 	}
 
 	// Get the chart metadata (description, maintainers, home) for a specific revision of the application
 	rpc GetOCIMetadata (RevisionMetadataQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.OCIMetadata) {
-		option (google.api.http).get = "/api/v1/applications/{name}/revisions/{revision}/ocimetadata";
+		option (google.api.http).get = "/v1/applications/{name}/revisions/{revision}/ocimetadata";
 	}
 
 	// GetManifests returns application manifests
 	rpc GetManifests (ApplicationManifestQuery) returns (repository.ManifestResponse) {
-		option (google.api.http).get = "/api/v1/applications/{name}/manifests";
+		option (google.api.http).get = "/v1/applications/{name}/manifests";
 	}
 
 	// GetManifestsWithFiles returns application manifests using provided files to generate them
 	rpc GetManifestsWithFiles (stream ApplicationManifestQueryWithFilesWrapper) returns (repository.ManifestResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/applications/manifestsWithFiles"
+			post: "/v1/applications/manifestsWithFiles"
 			body: "*"
 		};
 	}
@@ -417,7 +417,7 @@ service ApplicationService {
 	// Update updates an application
 	rpc Update(ApplicationUpdateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Application) {
 		option (google.api.http) = {
-			put: "/api/v1/applications/{application.metadata.name}"
+			put: "/v1/applications/{application.metadata.name}"
 			body: "application"
 		};
 	}
@@ -425,7 +425,7 @@ service ApplicationService {
 	// UpdateSpec updates an application spec
 	rpc UpdateSpec(ApplicationUpdateSpecRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSpec) {
 		option (google.api.http) = {
-			put: "/api/v1/applications/{name}/spec"
+			put: "/v1/applications/{name}/spec"
 			body: "spec"
 		};
 	}
@@ -433,48 +433,48 @@ service ApplicationService {
 	// Patch patch an application
 	rpc Patch(ApplicationPatchRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Application) {
 		option (google.api.http) = {
-			patch: "/api/v1/applications/{name}"
+			patch: "/v1/applications/{name}"
 			body: "*"
 		};
 	}
 
 	// Delete deletes an application
 	rpc Delete(ApplicationDeleteRequest) returns (ApplicationResponse) {
-		option (google.api.http).delete = "/api/v1/applications/{name}";
+		option (google.api.http).delete = "/v1/applications/{name}";
 	}
 
 	// Sync syncs an application to its target state
 	rpc Sync(ApplicationSyncRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Application) {
 		option (google.api.http) = {
-			post: "/api/v1/applications/{name}/sync"
+			post: "/v1/applications/{name}/sync"
 			body: "*"
 		};
 	}
 
 	// ManagedResources returns list of managed resources
 	rpc ManagedResources(ResourcesQuery) returns (ManagedResourcesResponse) {
-		option (google.api.http).get = "/api/v1/applications/{applicationName}/managed-resources";
+		option (google.api.http).get = "/v1/applications/{applicationName}/managed-resources";
 	}
 
 	// ServerSideDiff performs server-side diff calculation using dry-run apply
 	rpc ServerSideDiff(ApplicationServerSideDiffQuery) returns (ApplicationServerSideDiffResponse) {
-		option (google.api.http).get = "/api/v1/applications/{appName}/server-side-diff";
+		option (google.api.http).get = "/v1/applications/{appName}/server-side-diff";
 	}
 
 	// ResourceTree returns resource tree
 	rpc ResourceTree(ResourcesQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationTree) {
-		option (google.api.http).get = "/api/v1/applications/{applicationName}/resource-tree";
+		option (google.api.http).get = "/v1/applications/{applicationName}/resource-tree";
 	}
 
 	// Watch returns stream of application resource tree
 	rpc WatchResourceTree(ResourcesQuery) returns (stream github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationTree) {
-		option (google.api.http).get = "/api/v1/stream/applications/{applicationName}/resource-tree";
+		option (google.api.http).get = "/v1/stream/applications/{applicationName}/resource-tree";
 	}
 
 	// Rollback syncs an application to its target state
 	rpc Rollback(ApplicationRollbackRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Application) {
 		option (google.api.http) = {
-			post: "/api/v1/applications/{name}/rollback"
+			post: "/v1/applications/{name}/rollback"
 			body: "*"
 		};
 	}
@@ -482,26 +482,26 @@ service ApplicationService {
 	// TerminateOperation terminates the currently running operation
 	rpc TerminateOperation(OperationTerminateRequest) returns (OperationTerminateResponse) {
 		option (google.api.http) = {
-			delete: "/api/v1/applications/{name}/operation";
+			delete: "/v1/applications/{name}/operation";
 		};
 	}
 
 	// GetResource returns single application resource
 	rpc GetResource(ApplicationResourceRequest) returns (ApplicationResourceResponse) {
-		option (google.api.http).get = "/api/v1/applications/{name}/resource";
+		option (google.api.http).get = "/v1/applications/{name}/resource";
 	}
 
 	// PatchResource patch single application resource
 	rpc PatchResource(ApplicationResourcePatchRequest) returns (ApplicationResourceResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/applications/{name}/resource"
+			post: "/v1/applications/{name}/resource"
 			body: "patch"
 		};
 	}
 
 	// ListResourceActions returns list of resource actions
 	rpc ListResourceActions(ApplicationResourceRequest) returns (ResourceActionsListResponse) {
-		option (google.api.http).get = "/api/v1/applications/{name}/resource/actions";
+		option (google.api.http).get = "/v1/applications/{name}/resource/actions";
 	}
 
 	// RunResourceAction runs a resource action
@@ -511,7 +511,7 @@ service ApplicationService {
 	rpc RunResourceAction(ResourceActionRunRequest) returns (ApplicationResponse) {
 		option deprecated = true;
 		option (google.api.http) = {
-			post: "/api/v1/applications/{name}/resource/actions"
+			post: "/v1/applications/{name}/resource/actions"
 			body: "action"
 		};
 	}
@@ -519,33 +519,33 @@ service ApplicationService {
 	// RunResourceActionV2 runs a resource action with parameters
 	rpc RunResourceActionV2(ResourceActionRunRequestV2) returns (ApplicationResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/applications/{name}/resource/actions/v2"
+			post: "/v1/applications/{name}/resource/actions/v2"
 			body: "*"
 		};
 	}
 
 	// DeleteResource deletes a single application resource
 	rpc DeleteResource(ApplicationResourceDeleteRequest) returns (ApplicationResponse) {
-		option (google.api.http).delete = "/api/v1/applications/{name}/resource";
+		option (google.api.http).delete = "/v1/applications/{name}/resource";
 	}
 
 	// PodLogs returns stream of log entries for the specified pod. Pod
 	rpc PodLogs(ApplicationPodLogsQuery) returns (stream LogEntry) {
 		option (google.api.http) = {
-			get: "/api/v1/applications/{name}/pods/{podName}/logs"
+			get: "/v1/applications/{name}/pods/{podName}/logs"
 			additional_bindings {
-				get: "/api/v1/applications/{name}/logs"
+				get: "/v1/applications/{name}/logs"
 			}
 		};
 	}
 
 	// ListLinks returns the list of all application deep links
 	rpc ListLinks(ListAppLinksRequest) returns (LinksResponse) {
-		option (google.api.http).get = "/api/v1/applications/{name}/links";
+		option (google.api.http).get = "/v1/applications/{name}/links";
 	}
 
 	// ListResourceLinks returns the list of all resource deep links
 	rpc ListResourceLinks(ApplicationResourceRequest) returns (LinksResponse) {
-		option (google.api.http).get = "/api/v1/applications/{name}/resource/links";
+		option (google.api.http).get = "/v1/applications/{name}/resource/links";
 	}
 }

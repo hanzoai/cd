@@ -849,19 +849,19 @@ func RegisterClusterServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ClusterService_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "clusters"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ClusterService_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "clusters"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ClusterService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "clusters"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ClusterService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "clusters"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ClusterService_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "clusters", "id.value"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ClusterService_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "clusters", "id.value"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ClusterService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "clusters", "id.value"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ClusterService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "clusters", "id.value"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ClusterService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "clusters", "id.value"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ClusterService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "clusters", "id.value"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ClusterService_RotateAuth_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "clusters", "id.value", "rotate-auth"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ClusterService_RotateAuth_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clusters", "id.value", "rotate-auth"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ClusterService_InvalidateCache_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "clusters", "id.value", "invalidate-cache"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ClusterService_InvalidateCache_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clusters", "id.value", "invalidate-cache"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

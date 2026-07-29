@@ -836,7 +836,7 @@ rootCA: |
 		mgr.verificationDelayNoiseEnabled = false
 
 		claims := jwt.RegisteredClaims{Audience: jwt.ClaimStrings{"test-client"}, Subject: "admin", ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24))}
-		claims.Issuer = dexTestServer.URL + "/api/dex"
+		claims.Issuer = dexTestServer.URL + "/v1/dex"
 		token := jwt.NewWithClaims(jwt.SigningMethodRS512, claims)
 		key, err := jwt.ParseRSAPrivateKeyFromPEM(utiltest.PrivateKey)
 		require.NoError(t, err)
@@ -906,7 +906,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		mgr.verificationDelayNoiseEnabled = false
 
 		claims := jwt.RegisteredClaims{Audience: jwt.ClaimStrings{"test-client"}, Subject: "admin", ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24))}
-		claims.Issuer = dexTestServer.URL + "/api/dex"
+		claims.Issuer = dexTestServer.URL + "/v1/dex"
 		token := jwt.NewWithClaims(jwt.SigningMethodRS512, claims)
 		key, err := jwt.ParseRSAPrivateKeyFromPEM(utiltest.PrivateKey)
 		require.NoError(t, err)
@@ -1424,7 +1424,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		mgr.verificationDelayNoiseEnabled = false
 
 		claims := jwt.RegisteredClaims{Audience: jwt.ClaimStrings{"argo-cd-cli"}, Subject: "admin", ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24))}
-		claims.Issuer = dexTestServer.URL + "/api/dex"
+		claims.Issuer = dexTestServer.URL + "/v1/dex"
 		claims.ID = tokenID
 		token := jwt.NewWithClaims(jwt.SigningMethodRS512, claims)
 		key, err := jwt.ParseRSAPrivateKeyFromPEM(utiltest.PrivateKey)
@@ -1512,7 +1512,7 @@ func TestSessionManager_VerifyToken_DexTokenRevokedByAccessTokenHash(t *testing.
 		"aud":     []string{"argo-cd-cli"},
 		"sub":     "admin",
 		"exp":     jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
-		"iss":     dexTestServer.URL + "/api/dex",
+		"iss":     dexTestServer.URL + "/v1/dex",
 		"at_hash": accessTokenHash,
 		// Deliberately no "jti" claim
 	}
