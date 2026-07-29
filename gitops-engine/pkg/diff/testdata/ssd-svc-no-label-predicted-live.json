@@ -29,7 +29,7 @@
             "f:selector": {}
           }
         },
-        "manager": "argocd-controller",
+        "manager": "cd-controller",
         "operation": "Apply",
         "time": "2025-05-16T19:02:57Z"
       }
