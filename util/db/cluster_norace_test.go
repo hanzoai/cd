@@ -8,13 +8,13 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 
 	"github.com/stretchr/testify/assert"
 	"k8s.io/client-go/kubernetes/fake"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func TestWatchClusters_CreateRemoveCluster(t *testing.T) {

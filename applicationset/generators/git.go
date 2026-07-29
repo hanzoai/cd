@@ -16,9 +16,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/applicationset/services"
-	"github.com/hanzoai/deploy/applicationset/utils"
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/applicationset/services"
+	"github.com/hanzoai/cd/applicationset/utils"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 var _ Generator = (*GitGenerator)(nil)

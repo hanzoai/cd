@@ -15,10 +15,10 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	pluginclient "github.com/hanzoai/deploy/cmpserver/apiclient"
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/io/files"
-	"github.com/hanzoai/deploy/util/tgzstream"
+	pluginclient "github.com/hanzoai/cd/cmpserver/apiclient"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/io/files"
+	"github.com/hanzoai/cd/util/tgzstream"
 )
 
 // StreamSender defines the contract to send App files over stream

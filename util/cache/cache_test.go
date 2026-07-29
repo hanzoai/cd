@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 )
 
 func TestAddCacheFlagsToCmd(t *testing.T) {

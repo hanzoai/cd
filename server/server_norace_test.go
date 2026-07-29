@@ -14,10 +14,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apiclient"
-	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
-	"github.com/hanzoai/deploy/test"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apiclient"
+	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
+	"github.com/hanzoai/cd/test"
 )
 
 func TestUserAgent(t *testing.T) {

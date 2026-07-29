@@ -10,15 +10,15 @@ import (
 
 	k8smanagedfields "k8s.io/apimachinery/pkg/util/managedfields"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/cd/managedfields"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
-	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd/managedfields"
+	"github.com/hanzoai/cd/util/cd/normalizers"
+	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/scheme"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/scheme"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 

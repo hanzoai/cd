@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hanzoai/deploy/common"
-	httputil "github.com/hanzoai/deploy/util/http"
-	"github.com/hanzoai/deploy/util/rbac"
-	util_session "github.com/hanzoai/deploy/util/session"
+	"github.com/hanzoai/cd/common"
+	httputil "github.com/hanzoai/cd/util/http"
+	"github.com/hanzoai/cd/util/rbac"
+	util_session "github.com/hanzoai/cd/util/session"
 
 	"github.com/gorilla/websocket"
 	log "github.com/sirupsen/logrus"

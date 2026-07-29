@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/applicationset/services/github_app_auth"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/db/mocks"
+	"github.com/hanzoai/cd/applicationset/services/github_app_auth"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/db/mocks"
 )
 
 type ArgocdRepositoryMock struct {

@@ -7,7 +7,7 @@ package mocks
 import (
 	"context"
 
-	"github.com/hanzoai/deploy/pkg/apiclient/session"
+	"github.com/hanzoai/cd/pkg/apiclient/session"
 	mock "github.com/stretchr/testify/mock"
 )
 

@@ -12,14 +12,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	. "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 
-	"github.com/hanzoai/deploy/common"
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	. "github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	"github.com/hanzoai/deploy/util/clusterauth"
+	"github.com/hanzoai/cd/common"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
+	"github.com/hanzoai/cd/util/clusterauth"
 )
 
 // TestShardReconcilesAssignedApps tests to see if a shard only reconciles apps deploying to the clusters

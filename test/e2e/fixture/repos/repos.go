@@ -13,9 +13,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 func CertPath(t *testing.T) string {

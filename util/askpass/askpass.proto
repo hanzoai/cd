@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/hanzoai/deploy/util/askpass";
+option go_package = "github.com/hanzoai/cd/util/askpass";
 
 package askpass;
 

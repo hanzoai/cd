@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"github.com/hanzoai/deploy/test/e2e/fixture"
+	"github.com/hanzoai/cd/test/e2e/fixture"
 )
 
 // For admin CLI with kubernetes context

@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 )
 
 func TestCreateFormatter(t *testing.T) {

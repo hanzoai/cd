@@ -9,7 +9,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/util/sourceintegrity"
+	"github.com/hanzoai/cd/util/sourceintegrity"
 )
 
 const maxRecreateRetries = 5

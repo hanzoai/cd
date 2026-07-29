@@ -6,10 +6,10 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"k8s.io/apimachinery/pkg/util/duration"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 const (

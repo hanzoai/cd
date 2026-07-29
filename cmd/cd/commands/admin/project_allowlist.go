@@ -17,10 +17,10 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/util/errors"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cli"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cli"
 
 	// load the gcp plugin (required to authenticate against GKE clusters).
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -29,7 +29,7 @@ import (
 	// load the azure plugin (required to authenticate with AKS clusters).
 	_ "k8s.io/client-go/plugin/pkg/client/auth/azure"
 
-	"github.com/hanzoai/deploy/pkg/apis/application"
+	"github.com/hanzoai/cd/pkg/apis/application"
 )
 
 // NewProjectAllowListGenCommand generates a project from clusterRole

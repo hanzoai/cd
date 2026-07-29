@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hanzoai/deploy/util/errors"
-	argoexec "github.com/hanzoai/deploy/util/exec"
+	"github.com/hanzoai/cd/util/errors"
+	argoexec "github.com/hanzoai/cd/util/exec"
 )
 
 var Author string

@@ -6,7 +6,7 @@ formatters:
   settings:
     goimports:
       local-prefixes:
-        - github.com/hanzoai/deploy
+        - github.com/hanzoai/cd
 
 issues:
   max-issues-per-linter: 0
@@ -116,7 +116,7 @@ linters:
         - pkg: errors
           alias: stderrors
 
-        - pkg: github.com/hanzoai/deploy/util/io
+        - pkg: github.com/hanzoai/cd/util/io
           alias: utilio
 
     modernize:

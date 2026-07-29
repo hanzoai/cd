@@ -13,13 +13,13 @@ import (
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	"github.com/hanzoai/deploy/pkg/apiclient/gpgkey"
-	gpgkeymocks "github.com/hanzoai/deploy/pkg/apiclient/gpgkey/mocks"
-	projectmocks "github.com/hanzoai/deploy/pkg/apiclient/project/mocks"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	"github.com/hanzoai/cd/pkg/apiclient/gpgkey"
+	gpgkeymocks "github.com/hanzoai/cd/pkg/apiclient/gpgkey/mocks"
+	projectmocks "github.com/hanzoai/cd/pkg/apiclient/project/mocks"
 
-	projectpkg "github.com/hanzoai/deploy/pkg/apiclient/project"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	projectpkg "github.com/hanzoai/cd/pkg/apiclient/project"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func dummySourceIntegrity() *appsv1.SourceIntegrity {

@@ -17,9 +17,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/applicationset/utils"
-	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	metricsutil "github.com/hanzoai/deploy/util/metrics"
+	"github.com/hanzoai/cd/applicationset/utils"
+	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	metricsutil "github.com/hanzoai/cd/util/metrics"
 )
 
 var (

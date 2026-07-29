@@ -3,7 +3,7 @@ package metrics
 import (
 	"time"
 
-	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/cd/util/git"
 )
 
 // NewGitClientEventHandlers creates event handlers that update Git related metrics

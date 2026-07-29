@@ -6,10 +6,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel/attribute"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -17,11 +17,11 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/client-go/rest"
 
-	"github.com/hanzoai/deploy/util/lua"
+	"github.com/hanzoai/cd/util/lua"
 
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	argoutil "github.com/hanzoai/deploy/util/cd"
-	traceutil "github.com/hanzoai/deploy/util/trace"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	argoutil "github.com/hanzoai/cd/util/cd"
+	traceutil "github.com/hanzoai/cd/util/trace"
 )
 
 type HookType string

@@ -5,7 +5,7 @@ import (
 	"io"
 	"sync"
 
-	utilio "github.com/hanzoai/deploy/util/io"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 func NewRepositoryLock() *repositoryLock {

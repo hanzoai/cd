@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/deploy/test"
+	"github.com/hanzoai/cd/test"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

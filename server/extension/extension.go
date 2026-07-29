@@ -16,16 +16,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"go.yaml.in/yaml/v3"
 
-	"github.com/hanzoai/deploy/util/rbac"
+	"github.com/hanzoai/cd/util/rbac"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/server/rbacpolicy"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/security"
-	"github.com/hanzoai/deploy/util/session"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	applisters "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/cd/server/rbacpolicy"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/security"
+	"github.com/hanzoai/cd/util/session"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 const (

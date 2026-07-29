@@ -6,10 +6,10 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/syncwaves"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/syncwaves"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 )
 
 // syncTask holds the live and target object. At least one should be non-nil. A targetObj of nil

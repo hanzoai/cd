@@ -19,17 +19,17 @@ import (
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/hanzoai/deploy/common"
-	versionpkg "github.com/hanzoai/deploy/pkg/apiclient/version"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	reposervercache "github.com/hanzoai/deploy/reposerver/cache"
-	"github.com/hanzoai/deploy/reposerver/metrics"
-	"github.com/hanzoai/deploy/reposerver/repository"
-	"github.com/hanzoai/deploy/server/version"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/git"
-	grpc_util "github.com/hanzoai/deploy/util/grpc"
-	tlsutil "github.com/hanzoai/deploy/util/tls"
+	"github.com/hanzoai/cd/common"
+	versionpkg "github.com/hanzoai/cd/pkg/apiclient/version"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	reposervercache "github.com/hanzoai/cd/reposerver/cache"
+	"github.com/hanzoai/cd/reposerver/metrics"
+	"github.com/hanzoai/cd/reposerver/repository"
+	"github.com/hanzoai/cd/server/version"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/git"
+	grpc_util "github.com/hanzoai/cd/util/grpc"
+	tlsutil "github.com/hanzoai/cd/util/tls"
 )
 
 // ArgoCDRepoServer is the repo server implementation

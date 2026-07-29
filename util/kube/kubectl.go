@@ -6,11 +6,11 @@ import (
 	"github.com/go-logr/logr"
 	"k8s.io/client-go/rest"
 
-	"github.com/hanzoai/deploy/util/log"
+	"github.com/hanzoai/cd/util/log"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/tracing"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/tracing"
 )
 
 var (

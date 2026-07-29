@@ -5,7 +5,7 @@
 package mocks
 
 import (
-	"github.com/hanzoai/deploy/util/workloadidentity"
+	"github.com/hanzoai/cd/util/workloadidentity"
 	mock "github.com/stretchr/testify/mock"
 )
 

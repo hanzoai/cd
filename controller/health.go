@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	hookutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/ignore"
-	kubeutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	hookutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/ignore"
+	kubeutil "github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application"
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	applog "github.com/hanzoai/deploy/util/app/log"
-	"github.com/hanzoai/deploy/util/lua"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	applog "github.com/hanzoai/cd/util/app/log"
+	"github.com/hanzoai/cd/util/lua"
 )
 
 // maxHealthCausesShown bounds how many causes are rendered in events/logs to keep them readable.

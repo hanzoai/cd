@@ -7,9 +7,9 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/hack/gen-resources/util"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
+	"github.com/hanzoai/cd/hack/gen-resources/util"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
 )
 
 type ProjectGenerator struct {

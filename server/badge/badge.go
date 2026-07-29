@@ -7,17 +7,17 @@ import (
 	"strconv"
 	"strings"
 
-	healthutil "github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	healthutil "github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/validation"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/pkg/client/clientset/versioned"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/assets"
-	"github.com/hanzoai/deploy/util/security"
-	"github.com/hanzoai/deploy/util/settings"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/client/clientset/versioned"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/assets"
+	"github.com/hanzoai/cd/util/security"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // NewHandler creates handler serving to do api/badge endpoint

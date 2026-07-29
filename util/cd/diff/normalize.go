@@ -1,10 +1,10 @@
 package diff
 
 import (
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 

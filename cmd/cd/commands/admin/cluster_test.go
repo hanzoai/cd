@@ -4,10 +4,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	fakeapps "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
-	cacheutil "github.com/hanzoai/deploy/util/cache"
-	"github.com/hanzoai/deploy/util/cache/appstate"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	fakeapps "github.com/hanzoai/cd/pkg/client/clientset/versioned/fake"
+	cacheutil "github.com/hanzoai/cd/util/cache"
+	"github.com/hanzoai/cd/util/cache/appstate"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

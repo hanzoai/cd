@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/hanzoai/deploy/util/buffered_context"
+	"github.com/hanzoai/cd/util/buffered_context"
 )
 
 func TestWithEarlierDeadline_NoDeadline(t *testing.T) {

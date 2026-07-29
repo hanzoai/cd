@@ -3,10 +3,10 @@ package metrics
 import (
 	"strconv"
 
-	"github.com/hanzoai/deploy/util/vendored/kubeclientmetrics"
+	"github.com/hanzoai/cd/util/vendored/kubeclientmetrics"
 	"k8s.io/client-go/rest"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 // AddMetricsTransportWrapper adds a transport wrapper which increments 'cd_app_k8s_request_total' counter on each kubernetes request

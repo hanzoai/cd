@@ -12,11 +12,11 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 
-	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	. "github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	utilio "github.com/hanzoai/deploy/util/io"
+	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // TestServerSideDiffMasksSecretData is a regression test for a CVE where the

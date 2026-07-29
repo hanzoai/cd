@@ -12,7 +12,7 @@ import (
 	"github.com/go-playground/webhooks/v6/gogs"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 )
 
 // Extractor dispatches a webhook request to the matching provider.

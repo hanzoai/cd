@@ -17,16 +17,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 
-	commitclient "github.com/hanzoai/deploy/commitserver/apiclient"
-	commitservermocks "github.com/hanzoai/deploy/commitserver/apiclient/mocks"
-	"github.com/hanzoai/deploy/controller/hydrator/mocks"
-	"github.com/hanzoai/deploy/controller/hydrator/types"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	repoclient "github.com/hanzoai/deploy/reposerver/apiclient"
-	reposervermocks "github.com/hanzoai/deploy/reposerver/apiclient/mocks"
-	"github.com/hanzoai/deploy/util/settings"
+	commitclient "github.com/hanzoai/cd/commitserver/apiclient"
+	commitservermocks "github.com/hanzoai/cd/commitserver/apiclient/mocks"
+	"github.com/hanzoai/cd/controller/hydrator/mocks"
+	"github.com/hanzoai/cd/controller/hydrator/types"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	repoclient "github.com/hanzoai/cd/reposerver/apiclient"
+	reposervermocks "github.com/hanzoai/cd/reposerver/apiclient/mocks"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 var message = `testn

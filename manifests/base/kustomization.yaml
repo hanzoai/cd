@@ -3,8 +3,8 @@ kind: Kustomization
 
 
 images:
-- name: ghcr.io/hanzoai/deploy
-  newName: ghcr.io/hanzoai/deploy
+- name: ghcr.io/hanzoai/cd
+  newName: ghcr.io/hanzoai/cd
   newTag: latest
 resources:
 - ./application-controller

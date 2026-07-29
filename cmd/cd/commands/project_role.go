@@ -7,20 +7,20 @@ import (
 	"text/tabwriter"
 	"time"
 
-	timeutil "github.com/hanzoai/deploy/util/vendored/time"
+	timeutil "github.com/hanzoai/cd/util/vendored/time"
 	jwtgo "github.com/golang-jwt/jwt/v5"
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	"github.com/hanzoai/deploy/cmd/cd/commands/utils"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	projectpkg "github.com/hanzoai/deploy/pkg/apiclient/project"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/jwt"
-	"github.com/hanzoai/deploy/util/rbac"
-	"github.com/hanzoai/deploy/util/templates"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	"github.com/hanzoai/cd/cmd/cd/commands/utils"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	projectpkg "github.com/hanzoai/cd/pkg/apiclient/project"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/jwt"
+	"github.com/hanzoai/cd/util/rbac"
+	"github.com/hanzoai/cd/util/templates"
 )
 
 const (

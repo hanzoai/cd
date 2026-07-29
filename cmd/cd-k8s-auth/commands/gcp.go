@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2/google"
 
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 // defaultGCPScopes:

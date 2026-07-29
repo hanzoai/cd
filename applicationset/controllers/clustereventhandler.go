@@ -14,9 +14,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 
-	"github.com/hanzoai/deploy/applicationset/utils"
-	"github.com/hanzoai/deploy/common"
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/applicationset/utils"
+	"github.com/hanzoai/cd/common"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 // clusterSecretEventHandler is used when watching Secrets to check if they are Hanzo CD Cluster Secrets, and if so

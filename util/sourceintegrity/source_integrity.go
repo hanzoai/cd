@@ -9,9 +9,9 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/glob"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/glob"
 )
 
 type gitFunc func(ctx context.Context, gitClient git.Client, verifiedRevision string) (result *v1alpha1.SourceIntegrityCheckResult, legacyDescription string, err error)

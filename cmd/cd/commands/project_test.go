@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	projectpkg "github.com/hanzoai/deploy/pkg/apiclient/project"
-	projectmocks "github.com/hanzoai/deploy/pkg/apiclient/project/mocks"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	projectpkg "github.com/hanzoai/cd/pkg/apiclient/project"
+	projectmocks "github.com/hanzoai/cd/pkg/apiclient/project/mocks"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestModifyResourceListCmd_AddClusterAllowItemWithName(t *testing.T) {

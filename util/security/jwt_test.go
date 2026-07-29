@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	utiltest "github.com/hanzoai/deploy/util/test"
+	utiltest "github.com/hanzoai/cd/util/test"
 )
 
 func Test_UnverifiedHasAudClaim(t *testing.T) {

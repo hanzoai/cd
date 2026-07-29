@@ -10,23 +10,23 @@ import (
 
 	"go.yaml.in/yaml/v3"
 
-	"github.com/hanzoai/deploy/util/templates"
+	"github.com/hanzoai/cd/util/templates"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/utils"
-	"github.com/hanzoai/deploy/cmd/util"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/cmd/cd/commands/utils"
+	"github.com/hanzoai/cd/cmd/util"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // NewApplicationGetResourceCommand returns a new instance of the `app get-resource` command

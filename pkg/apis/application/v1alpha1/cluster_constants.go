@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/util/env"
 )
 
 const (

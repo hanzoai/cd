@@ -10,7 +10,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/util/retry"
 
-	"github.com/hanzoai/deploy/test/e2e/fixture"
+	"github.com/hanzoai/cd/test/e2e/fixture"
 
 	log "github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
@@ -21,10 +21,10 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/dynamic"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test/e2e/fixture/applicationsets/utils"
-	"github.com/hanzoai/deploy/util/clusterauth"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test/e2e/fixture/applicationsets/utils"
+	"github.com/hanzoai/cd/util/clusterauth"
 )
 
 // this implements the "when" part of given/when/then

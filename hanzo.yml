@@ -8,7 +8,7 @@
 # cd-git-ask-pass, cd-k8s-auth) into it.
 #
 # The image is ghcr.io/hanzoai/cd — matching the repo, the binaries, the
-# apps.hanzo.ai API group and the cd.hanzo.ai UI. It read ghcr.io/hanzoai/deploy
+# apps.hanzo.ai API group and the cd.hanzo.ai UI. It read ghcr.io/hanzoai/cd
 # until now, the name from before the repo was renamed, and this file was the
 # last place that name survived: universe's infra/k8s/hanzo-cd/README.md has
 # documented the engine as ghcr.io/hanzoai/cd throughout. A build target that

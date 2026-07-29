@@ -1,8 +1,8 @@
 package helm
 
 import (
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	resourceutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/resource"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	resourceutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )

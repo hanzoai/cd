@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	dbmocks "github.com/hanzoai/deploy/util/db/mocks"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	dbmocks "github.com/hanzoai/cd/util/db/mocks"
 )
 
 func TestLargeShuffle(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hanzoai/deploy/applicationset/services/github_app_auth"
-	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/cd/applicationset/services/github_app_auth"
+	"github.com/hanzoai/cd/util/db"
 )
 
 // NewAuthCredentials returns a GtiHub App credentials lookup by repo-creds url.

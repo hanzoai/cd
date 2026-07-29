@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/session"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/session"
 )
 
 func TestRateLimiter(t *testing.T) {

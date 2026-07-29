@@ -11,17 +11,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/text"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	"github.com/go-git/go-git/v5/plumbing"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	cacheutil "github.com/hanzoai/deploy/util/cache"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/hash"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	cacheutil "github.com/hanzoai/cd/util/cache"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/hash"
 )
 
 var (

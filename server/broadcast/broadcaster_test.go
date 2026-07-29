@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"k8s.io/apimachinery/pkg/watch"
 
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestBroadcasterHandler_SubscribeUnsubscribe(t *testing.T) {

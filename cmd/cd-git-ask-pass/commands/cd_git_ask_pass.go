@@ -9,11 +9,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/askpass"
-	"github.com/hanzoai/deploy/util/errors"
-	grpc_util "github.com/hanzoai/deploy/util/grpc"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/askpass"
+	"github.com/hanzoai/cd/util/errors"
+	grpc_util "github.com/hanzoai/cd/util/grpc"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 func NewCommand() *cobra.Command {

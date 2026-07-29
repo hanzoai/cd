@@ -3,9 +3,9 @@ package e2e
 import (
 	"testing"
 
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 // make sure you cannot create an app from a private repo without set-up

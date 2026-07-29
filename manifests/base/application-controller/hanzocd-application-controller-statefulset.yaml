@@ -398,7 +398,7 @@ spec:
               optional: true
         - name: KUBECACHEDIR
           value: /tmp/kubecache
-        image: ghcr.io/hanzoai/deploy:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         name: hanzocd-application-controller
         ports:

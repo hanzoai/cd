@@ -8,8 +8,8 @@ import (
 	"go.yaml.in/yaml/v3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 )
 
 func Test_applyIgnoreDifferences(t *testing.T) {

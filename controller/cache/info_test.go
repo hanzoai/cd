@@ -4,7 +4,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
@@ -12,10 +12,10 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd/normalizers"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 func strToUnstructured(jsonStr string) *unstructured.Unstructured {

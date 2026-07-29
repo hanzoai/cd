@@ -4,16 +4,16 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/util/settings"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/hanzoai/deploy/pkg/apiclient/session"
-	"github.com/hanzoai/deploy/server/rbacpolicy"
-	utilio "github.com/hanzoai/deploy/util/io"
-	sessionmgr "github.com/hanzoai/deploy/util/session"
+	"github.com/hanzoai/cd/pkg/apiclient/session"
+	"github.com/hanzoai/cd/server/rbacpolicy"
+	utilio "github.com/hanzoai/cd/util/io"
+	sessionmgr "github.com/hanzoai/cd/util/session"
 )
 
 // Server provides a Session service

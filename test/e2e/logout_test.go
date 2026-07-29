@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	sessionFixture "github.com/hanzoai/deploy/test/e2e/fixture/session"
+	sessionFixture "github.com/hanzoai/cd/test/e2e/fixture/session"
 )
 
 // TestLogoutRevokesToken verifies that after logging out via the /auth/logout endpoint,

@@ -45,22 +45,22 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 
-	"github.com/hanzoai/deploy/applicationset/controllers/template"
-	"github.com/hanzoai/deploy/applicationset/generators"
-	"github.com/hanzoai/deploy/applicationset/metrics"
-	"github.com/hanzoai/deploy/applicationset/progressivesync"
-	"github.com/hanzoai/deploy/applicationset/status"
-	"github.com/hanzoai/deploy/applicationset/utils"
-	"github.com/hanzoai/deploy/common"
-	applog "github.com/hanzoai/deploy/util/app/log"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/applicationset/controllers/template"
+	"github.com/hanzoai/cd/applicationset/generators"
+	"github.com/hanzoai/cd/applicationset/metrics"
+	"github.com/hanzoai/cd/applicationset/progressivesync"
+	"github.com/hanzoai/cd/applicationset/status"
+	"github.com/hanzoai/cd/applicationset/utils"
+	"github.com/hanzoai/cd/common"
+	applog "github.com/hanzoai/cd/util/app/log"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/settings"
 
-	argov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	argoutil "github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
+	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	argoutil "github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 
-	"github.com/hanzoai/deploy/pkg/apis/application"
+	"github.com/hanzoai/cd/pkg/apis/application"
 )
 
 const (

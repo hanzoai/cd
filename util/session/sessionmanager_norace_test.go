@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func TestRandomPasswordVerificationDelay(t *testing.T) {

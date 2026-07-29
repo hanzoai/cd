@@ -9,7 +9,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	"github.com/hanzoai/deploy/util/config"
+	"github.com/hanzoai/cd/util/config"
 )
 
 // LocalConfig is a local Hanzo CD config file

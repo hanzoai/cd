@@ -29,13 +29,13 @@ import (
 	testcore "k8s.io/client-go/testing"
 	"k8s.io/klog/v2/textlogger"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/kubetest"
-	testingutils "github.com/hanzoai/deploy/gitops-engine/pkg/utils/testing"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	synccommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/kubetest"
+	testingutils "github.com/hanzoai/cd/gitops-engine/pkg/utils/testing"
 )
 
 func newTestSyncCtx(getResourceFunc *func(ctx context.Context, config *rest.Config, gvk schema.GroupVersionKind, name string, namespace string) (*unstructured.Unstructured, error), opts ...SyncOpt) *syncContext {

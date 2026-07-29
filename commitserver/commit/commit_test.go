@@ -8,12 +8,12 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/commitserver/apiclient"
-	"github.com/hanzoai/deploy/commitserver/commit/mocks"
-	"github.com/hanzoai/deploy/commitserver/metrics"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/git"
-	gitmocks "github.com/hanzoai/deploy/util/git/mocks"
+	"github.com/hanzoai/cd/commitserver/apiclient"
+	"github.com/hanzoai/cd/commitserver/commit/mocks"
+	"github.com/hanzoai/cd/commitserver/metrics"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/git"
+	gitmocks "github.com/hanzoai/cd/util/git/mocks"
 )
 
 func Test_CommitHydratedManifests(t *testing.T) {

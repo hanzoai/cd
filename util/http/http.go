@@ -14,8 +14,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"k8s.io/client-go/transport"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/env"
 )
 
 const (

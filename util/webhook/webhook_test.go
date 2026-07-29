@@ -31,23 +31,23 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	kubetesting "k8s.io/client-go/testing"
 
-	argov1 "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	servercache "github.com/hanzoai/deploy/server/cache"
-	"github.com/hanzoai/deploy/util/cache/appstate"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/db/mocks"
+	argov1 "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	servercache "github.com/hanzoai/cd/server/cache"
+	"github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/db/mocks"
 
 	"github.com/sirupsen/logrus/hooks/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned/fake"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/reposerver/cache"
-	cacheutil "github.com/hanzoai/deploy/util/cache"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned/fake"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/reposerver/cache"
+	cacheutil "github.com/hanzoai/cd/util/cache"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 type fakeSettingsSrc struct{}

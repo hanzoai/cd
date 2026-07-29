@@ -10,10 +10,10 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/common"
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // SecretMaperValidation determine whether the secret should be transformed(i.e. trailing CRLF characters trimmed)

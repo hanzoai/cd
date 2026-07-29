@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/cache"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/cache"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/r3labs/diff/v3"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
@@ -23,15 +23,15 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 
-	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/pkg/client/clientset/versioned/typed/application/v1alpha1"
-	applicationsv1 "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/glob"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/settings"
+	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1"
+	applicationsv1 "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/glob"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 const (

@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/util/localconfig"
+	"github.com/hanzoai/cd/util/localconfig"
 )
 
 const testConfig = `contexts:

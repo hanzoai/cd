@@ -24,13 +24,13 @@ import (
 	gocache "github.com/patrickmn/go-cache"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/util/sourceintegrity"
+	"github.com/hanzoai/cd/util/sourceintegrity"
 
-	"github.com/hanzoai/deploy/util/oci"
+	"github.com/hanzoai/cd/util/oci"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
-	textutils "github.com/hanzoai/deploy/gitops-engine/pkg/utils/text"
-	"github.com/hanzoai/deploy/util/vendored/sync"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	textutils "github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
+	"github.com/hanzoai/cd/util/vendored/sync"
 	jsonpatch "github.com/evanphx/json-patch"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/golang/protobuf/ptypes/empty"
@@ -51,28 +51,28 @@ import (
 	k8sversion "k8s.io/apimachinery/pkg/util/version"
 	kubeyaml "k8s.io/apimachinery/pkg/util/yaml"
 
-	pluginclient "github.com/hanzoai/deploy/cmpserver/apiclient"
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/reposerver/cache"
-	"github.com/hanzoai/deploy/reposerver/metrics"
-	"github.com/hanzoai/deploy/util/app/discovery"
-	apppathutil "github.com/hanzoai/deploy/util/app/path"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/cmp"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/glob"
-	"github.com/hanzoai/deploy/util/grpc"
-	"github.com/hanzoai/deploy/util/helm"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/io/files"
-	pathutil "github.com/hanzoai/deploy/util/io/path"
-	"github.com/hanzoai/deploy/util/kustomize"
-	"github.com/hanzoai/deploy/util/manifeststream"
-	"github.com/hanzoai/deploy/util/settings"
-	traceutil "github.com/hanzoai/deploy/util/trace"
-	"github.com/hanzoai/deploy/util/versions"
+	pluginclient "github.com/hanzoai/cd/cmpserver/apiclient"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/reposerver/cache"
+	"github.com/hanzoai/cd/reposerver/metrics"
+	"github.com/hanzoai/cd/util/app/discovery"
+	apppathutil "github.com/hanzoai/cd/util/app/path"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cmp"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/glob"
+	"github.com/hanzoai/cd/util/grpc"
+	"github.com/hanzoai/cd/util/helm"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/io/files"
+	pathutil "github.com/hanzoai/cd/util/io/path"
+	"github.com/hanzoai/cd/util/kustomize"
+	"github.com/hanzoai/cd/util/manifeststream"
+	"github.com/hanzoai/cd/util/settings"
+	traceutil "github.com/hanzoai/cd/util/trace"
+	"github.com/hanzoai/cd/util/versions"
 )
 
 const (
@@ -86,7 +86,7 @@ const (
 
 var ErrExceededMaxCombinedManifestFileSize = errors.New("exceeded max combined manifest file size")
 
-var tracer = otel.Tracer("github.com/hanzoai/deploy/reposerver/repository")
+var tracer = otel.Tracer("github.com/hanzoai/cd/reposerver/repository")
 
 // Service implements ManifestService interface
 type Service struct {

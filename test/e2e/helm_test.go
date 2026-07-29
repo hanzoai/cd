@@ -8,16 +8,16 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	. "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"
 	corev1 "k8s.io/api/core/v1"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	projectFixture "github.com/hanzoai/deploy/test/e2e/fixture/project"
-	"github.com/hanzoai/deploy/util/errors"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
+	projectFixture "github.com/hanzoai/cd/test/e2e/fixture/project"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 func TestHelmHooksAreCreated(t *testing.T) {

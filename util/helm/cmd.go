@@ -14,11 +14,11 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/common"
-	executil "github.com/hanzoai/deploy/util/exec"
-	utilio "github.com/hanzoai/deploy/util/io"
-	pathutil "github.com/hanzoai/deploy/util/io/path"
-	"github.com/hanzoai/deploy/util/proxy"
+	"github.com/hanzoai/cd/common"
+	executil "github.com/hanzoai/cd/util/exec"
+	utilio "github.com/hanzoai/cd/util/io"
+	pathutil "github.com/hanzoai/cd/util/io/path"
+	"github.com/hanzoai/cd/util/proxy"
 )
 
 // A thin wrapper around the "helm" command, adding logging and error translation.

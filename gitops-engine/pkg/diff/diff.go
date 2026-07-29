@@ -26,11 +26,11 @@ import (
 	"sigs.k8s.io/structured-merge-diff/v6/merge"
 	"sigs.k8s.io/structured-merge-diff/v6/typed"
 
-	"github.com/hanzoai/deploy/gitops-engine/internal/kubernetes_vendor/pkg/api/v1/endpoints"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/diff/internal/fieldmanager"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/resource"
-	jsonutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/json"
-	gescheme "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/scheme"
+	"github.com/hanzoai/cd/gitops-engine/internal/kubernetes_vendor/pkg/api/v1/endpoints"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff/internal/fieldmanager"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
+	jsonutil "github.com/hanzoai/cd/gitops-engine/pkg/utils/json"
+	gescheme "github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/scheme"
 )
 
 const (

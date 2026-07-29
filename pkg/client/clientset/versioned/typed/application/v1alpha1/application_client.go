@@ -5,8 +5,8 @@ package v1alpha1
 import (
 	http "net/http"
 
-	applicationv1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	scheme "github.com/hanzoai/deploy/pkg/client/clientset/versioned/scheme"
+	applicationv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	scheme "github.com/hanzoai/cd/pkg/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 

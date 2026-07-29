@@ -5,22 +5,22 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/cache"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/cache"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	log "github.com/sirupsen/logrus"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/util/env"
 
-	"github.com/hanzoai/deploy/controller/metrics"
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd"
-	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
-	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/cd/controller/metrics"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd"
+	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/db"
 )
 
 const (

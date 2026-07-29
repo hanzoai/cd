@@ -9,8 +9,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/util"
-	"github.com/hanzoai/deploy/util/webhook"
+	"github.com/hanzoai/cd/util"
+	"github.com/hanzoai/cd/util/webhook"
 )
 
 func TestMakeSignature(t *testing.T) {

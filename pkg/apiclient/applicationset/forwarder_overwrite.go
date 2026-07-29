@@ -3,12 +3,12 @@ package applicationset
 import (
 	"errors"
 
-	"github.com/hanzoai/deploy/util/vendored/grpc-http"
+	"github.com/hanzoai/cd/util/vendored/grpc-http"
 
 	//nolint:staticcheck
 	"github.com/golang/protobuf/proto"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func init() {

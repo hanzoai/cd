@@ -15,11 +15,11 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 
-	cmdutil "github.com/hanzoai/deploy/cmd/util"
-	"github.com/hanzoai/deploy/common"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	"github.com/hanzoai/deploy/pkg/apis/application"
-	"github.com/hanzoai/deploy/util/errors"
+	cmdutil "github.com/hanzoai/cd/cmd/util"
+	"github.com/hanzoai/cd/common"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	"github.com/hanzoai/cd/pkg/apis/application"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 const (

@@ -16,13 +16,13 @@ import (
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/util/rbac"
+	"github.com/hanzoai/cd/util/rbac"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/server/extension"
-	"github.com/hanzoai/deploy/server/extension/mocks"
-	dbmocks "github.com/hanzoai/deploy/util/db/mocks"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/server/extension"
+	"github.com/hanzoai/cd/server/extension/mocks"
+	dbmocks "github.com/hanzoai/cd/util/db/mocks"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func TestValidateHeaders(t *testing.T) {

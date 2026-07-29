@@ -23,7 +23,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 
-	application "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	application "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 const (

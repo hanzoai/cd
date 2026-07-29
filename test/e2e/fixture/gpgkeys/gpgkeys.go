@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 // AddGPGPublicKey adds public key via API and creates the appropriate file where the ConfigMap mount would do it as well

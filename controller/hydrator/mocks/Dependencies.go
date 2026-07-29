@@ -7,9 +7,9 @@ package mocks
 import (
 	"context"
 
-	"github.com/hanzoai/deploy/controller/hydrator/types"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
+	"github.com/hanzoai/cd/controller/hydrator/types"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/reposerver/apiclient"
 	mock "github.com/stretchr/testify/mock"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )

@@ -6,7 +6,7 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/tracing/mocks"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/tracing/mocks"
 )
 
 func TestLoggingTracer(t *testing.T) {

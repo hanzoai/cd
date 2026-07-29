@@ -15,8 +15,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/errors"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 type DexTLSConfig struct {

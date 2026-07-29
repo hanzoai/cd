@@ -18,20 +18,20 @@ import (
 	"strings"
 	"time"
 
-	executil "github.com/hanzoai/deploy/util/exec"
+	executil "github.com/hanzoai/cd/util/exec"
 
-	"github.com/hanzoai/deploy/util/vendored/sync"
+	"github.com/hanzoai/cd/util/vendored/sync"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"oras.land/oras-go/v2/registry/remote"
 	"oras.land/oras-go/v2/registry/remote/auth"
 	"oras.land/oras-go/v2/registry/remote/credentials"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/cache"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/io/files"
-	"github.com/hanzoai/deploy/util/proxy"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/cache"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/io/files"
+	"github.com/hanzoai/cd/util/proxy"
 )
 
 var (

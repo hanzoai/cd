@@ -3,10 +3,10 @@ package controller
 import (
 	"maps"
 
-	gitopscommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	gitopscommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 // syncNamespace determine if Hanzo CD should create and/or manage the namespace

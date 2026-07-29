@@ -3,17 +3,17 @@ package e2e
 import (
 	"testing"
 
-	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	. "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	. "github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	. "github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/errors"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
+	. "github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 func TestAppCreationInOtherNamespace(t *testing.T) {

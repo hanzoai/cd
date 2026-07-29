@@ -23,15 +23,15 @@ import (
 	imagev1 "github.com/opencontainers/image-spec/specs-go/v1"
 	"oras.land/oras-go/v2/content/oci"
 
-	"github.com/hanzoai/deploy/util/versions"
+	"github.com/hanzoai/cd/util/versions"
 
-	"github.com/hanzoai/deploy/util/vendored/sync"
+	"github.com/hanzoai/cd/util/vendored/sync"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/util/cache"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/io/files"
-	"github.com/hanzoai/deploy/util/proxy"
+	"github.com/hanzoai/cd/util/cache"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/io/files"
+	"github.com/hanzoai/cd/util/proxy"
 
 	"oras.land/oras-go/v2"
 	"oras.land/oras-go/v2/content/file"

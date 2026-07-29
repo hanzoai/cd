@@ -12,10 +12,10 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/reposerver/cache/mocks"
-	cacheutil "github.com/hanzoai/deploy/util/cache"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/reposerver/cache/mocks"
+	cacheutil "github.com/hanzoai/cd/util/cache"
 )
 
 type MockedCache struct {

@@ -13,7 +13,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 )
 
 const depWithoutSelector = `

@@ -1,8 +1,8 @@
 package mocks
 
 import (
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 type Clientset struct {

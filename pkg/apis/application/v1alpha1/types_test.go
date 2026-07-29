@@ -11,9 +11,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	cdcommon "github.com/hanzoai/deploy/common"
+	cdcommon "github.com/hanzoai/cd/common"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

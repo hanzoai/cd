@@ -11,7 +11,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
 )
 
 type Kube struct {

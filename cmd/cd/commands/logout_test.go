@@ -23,9 +23,9 @@ import (
 	"google.golang.org/grpc"
 	grpccreds "google.golang.org/grpc/credentials"
 
-	"github.com/hanzoai/deploy/common"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	"github.com/hanzoai/deploy/util/localconfig"
+	"github.com/hanzoai/cd/common"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	"github.com/hanzoai/cd/util/localconfig"
 )
 
 func TestLogout(t *testing.T) {

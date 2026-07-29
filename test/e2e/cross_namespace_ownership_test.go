@@ -8,12 +8,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
-	clusterpkg "github.com/hanzoai/deploy/pkg/apiclient/cluster"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	. "github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	"github.com/hanzoai/deploy/util/io"
+	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
+	clusterpkg "github.com/hanzoai/cd/pkg/apiclient/cluster"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
+	"github.com/hanzoai/cd/util/io"
 )
 
 // TestCrossNamespaceOwnership tests that Argo CD correctly tracks parent-child relationships

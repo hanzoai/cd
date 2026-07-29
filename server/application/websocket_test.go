@@ -12,9 +12,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/assets"
-	"github.com/hanzoai/deploy/util/rbac"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/assets"
+	"github.com/hanzoai/cd/util/rbac"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/websocket"

@@ -7,9 +7,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/hanzoai/deploy/common"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/settings"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

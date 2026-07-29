@@ -10,14 +10,14 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	"github.com/hanzoai/deploy/test/e2e/fixture/certs"
-	"github.com/hanzoai/deploy/test/e2e/fixture/gpgkeys"
-	"github.com/hanzoai/deploy/test/e2e/fixture/repos"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	"github.com/hanzoai/cd/test/e2e/fixture/certs"
+	"github.com/hanzoai/cd/test/e2e/fixture/gpgkeys"
+	"github.com/hanzoai/cd/test/e2e/fixture/repos"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // Context implements the "given" part of given/when/then.

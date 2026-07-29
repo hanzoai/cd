@@ -11,19 +11,19 @@ import (
 	goSync "sync"
 	"time"
 
-	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	synccommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/diff"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync"
-	hookutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/ignore"
-	resourceutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/resource"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/syncwaves"
-	kubeutil "github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync"
+	hookutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/ignore"
+	resourceutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/syncwaves"
+	kubeutil "github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 
-	"github.com/hanzoai/deploy/util/sourceintegrity"
+	"github.com/hanzoai/cd/util/sourceintegrity"
 
 	log "github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
@@ -34,29 +34,29 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 
-	"github.com/hanzoai/deploy/common"
-	statecache "github.com/hanzoai/deploy/controller/cache"
-	"github.com/hanzoai/deploy/controller/metrics"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	applog "github.com/hanzoai/deploy/util/app/log"
-	"github.com/hanzoai/deploy/util/app/path"
-	"github.com/hanzoai/deploy/util/cd"
-	argodiff "github.com/hanzoai/deploy/util/cd/diff"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
-	appstatecache "github.com/hanzoai/deploy/util/cache/appstate"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/git"
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/settings"
-	"github.com/hanzoai/deploy/util/stats"
-	traceutil "github.com/hanzoai/deploy/util/trace"
+	"github.com/hanzoai/cd/common"
+	statecache "github.com/hanzoai/cd/controller/cache"
+	"github.com/hanzoai/cd/controller/metrics"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	applog "github.com/hanzoai/cd/util/app/log"
+	"github.com/hanzoai/cd/util/app/path"
+	"github.com/hanzoai/cd/util/cd"
+	argodiff "github.com/hanzoai/cd/util/cd/diff"
+	"github.com/hanzoai/cd/util/cd/normalizers"
+	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/git"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/settings"
+	"github.com/hanzoai/cd/util/stats"
+	traceutil "github.com/hanzoai/cd/util/trace"
 )
 
 var ErrCompareStateRepo = errors.New("failed to get repo objects")
 
-var tracer = otel.Tracer("github.com/hanzoai/deploy/controller")
+var tracer = otel.Tracer("github.com/hanzoai/cd/controller")
 
 // setAppTraceAttrs sets the standard cd.app.* span attributes (plus any extra attributes)
 // on span. It is a no-op when the span is not recording, so callers on hot reconcile paths do

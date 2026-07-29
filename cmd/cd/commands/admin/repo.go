@@ -10,13 +10,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 
-	cmdutil "github.com/hanzoai/deploy/cmd/util"
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/settings"
+	cmdutil "github.com/hanzoai/cd/cmd/util"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 const (

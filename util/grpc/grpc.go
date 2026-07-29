@@ -20,7 +20,7 @@ import (
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/status"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 )
 
 // LoggerRecoveryHandler return a handler for recovering from panics and returning error

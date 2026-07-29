@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
-	clusterpkg "github.com/hanzoai/deploy/pkg/apiclient/cluster"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
+	clusterpkg "github.com/hanzoai/cd/pkg/apiclient/cluster"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test/e2e/fixture"
 )
 
 // this implements the "then" part of given/when/then

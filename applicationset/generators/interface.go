@@ -6,8 +6,8 @@ import (
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/env"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/env"
 )
 
 // Generator defines the interface implemented by all ApplicationSet generators.

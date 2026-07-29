@@ -12,11 +12,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/io/files"
-	"github.com/hanzoai/deploy/util/manifeststream"
+	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/io/files"
+	"github.com/hanzoai/cd/util/manifeststream"
 )
 
 type applicationStreamMock struct {

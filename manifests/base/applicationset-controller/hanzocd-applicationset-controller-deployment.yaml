@@ -18,7 +18,7 @@ spec:
       containers:
         - args:
             - /usr/local/bin/hanzocd-applicationset-controller
-          image: ghcr.io/hanzoai/deploy:latest
+          image: ghcr.io/hanzoai/cd:latest
           imagePullPolicy: Always
           name: hanzocd-applicationset-controller
           ports:

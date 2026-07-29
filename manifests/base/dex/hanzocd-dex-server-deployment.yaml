@@ -18,7 +18,7 @@ spec:
       serviceAccountName: hanzocd-dex-server
       initContainers:
       - name: copyutil
-        image: ghcr.io/hanzoai/deploy:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         command: [/bin/cp, -n, /usr/local/bin/cd, /shared/hanzocd-dex]
         volumeMounts:

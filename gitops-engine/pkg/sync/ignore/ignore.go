@@ -3,7 +3,7 @@ package ignore
 import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
 )
 
 // should we Ignore this resource?

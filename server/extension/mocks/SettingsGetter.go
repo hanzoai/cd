@@ -5,7 +5,7 @@
 package mocks
 
 import (
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/util/settings"
 	mock "github.com/stretchr/testify/mock"
 )
 

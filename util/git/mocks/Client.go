@@ -7,7 +7,7 @@ package mocks
 import (
 	"context"
 
-	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/cd/util/git"
 	mock "github.com/stretchr/testify/mock"
 )
 

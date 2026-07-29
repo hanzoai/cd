@@ -6,11 +6,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/rest"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
-	argoprojv1alpha1 "github.com/hanzoai/deploy/pkg/client/clientset/versioned/typed/application/v1alpha1"
-	applisters "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/deploy/util"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
+	argoprojv1alpha1 "github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1"
+	applisters "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	"github.com/hanzoai/cd/util"
 
 	"k8s.io/apimachinery/pkg/labels"
 )

@@ -6,17 +6,17 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/util/settings"
 
-	"github.com/hanzoai/deploy/util/db"
+	"github.com/hanzoai/cd/util/db"
 
-	"github.com/hanzoai/deploy/hack/gen-resources/util"
+	"github.com/hanzoai/cd/hack/gen-resources/util"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
 )
 
 type ApplicationGenerator struct {

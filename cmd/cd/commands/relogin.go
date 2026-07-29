@@ -8,14 +8,14 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	settingspkg "github.com/hanzoai/deploy/pkg/apiclient/settings"
-	"github.com/hanzoai/deploy/util/errors"
-	utilio "github.com/hanzoai/deploy/util/io"
-	jwtutil "github.com/hanzoai/deploy/util/jwt"
-	"github.com/hanzoai/deploy/util/localconfig"
-	"github.com/hanzoai/deploy/util/session"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	settingspkg "github.com/hanzoai/cd/pkg/apiclient/settings"
+	"github.com/hanzoai/cd/util/errors"
+	utilio "github.com/hanzoai/cd/util/io"
+	jwtutil "github.com/hanzoai/cd/util/jwt"
+	"github.com/hanzoai/cd/util/localconfig"
+	"github.com/hanzoai/cd/util/session"
 )
 
 // NewReloginCommand returns a new instance of `cd relogin` command

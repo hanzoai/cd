@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/deploy/test/e2e/fixture"
+	"github.com/hanzoai/cd/test/e2e/fixture"
 )
 
 // Context implements the "given" part of given/when/then for session/logout tests.

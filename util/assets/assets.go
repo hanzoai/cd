@@ -1,7 +1,7 @@
 package assets
 
 import (
-	"github.com/hanzoai/deploy/assets"
+	"github.com/hanzoai/cd/assets"
 )
 
 var (

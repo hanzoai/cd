@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -16,12 +16,12 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	"github.com/hanzoai/deploy/applicationset/generators"
-	appsetmetrics "github.com/hanzoai/deploy/applicationset/metrics"
-	appsetprogressiveSync "github.com/hanzoai/deploy/applicationset/progressivesync"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/applicationset/generators"
+	appsetmetrics "github.com/hanzoai/cd/applicationset/metrics"
+	appsetprogressiveSync "github.com/hanzoai/cd/applicationset/progressivesync"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 func TestUpdateApplicationSetApplicationStatus(t *testing.T) {

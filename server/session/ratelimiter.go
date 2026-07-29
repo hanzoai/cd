@@ -1,8 +1,8 @@
 package session
 
 import (
-	utilio "github.com/hanzoai/deploy/util/io"
-	"github.com/hanzoai/deploy/util/session"
+	utilio "github.com/hanzoai/cd/util/io"
+	"github.com/hanzoai/cd/util/session"
 
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/sync/semaphore"

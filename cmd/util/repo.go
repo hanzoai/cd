@@ -3,8 +3,8 @@ package util
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/common"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/common"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 type RepoOptions struct {

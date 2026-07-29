@@ -12,12 +12,12 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/clusterauth"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/clusterauth"
 
-	clusterpkg "github.com/hanzoai/deploy/pkg/apiclient/cluster"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
+	clusterpkg "github.com/hanzoai/cd/pkg/apiclient/cluster"
+	"github.com/hanzoai/cd/test/e2e/fixture"
 )
 
 // this implements the "when" part of given/when/then

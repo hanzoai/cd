@@ -8,9 +8,9 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/common"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/sourceintegrity"
+	"github.com/hanzoai/cd/common"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/sourceintegrity"
 )
 
 // Validates a single GnuPG key and returns the key's ID

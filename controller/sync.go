@@ -12,12 +12,12 @@ import (
 
 	"k8s.io/apimachinery/pkg/util/strategicpatch"
 
-	cdcommon "github.com/hanzoai/deploy/common"
+	cdcommon "github.com/hanzoai/cd/common"
 
-	gitopsDiff "github.com/hanzoai/deploy/gitops-engine/pkg/diff"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	gitopsDiff "github.com/hanzoai/cd/gitops-engine/pkg/diff"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	jsonpatch "github.com/evanphx/json-patch"
 	log "github.com/sirupsen/logrus"
 	otel_codes "go.opentelemetry.io/otel/codes"
@@ -29,16 +29,16 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/kubectl/pkg/util/openapi"
 
-	"github.com/hanzoai/deploy/controller/metrics"
-	"github.com/hanzoai/deploy/controller/syncid"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	applog "github.com/hanzoai/deploy/util/app/log"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/cd/diff"
-	kubeutil "github.com/hanzoai/deploy/util/kube"
-	logutils "github.com/hanzoai/deploy/util/log"
-	"github.com/hanzoai/deploy/util/lua"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/controller/metrics"
+	"github.com/hanzoai/cd/controller/syncid"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	applog "github.com/hanzoai/cd/util/app/log"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd/diff"
+	kubeutil "github.com/hanzoai/cd/util/kube"
+	logutils "github.com/hanzoai/cd/util/log"
+	"github.com/hanzoai/cd/util/lua"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 const (

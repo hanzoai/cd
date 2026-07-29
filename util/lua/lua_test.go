@@ -5,16 +5,16 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	lua "github.com/yuin/gopher-lua"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/yaml"
 
-	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/grpc"
+	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/grpc"
 )
 
 const objJSON = `

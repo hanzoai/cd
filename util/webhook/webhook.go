@@ -13,13 +13,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hanzoai/deploy/common"
+	"github.com/hanzoai/cd/common"
 
 	bb "github.com/ktrysmt/go-bitbucket"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/util/workqueue"
 
-	alpha1 "github.com/hanzoai/deploy/pkg/client/listers/application/v1alpha1"
+	alpha1 "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/go-playground/webhooks/v6/azuredevops"
@@ -33,17 +33,17 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	appclientset "github.com/hanzoai/deploy/pkg/client/clientset/versioned"
-	"github.com/hanzoai/deploy/reposerver/cache"
-	servercache "github.com/hanzoai/deploy/server/cache"
-	"github.com/hanzoai/deploy/util/app/path"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/git"
-	"github.com/hanzoai/deploy/util/glob"
-	"github.com/hanzoai/deploy/util/guard"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
+	"github.com/hanzoai/cd/reposerver/cache"
+	servercache "github.com/hanzoai/cd/server/cache"
+	"github.com/hanzoai/cd/util/app/path"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/git"
+	"github.com/hanzoai/cd/util/glob"
+	"github.com/hanzoai/cd/util/guard"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 type settingsSource interface {

@@ -18,17 +18,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/controller/sharding/consistent"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/controller/sharding/consistent"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 	log "github.com/sirupsen/logrus"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/env"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/env"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // Make it overridable for testing

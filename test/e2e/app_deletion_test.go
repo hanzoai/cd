@@ -3,13 +3,13 @@ package e2e
 import (
 	"testing"
 
-	. "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
+	. "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	. "github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	. "github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
 )
 
 // when a app gets stuck in sync, and we try to delete it, it won't delete, instead we must then terminate it

@@ -23,11 +23,11 @@ import (
 
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-	"github.com/hanzoai/deploy/applicationset/generators"
-	"github.com/hanzoai/deploy/applicationset/services/scm_provider"
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	argosettings "github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/applicationset/generators"
+	"github.com/hanzoai/cd/applicationset/services/scm_provider"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	argosettings "github.com/hanzoai/cd/util/settings"
 )
 
 type generatorMock struct {

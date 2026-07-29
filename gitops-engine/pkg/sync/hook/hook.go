@@ -3,9 +3,9 @@ package hook
 import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	helmhook "github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook/helm"
-	resourceutil "github.com/hanzoai/deploy/gitops-engine/pkg/sync/resource"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	helmhook "github.com/hanzoai/cd/gitops-engine/pkg/sync/hook/helm"
+	resourceutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
 )
 
 const (

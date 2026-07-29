@@ -12,11 +12,11 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
 
-	. "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test/e2e/fixture"
-	. "github.com/hanzoai/deploy/test/e2e/fixture/app"
-	"github.com/hanzoai/deploy/test/e2e/fixture/repos"
-	"github.com/hanzoai/deploy/util/errors"
+	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test/e2e/fixture"
+	. "github.com/hanzoai/cd/test/e2e/fixture/app"
+	"github.com/hanzoai/cd/test/e2e/fixture/repos"
+	"github.com/hanzoai/cd/util/errors"
 )
 
 func TestGitSemverResolutionNotUsingConstraint(t *testing.T) {

@@ -5,12 +5,12 @@ import (
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 
-	"github.com/hanzoai/deploy/commitserver/apiclient"
-	"github.com/hanzoai/deploy/commitserver/commit"
-	"github.com/hanzoai/deploy/commitserver/metrics"
-	versionpkg "github.com/hanzoai/deploy/pkg/apiclient/version"
-	"github.com/hanzoai/deploy/server/version"
-	"github.com/hanzoai/deploy/util/git"
+	"github.com/hanzoai/cd/commitserver/apiclient"
+	"github.com/hanzoai/cd/commitserver/commit"
+	"github.com/hanzoai/cd/commitserver/metrics"
+	versionpkg "github.com/hanzoai/cd/pkg/apiclient/version"
+	"github.com/hanzoai/cd/server/version"
+	"github.com/hanzoai/cd/util/git"
 )
 
 // ArgoCDCommitServer is the server that handles commit requests.

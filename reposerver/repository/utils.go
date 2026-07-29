@@ -7,8 +7,8 @@ import (
 	securejoin "github.com/cyphar/filepath-securejoin"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/reposerver/apiclient"
-	"github.com/hanzoai/deploy/util/io/files"
+	"github.com/hanzoai/cd/reposerver/apiclient"
+	"github.com/hanzoai/cd/util/io/files"
 )
 
 // getApplicationRootPath returns the common root path (shortest shared structure between all paths) among a

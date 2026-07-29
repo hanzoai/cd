@@ -13,9 +13,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/util/config"
-	executil "github.com/hanzoai/deploy/util/exec"
-	pathutil "github.com/hanzoai/deploy/util/io/path"
+	"github.com/hanzoai/cd/util/config"
+	executil "github.com/hanzoai/cd/util/exec"
+	pathutil "github.com/hanzoai/cd/util/io/path"
 )
 
 const (

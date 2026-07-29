@@ -10,8 +10,8 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	fileutil "github.com/hanzoai/deploy/test/fixture/path"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	fileutil "github.com/hanzoai/cd/test/fixture/path"
 )
 
 func TestPathRoot(t *testing.T) {

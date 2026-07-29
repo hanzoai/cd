@@ -15,9 +15,9 @@ import (
 	kubefake "k8s.io/client-go/kubernetes/fake"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	argoprojiov1alpha1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/settings"
+	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 const (

@@ -13,19 +13,19 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/pkg/apis/application"
-	argoappv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/config"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/text/label"
+	"github.com/hanzoai/cd/pkg/apis/application"
+	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/config"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/text/label"
 )
 
 type AppOptions struct {

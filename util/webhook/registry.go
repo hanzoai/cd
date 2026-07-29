@@ -7,9 +7,9 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd"
-	"github.com/hanzoai/deploy/util/glob"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/glob"
 
 	"k8s.io/apimachinery/pkg/labels"
 )

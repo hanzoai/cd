@@ -7,7 +7,7 @@ package mocks
 import (
 	"context"
 
-	"github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/util/io"
 	"github.com/opencontainers/image-spec/specs-go/v1"
 	mock "github.com/stretchr/testify/mock"
 )

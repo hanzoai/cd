@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/util/env"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/util/env"
 
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	utilio "github.com/hanzoai/deploy/util/io"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // MaxGRPCMessageSize contains max grpc message size

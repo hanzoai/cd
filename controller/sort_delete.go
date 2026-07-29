@@ -3,7 +3,7 @@ package controller
 import (
 	"sort"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/syncwaves"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/syncwaves"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 

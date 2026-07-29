@@ -10,16 +10,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/hanzoai/deploy/cmd/cd/commands/headless"
-	"github.com/hanzoai/deploy/cmd/cd/commands/utils"
-	cmdutil "github.com/hanzoai/deploy/cmd/util"
-	cdclient "github.com/hanzoai/deploy/pkg/apiclient"
-	repositorypkg "github.com/hanzoai/deploy/pkg/apiclient/repository"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/git"
-	utilio "github.com/hanzoai/deploy/util/io"
+	"github.com/hanzoai/cd/cmd/cd/commands/headless"
+	"github.com/hanzoai/cd/cmd/cd/commands/utils"
+	cmdutil "github.com/hanzoai/cd/cmd/util"
+	cdclient "github.com/hanzoai/cd/pkg/apiclient"
+	repositorypkg "github.com/hanzoai/cd/pkg/apiclient/repository"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/git"
+	utilio "github.com/hanzoai/cd/util/io"
 )
 
 // NewRepoCommand returns a new instance of an `cd repo` command

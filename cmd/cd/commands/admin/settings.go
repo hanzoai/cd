@@ -13,7 +13,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	healthutil "github.com/hanzoai/deploy/gitops-engine/pkg/health"
+	healthutil "github.com/hanzoai/cd/gitops-engine/pkg/health"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	corev1 "k8s.io/api/core/v1"
@@ -24,14 +24,14 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/yaml"
 
-	"github.com/hanzoai/deploy/common"
-	applicationpkg "github.com/hanzoai/deploy/pkg/apiclient/application"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
-	"github.com/hanzoai/deploy/util/cli"
-	"github.com/hanzoai/deploy/util/errors"
-	"github.com/hanzoai/deploy/util/lua"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/common"
+	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/cd/normalizers"
+	"github.com/hanzoai/cd/util/cli"
+	"github.com/hanzoai/cd/util/errors"
+	"github.com/hanzoai/cd/util/lua"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 type settingsOpts struct {

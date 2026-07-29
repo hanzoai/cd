@@ -10,6 +10,6 @@ resources:
 # Because commit-server is added as a resource outside the base, we have to explicitly set the image override here.
 # If/when commit-server is added to the base, this can be removed.
 images:
-- name: ghcr.io/hanzoai/deploy
-  newName: ghcr.io/hanzoai/deploy
+- name: ghcr.io/hanzoai/cd
+  newName: ghcr.io/hanzoai/cd
   newTag: latest

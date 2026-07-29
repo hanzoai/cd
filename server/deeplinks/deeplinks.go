@@ -6,13 +6,13 @@ import (
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/expr-lang/expr"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/pkg/apiclient/application"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/pkg/apiclient/application"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 var sprigFuncMap = sprig.GenericFuncMap() // a singleton for better performance

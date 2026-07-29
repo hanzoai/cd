@@ -3,10 +3,10 @@ package certificate
 import (
 	"context"
 
-	certificatepkg "github.com/hanzoai/deploy/pkg/apiclient/certificate"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/db"
-	"github.com/hanzoai/deploy/util/rbac"
+	certificatepkg "github.com/hanzoai/cd/pkg/apiclient/certificate"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/db"
+	"github.com/hanzoai/cd/util/rbac"
 )
 
 // Server provides a Certificate service

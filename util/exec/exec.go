@@ -13,11 +13,11 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/tracing"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/tracing"
 	"github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/util/log"
-	"github.com/hanzoai/deploy/util/rand"
+	"github.com/hanzoai/cd/util/log"
+	"github.com/hanzoai/cd/util/rand"
 )
 
 var (

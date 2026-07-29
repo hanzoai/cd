@@ -7,11 +7,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/health"
-	synccommon "github.com/hanzoai/deploy/gitops-engine/pkg/sync/common"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/sync/hook"
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
-	testingutils "github.com/hanzoai/deploy/gitops-engine/pkg/utils/testing"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
+	synccommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
+	"github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	testingutils "github.com/hanzoai/cd/gitops-engine/pkg/utils/testing"
 )
 
 type resourceNameHealthOverride map[string]health.HealthStatusCode

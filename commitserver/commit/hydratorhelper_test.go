@@ -20,12 +20,12 @@ import (
 	"github.com/stretchr/testify/require"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/hanzoai/deploy/commitserver/apiclient"
-	appsv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/git"
-	gitmocks "github.com/hanzoai/deploy/util/git/mocks"
-	"github.com/hanzoai/deploy/util/hydrator"
-	"github.com/hanzoai/deploy/util/settings"
+	"github.com/hanzoai/cd/commitserver/apiclient"
+	appsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/git"
+	gitmocks "github.com/hanzoai/cd/util/git/mocks"
+	"github.com/hanzoai/cd/util/hydrator"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 // tempRoot creates a temporary directory and returns an os.Root object for it.

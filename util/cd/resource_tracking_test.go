@@ -4,15 +4,15 @@ import (
 	"os"
 	"testing"
 
-	"github.com/hanzoai/deploy/util/kube"
+	"github.com/hanzoai/cd/util/kube"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestSetAppInstanceLabel(t *testing.T) {

@@ -18,8 +18,8 @@ import (
 	"k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/hanzoai/deploy/common"
-	appv1 "github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/common"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestClusterInformer_ConcurrentAccess(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/util/glob"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/util/glob"
 )
 
 // IgnoreDiffConfig holds the ignore difference configurations defined in argo-cm

@@ -7,11 +7,11 @@ import (
 	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	"github.com/hanzoai/deploy/test"
-	"github.com/hanzoai/deploy/util/cd/diff"
-	"github.com/hanzoai/deploy/util/cd/normalizers"
-	"github.com/hanzoai/deploy/util/cd/testdata"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/test"
+	"github.com/hanzoai/cd/util/cd/diff"
+	"github.com/hanzoai/cd/util/cd/normalizers"
+	"github.com/hanzoai/cd/util/cd/testdata"
 )
 
 func TestNormalize(t *testing.T) {

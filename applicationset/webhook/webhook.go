@@ -16,18 +16,18 @@ import (
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/hanzoai/deploy/applicationset/generators"
-	"github.com/hanzoai/deploy/common"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
-	argosettings "github.com/hanzoai/deploy/util/settings"
-	"github.com/hanzoai/deploy/util/webhook"
+	"github.com/hanzoai/cd/applicationset/generators"
+	"github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	argosettings "github.com/hanzoai/cd/util/settings"
+	"github.com/hanzoai/cd/util/webhook"
 
 	"github.com/go-playground/webhooks/v6/azuredevops"
 	"github.com/go-playground/webhooks/v6/github"
 	"github.com/go-playground/webhooks/v6/gitlab"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/hanzoai/deploy/util/guard"
+	"github.com/hanzoai/cd/util/guard"
 )
 
 const payloadQueueSize = 50000

@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: hanzocd-repo-server
-        image: ghcr.io/hanzoai/deploy:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         args:
           - /usr/local/bin/hanzocd-repo-server
@@ -358,7 +358,7 @@ spec:
         command:
           - sh
           - '-c'
-        image: ghcr.io/hanzoai/deploy:latest
+        image: ghcr.io/hanzoai/cd:latest
         name: copyutil
         securityContext:
           runAsNonRoot: true

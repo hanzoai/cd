@@ -9,12 +9,12 @@ import (
 
 	"github.com/spf13/cobra/doc"
 
-	controller "github.com/hanzoai/deploy/cmd/cd-application-controller/commands"
-	cdappsetcontroller "github.com/hanzoai/deploy/cmd/cd-applicationset-controller/commands"
-	cddex "github.com/hanzoai/deploy/cmd/cd-dex/commands"
-	reposerver "github.com/hanzoai/deploy/cmd/cd-repo-server/commands"
-	cdserver "github.com/hanzoai/deploy/cmd/cd-server/commands"
-	cdcli "github.com/hanzoai/deploy/cmd/cd/commands"
+	controller "github.com/hanzoai/cd/cmd/cd-application-controller/commands"
+	cdappsetcontroller "github.com/hanzoai/cd/cmd/cd-applicationset-controller/commands"
+	cddex "github.com/hanzoai/cd/cmd/cd-dex/commands"
+	reposerver "github.com/hanzoai/cd/cmd/cd-repo-server/commands"
+	cdserver "github.com/hanzoai/cd/cmd/cd-server/commands"
+	cdcli "github.com/hanzoai/cd/cmd/cd/commands"
 )
 
 func main() {

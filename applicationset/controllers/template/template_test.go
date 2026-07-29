@@ -13,12 +13,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	"github.com/hanzoai/deploy/applicationset/generators"
-	genmock "github.com/hanzoai/deploy/applicationset/generators/mocks"
-	"github.com/hanzoai/deploy/applicationset/utils"
-	rendmock "github.com/hanzoai/deploy/applicationset/utils/mocks"
-	"github.com/hanzoai/deploy/pkg/apis/application"
-	"github.com/hanzoai/deploy/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/applicationset/generators"
+	genmock "github.com/hanzoai/cd/applicationset/generators/mocks"
+	"github.com/hanzoai/cd/applicationset/utils"
+	rendmock "github.com/hanzoai/cd/applicationset/utils/mocks"
+	"github.com/hanzoai/cd/pkg/apis/application"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestGenerateApplications(t *testing.T) {

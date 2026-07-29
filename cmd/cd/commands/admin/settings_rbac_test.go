@@ -13,9 +13,9 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 
-	"github.com/hanzoai/deploy/util/rbac"
+	"github.com/hanzoai/cd/util/rbac"
 
-	"github.com/hanzoai/deploy/util/assets"
+	"github.com/hanzoai/cd/util/assets"
 )
 
 type FakeClientConfig struct {

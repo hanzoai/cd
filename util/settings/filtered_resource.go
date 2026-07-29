@@ -1,6 +1,6 @@
 package settings
 
-import "github.com/hanzoai/deploy/util/glob"
+import "github.com/hanzoai/cd/util/glob"
 
 type FilteredResource struct {
 	APIGroups []string `json:"apiGroups,omitempty"`
