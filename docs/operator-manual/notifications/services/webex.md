@@ -37,5 +37,5 @@ The Webex Teams notification service configuration includes following settings:
     kind: Application
     metadata:
     annotations:
-        notifications.apps.hanzo.ai/subscribe.<trigger-name>.webex: <personal email or room id>
+        apps.hanzo.ai/subscribe.<trigger-name>.webex: <personal email or room id>
     ```

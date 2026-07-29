@@ -42,7 +42,7 @@ rm cd-linux-amd64
 You can download the latest stable release by executing below steps:
 
 ```bash
-VERSION=$(curl -L -s https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION)
+VERSION=$(curl -L -s https://raw.githubusercontent.com/hanzoai/cd/stable/VERSION)
 curl -sSL -o cd-linux-amd64 https://github.com/hanzoai/cd/releases/download/v$VERSION/cd-linux-amd64
 sudo install -m 555 cd-linux-amd64 /usr/local/bin/cd
 rm cd-linux-amd64
@@ -74,7 +74,7 @@ Choose the appropriate binary for your Mac's architecture:
 You can view the latest version of Hanzo CD at the link above or run the following command to grab the version:
 
 ```bash
-VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+VERSION=$(curl --silent "https://api.github.com/repos/hanzoai/cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 ```
 
 Replace `VERSION` in the command below with the version of Hanzo CD you would like to download:
@@ -95,7 +95,7 @@ rm cd
 You can view the latest version of Hanzo CD at the link above or run the following command to grab the version:
 
 ```bash
-VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+VERSION=$(curl --silent "https://api.github.com/repos/hanzoai/cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 ```
 
 Replace `VERSION` in the command below with the version of Hanzo CD you would like to download:
@@ -121,7 +121,7 @@ After finishing either of the instructions above, you should now be able to run 
 You can view the latest version of Hanzo CD at the link above or run the following command to grab the version:
 
 ```powershell
-$version = (Invoke-RestMethod https://api.github.com/repos/argoproj/argo-cd/releases/latest).tag_name
+$version = (Invoke-RestMethod https://api.github.com/repos/hanzoai/cd/releases/latest).tag_name
 ```
 
 Replace `$version` in the command below with the version of Hanzo CD you would like to download:

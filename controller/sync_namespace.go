@@ -35,7 +35,7 @@ func syncNamespace(syncPolicy *v1alpha1.SyncPolicy) func(m *unstructured.Unstruc
 			managedNs.SetAnnotations(appendSSAAnnotation(managedNamespaceMetadata.Annotations))
 		}
 
-		// TODO: https://github.com/argoproj/argo-cd/issues/11196
+		// TODO: https://github.com/hanzoai/cd/issues/11196
 		// err := resourceTracking.SetAppInstance(managedNs, appLabelKey, appName, "", trackingMethod)
 		// if err != nil {
 		// 	return false, fmt.Errorf("failed to set app instance tracking on the namespace %s: %s", managedNs.GetName(), err)

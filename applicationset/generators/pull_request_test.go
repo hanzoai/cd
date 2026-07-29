@@ -10,21 +10,21 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	pullrequest "github.com/hanzoai/cd/applicationset/services/pull_request"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestPullRequestGithubGenerateParams(t *testing.T) {
 	ctx := t.Context()
 	cases := []struct {
-		selectFunc                  func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error)
+		selectFunc                  func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error)
 		values                      map[string]string
 		expected                    []map[string]any
 		expectedErr                 error
-		applicationSet              argoprojiov1alpha1.ApplicationSet
+		applicationSet              appv1alpha1.ApplicationSet
 		continueOnRepoNotFoundError bool
 	}{
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					[]*pullrequest.PullRequest{
@@ -57,7 +57,7 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					[]*pullrequest.PullRequest{
@@ -90,7 +90,7 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					[]*pullrequest.PullRequest{
@@ -123,7 +123,7 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					[]*pullrequest.PullRequest{
@@ -162,7 +162,7 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					nil,
@@ -173,7 +173,7 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 			expectedErr: errors.New("error listing repos: fake error"),
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					nil,
@@ -185,7 +185,7 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 			continueOnRepoNotFoundError: true,
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					nil,
@@ -197,7 +197,7 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 			continueOnRepoNotFoundError: false,
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					[]*pullrequest.PullRequest{
@@ -230,15 +230,15 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 				},
 			},
 			expectedErr: nil,
-			applicationSet: argoprojiov1alpha1.ApplicationSet{
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
+			applicationSet: appv1alpha1.ApplicationSet{
+				Spec: appv1alpha1.ApplicationSetSpec{
 					// Application set is using Go Template.
 					GoTemplate: true,
 				},
 			},
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					[]*pullrequest.PullRequest{
@@ -270,15 +270,15 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 				},
 			},
 			expectedErr: nil,
-			applicationSet: argoprojiov1alpha1.ApplicationSet{
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
+			applicationSet: appv1alpha1.ApplicationSet{
+				Spec: appv1alpha1.ApplicationSetSpec{
 					// Application set is using fasttemplate.
 					GoTemplate: false,
 				},
 			},
 		},
 		{
-			selectFunc: func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+			selectFunc: func(context.Context, *appv1alpha1.PullRequestGenerator, *appv1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 				return pullrequest.NewFakeService(
 					ctx,
 					[]*pullrequest.PullRequest{
@@ -315,8 +315,8 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 				},
 			},
 			expectedErr: nil,
-			applicationSet: argoprojiov1alpha1.ApplicationSet{
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
+			applicationSet: appv1alpha1.ApplicationSet{
+				Spec: appv1alpha1.ApplicationSetSpec{
 					// Application set is using fasttemplate.
 					GoTemplate: true,
 				},
@@ -328,8 +328,8 @@ func TestPullRequestGithubGenerateParams(t *testing.T) {
 		gen := PullRequestGenerator{
 			selectServiceProviderFunc: c.selectFunc,
 		}
-		generatorConfig := argoprojiov1alpha1.ApplicationSetGenerator{
-			PullRequest: &argoprojiov1alpha1.PullRequestGenerator{
+		generatorConfig := appv1alpha1.ApplicationSetGenerator{
+			PullRequest: &appv1alpha1.PullRequestGenerator{
 				Values:                      c.values,
 				ContinueOnRepoNotFoundError: c.continueOnRepoNotFoundError,
 			},
@@ -350,36 +350,36 @@ func TestAllowedSCMProviderPullRequest(t *testing.T) {
 
 	cases := []struct {
 		name           string
-		providerConfig *argoprojiov1alpha1.PullRequestGenerator
+		providerConfig *appv1alpha1.PullRequestGenerator
 	}{
 		{
 			name: "Error Github",
-			providerConfig: &argoprojiov1alpha1.PullRequestGenerator{
-				Github: &argoprojiov1alpha1.PullRequestGeneratorGithub{
+			providerConfig: &appv1alpha1.PullRequestGenerator{
+				Github: &appv1alpha1.PullRequestGeneratorGithub{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
 		},
 		{
 			name: "Error Gitlab",
-			providerConfig: &argoprojiov1alpha1.PullRequestGenerator{
-				GitLab: &argoprojiov1alpha1.PullRequestGeneratorGitLab{
+			providerConfig: &appv1alpha1.PullRequestGenerator{
+				GitLab: &appv1alpha1.PullRequestGeneratorGitLab{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
 		},
 		{
 			name: "Error Gitea",
-			providerConfig: &argoprojiov1alpha1.PullRequestGenerator{
-				Gitea: &argoprojiov1alpha1.PullRequestGeneratorGitea{
+			providerConfig: &appv1alpha1.PullRequestGenerator{
+				Gitea: &appv1alpha1.PullRequestGeneratorGitea{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
 		},
 		{
 			name: "Error Bitbucket",
-			providerConfig: &argoprojiov1alpha1.PullRequestGenerator{
-				BitbucketServer: &argoprojiov1alpha1.PullRequestGeneratorBitbucketServer{
+			providerConfig: &appv1alpha1.PullRequestGenerator{
+				BitbucketServer: &appv1alpha1.PullRequestGeneratorBitbucketServer{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
@@ -400,12 +400,12 @@ func TestAllowedSCMProviderPullRequest(t *testing.T) {
 				"azuredevops.myorg.com",
 			}, true, true, nil, true))
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := appv1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
-					Generators: []argoprojiov1alpha1.ApplicationSetGenerator{{
+				Spec: appv1alpha1.ApplicationSetSpec{
+					Generators: []appv1alpha1.ApplicationSetGenerator{{
 						PullRequest: testCaseCopy.providerConfig,
 					}},
 				},
@@ -423,14 +423,14 @@ func TestAllowedSCMProviderPullRequest(t *testing.T) {
 func TestSCMProviderDisabled_PRGenerator(t *testing.T) {
 	generator := NewPullRequestGenerator(nil, NewSCMConfig("", []string{}, false, true, nil, true))
 
-	applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+	applicationSetInfo := appv1alpha1.ApplicationSet{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "set",
 		},
-		Spec: argoprojiov1alpha1.ApplicationSetSpec{
-			Generators: []argoprojiov1alpha1.ApplicationSetGenerator{{
-				PullRequest: &argoprojiov1alpha1.PullRequestGenerator{
-					Github: &argoprojiov1alpha1.PullRequestGeneratorGithub{
+		Spec: appv1alpha1.ApplicationSetSpec{
+			Generators: []appv1alpha1.ApplicationSetGenerator{{
+				PullRequest: &appv1alpha1.PullRequestGenerator{
+					Github: &appv1alpha1.PullRequestGeneratorGithub{
 						API: "https://myservice.mynamespace.svc.cluster.local",
 					},
 				},

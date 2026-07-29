@@ -59,14 +59,14 @@ func TestEnsurePrefix(t *testing.T) {
 func TestIsSSHURL(t *testing.T) {
 	t.Parallel()
 	data := map[string]bool{
-		"git://github.com/argoproj/test.git":     false,
-		"git@GITHUB.com:argoproj/test.git":       true,
+		"git://git.hanzo.ai/hanzo/test.git":     false,
+		"git@GITHUB.com:hanzoai/test.git":       true,
 		"git@github.com:test":                    true,
 		"git@github.com:test.git":                true,
-		"https://github.com/argoproj/test":       false,
-		"https://github.com/argoproj/test.git":   false,
-		"ssh://git@GITHUB.com:argoproj/test":     true,
-		"ssh://git@GITHUB.com:argoproj/test.git": true,
+		"https://github.com/hanzoai/test":       false,
+		"https://git.hanzo.ai/hanzo/test.git":   false,
+		"ssh://git@GITHUB.com:hanzoai/test":     true,
+		"ssh://git@GITHUB.com:hanzoai/test.git": true,
 		"ssh://git@github.com:test.git":          true,
 	}
 	for k, v := range data {
@@ -105,11 +105,11 @@ func TestIsSSHURLUserName(t *testing.T) {
 func TestSSHHostWithPort(t *testing.T) {
 	t.Parallel()
 	data := map[string]string{
-		"git@github.com:argoproj/test.git":            "github.com:22",
-		"ssh://git@github.com/argoproj/test.git":      "github.com:22",
-		"ssh://git@github.com:2222/argoproj/test.git": "github.com:2222",
+		"git@github.com:hanzoai/test.git":            "github.com:22",
+		"ssh://git@git.hanzo.ai/hanzo/test.git":      "github.com:22",
+		"ssh://git@github.com:2222/hanzoai/test.git": "github.com:2222",
 		"ssh://john@john-server.org:29418/project":    "john-server.org:29418",
-		"https://github.com/argoproj/test":            "",
+		"https://github.com/hanzoai/test":            "",
 		"":                                            "",
 	}
 	for repoURL, want := range data {
@@ -120,23 +120,23 @@ func TestSSHHostWithPort(t *testing.T) {
 func TestSameURL(t *testing.T) {
 	t.Parallel()
 	data := map[string]string{
-		"git@GITHUB.com:argoproj/test":                     "git@github.com:argoproj/test.git",
-		"git@GITHUB.com:argoproj/test.git":                 "git@github.com:argoproj/test.git",
+		"git@GITHUB.com:hanzoai/test":                     "git@github.com:hanzoai/test.git",
+		"git@GITHUB.com:hanzoai/test.git":                 "git@github.com:hanzoai/test.git",
 		"git@GITHUB.com:test":                              "git@github.com:test.git",
 		"git@GITHUB.com:test.git":                          "git@github.com:test.git",
-		"https://GITHUB.com/argoproj/test":                 "https://github.com/argoproj/test.git",
-		"https://GITHUB.com/argoproj/test.git":             "https://github.com/argoproj/test.git",
+		"https://GITHUB.com/hanzoai/test":                 "https://git.hanzo.ai/hanzo/test.git",
+		"https://GITHUB.com/hanzoai/test.git":             "https://git.hanzo.ai/hanzo/test.git",
 		"https://github.com/FOO":                           "https://github.com/foo",
 		"https://github.com/TEST":                          "https://github.com/TEST.git",
 		"https://github.com/TEST.git":                      "https://github.com/TEST.git",
 		"https://github.com:4443/TEST":                     "https://github.com:4443/TEST.git",
 		"https://github.com:4443/TEST.git":                 "https://github.com:4443/TEST",
-		"ssh://git@GITHUB.com/argoproj/test":               "git@github.com:argoproj/test.git",
-		"ssh://git@GITHUB.com/argoproj/test.git":           "git@github.com:argoproj/test.git",
+		"ssh://git@GITHUB.com/hanzoai/test":               "git@github.com:hanzoai/test.git",
+		"ssh://git@GITHUB.com/hanzoai/test.git":           "git@github.com:hanzoai/test.git",
 		"ssh://git@GITHUB.com/test.git":                    "git@github.com:test.git",
 		"ssh://git@github.com/test":                        "git@github.com:test.git",
-		" https://github.com/argoproj/test ":               "https://github.com/argoproj/test.git", //nolint:gocritic // This includes whitespaces for testing
-		"\thttps://github.com/argoproj/test\n":             "https://github.com/argoproj/test.git",
+		" https://github.com/hanzoai/test ":               "https://git.hanzo.ai/hanzo/test.git", //nolint:gocritic // This includes whitespaces for testing
+		"\thttps://github.com/hanzoai/test\n":             "https://git.hanzo.ai/hanzo/test.git",
 		"https://1234.visualstudio.com/myproj/_git/myrepo": "https://1234.visualstudio.com/myproj/_git/myrepo",
 		"https://dev.azure.com/1234/myproj/_git/myrepo":    "https://dev.azure.com/1234/myproj/_git/myrepo",
 	}
@@ -155,7 +155,7 @@ func TestSanitizeRepoURL(t *testing.T) {
 		{"no credentials", "https://github.com/hanzoai/cd.git", "https://github.com/hanzoai/cd.git"},
 		{"strips user and password", "https://user:p@ss@github.com/hanzoai/cd.git", "https://github.com/hanzoai/cd.git"},
 		{"strips token-only userinfo", "https://token@github.com/org/repo", "https://github.com/org/repo"},
-		{"scp-style ssh left unchanged", "git@github.com:argoproj/argo-cd.git", "git@github.com:argoproj/argo-cd.git"},
+		{"scp-style ssh left unchanged", "git@github.com:hanzoai/cd.git", "git@github.com:hanzoai/cd.git"},
 		{"unparseable returned unchanged", "://not a url", "://not a url"},
 		{"empty returned unchanged", "", ""},
 	}
@@ -361,7 +361,7 @@ func TestLFSClient(t *testing.T) {
 
 	tempDir := t.TempDir()
 
-	client, err := NewClientExt("https://github.com/argoproj-labs/cd-testrepo-lfs", tempDir, NopCreds{}, false, true, "", "")
+	client, err := NewClientExt("https://github.com/hanzoai-labs/cd-testrepo-lfs", tempDir, NopCreds{}, false, true, "", "")
 	require.NoError(t, err)
 
 	commitSHA, err := client.LsRemote("HEAD")
@@ -401,7 +401,7 @@ func TestVerifyCommitSignature(t *testing.T) {
 	setupGitEnv(t)
 	p := t.TempDir()
 
-	client, err := NewClientExt("https://github.com/argoproj/argocd-example-apps.git", p, NopCreds{}, false, false, "", "")
+	client, err := NewClientExt("https://git.hanzo.ai/hanzo/example-apps.git", p, NopCreds{}, false, false, "", "")
 	require.NoError(t, err)
 
 	err = client.Init()
@@ -456,7 +456,7 @@ func TestNewFactory(t *testing.T) {
 		name string
 		args args
 	}{
-		{"GitHub", args{url: "https://github.com/argoproj/argocd-example-apps"}},
+		{"GitHub", args{url: "https://git.hanzo.ai/hanzo/example-apps"}},
 	}
 	for _, tt := range tests {
 		if tt.name == "PrivateSSHRepo" {

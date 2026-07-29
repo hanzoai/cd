@@ -53,7 +53,7 @@ jobs:
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           
           # Calculate image names with defaults
-          IMAGE_NAMESPACE="${VARS_IMAGE_NAMESPACE:-argoproj}"
+          IMAGE_NAMESPACE="${VARS_IMAGE_NAMESPACE:-hanzoai}"
           IMAGE_REPOSITORY="${VARS_IMAGE_REPOSITORY:-cd}"
           GHCR_NAMESPACE="${VARS_GHCR_NAMESPACE:-$GITHUB_REPOSITORY}"
           GHCR_REPOSITORY="${VARS_GHCR_REPOSITORY:-cd}"
@@ -65,7 +65,7 @@ jobs:
           echo "quay_image_name=" >> $GITHUB_OUTPUT  # GHCR-only fork: no quay creds
           
           ALLOW_GHCR_PUBLISH=false
-          if [[ "$GITHUB_REPOSITORY" == "argoproj/argo-cd" || "$GHCR_NAMESPACE" != argoproj/* ]]; then
+          if [[ "$GITHUB_REPOSITORY" == "hanzoai/cd" || "$GHCR_NAMESPACE" != hanzoai/* ]]; then
             ALLOW_GHCR_PUBLISH=true
             echo "ghcr_image_name=ghcr.io/$GHCR_NAMESPACE/$GHCR_REPOSITORY:$TAG" >> $GITHUB_OUTPUT
             echo "ghcr_provenance_image=ghcr.io/$GHCR_NAMESPACE/$GHCR_REPOSITORY" >> $GITHUB_OUTPUT
@@ -101,7 +101,7 @@ jobs:
       contents: read
       packages: write # for pushing packages to GHCR, which is used by cd.apps.apps.hanzo.ai to avoid polluting Quay with tags
       id-token: write # for creating OIDC tokens for signing.
-    if: ${{ (github.repository == 'argoproj/argo-cd' || needs.set-vars.outputs.image_namespace != 'argoproj') && github.event_name != 'push' }}
+    if: ${{ (github.repository == 'hanzoai/cd' || needs.set-vars.outputs.image_namespace != 'hanzoai') && github.event_name != 'push' }}
     uses: ./.github/workflows/image-reuse.yaml
     with:
       # Note: cannot use env variables to set go-version (https://docs.github.com/en/actions/using-workflows/reusing-workflows#limitations)
@@ -116,7 +116,7 @@ jobs:
       contents: read
       packages: write # for pushing packages to GHCR, which is used by cd.apps.apps.hanzo.ai to avoid polluting Quay with tags
       id-token: write # for creating OIDC tokens for signing.
-    if: ${{ (github.repository == 'argoproj/argo-cd' || needs.set-vars.outputs.image_namespace != 'argoproj') && github.event_name == 'push' }}
+    if: ${{ (github.repository == 'hanzoai/cd' || needs.set-vars.outputs.image_namespace != 'hanzoai') && github.event_name == 'push' }}
     uses: ./.github/workflows/image-reuse.yaml
     with:
       quay_image_name: ${{ needs.set-vars.outputs.quay_image_name }}
@@ -140,7 +140,7 @@ jobs:
       actions: read # for detecting the Github Actions environment.
       id-token: write # for creating OIDC tokens for signing.
       packages: write # for uploading attestations. (https://github.com/slsa-framework/slsa-github-generator/blob/main/internal/builders/container/README.md#known-issues)
-    if: ${{ (github.repository == 'argoproj/argo-cd' || needs.set-vars.outputs.image_namespace != 'argoproj') && github.event_name == 'push' && needs.set-vars.outputs.allow_ghcr_publish == 'true'}}
+    if: ${{ (github.repository == 'hanzoai/cd' || needs.set-vars.outputs.image_namespace != 'hanzoai') && github.event_name == 'push' && needs.set-vars.outputs.allow_ghcr_publish == 'true'}}
     # Must be referenced by a tag. https://github.com/slsa-framework/slsa-github-generator/blob/main/internal/builders/container/README.md#referencing-the-slsa-generator
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v2.1.0
     with:
@@ -158,20 +158,20 @@ jobs:
     permissions:
       contents: write # for git to push upgrade commit if not already deployed
       packages: write # for pushing packages to GHCR, which is used by cd.apps.apps.hanzo.ai to avoid polluting Quay with tags
-    if: ${{ github.repository == 'argoproj/argo-cd' && github.event_name == 'push' }}
+    if: ${{ github.repository == 'hanzoai/cd' && github.event_name == 'push' }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - run: git clone "https://$TOKEN@github.com/argoproj/argoproj-deployments"
+      - run: git clone "https://$TOKEN@github.com/hanzoai/hanzoai-deployments"
         env:
           TOKEN: ${{ secrets.TOKEN }}
       - run: |
-          docker run -u $(id -u):$(id -g) -v $(pwd):/src -w /src --rm -t ghcr.io/argoproj/argo-cd/cd:${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG} kustomize edit set image quay.io/argoproj/cd=ghcr.io/argoproj/argo-cd/cd:${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG}
-          git config --global user.email 'ci@argoproj.com'
+          docker run -u $(id -u):$(id -g) -v $(pwd):/src -w /src --rm -t ghcr.io/hanzoai/cd/cd:${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG} kustomize edit set image ghcr.io/hanzoai/cd=ghcr.io/hanzoai/cd/cd:${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG}
+          git config --global user.email 'ci@hanzoai.com'
           git config --global user.name 'CI'
           git diff --exit-code && echo 'Already deployed' || (git commit -am 'Upgrade cd to ${NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG}' && git push)
-        working-directory: argoproj-deployments/cd
+        working-directory: hanzoai-deployments/cd
         env:
           NEEDS_SET_VARS_OUTPUTS_IMAGE_TAG: ${{ needs.set-vars.outputs.image-tag }}

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"regexp"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
-func compileFilters(filters []argoprojiov1alpha1.PullRequestGeneratorFilter) ([]*Filter, error) {
+func compileFilters(filters []appv1alpha1.PullRequestGeneratorFilter) ([]*Filter, error) {
 	outFilters := make([]*Filter, 0, len(filters))
 	for _, filter := range filters {
 		outFilter := &Filter{}
@@ -50,7 +50,7 @@ func matchFilter(pullRequest *PullRequest, filter *Filter) bool {
 	return true
 }
 
-func ListPullRequests(ctx context.Context, provider PullRequestService, filters []argoprojiov1alpha1.PullRequestGeneratorFilter) ([]*PullRequest, error) {
+func ListPullRequests(ctx context.Context, provider PullRequestService, filters []appv1alpha1.PullRequestGeneratorFilter) ([]*PullRequest, error) {
 	compiledFilters, err := compileFilters(filters)
 	if err != nil {
 		return nil, err

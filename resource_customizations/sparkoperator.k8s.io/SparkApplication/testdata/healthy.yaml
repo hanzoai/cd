@@ -3,7 +3,7 @@ kind: SparkApplication
 metadata:
   generation: 4
   labels:
-    cd.hanzo.ai/instance: spark-job
+    apps.hanzo.ai/instance: spark-job
   name: spark-job-app
   namespace: spark-cluster
   resourceVersion: "31812990"

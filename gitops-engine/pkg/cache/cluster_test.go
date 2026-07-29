@@ -2528,7 +2528,7 @@ func TestIterateHierarchyV2_NoDuplicatesCrossNamespace(t *testing.T) {
 func TestIterateHierarchyV2_CircularOwnerReference_NoStackOverflow(t *testing.T) {
 	t.Parallel()
 	// Test that self-referencing resources (circular ownerReferences) don't cause stack overflow.
-	// This reproduces the bug reported in https://github.com/argoproj/argo-cd/issues/26783
+	// This reproduces the bug reported in https://github.com/hanzoai/cd/issues/26783
 	// where a resource with an ownerReference pointing to itself caused infinite recursion.
 
 	// Create a cluster-scoped resource that owns itself (self-referencing)
@@ -2638,7 +2638,7 @@ func TestIterateHierarchyV2_CircularOwnerChain_NoStackOverflow(t *testing.T) {
 
 // BenchmarkSync_ParentToChildrenIndex measures the overhead of parent-to-children index
 // operations during sync. This benchmark was created to investigate performance regression
-// reported in https://github.com/argoproj/argo-cd/issues/26863
+// reported in https://github.com/hanzoai/cd/issues/26863
 //
 // The index is now maintained with O(1) operations (set-based) and updated inline
 // in setNode() for both explicit and inferred owner refs. No rebuild is needed.

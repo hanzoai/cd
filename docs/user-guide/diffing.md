@@ -153,7 +153,7 @@ Some CRDs are re-using data structures defined in the Kubernetes source base and
 JSON/YAML marshaling. Custom marshalers might serialize CRDs in a slightly different format that causes false
 positives during drift detection.
 
-A typical example is the `apps.hanzo.ai/Rollout` CRD that re-using `core/v1/PodSpec` data structure. Pod resource requests
+A typical example is the `hanzoai.io/Rollout` CRD that re-using `core/v1/PodSpec` data structure. Pod resource requests
 might be reformatted by the custom marshaller of `IntOrString` data type:
 
 from:
@@ -190,7 +190,7 @@ data:
       type: core/v1/PodSpec
 ```
 
-The list of supported Kubernetes types is available in [diffing_known_types.txt](https://raw.githubusercontent.com/argoproj/argo-cd/master/util/argo/normalizers/diffing_known_types.txt) and additionally:
+The list of supported Kubernetes types is available in [diffing_known_types.txt](https://raw.githubusercontent.com/hanzoai/cd/master/util/argo/normalizers/diffing_known_types.txt) and additionally:
 
 - `core/Quantity`
 - `meta/v1/Duration`

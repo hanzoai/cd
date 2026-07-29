@@ -3,7 +3,7 @@
 All `Application` resources created by the ApplicationSet controller (from an ApplicationSet) will contain:
 
 - A `.metadata.ownerReferences` reference back to the *parent* `ApplicationSet` resource
-- An Hanzo CD `resources-finalizer.cd.hanzo.ai` finalizer in `.metadata.finalizers` of the Application if `.syncPolicy.preserveResourcesOnDeletion` is set to false.
+- An Hanzo CD `resources-finalizer.apps.hanzo.ai` finalizer in `.metadata.finalizers` of the Application if `.syncPolicy.preserveResourcesOnDeletion` is set to false.
 
 The end result is that when an ApplicationSet is deleted, the following occurs (in rough order):
 
@@ -24,6 +24,6 @@ kubectl delete ApplicationSet (NAME) --cascade=orphan
 ```
 
 > [!WARNING]
-> Even if using a non-cascaded delete, the `resources-finalizer.cd.hanzo.ai` is still specified on the `Application`. Thus, when the `Application` is deleted, all of its deployed resources will also be deleted. (The lifecycle of the Application, and its *child* objects, are still equivalent.)
+> Even if using a non-cascaded delete, the `resources-finalizer.apps.hanzo.ai` is still specified on the `Application`. Thus, when the `Application` is deleted, all of its deployed resources will also be deleted. (The lifecycle of the Application, and its *child* objects, are still equivalent.)
 > 
 > To prevent the deletion of the resources of the Application, such as Services, Deployments, etc, set `.syncPolicy.preserveResourcesOnDeletion` to true in the ApplicationSet. This syncPolicy parameter prevents the finalizer from being added to the Application.

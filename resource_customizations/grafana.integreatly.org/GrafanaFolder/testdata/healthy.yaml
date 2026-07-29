@@ -2,15 +2,15 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaFolder
 metadata:
   annotations:
-    cd.hanzo.ai/installation-id: cd.com
-    cd.hanzo.ai/tracking-id: >-
+    apps.hanzo.ai/installation-id: cd.com
+    apps.hanzo.ai/tracking-id: >-
       foo:grafana.integreatly.org/GrafanaFolder:grafana-operator/bar
   creationTimestamp: '2025-03-26T14:50:23Z'
   finalizers:
     - operator.grafana.com/finalizer
   generation: 1
   labels:
-    cd.hanzo.ai/instance: foo
+    apps.hanzo.ai/instance: foo
   name: bar
   namespace: grafana-operator
   resourceVersion: '185974148'

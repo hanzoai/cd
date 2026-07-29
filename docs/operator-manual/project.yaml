@@ -5,7 +5,7 @@ metadata:
   namespace: cd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   # Project description
   description: Example Project

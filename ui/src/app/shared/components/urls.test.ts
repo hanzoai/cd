@@ -12,11 +12,11 @@ function testExample(http: string, ssl: string, revision: string, expectedRepoUr
 
 test('github.com', () => {
     testExample(
-        'https://github.com/argoproj/argo-cd.git',
-        'git@github.com:argoproj/argo-cd.git',
+        'https://github.com/hanzoai/cd.git',
+        'git@github.com:hanzoai/cd.git',
         '024dee09f543ce7bb5af7ca50260504d89dfda94',
-        'https://github.com/argoproj/argo-cd',
-        'https://github.com/argoproj/argo-cd/commit/024dee09f543ce7bb5af7ca50260504d89dfda94',
+        'https://github.com/hanzoai/cd',
+        'https://github.com/hanzoai/cd/commit/024dee09f543ce7bb5af7ca50260504d89dfda94',
     );
 });
 

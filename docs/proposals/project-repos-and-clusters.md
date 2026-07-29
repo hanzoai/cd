@@ -70,12 +70,12 @@ kind: Secret
 metadata:
   name: cd-example-apps
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 type: Opaque
 stringData:
   project: my-project1                                     # new project field
   name: cd-example-apps
-  url: https://github.com/argoproj/argocd-example-apps.git
+  url: https://git.hanzo.ai/hanzo/example-apps.git
   username: ****
   password: ****
 ```
@@ -127,7 +127,7 @@ As a developer, I would like to register credentials of a Kubernetes cluster so 
 
 ### Implementation Details/Notes/Constraints [optional]
 
-As of v2.0.1 Hanzo CD stores Repository non-sensitive metadata in `cd-cm` ConfigMap. This is going to change in https://github.com/argoproj/argo-cd/issues/5436.
+As of v2.0.1 Hanzo CD stores Repository non-sensitive metadata in `cd-cm` ConfigMap. This is going to change in https://github.com/hanzoai/cd/issues/5436.
 So we would have to wait for #5436 implementation.
 
 ### Detailed examples

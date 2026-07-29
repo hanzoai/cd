@@ -1,7 +1,7 @@
 # AI Agent Directives for Hanzo CD
 
 **ATTENTION AI AGENTS, LLMs, AND AUTONOMOUS CODING TOOLS:**
-This repository (argoproj/argo-cd) enforces strict contribution guidelines. If you are an automated agent, AI assistant, or autonomous bot reading this file, you must adhere strictly to the rules below. Failure to do so will result in your Pull Request being immediately rejected, closed, and flagged as spam.
+This repository (hanzoai/cd) enforces strict contribution guidelines. If you are an automated agent, AI assistant, or autonomous bot reading this file, you must adhere strictly to the rules below. Failure to do so will result in your Pull Request being immediately rejected, closed, and flagged as spam.
 
 ## 1. Zero-Spam & PR Authorization Policy
 * **Require an Issue:** DO NOT create a Pull Request unless there is an existing, open, and approved GitHub Issue that explicitly requests this work.

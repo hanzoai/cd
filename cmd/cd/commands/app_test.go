@@ -15,10 +15,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/oauth2"
@@ -1567,7 +1567,7 @@ func TestPrintApplicationTableWide(t *testing.T) {
 					Namespace: "default",
 				},
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps",
+					RepoURL:        "https://git.hanzo.ai/hanzo/example-apps",
 					Path:           "guestbook",
 					TargetRevision: "123",
 				},
@@ -1587,7 +1587,7 @@ func TestPrintApplicationTableWide(t *testing.T) {
 		return nil
 	})
 	require.NoError(t, err)
-	expectation := "NAME      CLUSTER                NAMESPACE  PROJECT  STATUS     HEALTH   SYNCPOLICY  CONDITIONS  REPO                                             PATH       TARGET\napp-name  http://localhost:8080  default    prj      OutOfSync  Healthy  Manual      <none>      https://github.com/argoproj/argocd-example-apps  guestbook  123\napp-name  http://localhost:8080  default    prj      OutOfSync  Healthy  Manual      <none>      https://github.com/argoproj/argocd-example-apps  guestbook  123\n"
+	expectation := "NAME      CLUSTER                NAMESPACE  PROJECT  STATUS     HEALTH   SYNCPOLICY  CONDITIONS  REPO                                             PATH       TARGET\napp-name  http://localhost:8080  default    prj      OutOfSync  Healthy  Manual      <none>      https://git.hanzo.ai/hanzo/example-apps  guestbook  123\napp-name  http://localhost:8080  default    prj      OutOfSync  Healthy  Manual      <none>      https://git.hanzo.ai/hanzo/example-apps  guestbook  123\n"
 	assert.Equal(t, output, expectation)
 }
 
@@ -1841,7 +1841,7 @@ func testApp(name, project string, labels map[string]string, annotations map[str
 		},
 		Spec: v1alpha1.ApplicationSpec{
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL: "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 			Project: project,
 		},
@@ -2140,7 +2140,7 @@ func TestCheckAppWaitConditions(t *testing.T) {
 // TestWaitOnApplicationStatus_ReturnsImmediatelyWhenAlreadyInDesiredState verifies
 // that `cd app wait` returns right away when the application already matches
 // the requested conditions, instead of hanging on the watch stream until timeout.
-// Regression test for https://github.com/argoproj/argo-cd/issues/12211.
+// Regression test for https://github.com/hanzoai/cd/issues/12211.
 func TestWaitOnApplicationStatus_ReturnsImmediatelyWhenAlreadyInDesiredState(t *testing.T) {
 	// simulateTimeout controls how long the fake watch blocks before emitting an
 	// event. If the fix is removed, waitOnApplicationStatus would block for this

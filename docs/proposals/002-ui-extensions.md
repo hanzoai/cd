@@ -77,7 +77,7 @@ kind: Hanzo CDExtension
 metadata:
   name: argo-rollouts
 spec:
-  repository: https://github.com/argoproj-labs/rollout-extension
+  repository: https://github.com/hanzoai-labs/rollout-extension
   revision: HEAD
 ```
 

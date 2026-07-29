@@ -275,7 +275,7 @@ func (s *Server) getApplicationEnforceRBACClient(ctx context.Context, action, pr
 		if !s.isNamespaceEnabled(namespaceOrDefault) {
 			return nil, security.NamespaceNotPermittedError(namespaceOrDefault)
 		}
-		app, err := s.appclientset.ArgoprojV1alpha1().Applications(namespaceOrDefault).Get(ctx, name, metav1.GetOptions{
+		app, err := s.appclientset.AppV1alpha1().Applications(namespaceOrDefault).Get(ctx, name, metav1.GetOptions{
 			ResourceVersion: resourceVersion,
 		})
 		if err != nil {
@@ -389,7 +389,7 @@ func (s *Server) Create(ctx context.Context, q *application.ApplicationCreateReq
 		a.Operation = nil
 	}
 
-	created, err := s.appclientset.ArgoprojV1alpha1().Applications(appNs).Create(ctx, a, metav1.CreateOptions{})
+	created, err := s.appclientset.AppV1alpha1().Applications(appNs).Create(ctx, a, metav1.CreateOptions{})
 	if err == nil {
 		s.logAppEvent(ctx, created, cd.EventReasonResourceCreated, "created application")
 		s.waitSync(created)
@@ -807,7 +807,7 @@ func (s *Server) Get(ctx context.Context, q *application.ApplicationQuery) (*v1a
 	if *q.Refresh == string(v1alpha1.RefreshTypeHard) {
 		refreshType = v1alpha1.RefreshTypeHard
 	}
-	appIf := s.appclientset.ArgoprojV1alpha1().Applications(appNs)
+	appIf := s.appclientset.AppV1alpha1().Applications(appNs)
 
 	// subscribe early with buffered channel to ensure we don't miss events
 	events := make(chan *v1alpha1.ApplicationWatchEvent, watchAPIBufferSize)
@@ -1029,7 +1029,7 @@ func (s *Server) updateApp(ctx context.Context, app *v1alpha1.Application, newAp
 
 		app.Finalizers = newApp.Finalizers
 
-		res, err := s.appclientset.ArgoprojV1alpha1().Applications(app.Namespace).Update(ctx, app, metav1.UpdateOptions{})
+		res, err := s.appclientset.AppV1alpha1().Applications(app.Namespace).Update(ctx, app, metav1.UpdateOptions{})
 		if err == nil {
 			s.logAppEvent(ctx, app, cd.EventReasonResourceUpdated, "updated application spec")
 			s.waitSync(res)
@@ -1039,7 +1039,7 @@ func (s *Server) updateApp(ctx context.Context, app *v1alpha1.Application, newAp
 			return nil, err
 		}
 
-		app, err = s.appclientset.ArgoprojV1alpha1().Applications(app.Namespace).Get(ctx, newApp.Name, metav1.GetOptions{})
+		app, err = s.appclientset.AppV1alpha1().Applications(app.Namespace).Get(ctx, newApp.Name, metav1.GetOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("error getting application: %w", err)
 		}
@@ -1210,13 +1210,13 @@ func (s *Server) Delete(ctx context.Context, q *application.ApplicationDeleteReq
 		if err != nil {
 			return nil, fmt.Errorf("error marshaling finalizers: %w", err)
 		}
-		_, err = s.appclientset.ArgoprojV1alpha1().Applications(a.Namespace).Patch(ctx, a.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+		_, err = s.appclientset.AppV1alpha1().Applications(a.Namespace).Patch(ctx, a.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("error patching application with finalizers: %w", err)
 		}
 	}
 
-	err = s.appclientset.ArgoprojV1alpha1().Applications(appNs).Delete(ctx, appName, metav1.DeleteOptions{})
+	err = s.appclientset.AppV1alpha1().Applications(appNs).Delete(ctx, appName, metav1.DeleteOptions{})
 	if err != nil {
 		return nil, fmt.Errorf("error deleting application: %w", err)
 	}
@@ -1336,7 +1336,7 @@ func (s *Server) validateAndNormalizeApp(ctx context.Context, app *v1alpha1.Appl
 	}
 
 	appNs := s.appNamespaceOrDefault(app.Namespace)
-	currApp, err := s.appclientset.ArgoprojV1alpha1().Applications(appNs).Get(ctx, app.Name, metav1.GetOptions{})
+	currApp, err := s.appclientset.AppV1alpha1().Applications(appNs).Get(ctx, app.Name, metav1.GetOptions{})
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			return fmt.Errorf("error getting application by name: %w", err)
@@ -1688,7 +1688,7 @@ func (s *Server) RevisionMetadata(ctx context.Context, q *application.RevisionMe
 		Repo:            repo,
 		Revision:        q.GetRevision(),
 		SourceIntegrity: sourceIntegrity,
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+		// TODO: Remove deprecated https://github.com/hanzoai/cd/issues/27695
 		CheckSignature: sourceIntegrity != nil, // nolint:staticcheck
 	})
 }
@@ -2176,7 +2176,7 @@ func (s *Server) Sync(ctx context.Context, syncReq *application.ApplicationSyncR
 
 	appName := syncReq.GetName()
 	appNs := s.appNamespaceOrDefault(syncReq.GetAppNamespace())
-	appIf := s.appclientset.ArgoprojV1alpha1().Applications(appNs)
+	appIf := s.appclientset.AppV1alpha1().Applications(appNs)
 	a, err = cd.SetAppOperation(appIf, appName, &op)
 	if err != nil {
 		return nil, fmt.Errorf("error setting app operation: %w", err)
@@ -2316,7 +2316,7 @@ func (s *Server) Rollback(ctx context.Context, rollbackReq *application.Applicat
 	}
 	appName := rollbackReq.GetName()
 	appNs := s.appNamespaceOrDefault(rollbackReq.GetAppNamespace())
-	appIf := s.appclientset.ArgoprojV1alpha1().Applications(appNs)
+	appIf := s.appclientset.AppV1alpha1().Applications(appNs)
 	a, err = cd.SetAppOperation(appIf, appName, &op)
 	if err != nil {
 		return nil, fmt.Errorf("error setting app operation: %w", err)
@@ -2519,7 +2519,7 @@ func (s *Server) TerminateOperation(ctx context.Context, termOpReq *application.
 			return nil, status.Errorf(codes.InvalidArgument, "Unable to terminate operation. No operation is in progress")
 		}
 		a.Status.OperationState.Phase = common.OperationTerminating
-		updated, err := s.appclientset.ArgoprojV1alpha1().Applications(appNs).Update(ctx, a, metav1.UpdateOptions{})
+		updated, err := s.appclientset.AppV1alpha1().Applications(appNs).Update(ctx, a, metav1.UpdateOptions{})
 		if err == nil {
 			s.waitSync(updated)
 			s.logAppEvent(ctx, a, cd.EventReasonResourceUpdated, "terminated running operation")
@@ -2530,7 +2530,7 @@ func (s *Server) TerminateOperation(ctx context.Context, termOpReq *application.
 		}
 		log.Warnf("failed to set operation for app %q due to update conflict. retrying again...", *termOpReq.Name)
 		time.Sleep(100 * time.Millisecond)
-		a, err = s.appclientset.ArgoprojV1alpha1().Applications(appNs).Get(ctx, appName, metav1.GetOptions{})
+		a, err = s.appclientset.AppV1alpha1().Applications(appNs).Get(ctx, appName, metav1.GetOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("error getting application by name: %w", err)
 		}

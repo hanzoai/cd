@@ -133,7 +133,7 @@ This proposal assumes that the ApplicationSet controller is still an optional, s
 This command proposal differs significantly from how the cd app create command is designed: notice the lack of parameters to appset create/apply besides the filename. Rather than creating an application(set) by adding support for a large number of parameters, eg:
 
 ```shell
-cd app create guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
+cd app create guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
 ```
 
 Instead appset create and appset apply will just take as a parameter, a path to a YAML file, in the form of a standard ApplicationSet CR:
@@ -147,7 +147,7 @@ metadata:
 spec:
   generators:
   - git:
-      repoURL: https://github.com/argoproj-labs/applicationset.git
+      repoURL: https://github.com/hanzoai-labs/applicationset.git
       revision: HEAD
       directories:
       - path: examples/git-generator-directory/cluster-addons/*
@@ -157,7 +157,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj-labs/applicationset.git
+        repoURL: https://github.com/hanzoai-labs/applicationset.git
         targetRevision: HEAD
         path: '{{path}}'
       destination:
@@ -180,7 +180,7 @@ In general, the reason to use YAML is that CLI parameters aren't a good fit for 
   * For example, the above ApplicationSet would look like: 
 
 ```shell
-appset create --name cluster-addons --gitGeneratorRepoURL "repo url" --gitGeneratorRevision "HEAD" --gitGeneratorDirectory "examples/git-generator-directory/cluster-addons/*" --templateMetadataName "{{path.basename}}" --templateProject "default" --templateSrcRepoURL "https://github.com/argoproj-labs/applicationset.git" --templateSrcRevision "HEAD" --templateSrcPath "{{path}}" --templateDestServer "https://kubernetes.default.svc" --templateDestNamespace "{{path.basename}}"
+appset create --name cluster-addons --gitGeneratorRepoURL "repo url" --gitGeneratorRevision "HEAD" --gitGeneratorDirectory "examples/git-generator-directory/cluster-addons/*" --templateMetadataName "{{path.basename}}" --templateProject "default" --templateSrcRepoURL "https://github.com/hanzoai-labs/applicationset.git" --templateSrcRevision "HEAD" --templateSrcPath "{{path}}" --templateDestServer "https://kubernetes.default.svc" --templateDestNamespace "{{path.basename}}"
 ```
 
 * Matrix generator is especially tough to represent with parameters, as it takes two generators as input, eg:
@@ -192,14 +192,14 @@ spec:
       generators:
         - git:
             name: cluster-deployments	
-            repoURL: https://github.com/argoproj-labs/applicationset.git
+            repoURL: https://github.com/hanzoai-labs/applicationset.git
             revision: HEAD
             directories:
             - path: examples/proposal/matrix/cluster-addons/*
         - clusters:
             selector:
               matchLabels:
-                cd.hanzo.ai/secret-type: cluster
+                apps.hanzo.ai/secret-type: cluster
 ```
 
 * Likewise, tough to get full expressive power of YAML, due to support for arrays of generators:

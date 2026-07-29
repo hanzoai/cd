@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
-    cd.hanzo.ai/hook: Sync
+    apps.hanzo.ai/hook: Sync
   name: hook
 spec:
   ttlSecondsAfterFinished: 0
@@ -12,7 +12,7 @@ spec:
       containers:
         - command:
             - "true"
-          image: quay.io/argoprojlabs/cd-e2e-container:0.1
+          image: ghcr.io/hanzoai/e2e-container:0.1
           imagePullPolicy: IfNotPresent
           name: main
       restartPolicy: Never

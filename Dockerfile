@@ -90,7 +90,7 @@ ENV USER=argocd
 # Disable gRPC service config lookups via DNS TXT records to prevent excessive
 # DNS queries for _grpc_config.<hostname> which can cause timeouts in dual-stack
 # environments. This can be overridden via argocd-cmd-params-cm ConfigMap.
-# See https://github.com/argoproj/argo-cd/issues/24991
+# See https://github.com/hanzoai/cd/issues/24991
 ENV GRPC_ENABLE_TXT_SERVICE_CONFIG=false
 
 USER $CD_USER_ID
@@ -121,7 +121,7 @@ RUN NODE_ENV='production' NODE_ONLINE_ENV='online' NODE_OPTIONS=--max_old_space_
 ####################################################################################################
 FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.26.5@sha256:63f132d58c1f589f0dcda584933a9bb44bfda1150f1506377f5a902f34d86033 AS argocd-build
 
-WORKDIR /go/src/github.com/argoproj/argo-cd
+WORKDIR /go/src/github.com/hanzoai/cd
 
 COPY go.* ./
 RUN mkdir -p gitops-engine
@@ -130,7 +130,7 @@ RUN go mod download
 
 # Perform the build
 COPY . .
-COPY --from=argocd-ui /src/dist/app /go/src/github.com/argoproj/argo-cd/ui/dist/app
+COPY --from=argocd-ui /src/dist/app /go/src/github.com/hanzoai/cd/ui/dist/app
 ARG TARGETOS \
     TARGETARCH
 # These build args are optional; if not specified the defaults will be taken from the Makefile
@@ -151,7 +151,7 @@ RUN GIT_COMMIT=$GIT_COMMIT \
 ####################################################################################################
 FROM argocd-base
 ENTRYPOINT ["/usr/bin/tini", "--"]
-COPY --from=argocd-build /go/src/github.com/argoproj/argo-cd/dist/hanzocd* /usr/local/bin/
+COPY --from=argocd-build /go/src/github.com/hanzoai/cd/dist/hanzocd* /usr/local/bin/
 
 USER root
 RUN ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-server && \

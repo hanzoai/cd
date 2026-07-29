@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: my-map
   annotations:
-    cd.hanzo.ai/hook: PreSync
+    apps.hanzo.ai/hook: PreSync
 data:
   foo: bar

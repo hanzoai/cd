@@ -23,7 +23,7 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: cronworkflows.apps.hanzo.ai
+  name: cronworkflows.hanzoai.io
 spec:
   group: apps.hanzo.ai
   names:
@@ -64,7 +64,7 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: workflows.apps.hanzo.ai
+  name: workflows.hanzoai.io
 spec:
   additionalPrinterColumns:
   - JSONPath: .status.phase
@@ -353,7 +353,7 @@ spec:
       - args:
         - server
         - --namespaced
-        image: argoproj/argocli:v2.12.5
+        image: hanzoai/argocli:v2.12.5
         name: argo-server
         ports:
         - containerPort: 2746
@@ -395,11 +395,11 @@ spec:
         - --configmap
         - workflow-controller-configmap
         - --executor-image
-        - argoproj/argoexec:v2.12.5
+        - hanzoai/argoexec:v2.12.5
         - --namespaced
         command:
         - workflow-controller
-        image: argoproj/workflow-controller:v2.12.5
+        image: hanzoai/workflow-controller:v2.12.5
         livenessProbe:
           httpGet:
             path: /metrics

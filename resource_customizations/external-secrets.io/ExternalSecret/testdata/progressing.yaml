@@ -42,4 +42,4 @@ spec:
         server: '{{ .url | toString }}'
       metadata:
         labels:
-          cd.hanzo.ai/secret-type: cluster
+          apps.hanzo.ai/secret-type: cluster

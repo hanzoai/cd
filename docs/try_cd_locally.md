@@ -30,7 +30,7 @@ This command verifies that `kubectl` is pointed to the right cluster.
 You can now install Hanzo CD on your `kind` cluster. First, apply the Hanzo CD manifest to create the necessary resources:
 ```bash
 kubectl create namespace cd
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/stable/manifests/install.yaml
 ```
 
 > [!NOTE]

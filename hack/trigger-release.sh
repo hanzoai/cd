@@ -31,19 +31,19 @@ fi
 
 echo ">> Working in release branch '${RELEASE_BRANCH}'"
 
-# Safety check: Warn if pushing to official argoproj/argo-cd repository
+# Safety check: Warn if pushing to official hanzoai/cd repository
 REMOTE_URL=$(git remote get-url "${GIT_REMOTE}")
-if echo "${REMOTE_URL}" | grep -q "argoproj/argo-cd"; then
+if echo "${REMOTE_URL}" | grep -q "hanzoai/cd"; then
 	echo "" >&2
 	echo "!! ============================================================================" >&2
-	echo "!! WARNING: Remote '${GIT_REMOTE}' points to OFFICIAL argoproj/argo-cd!" >&2
+	echo "!! WARNING: Remote '${GIT_REMOTE}' points to OFFICIAL hanzoai/cd!" >&2
 	echo "!! Remote URL: ${REMOTE_URL}" >&2
 	echo "!! ============================================================================" >&2
 	echo "!!" >&2
 	echo "!! This will create an OFFICIAL Argo CD release:" >&2
 	echo "!!   - Tag: ${NEW_TAG}" >&2
-	echo "!!   - Images: quay.io/argoproj/argocd:${NEW_TAG}" >&2
-	echo "!!   - GitHub Release: https://github.com/argoproj/argo-cd/releases" >&2
+	echo "!!   - Images: ghcr.io/hanzoai/argocd:${NEW_TAG}" >&2
+	echo "!!   - GitHub Release: https://github.com/hanzoai/cd/releases" >&2
 	echo "!!   - Visible to ALL users" >&2
 	echo "!!" >&2
 	echo "!! If you want to release from YOUR FORK:" >&2

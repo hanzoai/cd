@@ -15,7 +15,7 @@
     "customManagers:dockerfileVersions",
     "security:openssf-scorecard",
     "mergeConfidence:all-badges",
-    "github>argoproj/argo-cd//renovate-presets/fix/openssf-merge-confidence-columns.json5",
+    "github>hanzoai/cd//renovate-presets/fix/openssf-merge-confidence-columns.json5",
   ],
   "packageRules": [
     {

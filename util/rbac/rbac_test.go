@@ -505,7 +505,7 @@ p, alice, clusters, get, "https://github.com/argo[a-z]{4}/argo-[a-z]+.git", allo
 	_ = enf.SetUserPolicy(policy)
 
 	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/hanzoai/cd.git"))
-	assert.False(t, enf.Enforce("alice", "clusters", "get", "https://github.com/argoproj/1argo-cd.git"))
+	assert.False(t, enf.Enforce("alice", "clusters", "get", "https://github.com/hanzoai/1argo-cd.git"))
 }
 
 func TestGlobMatchFunc(t *testing.T) {

@@ -4,7 +4,7 @@ This directory contains configuration and cryptographic keys for running the E2E
 
 ## Overview
 
-The test server runs in Docker (`argoproj/argo-cd-ci-builder:v1.0.0`) using goreman to manage three processes: sshd (port 2222), nginx (ports 9080, 9443-9445), and fcgiwrap (Git HTTP backend).
+The test server runs in Docker (`hanzoai/cd-ci-builder:v1.0.0`) using goreman to manage three processes: sshd (port 2222), nginx (ports 9080, 9443-9445), and fcgiwrap (Git HTTP backend).
 
 ## Files
 

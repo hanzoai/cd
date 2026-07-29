@@ -2,7 +2,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   annotations:
-    cd.hanzo.ai/tracking-id: 'myapp:policy/PodDisruptionBudget:default/myapp-pdb'
+    apps.hanzo.ai/tracking-id: 'myapp:policy/PodDisruptionBudget:default/myapp-pdb'
   name: myapp-pdb
   namespace: default
 spec:

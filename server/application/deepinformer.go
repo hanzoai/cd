@@ -8,7 +8,7 @@ import (
 
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
-	argoprojv1alpha1 "github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1"
 	applisters "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
 	"github.com/hanzoai/cd/util"
 
@@ -65,9 +65,9 @@ type deepCopyAppClientset struct {
 	appclientset.Interface
 }
 
-func (d *deepCopyAppClientset) ArgoprojV1alpha1() argoprojv1alpha1.ArgoprojV1alpha1Interface {
-	return &deepCopyArgoprojV1alpha1Client{
-		ArgoprojV1alpha1Interface: d.Interface.ArgoprojV1alpha1(),
+func (d *deepCopyAppClientset) AppV1alpha1() appv1alpha1.AppV1alpha1Interface {
+	return &deepCopyAppV1alpha1Client{
+		AppV1alpha1Interface: d.Interface.AppV1alpha1(),
 	}
 }
 
@@ -77,34 +77,34 @@ func (d *deepCopyAppClientset) GetUnderlyingClientSet() appclientset.Interface {
 	return d.Interface
 }
 
-type deepCopyArgoprojV1alpha1Client struct {
-	argoprojv1alpha1.ArgoprojV1alpha1Interface
+type deepCopyAppV1alpha1Client struct {
+	appv1alpha1.AppV1alpha1Interface
 }
 
-func (d *deepCopyArgoprojV1alpha1Client) RESTClient() rest.Interface {
-	return d.ArgoprojV1alpha1Interface.RESTClient()
+func (d *deepCopyAppV1alpha1Client) RESTClient() rest.Interface {
+	return d.AppV1alpha1Interface.RESTClient()
 }
 
-func (d *deepCopyArgoprojV1alpha1Client) AppProjects(namespace string) argoprojv1alpha1.AppProjectInterface {
+func (d *deepCopyAppV1alpha1Client) AppProjects(namespace string) appv1alpha1.AppProjectInterface {
 	return &deepCopyAppProjectClient{
-		AppProjectInterface: d.ArgoprojV1alpha1Interface.AppProjects(namespace),
+		AppProjectInterface: d.AppV1alpha1Interface.AppProjects(namespace),
 	}
 }
 
-func (d *deepCopyArgoprojV1alpha1Client) ApplicationSets(namespace string) argoprojv1alpha1.ApplicationSetInterface {
+func (d *deepCopyAppV1alpha1Client) ApplicationSets(namespace string) appv1alpha1.ApplicationSetInterface {
 	return &deepCopyApplicationSetClient{
-		ApplicationSetInterface: d.ArgoprojV1alpha1Interface.ApplicationSets(namespace),
+		ApplicationSetInterface: d.AppV1alpha1Interface.ApplicationSets(namespace),
 	}
 }
 
-func (d *deepCopyArgoprojV1alpha1Client) Applications(namespace string) argoprojv1alpha1.ApplicationInterface {
+func (d *deepCopyAppV1alpha1Client) Applications(namespace string) appv1alpha1.ApplicationInterface {
 	return &deepCopyApplicationClient{
-		ApplicationInterface: d.ArgoprojV1alpha1Interface.Applications(namespace),
+		ApplicationInterface: d.AppV1alpha1Interface.Applications(namespace),
 	}
 }
 
 type deepCopyApplicationClient struct {
-	argoprojv1alpha1.ApplicationInterface
+	appv1alpha1.ApplicationInterface
 }
 
 func (d *deepCopyApplicationClient) Get(ctx context.Context, name string, options metav1.GetOptions) (*v1alpha1.Application, error) {
@@ -124,7 +124,7 @@ func (d *deepCopyApplicationClient) List(ctx context.Context, opts metav1.ListOp
 }
 
 type deepCopyAppProjectClient struct {
-	argoprojv1alpha1.AppProjectInterface
+	appv1alpha1.AppProjectInterface
 }
 
 func (d *deepCopyAppProjectClient) Get(ctx context.Context, name string, options metav1.GetOptions) (*v1alpha1.AppProject, error) {
@@ -144,7 +144,7 @@ func (d *deepCopyAppProjectClient) List(ctx context.Context, opts metav1.ListOpt
 }
 
 type deepCopyApplicationSetClient struct {
-	argoprojv1alpha1.ApplicationSetInterface
+	appv1alpha1.ApplicationSetInterface
 }
 
 func (d *deepCopyApplicationSetClient) Get(ctx context.Context, name string, options metav1.GetOptions) (*v1alpha1.ApplicationSet, error) {

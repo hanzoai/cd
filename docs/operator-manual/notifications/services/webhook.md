@@ -75,7 +75,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.<trigger-name>.<webhook-name>: ""
+    apps.hanzo.ai/subscribe.<trigger-name>.<webhook-name>: ""
 ```
 
 4. TLS configuration (optional)

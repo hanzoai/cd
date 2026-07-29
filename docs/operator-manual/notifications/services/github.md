@@ -13,7 +13,7 @@ The GitHub notification service changes commit status using [GitHub Apps](https:
 - `maxConnsPerHost` - optional, maximum total connections per host.
 - `idleConnTimeout` - optional, maximum amount of time an idle (keep-alive) connection will remain open before closing.
 
-> ⚠️ _NOTE:_ Specifying `/api/v3` in the `enterpriseBaseURL` is required until [argoproj/notifications-engine#205](https://github.com/argoproj/notifications-engine/issues/205) is resolved.
+> ⚠️ _NOTE:_ Specifying `/api/v3` in the `enterpriseBaseURL` is required until [hanzoai/notifications-engine#205](https://github.com/hanzoai/notifications-engine/issues/205) is resolved.
 
 ## Configuration
 
@@ -57,7 +57,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.<trigger-name>.github: ""
+    apps.hanzo.ai/subscribe.<trigger-name>.github: ""
 ```
 
 ## Templates

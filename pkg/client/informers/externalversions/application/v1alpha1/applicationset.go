@@ -57,25 +57,25 @@ func NewApplicationSetInformerWithOptions(client versioned.Interface, namespace 
 				if tweakListOptions != nil {
 					tweakListOptions(&opts)
 				}
-				return client.ArgoprojV1alpha1().ApplicationSets(namespace).List(context.Background(), opts)
+				return client.AppV1alpha1().ApplicationSets(namespace).List(context.Background(), opts)
 			},
 			WatchFunc: func(opts v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&opts)
 				}
-				return client.ArgoprojV1alpha1().ApplicationSets(namespace).Watch(context.Background(), opts)
+				return client.AppV1alpha1().ApplicationSets(namespace).Watch(context.Background(), opts)
 			},
 			ListWithContextFunc: func(ctx context.Context, opts v1.ListOptions) (runtime.Object, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&opts)
 				}
-				return client.ArgoprojV1alpha1().ApplicationSets(namespace).List(ctx, opts)
+				return client.AppV1alpha1().ApplicationSets(namespace).List(ctx, opts)
 			},
 			WatchFuncWithContext: func(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&opts)
 				}
-				return client.ArgoprojV1alpha1().ApplicationSets(namespace).Watch(ctx, opts)
+				return client.AppV1alpha1().ApplicationSets(namespace).Watch(ctx, opts)
 			},
 		}, client),
 		&apisapplicationv1alpha1.ApplicationSet{},

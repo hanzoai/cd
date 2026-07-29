@@ -12,7 +12,7 @@ All resources, including `Application` and `AppProject` specs, have to be instal
 |-----------------------------------------------------------------------|------------------------------------------------------------------------------------|-----------|--------------------------------------------------------------------------------------|
 | [`cd-cm.yaml`](cd-cm-yaml.md)                                 | cd-cm                                                                          | ConfigMap | General Hanzo CD configuration                                                        |
 | [`cd-repositories.yaml`](cd-repositories-yaml.md)             | my-private-repo / istio-helm-repo / private-helm-repo / private-repo               | Secrets   | Sample repository connection details                                                 |
-| [`cd-repo-creds.yaml`](cd-repo-creds-yaml.md)                    | argoproj-https-creds / argoproj-ssh-creds / github-creds / github-enterprise-creds | Secrets   | Sample repository credential templates                                               |
+| [`cd-repo-creds.yaml`](cd-repo-creds-yaml.md)                    | hanzoai-https-creds / hanzoai-ssh-creds / github-creds / github-enterprise-creds | Secrets   | Sample repository credential templates                                               |
 | [`cd-cmd-params-cm.yaml`](cd-cmd-params-cm-yaml.md)           | cd-cmd-params-cm                                                               | ConfigMap | Hanzo CD env variables configuration                                                  |
 | [`cd-secret.yaml`](cd-secret-yaml.md)                         | cd-secret                                                                      | Secret    | User Passwords, Certificates (deprecated), Signing Key, Dex secrets, Webhook secrets |
 | [`cd-rbac-cm.yaml`](cd-rbac-cm-yaml.md)                       | cd-rbac-cm                                                                     | ConfigMap | RBAC Configuration                                                                   |
@@ -55,7 +55,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -75,17 +75,17 @@ See [application.yaml](application.yaml) for additional fields. As long as you h
 spec:
   project: default
   source:
-    repoURL: https://argoproj.github.io/argo-helm
+    repoURL: https://charts.hanzo.ai
     chart: argo
 ```
 
 > [!WARNING]
-> Without the `resources-finalizer.cd.hanzo.ai` finalizer, deleting an application will not delete the resources it manages. To perform a cascading delete, you must add the finalizer. See [App Deletion](../user-guide/app_deletion.md#about-the-deletion-finalizer).
+> Without the `resources-finalizer.apps.hanzo.ai` finalizer, deleting an application will not delete the resources it manages. To perform a cascading delete, you must add the finalizer. See [App Deletion](../user-guide/app_deletion.md#about-the-deletion-finalizer).
 
 ```yaml
 metadata:
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 ```
 
 ### App of Apps
@@ -122,7 +122,7 @@ metadata:
   namespace: cd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -197,10 +197,10 @@ metadata:
   name: private-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/private-repo
+  url: https://github.com/hanzoai/private-repo
   password: my-password
   username: my-username
   project: my-project
@@ -215,10 +215,10 @@ metadata:
   name: private-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: git@github.com:argoproj/my-private-repository.git
+  url: git@github.com:hanzoai/my-private-repository.git
   sshPrivateKey: |
     -----BEGIN OPENSSH PRIVATE KEY-----
     ...
@@ -234,10 +234,10 @@ metadata:
   name: github-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/my-private-repository
+  url: https://github.com/hanzoai/my-private-repository
   githubAppID: 1
   githubAppInstallationID: 2
   githubAppPrivateKey: |
@@ -251,10 +251,10 @@ metadata:
   name: github-enterprise-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://ghe.example.com/argoproj/my-private-repository
+  url: https://ghe.example.com/hanzoai/my-private-repository
   githubAppID: 1
   githubAppInstallationID: 2
   githubAppEnterpriseBaseUrl: https://ghe.example.com/api/v3
@@ -272,7 +272,7 @@ metadata:
   name: github-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://source.developers.google.com/p/my-google-project/r/my-repo
@@ -307,7 +307,7 @@ metadata:
   name: service-principal-for-azure-public-cloud
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo
@@ -321,7 +321,7 @@ metadata:
   name: service-principal-for-azure-other-cloud
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
   url: https://dev.azure.com/my-devops-organization/my-devops-project/_git/my-devops-repo
@@ -342,10 +342,10 @@ metadata:
   name: first-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/private-repo
+  url: https://github.com/hanzoai/private-repo
 ---
 apiVersion: v1
 kind: Secret
@@ -353,10 +353,10 @@ metadata:
   name: second-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/other-private-repo
+  url: https://github.com/hanzoai/other-private-repo
 ---
 apiVersion: v1
 kind: Secret
@@ -364,20 +364,20 @@ metadata:
   name: private-repo-creds
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repo-creds
+    apps.hanzo.ai/secret-type: repo-creds
 stringData:
   type: git
-  url: https://github.com/argoproj
+  url: https://github.com/hanzoai
   password: my-password
   username: my-username
 ```
 
-In the above example, every repository accessed via HTTPS whose URL is prefixed with `https://github.com/argoproj` would use a username stored in the key `username` and a password stored in the key `password` of the secret `private-repo-creds` for connecting to Git.
+In the above example, every repository accessed via HTTPS whose URL is prefixed with `https://github.com/hanzoai` would use a username stored in the key `username` and a password stored in the key `password` of the secret `private-repo-creds` for connecting to Git.
 
 In order for Hanzo CD to use a credential template for any given repository, the following conditions must be met:
 
 * The repository must either not be configured at all, or if configured, must not contain any credential information (i.e. contain none of `sshPrivateKey`, `username`, `password` )
-* The URL configured for a credential template (e.g. `https://github.com/argoproj`) must match as prefix for the repository URL (e.g. `https://github.com/argoproj/argocd-example-apps`).
+* The URL configured for a credential template (e.g. `https://github.com/hanzoai`) must match as prefix for the repository URL (e.g. `https://git.hanzo.ai/hanzo/example-apps`).
 
 > [!NOTE]
 > Matching credential template URL prefixes is done on a _best match_ effort, so the longest (best) match will take precedence. The order of definition is not important, as opposed to pre v1.4 configuration.
@@ -529,10 +529,10 @@ metadata:
   name: private-repo
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/private-repo
+  url: https://github.com/hanzoai/private-repo
   proxy: https://proxy-server-url:8888
   noProxy: ".internal.example.com,company.org,10.123.0.0/16"
   password: my-password
@@ -544,7 +544,7 @@ A note on noProxy: Hanzo CD uses exec to interact with different tools such as h
 ## Clusters
 
 Cluster credentials are stored in secrets same as repositories or repository credentials. Each secret must have label
-`cd.hanzo.ai/secret-type: cluster`.
+`apps.hanzo.ai/secret-type: cluster`.
 
 The secret data can include the following fields:
 
@@ -615,7 +615,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -633,7 +633,7 @@ stringData:
 ### Skipping Cluster Reconciliation
 
 You can prevent the application controller from reconciling all apps targeting a cluster by annotating its
-secret with `cd.hanzo.ai/skip-reconcile: "true"`. This uses the same annotation as
+secret with `apps.hanzo.ai/skip-reconcile: "true"`. This uses the same annotation as
 [Skip Application Reconcile](../user-guide/skip_reconcile.md), but applied at the cluster level.
 
 The cluster remains visible in API responses (`cd cluster list`), but the controller treats it as unmanaged.
@@ -644,9 +644,9 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
   annotations:
-    cd.hanzo.ai/skip-reconcile: "true"
+    apps.hanzo.ai/skip-reconcile: "true"
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -664,13 +664,13 @@ stringData:
 To skip an existing cluster:
 
 ```bash
-kubectl -n cd annotate secret mycluster-secret cd.hanzo.ai/skip-reconcile=true
+kubectl -n cd annotate secret mycluster-secret apps.hanzo.ai/skip-reconcile=true
 ```
 
 To resume reconciliation:
 
 ```bash
-kubectl -n cd annotate secret mycluster-secret cd.hanzo.ai/skip-reconcile-
+kubectl -n cd annotate secret mycluster-secret apps.hanzo.ai/skip-reconcile-
 ```
 
 ### EKS
@@ -683,7 +683,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: "eks-cluster-name-for-argo"
@@ -1014,7 +1014,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster
@@ -1061,7 +1061,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: "mycluster.com"
@@ -1139,7 +1139,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1204,7 +1204,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1239,7 +1239,7 @@ kind: Secret
 metadata:
   name: mycluster-secret
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
   name: mycluster.example.com
@@ -1319,10 +1319,10 @@ metadata:
   name: argo-helm
   namespace: cd
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   name: argo
-  url: https://argoproj.github.io/argo-helm
+  url: https://charts.hanzo.ai
   type: helm
   username: my-username
   password: my-password
@@ -1339,7 +1339,7 @@ metadata:
   name: oci-helm-chart
   namespace: oci-helm-chart
   labels:
-    cd.hanzo.ai/secret-type: repository
+    apps.hanzo.ai/secret-type: repository
 stringData:
   name: oci-helm-chart
   url: myregistry.example.com
@@ -1490,7 +1490,7 @@ patches:
 ```
 
 The live example of self managed Hanzo CD config is available at [https://cd.apps.apps.hanzo.ai](https://cd.apps.apps.hanzo.ai) and with configuration
-stored at [argoproj/argoproj-deployments](https://github.com/argoproj/argoproj-deployments/tree/master/cd).
+stored at [hanzoai/hanzoai-deployments](https://github.com/hanzoai/hanzoai-deployments/tree/master/cd).
 
 > [!NOTE]
 > You will need to sign-in using your GitHub account to get access to [https://cd.apps.apps.hanzo.ai](https://cd.apps.apps.hanzo.ai)

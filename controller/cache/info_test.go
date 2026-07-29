@@ -52,7 +52,7 @@ var (
     resourceVersion: "123"
     uid: "4"
     annotations:
-      link.cd.hanzo.ai/external-link: http://my-grafana.example.com/pre-generated-link
+      link.apps.hanzo.ai/external-link: http://my-grafana.example.com/pre-generated-link
   spec:
     selector:
       app: guestbook
@@ -71,12 +71,12 @@ var (
     resourceVersion: "123"
     uid: "4"
     annotations:
-      link.cd.hanzo.ai/javascript: 'javascript:alert(1)'
-      link.cd.hanzo.ai/data: 'data:text/html,<script>alert(1)</script>'
-      link.cd.hanzo.ai/vbscript: 'vbscript:msgbox(1)'
-      link.cd.hanzo.ai/titled-javascript: 'click me|javascript:alert(1)'
-      link.cd.hanzo.ai/no-scheme: 'example.com/foo'
-      link.cd.hanzo.ai/safe: 'http://my-grafana.example.com/pre-generated-link'
+      link.apps.hanzo.ai/javascript: 'javascript:alert(1)'
+      link.apps.hanzo.ai/data: 'data:text/html,<script>alert(1)</script>'
+      link.apps.hanzo.ai/vbscript: 'vbscript:msgbox(1)'
+      link.apps.hanzo.ai/titled-javascript: 'click me|javascript:alert(1)'
+      link.apps.hanzo.ai/no-scheme: 'example.com/foo'
+      link.apps.hanzo.ai/safe: 'http://my-grafana.example.com/pre-generated-link'
   spec:
     selector:
       app: guestbook
@@ -125,7 +125,7 @@ var (
     namespace: default
     uid: "4"
     annotations:
-      link.cd.hanzo.ai/external-link: http://my-grafana.example.com/ingress-link
+      link.apps.hanzo.ai/external-link: http://my-grafana.example.com/ingress-link
   spec:
     backend:
       serviceName: not-found-service
@@ -158,8 +158,8 @@ var (
     namespace: default
     uid: "4"
     annotations:
-      link.cd.hanzo.ai/external-link: http://my-grafana.example.com/ingress-link
-      cd.hanzo.ai/ignore-default-links: "true"
+      link.apps.hanzo.ai/external-link: http://my-grafana.example.com/ingress-link
+      apps.hanzo.ai/ignore-default-links: "true"
   spec:
     backend:
       serviceName: not-found-service
@@ -368,7 +368,7 @@ metadata:
   name: annotated-route
   namespace: default
   annotations:
-    link.cd.hanzo.ai/external-link: https://example.com
+    link.apps.hanzo.ai/external-link: https://example.com
 spec:
   rules:
   - backendRefs:
@@ -522,7 +522,7 @@ metadata:
   name: annotated-gateway
   namespace: default
   annotations:
-    link.cd.hanzo.ai/external-link: https://custom-link.example.com
+    link.apps.hanzo.ai/external-link: https://custom-link.example.com
 spec:
   listeners:
   - name: http
@@ -541,8 +541,8 @@ metadata:
   name: no-default-links-gateway
   namespace: default
   annotations:
-    link.cd.hanzo.ai/external-link: https://custom-link.example.com
-    cd.hanzo.ai/ignore-default-links: "true"
+    link.apps.hanzo.ai/external-link: https://custom-link.example.com
+    apps.hanzo.ai/ignore-default-links: "true"
 spec:
   listeners:
   - name: http

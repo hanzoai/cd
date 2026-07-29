@@ -99,7 +99,7 @@ func TestTLS(address string, dialTime time.Duration) (*TLSTestResult, error) {
 	creds := credentials.NewTLS(&tlsConfig)
 
 	// Set timeout when dialing to the server
-	// fix: https://github.com/argoproj/argo-cd/issues/9679
+	// fix: https://github.com/hanzoai/cd/issues/9679
 	ctx, cancel := context.WithTimeout(context.Background(), dialTime)
 	defer cancel()
 

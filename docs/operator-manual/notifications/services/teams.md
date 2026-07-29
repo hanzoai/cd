@@ -79,7 +79,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.teams: channelName
+    apps.hanzo.ai/subscribe.on-sync-succeeded.teams: channelName
 ```
 
 ## Channel Support

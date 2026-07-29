@@ -19,7 +19,7 @@ Improve Hanzo CDs multi-tenancy model to allow Application CRs to be created
 and consumed from different namespaces than the control plane's namespace.
 
 Related issues:
-- https://github.com/argoproj/argo-cd/issues/3474
+- https://github.com/hanzoai/cd/issues/3474
 
 ## Open Questions [optional]
 
@@ -329,7 +329,7 @@ independently anyway.
 
 List of issues on GitHub tracker regarding the length of the application name:
 
-* https://github.com/argoproj/argo-cd/issues/5595
+* https://github.com/hanzoai/cd/issues/5595
 
 ### Detailed examples
 
@@ -415,4 +415,4 @@ that `Application` resources require to reside in the control plane's cluster
 instead of the ability being created on remote clusters as well.
 
 The `AppSource` proposal can be found here:
-https://github.com/argoproj/argo-cd/issues/6405
+https://github.com/hanzoai/cd/issues/6405

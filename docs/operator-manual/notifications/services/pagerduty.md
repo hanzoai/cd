@@ -58,9 +58,9 @@ NOTE: A Priority is a label representing the importance and impact of an inciden
 
 Annotation sample for pagerduty notifications:
 ```yaml
-apiVersion: apps.hanzo.ai/v1alpha1
+apiVersion: hanzoai.io/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-rollout-aborted.pagerduty: "<serviceID for PagerDuty>"
+    apps.hanzo.ai/subscribe.on-rollout-aborted.pagerduty: "<serviceID for PagerDuty>"
 ```

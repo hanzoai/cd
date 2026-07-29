@@ -10,7 +10,7 @@ import (
 
 	"github.com/hanzoai/cd/applicationset/services/github_app_auth"
 	"github.com/hanzoai/cd/applicationset/services/scm_provider"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestSCMProviderGenerateParams(t *testing.T) {
@@ -163,13 +163,13 @@ func TestSCMProviderGenerateParams(t *testing.T) {
 				Repos: testCaseCopy.repos,
 			}
 			scmGenerator := &SCMProviderGenerator{overrideProvider: mockProvider, SCMConfig: SCMConfig{enableSCMProviders: true}}
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := appv1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
-					Generators: []argoprojiov1alpha1.ApplicationSetGenerator{{
-						SCMProvider: &argoprojiov1alpha1.SCMProviderGenerator{
+				Spec: appv1alpha1.ApplicationSetSpec{
+					Generators: []appv1alpha1.ApplicationSetGenerator{{
+						SCMProvider: &appv1alpha1.SCMProviderGenerator{
 							Values: testCaseCopy.values,
 						},
 					}},
@@ -193,44 +193,44 @@ func TestAllowedSCMProvider(t *testing.T) {
 
 	cases := []struct {
 		name           string
-		providerConfig *argoprojiov1alpha1.SCMProviderGenerator
+		providerConfig *appv1alpha1.SCMProviderGenerator
 	}{
 		{
 			name: "Error Github",
-			providerConfig: &argoprojiov1alpha1.SCMProviderGenerator{
-				Github: &argoprojiov1alpha1.SCMProviderGeneratorGithub{
+			providerConfig: &appv1alpha1.SCMProviderGenerator{
+				Github: &appv1alpha1.SCMProviderGeneratorGithub{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
 		},
 		{
 			name: "Error Gitlab",
-			providerConfig: &argoprojiov1alpha1.SCMProviderGenerator{
-				Gitlab: &argoprojiov1alpha1.SCMProviderGeneratorGitlab{
+			providerConfig: &appv1alpha1.SCMProviderGenerator{
+				Gitlab: &appv1alpha1.SCMProviderGeneratorGitlab{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
 		},
 		{
 			name: "Error Gitea",
-			providerConfig: &argoprojiov1alpha1.SCMProviderGenerator{
-				Gitea: &argoprojiov1alpha1.SCMProviderGeneratorGitea{
+			providerConfig: &appv1alpha1.SCMProviderGenerator{
+				Gitea: &appv1alpha1.SCMProviderGeneratorGitea{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
 		},
 		{
 			name: "Error Bitbucket",
-			providerConfig: &argoprojiov1alpha1.SCMProviderGenerator{
-				BitbucketServer: &argoprojiov1alpha1.SCMProviderGeneratorBitbucketServer{
+			providerConfig: &appv1alpha1.SCMProviderGenerator{
+				BitbucketServer: &appv1alpha1.SCMProviderGeneratorBitbucketServer{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
 		},
 		{
 			name: "Error AzureDevops",
-			providerConfig: &argoprojiov1alpha1.SCMProviderGenerator{
-				AzureDevOps: &argoprojiov1alpha1.SCMProviderGeneratorAzureDevOps{
+			providerConfig: &appv1alpha1.SCMProviderGenerator{
+				AzureDevOps: &appv1alpha1.SCMProviderGeneratorAzureDevOps{
 					API: "https://myservice.mynamespace.svc.cluster.local",
 				},
 			},
@@ -256,12 +256,12 @@ func TestAllowedSCMProvider(t *testing.T) {
 				},
 			}
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := appv1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
-					Generators: []argoprojiov1alpha1.ApplicationSetGenerator{{
+				Spec: appv1alpha1.ApplicationSetSpec{
+					Generators: []appv1alpha1.ApplicationSetGenerator{{
 						SCMProvider: testCaseCopy.providerConfig,
 					}},
 				},
@@ -279,14 +279,14 @@ func TestAllowedSCMProvider(t *testing.T) {
 func TestSCMProviderDisabled_SCMGenerator(t *testing.T) {
 	generator := &SCMProviderGenerator{SCMConfig: SCMConfig{enableSCMProviders: false}}
 
-	applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+	applicationSetInfo := appv1alpha1.ApplicationSet{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "set",
 		},
-		Spec: argoprojiov1alpha1.ApplicationSetSpec{
-			Generators: []argoprojiov1alpha1.ApplicationSetGenerator{{
-				SCMProvider: &argoprojiov1alpha1.SCMProviderGenerator{
-					Github: &argoprojiov1alpha1.SCMProviderGeneratorGithub{
+		Spec: appv1alpha1.ApplicationSetSpec{
+			Generators: []appv1alpha1.ApplicationSetGenerator{{
+				SCMProvider: &appv1alpha1.SCMProviderGenerator{
+					Github: &appv1alpha1.SCMProviderGeneratorGithub{
 						API: "https://myservice.mynamespace.svc.cluster.local",
 					},
 				},

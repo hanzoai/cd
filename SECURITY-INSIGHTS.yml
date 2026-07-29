@@ -4,16 +4,16 @@ header:
   last-updated: '2023-10-27'
   last-reviewed: '2023-10-27'
   commit-hash: ddea9e7128ecce09318352de8fd9b9ab88afaf47
-  project-url: https://github.com/argoproj/argo-cd
+  project-url: https://github.com/hanzoai/cd
   project-release: v3.6.0
-  changelog: https://github.com/argoproj/argo-cd/releases
-  license: https://github.com/argoproj/argo-cd/blob/master/LICENSE
+  changelog: https://github.com/hanzoai/cd/releases
+  license: https://github.com/hanzoai/cd/blob/master/LICENSE
 project-lifecycle:
   status: active
-  roadmap: https://github.com/orgs/argoproj/projects/25
+  roadmap: https://github.com/orgs/hanzoai/projects/25
   bug-fixes-only: false
   core-maintainers:
-    - https://github.com/argoproj/argoproj/blob/master/MAINTAINERS.md
+    - https://github.com/hanzoai/hanzoai/blob/master/MAINTAINERS.md
   release-cycle: https://argo-cd.readthedocs.io/en/stable/developer-guide/release-process-and-cadence/
   release-process: https://argo-cd.readthedocs.io/en/stable/developer-guide/release-process-and-cadence/#release-process
 contribution-policy:
@@ -31,20 +31,20 @@ contribution-policy:
       comment: |
         This tool runs Snyk and generates a report of vulnerabilities in the project's dependencies. The report is 
         placed in the project's documentation. The workflow is defined here:
-        https://github.com/argoproj/argo-cd/blob/master/.github/workflows/update-snyk.yaml
+        https://github.com/hanzoai/cd/blob/master/.github/workflows/update-snyk.yaml
   contributing-policy: https://argo-cd.readthedocs.io/en/stable/developer-guide/code-contributions/
   code-of-conduct: https://github.com/cncf/foundation/blob/master/code-of-conduct.md
 documentation:
   - https://argo-cd.readthedocs.io/
 distribution-points:
-  - https://github.com/argoproj/argo-cd/releases
-  - https://quay.io/repository/argoproj/cd
+  - https://github.com/hanzoai/cd/releases
+  - https://quay.io/repository/hanzoai/cd
 security-artifacts:
   threat-model:
     threat-model-created: true
     evidence-url:
-      - https://github.com/argoproj/argoproj/blob/master/docs/argo_threat_model.pdf
-      - https://github.com/argoproj/argoproj/blob/master/docs/end_user_threat_model.pdf
+      - https://github.com/hanzoai/hanzoai/blob/master/docs/argo_threat_model.pdf
+      - https://github.com/hanzoai/hanzoai/blob/master/docs/end_user_threat_model.pdf
   self-assessment:
     self-assessment-created: false
     comment: |
@@ -60,7 +60,7 @@ security-testing:
       ci: false
       before-release: false
     tool-rulesets:
-      - https://github.com/argoproj/argo-cd/blob/master/.github/dependabot.yml
+      - https://github.com/hanzoai/cd/blob/master/.github/dependabot.yml
   - tool-type: sca
     tool-name: Snyk
     tool-version: latest
@@ -82,21 +82,21 @@ security-testing:
 security-assessments:
   - auditor-name: Trail of Bits
     auditor-url: https://trailofbits.com
-    auditor-report: https://github.com/argoproj/argoproj/blob/master/docs/argo_security_final_report.pdf
+    auditor-report: https://github.com/hanzoai/hanzoai/blob/master/docs/argo_security_final_report.pdf
     report-year: 2021
   - auditor-name: Ada Logics
     auditor-url: https://adalogics.com
-    auditor-report: https://github.com/argoproj/argoproj/blob/master/docs/argo_security_audit_2022.pdf
+    auditor-report: https://github.com/hanzoai/hanzoai/blob/master/docs/argo_security_audit_2022.pdf
     report-year: 2022
   - auditor-name: Ada Logics
     auditor-url: https://adalogics.com
-    auditor-report: https://github.com/argoproj/argoproj/blob/master/docs/audit_fuzzer_adalogics_2022.pdf
+    auditor-report: https://github.com/hanzoai/hanzoai/blob/master/docs/audit_fuzzer_adalogics_2022.pdf
     report-year: 2022
     comment: |
       Part of the audit was performed by Ada Logics, focussed on fuzzing.
   - auditor-name: Chainguard
     auditor-url: https://chainguard.dev
-    auditor-report: https://github.com/argoproj/argoproj/blob/master/docs/software_supply_chain_slsa_assessment_chainguard_2023.pdf
+    auditor-report: https://github.com/hanzoai/hanzoai/blob/master/docs/software_supply_chain_slsa_assessment_chainguard_2023.pdf
     report-year: 2023
     comment: |
       Confirmed the project's release process as achieving SLSA (v0.1) level 3.
@@ -107,20 +107,20 @@ security-contacts:
 vulnerability-reporting:
   accepts-vulnerability-reports: true
   email-contact: cncf-argo-security@lists.cncf.io
-  security-policy: https://github.com/argoproj/argo-cd/security/policy
+  security-policy: https://github.com/hanzoai/cd/security/policy
   bug-bounty-available: true
   bug-bounty-url: https://hackerone.com/ibb/policy_scopes
   out-scope:
-    - vulnerable and outdated components # See https://github.com/argoproj/argo-cd/blob/master/SECURITY.md#a-word-about-security-scanners
+    - vulnerable and outdated components # See https://github.com/hanzoai/cd/blob/master/SECURITY.md#a-word-about-security-scanners
     - security logging and monitoring failures
 dependencies:
   third-party-packages: true
   dependencies-lists:
-    - https://github.com/argoproj/argo-cd/blob/master/go.mod
-    - https://github.com/argoproj/argo-cd/blob/master/Dockerfile
-    - https://github.com/argoproj/argo-cd/blob/master/ui/package.json
+    - https://github.com/hanzoai/cd/blob/master/go.mod
+    - https://github.com/hanzoai/cd/blob/master/Dockerfile
+    - https://github.com/hanzoai/cd/blob/master/ui/package.json
   sbom:
-    - sbom-file: https://github.com/argoproj/argo-cd/releases # Every release's assets include SBOMs.
+    - sbom-file: https://github.com/hanzoai/cd/releases # Every release's assets include SBOMs.
       sbom-format: SPDX
   dependencies-lifecycle:
     policy-url: https://argo-cd.readthedocs.io/en/stable/developer-guide/release-process-and-cadence/#dependencies-lifecycle-policy

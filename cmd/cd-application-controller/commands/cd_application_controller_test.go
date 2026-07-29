@@ -8,7 +8,7 @@ import (
 )
 
 // TestNewCommand_HydrationProcessorsFlag pins down the contract for the manifest hydration concurrency
-// knob added for https://github.com/argoproj/argo-cd/issues/27926: the flag exists and defaults to a value
+// knob added for https://github.com/hanzoai/cd/issues/27926: the flag exists and defaults to a value
 // greater than 1 (so the default deployment exercises hydration concurrency and tests are more likely to
 // catch races, per the maintainer's guidance on the issue).
 func TestNewCommand_HydrationProcessorsFlag(t *testing.T) {

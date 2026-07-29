@@ -29,7 +29,7 @@ jobs:
       # Calculate image names with defaults, this will be used in the make manifests-local command
       # to generate the correct image name in the manifests
       IMAGE_REGISTRY: ${{ vars.IMAGE_REGISTRY || 'quay.io' }}
-      IMAGE_NAMESPACE: ${{ vars.IMAGE_NAMESPACE || 'argoproj' }}
+      IMAGE_NAMESPACE: ${{ vars.IMAGE_NAMESPACE || 'hanzoai' }}
       IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY || 'cd' }}
     steps:
       - name: Harden the runner (Audit all outbound calls)

@@ -43,7 +43,7 @@ import (
 )
 
 func getProjLister(objects ...runtime.Object) v1alpha1.AppProjectNamespaceLister {
-	return test.NewFakeProjListerFromInterface(apps.NewSimpleClientset(objects...).ArgoprojV1alpha1().AppProjects("cd"))
+	return test.NewFakeProjListerFromInterface(apps.NewSimpleClientset(objects...).AppV1alpha1().AppProjects("cd"))
 }
 
 func getKubeClient(t *testing.T, pass string, enabled bool, capabilities ...settings.AccountCapability) *fake.Clientset {

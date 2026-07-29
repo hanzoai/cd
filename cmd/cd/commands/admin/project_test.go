@@ -35,14 +35,14 @@ func TestUpdateProjects_FindMatchingProject(t *testing.T) {
 
 	modification, err := getModification("set", "*", "*", "allow")
 	require.NoError(t, err)
-	err = updateProjects(ctx, clientset.ArgoprojV1alpha1().AppProjects(namespace), "ba*", "*", "set", modification, false)
+	err = updateProjects(ctx, clientset.AppV1alpha1().AppProjects(namespace), "ba*", "*", "set", modification, false)
 	require.NoError(t, err)
 
-	fooProj, err := clientset.ArgoprojV1alpha1().AppProjects(namespace).Get(ctx, "foo", metav1.GetOptions{})
+	fooProj, err := clientset.AppV1alpha1().AppProjects(namespace).Get(ctx, "foo", metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.Empty(t, fooProj.Spec.Roles[0].Policies)
 
-	barProj, err := clientset.ArgoprojV1alpha1().AppProjects(namespace).Get(ctx, "bar", metav1.GetOptions{})
+	barProj, err := clientset.AppV1alpha1().AppProjects(namespace).Get(ctx, "bar", metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.Equal(t, []string{"p, proj:bar:test, *, set, bar/*, allow"}, barProj.Spec.Roles[0].Policies)
 }
@@ -54,10 +54,10 @@ func TestUpdateProjects_FindMatchingRole(t *testing.T) {
 
 	modification, err := getModification("set", "*", "*", "allow")
 	require.NoError(t, err)
-	err = updateProjects(ctx, clientset.ArgoprojV1alpha1().AppProjects(namespace), "*", "fo*", "set", modification, false)
+	err = updateProjects(ctx, clientset.AppV1alpha1().AppProjects(namespace), "*", "fo*", "set", modification, false)
 	require.NoError(t, err)
 
-	proj, err := clientset.ArgoprojV1alpha1().AppProjects(namespace).Get(ctx, "proj", metav1.GetOptions{})
+	proj, err := clientset.AppV1alpha1().AppProjects(namespace).Get(ctx, "proj", metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.Equal(t, []string{"p, proj:proj:foo, *, set, proj/*, allow"}, proj.Spec.Roles[0].Policies)
 	assert.Empty(t, proj.Spec.Roles[1].Policies)

@@ -20,7 +20,7 @@ import (
 func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 	// !race:
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
-	// https://github.com/argoproj/argo-cd/issues/4755
+	// https://github.com/hanzoai/cd/issues/4755
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,
@@ -76,7 +76,7 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 	// !race:
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
-	// https://github.com/argoproj/argo-cd/issues/4755
+	// https://github.com/hanzoai/cd/issues/4755
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,
@@ -132,7 +132,7 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 	// !race:
 	// Intermittent failure when running with -race, likely due to race condition
-	// https://github.com/argoproj/argo-cd/issues/4755
+	// https://github.com/hanzoai/cd/issues/4755
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,
@@ -170,7 +170,7 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 	// !race:
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
-	// https://github.com/argoproj/argo-cd/issues/4755
+	// https://github.com/hanzoai/cd/issues/4755
 	argoCDConfigMapWithInClusterServerAddressDisabled := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ArgoCDConfigMapName,

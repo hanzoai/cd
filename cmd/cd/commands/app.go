@@ -126,25 +126,25 @@ func NewApplicationCreateCommand(clientOpts *cdclient.ClientOptions) *cobra.Comm
 		Use:   "create APPNAME",
 		Short: "Create an application",
 		Example: `  # Create a directory app
-  cd app create guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
+  cd app create guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
 
   # Create a Jsonnet app
-  cd app create jsonnet-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path jsonnet-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --jsonnet-ext-str replicas=2
+  cd app create jsonnet-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path jsonnet-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --jsonnet-ext-str replicas=2
 
   # Create a Helm app
-  cd app create helm-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path helm-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set replicaCount=2
+  cd app create helm-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path helm-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set replicaCount=2
 
   # Create a Helm app from a Helm repo
   cd app create nginx-ingress --repo https://charts.helm.sh/stable --helm-chart nginx-ingress --revision 1.24.3 --dest-namespace default --dest-server https://kubernetes.default.svc
 
   # Create a Kustomize app
-  cd app create kustomize-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image quay.io/argoprojlabs/cd-e2e-container:0.1
+  cd app create kustomize-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image ghcr.io/hanzoai/e2e-container:0.1
 
   # Create a MultiSource app while yaml file contains an application with multiple sources
   cd app create guestbook --file <path-to-yaml-file>
 
   # Create a app using a custom tool:
-  cd app create kasane --repo https://github.com/argoproj/argocd-example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane`,
+  cd app create kasane --repo https://git.hanzo.ai/hanzo/example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane`,
 		Run: func(c *cobra.Command, args []string) {
 			ctx := c.Context()
 
@@ -853,10 +853,10 @@ func NewApplicationSetCommand(clientOpts *cdclient.ClientOptions) *cobra.Command
   cd app set my-app --parameter key1=value1 --parameter key2=value2 --validate
 
   # Set and override application parameters for a source at position 1 under spec.sources of app my-app. source-position starts at 1.
-  cd app set my-app --source-position 1 --repo https://github.com/argoproj/argocd-example-apps.git
+  cd app set my-app --source-position 1 --repo https://git.hanzo.ai/hanzo/example-apps.git
 
   # Set and override application parameters for a source named "test" under spec.sources of app my-app.
-  cd app set my-app --source-name test --repo https://github.com/argoproj/argocd-example-apps.git
+  cd app set my-app --source-name test --repo https://git.hanzo.ai/hanzo/example-apps.git
 
   # Set application parameters and specify the namespace
   cd app set my-app --parameter key1=value1 --parameter key2=value2 --namespace my-namespace
@@ -2475,7 +2475,7 @@ func waitOnApplicationStatus(ctx context.Context, acdClient cdclient.Client, app
 	// This means the app.status is unreliable for determining the final state of the operation.
 	// finalOperationState captures the operationState as it was seen when we met the conditions of
 	// the wait, so the caller can rely on it to determine the outcome of the operation.
-	// See: https://github.com/argoproj/argo-cd/issues/5592
+	// See: https://github.com/hanzoai/cd/issues/5592
 	finalOperationState := appWithLock.GetApp().Status.OperationState
 
 	// If the application already matches the desired wait conditions, return
@@ -2483,7 +2483,7 @@ func waitOnApplicationStatus(ctx context.Context, acdClient cdclient.Client, app
 	// command timeout because the event stream only delivers messages when
 	// the application CR changes — if nothing needs to change, no events
 	// arrive. Skip the early return for --delete, which needs an actual
-	// Deleted event from the watch. See https://github.com/argoproj/argo-cd/issues/12211.
+	// Deleted event from the watch. See https://github.com/hanzoai/cd/issues/12211.
 	if !watch.delete {
 		if ready, operationInProgress := checkAppWaitConditions(app, watch, selectedResources); ready && (!operationInProgress || !watch.operation) {
 			app = printFinalStatus(app)
@@ -3099,7 +3099,7 @@ func NewApplicationAddSourceCommand(clientOpts *cdclient.ClientOptions) *cobra.C
 		Use:   "add-source APPNAME",
 		Short: "Adds a source to the list of sources in the application",
 		Example: `  # Append a source to the list of sources in the application
-  cd app add-source guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --source-name guestbook`,
+  cd app add-source guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path guestbook --source-name guestbook`,
 		Run: func(c *cobra.Command, args []string) {
 			ctx := c.Context()
 			if len(args) != 1 {

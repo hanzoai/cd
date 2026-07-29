@@ -1,7 +1,7 @@
 redis-ha:
   auth: true
   authKey: auth
-  existingSecret: cd-redis
+  existingSecret: hanzocd-redis
   persistentVolume:
     enabled: false
   redis:

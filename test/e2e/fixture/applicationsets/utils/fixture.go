@@ -117,14 +117,14 @@ func EnsureCleanState(t *testing.T) {
 
 	fixture.RunFunctionsInParallelAndCheckErrors(t, []func() error{
 		func() error {
-			// kubectl delete secrets -l cd.hanzo.ai/secret-type=repository
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=repository
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{LabelSelector: common.LabelKeySecretType + "=" + common.LabelValueSecretTypeRepository})
 		},
 		func() error {
-			// kubectl delete secrets -l cd.hanzo.ai/secret-type=repo-creds
+			// kubectl delete secrets -l apps.hanzo.ai/secret-type=repo-creds
 			return fixtureClient.KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
@@ -148,11 +148,11 @@ func EnsureCleanState(t *testing.T) {
 		},
 		func() error {
 			// Clean up Applications in cd-e2e-external namespace
-			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(ArgoCDExternalNamespace)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.AppClientset.AppV1alpha1().Applications(string(ArgoCDExternalNamespace)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// Clean up Applications in cd-e2e-external-2 namespace
-			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(ArgoCDExternalNamespace2)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.AppClientset.AppV1alpha1().Applications(string(ArgoCDExternalNamespace2)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		// delete resources
 		func() error {
@@ -161,7 +161,7 @@ func EnsureCleanState(t *testing.T) {
 		},
 		func() error {
 			// kubectl delete apps --all
-			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.AppClientset.AppV1alpha1().Applications(TestNamespace()).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// kubectl delete secrets -l e2e.apps.hanzo.ai=true
@@ -189,14 +189,14 @@ func EnsureCleanState(t *testing.T) {
 
 	// Remove finalizers from Argo CD Application resources in the namespace
 	err := waitForSuccess(func() error {
-		appList, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
+		appList, err := fixtureClient.AppClientset.AppV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
 		if err != nil {
 			return err
 		}
 		for _, app := range appList.Items {
 			t.Log("Removing finalizer for: ", app.Name)
 			app.Finalizers = []string{}
-			_, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).Update(t.Context(), &app, metav1.UpdateOptions{})
+			_, err := fixtureClient.AppClientset.AppV1alpha1().Applications(TestNamespace()).Update(t.Context(), &app, metav1.UpdateOptions{})
 			if err != nil {
 				return err
 			}
@@ -243,7 +243,7 @@ func waitForExpectedClusterState(t *testing.T) error {
 
 	// Wait up to 60 seconds for all the Applications to delete
 	if err := waitForSuccess(func() error {
-		appList, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
+		appList, err := fixtureClient.AppClientset.AppV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
 		if err != nil {
 			return err
 		}
@@ -273,10 +273,10 @@ func waitForExpectedClusterState(t *testing.T) error {
 
 func SetProjectSpec(t *testing.T, fixtureClient *E2EFixtureK8sClient, project string, spec v1alpha1.AppProjectSpec) {
 	t.Helper()
-	proj, err := fixtureClient.AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Get(t.Context(), project, metav1.GetOptions{})
+	proj, err := fixtureClient.AppClientset.AppV1alpha1().AppProjects(TestNamespace()).Get(t.Context(), project, metav1.GetOptions{})
 	require.NoError(t, err)
 	proj.Spec = spec
-	_, err = fixtureClient.AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Update(t.Context(), proj, metav1.UpdateOptions{})
+	_, err = fixtureClient.AppClientset.AppV1alpha1().AppProjects(TestNamespace()).Update(t.Context(), proj, metav1.UpdateOptions{})
 	require.NoError(t, err)
 }
 

@@ -12,7 +12,7 @@ The prerequisites for backporting are:
 
 Adding a `cherry-pick/x.y` label to your PR (where `x.y` is the version you want to backport to e.g. `3.1`) will 
 trigger the cherry pick workflow to open a PR against the targeted release branch. Anyone with 
-[Argoproj membership](https://github.com/argoproj/argoproj/blob/main/community/membership.md) can add the label, but an
+[Argoproj membership](https://github.com/hanzoai/hanzoai/blob/main/community/membership.md) can add the label, but an
 Approver must merge the backport PR. If you cannot add the label yourself, ask the person who merged the PR to do it for
 you.
 

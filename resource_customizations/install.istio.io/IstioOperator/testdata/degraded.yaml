@@ -5,7 +5,7 @@ metadata:
   - istio-finalizer.install.istio.io
   generation: 1
   labels:
-    cd.hanzo.ai/instance: istio-default
+    apps.hanzo.ai/instance: istio-default
   name: istio-control-plane
   namespace: istio-system
   resourceVersion: "270068"

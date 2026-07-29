@@ -143,7 +143,7 @@ spec:
           # The git repo may have different directories which correspond to the
           # cluster locations, using these as a selector.
           - git:
-              repoURL: https://github.com/argoproj/argocd-example-apps/
+              repoURL: https://git.hanzo.ai/hanzo/example-apps/
               revision: HEAD
               directories:
               - path: '*'
@@ -155,7 +155,7 @@ spec:
     spec:
       project: '{{index .metadata.labels "environment"}}'
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://git.hanzo.ai/hanzo/example-apps/
         # The cluster values field for each generator will be substituted here:
         targetRevision: HEAD
         path: '{{.path.path}}'

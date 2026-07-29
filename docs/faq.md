@@ -20,7 +20,7 @@ which might cause health check to return `Progressing` state instead of `Healthy
 * `Ingress` is considered healthy if `status.loadBalancer.ingress` list is non-empty, with at least one value
   for `hostname` or `IP`. Some ingress controllers
   ([contour](https://github.com/projectcontour/contour/issues/403)
-  , [traefik](https://github.com/argoproj/argo-cd/issues/968#issuecomment-451082913)) don't update
+  , [traefik](https://github.com/hanzoai/cd/issues/968#issuecomment-451082913)) don't update
   `status.loadBalancer.ingress` field which causes `Ingress` to stuck in `Progressing` state forever.
 
 * `StatefulSet` is considered healthy if value of `status.updatedReplicas` field matches to `spec.replicas` field. Due
@@ -30,7 +30,7 @@ which might cause health check to return `Progressing` state instead of `Healthy
   fix [kubernetes/kubernetes#67570](https://github.com/kubernetes/kubernetes/pull/67570) `StatefulSet` might stay
   in `Progressing` state.
 * Your `StatefulSet` or `DaemonSet` is using `OnDelete` instead of `RollingUpdate` strategy.
-  See [#1881](https://github.com/argoproj/argo-cd/issues/1881).
+  See [#1881](https://github.com/hanzoai/cd/issues/1881).
 * For `SealedSecret`, see [Why are resources of type `SealedSecret` stuck in the `Progressing` state?](#sealed-secret-stuck-progressing)
 
 As workaround Hanzo CD allows providing [health check](operator-manual/health.md) customization which overrides default
@@ -133,7 +133,7 @@ to all manifest generators.
 
 ## I've configured [cluster secret](./operator-manual/declarative-setup.md#clusters) but it does not show up in CLI/UI, how do I fix it?
 
-Check if cluster secret has `cd.hanzo.ai/secret-type: cluster` label. If secret has the label but the cluster is
+Check if cluster secret has `apps.hanzo.ai/secret-type: cluster` label. If secret has the label but the cluster is
 still not visible then make sure it might be a permission issue. Try to list clusters using `admin` user
 (e.g. `cd login --username admin && cd cluster list`).
 
@@ -162,12 +162,12 @@ Kustomize common labels feature.
 
 Hanzo CD automatically sets the `app.kubernetes.io/instance` label and uses it to determine which resources form the app.
 If the tool does this too, this causes confusion. You can change this label by setting
-the `application.instanceLabelKey` value in the `cd-cm`. We recommend that you use `cd.hanzo.ai/instance`.
+the `application.instanceLabelKey` value in the `cd-cm`. We recommend that you use `apps.hanzo.ai/instance`.
 
 > [!NOTE]
 > When you make this change your applications will become out of sync and will need re-syncing.
 
-See [#1482](https://github.com/argoproj/argo-cd/issues/1482).
+See [#1482](https://github.com/hanzoai/cd/issues/1482).
 
 ## How often does Hanzo CD check for changes to my Git or Helm repository ?
 
@@ -210,7 +210,7 @@ for cookies. You can get the list of groups by opening "developer tools -> netwo
 Decode the token at [https://jwt.io/](https://jwt.io/). That will provide the list of teams that you can remove yourself
 from.
 
-See [#2165](https://github.com/argoproj/argo-cd/issues/2165).
+See [#2165](https://github.com/hanzoai/cd/issues/2165).
 
 ## Why Am I Getting `rpc error: code = Unavailable desc = transport is closing` When Using The CLI?
 
@@ -394,7 +394,7 @@ Example Hanzo CD component spec (e.g., add to `cd-server`, `cd-repo-server`, `cd
 spec:
     containers:
     - name: cd-server
-      image: quay.io/argoproj/cd:<version>
+      image: ghcr.io/hanzoai/cd:<version>
       env:
       - name: KV_CREDS_DIR_PATH
         value: "/var/run/secrets/redis"

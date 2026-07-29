@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   annotations:
-    cd.hanzo.ai/tracking-id: test-cronjob:batch/CronJob:test-cronjob/hello
+    apps.hanzo.ai/tracking-id: test-cronjob:batch/CronJob:test-cronjob/hello
   labels:
     app.kubernetes.io/instance: test-cronjob
   name: hello

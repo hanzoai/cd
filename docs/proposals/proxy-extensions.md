@@ -97,7 +97,7 @@ restarted.
 
 *Not in the first release*
 
-[Hanzo CD extensions][2] is an `argoproj-labs` project that supports loading
+[Hanzo CD extensions][2] is an `hanzoai-labs` project that supports loading
 extensions in runtime. Currently the project is implementing a controller
 that defines and reconciles the custom resource `Hanzo CDExtension`. This
 CRD should be enhanced to provide the ability to define backend services
@@ -113,7 +113,7 @@ kind: Hanzo CDExtension
 metadata:
   name: my-cool-extension
   finalizers:
-    - extensions-finalizer.cd.hanzo.ai
+    - extensions-finalizer.apps.hanzo.ai
 spec:
   sources:
     - git:
@@ -418,7 +418,7 @@ functionality. If this requirement becomes necessary, it won't be a
 breaking change as it will be more restrictive.
 
 [1]: https://argo-cd.readthedocs.io/en/stable/developer-guide/ui-extensions/
-[2]: https://github.com/argoproj-labs/cd-extensions
+[2]: https://github.com/hanzoai-labs/cd-extensions
 [3]: https://github.com/hanzoai/cd/blob/a23bfc3acaa464cbdeafdbbe66d05a121d5d1fb3/server/rbacpolicy/rbacpolicy.go#L17-L25
 [4]: https://argo-cd.readthedocs.io/en/stable/operator-manual/cd-cm.yaml
 [5]: https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#authentication-flow

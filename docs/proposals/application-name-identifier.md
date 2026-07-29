@@ -189,7 +189,7 @@ following on a resource:
     namespace: some-namespace
     annotations:
       app.kubernetes.io/instance: my-application;/Secret/some-namespace/some-secret
-      argo-cd.hanzo.ai/installation-id: 61199294-412c-4e78-a237-3ebba6784fcd
+      argo-apps.hanzo.ai/installation-id: 61199294-412c-4e78-a237-3ebba6784fcd
   ```
 
 The user should be able to opt-out of this feature by setting the `installationID` to an empty string.
@@ -250,7 +250,7 @@ metadata:
     app.kubernetes.io/instance: some-application
   annotations:
     app.kubernetes.io/instance: my-application;/Secret/some-namespace/some-secret
-    argo-cd.hanzo.ai/installation-id: 61199294-412c-4e78-a237-3ebba6784fcd
+    argo-apps.hanzo.ai/installation-id: 61199294-412c-4e78-a237-3ebba6784fcd
 ```
 
 On a rollback to a previous Hanzo CD version, this change would be reverted

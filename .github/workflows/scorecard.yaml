@@ -22,7 +22,7 @@ jobs:
       id-token: write # for scorecard to create OIDC tokens
       contents: read # to check out the repo
       actions: read # for upload-sarif to read workflow run info
-    if: github.repository == 'argoproj/argo-cd'
+    if: github.repository == 'hanzoai/cd'
 
     steps:
       - name: Harden the runner (Audit all outbound calls)

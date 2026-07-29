@@ -21,7 +21,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 	validRequest := &apiclient.CommitHydratedManifestsRequest{
 		Repo: &v1alpha1.Repository{
-			Repo: "https://github.com/argoproj/argocd-example-apps.git",
+			Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 		},
 		TargetBranch:  "main",
 		SyncBranch:    "env/test",
@@ -56,7 +56,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		service, _ := newServiceWithMocks(t)
 		request := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 		}
 		_, err := service.CommitHydratedManifests(t.Context(), request)
@@ -70,7 +70,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		service, _ := newServiceWithMocks(t)
 		request := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 			TargetBranch: "main",
 		}
@@ -197,7 +197,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithRootAndBlank := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",
@@ -246,7 +246,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithSubdirPath := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 			TargetBranch: "main",
 			SyncBranch:   "env/test",
@@ -289,7 +289,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithMixedPaths := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",
@@ -345,7 +345,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithEmptyPaths := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",
@@ -376,7 +376,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		request := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",
@@ -418,7 +418,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithRootAndBlank := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",

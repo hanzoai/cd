@@ -144,7 +144,7 @@ To keep the resource, set `Prune=false` annotation on the resource, with this Lu
 ```lua
 -- ...
 newObj.metadata.annotations = {}
-newObj.metadata.annotations["cd.hanzo.ai/sync-options"] = "Prune=false"
+newObj.metadata.annotations["apps.hanzo.ai/sync-options"] = "Prune=false"
 -- ...
 ```
 
@@ -156,7 +156,7 @@ If you wish to treat such an App as a synced one, add the following resource ann
 
 ```lua
 -- ...
-newObj.metadata.annotations["cd.hanzo.ai/compare-options"] = "IgnoreExtraneous"
+newObj.metadata.annotations["apps.hanzo.ai/compare-options"] = "IgnoreExtraneous"
 -- ...
 ```
 
@@ -183,9 +183,9 @@ resource.customizations.actions.ConfigMap: |
       cm1.metadata.labels["app.kubernetes.io/instance"] = obj.metadata.labels["app.kubernetes.io/instance"]
       cm1.metadata.annotations = {}
       -- For Apps with auto-prune, set the prune false on the resource, so it does not get deleted
-      cm1.metadata.annotations["cd.hanzo.ai/sync-options"] = "Prune=false"	  
+      cm1.metadata.annotations["apps.hanzo.ai/sync-options"] = "Prune=false"	  
       -- Keep the App synced even though it has a resource that is not in Git
-      cm1.metadata.annotations["cd.hanzo.ai/compare-options"] = "IgnoreExtraneous"		  
+      cm1.metadata.annotations["apps.hanzo.ai/compare-options"] = "IgnoreExtraneous"		  
       cm1.data = {}
       cm1.data.myKey1 = "myValue1"
       impactedResource1 = {}
@@ -256,7 +256,7 @@ argo-cd
 ```
 It is required to provide both discovery tests and action tests for your custom action.
 
-Example of a [complete custom action](https://github.com/hanzoai/cd/tree/master/resource_customizations/apps.hanzo.ai/AnalysisRun/actions) called `terminate` for AnalysisRun.
+Example of a [complete custom action](https://github.com/hanzoai/cd/tree/master/resource_customizations/hanzoai.io/AnalysisRun/actions) called `terminate` for AnalysisRun.
 
 
 Example of `action_test.yaml` file content with `discoveryTests` and `actionTests`:

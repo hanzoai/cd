@@ -59,7 +59,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.teams-workflows: channelName
+    apps.hanzo.ai/subscribe.on-sync-succeeded.teams-workflows: channelName
 ```
 
 ## Channel Support
@@ -260,10 +260,10 @@ If you're currently using the `teams` service with Office 365 Connectors, follow
 4. **Update your subscriptions:**
    ```yaml
    # Old
-   notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.teams: channelName
+   apps.hanzo.ai/subscribe.on-sync-succeeded.teams: channelName
    
    # New
-   notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.teams-workflows: channelName
+   apps.hanzo.ai/subscribe.on-sync-succeeded.teams-workflows: channelName
    ```
 
 5. **Test and verify:**

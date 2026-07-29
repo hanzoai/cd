@@ -38,7 +38,7 @@ type applications struct {
 }
 
 // newApplications returns a Applications
-func newApplications(c *ArgoprojV1alpha1Client, namespace string) *applications {
+func newApplications(c *AppV1alpha1Client, namespace string) *applications {
 	return &applications{
 		gentype.NewClientWithList[*applicationv1alpha1.Application, *applicationv1alpha1.ApplicationList](
 			"applications",

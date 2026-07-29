@@ -22,7 +22,7 @@ jobs:
       contents: read
       id-token: write # for creating OIDC tokens for signing.
       packages: write # used to push images to `ghcr.io` if used.
-    if: github.repository == 'argoproj/argo-cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
+    if: github.repository == 'hanzoai/cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
     uses: ./.github/workflows/image-reuse.yaml
     with:
       quay_image_name: ${{ needs.setup-variables.outputs.quay_image_name }}
@@ -37,7 +37,7 @@ jobs:
 
   setup-variables:
     name: Setup Release Variables
-    if: github.repository == 'argoproj/argo-cd' || (github.repository_owner != 'argoproj' && vars.ENABLE_FORK_RELEASES == 'true' && vars.IMAGE_NAMESPACE && vars.IMAGE_NAMESPACE != 'argoproj')
+    if: github.repository == 'hanzoai/cd' || (github.repository_owner != 'hanzoai' && vars.ENABLE_FORK_RELEASES == 'true' && vars.IMAGE_NAMESPACE && vars.IMAGE_NAMESPACE != 'hanzoai')
     runs-on: ubuntu-24.04
     outputs:
       is_pre_release: ${{ steps.var.outputs.is_pre_release }}
@@ -85,7 +85,7 @@ jobs:
           
           # Calculate configuration with defaults
           ENABLE_FORK_RELEASES="${VARS_ENABLE_FORK_RELEASES:-false}"
-          IMAGE_NAMESPACE="${VARS_IMAGE_NAMESPACE:-argoproj}"
+          IMAGE_NAMESPACE="${VARS_IMAGE_NAMESPACE:-hanzoai}"
           IMAGE_REPOSITORY="${VARS_IMAGE_REPOSITORY:-cd}"
           
           echo "enable_fork_releases=$ENABLE_FORK_RELEASES" >> $GITHUB_OUTPUT
@@ -96,7 +96,7 @@ jobs:
           echo "provenance_image=quay.io/$IMAGE_NAMESPACE/$IMAGE_REPOSITORY" >> $GITHUB_OUTPUT
           
           ALLOW_FORK_RELEASE=false
-          if [[ "$GITHUB_REPOSITORY_OWNER" != "argoproj" && "$ENABLE_FORK_RELEASES" == "true" && "$IMAGE_NAMESPACE" != "argoproj" && "${GITHUB_REF}" == refs/tags/* ]]; then
+          if [[ "$GITHUB_REPOSITORY_OWNER" != "hanzoai" && "$ENABLE_FORK_RELEASES" == "true" && "$IMAGE_NAMESPACE" != "hanzoai" && "${GITHUB_REF}" == refs/tags/* ]]; then
             ALLOW_FORK_RELEASE=true
           fi
           echo "allow_fork_release=$ALLOW_FORK_RELEASE" >> $GITHUB_OUTPUT
@@ -112,7 +112,7 @@ jobs:
       id-token: write # for creating OIDC tokens for signing.
       packages: write # for uploading attestations. (https://github.com/slsa-framework/slsa-github-generator/blob/main/internal/builders/container/README.md#known-issues)
     # Must be referenced by a tag. https://github.com/slsa-framework/slsa-github-generator/blob/main/internal/builders/container/README.md#referencing-the-slsa-generator
-    if: github.repository == 'argoproj/argo-cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
+    if: github.repository == 'hanzoai/cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v2.1.0
     with:
       image: ${{ needs.setup-variables.outputs.provenance_image }}
@@ -129,7 +129,7 @@ jobs:
       - cd-image-provenance
     permissions:
       contents: write # used for uploading assets
-    if: github.repository == 'argoproj/argo-cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
+    if: github.repository == 'hanzoai/cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
     runs-on: ubuntu-24.04
     env:
       GORELEASER_MAKE_LATEST: ${{ needs.setup-variables.outputs.is_latest_release }}
@@ -205,7 +205,7 @@ jobs:
       actions: read # for detecting the Github Actions environment
       id-token: write # Needed for provenance signing and ID
       contents: write #  Needed for release uploads
-    if: github.repository == 'argoproj/argo-cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
+    if: github.repository == 'hanzoai/cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
     # Must be refernced by a tag. https://github.com/slsa-framework/slsa-github-generator/blob/main/internal/builders/container/README.md#referencing-the-slsa-generator
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
     with:
@@ -223,7 +223,7 @@ jobs:
       contents: write # Needed for release uploads
     outputs:
       hashes: ${{ steps.sbom-hash.outputs.hashes }}
-    if: github.repository == 'argoproj/argo-cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
+    if: github.repository == 'hanzoai/cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
@@ -303,7 +303,7 @@ jobs:
       actions: read # for detecting the Github Actions environment
       id-token: write # Needed for provenance signing and ID
       contents: write #  Needed for release uploads
-    if: github.repository == 'argoproj/argo-cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
+    if: github.repository == 'hanzoai/cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
     # Must be referenced by a tag. https://github.com/slsa-framework/slsa-github-generator/blob/main/internal/builders/container/README.md#referencing-the-slsa-generator
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
     with:
@@ -321,7 +321,7 @@ jobs:
     permissions:
       contents: write # Needed to push commit to update stable and gitops-engine tags
       pull-requests: write # Needed to create PR for VERSION update.
-    if: github.repository == 'argoproj/argo-cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
+    if: github.repository == 'hanzoai/cd' || needs.setup-variables.outputs.allow_fork_release == 'true'
     runs-on: ubuntu-24.04
     env:
       TAG_STABLE: ${{ needs.setup-variables.outputs.is_latest_release }}
@@ -336,7 +336,7 @@ jobs:
       - name: Setup Git author information
         run: |
           set -ue
-          git config --global user.email 'ci@argoproj.com'
+          git config --global user.email 'ci@hanzoai.com'
           git config --global user.name 'CI'
 
       - name: Update stable tag to latest version

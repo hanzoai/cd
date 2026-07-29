@@ -768,7 +768,7 @@ func Test_nativeOCIClient_ResolveRevision(t *testing.T) {
 }
 
 func Test_nativeOCIClient_DigestMetadata(t *testing.T) {
-	// Regression test for https://github.com/argoproj/argo-cd/issues/27521:
+	// Regression test for https://github.com/hanzoai/cd/issues/27521:
 	// DigestMetadata must work on any replica without relying on a local tar
 	// populated by a prior Extract.
 	pushManifest := func(t *testing.T, store *memory.Store, annotations map[string]string) string {

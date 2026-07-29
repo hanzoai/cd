@@ -47,7 +47,7 @@ func LoadFlags() error {
 		flags[key] = "true"
 	}
 	// pkg shellquota doesn't recognize `=` so that the opts in format `foo=bar` could not work.
-	// issue ref: https://github.com/argoproj/argo-cd/issues/6822
+	// issue ref: https://github.com/hanzoai/cd/issues/6822
 	for k, v := range flags {
 		if strings.Contains(k, "=") && v == "true" {
 			kv := strings.SplitN(k, "=", 2)

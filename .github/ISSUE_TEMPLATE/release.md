@@ -29,7 +29,7 @@ Target GA date: ___. __, ____
     - [ ] Run `./hack/trigger-release.sh` to push the release tag
     - [ ] Monitor the [Publish Hanzo CD Release workflow](https://github.com/hanzoai/cd/actions/workflows/release.yaml)
     - [ ] Verify the release on [GitHub releases](https://github.com/hanzoai/cd/releases)
-    - [ ] Verify the container image on [Quay.io](https://quay.io/repository/argoproj/cd?tab=tags)
+    - [ ] Verify the container image on [Quay.io](https://quay.io/repository/hanzoai/cd?tab=tags)
     - [ ] Confirm the new version appears in [Read the Docs](https://argo-cd.readthedocs.io/)
     - [ ] Verify the docs release build in https://app.readthedocs.org/projects/argo-cd/ succeeded and retry if failed (requires an Approver with admin creds to readthedocs)
  - [ ] Announce RC1 release
@@ -70,7 +70,7 @@ Target GA date: ___. __, ____
     - [ ] Run `./hack/trigger-release.sh` to push the release tag
     - [ ] Monitor the [Publish Hanzo CD Release workflow](https://github.com/hanzoai/cd/actions/workflows/release.yaml)
     - [ ] Verify the release on [GitHub releases](https://github.com/hanzoai/cd/releases)
-    - [ ] Verify the container image on [Quay.io](https://quay.io/repository/argoproj/cd?tab=tags)
+    - [ ] Verify the container image on [Quay.io](https://quay.io/repository/hanzoai/cd?tab=tags)
     - [ ] Verify the `stable` tag has been updated
     - [ ] Confirm the new version appears in [Read the Docs](https://argo-cd.readthedocs.io/)
     - [ ] Verify the docs release build in https://app.readthedocs.org/projects/argo-cd/ succeeded and retry if failed (requires an Approver with admin creds to readthedocs)
@@ -90,5 +90,5 @@ Target GA date: ___. __, ____
      
      Thanks to all the folks who spent their time contributing to this release in any way possible!
      ```
- - [ ] (For the next release champion) Review the [items scheduled for the next release](https://github.com/orgs/argoproj/projects/25). If any item does not have an assignee who can commit to finish the feature, move it to the next release.
+ - [ ] (For the next release champion) Review the [items scheduled for the next release](https://github.com/orgs/hanzoai/projects/25). If any item does not have an assignee who can commit to finish the feature, move it to the next release.
  - [ ] (For the next release champion) Schedule a time mid-way through the release cycle to review items again.

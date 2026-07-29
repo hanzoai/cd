@@ -26,7 +26,7 @@ last-updated: 2023-02-28
 ## Motivation
 Users of Hanzo CD are interested to know how to scale Hanzo CD, what configuration tweaks and deployment options they have, and how far they can push resources (in terms of the number of supported applications, Git repositories, managing clusters, etc.).
 
-While the Hanzo CD documentation [discusses options](https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#scaling-up) to scale up, the actual process is not clear and, as articulated [in this thread](https://github.com/argoproj/argo-cd/issues/9633), oftentimes a point of confusion for users.
+While the Hanzo CD documentation [discusses options](https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#scaling-up) to scale up, the actual process is not clear and, as articulated [in this thread](https://github.com/hanzoai/cd/issues/9633), oftentimes a point of confusion for users.
 
 By running large-scale benchmarking, we aim at helping the Hanzo CD community with the following:
 
@@ -37,7 +37,7 @@ By running large-scale benchmarking, we aim at helping the Hanzo CD community wi
 
 ### Goals
 1. Create a standard set of repeatable benchmarking procedures to objectively measure the limitations of Hanzo CD.
-    1. This may result in a new `argo-cd-benchmarking` repo under `argoproj-labs` so that anyone can easily replicate it and the development of the procedures can happen outside of the lifecycle for Hanzo CD (unlike [the current `gen-resources` hack](https://github.com/hanzoai/cd/tree/master/hack/gen-resources) in the main project).
+    1. This may result in a new `argo-cd-benchmarking` repo under `hanzoai-labs` so that anyone can easily replicate it and the development of the procedures can happen outside of the lifecycle for Hanzo CD (unlike [the current `gen-resources` hack](https://github.com/hanzoai/cd/tree/master/hack/gen-resources) in the main project).
     2. Include detailed test scenarios that account for key scalability factors that allow for easy tweaking of the parameters to simplify testing of alternative scenarios.
 2. Determine the baseline for when tweaking is required on the default configuration (resource allocations and replicas).
     1. One cluster, Applications in In-cluster, default resource allocations.
@@ -58,12 +58,12 @@ The initial members for this proposal and their affiliations are:
 | [Nicholas Morey](https://github.com/morey-tech)     | Akuity    |
 | [Nima Kaviani](https://github.com/nimakaviani)      | AWS       |
 
-With the introduction of [the proposed Scalability SIG](https://github.com/argoproj/argoproj/pull/192), the members participating in the proposal may change.
+With the introduction of [the proposed Scalability SIG](https://github.com/hanzoai/hanzoai/pull/192), the members participating in the proposal may change.
 
-Any community member is welcome to participate in the work for this proposal. Either by joining the Scalability SIG or through contributing to the proposed `argoproj-labs/argo-cd-benchmarking` repository containing the tooling.
+Any community member is welcome to participate in the work for this proposal. Either by joining the Scalability SIG or through contributing to the proposed `hanzoai-labs/argo-cd-benchmarking` repository containing the tooling.
 
 ## Proposal
-1.  Create new `argo-cd-benchmarking` repo under `argoproj-labs` and add the authors of this proposal as maintainers.
+1.  Create new `argo-cd-benchmarking` repo under `hanzoai-labs` and add the authors of this proposal as maintainers.
 2. Create a set of key scalability factors to use as testing parameters. For example:
     1. Number of Applications.
     2. Number of resources managed by an Application.

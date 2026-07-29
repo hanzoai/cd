@@ -282,7 +282,7 @@ func TestInitializingExistingDefaultProject(t *testing.T) {
 	cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
 	assert.NotNil(t, cd)
 
-	proj, err := appClientSet.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
+	proj, err := appClientSet.AppV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.NotNil(t, proj)
 	assert.Equal(t, v1alpha1.DefaultAppProjectName, proj.Name)
@@ -305,7 +305,7 @@ func TestInitializingNotExistingDefaultProject(t *testing.T) {
 	cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
 	assert.NotNil(t, cd)
 
-	proj, err := appClientSet.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
+	proj, err := appClientSet.AppV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.NotNil(t, proj)
 	assert.Equal(t, v1alpha1.DefaultAppProjectName, proj.Name)
@@ -359,7 +359,7 @@ func TestEnforceProjectGroups(t *testing.T) {
 	log.Println(existingProj.ProjectPoliciesString())
 	existingProj.Spec.Roles[0].Groups = nil
 	log.Println(existingProj.ProjectPoliciesString())
-	_, _ = s.AppClientset.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Update(t.Context(), &existingProj, metav1.UpdateOptions{})
+	_, _ = s.AppClientset.AppV1alpha1().AppProjects(test.FakeArgoCDNamespace).Update(t.Context(), &existingProj, metav1.UpdateOptions{})
 	time.Sleep(100 * time.Millisecond) // this lets the informer get synced
 	assert.False(t, s.enf.Enforce(claims, "projects", "get", existingProj.Name))
 	assert.False(t, s.enf.Enforce(claims, "applications", "get", defaultTestObject))
@@ -1402,7 +1402,7 @@ func TestInitializeDefaultProject_ProjectDoesNotExist(t *testing.T) {
 	err := initializeDefaultProject(argoCDOpts)
 	require.NoError(t, err)
 
-	proj, err := argoCDOpts.AppClientset.ArgoprojV1alpha1().
+	proj, err := argoCDOpts.AppClientset.AppV1alpha1().
 		AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 
 	require.NoError(t, err)
@@ -1436,7 +1436,7 @@ func TestInitializeDefaultProject_ProjectAlreadyInitialized(t *testing.T) {
 	err := initializeDefaultProject(argoCDOpts)
 	require.NoError(t, err)
 
-	proj, err := argoCDOpts.AppClientset.ArgoprojV1alpha1().
+	proj, err := argoCDOpts.AppClientset.AppV1alpha1().
 		AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 
 	require.NoError(t, err)
@@ -1718,7 +1718,7 @@ func TestReplaceBaseHRef(t *testing.T) {
     <noscript>
         <p>
         Your browser does not support JavaScript. Please enable JavaScript to view the site.
-        Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
+        Alternatively, Argo CD can be used with the <a href="https://hanzoai.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
         </p>
     </noscript>
     <div id="app"></div>
@@ -1742,7 +1742,7 @@ func TestReplaceBaseHRef(t *testing.T) {
     <noscript>
         <p>
         Your browser does not support JavaScript. Please enable JavaScript to view the site.
-        Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
+        Alternatively, Argo CD can be used with the <a href="https://hanzoai.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
         </p>
     </noscript>
     <div id="app"></div>
@@ -1770,7 +1770,7 @@ func TestReplaceBaseHRef(t *testing.T) {
     <noscript>
         <p>
         Your browser does not support JavaScript. Please enable JavaScript to view the site.
-        Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
+        Alternatively, Argo CD can be used with the <a href="https://hanzoai.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
         </p>
     </noscript>
     <div id="app"></div>
@@ -1794,7 +1794,7 @@ func TestReplaceBaseHRef(t *testing.T) {
     <noscript>
         <p>
         Your browser does not support JavaScript. Please enable JavaScript to view the site.
-        Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
+        Alternatively, Argo CD can be used with the <a href="https://hanzoai.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
         </p>
     </noscript>
     <div id="app"></div>

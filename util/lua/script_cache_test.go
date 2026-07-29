@@ -16,8 +16,8 @@ import (
 const (
 	// Rollout is a representative built-in health script: ~5 KB of Lua with helper
 	// functions and multiple code paths, similar in complexity to hot-path checks.
-	scriptCacheBenchScriptPath = "../../resource_customizations/apps.hanzo.ai/Rollout/health.lua"
-	scriptCacheBenchObjPath    = "../../resource_customizations/apps.hanzo.ai/Rollout/testdata/canary/healthy_executedAllSteps.yaml"
+	scriptCacheBenchScriptPath = "../../resource_customizations/external-secrets.io/ExternalSecret/health.lua"
+	scriptCacheBenchObjPath    = "../../resource_customizations/external-secrets.io/ExternalSecret/testdata/healthy.yaml"
 )
 
 const cacheTestScriptA = `local hs = {}

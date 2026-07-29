@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+# TODO: Remove deprecated https://github.com/hanzoai/cd/issues/27695
 
 # Wrapper script to perform GPG signature validation on git commit SHAs and
 # annotated tags.

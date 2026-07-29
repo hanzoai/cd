@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    cd.hanzo.ai/tracking-id: 'guestbook:apps/Deployment:default/kustomize-guestbook-ui'
+    apps.hanzo.ai/tracking-id: 'guestbook:apps/Deployment:default/kustomize-guestbook-ui'
     iksm-version: '1.0'
   name: kustomize-guestbook-ui
   namespace: default
@@ -21,7 +21,7 @@ spec:
         - env:
             - name: SOME_ENV_VAR
               value: some_value
-          image: 'quay.io/argoprojlabs/cd-e2e-container:0.1'
+          image: 'ghcr.io/hanzoai/e2e-container:0.1'
           name: guestbook-ui
           ports:
             - containerPort: 80

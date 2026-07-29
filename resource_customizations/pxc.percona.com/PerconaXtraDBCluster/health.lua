@@ -34,5 +34,5 @@ if obj.status ~= nil then
 end
 
 hs.status = "Unknown"
-hs.message = "Cluster status is unknown. Ensure your ArgoCD is current and then check for/file a bug report: https://github.com/argoproj/argo-cd/issues"
+hs.message = "Cluster status is unknown. Ensure your Hanzo CD is current and then check for/file a bug report: https://github.com/hanzoai/cd/issues"
 return hs

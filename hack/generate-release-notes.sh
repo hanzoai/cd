@@ -44,14 +44,14 @@ cat <<-EOM
 
 \`\`\`shell
 kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/$version/manifests/install.yaml
+kubectl apply -n argocd -f https://raw.githubusercontent.com/hanzoai/cd/$version/manifests/install.yaml
 \`\`\`
 
 ### HA:
 
 \`\`\`shell
 kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/$version/manifests/ha/install.yaml
+kubectl apply -n argocd -f https://raw.githubusercontent.com/hanzoai/cd/$version/manifests/ha/install.yaml
 \`\`\`
 
 ## Release signatures

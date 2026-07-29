@@ -6,7 +6,7 @@
     "namespace": "default",
     "labels": {
       "app": "nested-test",
-      "applications.argoproj.io/app-name": "nested-app"
+      "applications.apps.hanzo.ai/app-name": "nested-app"
     },
     "annotations": {
       "deployment.kubernetes.io/revision": "2"
@@ -19,7 +19,7 @@
           "f:metadata": {
             "f:labels": {
               "f:app": {},
-              "f:applications.argoproj.io/app-name": {}
+              "f:applications.apps.hanzo.ai/app-name": {}
             }
           },
           "f:spec": {

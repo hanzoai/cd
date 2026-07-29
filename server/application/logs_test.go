@@ -81,7 +81,7 @@ func TestMergeLogStreams(t *testing.T) {
 }
 
 func TestMergeLogStreams_RaceCondition(t *testing.T) {
-	// Test for regression of this issue: https://github.com/argoproj/argo-cd/issues/7006
+	// Test for regression of this issue: https://github.com/hanzoai/cd/issues/7006
 	for i := range 5000 {
 		first := make(chan logEntry)
 		second := make(chan logEntry)

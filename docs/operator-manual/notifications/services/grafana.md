@@ -63,7 +63,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.<trigger-name>.grafana: tag1|tag2 # list of tags separated with |
+    apps.hanzo.ai/subscribe.<trigger-name>.grafana: tag1|tag2 # list of tags separated with |
 ```
 
 9. Change the annotations settings

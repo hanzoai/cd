@@ -508,7 +508,7 @@ metadata:
 spec:
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     ksonnet:
       environment: default
@@ -526,7 +526,7 @@ metadata:
 spec:
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     ksonnet:
       environment: default
@@ -546,7 +546,7 @@ metadata:
 spec:
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     ksonnet:
       environment: default
@@ -569,12 +569,12 @@ func newMultiSourceTestApp(opts ...func(app *v1alpha1.Application)) *v1alpha1.Ap
 	multiSourceApp.Spec = v1alpha1.ApplicationSpec{
 		Sources: []v1alpha1.ApplicationSource{
 			{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				Path:           "helm-guestbook",
 				TargetRevision: "appbranch1",
 			},
 			{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				Path:           "kustomize-guestbook",
 				TargetRevision: "appbranch2",
 			},
@@ -1136,7 +1136,7 @@ func TestNoAppEnumeration(t *testing.T) {
 // setSyncRunningOperationState simulates starting a sync operation on the given app.
 func setSyncRunningOperationState(t *testing.T, appServer *Server) {
 	t.Helper()
-	appIf := appServer.appclientset.ArgoprojV1alpha1().Applications("default")
+	appIf := appServer.appclientset.AppV1alpha1().Applications("default")
 	app, err := appIf.Get(t.Context(), "test", metav1.GetOptions{})
 	require.NoError(t, err)
 	// This sets the status that would be set by the controller usually.
@@ -1148,7 +1148,7 @@ func setSyncRunningOperationState(t *testing.T, appServer *Server) {
 // unsetSyncRunningOperationState simulates finishing a sync operation on the given app.
 func unsetSyncRunningOperationState(t *testing.T, appServer *Server) {
 	t.Helper()
-	appIf := appServer.appclientset.ArgoprojV1alpha1().Applications("default")
+	appIf := appServer.appclientset.AppV1alpha1().Applications("default")
 	app, err := appIf.Get(t.Context(), "test", metav1.GetOptions{})
 	require.NoError(t, err)
 	app.Operation = nil
@@ -1721,7 +1721,7 @@ func TestUpdateApp(t *testing.T) {
 			Application: updateApp,
 		})
 		require.Error(t, err)
-		require.ErrorContains(t, err, "application repo https://github.com/argoproj/argocd-example-apps.git is not permitted in project 'restricted-proj'")
+		require.ErrorContains(t, err, "application repo https://git.hanzo.ai/hanzo/example-apps.git is not permitted in project 'restricted-proj'")
 		require.ErrorContains(t, err, "application destination server 'fake-cluster' and namespace 'fake-dest-ns' do not match any of the allowed destinations in project 'restricted-proj'")
 	})
 	t.Run("Cannot update application project to inexisting", func(t *testing.T) {
@@ -2643,7 +2643,7 @@ func TestSyncRBACOverrideNotRequired_DiffRevisionWithAutosyncPrevented(t *testin
 		Revisions:       []string{"revisionbranch1"},
 	}
 	_, err = appServer.Sync(ctx, syncReq)
-	assert.EqualError(t, err, "rpc error: code = FailedPrecondition desc = Cannot sync source https://github.com/argoproj/argocd-example-apps.git to revisionbranch1: auto-sync currently set to appbranch1",
+	assert.EqualError(t, err, "rpc error: code = FailedPrecondition desc = Cannot sync source https://git.hanzo.ai/hanzo/example-apps.git to revisionbranch1: auto-sync currently set to appbranch1",
 		"should not be able to sync to different revision with auto-sync enabled, multi-source app")
 }
 
@@ -2675,7 +2675,7 @@ func TestSyncAndTerminate(t *testing.T) {
 		Phase:     synccommon.OperationRunning,
 		StartedAt: metav1.NewTime(time.Now()),
 	}
-	_, err = appServer.appclientset.ArgoprojV1alpha1().Applications(appServer.ns).Update(t.Context(), app, metav1.UpdateOptions{})
+	_, err = appServer.appclientset.AppV1alpha1().Applications(appServer.ns).Update(t.Context(), app, metav1.UpdateOptions{})
 	require.NoError(t, err)
 
 	resp, err := appServer.TerminateOperation(ctx, &application.OperationTerminateRequest{Name: &app.Name})
@@ -2692,7 +2692,7 @@ func TestSyncHelm(t *testing.T) {
 	ctx := t.Context()
 	appServer := newTestAppServer(t)
 	testApp := newTestApp()
-	testApp.Spec.Source.RepoURL = "https://argoproj.github.io/argo-helm"
+	testApp.Spec.Source.RepoURL = "https://charts.hanzo.ai"
 	testApp.Spec.Source.Path = ""
 	testApp.Spec.Source.Chart = "argo-cd"
 	testApp.Spec.Source.TargetRevision = "0.7.*"
@@ -3274,7 +3274,7 @@ func refreshAnnotationRemover(t *testing.T, ctx context.Context, patched *int32,
 		if a.GetAnnotations() != nil && a.GetAnnotations()[v1alpha1.AnnotationKeyRefresh] != "" {
 			a.SetAnnotations(map[string]string{})
 			a.SetResourceVersion("999")
-			_, err = appServer.appclientset.ArgoprojV1alpha1().Applications(a.Namespace).Update(
+			_, err = appServer.appclientset.AppV1alpha1().Applications(a.Namespace).Update(
 				t.Context(), a, metav1.UpdateOptions{})
 			require.NoError(t, err)
 			atomic.AddInt32(patched, 1)
@@ -4166,7 +4166,7 @@ func Test_RevisionMetadata(t *testing.T) {
 	singleSourceApp.Name = "single-source-app"
 	singleSourceApp.Spec = v1alpha1.ApplicationSpec{
 		Source: &v1alpha1.ApplicationSource{
-			RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+			RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 			Path:           "helm-guestbook",
 			TargetRevision: "HEAD",
 		},
@@ -4177,12 +4177,12 @@ func Test_RevisionMetadata(t *testing.T) {
 	multiSourceApp.Spec = v1alpha1.ApplicationSpec{
 		Sources: []v1alpha1.ApplicationSource{
 			{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				Path:           "helm-guestbook",
 				TargetRevision: "HEAD",
 			},
 			{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://git.hanzo.ai/hanzo/example-apps.git",
 				Path:           "kustomize-guestbook",
 				TargetRevision: "HEAD",
 			},
@@ -4470,7 +4470,7 @@ func Test_DeepCopyInformers(t *testing.T) {
 
 	s := newTestAppServer(t, ro...)
 
-	appList, err := s.appclientset.ArgoprojV1alpha1().Applications(namespace).List(t.Context(), metav1.ListOptions{})
+	appList, err := s.appclientset.AppV1alpha1().Applications(namespace).List(t.Context(), metav1.ListOptions{})
 	require.NoError(t, err)
 	assert.ElementsMatch(t, appls, appList.Items)
 	sAppList := appList.Items
@@ -4484,12 +4484,12 @@ func Test_DeepCopyInformers(t *testing.T) {
 	for i := range appls {
 		assert.NotSame(t, &appls[i], &sAppList[i])
 		assert.NotSame(t, &appls[i].Spec, &sAppList[i].Spec)
-		a, err := s.appclientset.ArgoprojV1alpha1().Applications(namespace).Get(t.Context(), sAppList[i].Name, metav1.GetOptions{})
+		a, err := s.appclientset.AppV1alpha1().Applications(namespace).Get(t.Context(), sAppList[i].Name, metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotSame(t, a, &sAppList[i])
 	}
 
-	appSetList, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).List(t.Context(), metav1.ListOptions{})
+	appSetList, err := s.appclientset.AppV1alpha1().ApplicationSets(namespace).List(t.Context(), metav1.ListOptions{})
 	require.NoError(t, err)
 	assert.ElementsMatch(t, appSets, appSetList.Items)
 	sAppSetList := appSetList.Items
@@ -4502,13 +4502,13 @@ func Test_DeepCopyInformers(t *testing.T) {
 	for i := range appSets {
 		assert.NotSame(t, &appSets[i], &sAppSetList[i])
 		assert.NotSame(t, &appSets[i].Spec, &sAppSetList[i].Spec)
-		a, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).Get(t.Context(),
+		a, err := s.appclientset.AppV1alpha1().ApplicationSets(namespace).Get(t.Context(),
 			sAppSetList[i].Name, metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotSame(t, a, &sAppSetList[i])
 	}
 
-	projList, err := s.appclientset.ArgoprojV1alpha1().AppProjects("deep-copy-ns").List(t.Context(), metav1.ListOptions{})
+	projList, err := s.appclientset.AppV1alpha1().AppProjects("deep-copy-ns").List(t.Context(), metav1.ListOptions{})
 	require.NoError(t, err)
 	assert.ElementsMatch(t, appProjects, projList.Items)
 	spList := projList.Items
@@ -4521,7 +4521,7 @@ func Test_DeepCopyInformers(t *testing.T) {
 	for i := range appProjects {
 		assert.NotSame(t, &appProjects[i], &spList[i])
 		assert.NotSame(t, &appProjects[i].Spec, &spList[i].Spec)
-		p, err := s.appclientset.ArgoprojV1alpha1().AppProjects("deep-copy-ns").Get(t.Context(),
+		p, err := s.appclientset.AppV1alpha1().AppProjects("deep-copy-ns").Get(t.Context(),
 			spList[i].Name, metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotSame(t, p, &spList[i])

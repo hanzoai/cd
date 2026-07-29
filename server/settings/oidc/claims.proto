@@ -1,7 +1,7 @@
 syntax = "proto3";
 option go_package = "github.com/hanzoai/cd/server/settings/oidc";
 
-package github.com.argoproj.argo_cd.server.settings.oidc;
+package github.com.hanzoai.argo_cd.server.settings.oidc;
 
 message Claim {
     bool essential = 1;

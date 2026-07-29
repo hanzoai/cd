@@ -123,25 +123,25 @@ func setupAppProjects(projects ...string) clientset.AppProjectInterface {
 	for i := range appProjects {
 		ro[i] = &appProjects[i]
 	}
-	return fake.NewSimpleClientset(ro...).ArgoprojV1alpha1().AppProjects("deep-copy-ns")
+	return fake.NewSimpleClientset(ro...).AppV1alpha1().AppProjects("deep-copy-ns")
 }
 
-func Test_deepCopyArgoprojV1alpha1Client_RESTClient(t *testing.T) {
-	fclientset := fake.NewSimpleClientset().ArgoprojV1alpha1()
+func Test_deepCopyAppV1alpha1Client_RESTClient(t *testing.T) {
+	fclientset := fake.NewSimpleClientset().AppV1alpha1()
 	type fields struct {
-		ArgoprojV1alpha1Interface clientset.ArgoprojV1alpha1Interface
+		AppV1alpha1Interface clientset.AppV1alpha1Interface
 	}
 	tests := []struct {
 		name   string
 		fields fields
 		want   rest.Interface
 	}{
-		{name: "RestClientGetter", fields: fields{ArgoprojV1alpha1Interface: fclientset}, want: fclientset.RESTClient()},
+		{name: "RestClientGetter", fields: fields{AppV1alpha1Interface: fclientset}, want: fclientset.RESTClient()},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			d := &deepCopyArgoprojV1alpha1Client{
-				ArgoprojV1alpha1Interface: tt.fields.ArgoprojV1alpha1Interface,
+			d := &deepCopyAppV1alpha1Client{
+				AppV1alpha1Interface: tt.fields.AppV1alpha1Interface,
 			}
 			assert.Equalf(t, tt.want, d.RESTClient(), "RESTClient()")
 		})

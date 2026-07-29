@@ -17,13 +17,10 @@ data:
   # The Application itself is already watched by the controller lister, but this configuration is applied for apps of apps
   resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
     jqPathExpressions:
-      - '.metadata.annotations."notified.notifications.apps.hanzo.ai"'
+      - '.metadata.annotations."apps.hanzo.ai/notified"'
       - '.metadata.annotations."apps.hanzo.ai/refresh"'
       - '.metadata.annotations."apps.hanzo.ai/hydrate"'
       - '.operation'
-  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Rollout: |
-    jqPathExpressions:
-      - '.metadata.annotations."notified.notifications.apps.hanzo.ai"'
   # Legacy annotations used on HPA autoscaling/v1
   resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler: |
     jqPathExpressions:
@@ -43,7 +40,6 @@ data:
     jqPathExpressions:
       - '.metadata.annotations."deployment.kubernetes.io/desired-replicas"'
       - '.metadata.annotations."deployment.kubernetes.io/max-replicas"'
-      - '.metadata.annotations."rollout.apps.hanzo.ai/desired-replicas"'
   # Ignores update if EndpointSlice is not excluded globally
   resource.customizations.ignoreResourceUpdates.discovery.k8s.io_EndpointSlice: |
     jsonPointers:

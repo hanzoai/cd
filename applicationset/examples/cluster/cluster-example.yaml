@@ -13,7 +13,7 @@ spec:
     spec:
       project: "default"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://git.hanzo.ai/hanzo/example-apps/
         targetRevision: HEAD
         path: guestbook
       destination:

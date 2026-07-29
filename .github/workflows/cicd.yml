@@ -3,7 +3,7 @@
 # the trigger + the import. Same shape every hanzo/lux/zoo repo uses.
 #
 # branches include both `main` and `master` — this repo's default branch is
-# still `master` (inherited from the argoproj/argo-cd fork point).
+# still `master` (inherited from the hanzoai/cd fork point).
 name: CI/CD
 
 on:

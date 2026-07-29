@@ -65,7 +65,7 @@ k8s_yaml(kustomize('manifests/dev-tilt'))
 
 # build dev image
 docker_build_with_restart(
-    'quay.io/argoproj/argocd:latest', 
+    'ghcr.io/hanzoai/argocd:latest', 
     context='.',
     dockerfile='Dockerfile.tilt',
     entrypoint=[
@@ -135,9 +135,9 @@ k8s_resource(
 k8s_resource(
     new_name='cluster-resources',
     objects=[
-        'applications.argoproj.io:customresourcedefinition',
-        'applicationsets.argoproj.io:customresourcedefinition',
-        'appprojects.argoproj.io:customresourcedefinition',
+        'applications.apps.hanzo.ai:customresourcedefinition',
+        'applicationsets.apps.hanzo.ai:customresourcedefinition',
+        'appprojects.apps.hanzo.ai:customresourcedefinition',
         'argocd:namespace'
     ]
 )

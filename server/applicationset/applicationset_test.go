@@ -358,7 +358,7 @@ func TestListAppSetsInDefaultNSWithLabels(t *testing.T) {
 	testListAppsetsWithLabels(t, appsetQuery, appSetServer)
 }
 
-// This test covers https://github.com/argoproj/argo-cd/issues/15429
+// This test covers https://github.com/hanzoai/cd/issues/15429
 // If the namespace isn't provided during listing action, cd's
 // default namespace must be used and not all the namespaces
 func TestListAppSetsWithoutNamespace(t *testing.T) {

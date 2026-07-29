@@ -128,7 +128,7 @@ initContainers:
   - -n
   - /usr/local/bin/cd
   - /var/run/cd/cd-cmp-server
-  image: quay.io/argoproj/cd:latest
+  image: ghcr.io/hanzoai/cd:latest
   name: copyutil
   volumeMounts:
   - mountPath: /var/run/cd
@@ -251,7 +251,7 @@ initContainers:
   - -n
   - /usr/local/bin/cd
   - /var/run/cd/cd-cmp-server
-  image: quay.io/argoproj/cd:latest
+  image: ghcr.io/hanzoai/cd:latest
   name: copyutil
   volumeMounts:
   - mountPath: /var/run/cd

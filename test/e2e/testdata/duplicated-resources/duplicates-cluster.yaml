@@ -7,7 +7,7 @@ metadata:
     e2e.apps.hanzo.ai: "true"
   annotations:
     # This needs to be synced first so that Hanzo CD knows these are cluster-scoped resources.
-    cd.hanzo.ai/sync-wave: "-1"
+    apps.hanzo.ai/sync-wave: "-1"
 spec:
   conversion:
     strategy: None

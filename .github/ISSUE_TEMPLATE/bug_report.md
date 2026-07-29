@@ -6,7 +6,7 @@ labels: ['bug', 'triage/pending']
 assignees: ''
 ---
 
-<!-- If you are trying to resolve an environment-specific issue or have a one-off question about the edge case that does not require a feature then please consider asking a question in cd slack [channel](https://argoproj.github.io/community/join-slack). -->
+<!-- If you are trying to resolve an environment-specific issue or have a one-off question about the edge case that does not require a feature then please consider asking a question in cd slack [channel](https://hanzoai.github.io/community/join-slack). -->
 
 Checklist:
 

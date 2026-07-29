@@ -8,7 +8,7 @@ spec:
   generators:
   - scmProvider:
       github:
-        organization: argoproj
+        organization: hanzoai
       cloneProtocol: https
       filters:
       - repositoryMatch: example-apps

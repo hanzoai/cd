@@ -18,7 +18,7 @@ In general, the flow of an ApplicationSet with a Plugin generator is as follows:
 - This allows for dynamic creation of Hanzo CD Applications based on custom user-created defined templates, parameters, and logic.
 
 To start working on your own plugin, you can generate a new repository based on the example
-[applicationset-hello-plugin](https://github.com/argoproj-labs/applicationset-hello-plugin).
+[applicationset-hello-plugin](https://github.com/hanzoai-labs/applicationset-hello-plugin).
 
 ## Simple example
 

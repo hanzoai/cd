@@ -19,9 +19,9 @@ data:
 kind: Secret
 metadata:
   annotations:
-    managed-by: cd.hanzo.ai
+    managed-by: apps.hanzo.ai
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
     cloud: gcp
     department: billing
     env: qa
@@ -126,7 +126,7 @@ metadata:
   name: guestbook
   namespace: cd
   finalizers:
-  - resources-finalizer.cd.hanzo.ai
+  - resources-finalizer.apps.hanzo.ai
 spec:
   destination:
     namespace: cd
@@ -134,7 +134,7 @@ spec:
   project: default
   source:
     path: guestbook
-    repoURL: https://github.com/argoproj/argocd-example-apps
+    repoURL: https://git.hanzo.ai/hanzo/example-apps
     targetRevision: HEAD
   syncPolicy:
     automated:
@@ -161,7 +161,7 @@ Next, you need to create and sync your parent app, e.g. via the CLI:
 cd app create apps \
     --dest-namespace cd \
     --dest-server https://kubernetes.default.svc \
-    --repo https://github.com/argoproj/argocd-example-apps.git \
+    --repo https://git.hanzo.ai/hanzo/example-apps.git \
     --path apps  
 cd app sync apps  
 ```
@@ -187,7 +187,7 @@ Or, via the CLI:
 cd app sync -l app.kubernetes.io/instance=apps
 ```
 
-View [the example on GitHub](https://github.com/argoproj/argocd-example-apps/tree/master/apps).
+View [the example on GitHub](https://git.hanzo.ai/hanzo/example-apps/tree/master/apps).
 
 
 
@@ -202,7 +202,7 @@ metadata:
   name: guestbook
   namespace: cd
   finalizers:
-  - resources-finalizer.cd.hanzo.ai
+  - resources-finalizer.apps.hanzo.ai
 spec:
  ...
 ```
@@ -238,7 +238,7 @@ spec:
         # Allow manually disabling auto sync for apps, useful for debugging.
         - /spec/syncPolicy/automated
         # These are automatically updated on a regular basis. Not ignoring last applied configuration since it's used for computing diffs after normalization.
-        - /metadata/annotations/cd.hanzo.ai~1refresh
+        - /metadata/annotations/apps.hanzo.ai~1refresh
         - /operation
   ...
 ```

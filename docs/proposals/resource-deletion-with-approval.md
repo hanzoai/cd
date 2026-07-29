@@ -28,9 +28,9 @@ application.
 ## Motivation
 
 We’ve seen cases where Hanzo CD deleted Kubernetes resources due to a bug or misconfiguration.​ Examples include [corrupted
-data](https://github.com/argoproj/argo-cd/issues/4423) in Redis, user errors
-([1](https://github.com/argoproj/argo-cd/issues/9093), [2](https://github.com/argoproj/argo-cd/issues/4844))
-and [bug](https://github.com/argoproj/argo-cd/issues/3473) in the automation on top of Hanzo CD. These examples don’t
+data](https://github.com/hanzoai/cd/issues/4423) in Redis, user errors
+([1](https://github.com/hanzoai/cd/issues/9093), [2](https://github.com/hanzoai/cd/issues/4844))
+and [bug](https://github.com/hanzoai/cd/issues/3473) in the automation on top of Hanzo CD. These examples don’t
 mean Hanzo CD is not reliable; however, there are cases where misbehavior is catastrophic, and erroneous deletion is not
 acceptable. Examples include the app-of-apps pattern where Hanzo CD is used to manage itself, or namespaces in production
 clusters.
@@ -63,7 +63,7 @@ protect resources from accidental deletion during cascading application deletion
 
 ### Introduce `confirm` option for Prune sync option.
 
-Hanzo CD already supports `cd.hanzo.ai/sync-options: Prune=false` sync option that prevents resource deletion while syncing
+Hanzo CD already supports `apps.hanzo.ai/sync-options: Prune=false` sync option that prevents resource deletion while syncing
 the application. This, however, is not ideal since it prevents implementing fully automated workflows that include resource deletion.
 
 In order to improve the situation, we propose to introduce `confirm` option for Prune sync option. When `confirm` option is set, Hanzo CD should pause the sync operation
@@ -75,7 +75,7 @@ In order to improve the situation, we propose to introduce `confirm` option for 
 
 ### Introduce `confirm` option for Delete sync option.
 
-Similarly to `Prune` sync option we need to introduce `confirm` value for `Delete` sync option: `cd.hanzo.ai/sync-options: Delete=confirm`. The `confirm` option
+Similarly to `Prune` sync option we need to introduce `confirm` value for `Delete` sync option: `apps.hanzo.ai/sync-options: Delete=confirm`. The `confirm` option
 should pause the sync operation **before deleting any app resources** and wait for the user to confirm the deletion. The confirmation can be done in a very friendly way
 using Hanzo CD UI, CLI or API.
 
@@ -112,7 +112,7 @@ The Hanzo CD UI, CLI should visualize the `requiresDeletionApproval` field so th
 #### Approve deletion resource action
 
 The Hanzo CD UI, CLI should bundle the `Approve Deletion` [resource action](https://argo-cd.readthedocs.io/en/stable/operator-manual/resource_actions/)
-that would allow the user to approve the deletion. The action should patch the resource with the `cd.hanzo.ai/deletion-approved: true` annotation.
+that would allow the user to approve the deletion. The action should patch the resource with the `apps.hanzo.ai/deletion-approved: true` annotation.
 Once annotation is applied the Hanzo CD should proceed with the deletion.
 
 The main reason to use the action is that we can reuse existing [RBAC](https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/) to control who can approve the deletion.
@@ -133,7 +133,7 @@ deletion approval is required. The notification template should include a list o
 
 #### Declarative approval
 
-The user should be able to approve resource deletion without using the UI or CLI by manually adding the `cd.hanzo.ai/deletion-approved: true` annotation to the resource.
+The user should be able to approve resource deletion without using the UI or CLI by manually adding the `apps.hanzo.ai/deletion-approved: true` annotation to the resource.
 
 ### Use cases
 

@@ -11,10 +11,10 @@ import (
 // fakeAppProjects implements AppProjectInterface
 type fakeAppProjects struct {
 	*gentype.FakeClientWithList[*v1alpha1.AppProject, *v1alpha1.AppProjectList]
-	Fake *FakeArgoprojV1alpha1
+	Fake *FakeAppV1alpha1
 }
 
-func newFakeAppProjects(fake *FakeArgoprojV1alpha1, namespace string) applicationv1alpha1.AppProjectInterface {
+func newFakeAppProjects(fake *FakeAppV1alpha1, namespace string) applicationv1alpha1.AppProjectInterface {
 	return &fakeAppProjects{
 		gentype.NewFakeClientWithList[*v1alpha1.AppProject, *v1alpha1.AppProjectList](
 			fake.Fake,

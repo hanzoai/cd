@@ -309,7 +309,7 @@ func TestNormalizeFailureLogIncludesResourceContext(t *testing.T) {
 	t.Parallel()
 	// When a normalization patch fails with a non-silenced error, the log entry
 	// must identify which resource was being normalized so operators can act on it.
-	// Regression test for https://github.com/argoproj/argo-cd/issues/14148.
+	// Regression test for https://github.com/hanzoai/cd/issues/14148.
 	normalizer, err := NewIgnoreNormalizer([]v1alpha1.ResourceIgnoreDifferences{{
 		Kind:              "ConfigMap",
 		JQPathExpressions: []string{`.nothing) | .data["config.yaml"] |= (fromjson | del(.auth) | tojson`},

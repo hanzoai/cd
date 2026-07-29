@@ -2210,7 +2210,7 @@ spec:
 }
 
 func TestStructuredMergeDiff_HPAv2ToV1Conversion(t *testing.T) {
-	// Reproduces https://github.com/argoproj/argo-cd/issues/17795
+	// Reproduces https://github.com/hanzoai/cd/issues/17795
 	gvkParser := buildGVKParser(t)
 
 	config := StrToUnstructured(`

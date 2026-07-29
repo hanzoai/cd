@@ -35,10 +35,10 @@ import (
 	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
 	appinformers "github.com/hanzoai/cd/pkg/client/informers/externalversions"
 	reposerverclient "github.com/hanzoai/cd/reposerver/apiclient"
-	"github.com/hanzoai/cd/util/cd"
-	"github.com/hanzoai/cd/util/cd/normalizers"
 	cacheutil "github.com/hanzoai/cd/util/cache"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/config"
 	"github.com/hanzoai/cd/util/db"
@@ -90,22 +90,22 @@ func NewGenAppSpecCommand() *cobra.Command {
 		Short: "Generate declarative config for an application",
 		Example: `
 	# Generate declarative config for a directory app
-	cd admin app generate-spec guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
+	cd admin app generate-spec guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
 
 	# Generate declarative config for a Jsonnet app
-	cd admin app generate-spec jsonnet-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path jsonnet-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --jsonnet-ext-str replicas=2
+	cd admin app generate-spec jsonnet-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path jsonnet-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --jsonnet-ext-str replicas=2
 
 	# Generate declarative config for a Helm app
-	cd admin app generate-spec helm-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path helm-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set replicaCount=2
+	cd admin app generate-spec helm-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path helm-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set replicaCount=2
 
 	# Generate declarative config for a Helm app from a Helm repo
 	cd admin app generate-spec nginx-ingress --repo https://charts.helm.sh/stable --helm-chart nginx-ingress --revision 1.24.3 --dest-namespace default --dest-server https://kubernetes.default.svc
 
 	# Generate declarative config for a Kustomize app
-	cd admin app generate-spec kustomize-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image quay.io/argoprojlabs/cd-e2e-container:0.1
+	cd admin app generate-spec kustomize-guestbook --repo https://git.hanzo.ai/hanzo/example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image ghcr.io/hanzoai/e2e-container:0.1
 
 	# Generate declarative config for a app using a custom tool:
-	cd admin app generate-spec kasane --repo https://github.com/argoproj/argocd-example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane
+	cd admin app generate-spec kasane --repo https://git.hanzo.ai/hanzo/example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane
 `,
 		Run: func(c *cobra.Command, args []string) {
 			apps, err := cmdutil.ConstructApps(fileURL, appName, labels, annotations, args, appOpts, c.Flags())
@@ -341,7 +341,7 @@ func saveToFile(err error, outputFormat string, result reconcileResults, outputP
 }
 
 func getReconcileResults(ctx context.Context, appClientset appclientset.Interface, namespace string, selector string) ([]appReconcileResult, error) {
-	appsList, err := appClientset.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
+	appsList, err := appClientset.AppV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
 	if err != nil {
 		return nil, fmt.Errorf("error listing namespaced apps: %w", err)
 	}
@@ -427,7 +427,7 @@ func reconcileApplications(
 		ignoreNormalizerOpts,
 	)
 
-	appsList, err := appClientset.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
+	appsList, err := appClientset.AppV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
 	if err != nil {
 		return nil, fmt.Errorf("error listing namespaced apps: %w", err)
 	}

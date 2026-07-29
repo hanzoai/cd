@@ -16,6 +16,6 @@ spec:
       containers:
         - name: main
           command: ["sleep", "999"]
-          image: quay.io/argoprojlabs/cd-e2e-container:0.1
+          image: ghcr.io/hanzoai/e2e-container:0.1
           imagePullPolicy: IfNotPresent
 

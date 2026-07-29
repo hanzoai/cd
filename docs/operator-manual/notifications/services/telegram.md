@@ -23,7 +23,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: username
+    apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: username
 ```
 
 ```yaml
@@ -31,7 +31,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: -1000000000000
+    apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: -1000000000000
 ```
 
 If your private chat contains threads, you can optionally specify a thread id by separating it with a `|`:
@@ -40,5 +40,5 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: -1000000000000|2
+    apps.hanzo.ai/subscribe.on-sync-succeeded.telegram: -1000000000000|2
 ```

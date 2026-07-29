@@ -2,9 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cd.hanzo.ai/sync-options: ServerSideApply=true
+    apps.hanzo.ai/sync-options: ServerSideApply=true
     kubectl.kubernetes.io/last-applied-configuration: >
-      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"cd.hanzo.ai/sync-options":"ServerSideApply=true"},"name":"multiple-protocol-port-svc","namespace":"default"},"spec":{"ports":[{"name":"rtmpk","port":1986,"protocol":"UDP","targetPort":1986},{"name":"rtmp","port":1935,"protocol":"TCP","targetPort":1935},{"name":"rtmpq","port":1935,"protocol":"UDP","targetPort":1935}]}}
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"apps.hanzo.ai/sync-options":"ServerSideApply=true"},"name":"multiple-protocol-port-svc","namespace":"default"},"spec":{"ports":[{"name":"rtmpk","port":1986,"protocol":"UDP","targetPort":1986},{"name":"rtmp","port":1935,"protocol":"TCP","targetPort":1935},{"name":"rtmpq","port":1935,"protocol":"UDP","targetPort":1935}]}}
   creationTimestamp: '2022-06-24T19:37:02Z'
   labels:
     app.kubernetes.io/instance: big-crd
@@ -14,7 +14,7 @@ metadata:
       fieldsV1:
         'f:metadata':
           'f:annotations':
-            'f:cd.hanzo.ai/sync-options': {}
+            'f:apps.hanzo.ai/sync-options': {}
           'f:labels':
             'f:app.kubernetes.io/instance': {}
         'f:spec':

@@ -28,13 +28,11 @@ For backend and frontend contributions, that require a full building-testing-run
 ## Contributing to Hanzo CD Notifications documentation
 
 This guide will help you get started quickly with contributing documentation changes, performing the minimum setup you'll need.
-The notifications docs are located in [notifications-engine](https://github.com/argoproj/notifications-engine) Git repository and require 2 pull requests: one for the `notifications-engine` repo and one for the `argo-cd` repo.
 For backend and frontend contributions, that require a full building-testing-running-locally cycle, please refer to [Contributing to Hanzo CD backend and frontend ](index.md#contributing-to-argo-cd-backend-and-frontend) 
 
 ### Fork and clone Hanzo CD repository
 - [Fork and clone Hanzo CD repository](development-environment.md#fork-and-clone-the-repository)
 
-### Submit your PR to notifications-engine
 - [Before submitting a PR](submit-your-pr.md#before-submitting-a-pr)
 - [Choose a correct title for your PR](submit-your-pr.md#title-of-the-pr)
 - [Perform the PR template checklist](submit-your-pr.md#pr-template-checklist)
@@ -43,7 +41,6 @@ For backend and frontend contributions, that require a full building-testing-run
 - [Install Go](development-environment.md#install-go)
 
 ### Submit your PR to argo-cd
-- [Contributing to notifications-engine](dependencies.md#notifications-engine-githubcomargoprojnotifications-engine)
 - [Before submitting a PR](submit-your-pr.md#before-submitting-a-pr)
 - [Choose a correct title for your PR](submit-your-pr.md#title-of-the-pr)
 - [Perform the PR template checklist](submit-your-pr.md#pr-template-checklist)
@@ -95,8 +92,6 @@ Need help? Start with the [Contributors FAQ](faq.md)
 - [Understanding and writing health checks](../operator-manual/health.md#custom-health-checks)
 
 ## Contributing to Hanzo CD dependencies
-- [Contributing to argo-ui](dependencies.md#argo-ui-components-githubcomargoprojargo-ui)
-- [Contributing to notifications-engine](dependencies.md#notifications-engine-githubcomargoprojnotifications-engine)
 
 ## Extensions and Third-Party Applications
 * [UI Extensions](extensions/ui-extensions.md)
@@ -104,7 +99,7 @@ Need help? Start with the [Contributors FAQ](faq.md)
 * [Config Management Plugins](../operator-manual/config-management-plugins.md)
 
 ## Generative AI
-Contributions using generative AI tools must follow the [Argo project Generative AI policy](https://github.com/argoproj/argoproj/blob/main/community/genai.md).
+Contributions using generative AI tools must follow the [Argo project Generative AI policy](https://github.com/hanzoai/hanzoai/blob/main/community/genai.md).
 
 ## Contributing to Argo Website
-The Argo website is maintained in the [argo-site](https://github.com/argoproj/argo-site) repository.
+The Argo website is maintained in the [argo-site](https://github.com/hanzoai/argo-site) repository.

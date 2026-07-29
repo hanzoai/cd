@@ -161,8 +161,8 @@ export type SyncResourceResult = ResourceResult & {
 };
 
 export const AnnotationRefreshKey = 'apps.hanzo.ai/refresh';
-export const AnnotationHookKey = 'cd.hanzo.ai/hook';
-export const AnnotationSyncWaveKey = 'cd.hanzo.ai/sync-wave';
+export const AnnotationHookKey = 'apps.hanzo.ai/hook';
+export const AnnotationSyncWaveKey = 'apps.hanzo.ai/sync-wave';
 export const AnnotationDefaultView = 'pref.apps.hanzo.ai/default-view';
 export const AnnotationDefaultPodSort = 'pref.apps.hanzo.ai/default-pod-sort';
 
@@ -1140,7 +1140,7 @@ export interface UserMessages {
     animation?: string;
 }
 
-export const AppDeletionConfirmedAnnotation = 'cd.hanzo.ai/deletion-approved';
+export const AppDeletionConfirmedAnnotation = 'apps.hanzo.ai/deletion-approved';
 
 export interface ApplicationSetSpec {
     strategy?: {

@@ -91,7 +91,7 @@ metadata:
   name: my-project
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -194,7 +194,7 @@ In this specific scenario, service account name `generic-deployer` will get used
 
 - Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
+kubectl apply --server-side -f https://raw.githubusercontent.com/hanzoai/cd/master/manifests/install.yaml -n cd
 ```
 
 - Enable the impersonation feature in Hanzo CD.
@@ -224,7 +224,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -237,7 +237,7 @@ metadata:
   name: my-project
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -258,7 +258,7 @@ In this specific scenario, service account name `guestbook-deployer` will get us
 
 - Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
+kubectl apply --server-side -f https://raw.githubusercontent.com/hanzoai/cd/master/manifests/install.yaml -n cd
 ```
 
 - Enable the impersonation feature in Hanzo CD.
@@ -287,7 +287,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -300,7 +300,7 @@ metadata:
   name: my-project
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -326,7 +326,7 @@ spec:
 
 - Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
+kubectl apply --server-side -f https://raw.githubusercontent.com/hanzoai/cd/master/manifests/install.yaml -n cd
 ```
 
 - Enable the impersonation feature in Hanzo CD.
@@ -365,7 +365,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -378,7 +378,7 @@ metadata:
   name: my-project
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -399,7 +399,7 @@ spec:
 
 - Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
+kubectl apply --server-side -f https://raw.githubusercontent.com/hanzoai/cd/master/manifests/install.yaml -n cd
 ```
 
 - Enable the impersonation feature in Hanzo CD.
@@ -440,7 +440,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -453,7 +453,7 @@ metadata:
   name: my-project
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -531,7 +531,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -543,7 +543,7 @@ metadata:
   name: my-project
   namespace: cd
   finalizers:
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
 spec:
   description: Example Project
   # Allow manifests to deploy from any Git repos
@@ -631,7 +631,7 @@ spec:
 
 ### Related issue
 
-https://github.com/argoproj/argo-cd/issues/7689
+https://github.com/hanzoai/cd/issues/7689
 
 
 ### Related links

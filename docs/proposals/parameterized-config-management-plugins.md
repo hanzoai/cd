@@ -92,7 +92,7 @@ More robust CMPs will make it easier to start supporting tools like [Tanka](http
 
 ### 2. Decisions about config management tools are limited by the core code
 
-For example, there's a [Helm bug](https://github.com/argoproj/argo-cd/issues/7291) affecting Hanzo CD users. The fix 
+For example, there's a [Helm bug](https://github.com/hanzoai/cd/issues/7291) affecting Hanzo CD users. The fix 
 would involve importing the Helm SDK (a very large dependency) into Hanzo CD. Implementing Helm support as a CMP would
 allow us to use that SDK without embedding it in the core code.
 
@@ -128,7 +128,7 @@ Parameterized CMPs must be:
   * The initial release of this feature should include a CMP implementation of the Helm config tool. This will
     1. Serve as a rich example for others CMP developers to mimic
     2. Allow us to decouple the Helm config management release cycle from the Argo release cycle
-    3. Allow us to work around [this bug](https://github.com/argoproj/argo-cd/issues/7291) without including the Helm 
+    3. Allow us to work around [this bug](https://github.com/hanzoai/cd/issues/7291) without including the Helm 
        SDK in the core Hanzo CD code
   * The Helm CMP must be on-par with the native implementation.
     1. It must present an equivalent parameters UI.
@@ -166,8 +166,8 @@ Since this proposal is designed to increase CMP adoption, we need to make sure t
 less robust than native tools.
 
 Bugs to fix:
-1. [#8145](https://github.com/argoproj/argo-cd/issues/8145) - `cd app sync/diff --local` doesn't account for sidecar CMPs
-2. [#8243](https://github.com/argoproj/argo-cd/issues/8243) - "Configure plugin via sidecar" ⇒ child resources not pruned on deletion
+1. [#8145](https://github.com/hanzoai/cd/issues/8145) - `cd app sync/diff --local` doesn't account for sidecar CMPs
+2. [#8243](https://github.com/hanzoai/cd/issues/8243) - "Configure plugin via sidecar" ⇒ child resources not pruned on deletion
 
 #### Terms
 
@@ -244,7 +244,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     plugin:
       parameters:
         - name: values
@@ -549,11 +549,11 @@ type ParametersAnnouncement []ParameterAnnouncement
    - name: name-prefix  # expects a string
    - name: helm-parameters-incorrect  # expects a string, the map is ignored
      map:
-       global.image.repository: quay.io/argoproj/cd
+       global.image.repository: ghcr.io/hanzoai/cd
    - name: helm-parameters  # expects a map
      collectionType: map
      map:
-       global.image.repository: quay.io/argoproj/cd
+       global.image.repository: ghcr.io/hanzoai/cd
    ```
 
 5. **Question**: What do we do if a parameter has a missing or absent top-level `name` field?
@@ -567,7 +567,7 @@ type ParametersAnnouncement []ParameterAnnouncement
    - title: Parameter Overrides
      collectionType: map
      map:
-       global.image.repository: quay.io/argoproj/cd
+       global.image.repository: ghcr.io/hanzoai/cd
    ```
 
 ### Detailed examples
@@ -749,7 +749,7 @@ Consider a very simple values.yaml:
 
 ```yaml
 image:
-  repo: quay.io/argoproj/cd
+  repo: ghcr.io/hanzoai/cd
   tag: latest
 ```
 
@@ -762,7 +762,7 @@ The script above will produce the following parameters announcement:
     "title": "Helm Parameters",
     "collectionType": "map",
     "map": {
-      "image.repo": "quay.io/argoproj/cd",
+      "image.repo": "ghcr.io/hanzoai/cd",
       "image.tag": "latest"
     }
   }
@@ -799,8 +799,8 @@ spec:
     "title": "Image Overrides",
     "collectionType": "map",
     "map": {
-      "quay.io/argoproj/cd": "docker.example.com/proxy/argoproj/cd",
-      "ubuntu:latest": "docker.example.com/proxy/argoproj/cd"
+      "ghcr.io/hanzoai/cd": "docker.example.com/proxy/hanzoai/cd",
+      "ubuntu:latest": "docker.example.com/proxy/hanzoai/cd"
     }
   }
 ]

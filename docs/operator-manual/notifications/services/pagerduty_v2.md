@@ -72,9 +72,9 @@ The `timestamp` and `custom_details` parameters are not currently supported.
 Annotation sample for PagerDuty notifications:
 
 ```yaml
-apiVersion: apps.hanzo.ai/v1alpha1
+apiVersion: hanzoai.io/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-rollout-aborted.pagerdutyv2: "<serviceID for PagerDuty>"
+    apps.hanzo.ai/subscribe.on-rollout-aborted.pagerdutyv2: "<serviceID for PagerDuty>"
 ```

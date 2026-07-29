@@ -3,7 +3,7 @@ kind: ZookeeperCluster
 metadata:
   generation: 3
   labels:
-    cd.hanzo.ai/instance: test-cluster-zookeeper
+    apps.hanzo.ai/instance: test-cluster-zookeeper
   name: test-cluster-zookeeper
   namespace: zookeeper
   resourceVersion: "265193"

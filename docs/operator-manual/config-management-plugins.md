@@ -300,7 +300,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git
     targetRevision: HEAD
     path: guestbook
     plugin:
@@ -371,9 +371,9 @@ You can set it one of three ways:
 For option 1, the flag can be repeated multiple times. For option 2 and 3, you can specify multiple globs by separating
 them with semicolons.
 
-## Application manifests generation using cd.hanzo.ai/manifest-generate-paths
+## Application manifests generation using apps.hanzo.ai/manifest-generate-paths
 
-To enhance the application manifests generation process, you can enable the use of the `cd.hanzo.ai/manifest-generate-paths` annotation. When this flag is enabled, the resources specified by this annotation will be passed to the CMP server for generating application manifests, rather than sending the entire repository. This can be particularly useful for monorepos.
+To enhance the application manifests generation process, you can enable the use of the `apps.hanzo.ai/manifest-generate-paths` annotation. When this flag is enabled, the resources specified by this annotation will be passed to the CMP server for generating application manifests, rather than sending the entire repository. This can be particularly useful for monorepos.
 
 You can set it one of three ways:
 

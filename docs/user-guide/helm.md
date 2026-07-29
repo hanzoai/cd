@@ -77,7 +77,7 @@ source:
 If Helm is passed a non-existing value file during template expansion, it will error out. Missing
 values files can be ignored (meaning, not passed to Helm) using the `--ignore-missing-value-files`. This can be
 particularly helpful to implement a [default/override
-pattern](https://github.com/argoproj/argo-cd/issues/7767#issue-1060611415) with [Application
+pattern](https://github.com/hanzoai/cd/issues/7767#issue-1060611415) with [Application
 Sets](./application-set.md).
 
 In the declarative syntax:
@@ -454,7 +454,7 @@ the result will be param1=value5
 > **When valueFiles or values is used**
 >
 > The chart is rendered correctly using the set of values from the different possible sources plus any parameters, merged in the expected order as documented here.
-> There is a bug (see [this issue](https://github.com/argoproj/argo-cd/issues/9213)) in the UI that only shows the parameters, i.e. it does not represent the complete set of values.
+> There is a bug (see [this issue](https://github.com/hanzoai/cd/issues/9213)) in the UI that only shows the parameters, i.e. it does not represent the complete set of values.
 > As a workaround, using parameters instead of values/valuesObject will provide a better overview of what will be used for resources.
 
 ## Helm --set-file support
@@ -508,20 +508,20 @@ Hanzo CD supports many (most?) Helm hooks by mapping the Helm annotations onto H
 | Helm Annotation                 | Notes                                                                                                                                              |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `helm.sh/hook: crd-install`     | Supported as equivalent to normal Hanzo CD CRD handling.                                                                                            |
-| `helm.sh/hook: pre-delete`      | Supported as equivalent to `cd.hanzo.ai/hook: PreDelete`                                                                                    |
+| `helm.sh/hook: pre-delete`      | Supported as equivalent to `apps.hanzo.ai/hook: PreDelete`                                                                                    |
 | `helm.sh/hook: pre-rollback`    | Not supported. Never used in Helm stable.                                                                                                          |
-| `helm.sh/hook: pre-install`     | Supported as equivalent to `cd.hanzo.ai/hook: PreSync`.                                                                                     |
-| `helm.sh/hook: pre-upgrade`     | Supported as equivalent to `cd.hanzo.ai/hook: PreSync`.                                                                                     |
-| `helm.sh/hook: post-upgrade`    | Supported as equivalent to `cd.hanzo.ai/hook: PostSync`.                                                                                    |
-| `helm.sh/hook: post-install`    | Supported as equivalent to `cd.hanzo.ai/hook: PostSync`.                                                                                    |
-| `helm.sh/hook: post-delete`     | Supported as equivalent to `cd.hanzo.ai/hook: PostDelete`.                                                                                  |
+| `helm.sh/hook: pre-install`     | Supported as equivalent to `apps.hanzo.ai/hook: PreSync`.                                                                                     |
+| `helm.sh/hook: pre-upgrade`     | Supported as equivalent to `apps.hanzo.ai/hook: PreSync`.                                                                                     |
+| `helm.sh/hook: post-upgrade`    | Supported as equivalent to `apps.hanzo.ai/hook: PostSync`.                                                                                    |
+| `helm.sh/hook: post-install`    | Supported as equivalent to `apps.hanzo.ai/hook: PostSync`.                                                                                    |
+| `helm.sh/hook: post-delete`     | Supported as equivalent to `apps.hanzo.ai/hook: PostDelete`.                                                                                  |
 | `helm.sh/hook: post-rollback`   | Not supported. Never used in Helm stable.                                                                                                          |
 | `helm.sh/hook: test-success`    | Not supported. No equivalent in Hanzo CD.                                                                                                           |
 | `helm.sh/hook: test-failure`    | Not supported. No equivalent in Hanzo CD.                                                                                                           |
-| `helm.sh/hook-delete-policy`    | Supported. Cleanup still follows Hanzo CD sync semantics, which can differ from Helm's hook event lifecycle. See also `cd.hanzo.ai/hook-delete-policy`. |
+| `helm.sh/hook-delete-policy`    | Supported. Cleanup still follows Hanzo CD sync semantics, which can differ from Helm's hook event lifecycle. See also `apps.hanzo.ai/hook-delete-policy`. |
 | `helm.sh/hook-delete-timeout`   | Not supported. Never used in Helm stable                                                                                                           |
-| `helm.sh/hook-weight`           | Supported as equivalent to `cd.hanzo.ai/sync-wave`.                                                                                         |
-| `helm.sh/resource-policy: keep` | Supported as equivalent to `cd.hanzo.ai/sync-options: Delete=false`.                                                                        |
+| `helm.sh/hook-weight`           | Supported as equivalent to `apps.hanzo.ai/sync-wave`.                                                                                         |
+| `helm.sh/resource-policy: keep` | Supported as equivalent to `apps.hanzo.ai/sync-options: Delete=false`.                                                                        |
 
 Unsupported hooks are ignored. In Hanzo CD, hooks are created by using `kubectl apply`, rather than `kubectl create`. This means that if the hook is named and already exists, it will not change unless you have annotated it with `before-hook-creation`.
 
@@ -621,7 +621,7 @@ One way to use this plugin is to prepare your own Hanzo CD image where it is inc
 Example `Dockerfile`:
 
 ```dockerfile
-FROM argoproj/cd:v1.5.7
+FROM hanzoai/cd:v1.5.7
 
 USER root
 RUN apt-get update && \
@@ -648,7 +648,7 @@ Once built, use the custom image for Hanzo CD installation.
 Another option is to install Helm plugins via Kubernetes `initContainers`.
 Some users find this pattern preferable to maintaining their own version of the Hanzo CD container image.
 
-Below is an example of how to add Helm plugins when installing Hanzo CD with the [official Hanzo CD helm chart](https://github.com/argoproj/argo-helm/tree/master/charts/argo-cd):
+Below is an example of how to add Helm plugins when installing Hanzo CD with the [official Hanzo CD helm chart](https://github.com/hanzoai/argo-helm/tree/master/charts/argo-cd):
 
 ```yaml
 repoServer:

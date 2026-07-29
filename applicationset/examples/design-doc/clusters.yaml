@@ -14,7 +14,7 @@ spec:
   - clusters:
       selector:
         matchLabels:
-          cd.hanzo.ai/secret-type: cluster
+          apps.hanzo.ai/secret-type: cluster
       values:
         project: default
   template:

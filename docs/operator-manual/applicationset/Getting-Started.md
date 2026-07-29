@@ -29,7 +29,7 @@ The ApplicationSet controller *must* be installed into the same namespace as the
 Presuming that Hanzo CD is installed into the `cd` namespace, run the following command:
 
 ```bash
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/applicationset/v0.4.0/manifests/install.yaml
 ```
 
 Once installed, the ApplicationSet controller requires no additional setup.
@@ -47,14 +47,14 @@ The `manifests/install.yaml` file contains the Kubernetes manifests required to 
 
 Development builds of the ApplicationSet controller can be installed by running the following command:
 ```bash
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/master/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/applicationset/master/manifests/install.yaml
 ```
 
 With this option you will need to ensure that Hanzo CD is already installed into the `cd` namespace.
 
 How it works:
 
-- After each successful commit to *argoproj/applicationset* `master` branch, a GitHub action will run that performs a container build/push to [`argoproj/cd-applicationset:latest`](https://quay.io/repository/argoproj/cd-applicationset?tab=tags )
+- After each successful commit to *hanzoai/applicationset* `master` branch, a GitHub action will run that performs a container build/push to [`hanzoai/cd-applicationset:latest`](https://quay.io/repository/hanzoai/cd-applicationset?tab=tags )
 - [Documentation for the `master`-branch-based developer builds](https://cd-applicationset.readthedocs.io/en/master/)  is available from Read the Docs.
 
 > [!WARNING]

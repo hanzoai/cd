@@ -38,7 +38,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-deployed-trigger.on-deployed-webhook: ""
+    apps.hanzo.ai/subscribe.on-deployed-trigger.on-deployed-webhook: ""
 ```
 
 You can test that this works and see how the response looks by adding any webhook site and syncing our application. Here you can see that we receive a list of resources, with a message and some properties of them. For example:

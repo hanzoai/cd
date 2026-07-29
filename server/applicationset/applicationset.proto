@@ -40,12 +40,12 @@ message ApplicationSetWatchQuery {
 
 message ApplicationSetResponse {
 	string project = 1;
-	github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet applicationset = 2;
+	github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet applicationset = 2;
 }
 
 
 message ApplicationSetCreateRequest {
-	github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet applicationset = 1;
+	github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet applicationset = 1;
 	bool upsert = 2;
 	bool dryRun = 3;
 }
@@ -66,18 +66,18 @@ message ApplicationSetTreeQuery {
 // ApplicationSetGetQuery is a query for applicationset resources
 message ApplicationSetGenerateRequest {
 	// the applicationsets
-	github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet applicationSet = 1;
+	github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet applicationSet = 1;
 }
 
 // ApplicationSetGenerateResponse is a response for applicationset generate request
 message ApplicationSetGenerateResponse {
-	repeated github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Application applications = 1;
+	repeated github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.Application applications = 1;
 }
 
 // ApplicationSetService
 service ApplicationSetService {
 	// Get returns an applicationset by name
-	rpc Get (ApplicationSetGetQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet) {
+	rpc Get (ApplicationSetGetQuery) returns (github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet) {
 		option (google.api.http).get = "/api/v1/applicationsets/{name}";
 	}
 
@@ -90,12 +90,12 @@ service ApplicationSetService {
 	}
 
 	//List returns list of applicationset
-	rpc List (ApplicationSetListQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSetList) {
+	rpc List (ApplicationSetListQuery) returns (github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSetList) {
 		option (google.api.http).get = "/api/v1/applicationsets";
 	}
 
 	//Create creates an applicationset
-	rpc Create (ApplicationSetCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet) {
+	rpc Create (ApplicationSetCreateRequest) returns (github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSet) {
 		option (google.api.http) = {
 			post: "/api/v1/applicationsets"
 			body: "applicationset"
@@ -108,7 +108,7 @@ service ApplicationSetService {
 	}
 
   // ResourceTree returns resource tree
-  rpc ResourceTree(ApplicationSetTreeQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSetTree) {
+  rpc ResourceTree(ApplicationSetTreeQuery) returns (github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSetTree) {
     option (google.api.http).get = "/api/v1/applicationsets/{name}/resource-tree";
   }
 
@@ -117,7 +117,7 @@ service ApplicationSetService {
 		option (google.api.http).get = "/api/v1/applicationsets/{name}/events";
 	}
 
-	rpc Watch (ApplicationSetWatchQuery) returns (stream github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSetWatchEvent) {
+	rpc Watch (ApplicationSetWatchQuery) returns (stream github.com.hanzoai.argo_cd.v3.pkg.apis.application.v1alpha1.ApplicationSetWatchEvent) {
 		option (google.api.http).get = "/api/v1/stream/applicationsets";
 	}
 

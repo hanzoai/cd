@@ -4,7 +4,7 @@
     "metadata": {
         "labels": {
             "app": "missing",
-            "applications.argoproj.io/app-name": "nginx",
+            "applications.apps.hanzo.ai/app-name": "nginx",
             "something-else": "bla"
         },
         "name": "nginx-deployment",
@@ -17,7 +17,7 @@
                     "f:metadata": {
                         "f:labels": {
                             "f:app": {},
-                            "f:applications.argoproj.io/app-name": {},
+                            "f:applications.apps.hanzo.ai/app-name": {},
                             "f:something-else": {}
                         }
                     },
@@ -28,7 +28,7 @@
                             "f:metadata": {
                                 "f:labels": {
                                     "f:app": {},
-                                    "f:applications.argoproj.io/app-name": {}
+                                    "f:applications.apps.hanzo.ai/app-name": {}
                                 }
                             },
                             "f:spec": {
@@ -81,7 +81,7 @@
             "metadata": {
                 "labels": {
                     "app": "nginx",
-                    "applications.argoproj.io/app-name": "nginx"
+                    "applications.apps.hanzo.ai/app-name": "nginx"
                 }
             },
             "spec": {

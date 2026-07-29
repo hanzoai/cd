@@ -7,7 +7,7 @@ import (
 type nodePhase string
 
 // Workflow and node statuses
-// See: https://github.com/argoproj/argo-workflows/blob/master/pkg/apis/workflow/v1alpha1/workflow_phase.go
+// See: https://github.com/hanzoai/argo-workflows/blob/master/pkg/apis/workflow/v1alpha1/workflow_phase.go
 const (
 	nodePending   nodePhase = "Pending"
 	nodeRunning   nodePhase = "Running"

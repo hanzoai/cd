@@ -13,7 +13,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/settings"
 
 	"github.com/hanzoai/cd/applicationset/services/plugin"
@@ -38,7 +38,7 @@ func NewPluginGenerator(client client.Client, namespace string) Generator {
 	return g
 }
 
-func (g *PluginGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) time.Duration {
+func (g *PluginGenerator) GetRequeueAfter(appSetGenerator *appv1alpha1.ApplicationSetGenerator) time.Duration {
 	// Return a requeue default of 30 minutes, if no default is specified.
 
 	if appSetGenerator.Plugin.RequeueAfterSeconds != nil {
@@ -48,11 +48,11 @@ func (g *PluginGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alpha1.Ap
 	return DefaultPluginRequeueAfter
 }
 
-func (g *PluginGenerator) GetTemplate(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) *argoprojiov1alpha1.ApplicationSetTemplate {
+func (g *PluginGenerator) GetTemplate(appSetGenerator *appv1alpha1.ApplicationSetGenerator) *appv1alpha1.ApplicationSetTemplate {
 	return &appSetGenerator.Plugin.Template
 }
 
-func (g *PluginGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator, applicationSetInfo *argoprojiov1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
+func (g *PluginGenerator) GenerateParams(appSetGenerator *appv1alpha1.ApplicationSetGenerator, applicationSetInfo *appv1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
 	if appSetGenerator == nil {
 		return nil, ErrEmptyAppSetGenerator
 	}
@@ -83,7 +83,7 @@ func (g *PluginGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha1.App
 	return res, nil
 }
 
-func (g *PluginGenerator) getPluginFromGenerator(ctx context.Context, appSetName string, generatorConfig *argoprojiov1alpha1.PluginGenerator) (*plugin.Service, error) {
+func (g *PluginGenerator) getPluginFromGenerator(ctx context.Context, appSetName string, generatorConfig *appv1alpha1.PluginGenerator) (*plugin.Service, error) {
 	cm, err := g.getConfigMap(ctx, generatorConfig.ConfigMapRef.Name)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching ConfigMap: %w", err)
@@ -109,7 +109,7 @@ func (g *PluginGenerator) getPluginFromGenerator(ctx context.Context, appSetName
 	return pluginClient, nil
 }
 
-func (g *PluginGenerator) generateParams(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator, appSet *argoprojiov1alpha1.ApplicationSet, objectsFound []map[string]any, pluginParams argoprojiov1alpha1.PluginParameters, useGoTemplate bool) ([]map[string]any, error) {
+func (g *PluginGenerator) generateParams(appSetGenerator *appv1alpha1.ApplicationSetGenerator, appSet *appv1alpha1.ApplicationSet, objectsFound []map[string]any, pluginParams appv1alpha1.PluginParameters, useGoTemplate bool) ([]map[string]any, error) {
 	res := []map[string]any{}
 
 	for _, objectFound := range objectsFound {
@@ -128,7 +128,7 @@ func (g *PluginGenerator) generateParams(appSetGenerator *argoprojiov1alpha1.App
 		}
 
 		params["generator"] = map[string]any{
-			"input": map[string]argoprojiov1alpha1.PluginParameters{
+			"input": map[string]appv1alpha1.PluginParameters{
 				"parameters": pluginParams,
 			},
 		}

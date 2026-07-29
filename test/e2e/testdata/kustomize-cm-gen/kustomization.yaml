@@ -4,6 +4,6 @@ configMapGenerator:
       - foo=bar
 generatorOptions:
   annotations:
-    cd.hanzo.ai/compare-options: IgnoreExtraneous
-    cd.hanzo.ai/sync-options: Prune=false
+    apps.hanzo.ai/compare-options: IgnoreExtraneous
+    apps.hanzo.ai/sync-options: Prune=false
 kind: Kustomization

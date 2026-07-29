@@ -15,7 +15,7 @@ jobs:
   snyk-report:
     permissions:
       contents: read
-    if: github.repository == 'argoproj/argo-cd'
+    if: github.repository == 'hanzoai/cd'
     name: Generate Snyk Report
     runs-on: ubuntu-24.04
     steps:
@@ -71,7 +71,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    if: github.repository == 'argoproj/argo-cd'
+    if: github.repository == 'hanzoai/cd'
     name: Update Snyk report in the docs directory
     runs-on: ubuntu-24.04
     steps:
@@ -102,7 +102,7 @@ jobs:
         run: |
           pr_branch="snyk-update-$(echo $RANDOM | md5sum | head -c 20)"
           git checkout -b "$pr_branch"
-          git config --global user.email 'ci@argoproj.com'
+          git config --global user.email 'ci@hanzoai.com'
           git config --global user.name 'CI'
           git add docs/snyk
           git commit -m "[Bot] docs: Update Snyk reports" --signoff

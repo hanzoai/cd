@@ -52,12 +52,12 @@ func TestCreateRepository(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	repo, err := db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://git.hanzo.ai/hanzo/example-apps",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
+	assert.Equal(t, "https://git.hanzo.ai/hanzo/example-apps", repo.Repo)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(repoSecretPrefix, repo.Repo, ""), metav1.GetOptions{})
 	require.NoError(t, err)
@@ -73,7 +73,7 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	repo, err := db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://git.hanzo.ai/hanzo/example-apps",
 		Username: "test-username",
 		Password: "test-password",
 		Project:  "test-project",
@@ -81,7 +81,7 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 	require.NoError(t, err)
 
 	otherRepo, err := db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://git.hanzo.ai/hanzo/example-apps",
 		Username: "other-username",
 		Password: "other-password",
 		Project:  "other-project",
@@ -89,13 +89,13 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://git.hanzo.ai/hanzo/example-apps",
 		Username: "wrong-username",
 		Password: "wrong-password",
 	})
 	require.NoError(t, err)
 
-	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
+	assert.Equal(t, "https://git.hanzo.ai/hanzo/example-apps", repo.Repo)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(repoSecretPrefix, repo.Repo, "test-project"), metav1.GetOptions{})
 	require.NoError(t, err)
@@ -120,12 +120,12 @@ func TestCreateRepoCredentials(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	creds, err := db.CreateRepositoryCredentials(t.Context(), &v1alpha1.RepoCreds{
-		URL:      "https://github.com/argoproj/",
+		URL:      "https://github.com/hanzoai/",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/", creds.URL)
+	assert.Equal(t, "https://github.com/hanzoai/", creds.URL)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(credSecretPrefix, creds.URL, ""), metav1.GetOptions{})
 	require.NoError(t, err)
@@ -156,12 +156,12 @@ func TestCreateWriteRepoCredentials(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	creds, err := db.CreateWriteRepositoryCredentials(t.Context(), &v1alpha1.RepoCreds{
-		URL:      "https://github.com/argoproj/",
+		URL:      "https://github.com/hanzoai/",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/", creds.URL)
+	assert.Equal(t, "https://github.com/hanzoai/", creds.URL)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(credWriteSecretPrefix, creds.URL, ""), metav1.GetOptions{})
 	require.NoError(t, err)
@@ -280,14 +280,14 @@ func TestCreateExistingRepository(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	_, err := db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://git.hanzo.ai/hanzo/example-apps",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
 
 	_, err = db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://git.hanzo.ai/hanzo/example-apps",
 		Username: "test-username",
 		Password: "test-password",
 	})
@@ -533,26 +533,26 @@ func TestFuzzyEquivalence(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	repo, err := db.CreateRepository(ctx, &v1alpha1.Repository{
-		Repo: "https://github.com/argoproj/argocd-example-apps",
+		Repo: "https://git.hanzo.ai/hanzo/example-apps",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
+	assert.Equal(t, "https://git.hanzo.ai/hanzo/example-apps", repo.Repo)
 
 	repo, err = db.CreateRepository(ctx, &v1alpha1.Repository{
-		Repo: "https://github.com/argoproj/argocd-example-apps.git",
+		Repo: "https://git.hanzo.ai/hanzo/example-apps.git",
 	})
 	require.ErrorContains(t, err, "already exists")
 	assert.Nil(t, repo)
 
 	repo, err = db.CreateRepository(ctx, &v1alpha1.Repository{
-		Repo: "https://github.com/argoproj/cd-example-APPS",
+		Repo: "https://github.com/hanzoai/cd-example-APPS",
 	})
 	require.ErrorContains(t, err, "already exists")
 	assert.Nil(t, repo)
 
-	repo, err = db.GetRepository(ctx, "https://github.com/argoproj/cd-example-APPS", "")
+	repo, err = db.GetRepository(ctx, "https://github.com/hanzoai/cd-example-APPS", "")
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
+	assert.Equal(t, "https://git.hanzo.ai/hanzo/example-apps", repo.Repo)
 }
 
 func TestGetApplicationControllerReplicas(t *testing.T) {

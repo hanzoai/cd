@@ -1,4 +1,4 @@
-module github.com/argoproj/argo-cd/get-previous-release
+module github.com/hanzoai/cd/get-previous-release
 
 go 1.26.1
 

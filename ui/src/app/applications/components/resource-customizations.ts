@@ -7,7 +7,6 @@ export const resourceIconGroups = {
     '*.crossplane.io': true,
     '*.fluxcd.io': true,
     '*.knative.dev': true,
-    '*.promoter.argoproj.io': true,
     'cassandra.rook.io': true,
     'cert-manager.io': true,
     'core.spinkube.dev': true,
@@ -23,7 +22,6 @@ export const resourceIconGroups = {
     'nauth.io': true,
     'opentelemetry.io': true,
     'projectcontour.io': true,
-    'promoter.argoproj.io': true,
     'work.karmada.io': true,
     'zookeeper.pravega.io': true,
 };

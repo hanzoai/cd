@@ -10,7 +10,7 @@ If you want to submit code for a great new feature or enhancement, we kindly ask
 enhancement process outlined below before you start to write code or submit a PR. This will ensure that your idea is well aligned with the project's strategy and technical requirements, and it will help greatly in getting your code merged into our code base.
 
 Before submitting code for a new feature (and also, to some extent, for more complex bug fixes) please
-[raise an Enhancement Proposal or Bug Issue](https://github.com/argoproj/argo-cd/issues/new/choose)
+[raise an Enhancement Proposal or Bug Issue](https://github.com/hanzoai/cd/issues/new/choose)
 first.
 
 _Please_ do not spend too much time on larger features or refactorings before the corresponding enhancement has been triaged. This may save everyone some amount of frustration and time, as the enhancement proposal might be rejected, and the code would never get merged. However, sometimes it's helpful to have some PoC code along with a proposal.
@@ -30,9 +30,9 @@ to understand our toolchain and our continuous integration processes. It contain
 ## Quick start
 
 If you want a quick start contributing to Hanzo CD, take a look at issues that are labeled with
-[help-wanted](https://github.com/argoproj/argo-cd/issues?q=is%3Aopen+is%3Aissue+label%3A%22help-wanted%22)
+[help-wanted](https://github.com/hanzoai/cd/issues?q=is%3Aopen+is%3Aissue+label%3A%22help-wanted%22)
 or
-[good first issue](https://github.com/argoproj/argo-cd/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
+[good first issue](https://github.com/hanzoai/cd/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
 
 These are issues that were already triaged and accepted.
 
@@ -90,7 +90,7 @@ Also, issues that we find to require a more formal design document will be moved
 
 ## Use of Generative AI
 
-Contributors using generative AI tools (for example ChatGPT) to help prepare contributions must follow the [Argo project Generative AI policy](https://github.com/argoproj/argoproj/blob/main/community/genai.md).
+Contributors using generative AI tools (for example ChatGPT) to help prepare contributions must follow the [Argo project Generative AI policy](https://github.com/hanzoai/hanzoai/blob/main/community/genai.md).
 
 ## Design documents
 

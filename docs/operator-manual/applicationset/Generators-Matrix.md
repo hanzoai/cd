@@ -51,7 +51,7 @@ spec:
           - clusters:
               selector:
                 matchLabels:
-                  cd.hanzo.ai/secret-type: cluster
+                  apps.hanzo.ai/secret-type: cluster
   template:
     metadata:
       name: '{{.path.basename}}-{{.name}}'
@@ -127,7 +127,7 @@ spec:
         generators:
           # git generator, 'child' #1
           - git:
-              repoURL: https://github.com/argoproj/applicationset.git
+              repoURL: https://github.com/hanzoai/applicationset.git
               revision: HEAD
               files:
                 - path: "examples/git-generator-files-discovery/cluster-config/**/config.json"
@@ -135,7 +135,7 @@ spec:
           - clusters:
               selector:
                 matchLabels:
-                  cd.hanzo.ai/secret-type: cluster
+                  apps.hanzo.ai/secret-type: cluster
                   kubernetes.io/environment: '{{.path.basename}}'
   template:
     metadata:
@@ -143,7 +143,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj/applicationset.git
+        repoURL: https://github.com/hanzoai/applicationset.git
         targetRevision: HEAD
         path: "examples/git-generator-files-discovery/apps/guestbook"
       destination:
@@ -395,11 +395,11 @@ For example, the below example would be invalid (cluster-generator must come aft
               - clusters:
                   selector:
                     matchLabels:
-                      cd.hanzo.ai/secret-type: cluster
+                      apps.hanzo.ai/secret-type: cluster
                       kubernetes.io/environment: '{{.path.basename}}' # {{.path.basename}} is produced by git-files generator
               # git generator, 'child' #2
               - git:
-                  repoURL: https://github.com/argoproj/applicationset.git
+                  repoURL: https://github.com/hanzoai/applicationset.git
                   revision: HEAD
                   files:
                     - path: "examples/git-generator-files-discovery/cluster-config/**/config.json"
@@ -412,11 +412,11 @@ For example, the below example would be invalid (cluster-generator must come aft
               - clusters:
                   selector:
                     matchLabels:
-                      cd.hanzo.ai/secret-type: cluster
+                      apps.hanzo.ai/secret-type: cluster
                       kubernetes.io/environment: '{{.path.basename}}' # {{.path.basename}} is produced by git-files generator
               # git generator, 'child' #2
               - git:
-                  repoURL: https://github.com/argoproj/applicationset.git
+                  repoURL: https://github.com/hanzoai/applicationset.git
                   revision: HEAD
                   files:
                     - path: "examples/git-generator-files-discovery/cluster-config/engineering/{{.name}}**/config.json" # {{.name}} is produced by cluster generator

@@ -7,9 +7,9 @@ metadata:
   # Add this finalizer ONLY if you want these to cascade delete.
   finalizers:
     # The default behaviour is foreground cascading deletion
-    - resources-finalizer.cd.hanzo.ai
+    - resources-finalizer.apps.hanzo.ai
     # Alternatively, you can use background cascading deletion
-    # - resources-finalizer.cd.hanzo.ai/background
+    # - resources-finalizer.apps.hanzo.ai/background
   # Add labels to your application object.
   labels:
     name: guestbook
@@ -19,7 +19,7 @@ spec:
 
   # Source of the application manifests
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git  # Can point to either a Helm chart repo or a git repo.
+    repoURL: https://git.hanzo.ai/hanzo/example-apps.git  # Can point to either a Helm chart repo or a git repo.
     targetRevision: HEAD  # For Helm, this refers to the chart version.
     path: guestbook  # This has no meaning for Helm charts pulled directly from a Helm repo instead of git.
 
@@ -127,7 +127,7 @@ spec:
       forceCommonLabels: false
       forceCommonAnnotations: false
       images:
-      - quay.io/argoprojlabs/cd-e2e-container:0.2
+      - ghcr.io/hanzoai/e2e-container:0.2
       - my-app=gcr.io/my-repo/my-app:0.1
       namespace: custom-namespace
       replicas:
@@ -204,7 +204,7 @@ spec:
   
   # Sources field specifies the list of sources for the application
   sources:
-    - repoURL: https://github.com/argoproj/argocd-example-apps.git  # Can point to either a Helm chart repo or a git repo.
+    - repoURL: https://git.hanzo.ai/hanzo/example-apps.git  # Can point to either a Helm chart repo or a git repo.
       targetRevision: HEAD  # For Helm, this refers to the chart version.
       path: guestbook  # This has no meaning for Helm charts pulled directly from a Helm repo instead of git.
       ref: my-repo  # For Helm, acts as a reference to this source for fetching values files from this source. Has no meaning when under `source` field
@@ -289,7 +289,7 @@ spec:
   # are available and follow the same spec as the source field above.
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps.git
+      repoURL: https://git.hanzo.ai/hanzo/example-apps.git
       targetRevision: HEAD
       path: guestbook
       # helm, kustomize, directory, and plugin fields are available here.

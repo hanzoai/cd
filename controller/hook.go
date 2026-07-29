@@ -33,11 +33,11 @@ const (
 
 var hookTypeAnnotations = map[HookType]map[string]string{
 	PreDeleteHookType: {
-		"cd.hanzo.ai/hook": string(PreDeleteHookType),
+		"apps.hanzo.ai/hook": string(PreDeleteHookType),
 		"helm.sh/hook":            "pre-delete",
 	},
 	PostDeleteHookType: {
-		"cd.hanzo.ai/hook": string(PostDeleteHookType),
+		"apps.hanzo.ai/hook": string(PostDeleteHookType),
 		"helm.sh/hook":            "post-delete",
 	},
 }
@@ -156,7 +156,7 @@ func (ctrl *ApplicationController) executeHooks(ctx context.Context, hookType Ho
 		// tracking method (label, annotation, annotation+label) is honored.
 		// When the configured tracking method writes a label, this also ensures
 		// the label value is truncated to fit Kubernetes' 63-character label
-		// limit (see https://github.com/argoproj/argo-cd/issues/27527).
+		// limit (see https://github.com/hanzoai/cd/issues/27527).
 		if err := resourceTracking.SetAppInstance(obj, appLabelKey, app.InstanceName(ctrl.namespace), app.Spec.Destination.Namespace, trackingMethod, installationID); err != nil {
 			return false, fmt.Errorf("failed to set app instance tracking on %s hook %s: %w", hookType, key, err)
 		}

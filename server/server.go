@@ -289,9 +289,9 @@ func initializeDefaultProject(opts ArgoCDServerOpts) error {
 		},
 	}
 
-	_, err := opts.AppClientset.ArgoprojV1alpha1().AppProjects(opts.Namespace).Get(context.Background(), defaultProj.Name, metav1.GetOptions{})
+	_, err := opts.AppClientset.AppV1alpha1().AppProjects(opts.Namespace).Get(context.Background(), defaultProj.Name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
-		_, err = opts.AppClientset.ArgoprojV1alpha1().AppProjects(opts.Namespace).Create(context.Background(), defaultProj, metav1.CreateOptions{})
+		_, err = opts.AppClientset.AppV1alpha1().AppProjects(opts.Namespace).Create(context.Background(), defaultProj, metav1.CreateOptions{})
 		if apierrors.IsAlreadyExists(err) {
 			return nil
 		}
@@ -410,7 +410,7 @@ func NewServer(ctx context.Context, opts ArgoCDServerOpts, appsetOpts Applicatio
 }
 
 const (
-	// catches corrupted informer state; see https://github.com/argoproj/argo-cd/issues/4960 for more information
+	// catches corrupted informer state; see https://github.com/hanzoai/cd/issues/4960 for more information
 	notObjectErrMsg = "object does not implement the Object interfaces"
 )
 

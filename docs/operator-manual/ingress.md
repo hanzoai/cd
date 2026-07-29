@@ -549,7 +549,7 @@ You can put Hanzo CD behind Istio using the following configuration. This exampl
 First we need to make sure that we can run Hanzo CD with subpath (i.e. /cd). For this we have used install.yaml from cd project as is
 
 ```bash
-curl -kLs -o install.yaml https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+curl -kLs -o install.yaml https://raw.githubusercontent.com/hanzoai/cd/stable/manifests/install.yaml
 ```
 
 Save the following file as `kustomization.yaml`:
@@ -569,7 +569,7 @@ And following lines as patch.yml
 ```yaml
 # Use --insecure so Ingress can send traffic with HTTP
 # --basehref /cd is the subpath like https://IP/cd
-# env was added because of https://github.com/argoproj/argo-cd/issues/3572 error
+# env was added because of https://github.com/hanzoai/cd/issues/3572 error
 ---
 apiVersion: apps/v1
 kind: Deployment

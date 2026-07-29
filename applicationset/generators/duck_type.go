@@ -18,7 +18,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	"github.com/hanzoai/cd/applicationset/utils"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/settings"
 )
 
@@ -44,7 +44,7 @@ func NewDuckTypeGenerator(ctx context.Context, dynClient dynamic.Interface, clie
 	return g
 }
 
-func (g *DuckTypeGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) time.Duration {
+func (g *DuckTypeGenerator) GetRequeueAfter(appSetGenerator *appv1alpha1.ApplicationSetGenerator) time.Duration {
 	// Return a requeue default of 3 minutes, if no override is specified.
 
 	if appSetGenerator.ClusterDecisionResource.RequeueAfterSeconds != nil {
@@ -54,11 +54,11 @@ func (g *DuckTypeGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alpha1.
 	return getDefaultRequeueAfter()
 }
 
-func (g *DuckTypeGenerator) GetTemplate(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) *argoprojiov1alpha1.ApplicationSetTemplate {
+func (g *DuckTypeGenerator) GetTemplate(appSetGenerator *appv1alpha1.ApplicationSetGenerator) *appv1alpha1.ApplicationSetTemplate {
 	return &appSetGenerator.ClusterDecisionResource.Template
 }
 
-func (g *DuckTypeGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator, appSet *argoprojiov1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
+func (g *DuckTypeGenerator) GenerateParams(appSetGenerator *appv1alpha1.ApplicationSetGenerator, appSet *appv1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
 	if appSetGenerator == nil {
 		return nil, ErrEmptyAppSetGenerator
 	}
@@ -219,7 +219,7 @@ func findCluster(clustersFromArgoCD []utils.ClusterSpecifier, cluster any, match
 	return nil
 }
 
-func collectParams(appSet *argoprojiov1alpha1.ApplicationSet, params map[string]any, key string, value string) {
+func collectParams(appSet *appv1alpha1.ApplicationSet, params map[string]any, key string, value string) {
 	if appSet.Spec.GoTemplate {
 		if params["values"] == nil {
 			params["values"] = map[string]string{}

@@ -41,7 +41,7 @@ PODMAN_ARGS=
 endif
 
 DOCKER_SRCDIR?=$(GOPATH)/src
-DOCKER_WORKDIR?=/go/src/github.com/argoproj/argo-cd
+DOCKER_WORKDIR?=/go/src/github.com/hanzoai/cd
 
 # Allows you to control which Docker network the test-util containers attach to.
 # This is particularly useful if you are running Kubernetes in Docker (e.g., k3d)
@@ -56,7 +56,7 @@ endif
 
 CD_PROCFILE?=Procfile
 
-# pointing to python 3.12 to match https://github.com/argoproj/argo-cd/blob/master/.readthedocs.yaml
+# pointing to python 3.12 to match https://github.com/hanzoai/cd/blob/master/.readthedocs.yaml
 MKDOCS_DOCKER_IMAGE?=python:3.12-alpine
 MKDOCS_RUN_ARGS?=
 
@@ -87,11 +87,11 @@ CD_BIN_MODE?=true
 
 # Depending on where we are (legacy or non-legacy pwd), we need to use
 # different Docker volume mounts for our source tree
-LEGACY_PATH=$(GOPATH)/src/github.com/argoproj/argo-cd
+LEGACY_PATH=$(GOPATH)/src/github.com/hanzoai/cd
 ifeq ("$(PWD)","$(LEGACY_PATH)")
 DOCKER_SRC_MOUNT="$(DOCKER_SRCDIR):/go/src$(VOLUME_MOUNT)"
 else
-DOCKER_SRC_MOUNT="$(PWD):/go/src/github.com/argoproj/argo-cd$(VOLUME_MOUNT)"
+DOCKER_SRC_MOUNT="$(PWD):/go/src/github.com/hanzoai/cd$(VOLUME_MOUNT)"
 endif
 
 # User and group IDs to map to the test container
@@ -205,7 +205,7 @@ endif
 # defaults for building images and manifests
 ifeq (${DOCKER_PUSH},true)
 ifndef IMAGE_NAMESPACE
-$(error IMAGE_NAMESPACE must be set to push images (e.g. IMAGE_NAMESPACE=argoproj))
+$(error IMAGE_NAMESPACE must be set to push images (e.g. IMAGE_NAMESPACE=hanzoai))
 endif
 endif
 
@@ -215,16 +215,16 @@ ifdef IMAGE_REGISTRY
 ifdef IMAGE_NAMESPACE
 IMAGE_PREFIX=${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/
 else
-$(error IMAGE_NAMESPACE must be set when IMAGE_REGISTRY is set (e.g. IMAGE_NAMESPACE=argoproj))
+$(error IMAGE_NAMESPACE must be set when IMAGE_REGISTRY is set (e.g. IMAGE_NAMESPACE=hanzoai))
 endif
 else
 ifdef IMAGE_NAMESPACE
-# for backwards compatibility with the old way like IMAGE_NAMESPACE='quay.io/argoproj'
+# for backwards compatibility with the old way like IMAGE_NAMESPACE='ghcr.io/hanzoai'
 IMAGE_PREFIX=${IMAGE_NAMESPACE}/
 else
 # Neither namespace nor registry given - apply the default values
 IMAGE_REGISTRY="quay.io"
-IMAGE_NAMESPACE="argoproj"
+IMAGE_NAMESPACE="hanzoai"
 IMAGE_PREFIX=${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/
 endif
 endif
@@ -445,7 +445,7 @@ test: test-tools-image
 .PHONY: test-local
 test-local: test-gitops-engine
 # run if TEST_MODULE is empty or does not point to gitops-engine tests
-ifneq ($(if $(TEST_MODULE),,ALL)$(filter-out github.com/argoproj/argo-cd/gitops-engine% ./gitops-engine%,$(TEST_MODULE)),)
+ifneq ($(if $(TEST_MODULE),,ALL)$(filter-out github.com/hanzoai/cd/gitops-engine% ./gitops-engine%,$(TEST_MODULE)),)
 	if test "$(TEST_MODULE)" = ""; then \
 		DIST_DIR=${DIST_DIR} RERUN_FAILS=0 PACKAGES=`go list ./... | grep -v 'test/e2e'` ./hack/test.sh -args -test.gocoverdir="$(PWD)/test-results"; \
 	else \
@@ -457,7 +457,7 @@ endif
 .PHONY: test-gitops-engine
 test-gitops-engine:
 # run if TEST_MODULE is empty or points to gitops-engine tests
-ifneq ($(if $(TEST_MODULE),,ALL)$(filter github.com/argoproj/argo-cd/gitops-engine% ./gitops-engine%,$(TEST_MODULE)),)
+ifneq ($(if $(TEST_MODULE),,ALL)$(filter github.com/hanzoai/cd/gitops-engine% ./gitops-engine%,$(TEST_MODULE)),)
 	mkdir -p $(PWD)/test-results/gitops-engine
 	cd gitops-engine && go test -race -cover ./... -args -test.gocoverdir="$(PWD)/test-results/gitops-engine"
 endif

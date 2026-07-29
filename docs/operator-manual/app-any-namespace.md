@@ -126,7 +126,7 @@ The `.spec.sourceNamespaces` field of the `AppProject` is a list that can contai
 
 > [!NOTE]
 > Currently it's not possible to have a applicationset in one namespace and have the application
-> be generated in another. See [#11104](https://github.com/argoproj/argo-cd/issues/11104) for more info.
+> be generated in another. See [#11104](https://github.com/hanzoai/cd/issues/11104) for more info.
 
 ### Application names
 

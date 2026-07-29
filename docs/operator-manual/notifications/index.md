@@ -11,7 +11,7 @@ So you can just use them instead of reinventing new ones.
 * Install Triggers and Templates from the catalog
 
     ```bash
-    kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml
+    kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/stable/notifications_catalog/install.yaml
     ```
 
 * Add email username and password token to the `cd-notifications-secret` secret
@@ -38,10 +38,10 @@ So you can just use them instead of reinventing new ones.
     kubectl patch cm cd-notifications-cm -n cd --type merge -p '{"data": {"service.email.gmail": "{ username: $email-username, password: $email-password, host: smtp.gmail.com, port: 465, from: $email-username }" }}'
     ```
 
-* Subscribe to notifications by adding the `notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.slack` annotation to the Hanzo CD application or project:
+* Subscribe to notifications by adding the `apps.hanzo.ai/subscribe.on-sync-succeeded.slack` annotation to the Hanzo CD application or project:
 
     ```bash
-    kubectl patch app <my-app> -n cd -p '{"metadata": {"annotations": {"notifications.apps.hanzo.ai/subscribe.on-sync-succeeded.slack":"<my-channel>"}}}' --type merge
+    kubectl patch app <my-app> -n cd -p '{"metadata": {"annotations": {"apps.hanzo.ai/subscribe.on-sync-succeeded.slack":"<my-channel>"}}}' --type merge
     ```
 
 Try syncing an application to get notified when the sync is completed.
@@ -118,7 +118,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 metadata:
   annotations:
-    notifications.apps.hanzo.ai/subscribe.on-sync-failed.pagerdutyv2: "<serviceID for Pagerduty>"
+    apps.hanzo.ai/subscribe.on-sync-failed.pagerdutyv2: "<serviceID for Pagerduty>"
 ```
 
 > [!NOTE]

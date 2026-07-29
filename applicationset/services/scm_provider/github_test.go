@@ -17,30 +17,30 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		switch r.RequestURI {
-		case "/api/v3/orgs/argoproj/repos?per_page=100":
+		case "/api/v3/orgs/hanzoai/repos?per_page=100":
 			_, err := io.WriteString(w, `[
 				{
 				  "id": 1296269,
 				  "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
 				  "name": "argo-cd",
-				  "full_name": "argoproj/argo-cd",
+				  "full_name": "hanzoai/cd",
 				  "owner": {
-					"login": "argoproj",
+					"login": "hanzoai",
 					"id": 1,
 					"node_id": "MDQ6VXNlcjE=",
-					"avatar_url": "https://github.com/images/error/argoproj_happy.gif",
+					"avatar_url": "https://github.com/images/error/hanzoai_happy.gif",
 					"gravatar_id": "",
-					"url": "https://api.github.com/users/argoproj",
-					"html_url": "https://github.com/argoproj",
-					"followers_url": "https://api.github.com/users/argoproj/followers",
-					"following_url": "https://api.github.com/users/argoproj/following{/other_user}",
-					"gists_url": "https://api.github.com/users/argoproj/gists{/gist_id}",
-					"starred_url": "https://api.github.com/users/argoproj/starred{/owner}{/repo}",
-					"subscriptions_url": "https://api.github.com/users/argoproj/subscriptions",
-					"organizations_url": "https://api.github.com/users/argoproj/orgs",
-					"repos_url": "https://api.github.com/users/argoproj/repos",
-					"events_url": "https://api.github.com/users/argoproj/events{/privacy}",
-					"received_events_url": "https://api.github.com/users/argoproj/received_events",
+					"url": "https://api.github.com/users/hanzoai",
+					"html_url": "https://github.com/hanzoai",
+					"followers_url": "https://api.github.com/users/hanzoai/followers",
+					"following_url": "https://api.github.com/users/hanzoai/following{/other_user}",
+					"gists_url": "https://api.github.com/users/hanzoai/gists{/gist_id}",
+					"starred_url": "https://api.github.com/users/hanzoai/starred{/owner}{/repo}",
+					"subscriptions_url": "https://api.github.com/users/hanzoai/subscriptions",
+					"organizations_url": "https://api.github.com/users/hanzoai/orgs",
+					"repos_url": "https://api.github.com/users/hanzoai/repos",
+					"events_url": "https://api.github.com/users/hanzoai/events{/privacy}",
+					"received_events_url": "https://api.github.com/users/hanzoai/received_events",
 					"type": "User",
 					"site_admin": false
 				  },
@@ -48,47 +48,47 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				  "html_url": "https://github.com/hanzoai/cd",
 				  "description": "This your first repo!",
 				  "fork": false,
-				  "url": "https://api.github.com/repos/argoproj/argo-cd",
-				  "archive_url": "https://api.github.com/repos/argoproj/argo-cd/{archive_format}{/ref}",
-				  "assignees_url": "https://api.github.com/repos/argoproj/argo-cd/assignees{/user}",
-				  "blobs_url": "https://api.github.com/repos/argoproj/argo-cd/git/blobs{/sha}",
-				  "branches_url": "https://api.github.com/repos/argoproj/argo-cd/branches{/branch}",
-				  "collaborators_url": "https://api.github.com/repos/argoproj/argo-cd/collaborators{/collaborator}",
-				  "comments_url": "https://api.github.com/repos/argoproj/argo-cd/comments{/number}",
-				  "commits_url": "https://api.github.com/repos/argoproj/argo-cd/commits{/sha}",
-				  "compare_url": "https://api.github.com/repos/argoproj/argo-cd/compare/{base}...{head}",
-				  "contents_url": "https://api.github.com/repos/argoproj/argo-cd/contents/{path}",
-				  "contributors_url": "https://api.github.com/repos/argoproj/argo-cd/contributors",
-				  "deployments_url": "https://api.github.com/repos/argoproj/argo-cd/deployments",
-				  "downloads_url": "https://api.github.com/repos/argoproj/argo-cd/downloads",
-				  "events_url": "https://api.github.com/repos/argoproj/argo-cd/events",
-				  "forks_url": "https://api.github.com/repos/argoproj/argo-cd/forks",
-				  "git_commits_url": "https://api.github.com/repos/argoproj/argo-cd/git/commits{/sha}",
-				  "git_refs_url": "https://api.github.com/repos/argoproj/argo-cd/git/refs{/sha}",
-				  "git_tags_url": "https://api.github.com/repos/argoproj/argo-cd/git/tags{/sha}",
+				  "url": "https://api.github.com/repos/hanzoai/cd",
+				  "archive_url": "https://api.github.com/repos/hanzoai/cd/{archive_format}{/ref}",
+				  "assignees_url": "https://api.github.com/repos/hanzoai/cd/assignees{/user}",
+				  "blobs_url": "https://api.github.com/repos/hanzoai/cd/git/blobs{/sha}",
+				  "branches_url": "https://api.github.com/repos/hanzoai/cd/branches{/branch}",
+				  "collaborators_url": "https://api.github.com/repos/hanzoai/cd/collaborators{/collaborator}",
+				  "comments_url": "https://api.github.com/repos/hanzoai/cd/comments{/number}",
+				  "commits_url": "https://api.github.com/repos/hanzoai/cd/commits{/sha}",
+				  "compare_url": "https://api.github.com/repos/hanzoai/cd/compare/{base}...{head}",
+				  "contents_url": "https://api.github.com/repos/hanzoai/cd/contents/{path}",
+				  "contributors_url": "https://api.github.com/repos/hanzoai/cd/contributors",
+				  "deployments_url": "https://api.github.com/repos/hanzoai/cd/deployments",
+				  "downloads_url": "https://api.github.com/repos/hanzoai/cd/downloads",
+				  "events_url": "https://api.github.com/repos/hanzoai/cd/events",
+				  "forks_url": "https://api.github.com/repos/hanzoai/cd/forks",
+				  "git_commits_url": "https://api.github.com/repos/hanzoai/cd/git/commits{/sha}",
+				  "git_refs_url": "https://api.github.com/repos/hanzoai/cd/git/refs{/sha}",
+				  "git_tags_url": "https://api.github.com/repos/hanzoai/cd/git/tags{/sha}",
 				  "git_url": "git:github.com/hanzoai/cd.git",
-				  "issue_comment_url": "https://api.github.com/repos/argoproj/argo-cd/issues/comments{/number}",
-				  "issue_events_url": "https://api.github.com/repos/argoproj/argo-cd/issues/events{/number}",
-				  "issues_url": "https://api.github.com/repos/argoproj/argo-cd/issues{/number}",
-				  "keys_url": "https://api.github.com/repos/argoproj/argo-cd/keys{/key_id}",
-				  "labels_url": "https://api.github.com/repos/argoproj/argo-cd/labels{/name}",
-				  "languages_url": "https://api.github.com/repos/argoproj/argo-cd/languages",
-				  "merges_url": "https://api.github.com/repos/argoproj/argo-cd/merges",
-				  "milestones_url": "https://api.github.com/repos/argoproj/argo-cd/milestones{/number}",
-				  "notifications_url": "https://api.github.com/repos/argoproj/argo-cd/notifications{?since,all,participating}",
-				  "pulls_url": "https://api.github.com/repos/argoproj/argo-cd/pulls{/number}",
-				  "releases_url": "https://api.github.com/repos/argoproj/argo-cd/releases{/id}",
-				  "ssh_url": "git@github.com:argoproj/argo-cd.git",
-				  "stargazers_url": "https://api.github.com/repos/argoproj/argo-cd/stargazers",
-				  "statuses_url": "https://api.github.com/repos/argoproj/argo-cd/statuses/{sha}",
-				  "subscribers_url": "https://api.github.com/repos/argoproj/argo-cd/subscribers",
-				  "subscription_url": "https://api.github.com/repos/argoproj/argo-cd/subscription",
-				  "tags_url": "https://api.github.com/repos/argoproj/argo-cd/tags",
-				  "teams_url": "https://api.github.com/repos/argoproj/argo-cd/teams",
-				  "trees_url": "https://api.github.com/repos/argoproj/argo-cd/git/trees{/sha}",
+				  "issue_comment_url": "https://api.github.com/repos/hanzoai/cd/issues/comments{/number}",
+				  "issue_events_url": "https://api.github.com/repos/hanzoai/cd/issues/events{/number}",
+				  "issues_url": "https://api.github.com/repos/hanzoai/cd/issues{/number}",
+				  "keys_url": "https://api.github.com/repos/hanzoai/cd/keys{/key_id}",
+				  "labels_url": "https://api.github.com/repos/hanzoai/cd/labels{/name}",
+				  "languages_url": "https://api.github.com/repos/hanzoai/cd/languages",
+				  "merges_url": "https://api.github.com/repos/hanzoai/cd/merges",
+				  "milestones_url": "https://api.github.com/repos/hanzoai/cd/milestones{/number}",
+				  "notifications_url": "https://api.github.com/repos/hanzoai/cd/notifications{?since,all,participating}",
+				  "pulls_url": "https://api.github.com/repos/hanzoai/cd/pulls{/number}",
+				  "releases_url": "https://api.github.com/repos/hanzoai/cd/releases{/id}",
+				  "ssh_url": "git@github.com:hanzoai/cd.git",
+				  "stargazers_url": "https://api.github.com/repos/hanzoai/cd/stargazers",
+				  "statuses_url": "https://api.github.com/repos/hanzoai/cd/statuses/{sha}",
+				  "subscribers_url": "https://api.github.com/repos/hanzoai/cd/subscribers",
+				  "subscription_url": "https://api.github.com/repos/hanzoai/cd/subscription",
+				  "tags_url": "https://api.github.com/repos/hanzoai/cd/tags",
+				  "teams_url": "https://api.github.com/repos/hanzoai/cd/teams",
+				  "trees_url": "https://api.github.com/repos/hanzoai/cd/git/trees{/sha}",
 				  "clone_url": "https://github.com/hanzoai/cd.git",
-				  "mirror_url": "git:git.example.com/argoproj/argo-cd",
-				  "hooks_url": "https://api.github.com/repos/argoproj/argo-cd/hooks",
+				  "mirror_url": "git:git.example.com/hanzoai/cd",
+				  "hooks_url": "https://api.github.com/repos/hanzoai/cd/hooks",
 				  "svn_url": "https://svn.github.com/hanzoai/cd",
 				  "homepage": "https://github.com",
 				  "language": null,
@@ -100,7 +100,7 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				  "open_issues_count": 0,
 				  "is_template": false,
 				  "topics": [
-					"argoproj",
+					"hanzoai",
 					"atom",
 					"electron",
 					"api"
@@ -127,73 +127,73 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				  "id": 1296270,
 				  "node_id": "MDEwOlJlcGsddRvcnkxMjk2MjY5",
 				  "name": "another-repo",
-				  "full_name": "argoproj/another-repo",
+				  "full_name": "hanzoai/another-repo",
 				  "owner": {
-					"login": "argoproj",
+					"login": "hanzoai",
 					"id": 1,
 					"node_id": "MDQ6VXNlcjE=",
-					"avatar_url": "https://github.com/images/error/argoproj_happy.gif",
+					"avatar_url": "https://github.com/images/error/hanzoai_happy.gif",
 					"gravatar_id": "",
-					"url": "https://api.github.com/users/argoproj",
-					"html_url": "https://github.com/argoproj",
-					"followers_url": "https://api.github.com/users/argoproj/followers",
-					"following_url": "https://api.github.com/users/argoproj/following{/other_user}",
-					"gists_url": "https://api.github.com/users/argoproj/gists{/gist_id}",
-					"starred_url": "https://api.github.com/users/argoproj/starred{/owner}{/repo}",
-					"subscriptions_url": "https://api.github.com/users/argoproj/subscriptions",
-					"organizations_url": "https://api.github.com/users/argoproj/orgs",
-					"repos_url": "https://api.github.com/users/argoproj/repos",
-					"events_url": "https://api.github.com/users/argoproj/events{/privacy}",
-					"received_events_url": "https://api.github.com/users/argoproj/received_events",
+					"url": "https://api.github.com/users/hanzoai",
+					"html_url": "https://github.com/hanzoai",
+					"followers_url": "https://api.github.com/users/hanzoai/followers",
+					"following_url": "https://api.github.com/users/hanzoai/following{/other_user}",
+					"gists_url": "https://api.github.com/users/hanzoai/gists{/gist_id}",
+					"starred_url": "https://api.github.com/users/hanzoai/starred{/owner}{/repo}",
+					"subscriptions_url": "https://api.github.com/users/hanzoai/subscriptions",
+					"organizations_url": "https://api.github.com/users/hanzoai/orgs",
+					"repos_url": "https://api.github.com/users/hanzoai/repos",
+					"events_url": "https://api.github.com/users/hanzoai/events{/privacy}",
+					"received_events_url": "https://api.github.com/users/hanzoai/received_events",
 					"type": "User",
 					"site_admin": false
 				  },
 				  "private": false,
-				  "html_url": "https://github.com/argoproj/another-repo",
+				  "html_url": "https://github.com/hanzoai/another-repo",
 				  "description": "This your first repo!",
 				  "fork": false,
-				  "url": "https://api.github.com/repos/argoproj/another-repo",
-				  "archive_url": "https://api.github.com/repos/argoproj/another-repo/{archive_format}{/ref}",
-				  "assignees_url": "https://api.github.com/repos/argoproj/another-repo/assignees{/user}",
-				  "blobs_url": "https://api.github.com/repos/argoproj/another-repo/git/blobs{/sha}",
-				  "branches_url": "https://api.github.com/repos/argoproj/another-repo/branches{/branch}",
-				  "collaborators_url": "https://api.github.com/repos/argoproj/another-repo/collaborators{/collaborator}",
-				  "comments_url": "https://api.github.com/repos/argoproj/another-repo/comments{/number}",
-				  "commits_url": "https://api.github.com/repos/argoproj/another-repo/commits{/sha}",
-				  "compare_url": "https://api.github.com/repos/argoproj/another-repo/compare/{base}...{head}",
-				  "contents_url": "https://api.github.com/repos/argoproj/another-repo/contents/{path}",
-				  "contributors_url": "https://api.github.com/repos/argoproj/another-repo/contributors",
-				  "deployments_url": "https://api.github.com/repos/argoproj/another-repo/deployments",
-				  "downloads_url": "https://api.github.com/repos/argoproj/another-repo/downloads",
-				  "events_url": "https://api.github.com/repos/argoproj/another-repo/events",
-				  "forks_url": "https://api.github.com/repos/argoproj/another-repo/forks",
-				  "git_commits_url": "https://api.github.com/repos/argoproj/another-repo/git/commits{/sha}",
-				  "git_refs_url": "https://api.github.com/repos/argoproj/another-repo/git/refs{/sha}",
-				  "git_tags_url": "https://api.github.com/repos/argoproj/another-repo/git/tags{/sha}",
-				  "git_url": "git:github.com/argoproj/another-repo.git",
-				  "issue_comment_url": "https://api.github.com/repos/argoproj/another-repo/issues/comments{/number}",
-				  "issue_events_url": "https://api.github.com/repos/argoproj/another-repo/issues/events{/number}",
-				  "issues_url": "https://api.github.com/repos/argoproj/another-repo/issues{/number}",
-				  "keys_url": "https://api.github.com/repos/argoproj/another-repo/keys{/key_id}",
-				  "labels_url": "https://api.github.com/repos/argoproj/another-repo/labels{/name}",
-				  "languages_url": "https://api.github.com/repos/argoproj/another-repo/languages",
-				  "merges_url": "https://api.github.com/repos/argoproj/another-repo/merges",
-				  "milestones_url": "https://api.github.com/repos/argoproj/another-repo/milestones{/number}",
-				  "notifications_url": "https://api.github.com/repos/argoproj/another-repo/notifications{?since,all,participating}",
-				  "pulls_url": "https://api.github.com/repos/argoproj/another-repo/pulls{/number}",
-				  "releases_url": "https://api.github.com/repos/argoproj/another-repo/releases{/id}",
-				  "ssh_url": "git@github.com:argoproj/another-repo.git",
-				  "stargazers_url": "https://api.github.com/repos/argoproj/another-repo/stargazers",
-				  "statuses_url": "https://api.github.com/repos/argoproj/another-repo/statuses/{sha}",
-				  "subscribers_url": "https://api.github.com/repos/argoproj/another-repo/subscribers",
-				  "subscription_url": "https://api.github.com/repos/argoproj/another-repo/subscription",
-				  "tags_url": "https://api.github.com/repos/argoproj/another-repo/tags",
-				  "teams_url": "https://api.github.com/repos/argoproj/another-repo/teams",
-				  "trees_url": "https://api.github.com/repos/argoproj/another-repo/git/trees{/sha}",
-				  "clone_url": "https://github.com/argoproj/another-repo.git",
-				  "mirror_url": "git:git.example.com/argoproj/another-repo",
-				  "hooks_url": "https://api.github.com/repos/argoproj/another-repo/hooks",
-				  "svn_url": "https://svn.github.com/argoproj/another-repo",
+				  "url": "https://api.github.com/repos/hanzoai/another-repo",
+				  "archive_url": "https://api.github.com/repos/hanzoai/another-repo/{archive_format}{/ref}",
+				  "assignees_url": "https://api.github.com/repos/hanzoai/another-repo/assignees{/user}",
+				  "blobs_url": "https://api.github.com/repos/hanzoai/another-repo/git/blobs{/sha}",
+				  "branches_url": "https://api.github.com/repos/hanzoai/another-repo/branches{/branch}",
+				  "collaborators_url": "https://api.github.com/repos/hanzoai/another-repo/collaborators{/collaborator}",
+				  "comments_url": "https://api.github.com/repos/hanzoai/another-repo/comments{/number}",
+				  "commits_url": "https://api.github.com/repos/hanzoai/another-repo/commits{/sha}",
+				  "compare_url": "https://api.github.com/repos/hanzoai/another-repo/compare/{base}...{head}",
+				  "contents_url": "https://api.github.com/repos/hanzoai/another-repo/contents/{path}",
+				  "contributors_url": "https://api.github.com/repos/hanzoai/another-repo/contributors",
+				  "deployments_url": "https://api.github.com/repos/hanzoai/another-repo/deployments",
+				  "downloads_url": "https://api.github.com/repos/hanzoai/another-repo/downloads",
+				  "events_url": "https://api.github.com/repos/hanzoai/another-repo/events",
+				  "forks_url": "https://api.github.com/repos/hanzoai/another-repo/forks",
+				  "git_commits_url": "https://api.github.com/repos/hanzoai/another-repo/git/commits{/sha}",
+				  "git_refs_url": "https://api.github.com/repos/hanzoai/another-repo/git/refs{/sha}",
+				  "git_tags_url": "https://api.github.com/repos/hanzoai/another-repo/git/tags{/sha}",
+				  "git_url": "git:github.com/hanzoai/another-repo.git",
+				  "issue_comment_url": "https://api.github.com/repos/hanzoai/another-repo/issues/comments{/number}",
+				  "issue_events_url": "https://api.github.com/repos/hanzoai/another-repo/issues/events{/number}",
+				  "issues_url": "https://api.github.com/repos/hanzoai/another-repo/issues{/number}",
+				  "keys_url": "https://api.github.com/repos/hanzoai/another-repo/keys{/key_id}",
+				  "labels_url": "https://api.github.com/repos/hanzoai/another-repo/labels{/name}",
+				  "languages_url": "https://api.github.com/repos/hanzoai/another-repo/languages",
+				  "merges_url": "https://api.github.com/repos/hanzoai/another-repo/merges",
+				  "milestones_url": "https://api.github.com/repos/hanzoai/another-repo/milestones{/number}",
+				  "notifications_url": "https://api.github.com/repos/hanzoai/another-repo/notifications{?since,all,participating}",
+				  "pulls_url": "https://api.github.com/repos/hanzoai/another-repo/pulls{/number}",
+				  "releases_url": "https://api.github.com/repos/hanzoai/another-repo/releases{/id}",
+				  "ssh_url": "git@github.com:hanzoai/another-repo.git",
+				  "stargazers_url": "https://api.github.com/repos/hanzoai/another-repo/stargazers",
+				  "statuses_url": "https://api.github.com/repos/hanzoai/another-repo/statuses/{sha}",
+				  "subscribers_url": "https://api.github.com/repos/hanzoai/another-repo/subscribers",
+				  "subscription_url": "https://api.github.com/repos/hanzoai/another-repo/subscription",
+				  "tags_url": "https://api.github.com/repos/hanzoai/another-repo/tags",
+				  "teams_url": "https://api.github.com/repos/hanzoai/another-repo/teams",
+				  "trees_url": "https://api.github.com/repos/hanzoai/another-repo/git/trees{/sha}",
+				  "clone_url": "https://github.com/hanzoai/another-repo.git",
+				  "mirror_url": "git:git.example.com/hanzoai/another-repo",
+				  "hooks_url": "https://api.github.com/repos/hanzoai/another-repo/hooks",
+				  "svn_url": "https://svn.github.com/hanzoai/another-repo",
 				  "homepage": "https://github.com",
 				  "language": null,
 				  "forks_count": 9,
@@ -204,7 +204,7 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				  "open_issues_count": 0,
 				  "is_template": false,
 				  "topics": [
-					"argoproj",
+					"hanzoai",
 					"atom",
 					"electron",
 					"api"
@@ -231,13 +231,13 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/argo-cd/branches?per_page=100":
+		case "/api/v3/repos/hanzoai/cd/branches?per_page=100":
 			_, err := io.WriteString(w, `[
 				{
 				  "name": "master",
 				  "commit": {
 					"sha": "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
-					"url": "https://api.github.com/repos/argoproj/argo-cd/commits/c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc"
+					"url": "https://api.github.com/repos/hanzoai/cd/commits/c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc"
 				  },
 				  "protected": true,
 				  "protection": {
@@ -249,13 +249,13 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					  ]
 					}
 				  },
-				  "protection_url": "https://api.github.com/repos/argoproj/hello-world/branches/master/protection"
+				  "protection_url": "https://api.github.com/repos/hanzoai/hello-world/branches/master/protection"
 				},
 				{
 				  "name": "test",
 				  "commit": {
 					"sha": "80a6e93f16e8093e24091b03c614362df3fb9b92",
-					"url": "https://api.github.com/repos/argoproj/argo-cd/commits/80a6e93f16e8093e24091b03c614362df3fb9b92"
+					"url": "https://api.github.com/repos/hanzoai/cd/commits/80a6e93f16e8093e24091b03c614362df3fb9b92"
 				  },
 				  "protected": true,
 				  "protection": {
@@ -267,20 +267,20 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					  ]
 					}
 				  },
-				  "protection_url": "https://api.github.com/repos/argoproj/hello-world/branches/master/protection"
+				  "protection_url": "https://api.github.com/repos/hanzoai/hello-world/branches/master/protection"
 				}
 			  ]
 			`)
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/another-repo/branches?per_page=100":
+		case "/api/v3/repos/hanzoai/another-repo/branches?per_page=100":
 			_, err := io.WriteString(w, `[
 				{
 				  "name": "main",
 				  "commit": {
 					"sha": "19b016818bc0e0a44ddeaab345838a2a6c97fa67",
-					"url": "https://api.github.com/repos/argoproj/another-repo/commits/19b016818bc0e0a44ddeaab345838a2a6c97fa67"
+					"url": "https://api.github.com/repos/hanzoai/another-repo/commits/19b016818bc0e0a44ddeaab345838a2a6c97fa67"
 				  },
 				  "protected": true,
 				  "protection": {
@@ -292,14 +292,14 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 					  ]
 					}
 				  },
-				  "protection_url": "https://api.github.com/repos/argoproj/hello-world/branches/master/protection"
+				  "protection_url": "https://api.github.com/repos/hanzoai/hello-world/branches/master/protection"
 					}
 			  ]
 			`)
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/argo-cd/contents/pkg?ref=master":
+		case "/api/v3/repos/hanzoai/cd/contents/pkg?ref=master":
 			_, err := io.WriteString(w, `{
 				"type": "file",
 				"encoding": "base64",
@@ -321,7 +321,7 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/argo-cd/branches/master":
+		case "/api/v3/repos/hanzoai/cd/branches/master":
 			_, err := io.WriteString(w, `{
 				"name": "master",
 				"commit": {
@@ -343,7 +343,7 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/argo-cd/branches/test":
+		case "/api/v3/repos/hanzoai/cd/branches/test":
 			_, err := io.WriteString(w, `{
 				"name": "test",
 				"commit": {
@@ -365,7 +365,7 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/v3/repos/argoproj/another-repo/branches/main":
+		case "/api/v3/repos/hanzoai/another-repo/branches/main":
 			_, err := io.WriteString(w, `{
 					"name": "main",
 					"commit": {
@@ -412,13 +412,13 @@ func TestGithubListRepos(t *testing.T) {
 			excludeArchivedRepos: false,
 			expectedRepos: []*Repository{
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "master",
-					URL:          "git@github.com:argoproj/argo-cd.git",
+					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -426,13 +426,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "test",
-					URL:          "git@github.com:argoproj/argo-cd.git",
+					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -440,13 +440,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "git@github.com:argoproj/another-repo.git",
+					URL:          "git@github.com:hanzoai/another-repo.git",
 					SHA:          "19b016818bc0e0a44ddeaab345838a2a6c97fa67",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -465,13 +465,13 @@ func TestGithubListRepos(t *testing.T) {
 			excludeArchivedRepos: false,
 			expectedRepos: []*Repository{
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "master",
-					URL:          "git@github.com:argoproj/argo-cd.git",
+					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -479,13 +479,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "test",
-					URL:          "git@github.com:argoproj/argo-cd.git",
+					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -493,13 +493,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "git@github.com:argoproj/another-repo.git",
+					URL:          "git@github.com:hanzoai/another-repo.git",
 					SHA:          "19b016818bc0e0a44ddeaab345838a2a6c97fa67",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -518,13 +518,13 @@ func TestGithubListRepos(t *testing.T) {
 			excludeArchivedRepos: false,
 			expectedRepos: []*Repository{
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "master",
 					URL:          "https://github.com/hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -532,13 +532,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "test",
 					URL:          "https://github.com/hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -546,13 +546,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "https://github.com/argoproj/another-repo.git",
+					URL:          "https://github.com/hanzoai/another-repo.git",
 					SHA:          "19b016818bc0e0a44ddeaab345838a2a6c97fa67",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -581,13 +581,13 @@ func TestGithubListRepos(t *testing.T) {
 			excludeArchivedRepos: false,
 			expectedRepos: []*Repository{
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "master",
-					URL:          "git@github.com:argoproj/argo-cd.git",
+					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -595,13 +595,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "test",
-					URL:          "git@github.com:argoproj/argo-cd.git",
+					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -609,13 +609,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "another-repo",
 					Branch:       "main",
-					URL:          "git@github.com:argoproj/another-repo.git",
+					URL:          "git@github.com:hanzoai/another-repo.git",
 					SHA:          "19b016818bc0e0a44ddeaab345838a2a6c97fa67",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -634,13 +634,13 @@ func TestGithubListRepos(t *testing.T) {
 			proto:                "https",
 			expectedRepos: []*Repository{
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "master",
 					URL:          "https://github.com/hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -648,13 +648,13 @@ func TestGithubListRepos(t *testing.T) {
 					RepositoryId: idptr(1296269),
 				},
 				{
-					Organization: "argoproj",
+					Organization: "hanzoai",
 					Repository:   "argo-cd",
 					Branch:       "test",
 					URL:          "https://github.com/hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
 					Labels: []string{
-						"argoproj",
+						"hanzoai",
 						"atom",
 						"electron",
 						"api",
@@ -674,7 +674,7 @@ func TestGithubListRepos(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			t.Parallel()
-			provider, _ := NewGithubProvider("argoproj", "", ts.URL, c.allBranches, c.excludeArchivedRepos)
+			provider, _ := NewGithubProvider("hanzoai", "", ts.URL, c.allBranches, c.excludeArchivedRepos)
 			rawRepos, err := ListRepos(t.Context(), provider, c.filters, c.proto)
 			if c.hasError {
 				require.Error(t, err)
@@ -705,9 +705,9 @@ func TestGithubHasPath(t *testing.T) {
 		githubMockHandler(t)(w, r)
 	}))
 	defer ts.Close()
-	host, _ := NewGithubProvider("argoproj", "", ts.URL, false, false)
+	host, _ := NewGithubProvider("hanzoai", "", ts.URL, false, false)
 	repo := &Repository{
-		Organization: "argoproj",
+		Organization: "hanzoai",
 		Repository:   "argo-cd",
 		Branch:       "master",
 	}
@@ -726,9 +726,9 @@ func TestGithubGetBranches(t *testing.T) {
 		githubMockHandler(t)(w, r)
 	}))
 	defer ts.Close()
-	host, _ := NewGithubProvider("argoproj", "", ts.URL, false, false)
+	host, _ := NewGithubProvider("hanzoai", "", ts.URL, false, false)
 	repo := &Repository{
-		Organization: "argoproj",
+		Organization: "hanzoai",
 		Repository:   "argo-cd",
 		Branch:       "master",
 	}
@@ -740,7 +740,7 @@ func TestGithubGetBranches(t *testing.T) {
 	}
 	// Branch Doesn't exists instead of error will return no error
 	repo2 := &Repository{
-		Organization: "argoproj",
+		Organization: "hanzoai",
 		Repository:   "applicationset",
 		Branch:       "main",
 	}

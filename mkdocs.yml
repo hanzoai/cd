@@ -46,7 +46,6 @@ nav:
     - operator-manual/rbac.md
   - Security:
     - Overview: operator-manual/security.md
-    - snyk/index.md
     - operator-manual/signed-release-assets.md
   - operator-manual/tls.md
   - operator-manual/mtls.md
@@ -254,8 +253,8 @@ nav:
 - security_considerations.md
 - Support: SUPPORT.md
 - roadmap.md
-- Releases ⧉: https://github.com/argoproj/argo-cd/releases
-- Blog ⧉: https://blog.argoproj.io/
+- Releases ⧉: https://github.com/hanzoai/cd/releases
+- Blog ⧉: https://blog.hanzoai.io/
 plugins:
 - search
 - gh-admonitions

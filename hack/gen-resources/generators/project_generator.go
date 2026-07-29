@@ -21,7 +21,7 @@ func NewProjectGenerator(clientSet *appclientset.Clientset) Generator {
 }
 
 func (pg *ProjectGenerator) Generate(opts *util.GenerateOpts) error {
-	projects := pg.clientSet.ArgoprojV1alpha1().AppProjects(opts.Namespace)
+	projects := pg.clientSet.AppV1alpha1().AppProjects(opts.Namespace)
 	for i := 0; i < opts.ProjectOpts.Samples; i++ {
 		log.Printf("Generate project #%v", i)
 		_, err := projects.Create(context.TODO(), &v1alpha1.AppProject{
@@ -44,7 +44,7 @@ func (pg *ProjectGenerator) Generate(opts *util.GenerateOpts) error {
 
 func (pg *ProjectGenerator) Clean(opts *util.GenerateOpts) error {
 	log.Print("Clean projects")
-	projects := pg.clientSet.ArgoprojV1alpha1().AppProjects(opts.Namespace)
+	projects := pg.clientSet.AppV1alpha1().AppProjects(opts.Namespace)
 	return projects.DeleteCollection(context.TODO(), metav1.DeleteOptions{}, metav1.ListOptions{
 		LabelSelector: "app.kubernetes.io/generated-by=cd-generator",
 	})

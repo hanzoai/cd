@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `cd.hanzo.ai/managed-by-url` annotation allows an Application resource to specify which Hanzo CD instance manages it. This is useful when you have multiple Hanzo CD instances and need application links in the UI to point to the correct managing instance.
+The `apps.hanzo.ai/managed-by-url` annotation allows an Application resource to specify which Hanzo CD instance manages it. This is useful when you have multiple Hanzo CD instances and need application links in the UI to point to the correct managing instance.
 
 ## Use Case
 
@@ -58,7 +58,7 @@ metadata:
   name: child-app
   namespace: namespace-b
   annotations:
-    cd.hanzo.ai/managed-by-url: "http://localhost:8081" # replace with actual secondary Hanzo CD URL in real setup
+    apps.hanzo.ai/managed-by-url: "http://localhost:8081" # replace with actual secondary Hanzo CD URL in real setup
 spec:
   project: default
   source:
@@ -87,7 +87,7 @@ When viewing the parent Application in the primary instance's UI:
 
 | Field | Value |
 |-------|-------|
-| **Annotation** | `cd.hanzo.ai/managed-by-url` |
+| **Annotation** | `apps.hanzo.ai/managed-by-url` |
 | **Target** | Application |
 | **Value** | Valid HTTP(S) URL |
 | **Required** | No |
@@ -121,11 +121,11 @@ To test the annotation with two local Hanzo CD instances:
 ```bash
 # Install primary instance
 kubectl create namespace cd
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/stable/manifests/install.yaml
 
 # Install secondary instance
 kubectl create namespace namespace-b
-kubectl apply -n namespace-b --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n namespace-b --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/stable/manifests/install.yaml
 
 # Port forward both instances
 kubectl port-forward -n cd svc/cd-server 8080:443 &
@@ -160,7 +160,7 @@ kubectl -n namespace-b get secret cd-initial-admin-secret -o jsonpath="{.data.pa
 **Check if the annotation is present:**
 
 ```bash
-kubectl get application child-app -n instance-b -o jsonpath='{.metadata.annotations.cd\.argoproj\.io/managed-by-url}'
+kubectl get application child-app -n instance-b -o jsonpath='{.metadata.annotations.cd\.hanzoai\.io/managed-by-url}'
 ```
 
 Expected output: A complete URL like `http://localhost:8081` or the url that has been set 

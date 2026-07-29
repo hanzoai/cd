@@ -602,7 +602,7 @@ func TestProcessAppHydrateQueueItem_HydrationNeeded_NoCurrentOperation(t *testin
 	require.NotNil(t, persistedStatus)
 	// ProcessAppHydrateQueueItem no longer marks the app Hydrating — that work moved to
 	// ProcessHydrationQueueItem so it can happen atomically across the whole app group
-	// (https://github.com/argoproj/argo-cd/issues/27926). All we persist here is the consumed
+	// (https://github.com/hanzoai/cd/issues/27926). All we persist here is the consumed
 	// hydrate annotation; CurrentOperation stays nil until the hydration worker picks the key up.
 	assert.Nil(t, persistedStatus.CurrentOperation)
 	assert.Empty(t, persistedStatus.LastComparedDryRevision)
@@ -1677,7 +1677,7 @@ func Test_newRevisionHasChanges(t *testing.T) {
 	}
 }
 
-// --- Concurrency tests for the manifest hydration queue (https://github.com/argoproj/argo-cd/issues/27926) ---
+// --- Concurrency tests for the manifest hydration queue (https://github.com/hanzoai/cd/issues/27926) ---
 //
 // ProcessHydrationQueueItem owns the per-app status updates for the entire app group sharing a hydration
 // key. The hydration workqueue dedups on the key, so no two workers ever process the same group at once.
@@ -1706,7 +1706,7 @@ func expectSuccessfulHydratePipeline(d *mocks.Dependencies, r *mocks.RepoGetter,
 }
 
 // TestProcessHydrationQueueItem_MarksAllAppsHydratingThenHydrated verifies the core contract of the new
-// design (https://github.com/argoproj/argo-cd/issues/27926): when ProcessHydrationQueueItem picks up a key
+// design (https://github.com/hanzoai/cd/issues/27926): when ProcessHydrationQueueItem picks up a key
 // it marks every app in the group Hydrating up front, runs the single commit, then marks every app
 // Hydrated. Apps without a prior CurrentOperation - the case that used to be the parallel-worker race
 // window - get the same treatment as apps already Hydrating.

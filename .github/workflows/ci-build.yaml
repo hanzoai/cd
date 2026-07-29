@@ -173,7 +173,7 @@ jobs:
         with:
           egress-policy: audit
       - name: Create checkout directory
-        run: mkdir -p ~/go/src/github.com/argoproj
+        run: mkdir -p ~/go/src/github.com/hanzoai
       - name: Checkout code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -250,7 +250,7 @@ jobs:
         with:
           egress-policy: audit    
       - name: Create checkout directory
-        run: mkdir -p ~/go/src/github.com/argoproj
+        run: mkdir -p ~/go/src/github.com/hanzoai
       - name: Checkout code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -332,8 +332,8 @@ jobs:
       - name: Create symlink in GOPATH
         # generalizing repo name for forks:  ${{ github.event.repository.name }}
         run: |
-          mkdir -p ~/go/src/github.com/argoproj
-          cp -a ../${GITHUB_EVENT_REPOSITORY_NAME} ~/go/src/github.com/argoproj
+          mkdir -p ~/go/src/github.com/hanzoai
+          cp -a ../${GITHUB_EVENT_REPOSITORY_NAME} ~/go/src/github.com/hanzoai
         env:
           GITHUB_EVENT_REPOSITORY_NAME: ${{ github.event.repository.name }}
       - name: Add ~/go/bin to PATH
@@ -348,13 +348,13 @@ jobs:
           go mod download
           go mod vendor -v
         # generalizing repo name for forks:  ${{ github.event.repository.name }}
-        working-directory: /home/runner/go/src/github.com/argoproj/${{ github.event.repository.name }}
+        working-directory: /home/runner/go/src/github.com/hanzoai/${{ github.event.repository.name }}
       - name: Install toolchain for codegen
         run: |
           make install-codegen-tools-local
           make install-go-tools-local
         # generalizing repo name for forks:  ${{ github.event.repository.name }}
-        working-directory: /home/runner/go/src/github.com/argoproj/${{ github.event.repository.name }}
+        working-directory: /home/runner/go/src/github.com/hanzoai/${{ github.event.repository.name }}
         # We install kustomize in the dist directory
       - name: Add dist to PATH
         run: |
@@ -366,13 +366,13 @@ jobs:
           git checkout -- go.mod go.sum
           make codegen-local
         # generalizing repo name for forks:  ${{ github.event.repository.name }}
-        working-directory: /home/runner/go/src/github.com/argoproj/${{ github.event.repository.name }}
+        working-directory: /home/runner/go/src/github.com/hanzoai/${{ github.event.repository.name }}
       - name: Check nothing has changed
         run: |
           set -xo pipefail
           git diff --exit-code -- . ':!go.sum' ':!go.mod' ':!assets/swagger.json' | tee codegen.patch
         # generalizing repo name for forks:  ${{ github.event.repository.name }}
-        working-directory: /home/runner/go/src/github.com/argoproj/${{ github.event.repository.name }}
+        working-directory: /home/runner/go/src/github.com/hanzoai/${{ github.event.repository.name }}
 
   build-ui:
     name: Build, test & lint UI code
@@ -479,7 +479,7 @@ jobs:
         run: |
           go tool covdata textfmt -i=e2e-code-coverage/applicationset-controller,e2e-code-coverage/repo-server,e2e-code-coverage/app-controller,e2e-code-coverage/commit-server -o test-results/e2e-coverage.out
       - name: Upload unit test coverage to codecov.io
-        if: github.repository == 'argoproj/argo-cd'
+        if: github.repository == 'hanzoai/cd'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           version: v11.2.8 # https://github.com/getsentry/prevent-cli/releases/tag/v11.2.8
@@ -490,7 +490,7 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload e2e test coverage to codecov.io
-        if: github.repository == 'argoproj/argo-cd'
+        if: github.repository == 'hanzoai/cd'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           version: v11.2.8 # https://github.com/getsentry/prevent-cli/releases/tag/v11.2.8
@@ -502,7 +502,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload test results to Codecov
         # Codecov uploads test results to Codecov.io on upstream master branch.
-        if: github.repository == 'argoproj/argo-cd' && github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.repository == 'hanzoai/cd' && github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           version: v11.2.8 # https://github.com/getsentry/prevent-cli/releases/tag/v11.2.8
@@ -519,7 +519,7 @@ jobs:
   test-e2e:
     name: Run end-to-end tests
     if: ${{ needs.changes.outputs.backend == 'true' }}
-    runs-on: ${{ github.repository == 'argoproj/argo-cd' && 'oracle-vm-16cpu-64gb-x86-64' || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'hanzoai/cd' && 'oracle-vm-16cpu-64gb-x86-64' || 'ubuntu-24.04' }}
     strategy:
       fail-fast: false
       matrix:
@@ -630,7 +630,7 @@ jobs:
         run: |
           # renovate: datasource=github-releases depName=dexidp/dex
           docker pull ghcr.io/dexidp/dex:v2.45.0
-          docker pull argoproj/argo-cd-ci-builder:v1.0.0
+          docker pull hanzoai/cd-ci-builder:v1.0.0
           docker pull redis:8.6.4-alpine
       - name: Create target directory for binaries in the build-process
         run: |
@@ -676,7 +676,7 @@ jobs:
   # workaround for status checks -- check this one job instead of each individual E2E job in the matrix
   # this allows us to skip the entire matrix when it doesn't need to run while still having accurate status checks
   # see:
-  # https://github.com/argoproj/argo-workflows/pull/12006
+  # https://github.com/hanzoai/argo-workflows/pull/12006
   # https://github.com/orgs/community/discussions/9141#discussioncomment-2296809
   # https://github.com/orgs/community/discussions/26822#discussioncomment-3305794
   test-e2e-composite-result:

@@ -146,7 +146,7 @@ spec:
   # should either throw an error or ignore the other two.
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       targetRevision: main
       # This assumes the Application's environments are modeled as directories.
       path: environments/e2e
@@ -203,7 +203,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       targetRevision: main
       path: environments/dev/west
     syncSource:
@@ -217,7 +217,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       targetRevision: main
       path: environments/dev/east
     syncSource:
@@ -232,7 +232,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       targetRevision: main
       path: environments/test/west
     syncSource:
@@ -246,7 +246,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       targetRevision: main
       path: environments/test/east
     syncSource:
@@ -261,7 +261,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       targetRevision: main
       path: environments/prod/west
     syncSource:
@@ -275,7 +275,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://git.hanzo.ai/hanzo/example-apps
       targetRevision: main
       path: environments/prod/east
     syncSource:
@@ -442,7 +442,7 @@ These are the details of the most recent change;
 To reproduce the manifest hydration, do the following:
 
 ```
-git clone https://github.com/argoproj/argocd-example-apps
+git clone https://git.hanzo.ai/hanzo/example-apps
 cd cd-example-apps
 git checkout ab2382f
 kustomize edit set image my-app:v0.0.2
@@ -458,7 +458,7 @@ The hydrator will also write a `hydrator.metadata` file containing a JSON repres
   "drySHA": "ab2382f",
   "commitAuthor": "Michael Crenshaw <michael@example.com>",
   "commitMessage": "chore: bump Helm dependency chart to 32.1.12",
-  "repoURL": "https://github.com/argoproj/argocd-example-apps"
+  "repoURL": "https://git.hanzo.ai/hanzo/example-apps"
 }
 ```
 
@@ -512,9 +512,9 @@ apiVersion: v1
 kind: Secret
 metadata:
   labels:
-    cd.hanzo.ai/secret-type: repository-write
+    apps.hanzo.ai/secret-type: repository-write
 stringData:
-  url: 'https://github.com/argoproj/argocd-example-apps'
+  url: 'https://git.hanzo.ai/hanzo/example-apps'
   githubAppID: '123456'
   githubInstallationID: '123456'
   githubAppPrivateKey: |
