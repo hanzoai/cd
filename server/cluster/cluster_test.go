@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/kubetest"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube/kubetest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -563,7 +563,7 @@ func TestRotateAuth(t *testing.T) {
 func getClientset(config map[string]string, ns string, objects ...runtime.Object) *fake.Clientset {
 	secret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: ns,
 		},
 		Data: map[string][]byte{
@@ -573,10 +573,10 @@ func getClientset(config map[string]string, ns string, objects ...runtime.Object
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Namespace: ns,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: config,

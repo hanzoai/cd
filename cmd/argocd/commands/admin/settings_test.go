@@ -52,7 +52,7 @@ func newSettingsManager(ctx context.Context, data map[string]string) *settings.S
 			Namespace: "default",
 			Name:      common.ArgoCDConfigMapName,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: data,

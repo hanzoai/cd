@@ -44,15 +44,15 @@ var (
 	argocdCM = corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 	}
 	argocdSecret = corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: testNamespace,
 		},
 		Data: map[string][]byte{

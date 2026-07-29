@@ -62,10 +62,10 @@ func getKubeClient(t *testing.T, pass string, enabled bool, capabilities ...sett
 
 	return fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Namespace: "argocd",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{
@@ -74,7 +74,7 @@ func getKubeClient(t *testing.T, pass string, enabled bool, capabilities ...sett
 		},
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: "argocd",
 		},
 		Data: map[string][]byte{
@@ -726,16 +726,16 @@ func getKubeClientWithConfig(config map[string]string, secretConfig map[string][
 
 	return fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Namespace: "argocd",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: config,
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: "argocd",
 		},
 		Data: mergedSecretConfig,

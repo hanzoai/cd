@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/hanzoai/deploy/common"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -246,10 +247,10 @@ const (
 func getCertClientset() *fake.Clientset {
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: nil,
@@ -257,10 +258,10 @@ func getCertClientset() *fake.Clientset {
 
 	sshCM := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-ssh-known-hosts-cm",
+			Name:      common.ArgoCDKnownHostsConfigMapName,
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{
@@ -270,10 +271,10 @@ func getCertClientset() *fake.Clientset {
 
 	tlsCM := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-tls-certs-cm",
+			Name:      common.ArgoCDTLSCertsConfigMapName,
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{

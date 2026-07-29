@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"github.com/hanzoai/deploy/common"
 	"testing"
 	"time"
 
@@ -19,17 +20,17 @@ import (
 func Test_loadClusters(t *testing.T) {
 	argoCDCM := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Namespace: "argocd",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string]string{},
 	}
 	argoCDSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-secret",
+			Name:      common.ArgoCDSecretName,
 			Namespace: "argocd",
 		},
 		Data: map[string][]byte{

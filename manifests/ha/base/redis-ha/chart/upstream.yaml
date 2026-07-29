@@ -4,41 +4,39 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: argocd-redis-ha
-  namespace: "argocd"
+  name: hanzocd-redis-ha
+  namespace: "hanzo-cd"
   labels:
     heritage: Helm
-    release: argocd
+    release: hanzocd
     chart: redis-ha-4.35.10
-    app: argocd-redis-ha
+    app: hanzocd-redis-ha
 secrets:
-- name: argocd-redis
-
+- name: hanzocd-redis
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-haproxy-serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: argocd-redis-ha-haproxy
-  namespace: "argocd"
+  name: hanzocd-redis-ha-haproxy
+  namespace: "hanzo-cd"
   labels:
     heritage: Helm
-    release: argocd
+    release: hanzocd
     chart: redis-ha-4.35.10
-    app: argocd-redis-ha
-
+    app: hanzocd-redis-ha
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-redis-ha-configmap
-  namespace: "argocd"
+  name: hanzocd-redis-ha-configmap
+  namespace: "hanzo-cd"
   labels:
     heritage: Helm
-    release: argocd
+    release: hanzocd
     chart: redis-ha-4.35.10
-    app: argocd-redis-ha
+    app: hanzocd-redis-ha
 data:
   redis.conf: |
     dir "/data"
@@ -81,8 +79,8 @@ data:
     REDIS_TLS_PORT=
     SENTINEL_CONF=/data/conf/sentinel.conf
     SENTINEL_TLS_PORT=
-    SERVICE=argocd-redis-ha
-    NAMESPACE="argocd"
+    SERVICE=hanzocd-redis-ha
+    NAMESPACE="hanzo-cd"
     SENTINEL_TLS_REPLICATION_ENABLED=false
     REDIS_TLS_REPLICATION_ENABLED=false
     RESOLVE_HOSTNAMES=false
@@ -127,7 +125,7 @@ data:
 
     identify_master() {
         echo "Identifying redis master (get-master-addr-by-name).."
-        echo "  using sentinel (argocd-redis-ha), sentinel group name (argocd)"
+        echo "  using sentinel (hanzocd-redis-ha), sentinel group name (argocd)"
         MASTER="$(sentinel_get_master_retry 3)"
         if [ -n "${MASTER}" ]; then
             echo "  $(date) Found redis master (${MASTER})"
@@ -371,8 +369,8 @@ data:
     REDIS_TLS_PORT=
     SENTINEL_CONF=/data/conf/sentinel.conf
     SENTINEL_TLS_PORT=
-    SERVICE=argocd-redis-ha
-    NAMESPACE="argocd"
+    SERVICE=hanzocd-redis-ha
+    NAMESPACE="hanzo-cd"
     SENTINEL_TLS_REPLICATION_ENABLED=false
     REDIS_TLS_REPLICATION_ENABLED=false
     RESOLVE_HOSTNAMES=false
@@ -420,7 +418,7 @@ data:
 
     identify_master() {
         echo "Identifying redis master (get-master-addr-by-name).."
-        echo "  using sentinel (argocd-redis-ha), sentinel group name (argocd)"
+        echo "  using sentinel (hanzocd-redis-ha), sentinel group name (argocd)"
         MASTER="$(sentinel_get_master_retry 3)"
         if [ -n "${MASTER}" ]; then
             echo "  $(date) Found redis master (${MASTER})"
@@ -719,9 +717,9 @@ data:
       tcp-check send SENTINEL\ get-master-addr-by-name\ argocd\r\n
       tcp-check expect string REPLACE_ANNOUNCE0
       tcp-check send QUIT\r\n
-      server R0 argocd-redis-ha-announce-0:26379 check inter 3s
-      server R1 argocd-redis-ha-announce-1:26379 check inter 3s
-      server R2 argocd-redis-ha-announce-2:26379 check inter 3s
+      server R0 hanzocd-redis-ha-announce-0:26379 check inter 3s
+      server R1 hanzocd-redis-ha-announce-1:26379 check inter 3s
+      server R2 hanzocd-redis-ha-announce-2:26379 check inter 3s
     # Check Sentinel and whether they are nominated master
     backend check_if_redis_is_master_1
       mode tcp
@@ -732,9 +730,9 @@ data:
       tcp-check send SENTINEL\ get-master-addr-by-name\ argocd\r\n
       tcp-check expect string REPLACE_ANNOUNCE1
       tcp-check send QUIT\r\n
-      server R0 argocd-redis-ha-announce-0:26379 check inter 3s
-      server R1 argocd-redis-ha-announce-1:26379 check inter 3s
-      server R2 argocd-redis-ha-announce-2:26379 check inter 3s
+      server R0 hanzocd-redis-ha-announce-0:26379 check inter 3s
+      server R1 hanzocd-redis-ha-announce-1:26379 check inter 3s
+      server R2 hanzocd-redis-ha-announce-2:26379 check inter 3s
     # Check Sentinel and whether they are nominated master
     backend check_if_redis_is_master_2
       mode tcp
@@ -745,9 +743,9 @@ data:
       tcp-check send SENTINEL\ get-master-addr-by-name\ argocd\r\n
       tcp-check expect string REPLACE_ANNOUNCE2
       tcp-check send QUIT\r\n
-      server R0 argocd-redis-ha-announce-0:26379 check inter 3s
-      server R1 argocd-redis-ha-announce-1:26379 check inter 3s
-      server R2 argocd-redis-ha-announce-2:26379 check inter 3s
+      server R0 hanzocd-redis-ha-announce-0:26379 check inter 3s
+      server R1 hanzocd-redis-ha-announce-1:26379 check inter 3s
+      server R2 hanzocd-redis-ha-announce-2:26379 check inter 3s
 
     # decide redis backend to use
     #master
@@ -768,11 +766,11 @@ data:
       tcp-check send QUIT\r\n
       tcp-check expect string +OK
       use-server R0 if { srv_is_up(R0) } { nbsrv(check_if_redis_is_master_0) ge 2 }
-      server R0 argocd-redis-ha-announce-0:6379 check inter 3s fall 1 rise 1
+      server R0 hanzocd-redis-ha-announce-0:6379 check inter 3s fall 1 rise 1
       use-server R1 if { srv_is_up(R1) } { nbsrv(check_if_redis_is_master_1) ge 2 }
-      server R1 argocd-redis-ha-announce-1:6379 check inter 3s fall 1 rise 1
+      server R1 hanzocd-redis-ha-announce-1:6379 check inter 3s fall 1 rise 1
       use-server R2 if { srv_is_up(R2) } { nbsrv(check_if_redis_is_master_2) ge 2 }
-      server R2 argocd-redis-ha-announce-2:6379 check inter 3s fall 1 rise 1
+      server R2 hanzocd-redis-ha-announce-2:6379 check inter 3s fall 1 rise 1
     frontend stats
       mode http
       bind :9101 
@@ -788,32 +786,32 @@ data:
     HAPROXY_CONF=/data/haproxy.cfg
     cp /readonly/haproxy.cfg "$HAPROXY_CONF"
     for loop in $(seq 1 10); do
-      getent hosts argocd-redis-ha-announce-0 && break
-      echo "Waiting for service argocd-redis-ha-announce-0 to be ready ($loop) ..." && sleep 1
+      getent hosts hanzocd-redis-ha-announce-0 && break
+      echo "Waiting for service hanzocd-redis-ha-announce-0 to be ready ($loop) ..." && sleep 1
     done
-    ANNOUNCE_IP0=$(getent hosts "argocd-redis-ha-announce-0" | awk '{ print $1 }')
+    ANNOUNCE_IP0=$(getent hosts "hanzocd-redis-ha-announce-0" | awk '{ print $1 }')
     if [ -z "$ANNOUNCE_IP0" ]; then
-      echo "Could not resolve the announce address for argocd-redis-ha-announce-0"
+      echo "Could not resolve the announce address for hanzocd-redis-ha-announce-0"
       exit 1
     fi
     sed -i "s/REPLACE_ANNOUNCE0/$ANNOUNCE_IP0/" "$HAPROXY_CONF"
     for loop in $(seq 1 10); do
-      getent hosts argocd-redis-ha-announce-1 && break
-      echo "Waiting for service argocd-redis-ha-announce-1 to be ready ($loop) ..." && sleep 1
+      getent hosts hanzocd-redis-ha-announce-1 && break
+      echo "Waiting for service hanzocd-redis-ha-announce-1 to be ready ($loop) ..." && sleep 1
     done
-    ANNOUNCE_IP1=$(getent hosts "argocd-redis-ha-announce-1" | awk '{ print $1 }')
+    ANNOUNCE_IP1=$(getent hosts "hanzocd-redis-ha-announce-1" | awk '{ print $1 }')
     if [ -z "$ANNOUNCE_IP1" ]; then
-      echo "Could not resolve the announce address for argocd-redis-ha-announce-1"
+      echo "Could not resolve the announce address for hanzocd-redis-ha-announce-1"
       exit 1
     fi
     sed -i "s/REPLACE_ANNOUNCE1/$ANNOUNCE_IP1/" "$HAPROXY_CONF"
     for loop in $(seq 1 10); do
-      getent hosts argocd-redis-ha-announce-2 && break
-      echo "Waiting for service argocd-redis-ha-announce-2 to be ready ($loop) ..." && sleep 1
+      getent hosts hanzocd-redis-ha-announce-2 && break
+      echo "Waiting for service hanzocd-redis-ha-announce-2 to be ready ($loop) ..." && sleep 1
     done
-    ANNOUNCE_IP2=$(getent hosts "argocd-redis-ha-announce-2" | awk '{ print $1 }')
+    ANNOUNCE_IP2=$(getent hosts "hanzocd-redis-ha-announce-2" | awk '{ print $1 }')
     if [ -z "$ANNOUNCE_IP2" ]; then
-      echo "Could not resolve the announce address for argocd-redis-ha-announce-2"
+      echo "Could not resolve the announce address for hanzocd-redis-ha-announce-2"
       exit 1
     fi
     sed -i "s/REPLACE_ANNOUNCE2/$ANNOUNCE_IP2/" "$HAPROXY_CONF"
@@ -848,19 +846,18 @@ data:
       done
       echo "Failover successful"
     fi
-
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-health-configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-redis-ha-health-configmap
-  namespace: "argocd"
+  name: hanzocd-redis-ha-health-configmap
+  namespace: "hanzo-cd"
   labels:
     heritage: Helm
-    release: argocd
+    release: hanzocd
     chart: redis-ha-4.35.10
-    app: argocd-redis-ha
+    app: hanzocd-redis-ha
 data:
   redis_liveness.sh: |
     response=$(
@@ -924,18 +921,17 @@ data:
       exit 1
     fi
     echo "response=$response"
-
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: argocd-redis-ha
-  namespace: "argocd"
+  name: hanzocd-redis-ha
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
 rules:
 - apiGroups:
@@ -944,18 +940,17 @@ rules:
     - endpoints
   verbs:
     - get
-
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-haproxy-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: argocd-redis-ha-haproxy
-  namespace: "argocd"
+  name: hanzocd-redis-ha-haproxy
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
     component: haproxy
 rules:
@@ -965,59 +960,56 @@ rules:
     - endpoints
   verbs:
     - get
-
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: argocd-redis-ha
-  namespace: "argocd"
+  name: hanzocd-redis-ha
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
 subjects:
 - kind: ServiceAccount
-  name: argocd-redis-ha
+  name: hanzocd-redis-ha
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argocd-redis-ha
-
+  name: hanzocd-redis-ha
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-haproxy-rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: argocd-redis-ha-haproxy
-  namespace: "argocd"
+  name: hanzocd-redis-ha-haproxy
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
     component: haproxy
 subjects:
 - kind: ServiceAccount
-  name: argocd-redis-ha-haproxy
+  name: hanzocd-redis-ha-haproxy
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argocd-redis-ha-haproxy
-
+  name: hanzocd-redis-ha-haproxy
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-announce-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: argocd-redis-ha-announce-0
-  namespace: "argocd"
+  name: hanzocd-redis-ha-announce-0
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
   annotations:
 spec:
@@ -1033,20 +1025,20 @@ spec:
     protocol: TCP
     targetPort: sentinel
   selector:
-    release: argocd
+    release: hanzocd
     app: redis-ha
-    "statefulset.kubernetes.io/pod-name": argocd-redis-ha-server-0
+    "statefulset.kubernetes.io/pod-name": hanzocd-redis-ha-server-0
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-announce-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: argocd-redis-ha-announce-1
-  namespace: "argocd"
+  name: hanzocd-redis-ha-announce-1
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
   annotations:
 spec:
@@ -1062,20 +1054,20 @@ spec:
     protocol: TCP
     targetPort: sentinel
   selector:
-    release: argocd
+    release: hanzocd
     app: redis-ha
-    "statefulset.kubernetes.io/pod-name": argocd-redis-ha-server-1
+    "statefulset.kubernetes.io/pod-name": hanzocd-redis-ha-server-1
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-announce-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: argocd-redis-ha-announce-2
-  namespace: "argocd"
+  name: hanzocd-redis-ha-announce-2
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
   annotations:
 spec:
@@ -1091,21 +1083,20 @@ spec:
     protocol: TCP
     targetPort: sentinel
   selector:
-    release: argocd
+    release: hanzocd
     app: redis-ha
-    "statefulset.kubernetes.io/pod-name": argocd-redis-ha-server-2
-
+    "statefulset.kubernetes.io/pod-name": hanzocd-redis-ha-server-2
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: argocd-redis-ha
-  namespace: "argocd"
+  name: hanzocd-redis-ha
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
   annotations:
 spec:
@@ -1121,20 +1112,19 @@ spec:
     protocol: TCP
     targetPort: sentinel
   selector:
-    release: argocd
+    release: hanzocd
     app: redis-ha
-
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-haproxy-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: argocd-redis-ha-haproxy
-  namespace: "argocd"
+  name: hanzocd-redis-ha-haproxy
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
     component: haproxy
   annotations:
@@ -1150,20 +1140,19 @@ spec:
     protocol: TCP
     targetPort: metrics-port
   selector:
-    release: argocd
+    release: hanzocd
     app: redis-ha-haproxy
-
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-haproxy-deployment.yaml
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: argocd-redis-ha-haproxy
-  namespace: "argocd"
+  name: hanzocd-redis-ha-haproxy
+  namespace: "hanzo-cd"
   labels:
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
     component: haproxy
 spec:
@@ -1174,24 +1163,24 @@ spec:
   selector:
     matchLabels:
       app: redis-ha-haproxy
-      release: argocd
+      release: hanzocd
       component: haproxy
   template:
     metadata:
-      name: argocd-redis-ha-haproxy
+      name: hanzocd-redis-ha-haproxy
       labels:
         app: redis-ha-haproxy
-        release: argocd
+        release: hanzocd
         component: haproxy
       annotations:
         prometheus.io/port: "9101"
         prometheus.io/scrape: "true"
         prometheus.io/path: "/metrics"
-        checksum/config: cda181423e5fd3b17fbdaa2433890ba317affcdb717c9c12ec3ded1fd6875177
+        checksum/config: 1e254a4bcaa6c89b1a091f572d20ccddb1e8848e13f7898aa14c8ee34bd7b9f0
     spec:
       # Needed when using unmodified rbac-setup.yml
       
-      serviceAccountName: argocd-redis-ha-haproxy
+      serviceAccountName: hanzocd-redis-ha-haproxy
       securityContext:
         fsGroup: 99
         runAsNonRoot: true
@@ -1207,7 +1196,7 @@ spec:
             - labelSelector:
                 matchLabels:
                   app: redis-ha-haproxy
-                  release: argocd
+                  release: hanzocd
                   component: haproxy
               topologyKey: kubernetes.io/hostname
       initContainers:
@@ -1250,7 +1239,7 @@ spec:
         - name: AUTH
           valueFrom:
             secretKeyRef:
-              name: argocd-redis
+              name: hanzocd-redis
               key: auth
         livenessProbe:
           httpGet:
@@ -1283,35 +1272,34 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: argocd-redis-ha-configmap
+          name: hanzocd-redis-ha-configmap
       - name: shared-socket
         emptyDir:
           {}
       - name: data
         emptyDir:
           {}
-
 ---
 # Source: redis-ha/charts/redis-ha/templates/redis-ha-statefulset.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: argocd-redis-ha-server
-  namespace: "argocd"
+  name: hanzocd-redis-ha-server
+  namespace: "hanzo-cd"
   labels:
-    argocd-redis-ha: replica
+    hanzocd-redis-ha: replica
     app: redis-ha
     heritage: "Helm"
-    release: "argocd"
+    release: "hanzocd"
     chart: redis-ha-4.35.10
   annotations:
     {}
 spec:
   selector:
     matchLabels:
-      release: argocd
+      release: hanzocd
       app: redis-ha
-  serviceName: argocd-redis-ha
+  serviceName: hanzocd-redis-ha
   replicas: 3
   podManagementPolicy: OrderedReady
   updateStrategy:
@@ -1319,11 +1307,11 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/init-config: cb9ebad11d288a7327d836f5f0fa63a61806e11078082ffaf78cd15e5b6f04fa
+        checksum/init-config: 4f7972f27c641d27f3270b124c3ed216dac949182fcc05750d0d09cd8b72a158
       labels:
-        release: argocd
+        release: hanzocd
         app: redis-ha
-        argocd-redis-ha: replica
+        hanzocd-redis-ha: replica
     spec:
       terminationGracePeriodSeconds: 60
       affinity:
@@ -1332,14 +1320,14 @@ spec:
             - labelSelector:
                 matchLabels:
                   app: redis-ha
-                  release: argocd
-                  argocd-redis-ha: replica
+                  release: hanzocd
+                  hanzocd-redis-ha: replica
               topologyKey: kubernetes.io/hostname
       securityContext:
         fsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
-      serviceAccountName: argocd-redis-ha
+      serviceAccountName: hanzocd-redis-ha
       automountServiceAccountToken: false
       initContainers:
       - name: config-init
@@ -1362,15 +1350,15 @@ spec:
             type: RuntimeDefault
         env:
         - name: SENTINEL_ID_0
-          value: 3c0d9c0320bb34888c2df5757c718ce6ca992ce6
+          value: 5ffd03139d83b1a77be6be1b1d524d4c692f23be
         - name: SENTINEL_ID_1
-          value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
+          value: 9b46a6f0067b11706e270fa4baa804877d57ca1d
         - name: SENTINEL_ID_2
-          value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
+          value: 0c4181fb6f4f8cc766787f0c766217c8710d4a6a
         - name: AUTH
           valueFrom:
             secretKeyRef:
-              name: argocd-redis
+              name: hanzocd-redis
               key: auth
         volumeMounts:
         - name: config
@@ -1402,7 +1390,7 @@ spec:
         - name: AUTH
           valueFrom:
             secretKeyRef:
-              name: argocd-redis
+              name: hanzocd-redis
               key: auth
         livenessProbe:
           initialDelaySeconds: 30
@@ -1476,7 +1464,7 @@ spec:
         - name: AUTH
           valueFrom:
             secretKeyRef:
-              name: argocd-redis
+              name: hanzocd-redis
               key: auth
         livenessProbe:
           initialDelaySeconds: 30
@@ -1570,15 +1558,15 @@ spec:
             type: RuntimeDefault
         env:
         - name: SENTINEL_ID_0
-          value: 3c0d9c0320bb34888c2df5757c718ce6ca992ce6
+          value: 5ffd03139d83b1a77be6be1b1d524d4c692f23be
         - name: SENTINEL_ID_1
-          value: 40000915ab58c3fa8fd888fb8b24711944e6cbb4
+          value: 9b46a6f0067b11706e270fa4baa804877d57ca1d
         - name: SENTINEL_ID_2
-          value: 2bbec7894d954a8af3bb54d13eaec53cb024e2ca
+          value: 0c4181fb6f4f8cc766787f0c766217c8710d4a6a
         - name: AUTH
           valueFrom:
             secretKeyRef:
-              name: argocd-redis
+              name: hanzocd-redis
               key: auth
         volumeMounts:
         - name: config
@@ -1589,10 +1577,10 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: argocd-redis-ha-configmap
+          name: hanzocd-redis-ha-configmap
       - name: health
         configMap:
-          name: argocd-redis-ha-health-configmap
+          name: hanzocd-redis-ha-health-configmap
           defaultMode: 0755
       - name: data
         emptyDir:

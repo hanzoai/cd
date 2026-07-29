@@ -74,7 +74,7 @@ func TestArgoCDConfigMapEventHandler(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
 		h := mgr.argoCDConfigMapEventHandler()
 
-		other := &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: "argocd-rbac-cm", Namespace: "argocd"}}
+		other := &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: common.ArgoCDRBACConfigMapName, Namespace: "argocd"}}
 		h.OnAdd(other, false)
 		h.OnUpdate(other, other)
 		h.OnDelete(other)
@@ -187,7 +187,7 @@ func TestSettingsNotificationEventHandler(t *testing.T) {
 	const partOfLabel = "app.kubernetes.io/part-of"
 	settingsObject := func(creation time.Time, resourceVersion string) *corev1.Secret {
 		return &corev1.Secret{ObjectMeta: metav1.ObjectMeta{
-			Name:              "argocd-secret",
+			Name:              common.ArgoCDSecretName,
 			Namespace:         "argocd",
 			Labels:            map[string]string{partOfLabel: "argocd"},
 			CreationTimestamp: metav1.NewTime(creation),

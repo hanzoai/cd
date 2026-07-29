@@ -21,7 +21,7 @@ var gpgCMEmpty = corev1.ConfigMap{
 		Name:      common.ArgoCDGPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
-			"app.kubernetes.io/part-of": "argocd",
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 	},
 }
@@ -32,7 +32,7 @@ var gpgCMSingleGoodPubkey = corev1.ConfigMap{
 		Name:      common.ArgoCDGPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
-			"app.kubernetes.io/part-of": "argocd",
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 	},
 	Data: map[string]string{
@@ -46,7 +46,7 @@ var gpgCMMultiGoodPubkey = corev1.ConfigMap{
 		Name:      common.ArgoCDGPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
-			"app.kubernetes.io/part-of": "argocd",
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 	},
 	Data: map[string]string{
@@ -61,7 +61,7 @@ var gpgCMSingleKeyWrongId = corev1.ConfigMap{
 		Name:      common.ArgoCDGPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
-			"app.kubernetes.io/part-of": "argocd",
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 	},
 	Data: map[string]string{
@@ -75,7 +75,7 @@ var gpgCMGarbagePubkey = corev1.ConfigMap{
 		Name:      common.ArgoCDGPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
-			"app.kubernetes.io/part-of": "argocd",
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 	},
 	Data: map[string]string{
@@ -89,7 +89,7 @@ var gpgCMGarbageCMKey = corev1.ConfigMap{
 		Name:      common.ArgoCDGPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
-			"app.kubernetes.io/part-of": "argocd",
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 	},
 	Data: map[string]string{
@@ -101,10 +101,10 @@ var gpgCMGarbageCMKey = corev1.ConfigMap{
 func getGPGKeysClientset(gpgCM corev1.ConfigMap) *fake.Clientset {
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-cm",
+			Name:      common.ArgoCDConfigMapName,
 			Namespace: testNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: nil,

@@ -1,6 +1,7 @@
 package notification
 
 import (
+	"github.com/hanzoai/deploy/common"
 	"os"
 	"testing"
 
@@ -39,7 +40,7 @@ func TestNotificationServer(t *testing.T) {
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: testNamespace,
-			Name:      "argocd-notifications-cm",
+			Name:      common.ArgoCDNotificationsConfigMapName,
 		},
 		Data: map[string]string{
 			"service.webhook.test": "url: https://test.example.com",
@@ -49,15 +50,15 @@ func TestNotificationServer(t *testing.T) {
 	},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "argocd-notifications-secret",
+				Name:      common.ArgoCDNotificationsSecretName,
 				Namespace: testNamespace,
 			},
 			Data: map[string][]byte{},
 		})
 
 	ctx := t.Context()
-	secretInformer := k8s.NewSecretInformer(kubeclientset, testNamespace, "argocd-notifications-secret")
-	configMapInformer := k8s.NewConfigMapInformer(kubeclientset, testNamespace, "argocd-notifications-cm")
+	secretInformer := k8s.NewSecretInformer(kubeclientset, testNamespace, common.ArgoCDNotificationsSecretName)
+	configMapInformer := k8s.NewConfigMapInformer(kubeclientset, testNamespace, common.ArgoCDNotificationsConfigMapName)
 	go secretInformer.Run(ctx.Done())
 	if !k8scache.WaitForCacheSync(ctx.Done(), secretInformer.HasSynced) {
 		panic("Timed out waiting for caches to sync")
@@ -72,7 +73,7 @@ func TestNotificationServer(t *testing.T) {
 	argocdService, err := service.NewArgoCDService(kubeclientset, dynamicClient, testNamespace, mockRepoClient)
 	require.NoError(t, err)
 	t.Cleanup(argocdService.Close)
-	apiFactory := api.NewFactory(settings.GetFactorySettings(argocdService, "argocd-notifications-secret", "argocd-notifications-cm", false), testNamespace, secretInformer, configMapInformer)
+	apiFactory := api.NewFactory(settings.GetFactorySettings(argocdService, common.ArgoCDNotificationsSecretName, common.ArgoCDNotificationsConfigMapName, false), testNamespace, secretInformer, configMapInformer)
 
 	t.Run("TestListServices", func(t *testing.T) {
 		t.Parallel()

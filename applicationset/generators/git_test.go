@@ -2422,7 +2422,7 @@ func TestGitGenerator_GenerateParams(t *testing.T) {
 			},
 			callGetDirectories: false,
 			expected:           []map[string]any{{"path": "app1", "path.basename": "app1", "path.basenameNormalized": "app1", "path[0]": "app1", "values.foo": "bar"}},
-			expectedError:      errors.New("error getting project project: appprojects.argoproj.io \"project\" not found"),
+			expectedError:      errors.New("error getting project project: appprojects.apps.hanzo.ai \"project\" not found"),
 		},
 		{
 			name: "Project field is not templated - verify that project is passed through to repo-server as-is",

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hanzoai/deploy/common"
 	"strconv"
 	"strings"
 	"testing"
@@ -500,7 +501,7 @@ func createAndConfigGlobalProject(ctx context.Context, testName string) error {
               - you
       projectName: %s`
 
-	_, err = fixture.Run("", "kubectl", "patch", "cm", "argocd-cm",
+	_, err = fixture.Run("", "kubectl", "patch", "cm", common.ArgoCDConfigMapName,
 		"-n", fixture.TestNamespace(),
 		"-p", fmt.Sprintf(globalProjectsSettings, projGlobal.Name))
 	if err != nil {

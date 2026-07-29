@@ -4,7 +4,7 @@ You can use "kubectl" to ask Argo CD to synchronize applications the same way yo
 
 This "operation" defines how a synchronization should be done and for what resources these synchronization is to be done.
 
-There are many configuration options that can be added to the "operation". Next, a few of them are explained. For more details, you can have a look at the CRD [applications.argoproj.io](https://github.com/argoproj/argo-cd/blob/master/manifests/crds/application-crd.yaml). Some of them are required, whereas others are optional.
+There are many configuration options that can be added to the "operation". Next, a few of them are explained. For more details, you can have a look at the CRD [applications.apps.hanzo.ai](https://github.com/argoproj/argo-cd/blob/master/manifests/crds/application-crd.yaml). Some of them are required, whereas others are optional.
 
 To ask Argo CD to synchronize all resources of a given application, we can do:
 

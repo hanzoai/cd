@@ -1,6 +1,7 @@
 package e2e
 
 import (
+	"github.com/hanzoai/deploy/common"
 	"testing"
 
 	"github.com/hanzoai/deploy/gitops-engine/pkg/utils/kube"
@@ -61,7 +62,7 @@ func TestBackupExportImport(t *testing.T) {
 		}).
 		AndExportedResources(func(exportResources *ExportedResources, err error) {
 			require.NoError(t, err, "export format not valid")
-			assert.True(t, exportResources.HasResource(kube.NewResourceKey("", "ConfigMap", "", "argocd-cm")), "argocd-cm not found in export")
+			assert.True(t, exportResources.HasResource(kube.NewResourceKey("", "ConfigMap", "", common.ArgoCDConfigMapName)), "argocd-cm not found in export")
 			assert.True(t, exportResources.HasResource(kube.NewResourceKey(ApplicationSchemaGroupVersionKind.Group, ApplicationSchemaGroupVersionKind.Kind, "", appTestNamespace.GetName())), "test namespace application not in export")
 			assert.True(t, exportResources.HasResource(kube.NewResourceKey(ApplicationSchemaGroupVersionKind.Group, ApplicationSchemaGroupVersionKind.Kind, appOtherNamespace.GetNamespace(), appOtherNamespace.GetName())), "app namespace application not in export")
 		})

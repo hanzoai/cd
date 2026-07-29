@@ -46,7 +46,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 			Name:      common.ArgoCDConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: data,
@@ -56,7 +56,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 			Name:      common.ArgoCDSecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "argocd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{},

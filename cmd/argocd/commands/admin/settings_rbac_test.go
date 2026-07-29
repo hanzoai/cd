@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"github.com/hanzoai/deploy/common"
 	"os"
 	"testing"
 
@@ -141,7 +142,7 @@ func Test_PolicyFromK8s(t *testing.T) {
 	require.NoError(t, err)
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-rbac-cm",
+			Name:      common.ArgoCDRBACConfigMapName,
 			Namespace: "argocd",
 		},
 		Data: map[string]string{
@@ -232,7 +233,7 @@ p, role:user, exec, create, .*/.*, allow
 
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "argocd-rbac-cm",
+			Name:      common.ArgoCDRBACConfigMapName,
 			Namespace: "argocd",
 		},
 		Data: map[string]string{
