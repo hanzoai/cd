@@ -27,13 +27,13 @@ func TestAppProject_IsSourcePermitted(t *testing.T) {
 		appSource   string
 		isPermitted bool
 	}{{
-		projSources: []string{"*"}, appSource: "https://git.hanzo.ai/hanzo/test.git", isPermitted: true,
+		projSources: []string{"*"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: true,
 	}, {
-		projSources: []string{"https://git.hanzo.ai/hanzo/test.git"}, appSource: "https://git.hanzo.ai/hanzo/test.git", isPermitted: true,
+		projSources: []string{"https://github.com/hanzoai/test.git"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: true,
 	}, {
 		projSources: []string{"ssh://git@GITHUB.com:hanzoai/test"}, appSource: "ssh://git@github.com:hanzoai/test", isPermitted: true,
 	}, {
-		projSources: []string{"https://github.com/hanzoai/*"}, appSource: "https://git.hanzo.ai/hanzo/test.git", isPermitted: true,
+		projSources: []string{"https://github.com/hanzoai/*"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: true,
 	}, {
 		projSources: []string{"https://github.com/test1/test.git", "https://github.com/test2/test.git"}, appSource: "https://github.com/test2/test.git", isPermitted: true,
 	}, {
@@ -70,11 +70,11 @@ func TestAppProject_IsNegatedSourcePermitted(t *testing.T) {
 		appSource   string
 		isPermitted bool
 	}{{
-		projSources: []string{"!https://git.hanzo.ai/hanzo/test.git"}, appSource: "https://git.hanzo.ai/hanzo/test.git", isPermitted: false,
+		projSources: []string{"!https://github.com/hanzoai/test.git"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: false,
 	}, {
 		projSources: []string{"!ssh://git@GITHUB.com:hanzoai/test"}, appSource: "ssh://git@github.com:hanzoai/test", isPermitted: false,
 	}, {
-		projSources: []string{"!https://github.com/hanzoai/*"}, appSource: "https://git.hanzo.ai/hanzo/test.git", isPermitted: false,
+		projSources: []string{"!https://github.com/hanzoai/*"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: false,
 	}, {
 		projSources: []string{"https://github.com/test1/test.git", "!https://github.com/test2/test.git"}, appSource: "https://github.com/test2/test.git", isPermitted: false,
 	}, {
@@ -86,7 +86,7 @@ func TestAppProject_IsNegatedSourcePermitted(t *testing.T) {
 	}, {
 		projSources: []string{"!https://gitlab.com/group/**"}, appSource: "https://gitlab.com/group/sub-group/repo/owner", isPermitted: false,
 	}, {
-		projSources: []string{"*"}, appSource: "https://git.hanzo.ai/hanzo/test.git", isPermitted: true,
+		projSources: []string{"*"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: true,
 	}, {
 		projSources: []string{"https://github.com/hanzoai/test1.git", "*"}, appSource: "https://github.com/hanzoai/test2.git", isPermitted: true,
 	}, {
@@ -4603,10 +4603,10 @@ func TestApplicationSpec_GetSourcePtrByIndex(t *testing.T) {
 		{
 			name: "HasSingleSource_ReturnsSource",
 			application: ApplicationSpec{
-				Source: &ApplicationSource{RepoURL: "https://git.hanzo.ai/hanzo/test.git"},
+				Source: &ApplicationSource{RepoURL: "https://github.com/hanzoai/test.git"},
 			},
 			sourceIndex: 0,
-			expected:    &ApplicationSource{RepoURL: "https://git.hanzo.ai/hanzo/test.git"},
+			expected:    &ApplicationSource{RepoURL: "https://github.com/hanzoai/test.git"},
 		},
 		{
 			name: "HasSourceHydrator_NegativeIndex_ReturnsDrySource",
