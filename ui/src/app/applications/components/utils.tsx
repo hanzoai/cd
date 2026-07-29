@@ -479,7 +479,7 @@ export const deleteSourceAction = (app: appModels.Application, source: appModels
 
 // Detect if a resource is an Application
 const isApplicationResource = (resource: ResourceTreeNode): boolean => {
-    return resource.kind === 'Application' && resource.group === 'argoproj.io';
+    return resource.kind === 'Application' && resource.group === 'apps.hanzo.ai';
 };
 
 // Detect if an application is a child application
@@ -1463,11 +1463,11 @@ export function getAppSetConditionCategory(condition: appModels.ApplicationSetCo
 }
 
 export function isAppNode(node: appModels.ResourceNode) {
-    return node.kind === 'Application' && node.group === 'argoproj.io';
+    return node.kind === 'Application' && node.group === 'apps.hanzo.ai';
 }
 
 export function isAppSetNode(node: appModels.ResourceNode) {
-    return node.kind === 'ApplicationSet' && node.group === 'argoproj.io';
+    return node.kind === 'ApplicationSet' && node.group === 'apps.hanzo.ai';
 }
 
 export function getApplicationSetOwnerRef(application: appModels.Application) {
@@ -2036,7 +2036,7 @@ export const podRequests = {
  * @returns The managed-by-url value or null if not present
  */
 export function getManagedByURL(app: any): string | null {
-    return app?.metadata?.annotations?.['argocd.argoproj.io/managed-by-url'] || null;
+    return app?.metadata?.annotations?.['apps.hanzo.ai/managed-by-url'] || null;
 }
 
 /**

@@ -676,7 +676,7 @@ Are you sure you want to disable auto-sync and rollback application '${props.mat
                             // For ApplicationSets, add the appset itself to the map
                             if (!isApplication) {
                                 const appSetKey = AppUtils.nodeKey({
-                                    group: 'argoproj.io',
+                                    group: 'apps.hanzo.ai',
                                     kind: application.kind,
                                     name: application.metadata.name,
                                     namespace: application.metadata.namespace
@@ -768,7 +768,7 @@ Are you sure you want to disable auto-sync and rollback application '${props.mat
                                         onNodeClick: (fullName: string) => {
                                             const parts = fullName.split('/');
                                             const [group, kind, namespace, name] = parts;
-                                            if (group === 'argoproj.io' && kind === 'ApplicationSet' && namespace && name) {
+                                            if (group === 'apps.hanzo.ai' && kind === 'ApplicationSet' && namespace && name) {
                                                 // Only navigate to AppSet page if this AppSet owns the current Application.
                                                 // If the AppSet is a child resource managed by this Application, open ResourceDetails instead.
                                                 const ownerAppSetRef = AppUtils.getApplicationSetOwnerRef(application as appModels.Application);
@@ -796,7 +796,7 @@ Are you sure you want to disable auto-sync and rollback application '${props.mat
                                             // For ApplicationSets, navigate to Application details if clicking an Application node
                                             const parts = fullName.split('/');
                                             const [group, kind, namespace, name] = parts;
-                                            if (group === 'argoproj.io' && kind === 'Application' && namespace && name) {
+                                            if (group === 'apps.hanzo.ai' && kind === 'Application' && namespace && name) {
                                                 appContext.navigation.goto(`/applications/${namespace}/${name}`);
                                             } else {
                                                 selectNode(fullName);
@@ -880,7 +880,7 @@ Are you sure you want to disable auto-sync and rollback application '${props.mat
                                 }
                             };
                             const appFullName = AppUtils.nodeKey({
-                                group: 'argoproj.io',
+                                group: 'apps.hanzo.ai',
                                 kind: application.kind,
                                 name: application.metadata.name,
                                 namespace: application.metadata.namespace
@@ -1319,7 +1319,7 @@ Are you sure you want to disable auto-sync and rollback application '${props.mat
     const getApplicationActionMenu = useCallback(
         (app: appModels.Application, needOverlapLabelOnNarrowScreen: boolean, includeToggleAutoSync = false) => {
             const refreshing = app.metadata.annotations && app.metadata.annotations[appModels.AnnotationRefreshKey];
-            const fullName = AppUtils.nodeKey({group: 'argoproj.io', kind: app.kind, name: app.metadata.name, namespace: app.metadata.namespace});
+            const fullName = AppUtils.nodeKey({group: 'apps.hanzo.ai', kind: app.kind, name: app.metadata.name, namespace: app.metadata.namespace});
             const ActionMenuItem = (prop: {actionLabel: string}) => <span className={needOverlapLabelOnNarrowScreen ? 'show-for-large' : ''}>{prop.actionLabel}</span>;
             return [
                 {
@@ -1364,7 +1364,7 @@ Are you sure you want to disable auto-sync and rollback application '${props.mat
                                           {
                                               name: app.metadata.name,
                                               namespace: app.metadata.namespace,
-                                              group: 'argoproj.io',
+                                              group: 'apps.hanzo.ai',
                                               kind: 'Application',
                                               version: 'v1alpha1'
                                           } as appModels.ResourceNode,
@@ -1542,7 +1542,7 @@ Are you sure you want to disable auto-sync and rollback application '${props.mat
     const groupAppNodesByKey = useCallback((application: appModels.Application, tree: appModels.ApplicationTree) => {
         const nodeByKey = new Map<string, appModels.ResourceDiff | appModels.ResourceNode | appModels.Application>();
         tree.nodes.concat(tree.orphanedNodes || []).forEach(node => nodeByKey.set(AppUtils.nodeKey(node), node));
-        nodeByKey.set(AppUtils.nodeKey({group: 'argoproj.io', kind: application.kind, name: application.metadata.name, namespace: application.metadata.namespace}), application);
+        nodeByKey.set(AppUtils.nodeKey({group: 'apps.hanzo.ai', kind: application.kind, name: application.metadata.name, namespace: application.metadata.namespace}), application);
         return nodeByKey;
     }, []);
 

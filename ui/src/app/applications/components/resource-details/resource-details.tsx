@@ -157,7 +157,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                 ]);
             }
         }
-        if (node?.kind === 'ApplicationSet' && node?.group === 'argoproj.io') {
+        if (node?.kind === 'ApplicationSet' && node?.group === 'apps.hanzo.ai') {
             const appSetSyncStatus = controlledState?.summary?.status || SyncStatuses.Unknown;
             tabs.push({
                 title: 'PREVIEW',
@@ -246,7 +246,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
             content: <ApplicationResourceEvents applicationName={application.metadata.name} applicationNamespace={application.metadata.namespace} />
         });
 
-        const extensionTabs = services.extensions.getResourceTabs('argoproj.io', 'Application').map((ext, i) => ({
+        const extensionTabs = services.extensions.getResourceTabs('apps.hanzo.ai', 'Application').map((ext, i) => ({
             title: ext.title,
             key: `extension-${i}`,
             content: <ext.component resource={application} tree={tree} application={application} />,
