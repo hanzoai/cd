@@ -126,60 +126,60 @@ service RepositoryService {
 
 	// List returns list of repos or repository credentials
 	rpc List(RepoQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryList) {
-		option (google.api.http).get = "/api/v1/repositories";
+		option (google.api.http).get = "/v1/repositories";
 		option deprecated = true;
 	}
 
 	// Get returns a repository or its credentials
 	rpc Get(RepoQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Repository) {
-		option (google.api.http).get = "/api/v1/repositories/{repo}";
+		option (google.api.http).get = "/v1/repositories/{repo}";
 	}
 
 	// GetWrite returns a repository or its write credentials
 	rpc GetWrite(RepoQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Repository) {
-		option (google.api.http).get = "/api/v1/write-repositories/{repo}";
+		option (google.api.http).get = "/v1/write-repositories/{repo}";
 	}
 
 	// ListRepositories gets a list of all configured repositories
 	rpc ListRepositories(RepoQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryList) {
-		option (google.api.http).get = "/api/v1/repositories";
+		option (google.api.http).get = "/v1/repositories";
 	}
 
 	// ListWriteRepositories gets a list of all configured write repositories
 	rpc ListWriteRepositories(RepoQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryList) {
-		option (google.api.http).get = "/api/v1/write-repositories";
+		option (google.api.http).get = "/v1/write-repositories";
 	}
 
 	rpc ListRefs(RepoQuery) returns (Refs) {
-		option (google.api.http).get = "/api/v1/repositories/{repo}/refs";
+		option (google.api.http).get = "/v1/repositories/{repo}/refs";
 	}
 
 	rpc ListOCITags(RepoQuery) returns (Refs) {
-		option (google.api.http).get = "/api/v1/repositories/{repo}/oci-tags";
+		option (google.api.http).get = "/v1/repositories/{repo}/oci-tags";
 	}
 
 	// ListApps returns list of apps in the repo
 	rpc ListApps(RepoAppsQuery) returns (RepoAppsResponse) {
-		option (google.api.http).get = "/api/v1/repositories/{repo}/apps";
+		option (google.api.http).get = "/v1/repositories/{repo}/apps";
 	}
 
 	// GetAppDetails returns application details by given path
 	rpc GetAppDetails(RepoAppDetailsQuery) returns (repository.RepoAppDetailsResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/repositories/{source.repoURL}/appdetails"
+			post: "/v1/repositories/{source.repoURL}/appdetails"
 			body: "*"
 		};
 	}
 
 	// GetHelmCharts returns list of helm charts in the specified repository
 	rpc GetHelmCharts(RepoQuery) returns (repository.HelmChartsResponse) {
-		option (google.api.http).get = "/api/v1/repositories/{repo}/helmcharts";
+		option (google.api.http).get = "/v1/repositories/{repo}/helmcharts";
 	}
 
 	// Create creates a repo or a repo credential set
 	rpc Create(RepoCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Repository) {
 		option (google.api.http) = {
-			post: "/api/v1/repositories"
+			post: "/v1/repositories"
 			body: "repo"
 		};
 		option deprecated = true;
@@ -188,7 +188,7 @@ service RepositoryService {
 	// CreateRepository creates a new repository configuration
 	rpc CreateRepository(RepoCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Repository) {
 		option (google.api.http) = {
-			post: "/api/v1/repositories"
+			post: "/v1/repositories"
 			body: "repo"
 		};
 	}
@@ -196,7 +196,7 @@ service RepositoryService {
 	// CreateWriteRepository creates a new write repository configuration
 	rpc CreateWriteRepository(RepoCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Repository) {
 		option (google.api.http) = {
-			post: "/api/v1/write-repositories"
+			post: "/v1/write-repositories"
 			body: "repo"
 		};
 	}
@@ -204,7 +204,7 @@ service RepositoryService {
 	// Update updates a repo or repo credential set
 	rpc Update(RepoUpdateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Repository) {
 		option (google.api.http) = {
-			put: "/api/v1/repositories/{repo.repo}"
+			put: "/v1/repositories/{repo.repo}"
 			body: "repo"
 		};
 		option deprecated = true;
@@ -213,7 +213,7 @@ service RepositoryService {
 	// UpdateRepository updates a repository configuration
 	rpc UpdateRepository(RepoUpdateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Repository) {
 		option (google.api.http) = {
-			put: "/api/v1/repositories/{repo.repo}"
+			put: "/v1/repositories/{repo.repo}"
 			body: "repo"
 		};
 	}
@@ -221,31 +221,31 @@ service RepositoryService {
 	// UpdateWriteRepository updates a write repository configuration
 	rpc UpdateWriteRepository(RepoUpdateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Repository) {
 		option (google.api.http) = {
-			put: "/api/v1/write-repositories/{repo.repo}"
+			put: "/v1/write-repositories/{repo.repo}"
 			body: "repo"
 		};
 	}
 
 	// Delete deletes a repository from the configuration
 	rpc Delete(RepoQuery) returns (RepoResponse) {
-		option (google.api.http).delete = "/api/v1/repositories/{repo}";
+		option (google.api.http).delete = "/v1/repositories/{repo}";
 		option deprecated = true;
 	}
 
 	// DeleteRepository deletes a repository from the configuration
 	rpc DeleteRepository(RepoQuery) returns (RepoResponse) {
-		option (google.api.http).delete = "/api/v1/repositories/{repo}";
+		option (google.api.http).delete = "/v1/repositories/{repo}";
 	}
 
 	// DeleteWriteRepository deletes a write repository from the configuration
 	rpc DeleteWriteRepository(RepoQuery) returns (RepoResponse) {
-		option (google.api.http).delete = "/api/v1/write-repositories/{repo}";
+		option (google.api.http).delete = "/v1/write-repositories/{repo}";
 	}
 
 	// ValidateAccess validates access to a repository with given parameters
 	rpc ValidateAccess(RepoAccessQuery) returns (RepoResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/repositories/{repo}/validate"
+			post: "/v1/repositories/{repo}/validate"
 			body: "repo"
 		};
 	}
@@ -253,7 +253,7 @@ service RepositoryService {
 	// ValidateWriteAccess validates write access to a repository with given parameters
 	rpc ValidateWriteAccess(RepoAccessQuery) returns (RepoResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/write-repositories/{repo}/validate"
+			post: "/v1/write-repositories/{repo}/validate"
 			body: "repo"
 		};
 	}

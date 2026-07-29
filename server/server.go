@@ -1153,7 +1153,7 @@ func (server *ArgoCDServer) newHTTPServer(ctx context.Context, port int, grpcWeb
 		Handler: &handlerSwitcher{
 			handler: mux,
 			urlToHandler: map[string]http.Handler{
-				"/api/badge":          otelhttp.NewHandler(badge.NewHandler(server.AppClientset, server.settingsMgr, server.Namespace, server.ApplicationNamespaces), "server.ArgoCDServer/badge"),
+				"/v1/badge":          otelhttp.NewHandler(badge.NewHandler(server.AppClientset, server.settingsMgr, server.Namespace, server.ApplicationNamespaces), "server.ArgoCDServer/badge"),
 				common.LogoutEndpoint: otelhttp.NewHandler(logout.NewHandler(server.settingsMgr, server.sessionMgr, server.RootPath, server.BaseHRef), "server.ArgoCDServer/logout"),
 			},
 			contentTypeToHandler: map[string]http.Handler{
@@ -1192,7 +1192,7 @@ func (server *ArgoCDServer) newHTTPServer(ctx context.Context, port int, grpcWeb
 	} else {
 		log.WithField(common.SecurityField, common.SecurityHigh).Warnf("Content-Type enforcement is disabled, which may make your API vulnerable to CSRF attacks")
 	}
-	mux.Handle("/api/", handler)
+	mux.Handle("/v1/", handler)
 
 	terminalOpts := application.TerminalOptions{DisableAuth: server.DisableAuth, Enf: server.enf}
 
@@ -1234,7 +1234,7 @@ func (server *ArgoCDServer) newHTTPServer(ctx context.Context, port int, grpcWeb
 	argoDB := db.NewDB(server.Namespace, server.settingsMgr, server.KubeClientset)
 	acdWebhookHandler := webhook.NewHandler(server.Namespace, server.ApplicationNamespaces, server.WebhookParallelism, server.WebhookRefreshWorkers, server.AppClientset, server.appLister, server.settings, server.settingsMgr, server.RepoServerCache, server.Cache, argoDB, server.settingsMgr.GetMaxWebhookPayloadSize(), server.settingsMgr.GetWebhookRefreshJitter(), server.settingsMgr.GetWebhookRefreshJitterThreshold())
 
-	mux.HandleFunc("/api/webhook", acdWebhookHandler.Handler)
+	mux.HandleFunc("/v1/webhook", acdWebhookHandler.Handler)
 
 	// Serve cli binaries directly from API server
 	registerDownloadHandlers(mux, "/download")
@@ -1342,7 +1342,7 @@ func (server *ArgoCDServer) registerDexHandlers(mux *http.ServeMux) {
 	if !server.settings.IsSSOConfigured() {
 		return
 	}
-	// Run dex OpenID Connect Identity Provider behind a reverse proxy (served at /api/dex)
+	// Run dex OpenID Connect Identity Provider behind a reverse proxy (served at /v1/dex)
 	mux.Handle(common.DexAPIEndpoint+"/", otelhttp.NewHandler(http.HandlerFunc(dexutil.NewDexHTTPReverseProxy(server.DexServerAddr, server.BaseHRef, server.DexTLSConfig)), "server.dex/Proxy"))
 
 	mux.Handle(common.LoginEndpoint, otelhttp.NewHandler(http.HandlerFunc(server.ssoClientApp.HandleLogin), "server.ClientApp/HandleLogin"))
@@ -1670,11 +1670,11 @@ type bug21955Workaround struct {
 }
 
 var pathPatters = []*regexp.Regexp{
-	regexp.MustCompile(`/api/v1/clusters/[^/]+`),
-	regexp.MustCompile(`/api/v1/repositories/[^/]+`),
-	regexp.MustCompile(`/api/v1/repocreds/[^/]+`),
-	regexp.MustCompile(`/api/v1/repositories/[^/]+/apps`),
-	regexp.MustCompile(`/api/v1/repositories/[^/]+/apps/[^/]+`),
+	regexp.MustCompile(`/v1/clusters/[^/]+`),
+	regexp.MustCompile(`/v1/repositories/[^/]+`),
+	regexp.MustCompile(`/v1/repocreds/[^/]+`),
+	regexp.MustCompile(`/v1/repositories/[^/]+/apps`),
+	regexp.MustCompile(`/v1/repositories/[^/]+/apps/[^/]+`),
 	regexp.MustCompile(`/settings/clusters/[^/]+`),
 }
 

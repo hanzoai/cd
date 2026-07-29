@@ -267,11 +267,11 @@ func RegisterNotificationServiceHandlerClient(ctx context.Context, mux *runtime.
 }
 
 var (
-	pattern_NotificationService_ListTriggers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "notifications", "triggers"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_NotificationService_ListTriggers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "notifications", "triggers"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_NotificationService_ListServices_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "notifications", "services"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_NotificationService_ListServices_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "notifications", "services"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_NotificationService_ListTemplates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "notifications", "templates"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_NotificationService_ListTemplates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "notifications", "templates"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

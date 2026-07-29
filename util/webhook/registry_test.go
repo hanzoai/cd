@@ -71,7 +71,7 @@ func TestGHCRHandlerCanHandle(t *testing.T) {
 func TestRegistryPackageEvent(t *testing.T) {
 	hook := test.NewGlobal()
 	h := NewMockHandler(nil, []string{})
-	req := httptest.NewRequestWithContext(t.Context(), http.MethodPost, "/api/webhook", http.NoBody)
+	req := httptest.NewRequestWithContext(t.Context(), http.MethodPost, "/v1/webhook", http.NoBody)
 	req.Header.Set("X-GitHub-Event", "package")
 	payload, err := os.ReadFile("testdata/ghcr-package-event.json")
 	require.NoError(t, err)

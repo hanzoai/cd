@@ -646,15 +646,15 @@ func dexMockHandler(t *testing.T, url string) func(http.ResponseWriter, *http.Re
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		switch r.RequestURI {
-		case "/api/dex/.well-known/openid-configuration":
+		case "/v1/dex/.well-known/openid-configuration":
 			_, err := fmt.Fprintf(w, `
 {
-  "issuer": "%[1]s/api/dex",
-  "authorization_endpoint": "%[1]s/api/dex/auth",
-  "token_endpoint": "%[1]s/api/dex/token",
-  "jwks_uri": "%[1]s/api/dex/keys",
-  "userinfo_endpoint": "%[1]s/api/dex/userinfo",
-  "device_authorization_endpoint": "%[1]s/api/dex/device/code",
+  "issuer": "%[1]s/v1/dex",
+  "authorization_endpoint": "%[1]s/v1/dex/auth",
+  "token_endpoint": "%[1]s/v1/dex/token",
+  "jwks_uri": "%[1]s/v1/dex/keys",
+  "userinfo_endpoint": "%[1]s/v1/dex/userinfo",
+  "device_authorization_endpoint": "%[1]s/v1/dex/device/code",
   "grant_types_supported": [
     "authorization_code",
     "refresh_token",
@@ -701,7 +701,7 @@ func dexMockHandler(t *testing.T, url string) func(http.ResponseWriter, *http.Re
 			if err != nil {
 				t.Fail()
 			}
-		case "/api/dex/keys":
+		case "/v1/dex/keys":
 			pubKey, err := jwt.ParseRSAPublicKeyFromPEM(testutil.Cert)
 			require.NoError(t, err)
 			jwks := jose.JSONWebKeySet{
@@ -1089,7 +1089,7 @@ func TestAuthenticate_3rd_party_JWTs(t *testing.T) {
 			cd, oidcURL := getTestServer(t, testDataCopy.anonymousEnabled, true, testDataCopy.useDex, settings_util.OIDCConfig{})
 
 			if testDataCopy.useDex {
-				testDataCopy.claims.Issuer = oidcURL + "/api/dex"
+				testDataCopy.claims.Issuer = oidcURL + "/v1/dex"
 			} else {
 				testDataCopy.claims.Issuer = oidcURL
 			}
@@ -1210,7 +1210,7 @@ func TestAuthenticate_no_SSO(t *testing.T) {
 			ctx := t.Context() //nolint:ineffassign,staticcheck
 
 			cd, dexURL := getTestServer(t, testDataCopy.anonymousEnabled, false, true, settings_util.OIDCConfig{})
-			token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{Issuer: dexURL + "/api/dex"})
+			token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{Issuer: dexURL + "/v1/dex"})
 			tokenString, err := token.SignedString([]byte("key"))
 			require.NoError(t, err)
 			ctx = metadata.NewIncomingContext(t.Context(), metadata.Pairs(apiclient.MetaDataTokenKey, tokenString))

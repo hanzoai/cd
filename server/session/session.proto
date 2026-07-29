@@ -40,13 +40,13 @@ service SessionService {
 
   // Get the current user's info
   rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse) {
-    option (google.api.http).get = "/api/v1/session/userinfo";
+    option (google.api.http).get = "/v1/session/userinfo";
   }
 
   // Create a new JWT for authentication and set a cookie if using HTTP
   rpc Create(SessionCreateRequest) returns (SessionResponse) {
     option (google.api.http) = {
-      post: "/api/v1/session"
+      post: "/v1/session"
       body: "*"
     };
   }
@@ -54,7 +54,7 @@ service SessionService {
   // Delete an existing JWT cookie if using HTTP
   rpc Delete(SessionDeleteRequest) returns (SessionResponse) {
     option (google.api.http) = {
-      delete: "/api/v1/session"
+      delete: "/v1/session"
     };
   }
 }

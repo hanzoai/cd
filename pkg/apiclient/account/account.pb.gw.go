@@ -692,17 +692,17 @@ func RegisterAccountServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_AccountService_CanI_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 3, 0, 4, 1, 5, 6}, []string{"api", "v1", "account", "can-i", "resource", "action", "subresource"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_AccountService_CanI_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 3, 0, 4, 1, 5, 5}, []string{"v1", "account", "can-i", "resource", "action", "subresource"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_AccountService_UpdatePassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "account", "password"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_AccountService_UpdatePassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "account", "password"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_AccountService_ListAccounts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "account"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_AccountService_ListAccounts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "account"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_AccountService_GetAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "account", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_AccountService_GetAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "account", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_AccountService_CreateToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "account", "name", "token"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_AccountService_CreateToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "account", "name", "token"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_AccountService_DeleteToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "account", "name", "token", "id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_AccountService_DeleteToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "account", "name", "token", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

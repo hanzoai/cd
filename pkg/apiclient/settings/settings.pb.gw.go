@@ -206,9 +206,9 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 }
 
 var (
-	pattern_SettingsService_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "settings"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_SettingsService_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "settings"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_SettingsService_GetPlugins_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "settings", "plugins"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_SettingsService_GetPlugins_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "settings", "plugins"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

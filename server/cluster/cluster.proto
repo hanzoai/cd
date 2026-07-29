@@ -42,42 +42,42 @@ service ClusterService {
 
 	// List returns list of clusters
 	rpc List(ClusterQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.ClusterList) {
-		option (google.api.http).get = "/api/v1/clusters";
+		option (google.api.http).get = "/v1/clusters";
 	}
 
 	// Create creates a cluster
 	rpc Create(ClusterCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Cluster) {
 		option (google.api.http) = {
-			post: "/api/v1/clusters"
+			post: "/v1/clusters"
 			body: "cluster"
 		};
 	}
 
 	// Get returns a cluster by server address
 	rpc Get(ClusterQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Cluster) {
-		option (google.api.http).get = "/api/v1/clusters/{id.value}";
+		option (google.api.http).get = "/v1/clusters/{id.value}";
 	}
 
 	// Update updates a cluster
 	rpc Update(ClusterUpdateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Cluster) {
 		option (google.api.http) = {
-			put: "/api/v1/clusters/{id.value}"
+			put: "/v1/clusters/{id.value}"
 			body: "cluster"
 		};
 	}
 
 	// Delete deletes a cluster
 	rpc Delete(ClusterQuery) returns (ClusterResponse) {
-		option (google.api.http).delete = "/api/v1/clusters/{id.value}";
+		option (google.api.http).delete = "/v1/clusters/{id.value}";
 	}
 
 	// RotateAuth rotates the bearer token used for a cluster
 	rpc RotateAuth(ClusterQuery) returns (ClusterResponse) {
-		option (google.api.http).post = "/api/v1/clusters/{id.value}/rotate-auth";
+		option (google.api.http).post = "/v1/clusters/{id.value}/rotate-auth";
 	}
 
 	// InvalidateCache invalidates cluster cache
 	rpc InvalidateCache(ClusterQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.Cluster) {
-		option (google.api.http).post = "/api/v1/clusters/{id.value}/invalidate-cache";
+		option (google.api.http).post = "/v1/clusters/{id.value}/invalidate-cache";
 	}
 }

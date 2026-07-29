@@ -1326,29 +1326,29 @@ func RegisterProjectServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ProjectService_CreateToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"api", "v1", "projects", "project", "roles", "role", "token"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_CreateToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"v1", "projects", "project", "roles", "role", "token"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_DeleteToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7}, []string{"api", "v1", "projects", "project", "roles", "role", "token", "iat"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_DeleteToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"v1", "projects", "project", "roles", "role", "token", "iat"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "projects"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "projects"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "projects"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "projects"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_GetDetailedProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "name", "detailed"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_GetDetailedProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "projects", "name", "detailed"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "projects", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "projects", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_GetGlobalProjects_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "name", "globalprojects"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_GetGlobalProjects_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "projects", "name", "globalprojects"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "projects", "project.metadata.name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "projects", "project.metadata.name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "projects", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "projects", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_ListEvents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "name", "events"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_ListEvents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "projects", "name", "events"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_GetSyncWindowsState_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "name", "syncwindows"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_GetSyncWindowsState_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "projects", "name", "syncwindows"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProjectService_ListLinks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "name", "links"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProjectService_ListLinks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "projects", "name", "links"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

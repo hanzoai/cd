@@ -19,14 +19,14 @@ export const BadgePanel = ({app, project, appNamespace, nsEnabled}: {app?: strin
         let entityURL = '';
         let alt = '';
         if (app) {
-            badgeURL = `${root}api/badge?name=${app}&revision=true&showAppName=true`;
+            badgeURL = `${root}v1/badge?name=${app}&revision=true&showAppName=true`;
             if (nsEnabled) {
                 badgeURL += `&namespace=${appNamespace}`;
             }
             entityURL = `${root}applications/${app}`;
             alt = 'App Status';
         } else if (project) {
-            badgeURL = `${root}api/badge?project=${project}&revision=true`;
+            badgeURL = `${root}v1/badge?project=${project}&revision=true`;
             entityURL = `${root}projects/${project}`;
             alt = 'Project Status';
         }
