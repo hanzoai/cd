@@ -64,7 +64,7 @@
                         }
                     }
                 },
-                "manager": "argocd-controller",
+                "manager": "cd-controller",
                 "operation": "Apply",
                 "time": "2022-09-18T23:50:25Z"
             }

@@ -71,7 +71,7 @@
             }
           }
         },
-        "manager": "argocd-controller",
+        "manager": "cd-controller",
         "operation": "Apply",
         "time": "2023-12-19T00:00:00Z"
       }

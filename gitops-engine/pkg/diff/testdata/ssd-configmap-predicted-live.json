@@ -8,7 +8,7 @@
     "resourceVersion": "1000",
     "managedFields": [
       {
-        "manager": "argocd-controller",
+        "manager": "cd-controller",
         "operation": "Apply",
         "apiVersion": "v1",
         "time": "2024-01-01T00:00:00Z",

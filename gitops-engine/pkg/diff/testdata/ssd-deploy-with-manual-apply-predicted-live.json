@@ -63,7 +63,7 @@
             }
           }
         },
-        "manager": "argocd-controller",
+        "manager": "cd-controller",
         "operation": "Apply",
         "time": "2025-02-25T01:31:03Z"
       },
@@ -136,7 +136,7 @@
             }
           }
         },
-        "manager": "argocd-controller",
+        "manager": "cd-controller",
         "operation": "Update",
         "time": "2025-02-25T01:19:32Z"
       },
