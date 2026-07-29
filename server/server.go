@@ -204,8 +204,6 @@ type ArgoCDServer struct {
 	indexData          []byte
 	indexDataErr       error
 	staticAssets       http.FileSystem
-	secretInformer     cache.SharedIndexInformer
-	configMapInformer  cache.SharedIndexInformer
 	serviceSet         *ArgoCDServiceSet
 	extensionManager   *extension.Manager
 	Shutdown           func()
@@ -551,8 +549,6 @@ func (server *ArgoCDServer) Init(ctx context.Context) {
 	go server.appInformer.Run(ctx.Done())
 	go server.appsetInformer.Run(ctx.Done())
 	go server.clusterInformer.Run(ctx.Done())
-	go server.configMapInformer.Run(ctx.Done())
-	go server.secretInformer.Run(ctx.Done())
 }
 
 // Run runs the API Server
