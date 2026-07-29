@@ -20,12 +20,12 @@ type Interface interface {
 // Clientset contains the clients for groups.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	argoprojV1alpha1 *appv1alpha1.AppV1alpha1Client
+	appV1alpha1 *appv1alpha1.AppV1alpha1Client
 }
 
 // AppV1alpha1 retrieves the AppV1alpha1Client
 func (c *Clientset) AppV1alpha1() appv1alpha1.AppV1alpha1Interface {
-	return c.argoprojV1alpha1
+	return c.appV1alpha1
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -72,7 +72,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 
 	var cs Clientset
 	var err error
-	cs.argoprojV1alpha1, err = appv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.appV1alpha1, err = appv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.argoprojV1alpha1 = appv1alpha1.New(c)
+	cs.appV1alpha1 = appv1alpha1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

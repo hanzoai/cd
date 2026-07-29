@@ -22,7 +22,7 @@ func githubMockHandler(t *testing.T) func(http.ResponseWriter, *http.Request) {
 				{
 				  "id": 1296269,
 				  "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
-				  "name": "argo-cd",
+				  "name": "cd",
 				  "full_name": "hanzoai/cd",
 				  "owner": {
 					"login": "hanzoai",
@@ -413,7 +413,7 @@ func TestGithubListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "master",
 					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
@@ -427,7 +427,7 @@ func TestGithubListRepos(t *testing.T) {
 				},
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "test",
 					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
@@ -466,7 +466,7 @@ func TestGithubListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "master",
 					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
@@ -480,7 +480,7 @@ func TestGithubListRepos(t *testing.T) {
 				},
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "test",
 					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
@@ -519,7 +519,7 @@ func TestGithubListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "master",
 					URL:          "https://github.com/hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
@@ -533,7 +533,7 @@ func TestGithubListRepos(t *testing.T) {
 				},
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "test",
 					URL:          "https://github.com/hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
@@ -582,7 +582,7 @@ func TestGithubListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "master",
 					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
@@ -596,7 +596,7 @@ func TestGithubListRepos(t *testing.T) {
 				},
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "test",
 					URL:          "git@github.com:hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
@@ -635,7 +635,7 @@ func TestGithubListRepos(t *testing.T) {
 			expectedRepos: []*Repository{
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "master",
 					URL:          "https://github.com/hanzoai/cd.git",
 					SHA:          "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc",
@@ -649,7 +649,7 @@ func TestGithubListRepos(t *testing.T) {
 				},
 				{
 					Organization: "hanzoai",
-					Repository:   "argo-cd",
+					Repository:   "cd",
 					Branch:       "test",
 					URL:          "https://github.com/hanzoai/cd.git",
 					SHA:          "80a6e93f16e8093e24091b03c614362df3fb9b92",
@@ -708,7 +708,7 @@ func TestGithubHasPath(t *testing.T) {
 	host, _ := NewGithubProvider("hanzoai", "", ts.URL, false, false)
 	repo := &Repository{
 		Organization: "hanzoai",
-		Repository:   "argo-cd",
+		Repository:   "cd",
 		Branch:       "master",
 	}
 	ok, err := host.RepoHasPath(t.Context(), repo, "pkg/")
@@ -729,7 +729,7 @@ func TestGithubGetBranches(t *testing.T) {
 	host, _ := NewGithubProvider("hanzoai", "", ts.URL, false, false)
 	repo := &Repository{
 		Organization: "hanzoai",
-		Repository:   "argo-cd",
+		Repository:   "cd",
 		Branch:       "master",
 	}
 	repos, err := host.GetBranches(t.Context(), repo)
