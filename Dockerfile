@@ -37,7 +37,7 @@ RUN ./install.sh helm && \
 ####################################################################################################
 FROM $BASE_IMAGE AS argocd-base
 
-LABEL org.opencontainers.image.source="https://github.com/argoproj/argo-cd"
+LABEL org.opencontainers.image.source="https://github.com/hanzoai/cd"
 
 USER root
 
@@ -159,7 +159,6 @@ RUN ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-server && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-cmp-server && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-application-controller && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-dex && \
-    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-notifications && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-applicationset-controller && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-k8s-auth && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-commit-server
