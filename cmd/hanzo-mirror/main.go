@@ -32,7 +32,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/hanzoai/deploy/mirror"
+	"github.com/hanzoai/cd/mirror"
 )
 
 func main() {
