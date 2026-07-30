@@ -1,0 +1,122 @@
+[
+  {
+    "org": "hanzoai",
+    "name": "brand",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "design",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "logo",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "sign",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "visor",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "extension",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "ml",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "agent",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "python-sdk",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "blog",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "o11y",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "tasks",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "papers",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "gui",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "auto",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "kms",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "ui",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "index",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "hanzo.network",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "hanzo.one",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "hanzo.sh",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "crawl",
+    "direction": "native"
+  },
+  {
+    "org": "hanzoai",
+    "name": "cloud",
+    "direction": "native"
+  },
+  {
+    "org": "hanzobot",
+    "name": "site",
+    "direction": "native"
+  }
+]
