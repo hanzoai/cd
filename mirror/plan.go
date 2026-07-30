@@ -3,15 +3,38 @@ package mirror
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"sort"
 	"strings"
 )
 
-// Poison is absolute: nothing matching it is created, listed, or named in output.
-// Carried over verbatim from the script it replaces — the constraint is a hard one
-// and does not weaken because the language changed.
-var Poison = regexp.MustCompile(`(?i)liquid|satschel|simplici|equitytable|onyx-plus|vccross|securegate|morningline`)
+// Owned is the set of orgs this may touch. An ALLOWLIST, not a denylist, and the
+// difference is the whole point.
+//
+// The script this replaces carried a regex of forbidden names, which meant the
+// forbidden names were written down in our source — the exact thing the rule
+// against them forbids. It needed that regex because it swept entire orgs, so
+// anything could turn up in a listing.
+//
+// This never enumerates an org: it acts only on the explicitly declared table. The
+// one residual risk is a declared repo being TRANSFERRED into an org we do not own,
+// which Plan checks after resolution. Naming what we own answers that without
+// naming anything we do not, and fails closed on an org nobody thought about —
+// including ones that do not exist yet.
+var Owned = map[string]bool{
+	"hanzoai":    true,
+	"hanzobot":   true,
+	"hanzo-js":   true,
+	"hanzo-ml":   true,
+	"hanzo-apps": true,
+	"hanzodao":   true,
+	"hanzoid":    true,
+}
+
+// owned reports whether a full name "org/repo" sits in an org we own.
+func owned(full string) bool {
+	org, _, ok := strings.Cut(full, "/")
+	return ok && Owned[org]
+}
 
 // Entry is one declared repository: where it lives here, and which way it syncs.
 //
@@ -52,7 +75,8 @@ func Plan(ctx context.Context, gh *Client, entries []Entry) ([]Planned, []error)
 	claimed := map[string]Entry{}
 
 	for _, e := range entries {
-		if Poison.MatchString(e.Org) || Poison.MatchString(e.Name) {
+		if !Owned[e.Org] {
+			errs = append(errs, fmt.Errorf("%s: org %q is not one we own", e, e.Org))
 			continue
 		}
 		if e.Direction != Native && e.Direction != Mirror {
@@ -64,8 +88,10 @@ func Plan(ctx context.Context, gh *Client, entries []Entry) ([]Planned, []error)
 			errs = append(errs, fmt.Errorf("%s: %w", e, err))
 			continue
 		}
-		// A transfer can move a repo anywhere, including somewhere the guard forbids.
-		if Poison.MatchString(r.FullName) {
+		// A transfer can move a repo anywhere, including out of our estate entirely.
+		// Refusing loudly beats syncing a repo that is no longer ours.
+		if !owned(r.FullName) {
+			errs = append(errs, fmt.Errorf("%s now resolves to %s, outside the orgs we own — refusing", e, r.FullName))
 			continue
 		}
 		if prev, dup := claimed[r.FullName]; dup {
