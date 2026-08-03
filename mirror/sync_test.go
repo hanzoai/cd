@@ -3,26 +3,43 @@ package mirror
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 	"testing"
 )
+
+// exitErr models a failed process the way os/exec does: the status IS the
+// message. The fake has to carry it, because the code under test now reads exit 1
+// as an answer ("not an ancestor") and anything else as a failure to answer — a
+// fake that returns a bare error can only test one of those two paths.
+type exitErr struct{ code int }
+
+func (e exitErr) Error() string { return fmt.Sprintf("exit status %d", e.code) }
+func (e exitErr) ExitCode() int { return e.code }
 
 // fakeGit records what it was asked to run and answers ancestry from a set.
 type fakeGit struct {
 	ancestors map[string]bool // "child<-parent" -> is-ancestor
 	pushErr   error
+	fetchErr  error
+	ancErr    error // when set, merge-base fails with this instead of answering
 	calls     []string
 }
 
 func (f *fakeGit) run(_ context.Context, args ...string) (string, error) {
 	f.calls = append(f.calls, strings.Join(args, " "))
 	switch args[0] {
+	case "fetch":
+		return "", f.fetchErr
 	case "merge-base":
 		// merge-base --is-ancestor <maybe-ancestor> <descendant>
+		if f.ancErr != nil {
+			return "fatal: Not a valid object name", f.ancErr
+		}
 		if f.ancestors[args[2]+"<-"+args[3]] {
 			return "", nil
 		}
-		return "", errors.New("exit status 1")
+		return "", exitErr{1}
 	case "push":
 		return "", f.pushErr
 	}
@@ -158,6 +175,55 @@ func TestSummaryFlagsOnlyWhatNeedsAHuman(t *testing.T) {
 	for _, r := range human {
 		if r.Outcome == Skipped {
 			t.Error("a skipped repo was reported as needing a human")
+		}
+	}
+}
+
+// git failing to ANSWER is not the same as git answering "diverged". Before the
+// fetch existed, ghTip named an object git did not have, merge-base exited 128,
+// and this code called it divergence — so every repo demanded a human look at a
+// history that was never in conflict. Exit 1 is an answer; 128 is a broken job.
+func TestUnreadableAncestryIsNotDivergence(t *testing.T) {
+	g := &fakeGit{ancErr: exitErr{128}}
+	res := FastForward(context.Background(), g.run, planned(),
+		"http://forge/hanzoai/cloud.git", "https://github.com/hanzoai/cloud.git",
+		"main", "aaaaaaaa", "bbbbbbbb")
+
+	if res.Outcome != Failed {
+		t.Fatalf("outcome = %q, want %q — an unreadable repo must not be reported as a question for a person (detail: %s)",
+			res.Outcome, Failed, res.Detail)
+	}
+}
+
+// The tips have to be local before anything can be asked about them. ghURL was
+// accepted and never used, so nothing was ever fetched.
+func TestFetchesGitHubBeforeComparing(t *testing.T) {
+	g := &fakeGit{ancestors: map[string]bool{"aaaaaaaa<-bbbbbbbb": true}}
+	FastForward(context.Background(), g.run, planned(),
+		"http://forge/hanzoai/cloud.git", "https://github.com/hanzoai/cloud.git",
+		"main", "aaaaaaaa", "bbbbbbbb")
+
+	if len(g.calls) == 0 || !strings.HasPrefix(g.calls[0], "fetch ") {
+		t.Fatalf("first git call = %q, want a fetch of github before any comparison", g.calls)
+	}
+	if !strings.Contains(g.calls[0], "https://github.com/hanzoai/cloud.git") {
+		t.Fatalf("fetch did not name the github url: %q", g.calls[0])
+	}
+}
+
+// A repo we cannot read is a failure of this job, not a verdict about history.
+func TestUnreachableGitHubFailsWithoutJudging(t *testing.T) {
+	g := &fakeGit{fetchErr: exitErr{128}}
+	res := FastForward(context.Background(), g.run, planned(),
+		"http://forge/hanzoai/cloud.git", "https://github.com/hanzoai/cloud.git",
+		"main", "aaaaaaaa", "bbbbbbbb")
+
+	if res.Outcome != Failed {
+		t.Fatalf("outcome = %q, want %q", res.Outcome, Failed)
+	}
+	for _, c := range g.calls {
+		if strings.HasPrefix(c, "push ") {
+			t.Fatal("pushed after failing to read github")
 		}
 	}
 }
