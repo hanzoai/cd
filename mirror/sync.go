@@ -52,6 +52,29 @@ func RealGit(ctx context.Context, args ...string) (string, error) {
 	return string(out), nil
 }
 
+// exitCode reports a failed command's process exit status, or -1 when the error
+// is not one. git uses status to say WHICH answer it gave — merge-base
+// --is-ancestor exits 1 for "no" and reserves other codes for "I could not tell
+// you" — so a caller that only checks err != nil cannot tell an answer from a
+// failure. Read through wrapping, since RealGit annotates with %w.
+func exitCode(err error) int {
+	var ec interface{ ExitCode() int }
+	if errors.As(err, &ec) {
+		return ec.ExitCode()
+	}
+	return -1
+}
+
+// detailOf prefers git's own first line over the wrapped error: the command says
+// what went wrong far better than the exit status does. Redacted, because these
+// URLs carry an admin token.
+func detailOf(out string, err error) string {
+	if d := redact(firstLine(out)); d != "" {
+		return d
+	}
+	return redact(err.Error())
+}
+
 // FastForward moves the forge's branch up to GitHub's, or refuses and says why.
 //
 // The guarantee is GIT's, not this function's: the refspec carries no leading '+',
@@ -77,9 +100,37 @@ func FastForward(ctx context.Context, git Git, p Planned, forgeURL, ghURL, branc
 		return res
 	}
 
+	// Both tips must be present locally before anything can be asked about them.
+	// ghURL used to be accepted and never used: nothing fetched, so ghTip named an
+	// object git did not have, merge-base could not resolve it, and the error below
+	// was read as divergence. Every repo then reported "diverged — needs a person",
+	// which is the worst failure a reconciler can have: it invents work for a human
+	// and is unfalsifiable from its own output. The push would have failed for the
+	// same missing-object reason had anything ever reached it.
+	//
+	// The branch is fetched rather than the bare sha: fetching a sha needs the
+	// server to allow reachable-sha1-in-want, and a branch fetch carries the tip we
+	// were handed as an ancestor of what it brings, which is all ancestry needs.
+	if out, err := git(ctx, "fetch", "--no-tags", ghURL, branch); err != nil {
+		res.Outcome = Failed
+		res.Detail = "cannot read github " + p.GitHub.FullName + ": " + detailOf(out, err)
+		return res
+	}
+
 	// Ancestry decides, and it is asked of git rather than inferred from commit
 	// counts or dates. "Behind by N" is a summary; "is an ancestor" is the fact.
-	if _, err := git(ctx, "merge-base", "--is-ancestor", forgeTip, ghTip); err != nil {
+	//
+	// Exit 1 is git's ANSWER — "no, not an ancestor". Any other status is git
+	// failing to answer at all, and the two must not collapse into one outcome:
+	// divergence is a real state a person should look at, while an unreadable
+	// repository is a broken job. Reporting the second as the first is what sent
+	// people to inspect histories that were never in conflict.
+	if out, err := git(ctx, "merge-base", "--is-ancestor", forgeTip, ghTip); err != nil {
+		if exitCode(err) != 1 {
+			res.Outcome = Failed
+			res.Detail = "ancestry undetermined for " + p.GitHub.FullName + ": " + detailOf(out, err)
+			return res
+		}
 		res.Outcome = Diverged
 		res.Detail = fmt.Sprintf("forge %s is not an ancestor of github %s (%s)",
 			short(forgeTip), short(ghTip), p.GitHub.FullName)
