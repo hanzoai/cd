@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -37,19 +39,47 @@ var credential = regexp.MustCompile(`//[^/@\s]*@`)
 
 func redact(s string) string { return credential.ReplaceAllString(s, "//***@") }
 
-// Git runs git. Injectable so the fast-forward decision is testable without a
-// network or a real repository — the FF guarantee is the safety property here, and
-// one that can only be tested against live remotes is one nobody tests.
-type Git func(ctx context.Context, args ...string) (string, error)
+// Git runs git in a working directory. Injectable so the fast-forward decision is
+// testable without a network or a real repository — the FF guarantee is the safety
+// property here, and one that can only be tested against live remotes is one nobody
+// tests.
+//
+// The directory is a parameter rather than the process's own, because every command
+// here needs a repository to hold objects in and a scheduled job starts in none.
+// Run from a bare working directory git answers "fatal: not a git repository", and
+// this package would have reported that as GitHub being unreadable.
+type Git func(ctx context.Context, dir string, args ...string) (string, error)
 
 // RealGit runs the git binary.
-func RealGit(ctx context.Context, args ...string) (string, error) {
+func RealGit(ctx context.Context, dir string, args ...string) (string, error) {
 	cmd := exec.CommandContext(ctx, "git", args...)
+	cmd.Dir = dir
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return string(out), fmt.Errorf("git %s: %w: %s", strings.Join(args, " "), err, redact(string(out)))
 	}
 	return string(out), nil
+}
+
+// Workspace prepares the object store for one repo and returns its path.
+//
+// One store per repo, under a root that MAY survive between runs: git's fetch
+// negotiation offers whatever is already here, so a kept root makes every later run
+// a delta. It is only ever an optimisation — an empty root is equally correct, just
+// slower — so this needs no volume to be right, and losing the volume costs time
+// rather than correctness.
+func Workspace(ctx context.Context, git Git, root string, e Entry) (string, error) {
+	dir := filepath.Join(root, e.Org, e.Name+".git")
+	if err := os.MkdirAll(dir, 0o750); err != nil {
+		return "", fmt.Errorf("prepare %s: %w", dir, err)
+	}
+	// init is idempotent — on an existing store it rereads the config and leaves
+	// every object alone — so "create or reuse" is one command instead of a stat and
+	// a branch on its answer.
+	if out, err := git(ctx, dir, "init", "--bare", "--quiet"); err != nil {
+		return "", fmt.Errorf("prepare %s: %s", dir, detailOf(out, err))
+	}
+	return dir, nil
 }
 
 // exitCode reports a failed command's process exit status, or -1 when the error
@@ -87,7 +117,7 @@ func detailOf(out string, err error) string {
 // Divergence returns Diverged with both tips and touches nothing. Two people
 // disagreeing about history is not a race for a sync job to settle: settling it
 // destroys whichever side lost.
-func FastForward(ctx context.Context, git Git, p Planned, forgeURL, ghURL, branch, forgeTip, ghTip string) Result {
+func FastForward(ctx context.Context, git Git, work string, p Planned, forgeURL, ghURL, branch, forgeTip, ghTip string) Result {
 	res := Result{Entry: p.Entry, From: forgeTip, To: ghTip}
 
 	if forgeTip == ghTip {
@@ -100,6 +130,16 @@ func FastForward(ctx context.Context, git Git, p Planned, forgeURL, ghURL, branc
 		return res
 	}
 
+	// Nothing above this line touches disk, so a fleet in steady state costs no
+	// repository at all — the store is prepared only for a repo that has actually
+	// moved.
+	dir, err := Workspace(ctx, git, work, p.Entry)
+	if err != nil {
+		res.Outcome = Failed
+		res.Detail = redact(err.Error())
+		return res
+	}
+
 	// Both tips must be present locally before anything can be asked about them.
 	// ghURL used to be accepted and never used: nothing fetched, so ghTip named an
 	// object git did not have, merge-base could not resolve it, and the error below
@@ -108,13 +148,24 @@ func FastForward(ctx context.Context, git Git, p Planned, forgeURL, ghURL, branc
 	// and is unfalsifiable from its own output. The push would have failed for the
 	// same missing-object reason had anything ever reached it.
 	//
-	// The branch is fetched rather than the bare sha: fetching a sha needs the
-	// server to allow reachable-sha1-in-want, and a branch fetch carries the tip we
-	// were handed as an ancestor of what it brings, which is all ancestry needs.
-	if out, err := git(ctx, "fetch", "--no-tags", ghURL, branch); err != nil {
-		res.Outcome = Failed
-		res.Detail = "cannot read github " + p.GitHub.FullName + ": " + detailOf(out, err)
-		return res
+	// The FORGE is fetched first, and not only so a diverged tip can be named. With
+	// its history present git offers those objects in negotiation, so the GitHub
+	// fetch carries the delta instead of the repository — which is what keeps this
+	// affordable every ten minutes over two dozen repos. Fetching GitHub alone
+	// leaves a diverged forge tip absent, and the honest report for that is
+	// "ancestry undetermined" — true, and the one case a person most needs named.
+	//
+	// The refspec's leading '+' is NOT the property this package guards. These are
+	// scratch refs in a store we own, where a forced update destroys nothing; they
+	// exist so the next fetch has something to negotiate with. The refspec that must
+	// never carry one is the push, below.
+	for _, side := range []struct{ name, url string }{{"forge", forgeURL}, {"github", ghURL}} {
+		refspec := "+refs/heads/" + branch + ":refs/remotes/" + side.name + "/" + branch
+		if out, err := git(ctx, dir, "fetch", "--no-tags", side.url, refspec); err != nil {
+			res.Outcome = Failed
+			res.Detail = "cannot read " + side.name + " " + p.GitHub.FullName + ": " + detailOf(out, err)
+			return res
+		}
 	}
 
 	// Ancestry decides, and it is asked of git rather than inferred from commit
@@ -125,7 +176,7 @@ func FastForward(ctx context.Context, git Git, p Planned, forgeURL, ghURL, branc
 	// divergence is a real state a person should look at, while an unreadable
 	// repository is a broken job. Reporting the second as the first is what sent
 	// people to inspect histories that were never in conflict.
-	if out, err := git(ctx, "merge-base", "--is-ancestor", forgeTip, ghTip); err != nil {
+	if out, err := git(ctx, dir, "merge-base", "--is-ancestor", forgeTip, ghTip); err != nil {
 		if exitCode(err) != 1 {
 			res.Outcome = Failed
 			res.Detail = "ancestry undetermined for " + p.GitHub.FullName + ": " + detailOf(out, err)
@@ -138,7 +189,7 @@ func FastForward(ctx context.Context, git Git, p Planned, forgeURL, ghURL, branc
 	}
 
 	// No leading '+'. git refuses anything but a fast-forward.
-	if out, err := git(ctx, "push", forgeURL, ghTip+":refs/heads/"+branch); err != nil {
+	if out, err := git(ctx, dir, "push", forgeURL, ghTip+":refs/heads/"+branch); err != nil {
 		res.Outcome = Failed
 		res.Detail = redact(firstLine(out))
 		if res.Detail == "" {
@@ -172,7 +223,7 @@ func firstLine(s string) string {
 // One repo's failure never ends the run. A reconcile that stops at the first
 // problem leaves every repo after it unexamined, and the ordering is by size, so
 // the unexamined ones would be arbitrary.
-func Reconcile(ctx context.Context, forge, gh *Client, git Git, forgeBase string, plan []Planned) []Result {
+func Reconcile(ctx context.Context, forge, gh *Client, git Git, forgeBase, work string, plan []Planned) []Result {
 	var out []Result
 	for _, p := range plan {
 		if p.Direction != Native {
@@ -202,7 +253,7 @@ func Reconcile(ctx context.Context, forge, gh *Client, git Git, forgeBase string
 			continue
 		}
 
-		res := FastForward(ctx, git, p,
+		res := FastForward(ctx, git, work, p,
 			forge.pushURL(forgeBase, p.Org, p.Name), p.GitHub.CloneURL, branch, forgeTip, ghTip)
 		out = append(out, res)
 	}

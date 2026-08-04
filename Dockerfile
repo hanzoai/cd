@@ -161,6 +161,13 @@ RUN ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-server && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-dex && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-applicationset-controller && \
     ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-k8s-auth && \
-    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-commit-server
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-commit-server && \
+    ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-mirror
+
+# The repository table travels with the binary that reads it. One home for "which
+# repos sync which way", validated by the same code in CI that consumes it at run
+# time — as opposed to a ConfigMap, which is a second copy that can disagree with
+# the checks. common.DefaultMirrorTable names this path.
+COPY --from=argocd-build /go/src/github.com/argoproj/argo-cd/mirror/repos.json /usr/local/share/cd/repos.json
 
 USER $CD_USER_ID

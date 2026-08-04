@@ -16,6 +16,7 @@ import (
 	dex "github.com/hanzoai/cd/cmd/cd-dex/commands"
 	gitaskpass "github.com/hanzoai/cd/cmd/cd-git-ask-pass/commands"
 	k8sauth "github.com/hanzoai/cd/cmd/cd-k8s-auth/commands"
+	mirror "github.com/hanzoai/cd/cmd/cd-mirror/commands"
 	reposerver "github.com/hanzoai/cd/cmd/cd-repo-server/commands"
 	apiserver "github.com/hanzoai/cd/cmd/cd-server/commands"
 	cli "github.com/hanzoai/cd/cmd/cd/commands"
@@ -67,6 +68,8 @@ func main() {
 	case common.CommandK8sAuth:
 		command = k8sauth.NewCommand()
 		isArgocdCLI = true
+	case common.CommandMirror:
+		command = mirror.NewCommand()
 	default:
 		// "cd-linux-amd64", "cd-darwin-amd64", "cd-windows-amd64.exe" are also valid binary names
 		command = cli.NewCommand()
