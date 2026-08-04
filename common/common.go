@@ -32,7 +32,13 @@ const (
 	CommandK8sAuth                  = "hanzocd-k8s-auth"
 	CommandDex                      = "hanzocd-dex"
 	CommandRepoServer               = "hanzocd-repo-server"
+	CommandMirror                   = "hanzocd-mirror"
 )
+
+// DefaultMirrorTable is where the Dockerfile installs the repository table, so a
+// scheduled run needs no argument to find it. The flag still overrides it; what the
+// default removes is a job spec that has to know a path baked into an image.
+const DefaultMirrorTable = "/usr/local/share/cd/repos.json"
 
 // Default service addresses and URLS of Argo CD internal services
 const (
