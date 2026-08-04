@@ -33,9 +33,25 @@ policy; 215 sit `OutOfSync / Healthy` on purpose. A generated Application at
 
 ## `mirror/` — which repos live on the forge, and which way they sync
 
-`mirror/` plus `cmd/hanzo-mirror` reconcile git.hanzo.ai against github.com. This
-replaced a Python script (`hanzoai/mirrors`), and the differences are the bugs that
-script had — each of which failed **silently**:
+`mirror/` plus `cmd/cd-mirror` push our own repos FORWARD onto git.hanzo.ai. It is
+a subcommand of the one CD binary, dispatched by `argv[0]` like every other
+`hanzocd-*`, so it travels in the image the control plane already builds and pins —
+no second artifact to version, and no second chance for the two to disagree about
+which repos exist. The table ships beside it at `common.DefaultMirrorTable`, so the
+JSON validated in CI is the JSON a scheduled run reads.
+
+**It replaces ONE of four legs in `hanzoai/mirrors`. Deleting that repo now loses
+work:**
+
+| leg | every | what it does | here? |
+|---|---|---|---|
+| `sync.py` | 15m | push native repos forward onto the forge | **yes** |
+| `reconcile.py` | 6h | create/refresh the pull-mirror for every qualifying repo across 15 orgs — how a new repo becomes visible here at all | no |
+| `releases.py` | 6h | copy releases and their assets from GitHub and GitLab | no |
+| `sync-from-github` | 10m | keeps that repo itself current | dies with it |
+
+The differences below are the bugs `sync.py` had — each of which failed
+**silently**:
 
 - **Names are resolved, never matched against a listing.** `Resolve` and `List` are
   separate methods so a call site must choose. `GET /repos/{org}/{name}` follows a
@@ -61,14 +77,34 @@ script had — each of which failed **silently**:
   permissions problem — the shape that hid a broken npm publish for weeks, every
   request unauthenticated because a name resolved to `""` and nothing said so.
 
+- **Every git command runs in a repository.** `RealGit` takes the directory; a
+  scheduled job starts in none, and git answers `fatal: not a git repository` to the
+  fetch — on the branch that reports GITHUB as unreadable. Perfect credentials and a
+  perfect table would still have produced a fleet-wide "cannot read github", and the
+  dry run would have stayed green throughout, because a dry run never touches git.
+  `Workspace` keeps one object store per repo under a root that MAY survive between
+  runs; it is an optimisation, so an empty root is equally correct.
+- **Both sides are fetched, forge first.** Its tip has to be local before a real
+  divergence can be NAMED rather than reported as "ancestry undetermined" — and once
+  its history is present those objects are offered in negotiation, so the internet
+  side of a run is a delta even on an empty store. That is what makes a ten-minute
+  schedule affordable across two dozen repos, and why the job needs no volume.
+
 ```bash
-go test ./mirror/                                            # 7 tests, no network
-FORGE_TOKEN=… GITHUB_TOKEN=… go run ./cmd/hanzo-mirror \
-  -config mirror/repos.json -dry-run                         # resolve + report only
+go test ./mirror/ ./cmd/cd-mirror/...   # incl. a real two-repository end-to-end
+FORGE_TOKEN=… GITHUB_TOKEN=… go run ./cmd hanzocd-mirror --dry-run  # resolve only
 ```
 
-Not yet on a schedule; `hanzoai/mirrors` still runs. Deleting that before this
-replaces it leaves a window with neither.
+The fakes in `sync_test.go` all agree with the code about what git is, which is
+exactly why none of them caught the missing working directory.
+`TestFastForwardMovesARealRepository` builds two bare repositories, leaves the forge
+a commit behind, requires it to reach GitHub's tip — then rewinds GitHub so the two
+genuinely disagree and requires the forge NOT to move.
+
+**Declared but OFF**: `universe charts/app/values/hanzo/mirror.yaml`, `suspend:
+true`. Two preconditions, both stated in that file — an image carrying
+`hanzocd-mirror` (v3.7.0 predates it), and `hanzo/mirror/{FORGE_TOKEN,GITHUB_TOKEN}`
+in KMS, which is an owner write. `hanzoai/mirrors` still runs all four legs.
 
 ## Build
 
