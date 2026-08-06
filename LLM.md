@@ -61,7 +61,17 @@ The differences below are the bugs `sync.py` had — each of which failed
 - **The table is config** (`mirror/repos.json`), not a list literal. Adding a repo
   used to be a code edit. `hanzoai/cloud` was in *neither* leg — `is_mirror=0` so
   nothing pulled in, absent from the table so nothing pushed in — and its CI ran on
-  a commit four behind for a day while merely looking red.
+  a commit four behind for a day while merely looking red. **40 entries**, and the
+  port originally kept 24 of them: `hanzoai/ci` was among the sixteen dropped, the
+  reusable pipeline every repo in three orgs imports, where a stale pipeline runs
+  green and no caller can tell. Two tests now guard the count and the allowlist.
+- **`Owned` is an allowlist and deliberately broader than the table.** A declared
+  repo can be transferred, and `owned` guards the name GitHub RESOLVES to — so the
+  org a repo may land in tomorrow has to be listed today. The live run proves the
+  point: eight of the forty resolve only because names are followed (three moved to
+  `hanzo-apps`, three to `hanzo-inc`, `esign`→`sign`, `kms-v1`→`kms`), and the
+  three in `hanzo-inc` were REFUSED by name until that org was listed rather than
+  pushed into an org nobody had vouched for.
 - **`Direction` is one typed value.** `mirror` previously meant both a vestigial git
   config flag and the forge's real push refspecs; reading the wrong one gives a
   confident wrong answer about whether a push can delete history.
