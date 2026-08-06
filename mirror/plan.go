@@ -20,14 +20,31 @@ import (
 // which Plan checks after resolution. Naming what we own answers that without
 // naming anything we do not, and fails closed on an org nobody thought about —
 // including ones that do not exist yet.
+// Owned lists the orgs whose repos this program may touch. An ALLOWLIST, not a
+// denylist: it refuses by default, so an org nobody has thought about yet is
+// refused rather than swept, and a lookalike that merely contains one of our
+// names is refused too.
+//
+// It is deliberately a SUPERSET of the orgs in repos.json. A declared repo can be
+// renamed or transferred, and `owned` guards the name GitHub resolves it to — so
+// an org with no entry today is still the org a repo may land in tomorrow. Three
+// declared repos had already moved into hanzo-apps that way.
 var Owned = map[string]bool{
-	"hanzoai":    true,
-	"hanzobot":   true,
+	"hanzo-apps": true,
+	"hanzo-dart": true,
+	"hanzo-docs": true,
+	"hanzo-go":   true,
 	"hanzo-js":   true,
 	"hanzo-ml":   true,
-	"hanzo-apps": true,
+	"hanzo-rs":   true,
+	"hanzoai":    true,
+	"hanzo-inc":  true,
+	"hanzobot":   true,
 	"hanzodao":   true,
 	"hanzoid":    true,
+	"hanzokv":    true,
+	"hanzozt":    true,
+	"luxfi":      true,
 }
 
 // owned reports whether a full name "org/repo" sits in an org we own.
