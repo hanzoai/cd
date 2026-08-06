@@ -102,7 +102,13 @@ The differences below are the bugs `sync.py` had — each of which failed
 
 ```bash
 go test ./mirror/ ./cmd/cd-mirror/...   # incl. a real two-repository end-to-end
-FORGE_TOKEN=… GITHUB_TOKEN=… go run ./cmd hanzocd-mirror --dry-run  # resolve only
+
+# Dispatch is by argv[0], so the name is NOT a subcommand argument — passing it as
+# one gets "unknown command" plus a plugin-not-found warning that reads like a
+# broken install. From source, name the binary through the env var the switch
+# already reads; from the image, the symlink is the name.
+CD_BINARY_NAME=hanzocd-mirror FORGE_TOKEN=… GITHUB_TOKEN=… \
+  go run ./cmd --table mirror/repos.json --dry-run
 ```
 
 The fakes in `sync_test.go` all agree with the code about what git is, which is
