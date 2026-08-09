@@ -139,6 +139,52 @@ The real resource is **kmssecrets.secrets.lux.network** and holds 122 objects.
 
 `hanzoai/mirrors` still runs all four legs.
 
+### 7 of the 40 native repos are split-brained, and the job will go RED on them
+
+Measured across the whole table, both sides, by tip: **32 in sync, 7 diverged,
+1 resolved.** So unsuspending the job does not quietly converge the estate — it
+reports seven repos that need a person, exits non-zero, and moves none of them.
+That is the correct behaviour and it is worth knowing BEFORE turning it on,
+because a red job on its first run reads like a broken job.
+
+The refusal is loud by construction: `FastForward` asks
+`merge-base --is-ancestor forgeTip ghTip`, treats exit 1 as git's ANSWER rather
+than an error, and pushes with no leading `+` so git itself refuses anything
+else. `Diverged` prints to stderr and `failed()` returns an error so cobra sets
+the exit status. Nothing is at risk of being overwritten.
+
+**`native` in this table is a CLAIM — "GitHub is canonical, move the forge onto
+it" — and for these seven it is not true.** All seven forge copies are
+`NATIVE-on-forge` in the forge's own `mirror` table, i.e. written directly. Both
+sides are taking writes. Two shapes:
+
+*No common ancestor at all — two different repositories sharing a name:*
+
+| repo | GitHub | forge | which holds the history |
+|---|---|---|---|
+| `hanzoai/cloud` | 8 commits, root 2026-08-04 | **5001 commits**, root 2026-05-18 | **the forge**; GitHub is a fresh stub and the classification is INVERTED |
+| `hanzoai/gui` | **15901 commits**, root 2020-10-16 | 374, root 2026-03-21 | GitHub (it carries the upstream fork history) |
+| `hanzo-apps/id` | 45 | 43 | same root DATE, different root SHA — a re-import that then took writes on both sides (26 files differ) |
+| `hanzoai/hanzo.network` | 21 | 19 | same shape (28 files differ) |
+| `hanzoai/hanzo.sh` | 93 | 91 | same shape (4 files differ) |
+
+*A real common ancestor, small divergence — mergeable by a person:*
+
+| repo | ancestor | forge-only | github-only |
+|---|---|---|---|
+| `hanzoai/kms` | 2026-07-27 | 6 | 1 |
+| `hanzoai/python-sdk` | 2026-08-07 | 14 | 2 |
+
+`hanzoai/o11y` was the eighth and is DONE: the forge was strictly one commit
+ahead, GitHub was its ancestor, so GitHub was fast-forwarded onto it. Both sides
+now read `0a75f53cc`. That is the whole class of thing this job automates, in
+the direction it does not run.
+
+⚠️ Do not "fix" a row by force-pushing the side you happened to measure first.
+`cloud` and `gui` diverge in OPPOSITE directions, so a rule applied uniformly
+destroys 5001 commits on one or 15901 on the other. Ancestry decides, per repo,
+every time — and where there is no ancestor, a person decides.
+
 ## Build
 
 ```bash
