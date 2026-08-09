@@ -76,11 +76,6 @@
   },
   {
     "org": "hanzoai",
-    "name": "cloud",
-    "direction": "native"
-  },
-  {
-    "org": "hanzoai",
     "name": "console",
     "direction": "native"
   },
@@ -101,11 +96,6 @@
   },
   {
     "org": "hanzoai",
-    "name": "gui",
-    "direction": "native"
-  },
-  {
-    "org": "hanzoai",
     "name": "hanzo.network",
     "direction": "native"
   },
@@ -122,11 +112,6 @@
   {
     "org": "hanzoai",
     "name": "index",
-    "direction": "native"
-  },
-  {
-    "org": "hanzoai",
-    "name": "kms",
     "direction": "native"
   },
   {
