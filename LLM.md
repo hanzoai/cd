@@ -118,9 +118,26 @@ a commit behind, requires it to reach GitHub's tip — then rewinds GitHub so th
 genuinely disagree and requires the forge NOT to move.
 
 **Declared but OFF**: `universe charts/app/values/hanzo/mirror.yaml`, `suspend:
-true`. Two preconditions, both stated in that file — an image carrying
-`hanzocd-mirror` (v3.7.0 predates it), and `hanzo/mirror/{FORGE_TOKEN,GITHUB_TOKEN}`
-in KMS, which is an owner write. `hanzoai/mirrors` still runs all four legs.
+true`. ONE precondition is left, and it is a credential.
+
+The image half is DONE — the pinned digest carries `hanzocd-mirror` and the
+repository table, proven by running a probe pod on that exact digest rather than
+by reading its tag's date. (The tag `v3.7.0` genuinely predates the subcommand;
+the digest beside it does not. Ask the image, not the version number.)
+
+What remains is `hanzo/mirror/{FORGE_TOKEN,GITHUB_TOKEN}`, which is an owner
+write. Everything around them is built: the KMSSecret `mirror-env` is live and
+authenticates (`LoadedKMSToken: True`), and it fails on exactly one sentence —
+`fetch secret "FORGE_TOKEN": kms: secret not found`. So the two values simply
+have not been written; nothing else is missing, and turning the job on is then a
+one-line diff.
+
+⚠️ Do not check that with `kubectl get kmssecret`. The short name resolves to
+kmssecrets.hanzo.ai, a DIFFERENT and empty CRD, and answers "No resources found"
+about the wrong thing — which is how this was reported as "no KMSSecret exists".
+The real resource is **kmssecrets.secrets.lux.network** and holds 122 objects.
+
+`hanzoai/mirrors` still runs all four legs.
 
 ## Build
 
