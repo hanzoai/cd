@@ -139,13 +139,19 @@ The real resource is **kmssecrets.secrets.lux.network** and holds 122 objects.
 
 `hanzoai/mirrors` still runs all four legs.
 
-### 7 of the 40 native repos are split-brained, and the job will go RED on them
+### The table is 37 rows, and 3 repos are deliberately NOT in it
 
-Measured across the whole table, both sides, by tip: **32 in sync, 7 diverged,
-1 resolved.** So unsuspending the job does not quietly converge the estate — it
-reports seven repos that need a person, exits non-zero, and moves none of them.
-That is the correct behaviour and it is worth knowing BEFORE turning it on,
-because a red job on its first run reads like a broken job.
+Swept both hosts by tip. It started at 40 rows: **32 in sync, 8 out of step.**
+Three of the eight are now reconciled, three left the table, and two remain for
+a person. So unsuspending the job does not quietly converge the estate — it will
+report the two, exit non-zero, and move neither. Worth knowing BEFORE turning it
+on, because a red first run reads like a broken job.
+
+**Reconciled** — `hanzoai/o11y` (forge was one commit ahead, GitHub was its
+strict ancestor, so GitHub was moved up), `hanzoai/kms` and `hanzoai/python-sdk`
+(both merged; see below). **Still split** — `hanzo-apps/id` and
+`hanzoai/hanzo.network`, each with no common ancestor and ~26 files apart.
+(`hanzoai/hanzo.sh` is the same shape at 4 files.)
 
 The refusal is loud by construction: `FastForward` asks
 `merge-base --is-ancestor forgeTip ghTip`, treats exit 1 as git's ANSWER rather
@@ -154,31 +160,59 @@ else. `Diverged` prints to stderr and `failed()` returns an error so cobra sets
 the exit status. Nothing is at risk of being overwritten.
 
 **`native` in this table is a CLAIM — "GitHub is canonical, move the forge onto
-it" — and for these seven it is not true.** All seven forge copies are
-`NATIVE-on-forge` in the forge's own `mirror` table, i.e. written directly. Both
-sides are taking writes. Two shapes:
+it".** Three repos are out of the table because that claim cannot be made true
+for them, and a row that can never go green is worse than no row: it teaches
+people to ignore a red job. Named here rather than silently dropped, the same
+way `kustomization.yaml` in universe names its deliberate exclusions.
+
+| not in the table | why |
+|---|---|
+| `hanzoai/kms` | **archived on GitHub.** An archived repo refuses pushes, so the two can never re-converge by pushing and the forge is canonical by construction. Its one GitHub commit (a README notice) was merged onto the forge by hand — that is as reconciled as it can get. |
+| `hanzoai/gui` | **archived on GitHub**, same reason. Note GitHub holds 15901 commits from 2020 (the upstream fork history) against 374 on the forge from 2026-03-21 — the forge is a deliberate restart, so "GitHub has more history" is not an argument for moving the forge onto it. |
+| `hanzoai/cloud` | the claim is **inverted**. GitHub's repo was CREATED 2026-08-06 and holds 8 commits; the forge's root is 2026-05-18 with 5001, and the forge is what CI and CD read. Both are being written today. Which one is canonical going forward is an owner's decision, not a table's. |
+
+An archived upstream is worth checking for directly — it is the one condition
+that makes `native` structurally impossible rather than merely wrong, and it is
+two of the three. Exactly 2 of the original 40 were archived, both listed above.
+
+Of what remained, all forge copies are `NATIVE-on-forge` in the forge's own
+`mirror` table, i.e. written directly, so both sides take writes. Two shapes:
 
 *No common ancestor at all — two different repositories sharing a name:*
 
 | repo | GitHub | forge | which holds the history |
 |---|---|---|---|
-| `hanzoai/cloud` | 8 commits, root 2026-08-04 | **5001 commits**, root 2026-05-18 | **the forge**; GitHub is a fresh stub and the classification is INVERTED |
-| `hanzoai/gui` | **15901 commits**, root 2020-10-16 | 374, root 2026-03-21 | GitHub (it carries the upstream fork history) |
 | `hanzo-apps/id` | 45 | 43 | same root DATE, different root SHA — a re-import that then took writes on both sides (26 files differ) |
 | `hanzoai/hanzo.network` | 21 | 19 | same shape (28 files differ) |
 | `hanzoai/hanzo.sh` | 93 | 91 | same shape (4 files differ) |
 
-*A real common ancestor, small divergence — mergeable by a person:*
+*A real common ancestor — both were merged, and neither needed a winner:*
 
-| repo | ancestor | forge-only | github-only |
-|---|---|---|---|
-| `hanzoai/kms` | 2026-07-27 | 6 | 1 |
-| `hanzoai/python-sdk` | 2026-08-07 | 14 | 2 |
+`hanzoai/kms` (ancestor 2026-07-27) had touched **disjoint files**: six commits
+on the forge to `.hanzo/workflows/release.yml`, `go.mod` and `go.sum`, one on
+GitHub to `README.md`. Nothing conflicted and both statements were true, so the
+merge kept both. It lives on the forge only — GitHub is archived and refused it.
 
-`hanzoai/o11y` was the eighth and is DONE: the forge was strictly one commit
-ahead, GitHub was its ancestor, so GitHub was fast-forwarded onto it. Both sides
-now read `0a75f53cc`. That is the whole class of thing this job automates, in
-the direction it does not run.
+`hanzoai/python-sdk` (ancestor 2026-08-07) is the instructive one. It looked
+like a 14-vs-2 divergence and was really the SAME work done twice: both sides
+had applied a commit named "one generated client in the wheel", 2,213 files and
+800,555 deletions each, and the forge retains nothing GitHub dropped. `git
+cherry` — patch-ids, not commit ids — showed the other GitHub commit was already
+present under a different sha. The forge had then gone on to five client
+regenerations, 3.2.2 → 3.2.7.
+
+Merged `-s ours`, so the histories join (GitHub fast-forwards, second head gone)
+while the tree stays the newer regeneration. A plain merge reported ~140
+modify/delete conflicts purely because the two deletions carry different shas —
+resolving those by taking trees would have RESURRECTED modules both sides had
+agreed to delete. `pkg/hanzoai/cloud/models/wrote.py` is the tell: GitHub
+deleted it, the forge regenerated it, and `models/__init__.py:2345` imports it,
+so the "obvious" resolution breaks the package. Verified after merging — the
+tree imports, 4,660 names, version 3.2.7.
+
+`hanzoai/o11y` was simplest: the forge was strictly one commit ahead and GitHub
+was its ancestor, so GitHub was fast-forwarded onto it. Both read `0a75f53cc`.
+That is exactly what this job automates, in the direction it does not run.
 
 ⚠️ Do not "fix" a row by force-pushing the side you happened to measure first.
 `cloud` and `gui` diverge in OPPOSITE directions, so a rule applied uniformly
