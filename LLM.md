@@ -139,19 +139,49 @@ The real resource is **kmssecrets.secrets.lux.network** and holds 122 objects.
 
 `hanzoai/mirrors` still runs all four legs.
 
-### The table is 37 rows, and 3 repos are deliberately NOT in it
+### The table is 37 rows, all in sync, and 3 repos are deliberately NOT in it
 
 Swept both hosts by tip. It started at 40 rows: **32 in sync, 8 out of step.**
-Three of the eight are now reconciled, three left the table, and two remain for
-a person. So unsuspending the job does not quietly converge the estate — it will
-report the two, exit non-zero, and move neither. Worth knowing BEFORE turning it
-on, because a red first run reads like a broken job.
+All eight are now resolved — five reconciled, three removed — and a re-sweep
+reads **37 of 37 in sync**. So the job's first real run has nothing to refuse,
+and a red run after this means something new, not the backlog.
 
-**Reconciled** — `hanzoai/o11y` (forge was one commit ahead, GitHub was its
-strict ancestor, so GitHub was moved up), `hanzoai/kms` and `hanzoai/python-sdk`
-(both merged; see below). **Still split** — `hanzo-apps/id` and
-`hanzoai/hanzo.network`, each with no common ancestor and ~26 files apart.
-(`hanzoai/hanzo.sh` is the same shape at 4 files.)
+The eight, and what each turned out to be:
+
+| repo | what it actually was | how it ended |
+|---|---|---|
+| `hanzoai/o11y` | forge one commit ahead, GitHub its strict ancestor | GitHub fast-forwarded onto it |
+| `hanzoai/kms` | disjoint files — CI/deps here, a README notice there | merged; forge only (GitHub archived) |
+| `hanzoai/python-sdk` | the same consolidation applied twice | merged `-s ours`, tree verified |
+| `hanzoai/hanzo.sh` | GitHub's history was **scrubbed**, forge kept the original | forge moved onto GitHub |
+| `hanzoai/hanzo.network` | same | same |
+| `hanzo-apps/id` | same | same |
+| `hanzoai/cloud` | claim inverted — see below | left the table |
+| `hanzoai/gui` | archived upstream — see below | left the table |
+
+**The last three were one thing wearing three names, and the commit messages
+gave it away.** They read as "unrelated histories": same root DATE, different
+root SHA, no common ancestor, so `merge-base` had nothing to say and every
+count came back as total-commits rather than divergence. What actually happened
+is that GitHub's history was REWRITTEN to scrub the scaffold vendor's name —
+`hanzo.sh`'s forge side says "drop lovable-tagger" and "Update Lovable project
+template" where GitHub says "drop the scaffold vendor's build plugin" and
+"Update the generated project template". A rewrite changes every sha, which is
+exactly what "unrelated" looks like from underneath.
+
+Measured before touching anything: the vendor name appears 0 times in GitHub's
+messages and tree, and 3-10 times in each forge tree. So the forge was holding
+the UNSCRUBBED original on the host CI reads — the scrub had been done on the
+copy and not on the canonical. Comparing commit SUBJECTS across the two (which
+works when shas cannot) showed the forge had no unique work in any of the three.
+
+Each forge tip is preserved as `archive/pre-scrub` before main was moved, the
+same way universe keeps `archive/github-divergence`. Nothing was thrown away;
+the branch that CI reads is simply the scrubbed one now.
+
+The general lesson: when two histories look unrelated, compare their SUBJECTS
+before concluding they are different projects. Shas are worthless across a
+rewrite, and a rewrite is far more common than a genuine fork.
 
 The refusal is loud by construction: `FastForward` asks
 `merge-base --is-ancestor forgeTip ghTip`, treats exit 1 as git's ANSWER rather
@@ -178,7 +208,7 @@ two of the three. Exactly 2 of the original 40 were archived, both listed above.
 Of what remained, all forge copies are `NATIVE-on-forge` in the forge's own
 `mirror` table, i.e. written directly, so both sides take writes. Two shapes:
 
-*No common ancestor at all — two different repositories sharing a name:*
+*No common ancestor — which in every case here meant a rewritten history, not a fork:*
 
 | repo | GitHub | forge | which holds the history |
 |---|---|---|---|
