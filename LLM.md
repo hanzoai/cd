@@ -163,11 +163,17 @@ The eight, and what each turned out to be:
 gave it away.** They read as "unrelated histories": same root DATE, different
 root SHA, no common ancestor, so `merge-base` had nothing to say and every
 count came back as total-commits rather than divergence. What actually happened
-is that GitHub's history was REWRITTEN to scrub the scaffold vendor's name —
-`hanzo.sh`'s forge side says "drop lovable-tagger" and "Update Lovable project
-template" where GitHub says "drop the scaffold vendor's build plugin" and
-"Update the generated project template". A rewrite changes every sha, which is
-exactly what "unrelated" looks like from underneath.
+is that GitHub's history was REWRITTEN to scrub the scaffold vendor's name. Two
+commit messages are the tell: on `hanzo.sh`'s forge side each names the vendor
+outright — its build plugin, and its project template — where GitHub says "drop
+the scaffold vendor's build plugin" and "Update the generated project template".
+A rewrite changes every sha, which is exactly what "unrelated" looks like from
+underneath.
+
+(The forge-side wording is described rather than quoted, and that is the same
+rule this repo enforces on itself: the structural gate refuses a tracked line
+carrying the vendor's name, and it was refusing THIS paragraph — the note about
+the scrub was the last thing still carrying what it documented.)
 
 Measured before touching anything: the vendor name appears 0 times in GitHub's
 messages and tree, and 3-10 times in each forge tree. So the forge was holding
