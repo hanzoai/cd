@@ -16,7 +16,7 @@ import (
 
 	"github.com/google/btree"
 
-	blake2b "github.com/minio/blake2b-simd"
+	blake2b "github.com/hanzos3/blake2b-simd"
 )
 
 // OptimalExtraCapacityFactor extra factor capacity (1 + ε). The ideal balance
