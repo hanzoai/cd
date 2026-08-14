@@ -8,7 +8,7 @@ name: Deploy UI embed image
 on:
   push:
     branches: ['rebrand/hanzo-monochrome']
-    paths: ['ui/**', 'Dockerfile.embed', '.github/workflows/deploy-ui-embed.yml']
+    paths: ['ui/**', 'Dockerfile.embed', '.hanzo/workflows/deploy-ui-embed.yml']
   workflow_dispatch:
 
 permissions:

@@ -8,7 +8,7 @@ name: cd-ui SPA image
 on:
   push:
     branches: ['rebrand/hanzo-monochrome']
-    paths: ['ui/**', 'Dockerfile.cd-ui', '.github/workflows/cd-ui.yml']
+    paths: ['ui/**', 'Dockerfile.cd-ui', '.hanzo/workflows/cd-ui.yml']
   workflow_dispatch:
 
 permissions:
