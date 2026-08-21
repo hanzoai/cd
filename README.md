@@ -1,3 +1,10 @@
+> **Retired — this is a stale copy of `hanzoai/deploy`.**
+>
+> Its 4 unique commits are carried into `hanzoai/deploy` first — merged onto the default branch or pushed there as `carry/*` refs — so nothing here is lost. This copy has no push mirror, so those commits had reached nothing.
+>
+> It also declared `ghcr.io/hanzoai/deploy`, the tag `hanzoai/deploy` owns, so a push here
+> could have published over it. That declaration is removed.
+
 **Releases:**
 [![Release Version](https://img.shields.io/github/v/release/argoproj/argo-cd?label=argo-cd)](https://github.com/argoproj/argo-cd/releases/latest)
 [![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/argo-cd)](https://artifacthub.io/packages/helm/argo/argo-cd)
