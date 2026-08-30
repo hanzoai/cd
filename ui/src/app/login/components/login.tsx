@@ -72,16 +72,14 @@ export function Login(props: RouteComponentProps<{}>) {
 
     return (
         <div className='login'>
-            <div className='login__content show-for-medium'>
-                <div className='login__text'>Let's get stuff deployed!</div>
-                <div className='argo__logo' />
-            </div>
             <div className='login__box'>
-                <div className='login__logo width-control'>
-                    <img className='logo-image' src='assets/images/hanzo-mark.svg' alt='Hanzo' />
+                <div className='login__logo'>
+                    <img src='assets/images/hanzo-mark.svg' alt='Hanzo' />
                 </div>
+                <div className='login__name'>Hanzo CD</div>
+                <div className='login__lede'>Every app, what it declares, and what is running.</div>
                 {ssoConfigured && (
-                    <div className='login__box_saml width-control'>
+                    <div className='login__box_saml'>
                         <a href={`auth/login?return_url=${encodeURIComponent(returnUrl)}`}>
                             <button className='argo-button argo-button--base argo-button--full-width argo-button--xlg'>
                                 {(authSettings.uiLoginButtonText && <span>{authSettings.uiLoginButtonText}</span>) ||
@@ -108,7 +106,7 @@ export function Login(props: RouteComponentProps<{}>) {
                             password: !params.password && 'Password is required'
                         })}>
                         {formApi => (
-                            <form role='form' className='width-control' onSubmit={formApi.submitForm}>
+                            <form role='form' onSubmit={formApi.submitForm}>
                                 <div className='argo-form-row'>
                                     <FormField
                                         formApi={formApi}
@@ -141,8 +139,9 @@ export function Login(props: RouteComponentProps<{}>) {
                     <div className='argo-form-row__error-msg'>Login is disabled. Please contact your system administrator.</div>
                 )}
                 <div className='login__footer'>
-                    <a href='https://hanzo.ai' target='_blank'>
-                        <img className='logo-image' src='assets/images/hanzo-mark.svg' alt='Hanzo' />
+                    <span>Hanzo AI</span>
+                    <a href='https://hanzo.ai' target='_blank' rel='noreferrer'>
+                        hanzo.ai
                     </a>
                 </div>
             </div>
