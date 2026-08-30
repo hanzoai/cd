@@ -1,205 +1,129 @@
 @import 'node_modules/argo-ui/src/styles/config';
 
-$logoPath: 'assets/images/hanzo-mark.svg';
-$logoNegativePath: 'assets/images/hanzo-logo-white.svg';
+// The sign-in page: one card, on the ground the rest of the product uses.
+//
+// What it replaced was Argo's own layout — a full-height white column pinned to
+// the right of a dark field, with the mark blown up to half the viewport in the
+// middle of it and the stock line "Let's get stuff deployed!" above. Three
+// copies of the same logo, two grounds fighting over one screen, and nothing
+// that said which product this is.
+//
+// A login page has one job: say where you are, and let you in.
 
-//for input fields
-
-.argo-field {
-    border-bottom: 2px solid $argo-color-gray-3;
-}
+$ground: #0a0a0a;
+$surface: #141414;
+$edge: rgba(255, 255, 255, 0.1);
+$ink: #fafafa;
+$soft: rgba(255, 255, 255, 0.56);
 
 .login {
-    min-height:100vh;
-    background: linear-gradient(to top left, 
-        rgba(122, 139, 207, 0.8) 0%, 
-        rgba(46, 50, 90, 0.8) 100%), 
-        url("assets/images/stars.gif");
+    min-height: 100vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: $ground;
+    color: $ink;
 
-    &__content {
-        float: left;
-        margin: auto;
-        width: calc(100% - 320px);
-        text-align: center;
+    // Argo draws its own field styles from a light palette. These four are the
+    // only ones the form needs to read on a dark ground.
+    .argo-field {
+        border-bottom: 1px solid $edge;
+        background: transparent;
+        color: $ink;
     }
 
-    .argo__logo {
-        background-image: url($logoNegativePath);
-        background-repeat: no-repeat;
-        background-size: contain;
-        min-height: 200px;
-        margin: auto;
-        background-position: center;
-        height: 50vh;
+    .argo-form-row__error-msg {
+        color: #ff6b6b;
+        font-size: 13px;
+        padding-top: 8px;
     }
 
-    &__text{
-        position: relative;
-        margin: auto;
-        top: -10vh;
-        color: #FFF;
-        font-size: 2.5rem;
-        font-weight: 100; 
-    }
-
-
-    &__box-wrapper {
-        display: table;
-        width: 100%;
-        height: calc(100% - 60px - 70px - 40px);
-        padding: 20px 0 80px;
-    }
-
-    &__box-outer {
-        display: table-cell;
-        vertical-align: middle;
-        overflow: hidden;
-        float: right;
+    label {
+        color: $soft;
     }
 
     &__box {
-        min-width: 320px;
-        width: 20%;
-        margin: 0 auto;
+        width: 100%;
+        max-width: 380px;
         padding: 40px;
-        background-color: #fff;
-        position: relative;
-        float: right;
-        min-height: 100vh;
+        border: 1px solid $edge;
+        border-radius: 16px;
+        background: $surface;
+    }
 
-        .width-control{
-            max-width: 200px;
-            margin: auto;
+    // The mark, once, at the size a mark is read at.
+    &__logo {
+        display: block;
+        margin-bottom: 28px;
+
+        img {
+            display: block;
+            width: 36px;
+            height: 36px;
         }
+    }
 
-        &_saml {
-            padding: 40px 0;
-        }
+    &__name {
+        font-size: 28px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        margin-bottom: 8px;
+    }
 
-        h3, h4, h5 {
-            color: #b268a7;
-            text-align: center;
-            padding-top: 1em;
-            padding-bottom: 1em;
-        }
-
-        h6 {
-            text-align: center;
-        }
-
-        h3 {
-            font-size: 2.25em;
-            font-weight: 100;
-            padding-bottom: 66px;
-
-            @media screen and (max-height: 774px) {
-                padding-bottom: 20px;
-            }
-        }
+    &__lede {
+        color: $soft;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 32px;
     }
 
     &__form-row {
-        padding: 20px 0;
+        padding-top: 24px;
     }
 
-    &__more-row {
-        padding: 20px 0;
-        text-align: center;
-        font-weight: bold;
-
-        @media screen and (max-height: 774px) {
-            padding: 0;
-        }
-
-        a {
-            font-size: 13px;
-            text-transform: uppercase;
-            color: $argo-color-gray-7;
-            font-weight: 300;
-        }
-
-        p {
-            font-size: 13px;
-        }
+    // argo-ui ships its buttons uppercase. A control that shouts one line and
+    // whispers the next is two voices; these are the product's own.
+    .argo-button {
+        text-transform: none;
+        letter-spacing: 0;
+        font-size: 14px;
+        border-radius: 10px;
     }
 
+    // The separator earns its line only when there is something on both sides.
     &__saml-separator {
-        margin-top: 15px;
-        color: $argo-color-gray-7;
-        border-bottom: 1px solid $argo-color-gray-4;
+        position: relative;
+        margin: 28px 0 4px;
         text-align: center;
+        border-bottom: 1px solid $edge;
+
         & > span {
             position: relative;
-            top: 0.8em;
+            top: 0.7em;
             display: inline-block;
-            padding: 0 6px;
-            background: #fff;
-        }
-    }
-
-    &__logo {
-        display: block;
-        background-repeat: no-repeat;
-        background-position: center;
-        text-align: center;
-
-        &--neg {
-            height: 40px;
-            background-size: contain;
-            background-image: url($logoPath);
-            background-repeat: no-repeat;
-            margin-left: 4.5rem;
-            position: relative;
-            top: 1.5rem;
-            width: 10rem;
-        }
-        &--argo{
-            height: 5rem;
-            background-size: contain;
-            background-image: url(assets/images/hanzo-logo-white.svg);
-            background-repeat: no-repeat;
-            float: left;
-            width: 4rem;  
-        }
-
-        img.logo-image{
-            max-width: 50%;
-            color: #F77530;
+            padding: 0 10px;
+            background: $surface;
+            color: $soft;
+            font-size: 13px;
         }
     }
 
     &__footer {
-        color: $argo-color-gray-2;
-        bottom: 20px;
-        position: absolute;
-        width: 90%;
-        text-align: center;
-        left: 20px;        
+        padding-top: 28px;
+        color: $soft;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-        & a {
-            color: $argo-color-gray-2;
-            img{
-                width: 36px;
-                filter: invert(50%);
-                -webkit-filter: invert(50%);
+        a {
+            color: $soft;
+            text-decoration: none;
+
+            &:hover {
+                color: $ink;
             }
         }
-
-        .ver {
-            font-size:12px;
-            color: $argo-color-gray-7;
-        }
-
-        &__link {
-            font-size:12px;
-            padding:0px 5px;
-        }
     }
-
-    ::after {
-        content: '';
-        clear: both;
-    }
-
 }
