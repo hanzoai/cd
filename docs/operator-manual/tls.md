@@ -29,7 +29,6 @@ their own dedicated Certificate Authority.
 | `cd-repo-server` | `cd-repo-server-tls` | ❌ Restart required | Self-signed | `DNS:cd-repo-server`, `DNS:cd-repo-server.cd.svc` |
 | `cd-dex-server` | `cd-dex-server-tls` | ❌ Restart required | Self-signed | `DNS:cd-dex-server`, `DNS:cd-dex-server.cd.svc` |
 
-### Inter-Component TLS
 
 | Connection | Recommended Parameter | Legacy Parameter (deprecated) | Plain Text Parameter | Default Behavior |
 |------------|----------------------|-------------------------------|---------------------|------------------|
