@@ -94,10 +94,10 @@ $applications-list-xxlarge: calc(map-get($breakpoints, xxlarge) - 1px);
     }
 
     .applications-list__table-row button.managed-by-url-invalid {
-        color: #f4c030;
+        color: #eab308;
 
         &:hover {
-            color: #f4c030;
+            color: #eab308;
         }
     }
 
