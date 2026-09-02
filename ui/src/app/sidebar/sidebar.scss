@@ -1,7 +1,7 @@
 @import 'node_modules/argo-ui/v2/styles/colors.scss';
 @import '../shared/config.scss';
 
-$deselected-text: #818d94;
+$deselected-text: #a3a3a3;
 
 .sidebar {
     min-width: $sidebar-width;
@@ -12,8 +12,9 @@ $deselected-text: #818d94;
     position: fixed;
     height: 100vh;
     max-height: 100vh;
-    color: white;
-    background-color: #0f2733;
+    color: #fafafa;
+    background-color: #0a0a0a;
+    border-right: 1px solid rgb(255 255 255 / 0.1);
     overflow: auto;
     z-index: 2;
 
@@ -47,7 +48,6 @@ $deselected-text: #818d94;
         &__text-logo {
             cursor: pointer;
             height: 2em;
-            filter: invert(100%);
         }
     }
 
@@ -96,13 +96,13 @@ $deselected-text: #818d94;
 
         // Visible keyboard focus on the dark sidebar background (default ring is low-contrast here).
         &:focus-visible {
-            outline: 2px solid #fe733f;
+            outline: 2px solid rgb(255 255 255 / 0.4);
             outline-offset: -2px;
         }
 
         i {
             font-size: 26px;
-            color: white;
+            color: #fafafa;
             width: 40px;
             padding-right: 45px;
         }
@@ -116,14 +116,14 @@ $deselected-text: #818d94;
         }
 
         &--active {
-            color: white;
-            // Out-specify argo-ui's global `a:hover { color: teal }` so the active item stays white.
+            color: #fafafa;
+            // Out-specify argo-ui's global `a:hover { color: accent }` so the active item stays paper-white.
             &:hover,
             &:focus {
-                color: white;
+                color: #fafafa;
             }
             i {
-                color: #fe733f;
+                color: #fafafa;
             }
         }
     }
