@@ -44,7 +44,10 @@ const tsxRule = reactCompiler
               // esbuild's existing /\.js$/ rule handles final JS lowering.
               presets: [
                   ['@babel/preset-react', {runtime: 'automatic'}],
-                  ['@babel/preset-typescript', {isTSX: true, allExtensions: true}]
+                  // Babel 8's preset-typescript detects JSX from the .tsx
+                  // extension (babel-loader passes the filename), so the
+                  // Babel-7-only isTSX/allExtensions options are gone.
+                  '@babel/preset-typescript'
               ],
               plugins: [['babel-plugin-react-compiler', {target: '19', ...(reactCompilerLog ? {logger: {logEvent: (filename, event) => console.log(`[react-compiler] ${event.kind} ${filename ?? ''}`)}} : {})}]]
           }
@@ -108,7 +111,12 @@ const config = {
                         loader: 'sass-loader',
                         options: {
                             sassOptions: {
-                                includePaths: ['node_modules'],
+                                // The SCSS imports argo-ui as 'node_modules/argo-ui/...'
+                                // (a path relative to the ui root), so the ui root must
+                                // be a load path; keep node_modules for bare imports.
+                                // sass-loader's modern API reads loadPaths, not the
+                                // legacy includePaths, so this key must be loadPaths.
+                                loadPaths: [__dirname + '/../..', 'node_modules'],
                                 quietDeps: true,
                                 silenceDeprecations: ['import', 'legacy-js-api', 'global-builtin', 'color-functions']
                             }
@@ -156,7 +164,9 @@ const config = {
                     to: 'assets/scripts/redoc.standalone.js'
                 },
                 {
-                    from: 'node_modules/monaco-editor/min/vs/base/browser/ui/codicons/codicon',
+                    // monaco 0.56 bundles its min/ build and no longer ships a
+                    // loose codicon dir there; the font now lives under esm/.
+                    from: 'node_modules/monaco-editor/esm/vs/base/browser/ui/codicons/codicon',
                     to: 'assets/fonts'
                 }
             ]
