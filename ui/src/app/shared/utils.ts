@@ -53,7 +53,7 @@ export function isValidManagedByURL(url: string): boolean {
 export const MANAGED_BY_URL_INVALID_TEXT = 'managed-by-url: invalid url provided';
 export const MANAGED_BY_URL_INVALID_TOOLTIP = 'managed-by-url must be a valid http(s) URL for the managing Hanzo CD instance. The external link is disabled until this is fixed.';
 
-export const MANAGED_BY_URL_INVALID_COLOR = '#f4c030';
+export const MANAGED_BY_URL_INVALID_COLOR = '#eab308';
 
 export const managedByURLInvalidLabelStyle: CSSProperties = {
     color: MANAGED_BY_URL_INVALID_COLOR,

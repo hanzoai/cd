@@ -1,0 +1,231 @@
+diff --git a/src/styles/config.scss b/src/styles/config.scss
+index cca858a..156283a 100644
+--- a/src/styles/config.scss
++++ b/src/styles/config.scss
+@@ -1,4 +1,4 @@
+-$body-font-family: 'Heebo', sans-serif !default;
++$body-font-family: 'Zen', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif !default;
+ $global-width: 100%;
+ $breakpoint-classes: (small medium large xlarge xxlarge xxxlarge);
+ $breakpoints: (
+@@ -10,49 +10,49 @@ $breakpoints: (
+   xxxlarge: 1820px,
+ );
+ 
+-$argo-color-gray-1: #F8FBFB;
+-$argo-color-gray-2: #EFF3F5;
+-$argo-color-gray-3: #DEE6EB;
+-$argo-color-gray-4: #CCD6DD;
+-$argo-color-gray-5: #8FA4B1;
+-$argo-color-gray-6: #6D7F8B;
+-$argo-color-gray-7: #495763;
+-$argo-color-gray-8: #363C4A;
+-$argo-color-gray-9: #000000;
++$argo-color-gray-1: #FAFAFA;
++$argo-color-gray-2: #F5F5F5;
++$argo-color-gray-3: #E5E5E5;
++$argo-color-gray-4: #D4D4D4;
++$argo-color-gray-5: #A3A3A3;
++$argo-color-gray-6: #737373;
++$argo-color-gray-7: #525252;
++$argo-color-gray-8: #262626;
++$argo-color-gray-9: #0A0A0A;
+ 
+-$argo-color-teal-1: #F5FBFD;
+-$argo-color-teal-2: #DFF6F9;
+-$argo-color-teal-3: #BDECF2;
+-$argo-color-teal-4: #99E1EA;
+-$argo-color-teal-5: #1FBDD0;
+-$argo-color-teal-6: #00A2B3;
+-$argo-color-teal-7: #006F8A;
+-$argo-color-teal-8: #004C67;
++$argo-color-teal-1: #CAE2FF;
++$argo-color-teal-2: #A5CDFF;
++$argo-color-teal-3: #79C0FF;
++$argo-color-teal-4: #58A6FF;
++$argo-color-teal-5: #2F81F7;
++$argo-color-teal-6: #2F81F7;
++$argo-color-teal-7: #1F6FEB;
++$argo-color-teal-8: #1A5DC7;
+ 
+ $white-color: #ffffff;
+-$dark-theme-background-1: #100f0f;
+-$dark-theme-background-2: #303237;
+-$dark-theme-sliding-panel: #28292a;
++$dark-theme-background-1: #0a0a0a;
++$dark-theme-background-2: #171717;
++$dark-theme-sliding-panel: #171717;
+ // Status colors
+-$argo-failed-color: #E96D76;
+-$argo-failed-color-dark: #c04b4f;
+-$argo-failed-color-light: #ff6262;
+-$argo-status-failed-color: #ef0b28;
+-$argo-color-red: #F00052;
++$argo-failed-color: #EF4444;
++$argo-failed-color-dark: #DC2626;
++$argo-failed-color-light: #FCA5A5;
++$argo-status-failed-color: #EF4444;
++$argo-color-red: #EF4444;
+ 
+-$argo-success-color: #18BE94;
+-$argo-success-color-dark: #3F946D;
+-$argo-success-color-light: #95D58F;
+-$argo-status-success-color: #0d8d38;
+-$argo-color-green: #7ED321;
++$argo-success-color: #4ADE80;
++$argo-success-color-dark: #16A34A;
++$argo-success-color-light: #4ADE80;
++$argo-status-success-color: #4ADE80;
++$argo-color-green: #4ADE80;
+ 
+-$argo-status-warning-color: #f4c030;
+-$argo-color-yellow: #FFD100;
++$argo-status-warning-color: #EAB308;
++$argo-color-yellow: #EAB308;
+ 
+-$argo-running-color-dark: #378398;
+-$argo-running-color-light: #02C4D3;
+-$argo-running-color: #0DADEA;
+-$argo-suspended-color: #766F94;
++$argo-running-color-dark: #1F6FEB;
++$argo-running-color-light: #58A6FF;
++$argo-running-color: #2F81F7;
++$argo-suspended-color: #737373;
+ 
+ $argo-waiting-color-dark: $argo-color-gray-6;
+ $argo-waiting-color-light: $argo-color-gray-5;
+diff --git a/v2/styles/colors.scss b/v2/styles/colors.scss
+index aa23d8a..36763a5 100644
+--- a/v2/styles/colors.scss
++++ b/v2/styles/colors.scss
+@@ -1,43 +1,43 @@
+-$argo-color-gray-1: #f8fbfb;
+-$argo-color-gray-2: #eff3f5;
+-$argo-color-gray-3: #dee6eb;
+-$argo-color-gray-4: #ccd6dd;
+-$argo-color-gray-5: #8fa4b1;
+-$argo-color-gray-6: #6d7f8b;
+-$argo-color-gray-7: #495763;
+-$argo-color-gray-8: #363c4a;
+-$argo-color-gray-9: #000000;
++$argo-color-gray-1: #fafafa;
++$argo-color-gray-2: #f5f5f5;
++$argo-color-gray-3: #e5e5e5;
++$argo-color-gray-4: #d4d4d4;
++$argo-color-gray-5: #a3a3a3;
++$argo-color-gray-6: #737373;
++$argo-color-gray-7: #525252;
++$argo-color-gray-8: #262626;
++$argo-color-gray-9: #0a0a0a;
+ 
+-$argo-color-teal-1: #f5fbfd;
+-$argo-color-teal-2: #dff6f9;
+-$argo-color-teal-3: #bdecf2;
+-$argo-color-teal-4: #99e1ea;
+-$argo-color-teal-5: #1fbdd0;
+-$argo-color-teal-6: #00a2b3;
+-$argo-color-teal-7: #006f8a;
+-$argo-color-teal-8: #004c67;
++$argo-color-teal-1: #cae2ff;
++$argo-color-teal-2: #a5cdff;
++$argo-color-teal-3: #79c0ff;
++$argo-color-teal-4: #58a6ff;
++$argo-color-teal-5: #2f81f7;
++$argo-color-teal-6: #2f81f7;
++$argo-color-teal-7: #1f6feb;
++$argo-color-teal-8: #1a5dc7;
+ 
+ $white-color: #ffffff;
+ 
+ // Status colors
+-$argo-failed-color: #e96d76;
+-$argo-failed-color-dark: #c04b4f;
+-$argo-failed-color-light: #ff6262;
+-$argo-status-failed-color: #ef0b28;
+-$argo-color-red: #f00052;
++$argo-failed-color: #ef4444;
++$argo-failed-color-dark: #dc2626;
++$argo-failed-color-light: #fca5a5;
++$argo-status-failed-color: #ef4444;
++$argo-color-red: #ef4444;
+ 
+-$argo-success-color: #18be94;
+-$argo-success-color-dark: #3f946d;
+-$argo-success-color-light: #95d58f;
+-$argo-status-success-color: #0d8d38;
+-$argo-color-green: #7ed321;
++$argo-success-color: #4ade80;
++$argo-success-color-dark: #16a34a;
++$argo-success-color-light: #4ade80;
++$argo-status-success-color: #4ade80;
++$argo-color-green: #4ade80;
+ 
+-$argo-status-warning-color: #f4c030;
+-$argo-color-yellow: #ffd100;
++$argo-status-warning-color: #eab308;
++$argo-color-yellow: #eab308;
+ 
+-$argo-running-color-dark: #378398;
+-$argo-running-color-light: #02c4d3;
+-$argo-running-color: #0dadea;
++$argo-running-color-dark: #1f6feb;
++$argo-running-color-light: #58a6ff;
++$argo-running-color: #2f81f7;
+ 
+ $argo-waiting-color-dark: $argo-color-gray-6;
+ $argo-waiting-color-light: $argo-color-gray-5;
+@@ -46,32 +46,32 @@ $argo-cancelled-color: $argo-color-gray-5;
+ $argo-init-color: $argo-color-gray-5;
+ 
+ // Dark Mode
+-$space: #09090f;
+-$midnight-sky: #0e0e14;
+-$slate: #191826;
+-$shine: #dad6e7;
+-$dull-shine: #abb2b9;
+-$silver-lining: #30303d;
+-$fog: #22212d;
+-$glow: #434355;
++$space: #0a0a0a;
++$midnight-sky: #0f0f0f;
++$slate: #161b22;
++$shine: #e5e5e5;
++$dull-shine: #a3a3a3;
++$silver-lining: #30363d;
++$fog: #161b22;
++$glow: #404040;
+ 
+ // Highlights
+-$spray-tan: #8b4329;
+-$sherbert: #f07548;
+-$peach: #fd8a5f;
++$spray-tan: #404040;
++$sherbert: #2f81f7;
++$peach: #58a6ff;
+ 
+ // Statuses
+-$lime: #3eb74f;
+-$grass: #339440;
+-$leaf: #246b2d;
+-$forest: #12221e;
++$lime: #4ade80;
++$grass: #16a34a;
++$leaf: #166534;
++$forest: #0f1a14;
+ 
+-$sky: #58a6fe;
+-$sea: #3a5e88;
+-$deep-sea: #172636;
++$sky: #58a6ff;
++$sea: #1f6feb;
++$deep-sea: #0d1117;
+ 
+-$coral: #f85149;
+-$clay: #9e3d38;
+-$dirt: #22141a;
++$coral: #ef4444;
++$clay: #dc2626;
++$dirt: #1a0f12;
+ 
+-$canary: #e4aa37;
++$canary: #eab308;
