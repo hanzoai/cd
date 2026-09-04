@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/alicebob/miniredis/v2"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -78,12 +78,12 @@ func TestAddCacheFlagsToCmd_SentinelDefaultValues(t *testing.T) {
 	assert.Equal(t, []string{}, sentinel)
 }
 
-func NewInMemoryRedis() (*redis.Client, func()) {
+func NewInMemoryRedis() (*kv.Client, func()) {
 	mr, err := miniredis.Run()
 	if err != nil {
 		panic(err)
 	}
-	return redis.NewClient(&redis.Options{Addr: mr.Addr()}), mr.Close
+	return kv.NewClient(&kv.Options{Addr: mr.Addr()}), mr.Close
 }
 
 func TestCacheClient(t *testing.T) {

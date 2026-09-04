@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	log "github.com/sirupsen/logrus"
 
 	utilio "github.com/hanzoai/cd/util/io"
@@ -19,7 +19,7 @@ const (
 
 type userStateStorage struct {
 	attempts            map[string]LoginAttempts
-	redis               *redis.Client
+	redis               *kv.Client
 	revokedTokens       map[string]bool
 	recentRevokedTokens map[string]bool
 	lock                sync.RWMutex
@@ -28,7 +28,7 @@ type userStateStorage struct {
 
 var _ UserStateStorage = &userStateStorage{}
 
-func NewUserStateStorage(redis *redis.Client) *userStateStorage {
+func NewUserStateStorage(redis *kv.Client) *userStateStorage {
 	return &userStateStorage{
 		attempts:            map[string]LoginAttempts{},
 		revokedTokens:       map[string]bool{},

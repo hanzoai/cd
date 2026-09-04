@@ -5,7 +5,7 @@ import (
 
 	"github.com/alicebob/miniredis/v2"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/testing"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -173,10 +173,10 @@ func NewFakeProjLister(objects ...runtime.Object) applister.AppProjectNamespaceL
 	return factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(FakeArgoCDNamespace)
 }
 
-func NewInMemoryRedis() (*redis.Client, func()) {
+func NewInMemoryRedis() (*kv.Client, func()) {
 	mr, err := miniredis.Run()
 	if err != nil {
 		panic(err)
 	}
-	return redis.NewClient(&redis.Options{Addr: mr.Addr()}), mr.Close
+	return kv.NewClient(&kv.Options{Addr: mr.Addr()}), mr.Close
 }

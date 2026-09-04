@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
@@ -90,7 +90,7 @@ func TestSetOptionalRedisPasswordFromKubeConfig(t *testing.T) {
 			var (
 				ctx          = t.Context()
 				kubeClient   = kubefake.NewClientset()
-				redisOptions = &redis.Options{}
+				redisOptions = &kv.Options{}
 			)
 			if tc.secret != nil {
 				_, err := kubeClient.CoreV1().Secrets(tc.namespace).Create(ctx, tc.secret, metav1.CreateOptions{})

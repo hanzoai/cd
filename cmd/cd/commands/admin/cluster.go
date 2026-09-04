@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	corev1 "k8s.io/api/core/v1"
@@ -105,11 +105,11 @@ func loadClusters(ctx context.Context, kubeClient kubernetes.Interface, appClien
 			return nil, err
 		}
 
-		redisOptions := &redis.Options{Addr: fmt.Sprintf("localhost:%d", port)}
+		redisOptions := &kv.Options{Addr: fmt.Sprintf("localhost:%d", port)}
 		if err = common.SetOptionalRedisPasswordFromKubeConfig(ctx, kubeClient, namespace, redisOptions); err != nil {
 			log.Warnf("Failed to fetch & set redis password for namespace %s: %v", namespace, err)
 		}
-		client := redis.NewClient(redisOptions)
+		client := kv.NewClient(redisOptions)
 		compressionType, err := cacheutil.CompressionTypeFromString(redisCompressionStr)
 		if err != nil {
 			return nil, err

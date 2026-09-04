@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/hanzoai/cd/util/vendored/stats"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -79,7 +79,7 @@ func NewCommand() *cobra.Command {
 		metricsClusterLabels             []string
 		kubectlParallelismLimit          int64
 		cacheSource                      func() (*appstatecache.Cache, error)
-		redisClient                      *redis.Client
+		redisClient                      *kv.Client
 		repoServerPlaintext              bool
 		repoServerStrictTLS              bool
 		otlpAddress                      string
@@ -311,7 +311,7 @@ func NewCommand() *cobra.Command {
 	command.Flags().BoolVar(&hydratorEnabled, "hydrator-enabled", env.ParseBoolFromEnv("CD_HYDRATOR_ENABLED", false), "Feature flag to enable Hydrator. Default (\"false\")")
 	repoServerClientTLSConfigSrc = tls.AddClientTLSFlagsToCmdWithPrefix(&command, "APPLICATION_CONTROLLER")
 	cacheSource = appstatecache.AddCacheFlagsToCmd(&command, cacheutil.Options{
-		OnClientCreated: func(client *redis.Client) {
+		OnClientCreated: func(client *kv.Client) {
 			redisClient = client
 		},
 	})
