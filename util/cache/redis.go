@@ -16,8 +16,7 @@ import (
 	"github.com/hanzoai/cd/util/env"
 	utilio "github.com/hanzoai/cd/util/io"
 
-	rediscache "github.com/go-redis/cache/v9"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 )
 
 type RedisCompressionType string
@@ -42,11 +41,10 @@ func CompressionTypeFromString(s string) (RedisCompressionType, error) {
 	return "", fmt.Errorf("unknown compression type: %s", s)
 }
 
-func NewRedisCache(client *redis.Client, expiration time.Duration, compressionType RedisCompressionType) CacheClient {
+func NewRedisCache(client *kv.Client, expiration time.Duration, compressionType RedisCompressionType) CacheClient {
 	return &redisCache{
 		client:               client,
 		expiration:           expiration,
-		cache:                rediscache.New(&rediscache.Options{Redis: client}),
 		redisCompressionType: compressionType,
 		prefix:               env.StringFromEnv(envRedisKeyPrefix, ""),
 	}
@@ -57,8 +55,7 @@ var _ CacheClient = &redisCache{}
 
 type redisCache struct {
 	expiration           time.Duration
-	client               *redis.Client
-	cache                *rediscache.Cache
+	client               *kv.Client
 	redisCompressionType RedisCompressionType
 	// prefix is added to all keys stored in redis
 	prefix string
@@ -134,19 +131,17 @@ func (r *redisCache) Set(item *Item) error {
 		return err
 	}
 
-	return r.cache.Set(&rediscache.Item{
-		Key:   r.getKey(item.Key),
-		Value: val,
-		TTL:   expiration,
-		SetNX: item.CacheActionOpts.DisableOverwrite,
-	})
+	key := r.getKey(item.Key)
+	if item.CacheActionOpts.DisableOverwrite {
+		return r.client.SetNX(context.TODO(), key, val, expiration).Err()
+	}
+	return r.client.Set(context.TODO(), key, val, expiration).Err()
 }
 
 func (r *redisCache) Get(key string, obj any) error {
-	var data []byte
-	err := r.cache.Get(context.TODO(), r.getKey(key), &data)
-	if errors.Is(err, rediscache.ErrCacheMiss) {
-		err = ErrCacheMiss
+	data, err := r.client.Get(context.TODO(), r.getKey(key)).Bytes()
+	if errors.Is(err, kv.Nil) {
+		return ErrCacheMiss
 	}
 	if err != nil {
 		return err
@@ -155,7 +150,7 @@ func (r *redisCache) Get(key string, obj any) error {
 }
 
 func (r *redisCache) Delete(key string) error {
-	return r.cache.Delete(context.TODO(), r.getKey(key))
+	return r.client.Del(context.TODO(), r.getKey(key)).Err()
 }
 
 func (r *redisCache) OnUpdated(ctx context.Context, key string, callback func() error) error {
@@ -188,9 +183,9 @@ type redisHook struct {
 	registry MetricsRegistry
 }
 
-// ignoredRedisCommandNames are commands that go-redis may issue during connection setup / bookkeeping
+// ignoredCommandNames are commands the client may issue during connection setup and bookkeeping
 // and which we don't want to count as application-level requests in metrics.
-var ignoredRedisCommandNames = map[string]struct{}{
+var ignoredCommandNames = map[string]struct{}{
 	"hello":  {},
 	"client": {},
 	// Optional: we can enable if we want also want to exclude other setup/noise commands.
@@ -199,21 +194,21 @@ var ignoredRedisCommandNames = map[string]struct{}{
 	// "ping":   {},
 }
 
-func shouldIgnoreRedisCmd(cmd redis.Cmder) bool {
+func shouldIgnoreRedisCmd(cmd kv.Cmder) bool {
 	name := strings.ToLower(strings.TrimSpace(cmd.Name()))
-	_, ok := ignoredRedisCommandNames[name]
+	_, ok := ignoredCommandNames[name]
 	return ok
 }
 
-func (rh *redisHook) DialHook(next redis.DialHook) redis.DialHook {
+func (rh *redisHook) DialHook(next kv.DialHook) kv.DialHook {
 	return func(ctx context.Context, network, addr string) (net.Conn, error) {
 		conn, err := next(ctx, network, addr)
 		return conn, err
 	}
 }
 
-func (rh *redisHook) ProcessHook(next redis.ProcessHook) redis.ProcessHook {
-	return func(ctx context.Context, cmd redis.Cmder) error {
+func (rh *redisHook) ProcessHook(next kv.ProcessHook) kv.ProcessHook {
+	return func(ctx context.Context, cmd kv.Cmder) error {
 		startTime := time.Now()
 
 		err := next(ctx, cmd)
@@ -222,20 +217,20 @@ func (rh *redisHook) ProcessHook(next redis.ProcessHook) redis.ProcessHook {
 			return err
 		}
 
-		rh.registry.IncRedisRequest(err != nil && !errors.Is(err, redis.Nil))
+		rh.registry.IncRedisRequest(err != nil && !errors.Is(err, kv.Nil))
 		rh.registry.ObserveRedisRequestDuration(time.Since(startTime))
 
 		return err
 	}
 }
 
-func (redisHook) ProcessPipelineHook(_ redis.ProcessPipelineHook) redis.ProcessPipelineHook {
+func (redisHook) ProcessPipelineHook(_ kv.ProcessPipelineHook) kv.ProcessPipelineHook {
 	return nil
 }
 
 // CollectMetrics add transport wrapper that pushes metrics into the specified metrics registry
 // Lock should be shared between functions that can add/process a Redis hook.
-func CollectMetrics(client *redis.Client, registry MetricsRegistry, lock *sync.RWMutex) {
+func CollectMetrics(client *kv.Client, registry MetricsRegistry, lock *sync.RWMutex) {
 	if lock != nil {
 		lock.Lock()
 		defer lock.Unlock()

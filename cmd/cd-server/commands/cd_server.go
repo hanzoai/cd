@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 
@@ -55,7 +55,7 @@ var (
 // NewCommand returns a new instance of an cd command
 func NewCommand() *cobra.Command {
 	var (
-		redisClient              *redis.Client
+		redisClient              *kv.Client
 		insecure                 bool
 		listenHost               string
 		listenPort               int
@@ -354,7 +354,7 @@ func NewCommand() *cobra.Command {
 	repoServerClientTLSConfigSrc = tls.AddClientTLSFlagsToCmdWithPrefix(command, "SERVER")
 	tlsConfigCustomizerSrc = tls.AddTLSFlagsToCmd(command)
 	cacheSrc = servercache.AddCacheFlagsToCmd(command, cacheutil.Options{
-		OnClientCreated: func(client *redis.Client) {
+		OnClientCreated: func(client *kv.Client) {
 			redisClient = client
 		},
 	})

@@ -10,7 +10,7 @@ import (
 
 	"github.com/alicebob/miniredis/v2"
 	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	corev1 "k8s.io/api/core/v1"
@@ -67,7 +67,7 @@ func (c *forwardCacheClient) doLazy(action func(client cache.CacheClient) error)
 			return
 		}
 
-		redisClient := redis.NewClient(&redis.Options{Addr: fmt.Sprintf("localhost:%d", redisPort), Password: c.redisPassword})
+		redisClient := kv.NewClient(&kv.Options{Addr: fmt.Sprintf("localhost:%d", redisPort), Password: c.redisPassword})
 		c.client = cache.NewRedisCache(redisClient, time.Hour, c.compression)
 	})
 	if c.err != nil {
@@ -265,7 +265,7 @@ func MaybeStartLocalServer(ctx context.Context, clientOpts *apiclient.ClientOpti
 	if err != nil {
 		return nil, fmt.Errorf("error running miniredis: %w", err)
 	}
-	redisOptions := &redis.Options{Addr: mr.Addr()}
+	redisOptions := &kv.Options{Addr: mr.Addr()}
 	if err = common.SetOptionalRedisPasswordFromKubeConfig(ctx, kubeClientset, namespace, redisOptions); err != nil {
 		log.Warnf("Failed to fetch & set redis password for namespace %s: %v", namespace, err)
 	}
@@ -277,7 +277,7 @@ func MaybeStartLocalServer(ctx context.Context, clientOpts *apiclient.ClientOpti
 		ListenPort:              *port,
 		AppClientset:            appClientset,
 		DisableAuth:             true,
-		RedisClient:             redis.NewClient(redisOptions),
+		RedisClient:             kv.NewClient(redisOptions),
 		Cache:                   servercache.NewCache(appstateCache, 0, 0),
 		KubeClientset:           kubeClientset,
 		DynamicClientset:        dynamicClientset,

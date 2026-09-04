@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -1415,7 +1415,7 @@ func TestGitGeneratorPrivateRepoWithTemplatedProject(t *testing.T) {
 func TestGitGeneratorPrivateRepoWithTemplatedProjectAndProjectScopedRepo(t *testing.T) {
 	// Flush repo-server cache. Why? We want to ensure that the previous test has not already populated the repo-server
 	// cache.
-	r := redis.NewClient(&redis.Options{
+	r := kv.NewClient(&kv.Options{
 		Addr: "localhost:6379",
 	})
 	all := r.FlushAll(t.Context())

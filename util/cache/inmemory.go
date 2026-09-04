@@ -34,7 +34,7 @@ func (i *InMemoryCache) Set(item *Item) error {
 		return err
 	}
 	if item.CacheActionOpts.DisableOverwrite {
-		// go-redis doesn't throw an error on Set with NX, so absorbing here to keep the interface consistent
+		// The client does not error on Set with NX, so absorb it here to keep the interface consistent
 		_ = i.memCache.Add(item.Key, buf, item.CacheActionOpts.Expiration)
 	} else {
 		i.memCache.Set(item.Key, buf, item.CacheActionOpts.Expiration)

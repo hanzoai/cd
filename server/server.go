@@ -39,7 +39,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	log "github.com/sirupsen/logrus"
 	"github.com/soheilhy/cmux"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
@@ -233,7 +233,7 @@ type ArgoCDServerOpts struct {
 	RepoClientset           repoapiclient.Clientset
 	Cache                   *servercache.Cache
 	RepoServerCache         *repocache.Cache
-	RedisClient             *redis.Client
+	RedisClient             *kv.Client
 	TLSConfigCustomizer     tlsutil.ConfigCustomizer
 	XFrameOptions           string
 	ContentSecurityPolicy   string

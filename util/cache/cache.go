@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
@@ -47,8 +47,8 @@ func NewCache(client CacheClient) *Cache {
 	return &Cache{client}
 }
 
-func buildRedisClient(redisAddress, password, username string, redisDB, maxRetries int, tlsConfig *tls.Config) *redis.Client {
-	opts := &redis.Options{
+func buildRedisClient(redisAddress, password, username string, redisDB, maxRetries int, tlsConfig *tls.Config) *kv.Client {
+	opts := &kv.Options{
 		Addr:       redisAddress,
 		Password:   password,
 		DB:         redisDB,
@@ -57,17 +57,17 @@ func buildRedisClient(redisAddress, password, username string, redisDB, maxRetri
 		Username:   username,
 	}
 
-	client := redis.NewClient(opts)
+	client := kv.NewClient(opts)
 
-	client.AddHook(redis.Hook(NewArgoRedisHook(func() {
+	client.AddHook(kv.Hook(NewArgoRedisHook(func() {
 		*client = *buildRedisClient(redisAddress, password, username, redisDB, maxRetries, tlsConfig)
 	})))
 
 	return client
 }
 
-func buildFailoverRedisClient(sentinelMaster, sentinelUsername, sentinelPassword, password, username string, redisDB, maxRetries int, tlsConfig *tls.Config, sentinelAddresses []string) *redis.Client {
-	opts := &redis.FailoverOptions{
+func buildFailoverRedisClient(sentinelMaster, sentinelUsername, sentinelPassword, password, username string, redisDB, maxRetries int, tlsConfig *tls.Config, sentinelAddresses []string) *kv.Client {
+	opts := &kv.FailoverOptions{
 		MasterName:       sentinelMaster,
 		SentinelAddrs:    sentinelAddresses,
 		DB:               redisDB,
@@ -79,9 +79,9 @@ func buildFailoverRedisClient(sentinelMaster, sentinelUsername, sentinelPassword
 		SentinelPassword: sentinelPassword,
 	}
 
-	client := redis.NewFailoverClient(opts)
+	client := kv.NewFailoverClient(opts)
 
-	client.AddHook(redis.Hook(NewArgoRedisHook(func() {
+	client.AddHook(kv.Hook(NewArgoRedisHook(func() {
 		*client = *buildFailoverRedisClient(sentinelMaster, sentinelUsername, sentinelPassword, password, username, redisDB, maxRetries, tlsConfig, sentinelAddresses)
 	})))
 
@@ -90,10 +90,10 @@ func buildFailoverRedisClient(sentinelMaster, sentinelUsername, sentinelPassword
 
 type Options struct {
 	FlagPrefix      string
-	OnClientCreated func(client *redis.Client)
+	OnClientCreated func(client *kv.Client)
 }
 
-func (o *Options) callOnClientCreated(client *redis.Client) {
+func (o *Options) callOnClientCreated(client *kv.Client) {
 	if o.OnClientCreated != nil {
 		o.OnClientCreated(client)
 	}
