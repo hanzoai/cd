@@ -1,9 +1,10 @@
 import {AppContext, AppContextReact, DataLoader, NavigationManager, Notifications, NotificationsManager, PageContext, Popup, PopupManager, PopupProps} from 'argo-ui';
-import {createBrowserHistory} from 'history';
 import * as React from 'react';
 import {Helmet} from 'react-helmet';
-import {Redirect, Route, RouteComponentProps, Router, Switch} from 'react-router';
+import {Route, Routes} from 'react-router';
 import {Subscription} from 'rxjs';
+import {history, base} from './shared/history';
+import {RouteComponentProps} from './shared/components/router-compat';
 import applications from './applications';
 import help from './help';
 import login from './login';
@@ -22,9 +23,6 @@ import {AuthSettings, UserInfo} from './shared/models';
 import {SystemLevelExtension} from './shared/services/extensions-service';
 
 services.viewPreferences.init();
-const bases = document.getElementsByTagName('base');
-const base = bases.length > 0 ? bases[0].getAttribute('href') || '/' : '/';
-export const history = createBrowserHistory({basename: base});
 requests.setBaseHRef(base);
 
 type Routes = {[path: string]: {component: React.ComponentType<RouteComponentProps<any>>; noLayout?: boolean}};
