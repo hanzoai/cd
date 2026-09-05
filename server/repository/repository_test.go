@@ -972,7 +972,7 @@ func newFixtures() *fixtures {
 }
 
 func newEnforcer(kubeclientset *fake.Clientset) *rbac.Enforcer {
-	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	_ = enforcer.SetBuiltinPolicy(assets.BuiltinPolicyCSV)
 	enforcer.SetDefaultRole("role:admin")
 	enforcer.SetClaimsEnforcerFunc(func(_ jwt.Claims, _ ...any) bool {

@@ -20,7 +20,7 @@ import (
 	"github.com/hanzoai/cd/util/env"
 )
 
-// Argo CD component names
+// Hanzo CD component names
 const (
 	CommandCLI                      = "hanzocd"
 	CommandApplicationController    = "hanzocd-application-controller"
@@ -40,11 +40,11 @@ const (
 // default removes is a job spec that has to know a path baked into an image.
 const DefaultMirrorTable = "/usr/local/share/cd/repos.json"
 
-// Default service addresses and URLS of Argo CD internal services
+// Default service addresses and URLS of Hanzo CD internal services
 const (
-	// DefaultRepoServerAddr is the gRPC address of the Argo CD repo server
+	// DefaultRepoServerAddr is the gRPC address of the Hanzo CD repo server
 	DefaultRepoServerAddr = "hanzocd-repo-server:8081"
-	// DefaultCommitServerAddr is the gRPC address of the Argo CD commit server
+	// DefaultCommitServerAddr is the gRPC address of the Hanzo CD commit server
 	DefaultCommitServerAddr = "hanzocd-commit-server:8086"
 	// DefaultDexServerAddr is the HTTP address of the Dex OIDC server, which we run a reverse proxy against
 	DefaultDexServerAddr = "hanzocd-dex-server:5556"
@@ -52,21 +52,21 @@ const (
 	DefaultRedisAddr = "hanzocd-redis:6379"
 )
 
-// Kubernetes ConfigMap and Secret resource names which hold Argo CD settings
+// Kubernetes ConfigMap and Secret resource names which hold Hanzo CD settings
 const (
-	ArgoCDConfigMapName              = "hanzocd-cm"
-	ArgoCDSecretName                 = "hanzocd-secret"
-	ArgoCDNotificationsConfigMapName = "hanzocd-notifications-cm"
-	ArgoCDNotificationsSecretName    = "hanzocd-notifications-secret"
-	ArgoCDRBACConfigMapName          = "hanzocd-rbac-cm"
-	// ArgoCDKnownHostsConfigMapName contains SSH known hosts data for connecting repositories. Will get mounted as volume to pods
-	ArgoCDKnownHostsConfigMapName = "hanzocd-ssh-known-hosts-cm"
-	// ArgoCDTLSCertsConfigMapName contains TLS certificate data for connecting repositories. Will get mounted as volume to pods
-	ArgoCDTLSCertsConfigMapName = "hanzocd-tls-certs-cm"
-	ArgoCDGPGKeysConfigMapName  = "hanzocd-gpg-keys-cm"
-	// ArgoCDAppControllerShardConfigMapName contains the application controller to shard mapping
-	ArgoCDAppControllerShardConfigMapName = "hanzocd-app-controller-shard-cm"
-	ArgoCDCmdParamsConfigMapName          = "hanzocd-cmd-params-cm"
+	ConfigMapName              = "hanzocd-cm"
+	SecretName                 = "hanzocd-secret"
+	NotificationsConfigMapName = "hanzocd-notifications-cm"
+	NotificationsSecretName    = "hanzocd-notifications-secret"
+	RBACConfigMapName          = "hanzocd-rbac-cm"
+	// KnownHostsConfigMapName contains SSH known hosts data for connecting repositories. Will get mounted as volume to pods
+	KnownHostsConfigMapName = "hanzocd-ssh-known-hosts-cm"
+	// TLSCertsConfigMapName contains TLS certificate data for connecting repositories. Will get mounted as volume to pods
+	TLSCertsConfigMapName = "hanzocd-tls-certs-cm"
+	GPGKeysConfigMapName  = "hanzocd-gpg-keys-cm"
+	// AppControllerShardConfigMapName contains the application controller to shard mapping
+	AppControllerShardConfigMapName = "hanzocd-app-controller-shard-cm"
+	CmdParamsConfigMapName          = "hanzocd-cmd-params-cm"
 )
 
 // Some default configurables
@@ -75,18 +75,18 @@ const (
 	DefaultRepoType        = "git"
 )
 
-// Default listener ports for ArgoCD components
+// Default listener ports for Hanzo CD components
 const (
-	DefaultPortAPIServer              = 8080
-	DefaultPortRepoServer             = 8081
-	DefaultPortArgoCDMetrics          = 8082
-	DefaultPortArgoCDAPIServerMetrics = 8083
-	DefaultPortRepoServerMetrics      = 8084
-	DefaultPortCommitServer           = 8086
-	DefaultPortCommitServerMetrics    = 8087
+	DefaultPortAPIServer           = 8080
+	DefaultPortRepoServer          = 8081
+	DefaultPortMetrics             = 8082
+	DefaultPortAPIServerMetrics    = 8083
+	DefaultPortRepoServerMetrics   = 8084
+	DefaultPortCommitServer        = 8086
+	DefaultPortCommitServerMetrics = 8087
 )
 
-// DefaultAddressAPIServer for ArgoCD components
+// DefaultAddressAPIServer for Hanzo CD components
 const (
 	DefaultAddressAdminDashboard      = "localhost"
 	DefaultAddressAPIServer           = "0.0.0.0"
@@ -123,14 +123,14 @@ const (
 	PodRequestsMEM = "memory"
 )
 
-// Argo CD application related constants
+// Hanzo CD application related constants
 const (
-	// ArgoCDAdminUsername is the username of the 'admin' user
-	ArgoCDAdminUsername = "admin"
-	// ArgoCDUserAgentName is the default user-agent name used by the gRPC API client library and grpc-gateway
-	ArgoCDUserAgentName = "hanzocd-client"
-	// ArgoCDSSAManager is the default cd manager name used by server-side apply syncs
-	ArgoCDSSAManager = "hanzocd-controller"
+	// AdminUsername is the username of the 'admin' user
+	AdminUsername = "admin"
+	// UserAgentName is the default user-agent name used by the gRPC API client library and grpc-gateway
+	UserAgentName = "hanzocd-client"
+	// SSAManager is the default cd manager name used by server-side apply syncs
+	SSAManager = "hanzocd-controller"
 	// AuthCookieName is the HTTP cookie name where we store our auth token
 	AuthCookieName = "cd.token"
 	// StateCookieName is the HTTP cookie name that holds temporary nonce tokens for CSRF protection
@@ -168,30 +168,30 @@ const (
 const (
 	// DexAPIEndpoint is the endpoint where we serve the Dex API server
 	DexAPIEndpoint = "/v1/dex"
-	// LoginEndpoint is Argo CD's shorthand login endpoint which redirects to dex's OAuth 2.0 provider's consent page
+	// LoginEndpoint is Hanzo CD's shorthand login endpoint which redirects to dex's OAuth 2.0 provider's consent page
 	LoginEndpoint = "/auth/login"
-	// LogoutEndpoint is Argo CD's shorthand logout endpoint which invalidates OIDC session after logout
+	// LogoutEndpoint is Hanzo CD's shorthand logout endpoint which invalidates OIDC session after logout
 	LogoutEndpoint = "/auth/logout"
-	// CallbackEndpoint is Argo CD's final callback endpoint we reach after OAuth 2.0 login flow has been completed
+	// CallbackEndpoint is Hanzo CD's final callback endpoint we reach after OAuth 2.0 login flow has been completed
 	CallbackEndpoint = "/auth/callback"
-	// DexCallbackEndpoint is Argo CD's final callback endpoint when Dex is configured
+	// DexCallbackEndpoint is Hanzo CD's final callback endpoint when Dex is configured
 	DexCallbackEndpoint = "/v1/dex/callback"
-	// ArgoCDClientAppName is name of the Oauth client app used when registering our web app to dex
-	ArgoCDClientAppName = "Argo CD"
-	// ArgoCDClientAppID is the Oauth client ID we will use when registering our app to dex
-	ArgoCDClientAppID = "argo-cd"
-	// ArgoCDCLIClientAppName is name of the Oauth client app used when registering our CLI to dex
-	ArgoCDCLIClientAppName = "Argo CD CLI"
-	// ArgoCDCLIClientAppID is the Oauth client ID we will use when registering our CLI to dex
-	ArgoCDCLIClientAppID = "argo-cd-cli"
+	// ClientAppName is name of the Oauth client app used when registering our web app to dex
+	ClientAppName = "Argo CD"
+	// ClientAppID is the Oauth client ID we will use when registering our app to dex
+	ClientAppID = "argo-cd"
+	// CLIClientAppName is name of the Oauth client app used when registering our CLI to dex
+	CLIClientAppName = "Argo CD CLI"
+	// CLIClientAppID is the Oauth client ID we will use when registering our CLI to dex
+	CLIClientAppID = "argo-cd-cli"
 	// DexFederatedScope allows to receive the federated_claims from Dex. https://dexidp.io/docs/configuration/custom-scopes-claims-clients/
 	DexFederatedScope = "federated:id"
 )
 
-// Resource metadata labels and annotations (keys and values) used by Argo CD components
+// Resource metadata labels and annotations (keys and values) used by Hanzo CD components
 const (
 	// LabelKeyAppInstance is the label key to use to uniquely identify the instance of an application
-	// The Argo CD application name is used as the instance name
+	// The Hanzo CD application name is used as the instance name
 	LabelKeyAppInstance = "app.kubernetes.io/instance"
 	// LabelKeyAppName is the label key to use to uniquely identify the name of the Kubernetes application
 	LabelKeyAppName = "app.kubernetes.io/name"
@@ -216,7 +216,7 @@ const (
 	// LabelValueSecretTypeSCMCreds indicates a secret type of SCM credentials
 	LabelValueSecretTypeSCMCreds = "scm-creds"
 
-	// AnnotationKeyAppInstance is the Argo CD application name is used as the instance name
+	// AnnotationKeyAppInstance is the Hanzo CD application name is used as the instance name
 	AnnotationKeyAppInstance = "apps.hanzo.ai/tracking-id"
 	AnnotationInstallationID = "apps.hanzo.ai/installation-id"
 
@@ -232,8 +232,8 @@ const (
 
 	// AnnotationKeyManagedBy is annotation name which indicates that k8s resource is managed by an application.
 	AnnotationKeyManagedBy = "managed-by"
-	// AnnotationValueManagedByArgoCD is a 'managed-by' annotation value for resources managed by Argo CD
-	AnnotationValueManagedByArgoCD = "apps.hanzo.ai"
+	// AnnotationValueManagedByCD is a 'managed-by' annotation value for resources managed by Hanzo CD
+	AnnotationValueManagedByCD = "apps.hanzo.ai"
 
 	// AnnotationKeyLinkPrefix tells the UI to add an external link icon to the application node
 	// that links to the value given in the annotation.
@@ -259,7 +259,7 @@ const (
 	LabelValueComponentRepoServer = "repo-server"
 )
 
-// Environment variables for tuning and debugging Argo CD
+// Environment variables for tuning and debugging Hanzo CD
 const (
 	// EnvVarSSODebug is an environment variable to enable additional OAuth debugging in the API server
 	EnvVarSSODebug = "CD_SSO_DEBUG"
@@ -281,7 +281,7 @@ const (
 	EnvGitSubmoduleEnabled = "CD_GIT_MODULES_ENABLED"
 	// EnvHelmUserAgent specifies the User-Agent header for Helm repository requests
 	EnvHelmUserAgent = "CD_HELM_USER_AGENT"
-	// EnvGnuPGHome is the path to ArgoCD's GnuPG keyring for signature verification
+	// EnvGnuPGHome is the path to Hanzo CD's GnuPG keyring for signature verification
 	EnvGnuPGHome = "CD_GNUPGHOME"
 	// EnvWatchAPIBufferSize is the buffer size used to transfer K8S watch events to watch API consumer
 	EnvWatchAPIBufferSize = "CD_WATCH_API_BUFFER_SIZE"
@@ -331,17 +331,17 @@ const (
 	EnvCMPWorkDir = "CD_CMP_WORKDIR"
 	// EnvGPGDataPath overrides the location where GPG keyring for signature verification is stored
 	EnvGPGDataPath = "CD_GPG_DATA_PATH"
-	// EnvServer is the server address of the Argo CD API server.
+	// EnvServer is the server address of the Hanzo CD API server.
 	EnvServer = "CD_SERVER"
-	// EnvServerName is the name of the Argo CD server component, as specified by the value under the LabelKeyAppName label key.
+	// EnvServerName is the name of the Hanzo CD server component, as specified by the value under the LabelKeyAppName label key.
 	EnvServerName = "CD_SERVER_NAME"
-	// EnvRepoServerName is the name of the Argo CD repo server component, as specified by the value under the LabelKeyAppName label key.
+	// EnvRepoServerName is the name of the Hanzo CD repo server component, as specified by the value under the LabelKeyAppName label key.
 	EnvRepoServerName = "CD_REPO_SERVER_NAME"
-	// EnvAppControllerName is the name of the Argo CD application controller component, as specified by the value under the LabelKeyAppName label key.
+	// EnvAppControllerName is the name of the Hanzo CD application controller component, as specified by the value under the LabelKeyAppName label key.
 	EnvAppControllerName = "CD_APPLICATION_CONTROLLER_NAME"
-	// EnvRedisName is the name of the Argo CD redis component, as specified by the value under the LabelKeyAppName label key.
+	// EnvRedisName is the name of the Hanzo CD redis component, as specified by the value under the LabelKeyAppName label key.
 	EnvRedisName = "CD_KV_NAME"
-	// EnvRedisHaProxyName is the name of the Argo CD Redis HA proxy component, as specified by the value under the LabelKeyAppName label key.
+	// EnvRedisHaProxyName is the name of the Hanzo CD Redis HA proxy component, as specified by the value under the LabelKeyAppName label key.
 	EnvRedisHaProxyName = "CD_KV_HAPROXY_NAME"
 	// EnvGRPCKeepAliveMin defines the GRPCKeepAliveEnforcementMinimum, used in the grpc.KeepaliveEnforcementPolicy. Expects a "Duration" format (e.g. 10s).
 	EnvGRPCKeepAliveMin = "CD_GRPC_KEEP_ALIVE_MIN"
@@ -394,7 +394,7 @@ const (
 	DefaultGitRetryFactor                    = int64(2)
 )
 
-// Constants represent the pod selector labels of the Argo CD component names. These values are determined by the
+// Constants represent the pod selector labels of the Hanzo CD component names. These values are determined by the
 // installation manifests.
 const (
 	DefaultServerName                = "hanzocd-server"

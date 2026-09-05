@@ -26,8 +26,8 @@ import (
 	appinformer "github.com/hanzoai/cd/pkg/client/informers/externalversions"
 	"github.com/hanzoai/cd/server/rbacpolicy"
 	"github.com/hanzoai/cd/test"
-	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/assets"
+	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/db"
 	"github.com/hanzoai/cd/util/rbac"
 	"github.com/hanzoai/cd/util/settings"
@@ -137,7 +137,7 @@ func newTestAppSetServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforce
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, appinformer.WithNamespace(namespace), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
 	fakeProjLister := factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
 
-	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	f(enforcer)
 	enforcer.SetClaimsEnforcerFunc(rbacpolicy.NewRBACPolicyEnforcer(enforcer, fakeProjLister).EnforceClaims)
 

@@ -51,7 +51,7 @@ func setupAzureIdentity(t *testing.T) {
 
 func TestGetDomainHint(t *testing.T) {
 	t.Run("Returns domain hint when OIDC config is set", func(t *testing.T) {
-		settings := &settings.ArgoCDSettings{
+		settings := &settings.Settings{
 			OIDCConfigRAW: `
 name: Test OIDC
 issuer: https://example.com
@@ -65,7 +65,7 @@ domainHint: example.com
 	})
 
 	t.Run("Returns empty string when domain hint is not set", func(t *testing.T) {
-		settings := &settings.ArgoCDSettings{
+		settings := &settings.Settings{
 			OIDCConfigRAW: `
 name: Test OIDC
 issuer: https://example.com
@@ -78,7 +78,7 @@ clientSecret: test-secret
 	})
 
 	t.Run("Returns empty string when OIDC config is nil", func(t *testing.T) {
-		settings := &settings.ArgoCDSettings{
+		settings := &settings.Settings{
 			OIDCConfigRAW: "",
 		}
 		domainHint := getDomainHint(settings)
@@ -86,7 +86,7 @@ clientSecret: test-secret
 	})
 
 	t.Run("Returns empty string when YAML is malformed", func(t *testing.T) {
-		settings := &settings.ArgoCDSettings{
+		settings := &settings.Settings{
 			OIDCConfigRAW: `{this is not valid yaml at all]`,
 		}
 		domainHint := getDomainHint(settings)
@@ -94,7 +94,7 @@ clientSecret: test-secret
 	})
 
 	t.Run("Trims whitespaces from domain hint", func(t *testing.T) {
-		settings := &settings.ArgoCDSettings{
+		settings := &settings.Settings{
 			OIDCConfigRAW: `
 name: Test OIDC
 issuer: https://example.com
@@ -165,7 +165,7 @@ func TestHandleLogin_IncludesDomainHint(t *testing.T) {
 	oidcTestServer := test.GetOIDCTestServer(t, nil)
 	t.Cleanup(oidcTestServer.Close)
 
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		URL:                       "https://cd.example.com",
 		OIDCTLSInsecureSkipVerify: true,
 		OIDCConfigRAW: fmt.Sprintf(`
@@ -203,12 +203,12 @@ func (p *fakeProvider) ParseConfig() (*OIDCConfiguration, error) {
 	return nil, nil
 }
 
-func (p *fakeProvider) Verify(_ context.Context, _ string, _ *settings.ArgoCDSettings) (*gooidc.IDToken, error) {
+func (p *fakeProvider) Verify(_ context.Context, _ string, _ *settings.Settings) (*gooidc.IDToken, error) {
 	return nil, nil
 }
 
 func TestHandleCallback(t *testing.T) {
-	app := ClientApp{provider: &fakeProvider{}, settings: &settings.ArgoCDSettings{}}
+	app := ClientApp{provider: &fakeProvider{}, settings: &settings.Settings{}}
 
 	req := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "http://example.com/foo", http.NoBody)
 	req.Form = url.Values{
@@ -230,7 +230,7 @@ func TestClientApp_HandleLogin(t *testing.T) {
 	t.Cleanup(dexTestServer.Close)
 
 	t.Run("oidc certificate checking during login should toggle on config", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL: "https://cd.example.com",
 			OIDCConfigRAW: fmt.Sprintf(`
 name: Test
@@ -264,7 +264,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 	})
 
 	t.Run("dex certificate checking during login should toggle on config", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL: "https://cd.example.com",
 			DexConfig: `connectors:
 - type: github
@@ -301,7 +301,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 	})
 
 	t.Run("OIDC auth", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL:                       "https://cd.example.com",
 			OIDCTLSInsecureSkipVerify: true,
 		}
@@ -333,7 +333,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 	})
 
 	t.Run("OIDC auth with custom scopes", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL:                       "https://cd.example.com",
 			OIDCTLSInsecureSkipVerify: true,
 		}
@@ -366,7 +366,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 	})
 
 	t.Run("Dex auth", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL: dexTestServer.URL,
 		}
 		dexConfig := map[string]any{
@@ -398,12 +398,12 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		values, err := url.ParseQuery(location.RawQuery)
 		require.NoError(t, err)
 		assert.Equal(t, []string{"openid", "profile", "email", "groups", common.DexFederatedScope}, strings.Split(values.Get("scope"), " "))
-		assert.Equal(t, common.ArgoCDClientAppID, values.Get("client_id"))
+		assert.Equal(t, common.ClientAppID, values.Get("client_id"))
 		assert.Equal(t, "code", values.Get("response_type"))
 	})
 
 	t.Run("with additional base URL", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL:                       "https://cd.example.com",
 			AdditionalURLs:            []string{"https://localhost:8080", "https://other.cd.example.com"},
 			OIDCTLSInsecureSkipVerify: true,
@@ -502,12 +502,12 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 
 func Test_Login_Flow(t *testing.T) {
 	// Show that SSO login works when no redirect URL is provided, and we fall back to the configured base href for the
-	// Argo CD instance.
+	// Hanzo CD instance.
 
 	oidcTestServer := test.GetOIDCTestServer(t, nil)
 	t.Cleanup(oidcTestServer.Close)
 
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		URL: "https://cd.example.com",
 		OIDCConfigRAW: fmt.Sprintf(`
 name: Test
@@ -556,7 +556,7 @@ func Test_Login_Flow_With_PKCE(t *testing.T) {
 	})
 	t.Cleanup(oidcTestServer.Close)
 
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		URL: "https://example.com/cd",
 		OIDCConfigRAW: fmt.Sprintf(`
 name: Test
@@ -607,7 +607,7 @@ func TestClientApp_HandleCallback(t *testing.T) {
 	t.Cleanup(dexTestServer.Close)
 
 	t.Run("oidc certificate checking during oidc callback should toggle on config", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL: "https://cd.example.com",
 			OIDCConfigRAW: fmt.Sprintf(`
 name: Test
@@ -643,7 +643,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 	})
 
 	t.Run("dex certificate checking during oidc callback should toggle on config", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL: "https://cd.example.com",
 			DexConfig: `connectors:
 - type: github
@@ -770,7 +770,7 @@ func TestClientAppWithAzureWorkloadIdentity_HandleCallback(t *testing.T) {
 	setupAzureIdentity(t)
 
 	t.Run("oidc certificate checking during oidc callback should toggle on config", func(t *testing.T) {
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			URL:             "https://cd.example.com",
 			ServerSignature: signature,
 			OIDCConfigRAW: fmt.Sprintf(`
@@ -905,7 +905,7 @@ func TestGenerateAppState(t *testing.T) {
 	signature, err := util.MakeSignature(32)
 	require.NoError(t, err)
 	expectedReturnURL := "http://cd.example.com/"
-	app, err := NewClientApp(&settings.ArgoCDSettings{ServerSignature: signature, URL: expectedReturnURL}, "", nil, "", cache.NewInMemoryCache(24*time.Hour))
+	app, err := NewClientApp(&settings.Settings{ServerSignature: signature, URL: expectedReturnURL}, "", nil, "", cache.NewInMemoryCache(24*time.Hour))
 	require.NoError(t, err)
 	generateResponse := httptest.NewRecorder()
 	expectedPKCEVerifier := oauth2.GenerateVerifier()
@@ -939,7 +939,7 @@ func TestGenerateAppState_XSS(t *testing.T) {
 	signature, err := util.MakeSignature(32)
 	require.NoError(t, err)
 	app, err := NewClientApp(
-		&settings.ArgoCDSettings{
+		&settings.Settings{
 			// Only return URLs starting with this base should be allowed.
 			URL:             "https://cd.example.com",
 			ServerSignature: signature,
@@ -988,7 +988,7 @@ func TestGenerateAppState_XSS(t *testing.T) {
 func TestGenerateAppState_NoReturnURL(t *testing.T) {
 	signature, err := util.MakeSignature(32)
 	require.NoError(t, err)
-	cdSettings := &settings.ArgoCDSettings{ServerSignature: signature}
+	cdSettings := &settings.Settings{ServerSignature: signature}
 	key, err := cdSettings.GetServerEncryptionKey()
 	require.NoError(t, err)
 
@@ -1291,7 +1291,7 @@ func TestGetUserInfo(t *testing.T) {
 
 			signature, err := util.MakeSignature(32)
 			require.NoError(t, err)
-			cdSettings := &settings.ArgoCDSettings{ServerSignature: signature}
+			cdSettings := &settings.Settings{ServerSignature: signature}
 			encryptionKey, err := cdSettings.GetServerEncryptionKey()
 			require.NoError(t, err)
 			a, _ := NewClientApp(cdSettings, "", nil, "/argo-cd", tt.cache)
@@ -1380,7 +1380,7 @@ func TestSetGroupsClaimFromEndpoint(t *testing.T) {
 			userInfoCache := cache.NewInMemoryCache(24 * time.Hour)
 			signature, err := util.MakeSignature(32)
 			require.NoError(t, err, "failed creating signature for settings object")
-			cdSettings := &settings.ArgoCDSettings{
+			cdSettings := &settings.Settings{
 				ServerSignature: signature,
 				OIDCConfigRAW: `
 issuer: http://localhost:63231
@@ -1497,7 +1497,7 @@ func TestClientApp_GetTokenSourceFromCache(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			app := ClientApp{provider: tt.provider, settings: &settings.ArgoCDSettings{}}
+			app := ClientApp{provider: tt.provider, settings: &settings.Settings{}}
 			tokenSource, err := app.GetTokenSourceFromCache(t.Context(), tt.oidcTokenCache)
 			if tt.expectErrorContains != "" {
 				assert.ErrorContains(t, err, tt.expectErrorContains)
@@ -1556,7 +1556,7 @@ func TestClientApp_GetUpdatedOidcTokenFromCache(t *testing.T) {
 			oidcTestServer := test.GetOIDCTestServer(t, nil)
 			t.Cleanup(oidcTestServer.Close)
 
-			cdSettings := &settings.ArgoCDSettings{
+			cdSettings := &settings.Settings{
 				URL: "https://cd.example.com",
 				OIDCConfigRAW: fmt.Sprintf(`
 name: Test
@@ -1617,7 +1617,7 @@ func TestClientApp_GetUpdatedOidcTokenFromCache_SessionCeiling(t *testing.T) {
 	oidcTestServer := test.GetOIDCTestServer(t, nil)
 	t.Cleanup(oidcTestServer.Close)
 
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		URL: "https://cd.example.com",
 		OIDCConfigRAW: fmt.Sprintf(`
 name: Test
@@ -1662,7 +1662,7 @@ func TestClientApp_GetUpdatedOidcTokenFromCache_SessionCeilingExceeded(t *testin
 	oidcTestServer := test.GetOIDCTestServer(t, nil)
 	t.Cleanup(oidcTestServer.Close)
 
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		URL: "https://cd.example.com",
 		OIDCConfigRAW: fmt.Sprintf(`
 name: Test
@@ -1707,7 +1707,7 @@ func TestClientApp_CheckAndGetRefreshToken(t *testing.T) {
 		{
 			name: "no new token",
 			groupClaims: jwt.MapClaims{
-				"aud":    common.ArgoCDClientAppID,
+				"aud":    common.ClientAppID,
 				"exp":    float64(time.Now().Add(time.Hour).Unix()),
 				"sub":    "randomUser",
 				"sid":    "1111",
@@ -1720,7 +1720,7 @@ func TestClientApp_CheckAndGetRefreshToken(t *testing.T) {
 		{
 			name: "new token",
 			groupClaims: jwt.MapClaims{
-				"aud":    common.ArgoCDClientAppID,
+				"aud":    common.ClientAppID,
 				"exp":    float64(time.Now().Add(55 * time.Second).Unix()),
 				"sub":    "randomUser",
 				"sid":    "1111",
@@ -1733,7 +1733,7 @@ func TestClientApp_CheckAndGetRefreshToken(t *testing.T) {
 		{
 			name: "parse error",
 			groupClaims: jwt.MapClaims{
-				"aud":    common.ArgoCDClientAppID,
+				"aud":    common.ClientAppID,
 				"exp":    float64(time.Now().Add(time.Minute).Unix()),
 				"sub":    "randomUser",
 				"sid":    "1111",
@@ -1749,7 +1749,7 @@ func TestClientApp_CheckAndGetRefreshToken(t *testing.T) {
 			oidcTestServer := test.GetOIDCTestServer(t, nil)
 			t.Cleanup(oidcTestServer.Close)
 
-			cdSettings := &settings.ArgoCDSettings{
+			cdSettings := &settings.Settings{
 				URL: "https://cd.example.com",
 				OIDCConfigRAW: fmt.Sprintf(`
 name: Test
@@ -1810,7 +1810,7 @@ func TestClientApp_getRedirectURIForRequest(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			app := ClientApp{provider: &fakeProvider{}, settings: &settings.ArgoCDSettings{}}
+			app := ClientApp{provider: &fakeProvider{}, settings: &settings.Settings{}}
 			hook := test.LogHook{}
 			log.AddHook(&hook)
 			t.Cleanup(func() {

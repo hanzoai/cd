@@ -796,7 +796,7 @@ func TestSyncPolicyCreateUpdate(t *testing.T) {
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook-sync-policy-create-update",
-			Namespace:  utils.ArgoCDNamespace,
+			Namespace:  utils.E2ENamespace,
 			Finalizers: []string{v1alpha1.ResourcesFinalizerName},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -906,7 +906,7 @@ func TestSyncPolicyCreateDelete(t *testing.T) {
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook-sync-policy-create-delete",
-			Namespace:  utils.ArgoCDNamespace,
+			Namespace:  utils.E2ENamespace,
 			Finalizers: []string{v1alpha1.ResourcesFinalizerName},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -1001,7 +1001,7 @@ func TestSyncPolicyCreateOnly(t *testing.T) {
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "my-cluster-guestbook-sync-policy-create-only",
-			Namespace:  utils.ArgoCDNamespace,
+			Namespace:  utils.E2ENamespace,
 			Finalizers: []string{v1alpha1.ResourcesFinalizerName},
 		},
 		Spec: v1alpha1.ApplicationSpec{
@@ -2144,7 +2144,7 @@ func TestApplicationSetAPIListResourceEvents(t *testing.T) {
 	}).Then().
 		And(func() {
 			// Test the ListResourceEvents API
-			closer, appSetClient := fixture.ArgoCDClientset.NewApplicationSetClientOrDie()
+			closer, appSetClient := fixture.CDClientset.NewApplicationSetClientOrDie()
 			defer utilio.Close(closer)
 
 			events, err := appSetClient.ListResourceEvents(t.Context(), &applicationset.ApplicationSetGetQuery{

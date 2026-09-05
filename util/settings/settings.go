@@ -83,8 +83,8 @@ git checkout {{ .DrySHA }}
 {{ end -}}
 {{ end -}}`
 
-// ArgoCDSettings holds in-memory runtime configuration options.
-type ArgoCDSettings struct {
+// Settings holds in-memory runtime configuration options.
+type Settings struct {
 	// URL is the externally facing URL users will visit to reach Hanzo CD.
 	// The value here is used when configuring SSO. Omitting this value will disable SSO.
 	URL string `json:"url,omitempty"`
@@ -194,8 +194,8 @@ type Help struct {
 
 // oidcConfig is the same as the public OIDCConfig, except the public one excludes the AllowedAudiences and the
 // SkipAudienceCheckWhenTokenHasNoAudience fields.
-// AllowedAudiences should be accessed via ArgoCDSettings.OAuth2AllowedAudiences.
-// SkipAudienceCheckWhenTokenHasNoAudience should be accessed via ArgoCDSettings.SkipAudienceCheckWhenTokenHasNoAudience.
+// AllowedAudiences should be accessed via Settings.OAuth2AllowedAudiences.
+// SkipAudienceCheckWhenTokenHasNoAudience should be accessed via Settings.SkipAudienceCheckWhenTokenHasNoAudience.
 type oidcConfig struct {
 	OIDCConfig
 	AllowedAudiences                        []string `json:"allowedAudiences,omitempty"`
@@ -607,7 +607,7 @@ type SettingsManager struct {
 	configmaps      v1listers.ConfigMapLister
 	namespace       string
 	// subscribers is a list of subscribers to settings updates
-	subscribers []chan<- *ArgoCDSettings
+	subscribers []chan<- *Settings
 	// mutex protects concurrency sensitive parts of settings manager: access to subscribers list and initialization flag
 	mutex                     *sync.Mutex
 	initContextCancel         func()
@@ -714,7 +714,7 @@ func (mgr *SettingsManager) updateSecret(callback func(*corev1.Secret) error) er
 		}
 		argoCDSecret = &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name: common.ArgoCDSecretName,
+				Name: common.SecretName,
 			},
 			Data: make(map[string][]byte),
 		}
@@ -752,7 +752,7 @@ func (mgr *SettingsManager) updateConfigMap(callback func(*corev1.ConfigMap) err
 		}
 		argoCDCM = &corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name: common.ArgoCDConfigMapName,
+				Name: common.ConfigMapName,
 			},
 			Data: make(map[string]string),
 		}
@@ -782,7 +782,7 @@ func (mgr *SettingsManager) updateConfigMap(callback func(*corev1.ConfigMap) err
 }
 
 func (mgr *SettingsManager) getConfigMap() (*corev1.ConfigMap, error) {
-	return mgr.GetConfigMapByName(common.ArgoCDConfigMapName)
+	return mgr.GetConfigMapByName(common.ConfigMapName)
 }
 
 // Returns the ConfigMap with the given name from the cluster.
@@ -808,7 +808,7 @@ func (mgr *SettingsManager) GetConfigMapByName(configMapName string) (*corev1.Co
 }
 
 func (mgr *SettingsManager) getSecret() (*corev1.Secret, error) {
-	return mgr.GetSecretByName(common.ArgoCDSecretName)
+	return mgr.GetSecretByName(common.SecretName)
 }
 
 // GetSecretByName returns the Secret with the given name from the cluster.
@@ -1377,7 +1377,7 @@ func (mgr *SettingsManager) RequireOverridePrivilegeForRevisionSync() (bool, err
 }
 
 // GetSettings retrieves settings from the ArgoCDConfigMap and secret.
-func (mgr *SettingsManager) GetSettings() (*ArgoCDSettings, error) {
+func (mgr *SettingsManager) GetSettings() (*Settings, error) {
 	argoCDCM, err := mgr.getConfigMap()
 	if err != nil {
 		return nil, fmt.Errorf("error retrieving cd-cm: %w", err)
@@ -1391,7 +1391,7 @@ func (mgr *SettingsManager) GetSettings() (*ArgoCDSettings, error) {
 		return nil, fmt.Errorf("error retrieving cd secrets: %w", err)
 	}
 
-	var settings ArgoCDSettings
+	var settings Settings
 	var errs []error
 	if err := mgr.updateSettingsFromSecret(&settings, argoCDSecret, secrets); err != nil {
 		errs = append(errs, err)
@@ -1433,7 +1433,7 @@ func isSettingsObject(obj any) bool {
 // by GetGlobalProjectsSettings). Unknown types return false (fail-closed).
 func isArgoCDConfigMap(obj any) bool {
 	if metaObj, ok := obj.(metav1.Object); ok {
-		return metaObj.GetName() == common.ArgoCDConfigMapName
+		return metaObj.GetName() == common.ConfigMapName
 	}
 	return false
 }
@@ -1666,8 +1666,8 @@ func getDownloadBinaryUrlsFromConfigMap(argoCDCM *corev1.ConfigMap) map[string]s
 	return binaryUrls
 }
 
-// updateSettingsFromConfigMap transfers settings from a Kubernetes configmap into an ArgoCDSettings struct.
-func updateSettingsFromConfigMap(settings *ArgoCDSettings, argoCDCM *corev1.ConfigMap) {
+// updateSettingsFromConfigMap transfers settings from a Kubernetes configmap into an Settings struct.
+func updateSettingsFromConfigMap(settings *Settings, argoCDCM *corev1.ConfigMap) {
 	settings.DexConfig = argoCDCM.Data[settingDexConfigKey]
 	settings.OIDCConfigRAW = argoCDCM.Data[settingsOIDCConfigKey]
 	if err := ValidateOIDCConfig(settings.OIDCConfigRAW); err != nil {
@@ -1761,8 +1761,8 @@ func ValidateExternalURL(u string) error {
 	return nil
 }
 
-// updateSettingsFromSecret transfers settings from a Kubernetes secret into an ArgoCDSettings struct.
-func (mgr *SettingsManager) updateSettingsFromSecret(settings *ArgoCDSettings, argoCDSecret *corev1.Secret, secrets []*corev1.Secret) error {
+// updateSettingsFromSecret transfers settings from a Kubernetes secret into an Settings struct.
+func (mgr *SettingsManager) updateSettingsFromSecret(settings *Settings, argoCDSecret *corev1.Secret, secrets []*corev1.Secret) error {
 	var errs []error
 	secretKey, ok := argoCDSecret.Data[settingServerSignatureKey]
 	if ok {
@@ -1810,7 +1810,7 @@ func (mgr *SettingsManager) updateSettingsFromSecret(settings *ArgoCDSettings, a
 	return nil
 }
 
-func (mgr *SettingsManager) loadTLSCertificate(settings *ArgoCDSettings, externalSecret *corev1.Secret, argoCDSecret *corev1.Secret) error {
+func (mgr *SettingsManager) loadTLSCertificate(settings *Settings, externalSecret *corev1.Secret, argoCDSecret *corev1.Secret) error {
 	mgr.mutex.Lock()
 	defer mgr.mutex.Unlock()
 	if externalSecret != nil {
@@ -1861,8 +1861,8 @@ func (mgr *SettingsManager) loadTLSCertificateFromSecret(secret *corev1.Secret) 
 	return &cert, nil
 }
 
-// saveSignatureAndCertificate serializes the server Signature and Certificate ArgoCDSettings and upserts it into the secret
-func (mgr *SettingsManager) saveSignatureAndCertificate(settings *ArgoCDSettings) error {
+// saveSignatureAndCertificate serializes the server Signature and Certificate Settings and upserts it into the secret
+func (mgr *SettingsManager) saveSignatureAndCertificate(settings *Settings) error {
 	return mgr.updateSecret(func(argoCDSecret *corev1.Secret) error {
 		argoCDSecret.Data[settingServerSignatureKey] = settings.ServerSignature
 		// we only write the certificate to the secret if it's not externally
@@ -1881,7 +1881,7 @@ func (mgr *SettingsManager) saveSignatureAndCertificate(settings *ArgoCDSettings
 
 // Save the SSH known host data into the corresponding ConfigMap
 func (mgr *SettingsManager) SaveSSHKnownHostsData(ctx context.Context, knownHostsList []string) error {
-	certCM, err := mgr.GetConfigMapByName(common.ArgoCDKnownHostsConfigMapName)
+	certCM, err := mgr.GetConfigMapByName(common.KnownHostsConfigMapName)
 	if err != nil {
 		return err
 	}
@@ -1897,7 +1897,7 @@ func (mgr *SettingsManager) SaveSSHKnownHostsData(ctx context.Context, knownHost
 }
 
 func (mgr *SettingsManager) SaveTLSCertificateData(ctx context.Context, tlsCertificates map[string]string) error {
-	certCM, err := mgr.GetConfigMapByName(common.ArgoCDTLSCertsConfigMapName)
+	certCM, err := mgr.GetConfigMapByName(common.TLSCertsConfigMapName)
 	if err != nil {
 		return err
 	}
@@ -1912,7 +1912,7 @@ func (mgr *SettingsManager) SaveTLSCertificateData(ctx context.Context, tlsCerti
 }
 
 func (mgr *SettingsManager) SaveGPGPublicKeyData(ctx context.Context, gpgPublicKeys map[string]string) error {
-	keysCM, err := mgr.GetConfigMapByName(common.ArgoCDGPGKeysConfigMapName)
+	keysCM, err := mgr.GetConfigMapByName(common.GPGKeysConfigMapName)
 	if err != nil {
 		return err
 	}
@@ -1955,7 +1955,7 @@ func (mgr *SettingsManager) ResyncInformers() error {
 }
 
 // IsSSOConfigured returns whether or not single-sign-on is configured
-func (a *ArgoCDSettings) IsSSOConfigured() bool {
+func (a *Settings) IsSSOConfigured() bool {
 	if a.IsDexConfigured() {
 		return true
 	}
@@ -1965,7 +1965,7 @@ func (a *ArgoCDSettings) IsSSOConfigured() bool {
 	return false
 }
 
-func (a *ArgoCDSettings) IsDexConfigured() bool {
+func (a *Settings) IsDexConfigured() bool {
 	if a.URL == "" {
 		return false
 	}
@@ -1978,7 +1978,7 @@ func (a *ArgoCDSettings) IsDexConfigured() bool {
 }
 
 // GetServerEncryptionKey generates a new server encryption key using the server signature as a passphrase
-func (a *ArgoCDSettings) GetServerEncryptionKey() ([]byte, error) {
+func (a *Settings) GetServerEncryptionKey() ([]byte, error) {
 	return crypto.KeyFromPassphrase(string(a.ServerSignature))
 }
 
@@ -1988,7 +1988,7 @@ func UnmarshalDexConfig(config string) (map[string]any, error) {
 	return dexCfg, err
 }
 
-func (a *ArgoCDSettings) oidcConfig() *oidcConfig {
+func (a *Settings) oidcConfig() *oidcConfig {
 	if a.OIDCConfigRAW == "" {
 		return nil
 	}
@@ -2015,7 +2015,7 @@ func (a *ArgoCDSettings) oidcConfig() *oidcConfig {
 	return &config
 }
 
-func (a *ArgoCDSettings) OIDCConfig() *OIDCConfig {
+func (a *Settings) OIDCConfig() *OIDCConfig {
 	config := a.oidcConfig()
 	if config == nil {
 		return nil
@@ -2024,37 +2024,37 @@ func (a *ArgoCDSettings) OIDCConfig() *OIDCConfig {
 }
 
 // GetWebhookGitHubSecret returns the resolved GitHub webhook secret
-func (a *ArgoCDSettings) GetWebhookGitHubSecret() string {
+func (a *Settings) GetWebhookGitHubSecret() string {
 	return ReplaceStringSecret(a.WebhookGitHubSecret, a.Secrets)
 }
 
 // GetWebhookGitLabSecret returns the resolved GitLab webhook secret
-func (a *ArgoCDSettings) GetWebhookGitLabSecret() string {
+func (a *Settings) GetWebhookGitLabSecret() string {
 	return ReplaceStringSecret(a.WebhookGitLabSecret, a.Secrets)
 }
 
 // GetWebhookBitbucketUUID returns the resolved Bitbucket webhook UUID
-func (a *ArgoCDSettings) GetWebhookBitbucketUUID() string {
+func (a *Settings) GetWebhookBitbucketUUID() string {
 	return ReplaceStringSecret(a.WebhookBitbucketUUID, a.Secrets)
 }
 
 // GetWebhookBitbucketServerSecret returns the resolved Bitbucket Server webhook secret
-func (a *ArgoCDSettings) GetWebhookBitbucketServerSecret() string {
+func (a *Settings) GetWebhookBitbucketServerSecret() string {
 	return ReplaceStringSecret(a.WebhookBitbucketServerSecret, a.Secrets)
 }
 
 // GetWebhookGogsSecret returns the resolved Gogs webhook secret
-func (a *ArgoCDSettings) GetWebhookGogsSecret() string {
+func (a *Settings) GetWebhookGogsSecret() string {
 	return ReplaceStringSecret(a.WebhookGogsSecret, a.Secrets)
 }
 
 // GetWebhookAzureDevOpsUsername returns the resolved Azure DevOps webhook username
-func (a *ArgoCDSettings) GetWebhookAzureDevOpsUsername() string {
+func (a *Settings) GetWebhookAzureDevOpsUsername() string {
 	return ReplaceStringSecret(a.WebhookAzureDevOpsUsername, a.Secrets)
 }
 
 // GetWebhookAzureDevOpsPassword returns the resolved Azure DevOps webhook password
-func (a *ArgoCDSettings) GetWebhookAzureDevOpsPassword() string {
+func (a *Settings) GetWebhookAzureDevOpsPassword() string {
 	return ReplaceStringSecret(a.WebhookAzureDevOpsPassword, a.Secrets)
 }
 
@@ -2086,7 +2086,7 @@ func ValidateOIDCConfig(configStr string) error {
 }
 
 // TLSConfig returns a tls.Config with the configured certificates
-func (a *ArgoCDSettings) TLSConfig() *tls.Config {
+func (a *Settings) TLSConfig() *tls.Config {
 	if a.Certificate == nil {
 		return nil
 	}
@@ -2101,7 +2101,7 @@ func (a *ArgoCDSettings) TLSConfig() *tls.Config {
 	}
 }
 
-func (a *ArgoCDSettings) UserInfoBaseURL() string {
+func (a *Settings) UserInfoBaseURL() string {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil {
 		if err := ValidateExternalURL(oidcConfig.UserInfoBaseURL); err == nil {
 			return oidcConfig.UserInfoBaseURL
@@ -2113,7 +2113,7 @@ func (a *ArgoCDSettings) UserInfoBaseURL() string {
 	return ""
 }
 
-func (a *ArgoCDSettings) IssuerURL() string {
+func (a *Settings) IssuerURL() string {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil {
 		return oidcConfig.Issuer
 	}
@@ -2124,7 +2124,7 @@ func (a *ArgoCDSettings) IssuerURL() string {
 }
 
 // UserInfoGroupsEnabled returns whether group claims should be fetch from UserInfo endpoint
-func (a *ArgoCDSettings) UserInfoGroupsEnabled() bool {
+func (a *Settings) UserInfoGroupsEnabled() bool {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil {
 		return oidcConfig.EnableUserInfoGroups
 	}
@@ -2132,7 +2132,7 @@ func (a *ArgoCDSettings) UserInfoGroupsEnabled() bool {
 }
 
 // UserInfoPath returns the sub-path on which the IDP exposes the UserInfo endpoint
-func (a *ArgoCDSettings) UserInfoPath() string {
+func (a *Settings) UserInfoPath() string {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil {
 		return oidcConfig.UserInfoPath
 	}
@@ -2140,7 +2140,7 @@ func (a *ArgoCDSettings) UserInfoPath() string {
 }
 
 // UserInfoCacheExpiration returns the expiry time of the UserInfo cache
-func (a *ArgoCDSettings) UserInfoCacheExpiration() time.Duration {
+func (a *Settings) UserInfoCacheExpiration() time.Duration {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil && oidcConfig.UserInfoCacheExpiration != "" {
 		userInfoCacheExpiration, err := time.ParseDuration(oidcConfig.UserInfoCacheExpiration)
 		if err != nil {
@@ -2152,12 +2152,12 @@ func (a *ArgoCDSettings) UserInfoCacheExpiration() time.Duration {
 }
 
 // RefreshTokenThreshold returns the duration before token expiration that a token should be refreshed by the server
-func (a *ArgoCDSettings) RefreshTokenThreshold() time.Duration {
+func (a *Settings) RefreshTokenThreshold() time.Duration {
 	return a.RefreshTokenThresholdWithConfig(a.OIDCConfig())
 }
 
 // RefreshTokenThresholdWithConfig takes oidcConfig as param and returns the duration before token expiration that a token should be refreshed by the server
-func (a *ArgoCDSettings) RefreshTokenThresholdWithConfig(oidcConfig *OIDCConfig) time.Duration {
+func (a *Settings) RefreshTokenThresholdWithConfig(oidcConfig *OIDCConfig) time.Duration {
 	if oidcConfig != nil && oidcConfig.RefreshTokenThreshold != "" {
 		refreshTokenThreshold, err := time.ParseDuration(oidcConfig.RefreshTokenThreshold)
 		if err != nil {
@@ -2168,20 +2168,20 @@ func (a *ArgoCDSettings) RefreshTokenThresholdWithConfig(oidcConfig *OIDCConfig)
 	return 0
 }
 
-func (a *ArgoCDSettings) OAuth2ClientID() string {
+func (a *Settings) OAuth2ClientID() string {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil {
 		return oidcConfig.ClientID
 	}
 	if a.DexConfig != "" {
-		return common.ArgoCDClientAppID
+		return common.ClientAppID
 	}
 	return ""
 }
 
 // OAuth2AllowedAudiences returns a list of audiences that are allowed for the OAuth2 client. If the user has not
 // explicitly configured the list of audiences (or has configured an empty list), then the OAuth2 client ID is returned
-// as the only allowed audience. When using the bundled Dex, that client ID is always "argo-cd".
-func (a *ArgoCDSettings) OAuth2AllowedAudiences() []string {
+// as the only allowed audience. When using the bundled Dex, that client ID is always "Hanzo CD".
+func (a *Settings) OAuth2AllowedAudiences() []string {
 	if config := a.oidcConfig(); config != nil {
 		if len(config.AllowedAudiences) == 0 {
 			allowedAudiences := []string{config.ClientID}
@@ -2193,12 +2193,12 @@ func (a *ArgoCDSettings) OAuth2AllowedAudiences() []string {
 		return config.AllowedAudiences
 	}
 	if a.DexConfig != "" {
-		return []string{common.ArgoCDClientAppID, common.ArgoCDCLIClientAppID}
+		return []string{common.ClientAppID, common.CLIClientAppID}
 	}
 	return nil
 }
 
-func (a *ArgoCDSettings) SkipAudienceCheckWhenTokenHasNoAudience() bool {
+func (a *Settings) SkipAudienceCheckWhenTokenHasNoAudience() bool {
 	if config := a.oidcConfig(); config != nil {
 		if config.SkipAudienceCheckWhenTokenHasNoAudience != nil {
 			return *config.SkipAudienceCheckWhenTokenHasNoAudience
@@ -2209,7 +2209,7 @@ func (a *ArgoCDSettings) SkipAudienceCheckWhenTokenHasNoAudience() bool {
 	return false
 }
 
-func (a *ArgoCDSettings) OAuth2ClientSecret() string {
+func (a *Settings) OAuth2ClientSecret() string {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil {
 		return oidcConfig.ClientSecret
 	}
@@ -2219,14 +2219,14 @@ func (a *ArgoCDSettings) OAuth2ClientSecret() string {
 	return ""
 }
 
-func (a *ArgoCDSettings) OAuth2UsePKCE() bool {
+func (a *Settings) OAuth2UsePKCE() bool {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil {
 		return oidcConfig.EnablePKCEAuthentication
 	}
 	return false
 }
 
-func (a *ArgoCDSettings) UseAzureWorkloadIdentity() bool {
+func (a *Settings) UseAzureWorkloadIdentity() bool {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil && oidcConfig.Azure != nil {
 		return oidcConfig.Azure.UseWorkloadIdentity
 	}
@@ -2236,7 +2236,7 @@ func (a *ArgoCDSettings) UseAzureWorkloadIdentity() bool {
 // AzureUserGroupOverageClaimEnabled returns whether group claims should be fetched from the Microsoft Graph API
 // when Azure AD returns a groups overage claim (user has 200+ group memberships).
 // See https://learn.microsoft.com/en-us/entra/identity-platform/access-token-claims-reference#groups-overage-claim
-func (a *ArgoCDSettings) AzureUserGroupOverageClaimEnabled() bool {
+func (a *Settings) AzureUserGroupOverageClaimEnabled() bool {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil && oidcConfig.Azure != nil {
 		return oidcConfig.Azure.EnableUserGroupOverageClaim
 	}
@@ -2273,7 +2273,7 @@ func ValidateAzureGraphAPIEndpoint(endpoint string) error {
 // Defaults to https://graph.microsoft.com/v1.0 for public cloud.
 // Can be overridden for sovereign clouds (e.g., https://graph.microsoft.us/v1.0).
 // Returns empty string if the configured endpoint fails validation, which disables the overage feature.
-func (a *ArgoCDSettings) AzureGraphAPIEndpoint() string {
+func (a *Settings) AzureGraphAPIEndpoint() string {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil && oidcConfig.Azure != nil {
 		if oidcConfig.Azure.GraphAPIEndpoint != "" {
 			if err := ValidateAzureGraphAPIEndpoint(oidcConfig.Azure.GraphAPIEndpoint); err != nil {
@@ -2288,7 +2288,7 @@ func (a *ArgoCDSettings) AzureGraphAPIEndpoint() string {
 }
 
 // AzureUserGroupOverageClaimCacheExpiration returns the cache duration for Azure groups overage claim results.
-func (a *ArgoCDSettings) AzureUserGroupOverageClaimCacheExpiration() time.Duration {
+func (a *Settings) AzureUserGroupOverageClaimCacheExpiration() time.Duration {
 	if oidcConfig := a.OIDCConfig(); oidcConfig != nil && oidcConfig.Azure != nil && oidcConfig.Azure.UserGroupOverageClaimCacheExpiration != "" {
 		cacheExpiration, err := time.ParseDuration(oidcConfig.Azure.UserGroupOverageClaimCacheExpiration)
 		if err != nil {
@@ -2303,7 +2303,7 @@ func (a *ArgoCDSettings) AzureUserGroupOverageClaimCacheExpiration() time.Durati
 // OIDCTLSConfig returns the TLS config for the OIDC provider. If an external provider is configured, returns a TLS
 // config using the root CAs (if any) specified in the OIDC config. If an external OIDC provider is not configured,
 // returns the API server TLS config, because the API server proxies requests to Dex.
-func (a *ArgoCDSettings) OIDCTLSConfig() *tls.Config {
+func (a *Settings) OIDCTLSConfig() *tls.Config {
 	var tlsConfig *tls.Config
 
 	oidcConfig := a.OIDCConfig()
@@ -2336,11 +2336,11 @@ func appendURLPath(inputURL string, inputPath string) (string, error) {
 	return u.String(), nil
 }
 
-func (a *ArgoCDSettings) RedirectURL() (string, error) {
+func (a *Settings) RedirectURL() (string, error) {
 	return appendURLPath(a.URL, common.CallbackEndpoint)
 }
 
-func (a *ArgoCDSettings) ArgoURLForRequest(r *http.Request) (string, error) {
+func (a *Settings) ArgoURLForRequest(r *http.Request) (string, error) {
 	for _, candidateURL := range append([]string{a.URL}, a.AdditionalURLs...) {
 		u, err := url.Parse(candidateURL)
 		if err != nil {
@@ -2353,7 +2353,7 @@ func (a *ArgoCDSettings) ArgoURLForRequest(r *http.Request) (string, error) {
 	return a.URL, nil
 }
 
-func (a *ArgoCDSettings) RedirectURLForRequest(r *http.Request) (string, error) {
+func (a *Settings) RedirectURLForRequest(r *http.Request) (string, error) {
 	if r == nil {
 		return "", errors.New("request is nil")
 	}
@@ -2364,7 +2364,7 @@ func (a *ArgoCDSettings) RedirectURLForRequest(r *http.Request) (string, error) 
 	return appendURLPath(base, common.CallbackEndpoint)
 }
 
-func (a *ArgoCDSettings) RedirectAdditionalURLs() ([]string, error) {
+func (a *Settings) RedirectAdditionalURLs() ([]string, error) {
 	RedirectAdditionalURLs := []string{}
 	for _, url := range a.AdditionalURLs {
 		redirectURL, err := appendURLPath(url, common.CallbackEndpoint)
@@ -2376,7 +2376,7 @@ func (a *ArgoCDSettings) RedirectAdditionalURLs() ([]string, error) {
 	return RedirectAdditionalURLs, nil
 }
 
-func (a *ArgoCDSettings) DexRedirectURL() (string, error) {
+func (a *Settings) DexRedirectURL() (string, error) {
 	return appendURLPath(a.URL, common.DexCallbackEndpoint)
 }
 
@@ -2384,7 +2384,7 @@ func (a *ArgoCDSettings) DexRedirectURL() (string, error) {
 // from the server secret. This is called by the dex startup wrapper (cd-dex rundex), as well
 // as the API server, such that they both independently come to the same conclusion of what the
 // OAuth2 shared client secret should be.
-func (a *ArgoCDSettings) DexOAuth2ClientSecret() string {
+func (a *Settings) DexOAuth2ClientSecret() string {
 	h := sha256.New()
 	_, err := h.Write(a.ServerSignature)
 	if err != nil {
@@ -2395,7 +2395,7 @@ func (a *ArgoCDSettings) DexOAuth2ClientSecret() string {
 }
 
 // Subscribe registers a channel in which to subscribe to settings updates
-func (mgr *SettingsManager) Subscribe(subCh chan<- *ArgoCDSettings) {
+func (mgr *SettingsManager) Subscribe(subCh chan<- *Settings) {
 	mgr.mutex.Lock()
 	defer mgr.mutex.Unlock()
 	mgr.subscribers = append(mgr.subscribers, subCh)
@@ -2403,7 +2403,7 @@ func (mgr *SettingsManager) Subscribe(subCh chan<- *ArgoCDSettings) {
 }
 
 // Unsubscribe unregisters a channel from receiving of settings updates
-func (mgr *SettingsManager) Unsubscribe(subCh chan<- *ArgoCDSettings) {
+func (mgr *SettingsManager) Unsubscribe(subCh chan<- *Settings) {
 	mgr.mutex.Lock()
 	defer mgr.mutex.Unlock()
 	for i, ch := range mgr.subscribers {
@@ -2415,11 +2415,11 @@ func (mgr *SettingsManager) Unsubscribe(subCh chan<- *ArgoCDSettings) {
 	}
 }
 
-func (mgr *SettingsManager) notifySubscribers(newSettings *ArgoCDSettings) {
+func (mgr *SettingsManager) notifySubscribers(newSettings *Settings) {
 	mgr.mutex.Lock()
 	defer mgr.mutex.Unlock()
 	if len(mgr.subscribers) > 0 {
-		subscribers := make([]chan<- *ArgoCDSettings, len(mgr.subscribers))
+		subscribers := make([]chan<- *Settings, len(mgr.subscribers))
 		copy(subscribers, mgr.subscribers)
 		// make sure subscribes are notified in a separate thread to avoid potential deadlock
 		go func() {
@@ -2437,9 +2437,9 @@ func isIncompleteSettingsError(err error) bool {
 }
 
 // InitializeSettings is used to initialize empty admin password, signature, certificate etc if missing
-func (mgr *SettingsManager) InitializeSettings(insecureModeEnabled bool) (*ArgoCDSettings, error) {
+func (mgr *SettingsManager) InitializeSettings(insecureModeEnabled bool) (*Settings, error) {
 	const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-"
-	err := mgr.UpdateAccount(common.ArgoCDAdminUsername, func(adminAccount *Account) error {
+	err := mgr.UpdateAccount(common.AdminUsername, func(adminAccount *Account) error {
 		if adminAccount.Enabled {
 			now := time.Now().UTC()
 			if adminAccount.PasswordHash == "" {
@@ -2484,7 +2484,7 @@ func (mgr *SettingsManager) InitializeSettings(insecureModeEnabled bool) (*ArgoC
 		return nil, err
 	}
 	if cdSettings == nil {
-		cdSettings = &ArgoCDSettings{}
+		cdSettings = &Settings{}
 	}
 	if cdSettings.ServerSignature == nil {
 		// set JWT signature

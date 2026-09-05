@@ -98,7 +98,7 @@ func (a *Actions) getSharedMockOIDCServer() *mockoidc.MockOIDC {
 	return mockServer
 }
 
-// WithDirectOIDC configures ArgoCD with oidc.config pointing directly to
+// WithDirectOIDC configures Hanzo CD with oidc.config pointing directly to
 // a shared mock OIDC server (bypassing Dex). Tests using this setup should
 // use LoginWithSSO to mint OIDC tokens programmatically. This exercises the IDP
 // token verification and revocation code path in SessionManager.VerifyToken.

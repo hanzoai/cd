@@ -251,7 +251,7 @@ func TestRemoveAppInstance_DefaultCase(t *testing.T) {
 	assert.NotContains(t, obj.GetAnnotations(), common.AnnotationKeyAppInstance)
 	assert.NotContains(t, obj.GetAnnotations(), common.AnnotationInstallationID)
 
-	// Argo CD app-instance label was never added, so it shouldn't exist
+	// Hanzo CD app-instance label was never added, so it shouldn't exist
 	_, cdLabelExists := obj.GetLabels()[common.LabelKeyAppInstance]
 	assert.False(t, cdLabelExists)
 	// Custom label should still exist

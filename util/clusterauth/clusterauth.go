@@ -18,16 +18,16 @@ import (
 	"github.com/hanzoai/cd/common"
 )
 
-// ArgoCDManagerServiceAccount is the name of the service account for managing a cluster
+// ManagerServiceAccount is the name of the service account for managing a cluster
 const (
-	ArgoCDManagerServiceAccount     = "cd-manager"
-	ArgoCDManagerClusterRole        = "cd-manager-role"
-	ArgoCDManagerClusterRoleBinding = "cd-manager-role-binding"
-	SATokenSecretSuffix             = "-long-lived-token"
+	ManagerServiceAccount     = "cd-manager"
+	ManagerClusterRole        = "cd-manager-role"
+	ManagerClusterRoleBinding = "cd-manager-role-binding"
+	SATokenSecretSuffix       = "-long-lived-token"
 )
 
 // ArgoCDManagerPolicyRules are the policies to give cd-manager
-var ArgoCDManagerClusterPolicyRules = []rbacv1.PolicyRule{
+var ManagerClusterPolicyRules = []rbacv1.PolicyRule{
 	{
 		APIGroups: []string{"*"},
 		Resources: []string{"*"},
@@ -39,8 +39,8 @@ var ArgoCDManagerClusterPolicyRules = []rbacv1.PolicyRule{
 	},
 }
 
-// ArgoCDManagerNamespacePolicyRules are the namespace level policies to give cd-manager
-var ArgoCDManagerNamespacePolicyRules = []rbacv1.PolicyRule{
+// ManagerNamespacePolicyRules are the namespace level policies to give cd-manager
+var ManagerNamespacePolicyRules = []rbacv1.PolicyRule{
 	{
 		APIGroups: []string{"*"},
 		Resources: []string{"*"},
@@ -177,20 +177,20 @@ func upsertRoleBinding(clientset kubernetes.Interface, name string, roleName str
 
 // InstallClusterManagerRBAC installs RBAC resources for a cluster manager to operate a cluster. Returns a token
 func InstallClusterManagerRBAC(clientset kubernetes.Interface, ns string, namespaces []string, bearerTokenTimeout time.Duration) (string, error) {
-	err := CreateServiceAccount(clientset, ArgoCDManagerServiceAccount, ns)
+	err := CreateServiceAccount(clientset, ManagerServiceAccount, ns)
 	if err != nil {
 		return "", err
 	}
 
 	if len(namespaces) == 0 {
-		err = upsertClusterRole(clientset, ArgoCDManagerClusterRole, ArgoCDManagerClusterPolicyRules)
+		err = upsertClusterRole(clientset, ManagerClusterRole, ManagerClusterPolicyRules)
 		if err != nil {
 			return "", err
 		}
 
-		err = upsertClusterRoleBinding(clientset, ArgoCDManagerClusterRoleBinding, ArgoCDManagerClusterRole, rbacv1.Subject{
+		err = upsertClusterRoleBinding(clientset, ManagerClusterRoleBinding, ManagerClusterRole, rbacv1.Subject{
 			Kind:      rbacv1.ServiceAccountKind,
-			Name:      ArgoCDManagerServiceAccount,
+			Name:      ManagerServiceAccount,
 			Namespace: ns,
 		})
 		if err != nil {
@@ -198,14 +198,14 @@ func InstallClusterManagerRBAC(clientset kubernetes.Interface, ns string, namesp
 		}
 	} else {
 		for _, namespace := range namespaces {
-			err = upsertRole(clientset, ArgoCDManagerClusterRole, namespace, ArgoCDManagerNamespacePolicyRules)
+			err = upsertRole(clientset, ManagerClusterRole, namespace, ManagerNamespacePolicyRules)
 			if err != nil {
 				return "", err
 			}
 
-			err = upsertRoleBinding(clientset, ArgoCDManagerClusterRoleBinding, ArgoCDManagerClusterRole, namespace, rbacv1.Subject{
+			err = upsertRoleBinding(clientset, ManagerClusterRoleBinding, ManagerClusterRole, namespace, rbacv1.Subject{
 				Kind:      rbacv1.ServiceAccountKind,
-				Name:      ArgoCDManagerServiceAccount,
+				Name:      ManagerServiceAccount,
 				Namespace: ns,
 			})
 			if err != nil {
@@ -214,7 +214,7 @@ func InstallClusterManagerRBAC(clientset kubernetes.Interface, ns string, namesp
 		}
 	}
 
-	return GetServiceAccountBearerToken(clientset, ns, ArgoCDManagerServiceAccount, bearerTokenTimeout)
+	return GetServiceAccountBearerToken(clientset, ns, ManagerServiceAccount, bearerTokenTimeout)
 }
 
 // GetServiceAccountBearerToken determines if a ServiceAccount has a
@@ -285,7 +285,7 @@ func getOrCreateServiceAccountTokenSecret(clientset kubernetes.Interface, servic
 
 // UninstallClusterManagerRBAC removes RBAC resources for a cluster manager to operate a cluster
 func UninstallClusterManagerRBAC(clientset kubernetes.Interface) error {
-	return UninstallRBAC(clientset, "kube-system", ArgoCDManagerClusterRoleBinding, ArgoCDManagerClusterRole, ArgoCDManagerServiceAccount)
+	return UninstallRBAC(clientset, "kube-system", ManagerClusterRoleBinding, ManagerClusterRole, ManagerServiceAccount)
 }
 
 // UninstallRBAC uninstalls RBAC related resources  for a binding, role, and service account

@@ -335,7 +335,7 @@ func AddWriteCredentials(t *testing.T, name string, insecure bool, repoURLType f
 	// Replace invalid characters for secret name
 	secretName := "write-creds-" + name
 
-	_, err := fixture.KubeClientset.CoreV1().Secrets(fixture.ArgoCDNamespace).Create(
+	_, err := fixture.KubeClientset.CoreV1().Secrets(fixture.E2ENamespace).Create(
 		context.Background(),
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{

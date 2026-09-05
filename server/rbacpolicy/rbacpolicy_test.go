@@ -58,7 +58,7 @@ func TestEnforceAllPolicies(t *testing.T) {
 	t.Parallel()
 	kubeclientset := fake.NewClientset(test.NewFakeConfigMap())
 	projLister := test.NewFakeProjLister(newFakeProj())
-	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
+	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ConfigMapName, nil)
 	enf.EnableLog(true)
 	_ = enf.SetBuiltinPolicy(`p, alice, applications, create, my-proj/*, allow` + "\n" + `p, alice, logs, get, my-proj/*, allow` + "\n" + `p, alice, exec, create, my-proj/*, allow`)
 	_ = enf.SetUserPolicy(`p, bob, applications, create, my-proj/*, allow` + "\n" + `p, bob, logs, get, my-proj/*, allow` + "\n" + `p, bob, exec, create, my-proj/*, allow`)
@@ -105,7 +105,7 @@ func TestEnforceActionActions(t *testing.T) {
 	t.Parallel()
 	kubeclientset := fake.NewClientset(test.NewFakeConfigMap())
 	projLister := test.NewFakeProjLister(newFakeProj())
-	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
+	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ConfigMapName, nil)
 	enf.EnableLog(true)
 	_ = enf.SetBuiltinPolicy(fmt.Sprintf(`p, alice, applications, %s/*, my-proj/*, allow
 p, bob, applications, %s/apps.hanzo.ai/Rollout/*, my-proj/*, allow
@@ -139,7 +139,7 @@ func TestInvalidatedCache(t *testing.T) {
 	t.Parallel()
 	kubeclientset := fake.NewClientset(test.NewFakeConfigMap())
 	projLister := test.NewFakeProjLister(newFakeProj())
-	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
+	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ConfigMapName, nil)
 	enf.EnableLog(true)
 	_ = enf.SetBuiltinPolicy(`p, alice, applications, create, my-proj/*, allow` + "\n" + `p, alice, logs, get, my-proj/*, allow` + "\n" + `p, alice, exec, create, my-proj/*, allow`)
 	_ = enf.SetUserPolicy(`p, bob, applications, create, my-proj/*, allow` + "\n" + `p, bob, logs, get, my-proj/*, allow` + "\n" + `p, bob, exec, create, my-proj/*, allow`)

@@ -18,7 +18,7 @@ import (
 // GPG config map with a single key and good mapping
 var gpgCMEmpty = corev1.ConfigMap{
 	ObjectMeta: metav1.ObjectMeta{
-		Name:      common.ArgoCDGPGKeysConfigMapName,
+		Name:      common.GPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
 			"app.kubernetes.io/part-of": "cd",
@@ -29,7 +29,7 @@ var gpgCMEmpty = corev1.ConfigMap{
 // GPG config map with a single key and good mapping
 var gpgCMSingleGoodPubkey = corev1.ConfigMap{
 	ObjectMeta: metav1.ObjectMeta{
-		Name:      common.ArgoCDGPGKeysConfigMapName,
+		Name:      common.GPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
 			"app.kubernetes.io/part-of": "cd",
@@ -43,7 +43,7 @@ var gpgCMSingleGoodPubkey = corev1.ConfigMap{
 // GPG config map with two keys and good mapping
 var gpgCMMultiGoodPubkey = corev1.ConfigMap{
 	ObjectMeta: metav1.ObjectMeta{
-		Name:      common.ArgoCDGPGKeysConfigMapName,
+		Name:      common.GPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
 			"app.kubernetes.io/part-of": "cd",
@@ -58,7 +58,7 @@ var gpgCMMultiGoodPubkey = corev1.ConfigMap{
 // GPG config map with a single key and bad mapping
 var gpgCMSingleKeyWrongId = corev1.ConfigMap{
 	ObjectMeta: metav1.ObjectMeta{
-		Name:      common.ArgoCDGPGKeysConfigMapName,
+		Name:      common.GPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
 			"app.kubernetes.io/part-of": "cd",
@@ -72,7 +72,7 @@ var gpgCMSingleKeyWrongId = corev1.ConfigMap{
 // GPG config map with a garbage pub key
 var gpgCMGarbagePubkey = corev1.ConfigMap{
 	ObjectMeta: metav1.ObjectMeta{
-		Name:      common.ArgoCDGPGKeysConfigMapName,
+		Name:      common.GPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
 			"app.kubernetes.io/part-of": "cd",
@@ -86,7 +86,7 @@ var gpgCMGarbagePubkey = corev1.ConfigMap{
 // GPG config map with a wrong key
 var gpgCMGarbageCMKey = corev1.ConfigMap{
 	ObjectMeta: metav1.ObjectMeta{
-		Name:      common.ArgoCDGPGKeysConfigMapName,
+		Name:      common.GPGKeysConfigMapName,
 		Namespace: testNamespace,
 		Labels: map[string]string{
 			"app.kubernetes.io/part-of": "cd",
@@ -213,7 +213,7 @@ func Test_AddGPGPublicKey(t *testing.T) {
 		require.NoError(t, err)
 		assert.Len(t, keys, 1)
 		assert.Empty(t, skipped)
-		cm, err := settings.GetConfigMapByName(common.ArgoCDGPGKeysConfigMapName)
+		cm, err := settings.GetConfigMapByName(common.GPGKeysConfigMapName)
 		require.NoError(t, err)
 		assert.Len(t, cm.Data, 1)
 
@@ -222,7 +222,7 @@ func Test_AddGPGPublicKey(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, keys)
 		assert.Len(t, skipped, 1)
-		cm, err = settings.GetConfigMapByName(common.ArgoCDGPGKeysConfigMapName)
+		cm, err = settings.GetConfigMapByName(common.GPGKeysConfigMapName)
 		require.NoError(t, err)
 		assert.Len(t, cm.Data, 1)
 
@@ -231,7 +231,7 @@ func Test_AddGPGPublicKey(t *testing.T) {
 		require.NoError(t, err)
 		assert.Len(t, keys, 2)
 		assert.Empty(t, skipped)
-		cm, err = settings.GetConfigMapByName(common.ArgoCDGPGKeysConfigMapName)
+		cm, err = settings.GetConfigMapByName(common.GPGKeysConfigMapName)
 		require.NoError(t, err)
 		assert.Len(t, cm.Data, 3)
 
@@ -240,7 +240,7 @@ func Test_AddGPGPublicKey(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, keys)
 		assert.Len(t, skipped, 2)
-		cm, err = settings.GetConfigMapByName(common.ArgoCDGPGKeysConfigMapName)
+		cm, err = settings.GetConfigMapByName(common.GPGKeysConfigMapName)
 		require.NoError(t, err)
 		assert.Len(t, cm.Data, 3)
 
@@ -249,7 +249,7 @@ func Test_AddGPGPublicKey(t *testing.T) {
 		require.Error(t, err)
 		assert.Nil(t, keys)
 		assert.Nil(t, skipped)
-		cm, err = settings.GetConfigMapByName(common.ArgoCDGPGKeysConfigMapName)
+		cm, err = settings.GetConfigMapByName(common.GPGKeysConfigMapName)
 		require.NoError(t, err)
 		assert.Len(t, cm.Data, 3)
 	}

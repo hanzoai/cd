@@ -33,7 +33,7 @@ const (
 func fixtures(ctx context.Context, data map[string]string) (*fake.Clientset, *settings.SettingsManager) {
 	kubeClient := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: testNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",

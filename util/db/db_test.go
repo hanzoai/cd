@@ -62,7 +62,7 @@ func TestCreateRepository(t *testing.T) {
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(repoSecretPrefix, repo.Repo, ""), metav1.GetOptions{})
 	require.NoError(t, err)
 
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "test-username", string(secret.Data[username]))
 	assert.Equal(t, "test-password", string(secret.Data[password]))
 	assert.Empty(t, secret.Data[sshPrivateKey])
@@ -100,7 +100,7 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(repoSecretPrefix, repo.Repo, "test-project"), metav1.GetOptions{})
 	require.NoError(t, err)
 
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "test-username", string(secret.Data[username]))
 	assert.Equal(t, "test-password", string(secret.Data[password]))
 	assert.Equal(t, "test-project", string(secret.Data[project]))
@@ -108,7 +108,7 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 
 	secret, err = clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(repoSecretPrefix, otherRepo.Repo, "other-project"), metav1.GetOptions{})
 	require.NoError(t, err)
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "other-username", string(secret.Data[username]))
 	assert.Equal(t, "other-password", string(secret.Data[password]))
 	assert.Equal(t, "other-project", string(secret.Data[project]))
@@ -130,7 +130,7 @@ func TestCreateRepoCredentials(t *testing.T) {
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(credSecretPrefix, creds.URL, ""), metav1.GetOptions{})
 	require.NoError(t, err)
 
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "test-username", string(secret.Data[username]))
 	assert.Equal(t, "test-password", string(secret.Data[password]))
 	assert.Empty(t, secret.Data[sshPrivateKey])
@@ -166,7 +166,7 @@ func TestCreateWriteRepoCredentials(t *testing.T) {
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(credWriteSecretPrefix, creds.URL, ""), metav1.GetOptions{})
 	require.NoError(t, err)
 
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "test-username", string(secret.Data[username]))
 	assert.Equal(t, "test-password", string(secret.Data[password]))
 	assert.Empty(t, secret.Data[sshPrivateKey])
@@ -301,7 +301,7 @@ func TestGetRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "known-repo-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepository,
@@ -315,7 +315,7 @@ func TestGetRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "secured-repo-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepository,
@@ -329,7 +329,7 @@ func TestGetRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "secured-repo-creds-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds,
@@ -379,7 +379,7 @@ func TestGetWriteRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "known-repo-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepositoryWrite,
@@ -393,7 +393,7 @@ func TestGetWriteRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "secured-repo-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepositoryWrite,
@@ -407,7 +407,7 @@ func TestGetWriteRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "secured-repo-creds-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepoCredsWrite,
@@ -465,7 +465,7 @@ func TestCreateClusterSuccessful(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, server, string(secret.Data["server"]))
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 }
 
 func TestDeleteClusterWithManagedSecret(t *testing.T) {
@@ -480,7 +480,7 @@ func TestDeleteClusterWithManagedSecret(t *testing.T) {
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 		},
 		Data: map[string][]byte{

@@ -12,7 +12,7 @@ import (
 	"github.com/hanzoai/cd/common"
 )
 
-// DoHttpRequest executes a http request against the Argo CD API server
+// DoHttpRequest executes a http request against the Hanzo CD API server
 func DoHttpRequest(method string, path string, host string, data ...byte) (*http.Response, error) { //nolint:revive //FIXME(var-naming)
 	reqURL, err := url.Parse(path)
 	if err != nil {
@@ -44,7 +44,7 @@ func DoHttpRequest(method string, path string, host string, data ...byte) (*http
 	return httpClient.Do(req)
 }
 
-// DoHttpJsonRequest executes a http request against the Argo CD API server and unmarshals the response body as JSON
+// DoHttpJsonRequest executes a http request against the Hanzo CD API server and unmarshals the response body as JSON
 func DoHttpJsonRequest(method string, path string, result any, data ...byte) error { //nolint:revive //FIXME(var-naming)
 	resp, err := DoHttpRequest(method, path, "", data...)
 	if err != nil {

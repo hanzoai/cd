@@ -271,7 +271,7 @@ func MaybeStartLocalServer(ctx context.Context, clientOpts *apiclient.ClientOpti
 	}
 
 	appstateCache := appstatecache.NewCache(cache.NewCache(&forwardCacheClient{namespace: namespace, context: ctxStr, compression: cache.RedisCompressionType(clientOpts.RedisCompression), redisHaProxyName: clientOpts.RedisHaProxyName, redisName: clientOpts.RedisName, redisPassword: redisOptions.Password}), time.Hour)
-	srv := server.NewServer(ctx, server.ArgoCDServerOpts{
+	srv := server.NewServer(ctx, server.ServerOpts{
 		EnableGZip:              false,
 		Namespace:               namespace,
 		ListenPort:              *port,

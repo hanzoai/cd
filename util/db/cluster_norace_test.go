@@ -23,7 +23,7 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 	// https://github.com/argoproj/argo-cd/issues/4755
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -33,7 +33,7 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 	}
 	argoCDSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -79,7 +79,7 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 	// https://github.com/argoproj/argo-cd/issues/4755
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -89,7 +89,7 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 	}
 	argoCDSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -135,7 +135,7 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 	// https://github.com/argoproj/argo-cd/issues/4755
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -145,7 +145,7 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 	}
 	argoCDSecretWithoutSecretKey := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -173,7 +173,7 @@ func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 	// https://github.com/argoproj/argo-cd/issues/4755
 	argoCDConfigMapWithInClusterServerAddressDisabled := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -183,7 +183,7 @@ func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 	}
 	argoCDSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",

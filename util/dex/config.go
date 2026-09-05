@@ -13,7 +13,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func GenerateDexConfigYAML(cdSettings *settings.ArgoCDSettings, disableTLS bool) ([]byte, error) {
+func GenerateDexConfigYAML(cdSettings *settings.Settings, disableTLS bool) ([]byte, error) {
 	if !cdSettings.IsDexConfigured() {
 		return nil, nil
 	}
@@ -78,8 +78,8 @@ func GenerateDexConfigYAML(cdSettings *settings.ArgoCDSettings, disableTLS bool)
 		return nil, fmt.Errorf("failed to infer additional redirect urls from config: %w", err)
 	}
 	argoCDStaticClient := map[string]any{
-		"id":           common.ArgoCDClientAppID,
-		"name":         common.ArgoCDClientAppName,
+		"id":           common.ClientAppID,
+		"name":         common.ClientAppName,
 		"secret":       cdSettings.DexOAuth2ClientSecret(),
 		"redirectURIs": append([]string{redirectURL}, additionalRedirectURLs...),
 	}
@@ -92,8 +92,8 @@ func GenerateDexConfigYAML(cdSettings *settings.ArgoCDSettings, disableTLS bool)
 		"public": true,
 	}
 	argoCDCLIStaticClient := map[string]any{
-		"id":     common.ArgoCDCLIClientAppID,
-		"name":   common.ArgoCDCLIClientAppName,
+		"id":     common.CLIClientAppID,
+		"name":   common.CLIClientAppName,
 		"public": true,
 		"redirectURIs": []string{
 			"http://localhost",

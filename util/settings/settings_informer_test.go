@@ -44,7 +44,7 @@ func assertNotFired(t *testing.T, ch <-chan struct{}) {
 }
 
 func argoCDConfigMap() *corev1.ConfigMap {
-	return &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: common.ArgoCDConfigMapName, Namespace: "cd"}}
+	return &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: common.ConfigMapName, Namespace: "cd"}}
 }
 
 func repositorySecret() *corev1.Secret {

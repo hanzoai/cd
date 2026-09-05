@@ -27,9 +27,9 @@ import (
 	cdclient "github.com/hanzoai/cd/pkg/apiclient"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/pkg/client/clientset/versioned"
-	"github.com/hanzoai/cd/util/cd"
 	cacheutil "github.com/hanzoai/cd/util/cache"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/clusterauth"
 	"github.com/hanzoai/cd/util/db"
@@ -609,8 +609,8 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			argoCDCM := &corev1.ConfigMap{
 				TypeMeta: metav1.TypeMeta{Kind: "ConfigMap", APIVersion: "v1"},
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
-					Namespace: ArgoCDNamespace,
+					Name:      common.ConfigMapName,
+					Namespace: DefaultNamespace,
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "hanzocd",
 					},
@@ -619,8 +619,8 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			argoCDSecret := &corev1.Secret{
 				TypeMeta: metav1.TypeMeta{Kind: "Secret", APIVersion: "v1"},
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
-					Namespace: ArgoCDNamespace,
+					Name:      common.SecretName,
+					Namespace: DefaultNamespace,
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "hanzocd",
 					},
@@ -675,8 +675,8 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 				clst.Shard = &clusterOpts.Shard
 			}
 
-			settingsMgr := settings.NewSettingsManager(ctx, kubeClientset, ArgoCDNamespace)
-			argoDB := db.NewDB(ArgoCDNamespace, settingsMgr, kubeClientset)
+			settingsMgr := settings.NewSettingsManager(ctx, kubeClientset, DefaultNamespace)
+			argoDB := db.NewDB(DefaultNamespace, settingsMgr, kubeClientset)
 
 			_, err = argoDB.CreateCluster(ctx, clst)
 			errors.CheckError(err)
@@ -684,7 +684,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			secName, err := db.URIToSecretName("cluster", clst.Server)
 			errors.CheckError(err)
 
-			secret, err := kubeClientset.CoreV1().Secrets(ArgoCDNamespace).Get(ctx, secName, metav1.GetOptions{})
+			secret, err := kubeClientset.CoreV1().Secrets(DefaultNamespace).Get(ctx, secName, metav1.GetOptions{})
 			errors.CheckError(err)
 
 			errors.CheckError(PrintResources(outputFormat, os.Stdout, secret))
@@ -693,7 +693,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 	command.PersistentFlags().StringVar(&pathOpts.LoadingRules.ExplicitPath, pathOpts.ExplicitFileFlag, pathOpts.LoadingRules.ExplicitPath, "use a particular kubeconfig file")
 	command.Flags().StringVar(&bearerToken, "bearer-token", "", "Authentication token that should be used to access K8S API server")
 	command.Flags().BoolVar(&generateToken, "generate-bearer-token", false, "Generate authentication token that should be used to access K8S API server")
-	command.Flags().StringVar(&clusterOpts.ServiceAccount, "service-account", "cd-manager", fmt.Sprintf("System namespace service account to use for kubernetes resource management. If not set then default %q SA will be used", clusterauth.ArgoCDManagerServiceAccount))
+	command.Flags().StringVar(&clusterOpts.ServiceAccount, "service-account", "cd-manager", fmt.Sprintf("System namespace service account to use for kubernetes resource management. If not set then default %q SA will be used", clusterauth.ManagerServiceAccount))
 	command.Flags().StringVar(&clusterOpts.SystemNamespace, "system-namespace", common.DefaultSystemNamespace, "Use different system namespace")
 	command.Flags().StringVarP(&outputFormat, "output", "o", "yaml", "Output format. One of: json|yaml")
 	command.Flags().StringArrayVar(&labels, "label", nil, "Set metadata labels (e.g. --label key=value)")

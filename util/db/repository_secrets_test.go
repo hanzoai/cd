@@ -68,7 +68,7 @@ func TestSecretsRepositoryBackend_CreateRepository(t *testing.T) {
 		assert.NotNil(t, secret)
 		require.NoError(t, err)
 
-		assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+		assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 		assert.Equal(t, common.LabelValueSecretTypeRepository, secret.Labels[common.LabelKeySecretType])
 
 		assert.Equal(t, repo.Name, string(secret.Data["name"]))
@@ -143,7 +143,7 @@ func TestSecretsRepositoryBackend_GetRepository(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", ""),
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
@@ -157,7 +157,7 @@ func TestSecretsRepositoryBackend_GetRepository(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", "testProject"),
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
@@ -245,7 +245,7 @@ func TestSecretsRepositoryBackend_ListRepositories(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", ""),
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
@@ -339,7 +339,7 @@ func TestSecretsRepositoryBackend_UpdateRepository(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        managedSecretName,
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
@@ -353,7 +353,7 @@ func TestSecretsRepositoryBackend_UpdateRepository(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        managedProjectSecretName,
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
@@ -462,7 +462,7 @@ func TestSecretsRepositoryBackend_DeleteRepository(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        managedSecretName,
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
@@ -476,7 +476,7 @@ func TestSecretsRepositoryBackend_DeleteRepository(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        managedScopedSecretName,
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
@@ -591,7 +591,7 @@ func TestSecretsRepositoryBackend_CreateRepoCreds(t *testing.T) {
 			assert.NotNil(t, secret)
 			require.NoError(t, err)
 
-			assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+			assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 			assert.Equal(t, common.LabelValueSecretTypeRepoCreds, secret.Labels[common.LabelKeySecretType])
 
 			// check every possible field of the secret if it has the same (default) value as the repoCred struct
@@ -626,7 +626,7 @@ func TestSecretsRepositoryBackend_GetRepoCreds(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj", ""),
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
@@ -697,7 +697,7 @@ func TestSecretsRepositoryBackend_ListRepoCreds(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj", ""),
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
@@ -758,7 +758,7 @@ func TestSecretsRepositoryBackend_UpdateRepoCreds(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        managedCredsName,
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
@@ -827,7 +827,7 @@ func TestSecretsRepositoryBackend_DeleteRepoCreds(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        managedSecretName,
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
@@ -878,7 +878,7 @@ func TestSecretsRepositoryBackend_GetAllHelmRepoCreds(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj", ""),
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
@@ -892,7 +892,7 @@ func TestSecretsRepositoryBackend_GetAllHelmRepoCreds(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
 				Name:        RepoURLToSecretName(repoSecretPrefix, "git@gitlab.com", ""),
-				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD},
+				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
@@ -951,7 +951,7 @@ func TestRepoCredsToSecret(t *testing.T) {
 	assert.Equal(t, []byte(strconv.FormatInt(creds.GithubAppId, 10)), s.Data["githubAppID"])
 	assert.Equal(t, []byte(strconv.FormatInt(creds.GithubAppInstallationId, 10)), s.Data["githubAppInstallationID"])
 	assert.Equal(t, []byte(creds.GitHubAppEnterpriseBaseURL), s.Data["githubAppEnterpriseBaseUrl"])
-	assert.Equal(t, map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD}, s.Annotations)
+	assert.Equal(t, map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD}, s.Annotations)
 	assert.Equal(t, map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds}, s.Labels)
 }
 
@@ -993,7 +993,7 @@ func TestRepoWriteCredsToSecret(t *testing.T) {
 	assert.Equal(t, []byte(strconv.FormatInt(creds.GithubAppId, 10)), s.Data["githubAppID"])
 	assert.Equal(t, []byte(strconv.FormatInt(creds.GithubAppInstallationId, 10)), s.Data["githubAppInstallationID"])
 	assert.Equal(t, []byte(creds.GitHubAppEnterpriseBaseURL), s.Data["githubAppEnterpriseBaseUrl"])
-	assert.Equal(t, map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD}, s.Annotations)
+	assert.Equal(t, map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD}, s.Annotations)
 	assert.Equal(t, map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCredsWrite}, s.Labels)
 }
 
@@ -1266,7 +1266,7 @@ func TestRepositoryToSecret(t *testing.T) {
 	assert.Equal(t, []byte(strconv.FormatBool(repo.UseAzureWorkloadIdentity)), s.Data["useAzureWorkloadIdentity"])
 	assert.Equal(t, []byte(strconv.FormatInt(repo.Depth, 10)), s.Data["depth"])
 	assert.Equal(t, []byte(strconv.FormatBool(repo.WebhookManifestCacheWarmDisabled)), s.Data["webhookManifestCacheWarmDisabled"])
-	assert.Equal(t, map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD}, s.Annotations)
+	assert.Equal(t, map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD}, s.Annotations)
 	assert.Equal(t, map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository}, s.Labels)
 }
 

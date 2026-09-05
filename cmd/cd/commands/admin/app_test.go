@@ -59,7 +59,7 @@ func TestGetReconcileResults_Refresh(t *testing.T) {
 
 	argoCM := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -68,7 +68,7 @@ func TestGetReconcileResults_Refresh(t *testing.T) {
 	}
 	argoCDSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",

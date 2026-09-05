@@ -17,6 +17,7 @@ import (
 	cacheutil "github.com/hanzoai/cd/util/cache"
 	"github.com/hanzoai/cd/util/sourceintegrity"
 
+	jsonpatch "github.com/evanphx/json-patch"
 	kubecache "github.com/hanzoai/cd/gitops-engine/pkg/cache"
 	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"github.com/hanzoai/cd/gitops-engine/pkg/health"
@@ -24,7 +25,6 @@ import (
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	"github.com/hanzoai/cd/util/vendored/sync"
-	jsonpatch "github.com/evanphx/json-patch"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -3038,7 +3038,7 @@ func (s *Server) ServerSideDiff(ctx context.Context, q *application.ApplicationS
 		WithDiffSettings(a.Spec.IgnoreDifferences, overrides, ignoreAggregatedRoles, normalizers.IgnoreNormalizerOpts{}).
 		WithTracking(appLabelKey, argoSettings.TrackingMethod).
 		WithNoCache().
-		WithManager(argocommon.ArgoCDSSAManager).
+		WithManager(argocommon.SSAManager).
 		WithServerSideDiff(true).
 		WithServerSideDryRunner(dryRunner).
 		WithGVKParser(gvkParser).

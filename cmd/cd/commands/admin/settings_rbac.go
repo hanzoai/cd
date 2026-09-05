@@ -362,7 +362,7 @@ func getPolicyFromConfigMap(cm *corev1.ConfigMap) (string, string, string) {
 
 // getPolicyConfigMap fetches the RBAC config map from K8s cluster
 func getPolicyConfigMap(ctx context.Context, client kubernetes.Interface, namespace string) (*corev1.ConfigMap, error) {
-	cm, err := client.CoreV1().ConfigMaps(namespace).Get(ctx, common.ArgoCDRBACConfigMapName, metav1.GetOptions{})
+	cm, err := client.CoreV1().ConfigMaps(namespace).Get(ctx, common.RBACConfigMapName, metav1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}

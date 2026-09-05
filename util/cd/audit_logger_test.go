@@ -19,7 +19,7 @@ import (
 const (
 	_somecomponent = "somecomponent"
 	_test          = "test"
-	_cdNs      = "cd"
+	_cdNs          = "cd"
 	_targetNs      = "target-namespace"
 )
 
@@ -381,7 +381,7 @@ func TestLogResourceEvent_EmptyNamespace(t *testing.T) {
 		logger.LogResourceEvent(&res, ei, "Cluster role action", "admin")
 	})
 
-	// Event should be created in ArgoCD namespace (not empty namespace)
+	// Event should be created in Hanzo CD namespace (not empty namespace)
 	events, err := fakeClient.CoreV1().Events(_cdNs).List(t.Context(), metav1.ListOptions{})
 	require.NoError(t, err)
 	require.Len(t, events.Items, 1)

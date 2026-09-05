@@ -20,13 +20,13 @@ import (
 const wardleAPIServiceName = "v1alpha1.wardle.example.com"
 
 // TestAPIServiceLateRegistrationIsDiscovered verifies that when an aggregated
-// (extension) API server is registered AFTER Argo CD is already running, the
+// (extension) API server is registered AFTER Hanzo CD is already running, the
 // destination cluster cache picks up the newly served group/kind WITHOUT a manual
 // cache invalidation or hard refresh.
 //
-// The scenario reproduces the original bug: starting Argo CD without the
+// The scenario reproduces the original bug: starting Hanzo CD without the
 // aggregated apiserver running means its group/kind is absent from discovery, so
-// the cluster cache never watches it. Argo CD watches APIService objects and, on
+// the cluster cache never watches it. Hanzo CD watches APIService objects and, on
 // the fix, reacts to an APIService becoming Available by re-running discovery and
 // starting the missing watches - mirroring the existing CRD handling.
 //
@@ -38,7 +38,7 @@ const wardleAPIServiceName = "v1alpha1.wardle.example.com"
 // it - which is exactly why it would be missing from the UI/tree.
 func TestAPIServiceLateRegistrationIsDiscovered(t *testing.T) {
 	// The aggregated apiserver infrastructure is cluster-scoped (Namespace,
-	// APIService, ClusterRole(Binding)s) and is not managed by an Argo CD app. It
+	// APIService, ClusterRole(Binding)s) and is not managed by an Hanzo CD app. It
 	// is labeled with e2e.apps.hanzo.ai=true so fixture.EnsureCleanState tears it
 	// down between tests; a dangling APIService backed by a deleted service would
 	// otherwise degrade discovery for subsequent tests.
@@ -64,7 +64,7 @@ metadata:
 		Expect(ResourceSyncStatusIs("ConfigMap", "aggregated-apiserver-canary", SyncStatusCodeSynced)).
 		When().
 		And(func() {
-			// Register the extension apiserver AFTER Argo CD is up and wait until it
+			// Register the extension apiserver AFTER Hanzo CD is up and wait until it
 			// is actually serving its API group.
 			errors.NewHandler(t).FailOnErr(Run("", "kubectl", "apply", "-f", serverManifests))
 			errors.NewHandler(t).FailOnErr(Run("", "kubectl", "-n", "wardle", "rollout", "status", "deployment/wardle-server", "--timeout=180s"))
@@ -84,7 +84,7 @@ metadata:
 			// under test: without reacting to the APIService event, the cache never
 			// watches wardle.example.com and the Flunder is absent from the tree (and
 			// the UI) until a manual invalidation.
-			closer, cdClient := ArgoCDClientset.NewApplicationClientOrDie()
+			closer, cdClient := CDClientset.NewApplicationClientOrDie()
 			defer utilio.Close(closer)
 
 			require.Eventually(t, func() bool {

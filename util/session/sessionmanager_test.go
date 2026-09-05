@@ -428,7 +428,7 @@ func TestSessionManager_WithAuthMiddleware(t *testing.T) {
 				userInfoCache := cache.NewInMemoryCache(24 * time.Hour)
 				signature, err := util.MakeSignature(32)
 				require.NoError(t, err, "failed creating signature for settings object")
-				cdSettings := &settings.ArgoCDSettings{
+				cdSettings := &settings.Settings{
 					ServerSignature: signature,
 					OIDCConfigRAW: `
 issuer: http://localhost:63231
@@ -538,28 +538,28 @@ func TestVerifyUsernamePassword(t *testing.T) {
 		{
 			name:     "Success if userName and password is correct",
 			disabled: false,
-			userName: common.ArgoCDAdminUsername,
+			userName: common.AdminUsername,
 			password: password,
 			expected: nil,
 		},
 		{
 			name:     "Return error if password is empty",
 			disabled: false,
-			userName: common.ArgoCDAdminUsername,
+			userName: common.AdminUsername,
 			password: "",
 			expected: status.Errorf(codes.Unauthenticated, blankPasswordError),
 		},
 		{
 			name:     "Return error if password is not correct",
 			disabled: false,
-			userName: common.ArgoCDAdminUsername,
+			userName: common.AdminUsername,
 			password: "foo",
 			expected: status.Errorf(codes.Unauthenticated, invalidLoginError),
 		},
 		{
 			name:     "Return error if disableAdmin is true",
 			disabled: true,
-			userName: common.ArgoCDAdminUsername,
+			userName: common.AdminUsername,
 			password: password,
 			expected: status.Errorf(codes.Unauthenticated, accountDisabled, "admin"),
 		},
@@ -825,7 +825,7 @@ rootCA: |
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -860,7 +860,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -895,7 +895,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -931,7 +931,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -997,7 +997,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1033,7 +1033,7 @@ skipAudienceCheckWhenTokenHasNoAudience: true`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1069,7 +1069,7 @@ skipAudienceCheckWhenTokenHasNoAudience: false`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1105,7 +1105,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1142,7 +1142,7 @@ allowedAudiences:
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1179,7 +1179,7 @@ allowedAudiences:
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1215,7 +1215,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1252,7 +1252,7 @@ allowedAudiences: []`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1290,7 +1290,7 @@ allowedAudiences: ["aud-a", "aud-b"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1325,7 +1325,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1369,7 +1369,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,
@@ -1413,7 +1413,7 @@ requestedScopes: ["oidc"]`, oidcTestServer.URL),
 		}
 
 		// This is not actually used in the test. The test only calls the OIDC test server. But a valid cert/key pair
-		// must be set to test VerifyToken's behavior when Argo CD is configured with TLS enabled.
+		// must be set to test VerifyToken's behavior when Hanzo CD is configured with TLS enabled.
 		secretConfig := map[string][]byte{
 			"tls.crt": utiltest.Cert,
 			"tls.key": utiltest.PrivateKey,

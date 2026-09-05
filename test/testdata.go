@@ -108,7 +108,7 @@ func NewFakeConfigMap() *corev1.ConfigMap {
 			APIVersion: "v1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: FakeArgoCDNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -126,7 +126,7 @@ func NewFakeSecret() *corev1.Secret {
 			APIVersion: "v1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: FakeArgoCDNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",

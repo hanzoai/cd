@@ -90,18 +90,18 @@ func assertLogContainsSubstr(t *testing.T, hook *test.Hook, substr string) {
 	t.Errorf("log hook did not contain message with substring: %q", substr)
 }
 
-func NewMockHandler(reactor *reactorDef, applicationNamespaces []string, objects ...runtime.Object) *ArgoCDWebhookHandler {
+func NewMockHandler(reactor *reactorDef, applicationNamespaces []string, objects ...runtime.Object) *Handler {
 	defaultMaxPayloadSize := int64(50) * 1024 * 1024
 	return NewMockHandlerWithPayloadLimit(reactor, applicationNamespaces, defaultMaxPayloadSize, objects...)
 }
 
-func NewMockHandlerWithPayloadLimit(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, objects ...runtime.Object) *ArgoCDWebhookHandler {
+func NewMockHandlerWithPayloadLimit(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, objects ...runtime.Object) *Handler {
 	mockDB := &mocks.DB{}
 	mockDB.EXPECT().ListRepositories(mock.Anything).Return([]*v1alpha1.Repository{}, nil).Maybe()
-	return newMockHandler(reactor, applicationNamespaces, maxPayloadSize, mockDB, &settings.ArgoCDSettings{}, objects...)
+	return newMockHandler(reactor, applicationNamespaces, maxPayloadSize, mockDB, &settings.Settings{}, objects...)
 }
 
-func NewMockHandlerForBitbucketCallback(reactor *reactorDef, applicationNamespaces []string, objects ...runtime.Object) *ArgoCDWebhookHandler {
+func NewMockHandlerForBitbucketCallback(reactor *reactorDef, applicationNamespaces []string, objects ...runtime.Object) *Handler {
 	mockDB := &mocks.DB{}
 	mockDB.EXPECT().ListRepositories(mock.Anything).Return(
 		[]*v1alpha1.Repository{
@@ -120,7 +120,7 @@ func NewMockHandlerForBitbucketCallback(reactor *reactorDef, applicationNamespac
 				SSHPrivateKey: "test-ssh-key",
 			},
 		}, nil)
-	argoSettings := settings.ArgoCDSettings{WebhookBitbucketUUID: "abcd-efgh-ijkl-mnop"}
+	argoSettings := settings.Settings{WebhookBitbucketUUID: "abcd-efgh-ijkl-mnop"}
 	defaultMaxPayloadSize := int64(50) * 1024 * 1024
 	return newMockHandler(reactor, applicationNamespaces, defaultMaxPayloadSize, mockDB, &argoSettings, objects...)
 }
@@ -150,7 +150,7 @@ func (f *fakeAppsLister) List(selector labels.Selector) ([]*v1alpha1.Application
 	return apps, nil
 }
 
-func newMockHandler(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, argoDB db.DB, argoSettings *settings.ArgoCDSettings, objects ...runtime.Object) *ArgoCDWebhookHandler {
+func newMockHandler(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, argoDB db.DB, argoSettings *settings.Settings, objects ...runtime.Object) *Handler {
 	appClientset := appclientset.NewSimpleClientset(objects...)
 	if reactor != nil {
 		defaultReactor := appClientset.ReactionChain[0]
@@ -1152,7 +1152,7 @@ func TestHandleEvent(t *testing.T) {
 				1,
 				appClientset,
 				&fakeAppsLister{clientset: appClientset},
-				&settings.ArgoCDSettings{},
+				&settings.Settings{},
 				&fakeSettingsSrc{},
 				repoCache,
 				serverCache,
@@ -1763,7 +1763,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 			5,
 			appClientset,
 			&fakeAppsLister{clientset: appClientset},
-			&settings.ArgoCDSettings{},
+			&settings.Settings{},
 			&fakeSettingsSrc{},
 			cache.NewCache(cacheClient, 1*time.Minute, 1*time.Minute, 10*time.Second),
 			servercache.NewCache(appstate.NewCache(cacheClient, time.Minute), time.Minute, time.Minute),
@@ -1803,7 +1803,7 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 			5,
 			appClientset,
 			&fakeAppsLister{clientset: appClientset},
-			&settings.ArgoCDSettings{},
+			&settings.Settings{},
 			&fakeSettingsSrc{},
 			cache.NewCache(cacheClient, 1*time.Minute, 1*time.Minute, 10*time.Second),
 			servercache.NewCache(appstate.NewCache(cacheClient, time.Minute), time.Minute, time.Minute),

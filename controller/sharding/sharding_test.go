@@ -494,7 +494,7 @@ func Test_generateDefaultShardMappingCM_NoPredefinedShard(t *testing.T) {
 
 	expectedShadingCM := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDAppControllerShardConfigMapName,
+			Name:      common.AppControllerShardConfigMapName,
 			Namespace: "test",
 		},
 		Data: map[string]string{
@@ -529,7 +529,7 @@ func Test_generateDefaultShardMappingCM_PredefinedShard(t *testing.T) {
 
 	expectedShadingCM := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDAppControllerShardConfigMapName,
+			Name:      common.AppControllerShardConfigMapName,
 			Namespace: "test",
 		},
 		Data: map[string]string{

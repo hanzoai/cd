@@ -71,7 +71,7 @@ func (s *terminalHandler) getApplicationClusterRawConfig(ctx context.Context, a 
 	return rawConfig, nil
 }
 
-type GetSettingsFunc func() (*settings.ArgoCDSettings, error)
+type GetSettingsFunc func() (*settings.Settings, error)
 
 // WithFeatureFlagMiddleware is an HTTP middleware to verify if the terminal
 // feature is enabled before invoking the main handler

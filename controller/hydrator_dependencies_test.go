@@ -69,7 +69,7 @@ func TestGetRepoObjs(t *testing.T) {
 
 	annotations := objs[0].GetAnnotations()
 
-	// only the tracking annotations set by Argo CD should be removed
+	// only the tracking annotations set by Hanzo CD should be removed
 	// and not the custom annotations set by user
 	require.NotNil(t, annotations)
 	assert.Equal(t, "custom-value", annotations["custom-annotation"])

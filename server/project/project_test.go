@@ -9,9 +9,9 @@ import (
 	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/db"
 
-	"github.com/hanzoai/cd/util/vendored/sync"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/hanzoai/cd/util/vendored/sync"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
@@ -775,7 +775,7 @@ p, role:admin, projects, update, *, allow`)
 }
 
 func newEnforcer(kubeclientset *fake.Clientset) *rbac.Enforcer {
-	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	_ = enforcer.SetBuiltinPolicy(assets.BuiltinPolicyCSV)
 	enforcer.SetDefaultRole("role:admin")
 	enforcer.SetClaimsEnforcerFunc(func(_ jwt.Claims, _ ...any) bool {
@@ -937,7 +937,7 @@ func TestListEvents(t *testing.T) {
 			Data:       map[string][]byte{"admin.password": []byte("test"), "server.secretkey": []byte("test")},
 		})
 		settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
-		enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+		enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 		_ = enforcer.SetBuiltinPolicy(`p, *, *, *, *, deny`)
 		enforcer.SetClaimsEnforcerFunc(nil)
 		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjLister(), "", nil, session.NewUserStateStorage(nil))

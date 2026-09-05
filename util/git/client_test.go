@@ -1488,7 +1488,7 @@ func Test_newAuth_SSH_KnownHostsUnreadable(t *testing.T) {
 	assert.Nil(t, auth)
 }
 
-// Test_newAuth_SSH_NoCreds_AgentUnavailable verifies that when no Argo CD
+// Test_newAuth_SSH_NoCreds_AgentUnavailable verifies that when no Hanzo CD
 // credentials are configured for an SSH URL and ssh-agent is unreachable, we
 // return (nil, nil) rather than an error — matching the pre-bump fallback
 // behavior where go-git's DefaultAuthBuilder would have been used.

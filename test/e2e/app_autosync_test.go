@@ -130,7 +130,7 @@ func TestAutoSyncRetryAndRefreshEnabled(t *testing.T) {
 		PatchFile("guestbook-ui-deployment.yaml", `[{"op": "replace", "path": "/spec/revisionHistoryLimit", "value": 42}]`).
 		Refresh(RefreshTypeNormal).
 		Then().
-		// Argo CD should pick it up and sync it successfully
+		// Hanzo CD should pick it up and sync it successfully
 		Expect(OperationPhaseIs(OperationSucceeded)).
 		Expect(SyncStatusIs(SyncStatusCodeSynced))
 }

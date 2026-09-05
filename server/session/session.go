@@ -92,7 +92,7 @@ func (s *Server) Delete(_ context.Context, _ *session.SessionDeleteRequest) (*se
 }
 
 // AuthFuncOverride overrides the authentication function and let us not require auth to receive auth.
-// Without this function here, ArgoCDServer.authenticate would be invoked and credentials checked.
+// Without this function here, Server.authenticate would be invoked and credentials checked.
 // Since this service is generally invoked when the user has _no_ credentials, that would create a
 // chicken-and-egg situation if we didn't place this here to allow traffic to pass through.
 func (s *Server) AuthFuncOverride(ctx context.Context, _ string) (context.Context, error) {

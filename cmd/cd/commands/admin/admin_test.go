@@ -59,11 +59,11 @@ func TestGetAdditionalNamespaces(t *testing.T) {
 	for _, c := range testCases {
 		fakeDynClient := dynfake.NewSimpleDynamicClient(runtime.NewScheme(), createArgoCDCmdCMWithKeys(c.CmdParamsKeys))
 
-		argoCDClientsets := &argoCDClientsets{
+		cdClientsets := &cdClientsets{
 			configMaps: fakeDynClient.Resource(configMapResource).Namespace("cd"),
 		}
 
-		result := getAdditionalNamespaces(t.Context(), argoCDClientsets.configMaps)
+		result := getAdditionalNamespaces(t.Context(), cdClientsets.configMaps)
 		assert.Equal(t, c.expected, *result)
 	}
 }

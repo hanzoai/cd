@@ -24,7 +24,7 @@ func setupPluginPath(t *testing.T) {
 	t.Setenv("PATH", testdataPath)
 }
 
-// TestNormalCommandWithPlugin ensures that a standard ArgoCD command executes correctly
+// TestNormalCommandWithPlugin ensures that a standard Hanzo CD command executes correctly
 // even when a plugin with the same name exists in the PATH
 func TestNormalCommandWithPlugin(t *testing.T) {
 	setupPluginPath(t)
@@ -99,7 +99,7 @@ func TestPluginExecution(t *testing.T) {
 	}
 }
 
-// TestNormalCommandError checks for an error when executing a normal ArgoCD command with invalid flags
+// TestNormalCommandError checks for an error when executing a normal Hanzo CD command with invalid flags
 func TestNormalCommandError(t *testing.T) {
 	setupPluginPath(t)
 
@@ -119,7 +119,7 @@ func TestNormalCommandError(t *testing.T) {
 	require.EqualError(t, pluginErr, "unknown flag: --non-existent-flag")
 }
 
-// TestUnknownCommandNoPlugin tests the scenario when the command is neither a normal ArgoCD command
+// TestUnknownCommandNoPlugin tests the scenario when the command is neither a normal Hanzo CD command
 // nor exists as a plugin
 func TestUnknownCommandNoPlugin(t *testing.T) {
 	pluginHandler := NewDefaultPluginHandler()

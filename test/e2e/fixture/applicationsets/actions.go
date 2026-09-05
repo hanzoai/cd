@@ -76,12 +76,12 @@ func (a *Actions) SwitchToExternalNamespace(namespace utils.ExternalNamespace) *
 
 func (a *Actions) SwitchToArgoCDNamespace() *Actions {
 	a.context.switchToNamespace = ""
-	log.Infof("switched to cd namespace: %s", utils.ArgoCDNamespace)
+	log.Infof("switched to cd namespace: %s", utils.E2ENamespace)
 	return a
 }
 
 // CreateClusterSecret creates a faux cluster secret, with the given cluster server and cluster name (this cluster
-// will not actually be used by the Argo CD controller, but that's not needed for our E2E tests)
+// will not actually be used by the Hanzo CD controller, but that's not needed for our E2E tests)
 func (a *Actions) CreateClusterSecret(secretName string, clusterName string, clusterServer string) *Actions {
 	a.context.T().Helper()
 	fixtureClient := utils.GetE2EFixtureK8sClient(a.context.T())

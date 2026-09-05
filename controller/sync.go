@@ -14,11 +14,11 @@ import (
 
 	cdcommon "github.com/hanzoai/cd/common"
 
+	jsonpatch "github.com/evanphx/json-patch"
 	gitopsDiff "github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"github.com/hanzoai/cd/gitops-engine/pkg/sync"
 	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
-	jsonpatch "github.com/evanphx/json-patch"
 	log "github.com/sirupsen/logrus"
 	otel_codes "go.opentelemetry.io/otel/codes"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -352,7 +352,7 @@ func (m *appStateManager) SyncAppState(ctx context.Context, app *v1alpha1.Applic
 		sync.WithPrunePropagationPolicy(&prunePropagationPolicy),
 		sync.WithReplace(syncOp.SyncOptions.HasOption(common.SyncOptionReplace)),
 		sync.WithServerSideApply(syncOp.SyncOptions.HasOption(common.SyncOptionServerSideApply)),
-		sync.WithServerSideApplyManager(cdcommon.ArgoCDSSAManager),
+		sync.WithServerSideApplyManager(cdcommon.SSAManager),
 		sync.WithClientSideApplyMigration(
 			!syncOp.SyncOptions.HasOption(common.SyncOptionDisableClientSideApplyMigration),
 			clientSideApplyManager,
@@ -488,7 +488,7 @@ func normalizeTargetResources(openAPISchema openapi.Resources, cr *comparisonRes
 		// values into the target that is applied during sync. `status` must be
 		// excluded from that copy: it is owned by the resource's own controller,
 		// never by the sync. Merging live `status` into the apply makes the sync
-		// field manager (ArgoCDSSAManager, "cd-controller") a co-owner of
+		// field manager (SSAManager, "cd-controller") a co-owner of
 		// `status` under server-side apply. For resources without a /status
 		// subresource (e.g. apps.hanzo.ai/Application) this freezes a stale
 		// status.operationState.phase that the controller can no longer correct.

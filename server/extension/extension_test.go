@@ -30,8 +30,8 @@ func TestValidateHeaders(t *testing.T) {
 		// given
 		r, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://null", http.NoBody)
 		require.NoError(t, err, "error initializing request")
-		r.Header.Add(extension.HeaderArgoCDApplicationName, "namespace:app-name")
-		r.Header.Add(extension.HeaderArgoCDProjectName, "project-name")
+		r.Header.Add(extension.HeaderCDApplicationName, "namespace:app-name")
+		r.Header.Add(extension.HeaderCDProjectName, "project-name")
 
 		// when
 		rr, err := extension.ValidateHeaders(r)
@@ -47,7 +47,7 @@ func TestValidateHeaders(t *testing.T) {
 		// given
 		r, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://null", http.NoBody)
 		require.NoError(t, err, "error initializing request")
-		r.Header.Add(extension.HeaderArgoCDApplicationName, "no-namespace")
+		r.Header.Add(extension.HeaderCDApplicationName, "no-namespace")
 
 		// when
 		rr, err := extension.ValidateHeaders(r)
@@ -60,7 +60,7 @@ func TestValidateHeaders(t *testing.T) {
 		// given
 		r, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://null", http.NoBody)
 		require.NoError(t, err, "error initializing request")
-		r.Header.Add(extension.HeaderArgoCDProjectName, "project-name")
+		r.Header.Add(extension.HeaderCDProjectName, "project-name")
 
 		// when
 		rr, err := extension.ValidateHeaders(r)
@@ -73,7 +73,7 @@ func TestValidateHeaders(t *testing.T) {
 		// given
 		r, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://null", http.NoBody)
 		require.NoError(t, err, "error initializing request")
-		r.Header.Add(extension.HeaderArgoCDApplicationName, "namespace:app-name")
+		r.Header.Add(extension.HeaderCDApplicationName, "namespace:app-name")
 
 		// when
 		rr, err := extension.ValidateHeaders(r)
@@ -86,8 +86,8 @@ func TestValidateHeaders(t *testing.T) {
 		// given
 		r, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://null", http.NoBody)
 		require.NoError(t, err, "error initializing request")
-		r.Header.Add(extension.HeaderArgoCDApplicationName, "bad%namespace:app-name")
-		r.Header.Add(extension.HeaderArgoCDProjectName, "project-name")
+		r.Header.Add(extension.HeaderCDApplicationName, "bad%namespace:app-name")
+		r.Header.Add(extension.HeaderCDProjectName, "project-name")
 
 		// when
 		rr, err := extension.ValidateHeaders(r)
@@ -100,8 +100,8 @@ func TestValidateHeaders(t *testing.T) {
 		// given
 		r, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://null", http.NoBody)
 		require.NoError(t, err, "error initializing request")
-		r.Header.Add(extension.HeaderArgoCDApplicationName, "namespace:bad@app")
-		r.Header.Add(extension.HeaderArgoCDProjectName, "project-name")
+		r.Header.Add(extension.HeaderCDApplicationName, "namespace:bad@app")
+		r.Header.Add(extension.HeaderCDProjectName, "project-name")
 
 		// when
 		rr, err := extension.ValidateHeaders(r)
@@ -114,8 +114,8 @@ func TestValidateHeaders(t *testing.T) {
 		// given
 		r, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://null", http.NoBody)
 		require.NoError(t, err, "error initializing request")
-		r.Header.Add(extension.HeaderArgoCDApplicationName, "namespace:app")
-		r.Header.Add(extension.HeaderArgoCDProjectName, "bad^project")
+		r.Header.Add(extension.HeaderCDApplicationName, "namespace:app")
+		r.Header.Add(extension.HeaderCDProjectName, "bad^project")
 
 		// when
 		rr, err := extension.ValidateHeaders(r)
@@ -150,7 +150,7 @@ func TestRegisterExtensions(t *testing.T) {
 		// given
 		t.Parallel()
 		f := setup()
-		settings := &settings.ArgoCDSettings{
+		settings := &settings.Settings{
 			ExtensionConfig: map[string]string{
 				"":            getExtensionConfigString(),
 				"another-ext": getSingleExtensionConfigString(),
@@ -214,7 +214,7 @@ func TestRegisterExtensions(t *testing.T) {
 				// given
 				t.Parallel()
 				f := setup()
-				settings := &settings.ArgoCDSettings{
+				settings := &settings.Settings{
 					ExtensionConfig: map[string]string{
 						"": tc.configYaml,
 					},
@@ -362,7 +362,7 @@ func TestCallExtension(t *testing.T) {
 		secrets["extension.auth.header"] = "Bearer some-bearer-token"
 		secrets["extension.auth.header2"] = "Bearer another-bearer-token"
 
-		settings := &settings.ArgoCDSettings{
+		settings := &settings.Settings{
 			ExtensionConfig: map[string]string{
 				"ephemeral": "services:\n- url: http://some-server.com",
 				"":          configYaml,
@@ -391,8 +391,8 @@ func TestCallExtension(t *testing.T) {
 		t.Helper()
 		r, err := http.NewRequestWithContext(t.Context(), method, url, http.NoBody)
 		require.NoError(t, err, "error initializing request")
-		r.Header.Add(extension.HeaderArgoCDApplicationName, "namespace:app-name")
-		r.Header.Add(extension.HeaderArgoCDProjectName, defaultProjectName)
+		r.Header.Add(extension.HeaderCDApplicationName, "namespace:app-name")
+		r.Header.Add(extension.HeaderCDProjectName, defaultProjectName)
 		return r
 	}
 
@@ -444,12 +444,12 @@ func TestCallExtension(t *testing.T) {
 		require.NoError(t, err)
 		actual := strings.TrimSuffix(string(body), "\n")
 		assert.Equal(t, backendResponse, actual)
-		assert.Equal(t, defaultServerNamespace, resp.Header.Get(extension.HeaderArgoCDNamespace))
-		assert.Equal(t, clusterURL, resp.Header.Get(extension.HeaderArgoCDTargetClusterURL))
+		assert.Equal(t, defaultServerNamespace, resp.Header.Get(extension.HeaderCDNamespace))
+		assert.Equal(t, clusterURL, resp.Header.Get(extension.HeaderCDTargetClusterURL))
 		assert.Equal(t, "Bearer some-bearer-token", resp.Header.Get("Authorization"))
-		assert.Equal(t, "some-user", resp.Header.Get(extension.HeaderArgoCDUsername))
-		assert.Equal(t, "some-user-id", resp.Header.Get(extension.HeaderArgoCDUserId))
-		assert.Equal(t, "group1,group2", resp.Header.Get(extension.HeaderArgoCDGroups))
+		assert.Equal(t, "some-user", resp.Header.Get(extension.HeaderCDUsername))
+		assert.Equal(t, "some-user-id", resp.Header.Get(extension.HeaderCDUserId))
+		assert.Equal(t, "group1,group2", resp.Header.Get(extension.HeaderCDGroups))
 
 		// waitgroup is necessary to make sure assertions aren't executed before
 		// the goroutine initiated by extension.CallExtension concludes which would
@@ -515,12 +515,12 @@ func TestCallExtension(t *testing.T) {
 
 		url := fmt.Sprintf("%s/extensions/%s/", ts.URL, extName)
 		req := newExtensionRequest(t, http.MethodGet, url)
-		req.Header.Del(extension.HeaderArgoCDApplicationName)
+		req.Header.Del(extension.HeaderCDApplicationName)
 
 		req1 := req.Clone(t.Context())
-		req1.Header.Add(extension.HeaderArgoCDApplicationName, "ns1:app1")
+		req1.Header.Add(extension.HeaderCDApplicationName, "ns1:app1")
 		req2 := req.Clone(t.Context())
-		req2.Header.Add(extension.HeaderArgoCDApplicationName, "ns2:app2")
+		req2.Header.Add(extension.HeaderCDApplicationName, "ns2:app2")
 
 		// when
 		resp1, err := http.DefaultClient.Do(req1)
@@ -695,9 +695,9 @@ func TestCallExtension(t *testing.T) {
 
 		url := fmt.Sprintf("%s/extensions/%s/", ts.URL, extName)
 		req := newExtensionRequest(t, http.MethodGet, url)
-		req.Header.Del(extension.HeaderArgoCDApplicationName)
+		req.Header.Del(extension.HeaderCDApplicationName)
 		req1 := req.Clone(t.Context())
-		req1.Header.Add(extension.HeaderArgoCDApplicationName, "ns1:app1")
+		req1.Header.Add(extension.HeaderCDApplicationName, "ns1:app1")
 
 		// when
 		resp1, err := http.DefaultClient.Do(req1)

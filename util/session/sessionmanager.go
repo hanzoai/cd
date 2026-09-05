@@ -341,7 +341,7 @@ func pickRandomNonAdminLoginFailure(failures map[string]LoginAttempts, username 
 	i := 0
 	for key := range failures {
 		if i == idx {
-			if key == common.ArgoCDAdminUsername || key == username {
+			if key == common.AdminUsername || key == username {
 				return pickRandomNonAdminLoginFailure(failures, username)
 			}
 			return &key

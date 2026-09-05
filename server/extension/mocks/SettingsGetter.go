@@ -37,23 +37,23 @@ func (_m *SettingsGetter) EXPECT() *SettingsGetter_Expecter {
 }
 
 // Get provides a mock function for the type SettingsGetter
-func (_mock *SettingsGetter) Get() (*settings.ArgoCDSettings, error) {
+func (_mock *SettingsGetter) Get() (*settings.Settings, error) {
 	ret := _mock.Called()
 
 	if len(ret) == 0 {
 		panic("no return value specified for Get")
 	}
 
-	var r0 *settings.ArgoCDSettings
+	var r0 *settings.Settings
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func() (*settings.ArgoCDSettings, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func() (*settings.Settings, error)); ok {
 		return returnFunc()
 	}
-	if returnFunc, ok := ret.Get(0).(func() *settings.ArgoCDSettings); ok {
+	if returnFunc, ok := ret.Get(0).(func() *settings.Settings); ok {
 		r0 = returnFunc()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*settings.ArgoCDSettings)
+			r0 = ret.Get(0).(*settings.Settings)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func() error); ok {
@@ -81,12 +81,12 @@ func (_c *SettingsGetter_Get_Call) Run(run func()) *SettingsGetter_Get_Call {
 	return _c
 }
 
-func (_c *SettingsGetter_Get_Call) Return(argoCDSettings *settings.ArgoCDSettings, err error) *SettingsGetter_Get_Call {
+func (_c *SettingsGetter_Get_Call) Return(argoCDSettings *settings.Settings, err error) *SettingsGetter_Get_Call {
 	_c.Call.Return(argoCDSettings, err)
 	return _c
 }
 
-func (_c *SettingsGetter_Get_Call) RunAndReturn(run func() (*settings.ArgoCDSettings, error)) *SettingsGetter_Get_Call {
+func (_c *SettingsGetter_Get_Call) RunAndReturn(run func() (*settings.Settings, error)) *SettingsGetter_Get_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -42,10 +42,10 @@ import (
 	"github.com/hanzoai/cd/reposerver/apiclient"
 	applog "github.com/hanzoai/cd/util/app/log"
 	"github.com/hanzoai/cd/util/app/path"
+	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 	"github.com/hanzoai/cd/util/cd"
 	argodiff "github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
-	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 	"github.com/hanzoai/cd/util/db"
 	"github.com/hanzoai/cd/util/git"
 	utilio "github.com/hanzoai/cd/util/io"
@@ -941,7 +941,7 @@ func (m *appStateManager) CompareAppState(ctx context.Context, app *v1alpha1.App
 		conditions = append(conditions, v1alpha1.ApplicationCondition{Type: v1alpha1.ApplicationConditionUnknownError, Message: err.Error(), LastTransitionTime: &now})
 	}
 	diffConfigBuilder.WithGVKParser(gvkParser)
-	diffConfigBuilder.WithManager(common.ArgoCDSSAManager)
+	diffConfigBuilder.WithManager(common.SSAManager)
 
 	diffConfigBuilder.WithServerSideDiff(serverSideDiff)
 

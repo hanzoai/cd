@@ -33,9 +33,9 @@ import (
 type ExternalNamespace string
 
 const (
-	// ArgoCDNamespace is the namespace into which Argo CD and ApplicationSet controller are deployed,
+	// E2ENamespace is the namespace into which Hanzo CD and ApplicationSet controller are deployed,
 	// and in which Application resources should be created.
-	ArgoCDNamespace = "cd-e2e"
+	E2ENamespace = "cd-e2e"
 
 	// ArgoCDExternalNamespace is an external namespace to test additional namespaces
 	ArgoCDExternalNamespace ExternalNamespace = "cd-e2e-external"
@@ -45,7 +45,7 @@ const (
 
 	// ApplicationsResourcesNamespace is the namespace into which temporary resources (such as Deployments/Pods/etc)
 	// can be deployed, such as using it as the target namespace in an Application resource.
-	// Note: this is NOT the namespace the ApplicationSet controller is deployed to; see ArgoCDNamespace.
+	// Note: this is NOT the namespace the ApplicationSet controller is deployed to; see E2ENamespace.
 	ApplicationsResourcesNamespace = "applicationset-e2e"
 
 	TestingLabel = "e2e.apps.hanzo.ai"
@@ -76,10 +76,10 @@ func GetEnvWithDefault(envName, defaultValue string) string {
 	return r
 }
 
-// TestNamespace returns the namespace where Argo CD E2E test instance will be
+// TestNamespace returns the namespace where Hanzo CD E2E test instance will be
 // running in.
 func TestNamespace() string {
-	return GetEnvWithDefault("CD_E2E_NAMESPACE", ArgoCDNamespace)
+	return GetEnvWithDefault("CD_E2E_NAMESPACE", E2ENamespace)
 }
 
 // GetE2EFixtureK8sClient initializes the Kubernetes clients (if needed), and returns the most recently initialized value.
@@ -173,7 +173,7 @@ func EnsureCleanState(t *testing.T) {
 	})
 
 	// First we wait up to 30 seconds for all the ApplicationSets to delete, but we don't fail if they don't.
-	// Why? We want to give Argo CD time to delete the Application's child resources, before we remove the finalizers below.
+	// Why? We want to give Hanzo CD time to delete the Application's child resources, before we remove the finalizers below.
 	_ = waitForSuccess(func() error {
 		list, err := fixtureClient.AppSetClientset.List(t.Context(), metav1.ListOptions{})
 		if err != nil {
@@ -187,7 +187,7 @@ func EnsureCleanState(t *testing.T) {
 		return nil // Pass
 	}, time.Now().Add(30*time.Second))
 
-	// Remove finalizers from Argo CD Application resources in the namespace
+	// Remove finalizers from Hanzo CD Application resources in the namespace
 	err := waitForSuccess(func() error {
 		appList, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
 		if err != nil {
