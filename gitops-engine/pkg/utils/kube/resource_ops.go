@@ -249,7 +249,7 @@ func (k *kubectlResourceOperations) rbacReconcile(ctx context.Context, obj *unst
 		// not want. We need to check if the namespace exists, before know if it is safe to run this
 		// command. Skip this for dryRuns.
 
-		// When an Argo CD Application specifies destination.namespace, that namespace
+		// When a Hanzo CD Application specifies destination.namespace, that namespace
 		// may be propagated even for cluster-scoped resources. Passing a namespace in
 		// this case causes `kubectl auth reconcile` to fail with:
 		//   "namespaces <ns> not found"

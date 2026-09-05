@@ -1351,7 +1351,7 @@ func (sc *syncContext) needsClientSideApplyMigration(liveObj *unstructured.Unstr
 // from a client-side apply manager (operation: Update) to the server-side apply manager.
 // This directly patches the managedFields to transfer field ownership, avoiding the need
 // to write the last-applied-configuration annotation (which has a 262KB size limit).
-// This is the primary method for CSA to SSA migration in ArgoCD.
+// This is the primary method for CSA to SSA migration in Hanzo CD.
 func (sc *syncContext) performCSAUpgradeMigration(ctx context.Context, liveObj *unstructured.Unstructured, csaFieldManager string) error {
 	sc.log.WithValues("resource", kubeutil.GetResourceKey(liveObj)).V(1).Info(
 		"Performing csaupgrade-based migration")
