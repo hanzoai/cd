@@ -127,7 +127,7 @@ spec:
       forceCommonLabels: false
       forceCommonAnnotations: false
       images:
-      - quay.io/argoprojlabs/cd-e2e-container:0.2
+      - ghcr.io/hanzoai/cd-e2e-container:0.2
       - my-app=gcr.io/my-repo/my-app:0.1
       namespace: custom-namespace
       replicas:

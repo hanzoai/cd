@@ -7,7 +7,7 @@ spec:
   init:
     command: [kustomize, version]
   generate:
-    command: [sh, -c, 'kustomize edit set image test=quay.io/argoprojlabs/cd-e2e-container:0.2 && kustomize build --load-restrictor LoadRestrictionsNone']
+    command: [sh, -c, 'kustomize edit set image test=ghcr.io/hanzoai/cd-e2e-container:0.2 && kustomize build --load-restrictor LoadRestrictionsNone']
   discover:
     find:
       glob: "**/kustomization.yaml"

@@ -1,6 +1,6 @@
 function (
     containerPort=80, 
-    image="quay.io/argoprojlabs/cd-e2e-container:0.2",
+    image="ghcr.io/hanzoai/cd-e2e-container:0.2",
     name="jsonnet-guestbook-ui",
     replicas=1,
     servicePort=80, 

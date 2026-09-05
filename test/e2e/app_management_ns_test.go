@@ -918,7 +918,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/cd-e2e-container:0.2")
 		}).
 		Given().
 		LocalPath(guestbookPathLocal).
@@ -929,7 +929,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 81")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.3")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/cd-e2e-container:0.3")
 		}).
 		Given().
 		LocalPath("").
@@ -940,7 +940,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/cd-e2e-container:0.2")
 		})
 }
 

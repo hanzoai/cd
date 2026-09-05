@@ -24,7 +24,7 @@ cd app create APPNAME [flags]
   cd app create nginx-ingress --repo https://charts.helm.sh/stable --helm-chart nginx-ingress --revision 1.24.3 --dest-namespace default --dest-server https://kubernetes.default.svc
 
   # Create a Kustomize app
-  cd app create kustomize-guestbook --repo https://github.com/hanzocd/example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image quay.io/argoprojlabs/cd-e2e-container:0.1
+  cd app create kustomize-guestbook --repo https://github.com/hanzocd/example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image ghcr.io/hanzoai/cd-e2e-container:0.1
 
   # Create a MultiSource app while yaml file contains an application with multiple sources
   cd app create guestbook --file <path-to-yaml-file>
