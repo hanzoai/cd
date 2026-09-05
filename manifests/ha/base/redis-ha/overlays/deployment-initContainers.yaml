@@ -3,7 +3,7 @@
   value:
     name: secret-init
     command: [ 'cd', 'admin', 'redis-initial-password' ]
-    image: quay.io/argoproj/cd:latest
+    image: ghcr.io/hanzoai/cd:latest
     imagePullPolicy: IfNotPresent
     securityContext:
       allowPrivilegeEscalation: false

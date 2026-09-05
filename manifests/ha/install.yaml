@@ -33079,7 +33079,7 @@ spec:
               key: applicationsetcontroller.status.max.resources.count
               name: cd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/cd:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         name: cd-applicationset-controller
         ports:
@@ -33251,7 +33251,7 @@ spec:
         - -n
         - /usr/local/bin/cd
         - /shared/cd-dex
-        image: quay.io/argoproj/cd:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         name: copyutil
         securityContext:
@@ -33371,7 +33371,7 @@ spec:
               key: notificationscontroller.repo.server.client.cert.key.path
               name: cd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/cd:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         livenessProbe:
           tcpSocket:
@@ -33508,7 +33508,7 @@ spec:
         - cd
         - admin
         - redis-initial-password
-        image: quay.io/argoproj/cd:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: IfNotPresent
         name: secret-init
         securityContext:
@@ -33873,7 +33873,7 @@ spec:
           value: /helm-working-dir
         - name: HELM_DATA_HOME
           value: /helm-working-dir
-        image: quay.io/argoproj/cd:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -33928,7 +33928,7 @@ spec:
         command:
         - sh
         - -c
-        image: quay.io/argoproj/cd:latest
+        image: ghcr.io/hanzoai/cd:latest
         name: copyutil
         securityContext:
           allowPrivilegeEscalation: false
@@ -34418,7 +34418,7 @@ spec:
               key: server.sync.replace.allowed
               name: cd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/cd:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -34929,7 +34929,7 @@ spec:
               optional: true
         - name: KUBECACHEDIR
           value: /tmp/kubecache
-        image: quay.io/argoproj/cd:latest
+        image: ghcr.io/hanzoai/cd:latest
         imagePullPolicy: Always
         name: cd-application-controller
         ports:
