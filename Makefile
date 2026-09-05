@@ -331,6 +331,12 @@ manifests-local:
 .PHONY: manifests
 manifests: test-tools-image
 	$(call run-in-test-client,make manifests-local IMAGE_REGISTRY='${IMAGE_REGISTRY}' IMAGE_NAMESPACE='${IMAGE_NAMESPACE}' IMAGE_REPOSITORY='${IMAGE_REPOSITORY}' IMAGE_TAG='${IMAGE_TAG}')
+
+# charts/cd is hand-derived from these same manifests; this fails the moment
+# the two stop agreeing on the rendered object names.
+.PHONY: verify-helm-chart
+verify-helm-chart:
+	./hack/verify-helm-chart.sh
 # consolidated binary for cli, util, server, repo-server, controller
 
 .PHONY: argocd-all
@@ -597,7 +603,7 @@ pre-commit: codegen build lint test
 pre-commit-local: codegen-local build-local lint-local test-local
 
 .PHONY: release-precheck
-release-precheck: manifests
+release-precheck: manifests verify-helm-chart
 	@if [ "$(GIT_TREE_STATE)" != "clean" ]; then echo 'git tree state is $(GIT_TREE_STATE)' ; exit 1; fi
 	@if [ -z "$(GIT_TAG)" ]; then echo 'commit must be tagged to perform release' ; exit 1; fi
 	@if [ "$(GIT_TAG)" != "v`cat VERSION`" ]; then echo 'VERSION does not match git tag'; exit 1; fi
