@@ -14,7 +14,7 @@
 --   Progressing (True)  - Configuration is being applied across nodes (ConfigurationProgressing)
 --   Ignored     (True)  - Policy matches no nodes (NoMatchingNode)
 --
--- ArgoCD health mapping:
+-- Hanzo CD health mapping:
 --   Available=True   => Healthy
 --   Degraded=True    => Degraded
 --   Progressing=True => Progressing
