@@ -1,0 +1,34 @@
+Hanzo CD has been installed into {{ .Release.Namespace }}.
+
+1. Reach the API/UI (port-forward for a quick look):
+
+   kubectl port-forward -n {{ .Release.Namespace }} svc/hanzocd-server 8080:443
+{{- if .Values.server.ingress.enabled }}
+
+   or via the ingress host(s) configured in server.ingress.hosts:
+   {{- range .Values.server.ingress.hosts }}
+   - {{ .host }}
+   {{- end }}
+{{- end }}
+
+2. The initial admin password lives in the hanzocd-secret Secret once the
+   server bootstraps it:
+
+   kubectl get secret -n {{ .Release.Namespace }} hanzocd-secret -o jsonpath='{.data.admin\.password}' | base64 -d
+
+3. Log in with the CLI:
+
+   cd login <server-address>
+
+{{- if not .Values.ha.enabled }}
+
+This release runs a single redis instance and one replica of server,
+repo-server and application-controller. Set ha.enabled=true for the
+multi-replica, redis-ha (sentinel + haproxy) topology.
+{{- else }}
+
+This release runs the redis-ha (sentinel + haproxy) topology. server and
+repo-server run {{ include "cd.server.replicaCount" . }} and {{ include "cd.repoServer.replicaCount" . }} replicas
+respectively; scale application-controller with controller.replicaCount for
+sharding.
+{{- end }}

@@ -16,13 +16,13 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: cd-server
+          app.kubernetes.io/name: hanzocd-server
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: cd-repo-server
+          app.kubernetes.io/name: hanzocd-repo-server
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: cd-application-controller
+          app.kubernetes.io/name: hanzocd-application-controller
     ports:
     - port: 6379
       protocol: TCP

@@ -1,0 +1,331 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-redis
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-redis
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    resourceNames:
+      - hanzocd-redis
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-redis
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hanzocd-redis
+subjects:
+  - kind: ServiceAccount
+    name: hanzocd-redis
+{{- if .Values.ha.enabled }}
+---
+# redis-ha's own pods (upstream dandydeveloper/redis-ha chart) never run our
+# "cd admin redis-initial-password" bootstrap, so nothing creates the
+# hanzocd-redis secret that every hanzocd component -- and, via
+# redis-ha.existingSecret, redis-ha itself -- authenticates with. Run it once
+# as a hook, ahead of every other resource.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hanzocd-redis-secret-init
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-redis
+    spec:
+      serviceAccountName: hanzocd-redis
+      restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: secret-init
+          image: {{ include "cd.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - cd
+            - admin
+            - redis-initial-password
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+{{- if .Values.networkPolicy.create }}
+---
+# The upstream redis-ha chart ships no NetworkPolicy of its own; these mirror
+# manifests/ha/base/redis-ha/cd-redis-ha-*-network-policy.yaml so HA mode
+# keeps the same ingress/egress coverage as every other component.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-redis-ha-haproxy
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-redis-ha-proxy-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: redis-ha-haproxy
+      release: {{ .Release.Name }}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-repo-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-application-controller
+    ports:
+    - port: 6379
+      protocol: TCP
+    - port: 26379
+      protocol: TCP
+  - from:
+    - namespaceSelector: {}
+    ports:
+    - port: 9101
+      protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-redis-ha
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-redis-ha-server-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: redis-ha
+      release: {{ .Release.Name }}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: redis-ha-haproxy
+          release: {{ .Release.Name }}
+    - podSelector:
+        matchLabels:
+          app: redis-ha
+          release: {{ .Release.Name }}
+    ports:
+    - port: 6379
+      protocol: TCP
+    - port: 26379
+      protocol: TCP
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: redis-ha
+          release: {{ .Release.Name }}
+    ports:
+    - port: 6379
+      protocol: TCP
+    - port: 26379
+      protocol: TCP
+  - ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
+{{- end }}
+{{- else }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: redis
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-redis
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-redis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-redis
+    spec:
+      initContainers:
+        - command:
+            - cd
+            - admin
+            - redis-initial-password
+          image: {{ include "cd.image" . }}
+          imagePullPolicy: IfNotPresent
+          name: secret-init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: hanzocd-redis
+      containers:
+      - name: redis
+        image: redis:8.6.4-alpine
+        imagePullPolicy: Always
+        args:
+        - "--save"
+        - ""
+        - "--appendonly"
+        - "no"
+        - --requirepass $(KV_PASSWORD)
+        env:
+          - name: KV_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: auth
+                name: hanzocd-redis
+        ports:
+        - containerPort: 6379
+        {{- with .Values.redis.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: hanzocd-redis
+              topologyKey: kubernetes.io/hostname
+          - weight: 5
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/part-of: hanzocd
+              topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: redis
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-redis
+spec:
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: 6379
+  selector:
+    app.kubernetes.io/name: hanzocd-redis
+{{- if .Values.networkPolicy.create }}
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-redis
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: redis
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-redis-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-redis
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-repo-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: hanzocd-application-controller
+    ports:
+    - protocol: TCP
+      port: 6379
+{{- end }}
+{{- end }}

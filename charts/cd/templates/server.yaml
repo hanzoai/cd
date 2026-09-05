@@ -1,0 +1,793 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  - configmaps
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - apps.hanzo.ai
+  resources:
+  - applications
+  - appprojects
+  - applicationsets
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+  - update
+  - delete
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hanzocd-server
+subjects:
+- kind: ServiceAccount
+  name: hanzocd-server
+{{- if .Values.global.clusterScope }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - delete  # supports deletion a live object in UI
+  - get     # supports viewing live object manifest in UI
+  - patch   # supports `hanzocd app patch`
+- apiGroups:
+  - '*'
+  resources:
+  - '*/finalizers'
+  verbs:
+  - update # allows to set metadata.ownerReferences[x].blockOwnerDeletion with OwnerReferencesPermissionEnforcement admission
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - list    # supports listing events in UI
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - pods/log
+  verbs:
+  - get     # supports viewing pod logs from UI
+- apiGroups:
+  - "apps.hanzo.ai"
+  resources:
+  - "applications"
+  - "applicationsets"
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create   # supports triggering jobs from UI
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: hanzocd-server
+subjects:
+- kind: ServiceAccount
+  name: hanzocd-server
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-server
+  replicas: {{ include "cd.server.replicaCount" . }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-server
+    spec:
+      serviceAccountName: hanzocd-server
+      containers:
+        - name: hanzocd-server
+          image: {{ include "cd.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - /usr/local/bin/hanzocd-server
+          env:
+            - name: KV_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: auth
+                  name: hanzocd-redis
+            - name: CD_API_SERVER_REPLICAS
+              value: {{ include "cd.server.replicaCount" . | quote }}
+            - name: GRPC_ENABLE_TXT_SERVICE_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.grpc.enable.txt.service.config
+                  optional: true
+            - name: CD_SERVER_INSECURE
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.insecure
+                  optional: true
+            - name: CD_SERVER_BASEHREF
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.basehref
+                  optional: true
+            - name: CD_SERVER_ROOTPATH
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.rootpath
+                  optional: true
+            - name: CD_SERVER_LOGFORMAT
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.log.format
+                  optional: true
+            - name: CD_SERVER_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.log.level
+                  optional: true
+            - name: CD_K8S_CLIENT_QPS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8s.client.qps
+                  optional: true
+            - name: CD_K8S_CLIENT_BURST
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8s.client.burst
+                  optional: true
+            - name: CD_K8S_CLIENT_MAX_IDLE_CONNECTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8s.client.max.idle.connections
+                  optional: true
+            - name: CD_K8S_TCP_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8s.tcp.timeout
+                  optional: true
+            - name: CD_K8S_TCP_KEEPALIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8s.tcp.keepalive
+                  optional: true
+            - name: CD_K8S_TLS_HANDSHAKE_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8s.tls.handshake.timeout
+                  optional: true
+            - name: CD_K8S_TCP_IDLE_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8s.tcp.idle.timeout
+                  optional: true
+            - name: CD_SERVER_REPO_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: repo.server
+                  optional: true
+            - name: CD_SERVER_DEX_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.dex.server
+                  optional: true
+            - name: CD_SERVER_DISABLE_AUTH
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.disable.auth
+                  optional: true
+            - name: CD_SERVER_ENABLE_GZIP
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.enable.gzip
+                  optional: true
+            - name: CD_SERVER_REPO_SERVER_TIMEOUT_SECONDS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.repo.server.timeout.seconds
+                  optional: true
+            - name: CD_SERVER_X_FRAME_OPTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.x.frame.options
+                  optional: true
+            - name: CD_SERVER_CONTENT_SECURITY_POLICY
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.content.security.policy
+                  optional: true
+            - name: CD_SERVER_REPO_SERVER_PLAINTEXT
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.repo.server.plaintext
+                  optional: true
+            - name: CD_SERVER_REPO_SERVER_STRICT_TLS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.repo.server.strict.tls
+                  optional: true
+            - name: CD_SERVER_REPO_SERVER_CA_CERT_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.repo.server.ca.cert.path
+                  optional: true
+            - name: CD_SERVER_REPO_SERVER_CLIENT_CERT_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.repo.server.client.cert.path
+                  optional: true
+            - name: CD_SERVER_REPO_SERVER_CLIENT_CERT_KEY_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.repo.server.client.cert.key.path
+                  optional: true
+            - name: CD_SERVER_DEX_SERVER_PLAINTEXT
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.dex.server.plaintext
+                  optional: true
+            - name: CD_SERVER_DEX_SERVER_STRICT_TLS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.dex.server.strict.tls
+                  optional: true
+            - name: CD_TLS_MIN_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.tls.minversion
+                  optional: true
+            - name: CD_TLS_MAX_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.tls.maxversion
+                  optional: true
+            - name: CD_TLS_CIPHERS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.tls.ciphers
+                  optional: true
+            - name: CD_SERVER_CONNECTION_STATUS_CACHE_EXPIRATION
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.connection.status.cache.expiration
+                  optional: true
+            - name: CD_SERVER_OIDC_CACHE_EXPIRATION
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.oidc.cache.expiration
+                  optional: true
+            - name: CD_SERVER_STATIC_ASSETS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.staticassets
+                  optional: true
+            - name: CD_APP_STATE_CACHE_EXPIRATION
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.app.state.cache.expiration
+                  optional: true
+            - name: KV_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: redis.server
+                  optional: true
+
+            - name: KV_SENTINEL_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: redis.sentinel.hosts
+                  optional: true
+
+            - name: KV_SENTINEL_MASTER
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: redis.sentinel.master
+                  optional: true
+            - name: KV_COMPRESSION
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: redis.compression
+                  optional: true
+            - name: REDISDB
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: redis.db
+                  optional: true
+            - name: CD_KV_KEY_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: redis.key.prefix
+                  optional: true
+            - name: CD_DEFAULT_CACHE_EXPIRATION
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.default.cache.expiration
+                  optional: true
+            - name: CD_MAX_COOKIE_NUMBER
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.http.cookie.maxnumber
+                  optional: true
+            - name: CD_SERVER_LISTEN_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.listen.address
+                  optional: true
+            - name: CD_SERVER_METRICS_LISTEN_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.metrics.listen.address
+                  optional: true
+            - name: CD_SERVER_OTLP_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: otlp.address
+                  optional: true
+            - name: CD_SERVER_OTLP_INSECURE
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: otlp.insecure
+                  optional: true
+            - name: CD_SERVER_OTLP_HEADERS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: otlp.headers
+                  optional: true
+            - name: CD_SERVER_OTLP_ATTRS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: otlp.attrs
+                  optional: true
+            - name: CD_SERVER_OTLP_SAMPLE_RATIO
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: otlp.sample.ratio
+                  optional: true
+            - name: CD_APPLICATION_NAMESPACES
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: application.namespaces
+                  optional: true
+            - name: CD_SERVER_ENABLE_PROXY_EXTENSION
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.enable.proxy.extension
+                  optional: true
+            - name: CD_K8SCLIENT_RETRY_MAX
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8sclient.retry.max
+                  optional: true
+            - name: CD_K8SCLIENT_RETRY_BASE_BACKOFF
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.k8sclient.retry.base.backoff
+                  optional: true
+            - name: CD_API_CONTENT_TYPES
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.api.content.types
+                  optional: true
+            - name: CD_SERVER_WEBHOOK_PARALLELISM_LIMIT
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.webhook.parallelism.limit
+                  optional: true
+            - name: CD_SERVER_GLOB_CACHE_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.glob.cache.size
+                  optional: true
+            - name: CD_SERVER_WEBHOOK_REFRESH_WORKERS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.webhook.refresh.workers
+                  optional: true
+            - name: CD_APPLICATIONSET_CONTROLLER_ENABLE_NEW_GIT_FILE_GLOBBING
+              valueFrom:
+                configMapKeyRef:
+                  key: applicationsetcontroller.enable.new.git.file.globbing
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: CD_APPLICATIONSET_CONTROLLER_SCM_ROOT_CA_PATH
+              valueFrom:
+                configMapKeyRef:
+                  key: applicationsetcontroller.scm.root.ca.path
+                  name: hanzocd-cmd-params-cm
+                  optional: true
+            - name: CD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: applicationsetcontroller.allowed.scm.providers
+                  optional: true
+            - name: CD_APPLICATIONSET_CONTROLLER_ENABLE_SCM_PROVIDERS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: applicationsetcontroller.enable.scm.providers
+                  optional: true
+            - name: CD_APPLICATIONSET_CONTROLLER_ENABLE_GITHUB_API_METRICS
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: applicationsetcontroller.enable.github.api.metrics
+                  optional: true
+            - name: CD_HYDRATOR_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: hydrator.enabled
+                  optional: true
+            - name: CD_SYNC_WITH_REPLACE_ALLOWED
+              valueFrom:
+                configMapKeyRef:
+                  name: hanzocd-cmd-params-cm
+                  key: server.sync.replace.allowed
+                  optional: true
+          volumeMounts:
+            - name: ssh-known-hosts
+              mountPath: /app/config/ssh
+            - name: tls-certs
+              mountPath: /app/config/tls
+            - name: hanzocd-repo-server-tls
+              mountPath: /app/config/server/tls
+            - name: hanzocd-repo-server-mtls
+              mountPath: /app/config/reposerver/mtls
+            - name: hanzocd-dex-server-tls
+              mountPath: /app/config/dex/tls
+            - mountPath: /home/cd
+              name: plugins-home
+            - mountPath: /tmp
+              name: tmp
+            - name: hanzocd-cmd-params-cm
+              mountPath: /home/cd/params
+          ports:
+            - containerPort: 8080
+            - containerPort: 8083
+          livenessProbe:
+            httpGet:
+              path: /healthz?full=true
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 30
+          {{- with .Values.server.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+      volumes:
+        - emptyDir: {}
+          name: plugins-home
+        - emptyDir: {}
+          name: tmp
+        - name: ssh-known-hosts
+          configMap:
+            name: hanzocd-ssh-known-hosts-cm
+        - name: tls-certs
+          configMap:
+            name: hanzocd-tls-certs-cm
+        - name: hanzocd-repo-server-tls
+          secret:
+            secretName: hanzocd-repo-server-tls
+            optional: true
+            items:
+              - key: tls.crt
+                path: tls.crt
+              - key: tls.key
+                path: tls.key
+              - key: ca.crt
+                path: ca.crt
+        - name: hanzocd-dex-server-tls
+          secret:
+            secretName: hanzocd-dex-server-tls
+            optional: true
+            items:
+              - key: tls.crt
+                path: tls.crt
+              - key: ca.crt
+                path: ca.crt
+        - name: hanzocd-repo-server-mtls
+          secret:
+            secretName: hanzocd-repo-server-mtls
+            optional: true
+            items:
+              - key: client.crt
+                path: client.crt
+              - key: client.key
+                path: client.key
+              - key: server-ca.crt
+                path: server-ca.crt
+        - name: hanzocd-cmd-params-cm
+          configMap:
+            optional: true
+            name: hanzocd-cmd-params-cm
+            items:
+            - key: server.profile.enabled
+              path: profiler.enabled
+{{- if .Values.ha.enabled }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: hanzocd-server
+            topologyKey: kubernetes.io/hostname
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: hanzocd-server
+              topologyKey: topology.kubernetes.io/zone
+{{- else }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: hanzocd-server
+                topologyKey: kubernetes.io/hostname
+            - weight: 5
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/part-of: hanzocd
+                topologyKey: kubernetes.io/hostname
+{{- end }}
+      nodeSelector:
+        kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server
+spec:
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8080
+  - name: https
+    protocol: TCP
+    port: 443
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/name: hanzocd-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server-metrics
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server-metrics
+spec:
+  ports:
+  - name: metrics
+    protocol: TCP
+    port: 8083
+    targetPort: 8083
+  selector:
+    app.kubernetes.io/name: hanzocd-server
+{{- if .Values.networkPolicy.create }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-server-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-server
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+{{- end }}
+{{- if .Values.server.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hanzocd-server
+  labels:
+    app.kubernetes.io/name: hanzocd-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: server
+    {{- include "cd.labels" . | nindent 4 }}
+  {{- with .Values.server.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.server.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  rules:
+    {{- range .Values.server.ingress.hosts }}
+    - host: {{ .host }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: hanzocd-server
+                port:
+                  name: http
+          {{- end }}
+    {{- end }}
+  {{- with .Values.server.ingress.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

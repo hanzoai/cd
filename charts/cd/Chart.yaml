@@ -1,0 +1,22 @@
+apiVersion: v2
+name: cd
+description: Declarative GitOps continuous delivery for Kubernetes
+type: application
+version: 0.1.0
+appVersion: "3.7.8"
+kubeVersion: ">=1.25.0-0"
+home: https://cd.hanzo.ai
+sources:
+  - https://github.com/hanzoai/cd
+keywords:
+  - gitops
+  - continuous-delivery
+  - kubernetes
+maintainers:
+  - name: Hanzo
+    url: https://hanzo.ai
+dependencies:
+  - name: redis-ha
+    version: 4.35.10
+    repository: https://dandydeveloper.github.io/charts
+    condition: ha.enabled

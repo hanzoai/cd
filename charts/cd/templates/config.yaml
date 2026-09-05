@@ -1,0 +1,210 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hanzocd-cm
+  labels:
+    app.kubernetes.io/name: hanzocd-cm
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+data:
+  ### Default configuration for ignoreResourceUpdates.
+  # The ignoreResourceUpdates list contains K8s resource's properties that are known to be frequently updated
+  # by controllers and operators. These resources, when watched by argo, will cause many unnecessary updates.
+  # Ignoring status for all resources. An update will still be sent if the status update causes the health to change.
+  resource.customizations.ignoreResourceUpdates.all: |
+    jsonPointers:
+      - /status
+  # Some Application fields are generated and not related to the application updates itself
+  # The Application itself is already watched by the controller lister, but this configuration is applied for apps of apps
+  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Application: |
+    jqPathExpressions:
+      - '.metadata.annotations."notified.notifications.apps.hanzo.ai"'
+      - '.metadata.annotations."apps.hanzo.ai/refresh"'
+      - '.metadata.annotations."apps.hanzo.ai/hydrate"'
+      - '.operation'
+  resource.customizations.ignoreResourceUpdates.apps.hanzo.ai_Rollout: |
+    jqPathExpressions:
+      - '.metadata.annotations."notified.notifications.apps.hanzo.ai"'
+  # Legacy annotations used on HPA autoscaling/v1
+  resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler: |
+    jqPathExpressions:
+      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/behavior"'
+      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/conditions"'
+      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/metrics"'
+      - '.metadata.annotations."autoscaling.alpha.kubernetes.io/current-metrics"'
+  # Ignore the cluster-autoscaler status
+  resource.customizations.ignoreResourceUpdates.ConfigMap: |
+    jqPathExpressions:
+      # Ignore the cluster-autoscaler status
+      - '.metadata.annotations."cluster-autoscaler.kubernetes.io/last-updated"'
+      # Ignore the annotation of the legacy Leases election
+      - '.metadata.annotations."control-plane.alpha.kubernetes.io/leader"'
+  # Ignore the common scaling annotations
+  resource.customizations.ignoreResourceUpdates.apps_ReplicaSet: |
+    jqPathExpressions:
+      - '.metadata.annotations."deployment.kubernetes.io/desired-replicas"'
+      - '.metadata.annotations."deployment.kubernetes.io/max-replicas"'
+      - '.metadata.annotations."rollout.apps.hanzo.ai/desired-replicas"'
+  # Ignores update if EndpointSlice is not excluded globally
+  resource.customizations.ignoreResourceUpdates.discovery.k8s.io_EndpointSlice: |
+    jsonPointers:
+      - /metadata
+      - /endpoints
+      - /ports
+  # Ignores update if Endpoints is not excluded globally
+  resource.customizations.ignoreResourceUpdates.Endpoints: |
+    jsonPointers:
+      - /metadata
+      - /subsets
+
+  ### Default configuration for exclusions.
+  # The exclusion list are K8s resources that we assume will never be declared in Git,
+  # and are never child objects of managed resources that need to be presented in the resource tree.
+  # This list contains high volume and  high churn metadata objects which we exclude for performance
+  # reasons, reducing connections and load to the K8s API servers of managed clusters.
+  resource.exclusions: |
+    ### Network resources created by the Kubernetes control plane and excluded to reduce the number of watched events and UI clutter
+    - apiGroups:
+      - ''
+      - discovery.k8s.io
+      kinds:
+      - Endpoints
+      - EndpointSlice
+    ### Internal Kubernetes resources excluded reduce the number of watched events
+    - apiGroups:
+      - coordination.k8s.io
+      kinds:
+      - Lease
+    ### Internal Kubernetes Authz/Authn resources excluded reduce the number of watched events
+    - apiGroups:
+      - authentication.k8s.io
+      - authorization.k8s.io
+      kinds:
+      - SelfSubjectReview
+      - TokenReview
+      - LocalSubjectAccessReview
+      - SelfSubjectAccessReview
+      - SelfSubjectRulesReview
+      - SubjectAccessReview
+    ### Intermediate Certificate Request excluded reduce the number of watched events
+    - apiGroups:
+      - certificates.k8s.io
+      kinds:
+      - CertificateSigningRequest
+    - apiGroups:
+      - cert-manager.io
+      kinds:
+      - CertificateRequest
+    ### Cilium internal resources excluded reduce the number of watched events and UI Clutter
+    - apiGroups:
+      - cilium.io
+      kinds:
+      - CiliumIdentity
+      - CiliumEndpoint
+      - CiliumEndpointSlice
+    ### Kyverno intermediate and reporting resources excluded reduce the number of watched events and improve performance
+    - apiGroups:
+      - kyverno.io
+      - reports.kyverno.io
+      - wgpolicyk8s.io
+      kinds:
+      - PolicyReport
+      - ClusterPolicyReport
+      - EphemeralReport
+      - ClusterEphemeralReport
+      - AdmissionReport
+      - ClusterAdmissionReport
+      - BackgroundScanReport
+      - ClusterBackgroundScanReport
+      - UpdateRequest
+  {{- with .Values.config }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hanzocd-cmd-params-cm
+  labels:
+    app.kubernetes.io/name: hanzocd-cmd-params-cm
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+{{- $params := dict }}
+{{- $params = merge $params .Values.params }}
+{{- if .Values.ha.enabled }}
+{{- $params = merge $params (dict "redis.server" "hanzocd-redis-ha-haproxy:6379") }}
+{{- end }}
+{{- if .Values.hydrator.enabled }}
+{{- $params = merge $params (dict "hydrator.enabled" "true") }}
+{{- end }}
+{{- if $params }}
+data:
+  {{- toYaml $params | nindent 2 }}
+{{- end }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hanzocd-secret
+  labels:
+    app.kubernetes.io/name: hanzocd-secret
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+type: Opaque
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hanzocd-rbac-cm
+  labels:
+    app.kubernetes.io/name: hanzocd-rbac-cm
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+{{- with .Values.rbac }}
+data:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-gpg-keys-cm
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-gpg-keys-cm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-tls-certs-cm
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-tls-certs-cm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-ssh-known-hosts-cm
+    app.kubernetes.io/part-of: hanzocd
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-ssh-known-hosts-cm
+data:
+  ssh_known_hosts: |
+    # This file was automatically generated by hack/update-ssh-known-hosts.sh. DO NOT EDIT
+    [ssh.github.com]:443 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+    [ssh.github.com]:443 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+    [ssh.github.com]:443 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+    bitbucket.org ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPIQmuzMBuKdWeF4+a2sjSSpBK0iqitSQ+5BM9KhpexuGt20JpTVM7u5BDZngncgrqDMbWdxMWWOGtZ9UgbqgZE=
+    bitbucket.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazEu89wgQZ4bqs3d63QSMzYVa0MuJ2e2gKTKqu+UUO
+    bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQeJzhupRu0u0cdegZIa8e86EG2qOCsIsD1Xw0xSeiPDlCr7kq97NLmMbpKTX6Esc30NuoqEEHCuc7yWtwp8dI76EEEB1VqY9QJq6vk+aySyboD5QF61I/1WeTwu+deCbgKMGbUijeXhtfbxSxm6JwGrXrhBdofTsbKRUsrN1WoNgUa8uqN1Vx6WAJw1JHPhglEGGHea6QICwJOAr/6mrui/oB7pkaWKHj3z7d1IC4KWLtY47elvjbaTlkN04Kc/5LFEirorGYVbt15kAUlqGM65pk6ZBxtaO3+30LVlORZkxOh+LKL/BvbZ/iRNhItLqNyieoQj/uh/7Iv4uyH/cV/0b4WDSd3DptigWq84lJubb9t/DnZlrJazxyDCulTmKdOR7vs9gMTo+uoIrPSb8ScTtvw65+odKAlBj59dhnVp9zd7QUojOpXlL62Aw56U4oO+FALuevvMjiWeavKhJqlR7i5n9srYcrNV7ttmDw7kf/97P5zauIhxcjX+xHv4M=
+    github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+    github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+    github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+    gitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=
+    gitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf
+    gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9
+    ssh.dev.azure.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H
+    vs-ssh.visualstudio.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H
