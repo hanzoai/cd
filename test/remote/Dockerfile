@@ -60,31 +60,31 @@ RUN useradd -l -u 1000 -d /home/user -s /bin/bash user && \
     chgrp -R user /home/user && \
     chown root /etc/ssh/ssh_host_*_key* && \
     chmod 0600 /etc/ssh/ssh_host_*_key  && \
-    mkdir -p /tmp/argo-e2e/testdata.git && \
-    cd /tmp/argo-e2e/testdata.git && \
+    mkdir -p /tmp/cd-e2e/testdata.git && \
+    cd /tmp/cd-e2e/testdata.git && \
     HOME=/home/user git init --bare && \
     cd /app/config/testdata && \
     HOME=/home/user git init && \
     HOME=/home/user git add . && \
     HOME=/home/user git commit -a -m "Initial commit" && \
-    HOME=/home/user git remote add origin file:///tmp/argo-e2e/testdata.git && \
+    HOME=/home/user git remote add origin file:///tmp/cd-e2e/testdata.git && \
     HOME=/home/user git push origin master && \
-    mkdir -p /tmp/argo-e2e/submodule.git && \
-    cd /tmp/argo-e2e/submodule.git && \
+    mkdir -p /tmp/cd-e2e/submodule.git && \
+    cd /tmp/cd-e2e/submodule.git && \
     HOME=/home/user git init --bare && \
-    mkdir -p /tmp/argo-e2e/submoduleParent.git && \
-    cd /tmp/argo-e2e/submoduleParent.git && \
+    mkdir -p /tmp/cd-e2e/submoduleParent.git && \
+    cd /tmp/cd-e2e/submoduleParent.git && \
     HOME=/home/user git init --bare && \
-    chown -R user /tmp/argo-e2e/testdata.git && \
-    chown -R user /tmp/argo-e2e/submodule.git && \
-    chown -R user /tmp/argo-e2e/submoduleParent.git && \
+    chown -R user /tmp/cd-e2e/testdata.git && \
+    chown -R user /tmp/cd-e2e/submodule.git && \
+    chown -R user /tmp/cd-e2e/submoduleParent.git && \
     ln -s /usr/libexec/git-core /usr/lib/git-core
 
-RUN echo "[http]" >> /tmp/argo-e2e/testdata.git/config && \
-    echo "  receivepack = true" >> /tmp/argo-e2e/testdata.git/config 
-RUN echo "[http]" >> /tmp/argo-e2e/submodule.git/config && \
-    echo "  receivepack = true" >> /tmp/argo-e2e/submodule.git/config 
-RUN echo "[http]" >> /tmp/argo-e2e/submoduleParent.git/config && \
-    echo "  receivepack = true" >> /tmp/argo-e2e/submoduleParent.git/config 
+RUN echo "[http]" >> /tmp/cd-e2e/testdata.git/config && \
+    echo "  receivepack = true" >> /tmp/cd-e2e/testdata.git/config 
+RUN echo "[http]" >> /tmp/cd-e2e/submodule.git/config && \
+    echo "  receivepack = true" >> /tmp/cd-e2e/submodule.git/config 
+RUN echo "[http]" >> /tmp/cd-e2e/submoduleParent.git/config && \
+    echo "  receivepack = true" >> /tmp/cd-e2e/submoduleParent.git/config 
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

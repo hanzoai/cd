@@ -14,7 +14,7 @@ ifeq ($(IS_DARWIN),true)
 endif
 CGO_FLAG?=${DEFAULT_CGO_FLAG}
 
-GEN_RESOURCES_CLI_NAME=argocd-resources-gen
+GEN_RESOURCES_CLI_NAME=hanzocd-resources-gen
 
 HOST_OS:=$(shell go env GOOS)
 HOST_ARCH:=$(shell go env GOARCH)
@@ -41,7 +41,7 @@ PODMAN_ARGS=
 endif
 
 DOCKER_SRCDIR?=$(GOPATH)/src
-DOCKER_WORKDIR?=/go/src/github.com/argoproj/argo-cd
+DOCKER_WORKDIR?=/go/src/github.com/hanzoai/cd
 
 # Allows you to control which Docker network the test-util containers attach to.
 # This is particularly useful if you are running Kubernetes in Docker (e.g., k3d)
@@ -60,9 +60,9 @@ CD_PROCFILE?=Procfile
 MKDOCS_DOCKER_IMAGE?=python:3.12-alpine
 MKDOCS_RUN_ARGS?=
 
-# Configuration for building argocd-test-tools image
+# Configuration for building hanzocd-test-tools image
 TEST_TOOLS_NAMESPACE?=
-TEST_TOOLS_IMAGE=argocd-test-tools
+TEST_TOOLS_IMAGE=hanzocd-test-tools
 TEST_TOOLS_TAG?=latest
 ifdef TEST_TOOLS_NAMESPACE
 TEST_TOOLS_PREFIX=${TEST_TOOLS_NAMESPACE}/
@@ -76,7 +76,7 @@ CD_E2E_KV_PORT?=6379
 CD_E2E_DEX_PORT?=5556
 CD_E2E_JS_HOST?=localhost
 CD_E2E_DISABLE_AUTH?=
-CD_E2E_DIR?=/tmp/argo-e2e
+CD_E2E_DIR?=/tmp/cd-e2e
 
 CD_E2E_TEST_TIMEOUT?=90m
 CD_E2E_RERUN_FAILS?=5
@@ -87,11 +87,11 @@ CD_BIN_MODE?=true
 
 # Depending on where we are (legacy or non-legacy pwd), we need to use
 # different Docker volume mounts for our source tree
-LEGACY_PATH=$(GOPATH)/src/github.com/argoproj/argo-cd
+LEGACY_PATH=$(GOPATH)/src/github.com/hanzoai/cd
 ifeq ("$(PWD)","$(LEGACY_PATH)")
 DOCKER_SRC_MOUNT="$(DOCKER_SRCDIR):/go/src$(VOLUME_MOUNT)"
 else
-DOCKER_SRC_MOUNT="$(PWD):/go/src/github.com/argoproj/argo-cd$(VOLUME_MOUNT)"
+DOCKER_SRC_MOUNT="$(PWD):/go/src/github.com/hanzoai/cd$(VOLUME_MOUNT)"
 endif
 
 # User and group IDs to map to the test container
@@ -101,11 +101,11 @@ CONTAINER_GID=$(shell id -g)
 # Set SUDO to sudo to run privileged commands with sudo
 SUDO?=
 
-# Runs any command in the argocd-test-utils container in server mode
+# Runs any command in the hanzocd-test-utils container in server mode
 # Server mode container will start with uid 0 and drop privileges during runtime
 define run-in-test-server
 	$(SUDO) $(DOCKER) run --rm -it \
-		--name argocd-test-server \
+		--name hanzocd-test-server \
 		-u $(CONTAINER_UID):$(CONTAINER_GID) \
 		-e USER_ID=$(CONTAINER_UID) \
 		-e HOME=/home/user \
@@ -115,9 +115,9 @@ define run-in-test-server
 		-e CD_E2E_TEST=$(CD_E2E_TEST) \
 		-e CD_E2E_JS_HOST=$(CD_E2E_JS_HOST) \
 		-e CD_E2E_DISABLE_AUTH=$(CD_E2E_DISABLE_AUTH) \
-		-e CD_TLS_DATA_PATH=${CD_TLS_DATA_PATH:-/tmp/argocd-local/tls} \
-		-e CD_SSH_DATA_PATH=${CD_SSH_DATA_PATH:-/tmp/argocd-local/ssh} \
-		-e CD_GPG_DATA_PATH=${CD_GPG_DATA_PATH:-/tmp/argocd-local/gpg/source} \
+		-e CD_TLS_DATA_PATH=${CD_TLS_DATA_PATH:-/tmp/cd-local/tls} \
+		-e CD_SSH_DATA_PATH=${CD_SSH_DATA_PATH:-/tmp/cd-local/ssh} \
+		-e CD_GPG_DATA_PATH=${CD_GPG_DATA_PATH:-/tmp/cd-local/gpg/source} \
 		-e CD_APPLICATION_NAMESPACES \
 		-e GITHUB_TOKEN \
 		-v ${DOCKER_SRC_MOUNT} \
@@ -134,10 +134,10 @@ define run-in-test-server
 		bash -c "$(1)"
 endef
 
-# Runs any command in the argocd-test-utils container in client mode
+# Runs any command in the hanzocd-test-utils container in client mode
 define run-in-test-client
 	$(SUDO) $(DOCKER) run --rm -it \
-	  --name argocd-test-client \
+	  --name hanzocd-test-client \
 		-u $(CONTAINER_UID):$(CONTAINER_GID) \
 		-e HOME=/home/user \
 		-e GOPATH=/go \
@@ -157,7 +157,7 @@ endef
 
 #
 define exec-in-test-server
-	$(SUDO) $(DOCKER) exec -it -u $(CONTAINER_UID):$(CONTAINER_GID) -e CD_E2E_RECORD=$(CD_E2E_RECORD) -e CD_E2E_K3S=$(CD_E2E_K3S) argocd-test-server $(1)
+	$(SUDO) $(DOCKER) exec -it -u $(CONTAINER_UID):$(CONTAINER_GID) -e CD_E2E_RECORD=$(CD_E2E_RECORD) -e CD_E2E_K3S=$(CD_E2E_K3S) hanzocd-test-server $(1)
 endef
 
 PATH:=$(PATH):$(PWD)/hack
@@ -205,7 +205,7 @@ endif
 # defaults for building images and manifests
 ifeq (${DOCKER_PUSH},true)
 ifndef IMAGE_NAMESPACE
-$(error IMAGE_NAMESPACE must be set to push images (e.g. IMAGE_NAMESPACE=argoproj))
+$(error IMAGE_NAMESPACE must be set to push images (e.g. IMAGE_NAMESPACE=hanzoai))
 endif
 endif
 
@@ -215,7 +215,7 @@ ifdef IMAGE_REGISTRY
 ifdef IMAGE_NAMESPACE
 IMAGE_PREFIX=${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/
 else
-$(error IMAGE_NAMESPACE must be set when IMAGE_REGISTRY is set (e.g. IMAGE_NAMESPACE=argoproj))
+$(error IMAGE_NAMESPACE must be set when IMAGE_REGISTRY is set (e.g. IMAGE_NAMESPACE=hanzoai))
 endif
 else
 ifdef IMAGE_NAMESPACE
@@ -223,14 +223,14 @@ ifdef IMAGE_NAMESPACE
 IMAGE_PREFIX=${IMAGE_NAMESPACE}/
 else
 # Neither namespace nor registry given - apply the default values
-IMAGE_REGISTRY="quay.io"
-IMAGE_NAMESPACE="argoproj"
+IMAGE_REGISTRY="ghcr.io"
+IMAGE_NAMESPACE="hanzoai"
 IMAGE_PREFIX=${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/
 endif
 endif
 
 ifndef IMAGE_REPOSITORY
-IMAGE_REPOSITORY=argocd
+IMAGE_REPOSITORY=cd
 endif
 
 .PHONY: all
@@ -310,13 +310,13 @@ gen-resources-cli-local: clean-debug
 
 .PHONY: release-cli
 release-cli: clean-debug build-ui
-	make BIN_NAME=argocd-darwin-amd64 GOOS=darwin argocd-all
-	make BIN_NAME=argocd-darwin-arm64 GOOS=darwin GOARCH=arm64 argocd-all
-	make BIN_NAME=argocd-linux-amd64 GOOS=linux argocd-all
-	make BIN_NAME=argocd-linux-arm64 GOOS=linux GOARCH=arm64 argocd-all
-	make BIN_NAME=argocd-linux-ppc64le GOOS=linux GOARCH=ppc64le argocd-all
-	make BIN_NAME=argocd-linux-s390x GOOS=linux GOARCH=s390x argocd-all
-	make BIN_NAME=argocd-windows-amd64.exe GOOS=windows argocd-all
+	make BIN_NAME=hanzocd-darwin-amd64 GOOS=darwin hanzocd-all
+	make BIN_NAME=hanzocd-darwin-arm64 GOOS=darwin GOARCH=arm64 hanzocd-all
+	make BIN_NAME=hanzocd-linux-amd64 GOOS=linux hanzocd-all
+	make BIN_NAME=hanzocd-linux-arm64 GOOS=linux GOARCH=arm64 hanzocd-all
+	make BIN_NAME=hanzocd-linux-ppc64le GOOS=linux GOARCH=ppc64le hanzocd-all
+	make BIN_NAME=hanzocd-linux-s390x GOOS=linux GOARCH=s390x hanzocd-all
+	make BIN_NAME=hanzocd-windows-amd64.exe GOOS=windows hanzocd-all
 
 .PHONY: test-tools-image
 test-tools-image:
@@ -339,27 +339,27 @@ verify-helm-chart:
 	./hack/verify-helm-chart.sh
 # consolidated binary for cli, util, server, repo-server, controller
 
-.PHONY: argocd-all
-argocd-all: clean-debug
+.PHONY: hanzocd-all
+hanzocd-all: clean-debug
 	CGO_ENABLED=${CGO_FLAG} GOOS=${GOOS} GOARCH=${GOARCH} GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/${BIN_NAME} ./cmd
 
 .PHONY: server
 server: clean-debug
-	CGO_ENABLED=${CGO_FLAG} GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/argocd-server ./cmd
+	CGO_ENABLED=${CGO_FLAG} GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/hanzocd-server ./cmd
 
 .PHONY: repo-server
 repo-server:
-	CGO_ENABLED=${CGO_FLAG} GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/argocd-repo-server ./cmd
+	CGO_ENABLED=${CGO_FLAG} GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/hanzocd-repo-server ./cmd
 
 .PHONY: controller
 controller:
-	CGO_ENABLED=${CGO_FLAG} GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/argocd-application-controller ./cmd
+	CGO_ENABLED=${CGO_FLAG} GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/hanzocd-application-controller ./cmd
 
 .PHONY: build-ui
 build-ui:
-	DOCKER_BUILDKIT=1 $(DOCKER) build -t argocd-ui --platform=$(TARGET_ARCH) --target argocd-ui .
+	DOCKER_BUILDKIT=1 $(DOCKER) build -t hanzocd-ui --platform=$(TARGET_ARCH) --target hanzocd-ui .
 	find ./ui/dist -type f -not -name gitkeep -not -name .gitkeep -delete
-	$(DOCKER) run $(PODMAN_ARGS) -v ${CURRENT_DIR}/ui/dist/app:/tmp/app:Z --rm -t argocd-ui sh -c 'cp -r ./dist/app/* /tmp/app/'
+	$(DOCKER) run $(PODMAN_ARGS) -v ${CURRENT_DIR}/ui/dist/app:/tmp/app:Z --rm -t hanzocd-ui sh -c 'cp -r ./dist/app/* /tmp/app/'
 
 .PHONY: image
 ifeq ($(DEV_IMAGE), true)
@@ -368,13 +368,13 @@ ifeq ($(DEV_IMAGE), true)
 # the dist directory is under .dockerignore.
 IMAGE_TAG="dev-$(shell git describe --always --dirty)"
 image: build-ui
-	DOCKER_BUILDKIT=1 $(DOCKER) build --platform=$(TARGET_ARCH) -t argocd-base --target argocd-base .
-	GOOS=linux GOARCH=$(TARGET_ARCH:linux/%=%) GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -gcflags="all=-N -l" -o ${DIST_DIR}/argocd ./cmd
-	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-server
-	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-application-controller
-	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-repo-server
-	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-cmp-server
-	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-dex
+	DOCKER_BUILDKIT=1 $(DOCKER) build --platform=$(TARGET_ARCH) -t hanzocd-base --target hanzocd-base .
+	GOOS=linux GOARCH=$(TARGET_ARCH:linux/%=%) GODEBUG="tarinsecurepath=0,zipinsecurepath=0" go build -v -ldflags '${LDFLAGS}' -gcflags="all=-N -l" -o ${DIST_DIR}/hanzocd ./cmd
+	ln -sfn ${DIST_DIR}/hanzocd ${DIST_DIR}/hanzocd-server
+	ln -sfn ${DIST_DIR}/hanzocd ${DIST_DIR}/hanzocd-application-controller
+	ln -sfn ${DIST_DIR}/hanzocd ${DIST_DIR}/hanzocd-repo-server
+	ln -sfn ${DIST_DIR}/hanzocd ${DIST_DIR}/hanzocd-cmp-server
+	ln -sfn ${DIST_DIR}/hanzocd ${DIST_DIR}/hanzocd-dex
 	cp Dockerfile.dev dist
 	DOCKER_BUILDKIT=1 $(DOCKER) build --platform=$(TARGET_ARCH) -t $(IMAGE_PREFIX)$(IMAGE_REPOSITORY):$(IMAGE_TAG) -f dist/Dockerfile.dev dist
 else
@@ -389,8 +389,8 @@ armimage:
 
 .PHONY: builder-image
 builder-image:
-	$(DOCKER) build  -t $(IMAGE_PREFIX)argo-cd-ci-builder:$(IMAGE_TAG) --target builder .
-	@if [ "$(DOCKER_PUSH)" = "true" ] ; then $(DOCKER) push $(IMAGE_PREFIX)argo-cd-ci-builder:$(IMAGE_TAG) ; fi
+	$(DOCKER) build  -t $(IMAGE_PREFIX)hanzocd-ci-builder:$(IMAGE_TAG) --target builder .
+	@if [ "$(DOCKER_PUSH)" = "true" ] ; then $(DOCKER) push $(IMAGE_PREFIX)hanzocd-ci-builder:$(IMAGE_TAG) ; fi
 
 .PHONY: mod-download
 mod-download: test-tools-image
@@ -451,7 +451,7 @@ test: test-tools-image
 .PHONY: test-local
 test-local: test-gitops-engine
 # run if TEST_MODULE is empty or does not point to gitops-engine tests
-ifneq ($(if $(TEST_MODULE),,ALL)$(filter-out github.com/argoproj/argo-cd/gitops-engine% ./gitops-engine%,$(TEST_MODULE)),)
+ifneq ($(if $(TEST_MODULE),,ALL)$(filter-out github.com/hanzoai/cd/gitops-engine% ./gitops-engine%,$(TEST_MODULE)),)
 	if test "$(TEST_MODULE)" = ""; then \
 		DIST_DIR=${DIST_DIR} RERUN_FAILS=0 PACKAGES=`go list ./... | grep -v 'test/e2e'` ./hack/test.sh -args -test.gocoverdir="$(PWD)/test-results"; \
 	else \
@@ -463,7 +463,7 @@ endif
 .PHONY: test-gitops-engine
 test-gitops-engine:
 # run if TEST_MODULE is empty or points to gitops-engine tests
-ifneq ($(if $(TEST_MODULE),,ALL)$(filter github.com/argoproj/argo-cd/gitops-engine% ./gitops-engine%,$(TEST_MODULE)),)
+ifneq ($(if $(TEST_MODULE),,ALL)$(filter github.com/hanzoai/cd/gitops-engine% ./gitops-engine%,$(TEST_MODULE)),)
 	mkdir -p $(PWD)/test-results/gitops-engine
 	cd gitops-engine && go test -race -cover ./... -args -test.gocoverdir="$(PWD)/test-results/gitops-engine"
 endif
@@ -493,7 +493,7 @@ test-e2e:
 test-e2e-local: cli-local
 	# NO_PROXY ensures all tests don't go out through a proxy if one is configured on the test system
 	export GO111MODULE=off
-	CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS=$${CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS:-true}  DIST_DIR=${DIST_DIR} RERUN_FAILS=$(CD_E2E_RERUN_FAILS) PACKAGES="./test/e2e" CD_E2E_RECORD=${CD_E2E_RECORD} CD_CONFIG_DIR=$(HOME)/.config/argocd-e2e CD_GPG_ENABLED=true NO_PROXY=* ./hack/test.sh -timeout $(CD_E2E_TEST_TIMEOUT) -v -args -test.gocoverdir="$(PWD)/test-results"
+	CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS=$${CD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS:-true}  DIST_DIR=${DIST_DIR} RERUN_FAILS=$(CD_E2E_RERUN_FAILS) PACKAGES="./test/e2e" CD_E2E_RECORD=${CD_E2E_RECORD} CD_CONFIG_DIR=$(HOME)/.config/cd-e2e CD_GPG_ENABLED=true NO_PROXY=* ./hack/test.sh -timeout $(CD_E2E_TEST_TIMEOUT) -v -args -test.gocoverdir="$(PWD)/test-results"
 
 # Spawns a shell in the test server container for debugging purposes
 debug-test-server: test-tools-image
@@ -513,10 +513,10 @@ start-e2e: test-tools-image
 # Starts e2e server locally (or within a container)
 .PHONY: start-e2e-local
 start-e2e-local: mod-vendor-local dep-ui-local cli-local
-	kubectl create ns argocd-e2e || true
-	kubectl create ns argocd-e2e-external || true
-	kubectl create ns argocd-e2e-external-2 || true
-	kubectl config set-context --current --namespace=argocd-e2e
+	kubectl create ns cd-e2e || true
+	kubectl create ns cd-e2e-external || true
+	kubectl create ns cd-e2e-external-2 || true
+	kubectl config set-context --current --namespace=cd-e2e
 	kustomize build test/manifests/base | kubectl apply --server-side --force-conflicts -f -
 	kubectl apply -f https://raw.githubusercontent.com/open-cluster-management/api/a6845f2ebcb186ec26b832f60c988537a58f3859/cluster/v1alpha1/0000_04_clusters.open-cluster-management.io_placementdecisions.crd.yaml
 	# Create GPG keys and source directories
@@ -545,8 +545,8 @@ start-e2e-local: mod-vendor-local dep-ui-local cli-local
 	CD_ZJWT_FEATURE_FLAG=always \
 	CD_IN_CI=$(CD_IN_CI) \
 	BIN_MODE=$(CD_BIN_MODE) \
-	CD_APPLICATION_NAMESPACES=argocd-e2e-external,argocd-e2e-external-2 \
-	CD_APPLICATIONSET_CONTROLLER_NAMESPACES=argocd-e2e-external,argocd-e2e-external-2 \
+	CD_APPLICATION_NAMESPACES=cd-e2e-external,cd-e2e-external-2 \
+	CD_APPLICATIONSET_CONTROLLER_NAMESPACES=cd-e2e-external,cd-e2e-external-2 \
 	CD_APPLICATIONSET_CONTROLLER_TOKENREF_STRICT_MODE=true \
 	CD_APPLICATIONSET_CONTROLLER_ALLOWED_SCM_PROVIDERS=http://127.0.0.1:8341,http://127.0.0.1:8342,http://127.0.0.1:8343,http://127.0.0.1:8344 \
 	CD_E2E_TEST=true \
@@ -574,12 +574,12 @@ start: test-tools-image
 start-local: mod-vendor-local dep-ui-local cli-local
 	# check we can connect to Docker to start Redis
 	killall goreman || true
-	kubectl create ns argocd || true
-	rm -rf /tmp/argocd-local
-	mkdir -p /tmp/argocd-local
-	mkdir -p /tmp/argocd-local/gpg/keys && chmod 0700 /tmp/argocd-local/gpg/keys
-	mkdir -p /tmp/argocd-local/gpg/source
-	KV_PASSWORD=$(shell kubectl get secret argocd-redis -o jsonpath='{.data.auth}' | base64 -d) \
+	kubectl create ns cd || true
+	rm -rf /tmp/cd-local
+	mkdir -p /tmp/cd-local
+	mkdir -p /tmp/cd-local/gpg/keys && chmod 0700 /tmp/cd-local/gpg/keys
+	mkdir -p /tmp/cd-local/gpg/source
+	KV_PASSWORD=$(shell kubectl get secret hanzocd-redis -o jsonpath='{.data.auth}' | base64 -d) \
 	CD_ZJWT_FEATURE_FLAG=always \
 	CD_IN_CI=false \
 	CD_GPG_ENABLED=$(CD_GPG_ENABLED) \
@@ -689,7 +689,7 @@ list:
 
 .PHONY: applicationset-controller
 applicationset-controller:
-	GODEBUG="tarinsecurepath=0,zipinsecurepath=0" CGO_ENABLED=${CGO_FLAG} go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/argocd-applicationset-controller ./cmd
+	GODEBUG="tarinsecurepath=0,zipinsecurepath=0" CGO_ENABLED=${CGO_FLAG} go build -v -ldflags '${LDFLAGS}' -o ${DIST_DIR}/hanzocd-applicationset-controller ./cmd
 
 .PHONY: checksums
 checksums:
