@@ -332,7 +332,7 @@ spec:
   project: default
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
   syncPolicy:
     automated: {}
 status:
@@ -356,7 +356,7 @@ status:
       revision: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       source:
         path: some/path
-        repoURL: https://github.com/argoproj/argocd-example-apps.git
+        repoURL: https://github.com/hanzocd/example-apps.git
 `
 
 var fakeMultiSourceApp = `
@@ -376,11 +376,11 @@ spec:
     helm:
       valueFiles:
       - $values_test/values.yaml
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
   - path: some/other/path
-    repoURL: https://github.com/argoproj/argocd-example-apps-fake.git
+    repoURL: https://github.com/hanzocd/example-apps-fake.git
   - ref: values_test
-    repoURL: https://github.com/argoproj/argocd-example-apps-fake-ref.git
+    repoURL: https://github.com/hanzocd/example-apps-fake-ref.git
   syncPolicy:
     automated: {}
 status:
@@ -413,11 +413,11 @@ status:
         helm:
           valueFiles:
           - $values_test/values.yaml
-        repoURL: https://github.com/argoproj/argocd-example-apps.git
+        repoURL: https://github.com/hanzocd/example-apps.git
       - path: some/other/path
-        repoURL: https://github.com/argoproj/argocd-example-apps-fake.git
+        repoURL: https://github.com/hanzocd/example-apps-fake.git
       - ref: values_test
-        repoURL: https://github.com/argoproj/argocd-example-apps-fake-ref.git
+        repoURL: https://github.com/hanzocd/example-apps-fake-ref.git
 `
 
 var fakeAppWithDestName = `
@@ -434,7 +434,7 @@ spec:
   project: default
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
   syncPolicy:
     automated: {}
 `
@@ -454,7 +454,7 @@ spec:
   project: default
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
   syncPolicy:
     automated: {}
 `

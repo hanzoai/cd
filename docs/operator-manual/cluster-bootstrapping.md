@@ -134,7 +134,7 @@ spec:
   project: default
   source:
     path: guestbook
-    repoURL: https://github.com/argoproj/argocd-example-apps
+    repoURL: https://github.com/hanzocd/example-apps
     targetRevision: HEAD
   syncPolicy:
     automated:
@@ -161,7 +161,7 @@ Next, you need to create and sync your parent app, e.g. via the CLI:
 cd app create apps \
     --dest-namespace cd \
     --dest-server https://kubernetes.default.svc \
-    --repo https://github.com/argoproj/argocd-example-apps.git \
+    --repo https://github.com/hanzocd/example-apps.git \
     --path apps  
 cd app sync apps  
 ```
@@ -187,7 +187,7 @@ Or, via the CLI:
 cd app sync -l app.kubernetes.io/instance=apps
 ```
 
-View [the example on GitHub](https://github.com/argoproj/argocd-example-apps/tree/master/apps).
+View [the example on GitHub](https://github.com/hanzocd/example-apps/tree/master/apps).
 
 
 

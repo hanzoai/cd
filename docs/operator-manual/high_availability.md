@@ -381,7 +381,7 @@ metadata:
     cd.hanzo.ai/manifest-generate-paths: .
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
 # ...
@@ -399,7 +399,7 @@ metadata:
     cd.hanzo.ai/manifest-generate-paths: /guestbook
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
 # ...
@@ -418,7 +418,7 @@ metadata:
     cd.hanzo.ai/manifest-generate-paths: .;../shared
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: my-application
 # ...
@@ -438,7 +438,7 @@ metadata:
     cd.hanzo.ai/manifest-generate-paths: "/shared/*-secret.yaml"
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
 # ...
@@ -715,7 +715,7 @@ apiVersion: v1
 stringData:
   depth: "1"
   type: "git"
-  url: "https://github.com/argoproj/argocd-example-apps.git"
+  url: "https://github.com/hanzocd/example-apps.git"
 kind: Secret
 metadata:
   annotations:

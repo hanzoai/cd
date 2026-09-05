@@ -244,7 +244,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     plugin:
       parameters:
         - name: values

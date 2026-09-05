@@ -31,7 +31,7 @@ The template subfields correspond directly to [the spec of an Hanzo CD `Applicat
 
 - `project` refers to the [Hanzo CD Project](../../user-guide/projects.md) in use (`default` may be used here to utilize the default Hanzo CD Project)
 - `source` defines from which Git repository to extract the desired Application manifests
-    - **repoURL**: URL of the repository (eg `https://github.com/argoproj/argocd-example-apps.git`)
+    - **repoURL**: URL of the repository (eg `https://github.com/hanzocd/example-apps.git`)
     - **targetRevision**: Revision (tag/branch/commit) of the repository (eg `HEAD`)
     - **path**: Path within the repository where Kubernetes manifests (and/or Helm, Kustomize, Jsonnet resources) are located
 - `destination`: Defines which Kubernetes cluster/namespace to deploy to

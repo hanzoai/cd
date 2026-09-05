@@ -360,8 +360,8 @@ func Test_setAppSpecOptions(t *testing.T) {
 		assert.Equal(t, []string{"v1", "v2"}, f.spec.Source.Helm.APIVersions)
 	})
 	t.Run("source hydrator", func(t *testing.T) {
-		require.NoError(t, f.SetFlag("dry-source-repo", "https://github.com/argoproj/argocd-example-apps"))
-		assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", f.spec.SourceHydrator.DrySource.RepoURL)
+		require.NoError(t, f.SetFlag("dry-source-repo", "https://github.com/hanzocd/example-apps"))
+		assert.Equal(t, "https://github.com/hanzocd/example-apps", f.spec.SourceHydrator.DrySource.RepoURL)
 
 		require.NoError(t, f.SetFlag("dry-source-path", "apps"))
 		assert.Equal(t, "apps", f.spec.SourceHydrator.DrySource.Path)

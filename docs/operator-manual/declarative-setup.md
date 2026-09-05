@@ -55,7 +55,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -377,7 +377,7 @@ In the above example, every repository accessed via HTTPS whose URL is prefixed 
 In order for Hanzo CD to use a credential template for any given repository, the following conditions must be met:
 
 * The repository must either not be configured at all, or if configured, must not contain any credential information (i.e. contain none of `sshPrivateKey`, `username`, `password` )
-* The URL configured for a credential template (e.g. `https://github.com/argoproj`) must match as prefix for the repository URL (e.g. `https://github.com/argoproj/argocd-example-apps`).
+* The URL configured for a credential template (e.g. `https://github.com/argoproj`) must match as prefix for the repository URL (e.g. `https://github.com/hanzocd/example-apps`).
 
 > [!NOTE]
 > Matching credential template URL prefixes is done on a _best match_ effort, so the longest (best) match will take precedence. The order of definition is not important, as opposed to pre v1.4 configuration.

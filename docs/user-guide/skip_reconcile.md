@@ -43,7 +43,7 @@ spec:
   project: default
   source:
     path: guestbook
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
 ```
 

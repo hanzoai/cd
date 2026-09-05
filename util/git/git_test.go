@@ -401,7 +401,7 @@ func TestVerifyCommitSignature(t *testing.T) {
 	setupGitEnv(t)
 	p := t.TempDir()
 
-	client, err := NewClientExt("https://github.com/argoproj/argocd-example-apps.git", p, NopCreds{}, false, false, "", "")
+	client, err := NewClientExt("https://github.com/hanzocd/example-apps.git", p, NopCreds{}, false, false, "", "")
 	require.NoError(t, err)
 
 	err = client.Init()
@@ -456,7 +456,7 @@ func TestNewFactory(t *testing.T) {
 		name string
 		args args
 	}{
-		{"GitHub", args{url: "https://github.com/argoproj/argocd-example-apps"}},
+		{"GitHub", args{url: "https://github.com/hanzocd/example-apps"}},
 	}
 	for _, tt := range tests {
 		if tt.name == "PrivateSSHRepo" {

@@ -32,7 +32,7 @@ metadata:
     cd.hanzo.ai/secret-type: repository-push
 type: Opaque
 stringData:
-  url: https://github.com/argoproj/argocd-example-apps.git
+  url: https://github.com/hanzocd/example-apps.git
   username: '****'
   password: '****'
 ```

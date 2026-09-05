@@ -43,7 +43,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				Path:           "guestbook",
 				TargetRevision: "HEAD",
 			},
@@ -72,7 +72,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				Path:           "guestbook",
 				TargetRevision: "HEAD",
 			},
@@ -100,7 +100,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				Path:           "guestbook",
 				TargetRevision: "HEAD",
 			},
@@ -130,7 +130,7 @@ func TestApplicationSetProgressiveSyncStep(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							Path:           "guestbook",
 							TargetRevision: "HEAD",
 						},

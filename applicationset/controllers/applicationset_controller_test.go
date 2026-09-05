@@ -2696,7 +2696,7 @@ func TestReconcilerValidationProjectErrorBehaviour(t *testing.T) {
 					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
-					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/hanzocd/example-apps", Path: "guestbook"},
 					Project:     "{{.project}}",
 					Destination: v1alpha1.ApplicationDestination{Server: "https://kubernetes.default.svc"},
 				},
@@ -3278,7 +3278,7 @@ func applicationsUpdateSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
-					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/hanzocd/example-apps", Path: "guestbook"},
 					Project:     "default",
 					Destination: v1alpha1.ApplicationDestination{Server: "{{url}}"},
 				},
@@ -3452,7 +3452,7 @@ func TestReconcilePopulatesResourcesStatusOnFirstRun(t *testing.T) {
 					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
-					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/hanzocd/example-apps", Path: "guestbook"},
 					Project:     "default",
 					Destination: v1alpha1.ApplicationDestination{Server: "{{url}}"},
 				},
@@ -3566,7 +3566,7 @@ func applicationsDeleteSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 					Namespace: "cd",
 				},
 				Spec: v1alpha1.ApplicationSpec{
-					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+					Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/hanzocd/example-apps", Path: "guestbook"},
 					Project:     "default",
 					Destination: v1alpha1.ApplicationDestination{Server: "{{url}}"},
 				},
@@ -3782,7 +3782,7 @@ func TestPolicies(t *testing.T) {
 							},
 						},
 						Spec: v1alpha1.ApplicationSpec{
-							Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/argoproj/argocd-example-apps", Path: "guestbook"},
+							Source:      &v1alpha1.ApplicationSource{RepoURL: "https://github.com/hanzocd/example-apps", Path: "guestbook"},
 							Project:     "default",
 							Destination: v1alpha1.ApplicationDestination{Server: "https://kubernetes.default.svc"},
 						},

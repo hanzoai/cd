@@ -12,7 +12,7 @@ cd app add-source APPNAME [flags]
 
 ```
   # Append a source to the list of sources in the application
-  cd app add-source guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --source-name guestbook
+  cd app add-source guestbook --repo https://github.com/hanzocd/example-apps.git --path guestbook --source-name guestbook
 ```
 
 ### Options

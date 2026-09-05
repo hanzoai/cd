@@ -1468,7 +1468,7 @@ func TestGenerateHelmWithURL(t *testing.T) {
 		ApplicationSource: &v1alpha1.ApplicationSource{
 			Path: ".",
 			Helm: &v1alpha1.ApplicationSourceHelm{
-				ValueFiles:   []string{"https://raw.githubusercontent.com/argoproj/argocd-example-apps/master/helm-guestbook/values.yaml"},
+				ValueFiles:   []string{"https://raw.githubusercontent.com/argoproj/example-apps/master/helm-guestbook/values.yaml"},
 				ValuesObject: &runtime.RawExtension{Raw: []byte(`cluster: {slaveCount: 2}`)},
 			},
 		},

@@ -17,7 +17,7 @@ Private repositories that require a username and password typically have a URL t
 Credentials can be configured using Hanzo CD CLI:
 
 ```bash
-cd repo add https://github.com/argoproj/argocd-example-apps --username <username> --password <password>
+cd repo add https://github.com/hanzocd/example-apps --username <username> --password <password>
 ```
 
 or UI:
@@ -86,7 +86,7 @@ You can configure your Git repository using SSH either using the CLI or the UI.
 Using the CLI:
 
 ```
-cd repo add git@github.com:argoproj/argocd-example-apps.git --ssh-private-key-path ~/.ssh/id_rsa
+cd repo add git@github.com:argoproj/example-apps.git --ssh-private-key-path ~/.ssh/id_rsa
 ```
 
 Using the UI:
@@ -119,7 +119,7 @@ You can configure access to your Git repository hosted by GitHub.com or GitHub E
 Using the CLI:
 
 ```
-cd repo add https://github.com/argoproj/argocd-example-apps.git --github-app-id 1 --github-app-installation-id 2 --github-app-private-key-path test.private-key.pem
+cd repo add https://github.com/hanzocd/example-apps.git --github-app-id 1 --github-app-installation-id 2 --github-app-private-key-path test.private-key.pem
 ```
 
 > [!NOTE]
@@ -274,16 +274,16 @@ Using the UI:
 
 ## Credential templates
 
-You can also set up credentials to serve as templates for connecting repositories, without having to repeat credential configuration. For example, if you setup credential templates for the URL prefix `https://github.com/argoproj`, these credentials will be used for all repositories with this URL as prefix (e.g. `https://github.com/argoproj/argocd-example-apps`) that do not have their own credentials configured.
+You can also set up credentials to serve as templates for connecting repositories, without having to repeat credential configuration. For example, if you setup credential templates for the URL prefix `https://github.com/argoproj`, these credentials will be used for all repositories with this URL as prefix (e.g. `https://github.com/hanzocd/example-apps`) that do not have their own credentials configured.
 
-To set up a credential template using the Web UI, simply fill in all relevant credential information in the __Connect repo using SSH__ or __Connect repo using HTTPS__ dialogues (as described above), but select __Save as credential template__ instead of __Connect__ to save the credential template. Be sure to only enter the prefix URL (i.e. `https://github.com/argoproj`) instead of the complete repository URL (i.e. `https://github.com/argoproj/argocd-example-apps`) in the field __Repository URL__
+To set up a credential template using the Web UI, simply fill in all relevant credential information in the __Connect repo using SSH__ or __Connect repo using HTTPS__ dialogues (as described above), but select __Save as credential template__ instead of __Connect__ to save the credential template. Be sure to only enter the prefix URL (i.e. `https://github.com/argoproj`) instead of the complete repository URL (i.e. `https://github.com/hanzocd/example-apps`) in the field __Repository URL__
 
 To manage credential templates using the CLI, use the `repocreds` sub-command, for example `cd repocreds add https://github.com/argoproj --username youruser --password yourpass` would setup a credential template for the URL prefix `https://github.com/argoproj` using the specified username/password combination. Similar to the `repo` sub-command, you can also list and remove repository credentials using the `cd repocreds list` and `cd repocreds rm` commands, respectively.
 
 In order for Hanzo CD to use a credential template for any given repository, the following conditions must be met:
 
 * The repository must either not be configured at all, or if configured, must not contain any credential information 
-* The URL configured for a credential template (e.g. `https://github.com/argoproj`) must match as prefix for the repository URL (e.g. `https://github.com/argoproj/argocd-example-apps`). 
+* The URL configured for a credential template (e.g. `https://github.com/argoproj`) must match as prefix for the repository URL (e.g. `https://github.com/hanzocd/example-apps`). 
 
 > [!NOTE]
 > Repositories that require authentication can be added using CLI or Web UI without specifying credentials only after a matching repository credential has been set up

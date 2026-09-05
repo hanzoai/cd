@@ -224,7 +224,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -287,7 +287,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -365,7 +365,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -440,7 +440,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:
@@ -531,7 +531,7 @@ metadata:
 spec:
   project: my-project
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:

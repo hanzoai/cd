@@ -9,7 +9,7 @@ metadata:
   labels:
     cd.hanzo.ai/secret-type: repository
 stringData:
-  url: https://github.com/argoproj/argocd-example-apps
+  url: https://github.com/hanzocd/example-apps
   password: my-password
   username: my-username
   bearerToken: my-token
@@ -26,7 +26,7 @@ metadata:
   labels:
     cd.hanzo.ai/secret-type: repository
 stringData:
-  url: ssh://git@github.com/argoproj/argocd-example-apps
+  url: ssh://git@github.com/hanzocd/example-apps
   sshPrivateKey: |
     -----BEGIN OPENSSH PRIVATE KEY-----
     ...

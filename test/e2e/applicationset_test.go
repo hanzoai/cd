@@ -69,7 +69,7 @@ func TestSimpleListGeneratorExternalNamespace(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -94,7 +94,7 @@ func TestSimpleListGeneratorExternalNamespace(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -167,7 +167,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -191,7 +191,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -220,7 +220,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -254,7 +254,7 @@ func TestSimpleListGeneratorExternalNamespaceNoConflict(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -348,7 +348,7 @@ func TestSimpleListGenerator(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -371,7 +371,7 @@ func TestSimpleListGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -437,7 +437,7 @@ func TestSimpleListGeneratorGoTemplate(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -460,7 +460,7 @@ func TestSimpleListGeneratorGoTemplate(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -526,7 +526,7 @@ func TestRenderHelmValuesObject(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "helm-guestbook",
 				Helm: &v1alpha1.ApplicationSourceHelm{
@@ -553,7 +553,7 @@ func TestRenderHelmValuesObject(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "helm-guestbook",
 						Helm: &v1alpha1.ApplicationSourceHelm{
@@ -601,7 +601,7 @@ func TestTemplatePatch(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -628,7 +628,7 @@ func TestTemplatePatch(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -720,7 +720,7 @@ func TestUpdateHelmValuesObject(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "helm-guestbook",
 				Helm: &v1alpha1.ApplicationSourceHelm{
@@ -747,7 +747,7 @@ func TestUpdateHelmValuesObject(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "helm-guestbook",
 						Helm: &v1alpha1.ApplicationSourceHelm{
@@ -802,7 +802,7 @@ func TestSyncPolicyCreateUpdate(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -828,7 +828,7 @@ func TestSyncPolicyCreateUpdate(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -912,7 +912,7 @@ func TestSyncPolicyCreateDelete(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -934,7 +934,7 @@ func TestSyncPolicyCreateDelete(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -1007,7 +1007,7 @@ func TestSyncPolicyCreateOnly(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -1032,7 +1032,7 @@ func TestSyncPolicyCreateOnly(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -1521,7 +1521,7 @@ func TestCustomApplicationFinalizers(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -1544,7 +1544,7 @@ func TestCustomApplicationFinalizers(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -1585,7 +1585,7 @@ func TestCustomApplicationFinalizersGoTemplate(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -1609,7 +1609,7 @@ func TestCustomApplicationFinalizersGoTemplate(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -2121,7 +2121,7 @@ func TestApplicationSetAPIListResourceEvents(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},
@@ -2168,7 +2168,7 @@ func TestApplicationSetHealthStatusCLI(t *testing.T) {
 				Spec: v1alpha1.ApplicationSpec{
 					Project: "default",
 					Source: &v1alpha1.ApplicationSource{
-						RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+						RepoURL:        "https://github.com/hanzocd/example-apps.git",
 						TargetRevision: "HEAD",
 						Path:           "guestbook",
 					},

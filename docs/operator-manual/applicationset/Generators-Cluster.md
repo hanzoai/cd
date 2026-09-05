@@ -50,7 +50,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://github.com/hanzocd/example-apps/
         targetRevision: HEAD
         path: guestbook
       destination:
@@ -192,7 +192,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://github.com/hanzocd/example-apps/
         # The cluster values field for each generator will be substituted here:
         targetRevision: '{{.values.revision}}'
         path: guestbook
@@ -244,7 +244,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://github.com/hanzocd/example-apps/
         # The cluster values field for each generator will be substituted here:
         targetRevision: '{{.values.revision}}'
         path: guestbook
@@ -275,7 +275,7 @@ spec:
     spec:
       project: "my-project"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps/
+        repoURL: https://github.com/hanzocd/example-apps/
         # The cluster values field for each generator will be substituted here:
         targetRevision: 'HEAD'
         path: helm-guestbook
@@ -302,7 +302,7 @@ metadata:
 spec:
   project: "my-project"
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps/
+    repoURL: https://github.com/hanzocd/example-apps/
     targetRevision: 'HEAD'
     path: helm-guestbook
     helm:

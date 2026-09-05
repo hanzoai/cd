@@ -96,7 +96,7 @@ between `cd` and `cd-util`. Given that we still have not finalized how users are
 it is proposed to deprecate `cd-util` and merge in into `cd` CLI under admin subcommand:
 
 ```
-cd admin app generate-spec guestbook --repo https://github.com/argoproj/argocd-example-apps
+cd admin app generate-spec guestbook --repo https://github.com/hanzocd/example-apps
 ```
 
 ### Use cases
