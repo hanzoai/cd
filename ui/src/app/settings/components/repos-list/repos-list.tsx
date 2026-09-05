@@ -1,8 +1,8 @@
-import {AutocompleteField, DropDownMenu, FormField, FormSelect, HelpIcon, NotificationType, SlidingPanel, Tooltip} from 'argo-ui';
+import {AutocompleteField, DropDownMenu, FormField, FormSelect, HelpIcon, NotificationType, SlidingPanel, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
-import {Form, FormValues, FormApi, Text, TextArea, FormErrors} from 'argo-ui';
+import {Form, FormValues, FormApi, Text, TextArea, FormErrors} from '../../../../kit/src';
 import {Context} from '../../../shared/context';
 import {
     ActionMenu,
@@ -256,20 +256,20 @@ const SlidingPanelHeader = ({
         <>
             {showConnectRepo && (
                 <>
-                    <button className='argo-button argo-button--base' onClick={onConnect}>
+                    <button className='kit-button kit-button--base' onClick={onConnect}>
                         <Spinner show={connecting} style={{marginRight: '5px'}} />
                         Connect
                     </button>{' '}
-                    <button className='argo-button argo-button--base' onClick={onSaveCredsTemplate}>
+                    <button className='kit-button kit-button--base' onClick={onSaveCredsTemplate}>
                         Save as credentials template
                     </button>{' '}
-                    <button onClick={() => setConnectRepo(false)} className='argo-button argo-button--base-o'>
+                    <button onClick={() => setConnectRepo(false)} className='kit-button kit-button--base-o'>
                         Cancel
                     </button>
                 </>
             )}
             {displayEditPanel && (
-                <button onClick={() => setDisplayEditPanel(false)} className='argo-button argo-button--base-o'>
+                <button onClick={() => setDisplayEditPanel(false)} className='kit-button kit-button--base-o'>
                     Cancel
                 </button>
             )}
@@ -834,7 +834,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                 }}
             />
             <div className='repos-list'>
-                <div className='argo-container'>
+                <div className='kit-container'>
                     {authSettings && (
                         <DataLoader
                             load={async () => {
@@ -888,8 +888,8 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         {filteredRepos.length > 0 ? (
                                             <Paginate page={page} data={filteredRepos} onPageChange={setPage} preferencesKey='repos-list'>
                                                 {reposToDisplay => (
-                                                    <div className='argo-table-list argo-table-list--clickable'>
-                                                        <div className='argo-table-list__head'>
+                                                    <div className='kit-table-list kit-table-list--clickable'>
+                                                        <div className='kit-table-list__head'>
                                                             <div className='row'>
                                                                 <IconColumn />
                                                                 <div className='columns small-1 sortable' onClick={() => requestSort('type')}>
@@ -920,9 +920,9 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                             const repoKey = `${isTemplate(repo) ? 'template' : 'repo'}-${isWrite(repo) ? 'write' : 'read'}-${repoUrl}`;
                                                             const connectionState = getConnectionState(repo);
                                                             return (
-                                                                <div className='argo-table-list__row' key={repoKey} onClick={() => displayEditSliding(repo)}>
+                                                                <div className='kit-table-list__row' key={repoKey} onClick={() => displayEditSliding(repo)}>
                                                                     <div className='row'>
-                                                                        <IconColumn icon={'argo-icon-' + getRepoType(repo)} />
+                                                                        <IconColumn icon={'kit-icon-' + getRepoType(repo)} />
                                                                         <div className='columns small-1'>
                                                                             <span>{getRepoType(repo)}</span>
                                                                         </div>
@@ -990,7 +990,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                 )}
                                             </Paginate>
                                         ) : allRepos.length === 0 ? (
-                                            <EmptyState icon='argo-icon-git'>
+                                            <EmptyState icon='kit-icon-git'>
                                                 <h4>No repositories connected</h4>
                                                 <h5>Connect your repo to deploy apps.</h5>
                                             </EmptyState>
@@ -1068,7 +1068,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                     <strong>any Application that can sync from the repo can also push hydrated manifests to that repo.</strong> Do not use this
                                                     feature until you've read its documentation and understand the security implications.
                                                 </p>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Save as write credential' field='write' component={CheckboxField} />
                                                 </div>
                                             </div>
@@ -1077,12 +1077,12 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                             <div className='white-box'>
                                                 <p>CONNECT REPO USING SSH</p>
                                                 {formApi.getFormState().values.write === false && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField formApi={formApi} label='Name (mandatory for Helm)' field='name' component={Text} />
                                                     </div>
                                                 )}
                                                 {formApi.getFormState().values.write === false && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField
                                                             formApi={formApi}
                                                             label='Project'
@@ -1092,29 +1092,29 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                         />
                                                     </div>
                                                 )}
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Repository URL' field='url' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='SSH private key data' field='sshPrivateKey' component={TextArea} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Skip server verification' field='insecure' component={CheckboxField} />
                                                     <HelpIcon title='This setting is ignored when creating as credential template.' />
                                                 </div>
                                                 {formApi.getFormState().values.write === false && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField formApi={formApi} label='Enable LFS support (Git only)' field='enableLfs' component={CheckboxField} />
                                                         <HelpIcon title='This setting is ignored when creating as credential template.' />
                                                     </div>
                                                 )}
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Proxy (optional)' field='proxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='NoProxy (optional)' field='noProxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Depth (optional)' field='depth' component={NumberField} />
                                                     <HelpIcon title='Depth for shallow clones. Leave empty or 0 for a full clone.' />
                                                 </div>
@@ -1123,7 +1123,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         {method === ConnectionMethod.HTTPS && (
                                             <div className='white-box'>
                                                 <p>CONNECT REPO USING HTTP/HTTPS</p>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField
                                                         formApi={formApi}
                                                         label='Type'
@@ -1133,7 +1133,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                     />
                                                 </div>
                                                 {(formApi.getFormState().values.type === 'helm' || formApi.getFormState().values.type === 'git') && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField
                                                             formApi={formApi}
                                                             label={`Name ${formApi.getFormState().values.type === 'git' ? '(optional)' : ''}`}
@@ -1143,7 +1143,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                     </div>
                                                 )}
                                                 {formApi.getFormState().values.write === false && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField
                                                             formApi={formApi}
                                                             label='Project'
@@ -1153,13 +1153,13 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                         />
                                                     </div>
                                                 )}
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Repository URL' field='url' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Username (optional)' field='username' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField
                                                         formApi={formApi}
                                                         label='Password (optional)'
@@ -1169,7 +1169,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                     />
                                                 </div>
                                                 {formApi.getFormState().values.type === 'git' && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField
                                                             formApi={formApi}
                                                             label='Bearer token (optional, for BitBucket Data Center only)'
@@ -1179,45 +1179,45 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                         />
                                                     </div>
                                                 )}
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='TLS client certificate (optional)' field='tlsClientCertData' component={TextArea} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='TLS client certificate key (optional)' field='tlsClientCertKey' component={TextArea} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Skip server verification' field='insecure' component={CheckboxField} />
                                                     <HelpIcon title='This setting is ignored when creating as credential template.' />
                                                 </div>
                                                 {formApi.getFormState().values.type === 'git' && (
                                                     <>
-                                                        <div className='argo-form-row'>
+                                                        <div className='kit-form-row'>
                                                             <FormField formApi={formApi} label='Force HTTP basic auth' field='forceHttpBasicAuth' component={CheckboxField} />
                                                         </div>
-                                                        <div className='argo-form-row'>
+                                                        <div className='kit-form-row'>
                                                             <FormField formApi={formApi} label='Enable LFS support (Git only)' field='enableLfs' component={CheckboxField} />
                                                             <HelpIcon title='This setting is ignored when creating as credential template.' />
                                                         </div>
                                                     </>
                                                 )}
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Proxy (optional)' field='proxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='NoProxy (optional)' field='noProxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     {formApi.getFormState().values.type !== 'oci' ? (
                                                         <FormField formApi={formApi} label='Enable OCI' field='enableOCI' component={CheckboxField} />
                                                     ) : (
                                                         <FormField formApi={formApi} label='Insecure HTTP Only' field='insecureOCIForceHttp' component={CheckboxField} />
                                                     )}
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Use Azure Workload Identity' field='useAzureWorkloadIdentity' component={CheckboxField} />
                                                 </div>
                                                 {formApi.getFormState().values.type === 'git' && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField formApi={formApi} label='Depth (optional)' field='depth' component={NumberField} />
                                                         <HelpIcon title='Depth for shallow clones. Leave empty or 0 for a full clone.' />
                                                     </div>
@@ -1227,7 +1227,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         {method === ConnectionMethod.GITHUBAPP && (
                                             <div className='white-box'>
                                                 <p>CONNECT REPO USING GITHUB APP</p>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField
                                                         formApi={formApi}
                                                         label='Type'
@@ -1237,7 +1237,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                     />
                                                 </div>
                                                 {formApi.getFormState().values.ghType === 'GitHub Enterprise' && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField
                                                             formApi={formApi}
                                                             label='GitHub Enterprise Base URL (e.g. https://ghe.example.com/formApi/v3)'
@@ -1246,35 +1246,35 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                         />
                                                     </div>
                                                 )}
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Project' field='project' component={AutocompleteField} componentProps={{items: projects}} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Repository URL' field='url' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='GitHub App ID' field='githubAppId' component={NumberField} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='GitHub App Installation ID' field='githubAppInstallationId' component={NumberField} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='GitHub App private key' field='githubAppPrivateKey' component={TextArea} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Skip server verification' field='insecure' component={CheckboxField} />
                                                     <HelpIcon title='This setting is ignored when creating as credential template.' />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Enable LFS support (Git only)' field='enableLfs' component={CheckboxField} />
                                                     <HelpIcon title='This setting is ignored when creating as credential template.' />
                                                 </div>
                                                 {formApi.getFormState().values.ghType === 'GitHub Enterprise' && (
                                                     <>
-                                                        <div className='argo-form-row'>
+                                                        <div className='kit-form-row'>
                                                             <FormField formApi={formApi} label='TLS client certificate (optional)' field='tlsClientCertData' component={TextArea} />
                                                         </div>
-                                                        <div className='argo-form-row'>
+                                                        <div className='kit-form-row'>
                                                             <FormField
                                                                 formApi={formApi}
                                                                 label='TLS client certificate key (optional)'
@@ -1284,13 +1284,13 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                         </div>
                                                     </>
                                                 )}
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Proxy (optional)' field='proxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='NoProxy (optional)' field='noProxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Depth (optional)' field='depth' component={NumberField} />
                                                     <HelpIcon title='Depth for shallow clones. Leave empty or 0 for a full clone.' />
                                                 </div>
@@ -1299,22 +1299,22 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         {method === ConnectionMethod.GOOGLECLOUD && (
                                             <div className='white-box'>
                                                 <p>CONNECT REPO USING GOOGLE CLOUD</p>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Project' field='project' component={AutocompleteField} componentProps={{items: projects}} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Repository URL' field='url' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='GCP service account key' field='gcpServiceAccountKey' component={TextArea} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Proxy (optional)' field='proxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='NoProxy (optional)' field='noProxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Depth (optional)' field='depth' component={NumberField} />
                                                     <HelpIcon title='Depth for shallow clones. Leave empty or 0 for a full clone.' />
                                                 </div>
@@ -1323,7 +1323,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         {method === ConnectionMethod.AZURESERVICEPRINCIPAL && (
                                             <div className='white-box'>
                                                 <p>CONNECT REPO USING AZURE SERVICE PRINCIPAL</p>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField
                                                         formApi={formApi}
                                                         label='Type'
@@ -1333,7 +1333,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                     />
                                                 </div>
                                                 {formApi.getFormState().values.azureType === 'Azure Other Cloud' && (
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField
                                                             formApi={formApi}
                                                             label='Azure Active Directory Endpoint (e.g. https://login.microsoftonline.de)'
@@ -1342,33 +1342,33 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                         />
                                                     </div>
                                                 )}
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Project' field='project' component={AutocompleteField} componentProps={{items: projects}} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Repository URL' field='url' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='AzureTenant ID' field='azureServicePrincipalTenantId' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Azure Client ID' field='azureServicePrincipalClientId' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Azure Client Secret' field='azureServicePrincipalClientSecret' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Skip server verification' field='insecure' component={CheckboxField} />
                                                     <HelpIcon title='This setting is ignored when creating as credential template.' />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Enable LFS support (Git only)' field='enableLfs' component={CheckboxField} />
                                                     <HelpIcon title='This setting is ignored when creating as credential template.' />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Proxy (optional)' field='proxy' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='NoProxy (optional)' field='noProxy' component={Text} />
                                                 </div>
                                             </div>

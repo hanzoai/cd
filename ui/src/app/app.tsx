@@ -1,4 +1,4 @@
-import {AppContext, AppContextReact, DataLoader, NavigationManager, Notifications, NotificationsManager, PageContext, Popup, PopupManager, PopupProps} from 'argo-ui';
+import {AppContext, AppContextReact, DataLoader, NavigationManager, Notifications, NotificationsManager, PageContext, Popup, PopupManager, PopupProps} from '../kit/src';
 import * as React from 'react';
 import {Helmet} from 'react-helmet';
 import {Route, Routes} from 'react-router';
@@ -49,19 +49,19 @@ const navItems: NavItem[] = [
         title: 'Applications',
         tooltip: 'Manage your applications, and diagnose health problems.',
         path: '/applications',
-        iconClassName: 'argo-icon argo-icon-application'
+        iconClassName: 'kit-icon kit-icon-application'
     },
     {
         title: 'ApplicationSets',
         tooltip: 'Manage your ApplicationSets, and diagnose health problems.',
         path: '/applicationsets',
-        iconClassName: 'argo-icon argo-icon-applicationset'
+        iconClassName: 'kit-icon kit-icon-applicationset'
     },
     {
         title: 'Settings',
         tooltip: 'Manage your repositories, projects, settings',
         path: '/settings',
-        iconClassName: 'argo-icon argo-icon-settings'
+        iconClassName: 'kit-icon kit-icon-settings'
     },
     {
         title: 'User Info',
@@ -72,7 +72,7 @@ const navItems: NavItem[] = [
         title: 'Documentation',
         tooltip: 'Read the documentation, and get help and assistance.',
         path: '/help',
-        iconClassName: 'argo-icon argo-icon-docs'
+        iconClassName: 'kit-icon kit-icon-docs'
     }
 ];
 
@@ -83,7 +83,7 @@ async function fetchUserInfoSafe(): Promise<UserInfo> {
         return await services.users.get();
     } catch (err: any) {
         if (err?.response?.status === 401 || err?.status === 401) {
-            return {loggedIn: false, username: '', iss: 'argocd', groups: []};
+            return {loggedIn: false, username: '', iss: 'hanzocd', groups: []};
         }
         throw err;
     }
@@ -229,7 +229,7 @@ export class App extends React.Component<
     public render() {
         if (this.state.error != null) {
             const stack = this.state.error.stack;
-            const url = 'https://github.com/argoproj/argo-cd/issues/new?labels=bug&template=bug_report.md';
+            const url = 'https://github.com/hanzoai/cd/issues/new?labels=bug&template=bug_report.md';
 
             return (
                 <React.Fragment>
@@ -261,8 +261,8 @@ export class App extends React.Component<
 
         const contextApis = {history, popup: this.popupManager, notifications: this.notificationsManager, navigation: this.navigationManager, baseHref: base};
 
-        // argo-ui's AppContext requires a `router`, but this provider sits above <Router> so there is no
-        // route match yet — supply the current location with an empty match. The only fields argo-ui actually
+        // The kit's AppContext requires a `router`, but this provider sits above <Router> so there is no
+        // route match yet — supply the current location with an empty match. The only fields the kit actually
         // reads off this context are `apis` (DataLoader) and `router` (NavBar, unused in Hanzo CD).
         const appContext: AppContext = {
             history,
@@ -279,7 +279,7 @@ export class App extends React.Component<
                 <PageContext.Provider value={{title: 'Hanzo CD'}}>
                     <Provider value={contextApis}>
                         {/*
-                          argo-ui's class components (e.g. DataLoader) read context via the modern
+                          The kit's class components (e.g. DataLoader) read context via the modern
                           `static contextType = AppContextReact`. Without this provider, their `this.context`
                           is undefined and any error path (e.g. DataLoader.handleError after a failed
                           save/update/delete) throws "this.appContext is undefined".

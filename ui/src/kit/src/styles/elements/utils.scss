@@ -1,0 +1,63 @@
+@import '../config';
+
+.status-icon {
+    &--failed {
+        color: $kit-failed-color;
+    }
+
+    &--success {
+        color: $kit-success-color;
+    }
+
+    &--waiting {
+        color: $kit-waiting-color;
+    }
+
+    &--cancelled {
+        color: $kit-cancelled-color;
+    }
+
+    &--running {
+        color: $kit-running-color;
+    }
+
+    &--pending {
+        color: $kit-status-warning-color;
+    }
+
+    &--init {
+        color: $kit-init-color;
+    }
+
+    &--spin {
+        animation-name: spin;
+        animation-duration: 4000ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
+    &--slow-spin {
+        animation-name: spin;
+        animation-duration: 10000ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
+    @keyframes spin {
+        from {transform:rotate(0deg);}
+        to {transform:rotate(360deg);}
+    }
+}
+
+.icon {
+    font-size: 2em;
+}
+
+.muted {
+    color: $kit-color-gray-5;
+}
+
+.title {
+    color: $kit-color-gray-7;
+    font-size: 1.1em;
+}

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {FormField} from 'argo-ui';
-import {FormApi} from 'argo-ui';
+import {FormField} from '../../../../kit/src';
+import {FormApi} from '../../../../kit/src';
 import * as models from '../../../shared/models';
 import {MapInputField} from '../../../shared/components';
 import {notificationSubscriptionsParser} from './edit-notification-subscriptions';

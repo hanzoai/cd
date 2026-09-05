@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 
 .editable-panel {
     position: relative;
@@ -35,7 +35,7 @@
         right: 30px;
         &__override {
             @include themify($themes) {
-                color: themed('light-argo-teal-7');
+                color: themed('light-kit-teal-7');
             }
         }
     }
@@ -63,7 +63,7 @@
         position: relative;
     }
 
-    .argo-form-row__error-msg {
+    .kit-form-row__error-msg {
         position: absolute;
         top: 0;
     }
@@ -73,7 +73,7 @@
         border-radius: 4px;
         position: absolute;
         display: block;
-        background: rgba($argo-color-gray-6, 0.2);
+        background: rgba($kit-color-gray-6, 0.2);
         left: 0;
         right: 0;
         top: 0;
@@ -88,14 +88,14 @@
             margin-bottom: 0.5em;
             font-size: 14px;
             @include themify($themes) {
-                color: themed('light-argo-teal-7');
+                color: themed('light-kit-teal-7');
             }
         }
 
         &-items {
             border-left: 3px solid;
             @include themify($themes) {
-                border-color: themed('light-argo-gray-4');
+                border-color: themed('light-kit-gray-4');
             }
             padding-left: 1.5em;
             margin-left: 0.5em;

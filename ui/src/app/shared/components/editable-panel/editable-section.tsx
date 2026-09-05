@@ -1,8 +1,8 @@
-import {ErrorNotification, NotificationType} from 'argo-ui';
+import {ErrorNotification, NotificationType} from '../../../../kit/src';
 import * as React from 'react';
 import {useState, useRef, useEffect, Fragment, useCallback} from 'react';
-import type {FormApi, FormState} from 'argo-ui';
-import {Form} from 'argo-ui';
+import type {FormApi, FormState} from '../../../../kit/src';
+import {Form} from '../../../../kit/src';
 import {ContextApis} from '../../context';
 import {EditablePanelItem} from './editable-panel';
 import {Spinner} from '../spinner';
@@ -108,7 +108,7 @@ function EditableSection<T extends {} = {}>({
                                     onModeSwitch?.();
                                 }}
                                 disabled={disabledState}
-                                className='argo-button argo-button--base'>
+                                className='kit-button kit-button--base'>
                                 Edit
                             </button>{' '}
                             {isTopSection && deleteSource && (
@@ -118,7 +118,7 @@ function EditableSection<T extends {} = {}>({
                                         deleteSource();
                                     }}
                                     disabled={disabledDelete}
-                                    className='argo-button argo-button--base'>
+                                    className='kit-button kit-button--base'>
                                     {helpTip('Delete the source from the sources field')}
                                     <span style={{marginRight: '8px'}} />
                                     Delete
@@ -132,7 +132,7 @@ function EditableSection<T extends {} = {}>({
                                     key={'save_button_' + uniqueId}
                                     disabled={isSaving}
                                     onClick={() => !isSaving && formApiRef.current?.submitForm(null)}
-                                    className='argo-button argo-button--base'>
+                                    className='kit-button kit-button--base'>
                                     <Spinner show={isSaving} style={{marginRight: '5px'}} />
                                     Save
                                 </button>{' '}
@@ -143,7 +143,7 @@ function EditableSection<T extends {} = {}>({
                                         updateButtons?.(false);
                                         onModeSwitch?.();
                                     }}
-                                    className='argo-button argo-button--base-o'>
+                                    className='kit-button kit-button--base-o'>
                                     Cancel
                                 </button>
                             </Fragment>

@@ -1,7 +1,7 @@
-import {Tooltip} from 'argo-ui';
+import {Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import {ChangeEvent} from 'react';
-import {ReactForm} from 'argo-ui';
+import {ReactForm} from '../../../../kit/src';
 import {SyncWindow} from '../../../shared/models';
 
 require('./project-sync-windows-edit.scss');
@@ -26,7 +26,7 @@ export const ProjectSyncWindowApplicationsEdit = (props: ProjectSyncWindowProps)
     <>
         <p>APPLICATIONS</p>
         <div>Manage applications assigned to this window ("*" for any)</div>
-        <div className='argo-table-list__row'>
+        <div className='kit-table-list__row'>
             {(props.window.applications || []).map((a, i) => (
                 <Attribute
                     key={i}
@@ -39,7 +39,7 @@ export const ProjectSyncWindowApplicationsEdit = (props: ProjectSyncWindowProps)
             <div className='row'>
                 <div className='columns small-6'>
                     <a
-                        className='argo-button argo-button--base'
+                        className='kit-button kit-button--base'
                         onClick={() => {
                             const newA = '';
                             props.formApi.setValue('window.applications', (props.formApi.values.window.applications || []).concat(newA));
@@ -56,7 +56,7 @@ export const ProjectSyncWindowNamespaceEdit = (props: ProjectSyncWindowProps) =>
     <>
         <p>NAMESPACES</p>
         <div>Manage namespaces assigned to this window ("*" for any)</div>
-        <div className='argo-table-list__row'>
+        <div className='kit-table-list__row'>
             {(props.window.namespaces || []).map((n, i) => (
                 <Attribute
                     key={i}
@@ -69,7 +69,7 @@ export const ProjectSyncWindowNamespaceEdit = (props: ProjectSyncWindowProps) =>
             <div className='row'>
                 <div className='columns small-6'>
                     <a
-                        className='argo-button argo-button--base'
+                        className='kit-button kit-button--base'
                         onClick={() => {
                             const newN = '';
                             props.formApi.setValue('window.namespaces', (props.formApi.values.window.namespaces || []).concat(newN));
@@ -86,7 +86,7 @@ export const ProjectSyncWindowClusterEdit = (props: ProjectSyncWindowProps) => (
     <>
         <p>CLUSTERS</p>
         <div>Manage clusters assigned to this window ("*" for any)</div>
-        <div className='argo-table-list__row'>
+        <div className='kit-table-list__row'>
             {(props.window.clusters || []).map((c, i) => (
                 <Attribute
                     key={i}
@@ -99,7 +99,7 @@ export const ProjectSyncWindowClusterEdit = (props: ProjectSyncWindowProps) => (
             <div className='row'>
                 <div className='columns small-6'>
                     <a
-                        className='argo-button argo-button--base'
+                        className='kit-button kit-button--base'
                         onClick={() => {
                             const newC = '';
                             props.formApi.setValue('window.clusters', (props.formApi.values.window.clusters || []).concat(newC));
@@ -133,7 +133,7 @@ function AttributeWrapper({fieldApi, deleteApp}: AttributeProps) {
         <div className='row'>
             <div className='columns small-6'>
                 <input
-                    className='argo-field'
+                    className='kit-field'
                     value={getApplication()}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         setApplication(e.target.value);
@@ -156,7 +156,7 @@ function generateSchedule(minute?: string, hour?: string, dom?: string, month?: 
 export const ProjectSyncWindowScheduleEdit = (props: ProjectSyncWindowProps) => (
     <>
         <p>Schedule</p>
-        <div className='argo-table-list__head'>
+        <div className='kit-table-list__head'>
             <div className='row'>
                 <div className='columns small-2'>Minute{helpTip('The minute/minutes assigned to the schedule')}</div>
                 <div className='columns small-2'>Hour{helpTip('The hour/hours assigned to the schedule')}</div>
@@ -273,7 +273,7 @@ function ScheduleWrapper({fieldApi}: ScheduleProps) {
         <>
             <div className='columns small-2'>
                 <select
-                    className='argo-field project-sync-windows-panel__options-wrapper'
+                    className='kit-field project-sync-windows-panel__options-wrapper'
                     size={8}
                     name='minute'
                     multiple={true}
@@ -298,7 +298,7 @@ function ScheduleWrapper({fieldApi}: ScheduleProps) {
             </div>
             <div className='columns small-2'>
                 <select
-                    className='argo-field project-sync-windows-panel__options-wrapper'
+                    className='kit-field project-sync-windows-panel__options-wrapper'
                     size={8}
                     name='hours'
                     multiple={true}
@@ -323,7 +323,7 @@ function ScheduleWrapper({fieldApi}: ScheduleProps) {
             </div>
             <div className='columns small-2'>
                 <select
-                    className='argo-field project-sync-windows-panel__options-wrapper'
+                    className='kit-field project-sync-windows-panel__options-wrapper'
                     size={8}
                     name='dom'
                     multiple={true}
@@ -348,7 +348,7 @@ function ScheduleWrapper({fieldApi}: ScheduleProps) {
             </div>
             <div className='columns small-2'>
                 <select
-                    className='argo-field project-sync-windows-panel__options-wrapper'
+                    className='kit-field project-sync-windows-panel__options-wrapper'
                     size={8}
                     name='month'
                     multiple={true}
@@ -406,7 +406,7 @@ function ScheduleWrapper({fieldApi}: ScheduleProps) {
             </div>
             <div className='columns small-2'>
                 <select
-                    className='argo-field project-sync-windows-panel__options-wrapper'
+                    className='kit-field project-sync-windows-panel__options-wrapper'
                     size={8}
                     name='dow'
                     multiple={true}

@@ -1,7 +1,7 @@
-import {AutocompleteField, DataLoader, DropDownMenu, FormField} from 'argo-ui';
+import {AutocompleteField, DataLoader, DropDownMenu, FormField} from '../../../../kit/src';
 import * as deepMerge from 'deepmerge';
 import * as React from 'react';
-import {Form, FormApi, FormErrors, Text} from 'argo-ui';
+import {Form, FormApi, FormErrors, Text} from '../../../../kit/src';
 import {ApplicationParameters} from '../../../applications/components/application-parameters/application-parameters';
 import {RevisionFormField} from '../../../applications/components/revision-form-field/revision-form-field';
 import {RevisionHelpIcon} from '../../../shared/components';
@@ -149,7 +149,7 @@ export const SourcePanel = (props: {
                                 const sourcePanel = () => (
                                     <div className='white-box'>
                                         <p>SOURCE</p>
-                                        <div className='row argo-form-row'>
+                                        <div className='row kit-form-row'>
                                             <div className='columns small-10'>
                                                 <FormField
                                                     formApi={api}
@@ -188,7 +188,7 @@ export const SourcePanel = (props: {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='row argo-form-row'>
+                                        <div className='row kit-form-row'>
                                             <div className='columns small-10'>
                                                 <FormField formApi={api} label='Name' field={'spec.source.name'} component={Text}></FormField>
                                             </div>
@@ -201,7 +201,7 @@ export const SourcePanel = (props: {
                                                     repoURL={api.getFormState().values.spec?.source?.repoURL}
                                                     repoType={repoType}
                                                 />
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <DataLoader
                                                         input={{
                                                             repoURL: api.getFormState().values.spec?.source?.repoURL,
@@ -226,7 +226,7 @@ export const SourcePanel = (props: {
                                                         )}
                                                     </DataLoader>
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={api} label='Ref' field={'spec.source.ref'} component={Text}></FormField>
                                                 </div>
                                             </React.Fragment>
@@ -239,7 +239,7 @@ export const SourcePanel = (props: {
                                                         repoURL={api.getFormState().values.spec?.source?.repoURL}
                                                         repoType={repoType}
                                                     />
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <DataLoader
                                                             input={{
                                                                 repoURL: api.getFormState().values.spec?.source?.repoURL,
@@ -267,7 +267,7 @@ export const SourcePanel = (props: {
                                                             )}
                                                         </DataLoader>
                                                     </div>
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField formApi={api} label='Ref' field={'spec.source.ref'} component={Text}></FormField>
                                                     </div>
                                                 </React.Fragment>
@@ -281,7 +281,7 @@ export const SourcePanel = (props: {
                                                     {(charts: models.HelmChart[]) => {
                                                         const selectedChart = charts.find(chart => chart.name === api.getFormState().values.spec?.source?.chart);
                                                         return (
-                                                            <div className='row argo-form-row'>
+                                                            <div className='row kit-form-row'>
                                                                 <div className='columns small-10'>
                                                                     <FormField
                                                                         formApi={api}

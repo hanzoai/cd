@@ -1,8 +1,8 @@
-import {models, DataLoader, FormField, MenuItem, NotificationType, Tooltip, HelpIcon} from 'argo-ui';
-import {ActionButton} from 'argo-ui/v2';
+import {models, DataLoader, FormField, MenuItem, NotificationType, Tooltip, HelpIcon} from '../../../kit/src';
+import {ActionButton} from '../../../kit/v2';
 import classNames from 'classnames';
 import * as React from 'react';
-import {ReactForm, FormApi, Text} from 'argo-ui';
+import {ReactForm, FormApi, Text} from '../../../kit/src';
 import * as moment from 'moment';
 import {BehaviorSubject, combineLatest, concat, from, fromEvent, Observable, Observer, Subscription} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
@@ -133,7 +133,7 @@ export async function deleteApplication(appName: string, appNamespace: string, a
                     Deleting the application in <kbd>foreground</kbd> or <kbd>background</kbd> mode will delete all the application's managed resources, which can be{' '}
                     <strong>dangerous</strong>. Be sure you understand the effects of deleting this resource before continuing. Consider asking someone to review the change first.
                 </p>
-                <div className='argo-form-row'>
+                <div className='kit-form-row'>
                     <FormField
                         label={`Please type '${appName}' to confirm the deletion of the ${confirmLabel}`}
                         formApi={api}
@@ -178,7 +178,7 @@ export async function deleteApplication(appName: string, appNamespace: string, a
                 }
             }
         },
-        {name: 'argo-icon-warning', color: 'failed'},
+        {name: 'kit-icon-warning', color: 'failed'},
         'red',
         {propagationPolicy: 'foreground'}
     );
@@ -197,7 +197,7 @@ export async function confirmSyncingAppOfApps(apps: appModels.Application[], api
                     Are you sure you want to sync the application '{appNameList}' which contain(s) multiple apps with 'replace' option? This action will delete and recreate all
                     apps linked to '{appNameList}'.
                 </p>
-                <div className='argo-form-row'>
+                <div className='kit-form-row'>
                     <FormField
                         label={`Please type '${appNameList}' to confirm the Syncing of the resource`}
                         formApi={api}
@@ -225,7 +225,7 @@ export async function confirmSyncingAppOfApps(apps: appModels.Application[], api
                 }
             }
         },
-        {name: 'argo-icon-warning', color: 'warning'},
+        {name: 'kit-icon-warning', color: 'warning'},
         'yellow'
     );
     return confirmed;
@@ -416,7 +416,7 @@ const deletePodAction = async (ctx: ContextApis, pod: appModels.ResourceNode, ap
                     Deleting resources can be <strong>dangerous</strong>. Be sure you understand the effects of deleting this resource before continuing. Consider asking someone to
                     review the change first.
                 </p>
-                <div className='argo-form-row' style={{paddingLeft: '30px'}}>
+                <div className='kit-form-row' style={{paddingLeft: '30px'}}>
                     <CheckboxField id='force-delete-checkbox' field='force' />
                     <label htmlFor='force-delete-checkbox'>Force delete</label>
                     <HelpIcon title='If checked, Hanzo CD will ignore any configured grace period and delete the resource immediately' />
@@ -472,7 +472,7 @@ export const deleteSourceAction = (app: appModels.Application, source: appModels
                 }
             }
         },
-        {name: 'argo-icon-warning', color: 'warning'},
+        {name: 'kit-icon-warning', color: 'warning'},
         'yellow'
     );
 };
@@ -573,13 +573,13 @@ export const deletePopup = async (
                 )}
 
                 {isManaged ? (
-                    <div className='argo-form-row'>
+                    <div className='kit-form-row'>
                         <FormField label={`Please type '${resource.name}' to confirm the deletion of the resource`} formApi={api} field='resourceName' component={Text} />
                     </div>
                 ) : (
                     ''
                 )}
-                <div className='argo-form-row'>
+                <div className='kit-form-row'>
                     <input
                         type='radio'
                         name='deleteOptions'
@@ -624,7 +624,7 @@ export const deletePopup = async (
                 }
             }
         },
-        {name: 'argo-icon-warning', color: 'warning'},
+        {name: 'kit-icon-warning', color: 'warning'},
         'yellow'
     );
 };
@@ -650,13 +650,13 @@ export async function getResourceActionsMenuItems(resource: ResourceTreeNode, me
                         api => (
                             <div>
                                 {!action.params && (
-                                    <div className='argo-form-row'>
+                                    <div className='kit-form-row'>
                                         <div> Are you sure you want to perform {action.name} action?</div>
                                     </div>
                                 )}
                                 {action.params &&
                                     action.params.map((param, index) => (
-                                        <div className='argo-form-row' key={index}>
+                                        <div className='kit-form-row' key={index}>
                                             <FormField label={param.name} field={param.name} formApi={api} component={Text} />
                                         </div>
                                     ))}

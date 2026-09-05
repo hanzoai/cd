@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FormApi} from 'argo-ui';
+import {FormApi} from '../../../../kit/src';
 import * as models from '../../../shared/models';
 import {CreatePanelSourceTypeParameters} from './create-panel-source-type-parameters';
 import {SourcePanel} from './source-panel';
@@ -41,7 +41,7 @@ export function CollapsibleMultiSourceSection(props: {
                     {props.canRemove && props.onRemove && (
                         <button
                             type='button'
-                            className='argo-button argo-button--base application-create-panel__multi-source-remove-btn'
+                            className='kit-button kit-button--base application-create-panel__multi-source-remove-btn'
                             title='Remove this source'
                             onClick={e => {
                                 e.stopPropagation();

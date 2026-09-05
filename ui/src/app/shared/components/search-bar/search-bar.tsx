@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Autocomplete} from 'argo-ui';
-import {Key, KeybindingContext} from 'argo-ui/v2';
+import {Autocomplete} from '../../../../kit/src';
+import {Key, KeybindingContext} from '../../../../kit/v2';
 
 import './search-bar.scss';
 
@@ -110,7 +110,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({value, onChange, placeholde
                                 }
                             }}
                             style={{fontSize: '14px', flex: 1, minWidth: 0}}
-                            className='argo-field'
+                            className='kit-field'
                             placeholder={placeholder}
                         />
                         <div className='keyboard-hint'>/</div>
@@ -135,7 +135,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({value, onChange, placeholde
                 <input
                     ref={inputRef}
                     type='text'
-                    className='argo-field'
+                    className='kit-field'
                     placeholder={placeholder}
                     value={localValue}
                     onChange={e => handleChange(e.target.value)}

@@ -1,5 +1,5 @@
-import {Autocomplete, Checkbox} from 'argo-ui/v2';
-import {Tooltip} from 'argo-ui';
+import {Autocomplete, Checkbox} from '../../../../kit/v2';
+import {Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 
 import './filter.scss';
@@ -82,7 +82,7 @@ export const FiltersGroup = (props: {
                 {props.title && <div className='filters-group__title'>{props.title}</div>}
                 {props.appliedFilter?.length > 0 && props.onClearFilter && (
                     <div className='filters-group__header'>
-                        <button onClick={() => props.onClearFilter()} className='argo-button argo-button--base argo-button--sm'>
+                        <button onClick={() => props.onClearFilter()} className='kit-button kit-button--base kit-button--sm'>
                             <i className='fa fa-times-circle' /> CLEAR ALL
                         </button>
                     </div>
@@ -157,7 +157,7 @@ export const Filter = (props: FilterProps) => {
                 </span>
                 {(props.selected || []).length > 0 || (props.field && Object.keys(values).length > 0) ? (
                     <button
-                        className='argo-button argo-button--base argo-button--sm argo-button--right'
+                        className='kit-button kit-button--base kit-button--sm kit-button--right'
                         onClick={() => {
                             setValues({} as {[label: string]: boolean});
                             setInput('');

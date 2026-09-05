@@ -1,13 +1,13 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .ui-banner {
-    background: $argo-color-gray-5;
+    background: $kit-color-gray-5;
     position: fixed;
     left: 0;
     right: 0;
     z-index: 10;
     text-align: center;
-    color: $argo-color-teal-8;
+    color: $kit-color-teal-8;
     font-weight: 500;
     font-size: 16px;
     display: flex;
@@ -17,7 +17,7 @@
 
     a {
         text-decoration: underline;
-        color: $argo-color-teal-8;
+        color: $kit-color-teal-8;
     }
 }
 

@@ -64,7 +64,7 @@ export const AccountsList = () => {
                     )
                 }}
             />
-            <div className='argo-container'>
+            <div className='kit-container'>
                 <DataLoader load={() => services.accounts.list()}>
                     {accounts => {
                         const accountsWithFilter = getAccountFilterResults(accounts, filterPref);
@@ -97,8 +97,8 @@ export const AccountsList = () => {
                                 {filteredAccounts.length > 0 ? (
                                     <Paginate page={page} data={filteredAccounts} onPageChange={setPage} preferencesKey='accounts-list'>
                                         {accountsToDisplay => (
-                                            <div className='argo-table-list argo-table-list--clickable'>
-                                                <div className='argo-table-list__head'>
+                                            <div className='kit-table-list kit-table-list--clickable'>
+                                                <div className='kit-table-list__head'>
                                                     <div className='row'>
                                                         <div className='columns small-3 sortable' onClick={() => requestSort('name')}>
                                                             NAME
@@ -115,7 +115,7 @@ export const AccountsList = () => {
                                                     </div>
                                                 </div>
                                                 {accountsToDisplay.map(account => (
-                                                    <div className='argo-table-list__row' key={account.name} onClick={() => ctx.navigation.goto(`./${account.name}`)}>
+                                                    <div className='kit-table-list__row' key={account.name} onClick={() => ctx.navigation.goto(`./${account.name}`)}>
                                                         <div className='row'>
                                                             <div className='columns small-3'>{account.name}</div>
                                                             <div className='columns small-3'>{(account.enabled && 'true') || 'false'}</div>

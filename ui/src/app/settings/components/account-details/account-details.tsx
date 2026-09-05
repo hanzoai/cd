@@ -1,6 +1,6 @@
-import {ErrorNotification, FormField, NotificationType} from 'argo-ui';
+import {ErrorNotification, FormField, NotificationType} from '../../../../kit/src';
 import * as React from 'react';
-import {Form, Text} from 'argo-ui';
+import {Form, Text} from '../../../../kit/src';
 import {RouteComponentProps} from 'react-router';
 
 import {DataLoader, Page, Timestamp} from '../../../shared/components';
@@ -23,7 +23,7 @@ export const AccountDetails = (props: RouteComponentProps<{name: string}>) => {
                 breadcrumbs: [{title: 'Settings', path: '/settings'}, {title: 'Accounts', path: '/settings/accounts'}, {title: props.match.params.name}]
             }}>
             <p />
-            <div className='argo-container account-details'>
+            <div className='kit-container account-details'>
                 <DataLoader input={props.match.params.name} load={(name: string) => services.accounts.get(name)}>
                     {(account: Account) => (
                         <React.Fragment>
@@ -70,17 +70,17 @@ export const AccountDetails = (props: RouteComponentProps<{name: string}>) => {
                                 })}>
                                 {api => (
                                     <form onSubmit={api.submitForm}>
-                                        <div className='row argo-table-list__row'>
+                                        <div className='row kit-table-list__row'>
                                             <div className='columns small-10'>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={api} label='Token ID' field='id' component={Text} />
                                                 </div>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField formApi={api} label='Expires In' field='expiresIn' component={Text} />
                                                 </div>
                                             </div>
                                             <div className='columns small-2'>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <a onClick={() => api.submitForm(null)}>Generate New</a>
                                                 </div>
                                             </div>
@@ -98,8 +98,8 @@ export const AccountDetails = (props: RouteComponentProps<{name: string}>) => {
                             <DataLoader ref={tokensLoaderRef} input={props.match.params.name} load={(name: string) => services.accounts.get(name).then(acc => acc.tokens || [])}>
                                 {(tokens: Token[]) =>
                                     (tokens.length > 0 && (
-                                        <div className='argo-table-list'>
-                                            <div className='argo-table-list__head'>
+                                        <div className='kit-table-list'>
+                                            <div className='kit-table-list__head'>
                                                 <div className='row'>
                                                     <div className='columns small-4'>ID</div>
                                                     <div className='columns small-4'>ISSUED AT</div>
@@ -107,7 +107,7 @@ export const AccountDetails = (props: RouteComponentProps<{name: string}>) => {
                                                 </div>
                                             </div>
                                             {tokens.map(token => (
-                                                <div className='argo-table-list__row' key={token.id}>
+                                                <div className='kit-table-list__row' key={token.id}>
                                                     <div className='row'>
                                                         <div className='columns small-4'>{token.id}</div>
                                                         <div className='columns small-4'>

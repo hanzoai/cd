@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import {ReactNode, useContext, useState} from 'react';
-import {FormApi} from 'argo-ui';
+import {FormApi} from '../../../../kit/src';
 import {EditablePanelItem} from '../../../shared/components';
 import {EditableSection} from '../../../shared/components/editable-panel/editable-section';
 import {Context} from '../../../shared/context';

@@ -1,7 +1,7 @@
-import {FormField, NotificationType, SlidingPanel} from 'argo-ui';
+import {FormField, NotificationType, SlidingPanel} from '../../../../kit/src';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Form, FormApi, Text, TextArea} from 'argo-ui';
+import {Form, FormApi, Text, TextArea} from '../../../../kit/src';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {ActionMenu, DataLoader, EmptyState, ErrorNotification, IconColumn, Page, Paginate, SearchBar} from '../../../shared/components';
@@ -191,7 +191,7 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                 }}
             />
             <div className='certs-list'>
-                <div className='argo-container'>
+                <div className='kit-container'>
                     <DataLoader
                         load={() => services.certs.list()}
                         ref={ref => {
@@ -230,8 +230,8 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                                     {filteredCerts.length > 0 ? (
                                         <Paginate page={page} data={filteredCerts} onPageChange={setPage} preferencesKey='certs-list'>
                                             {certsToDisplay => (
-                                                <div className='argo-table-list'>
-                                                    <div className='argo-table-list__head'>
+                                                <div className='kit-table-list'>
+                                                    <div className='kit-table-list__head'>
                                                         <div className='row'>
                                                             <IconColumn />
                                                             <div className='columns small-3 sortable' onClick={() => requestSort('serverName')}>
@@ -249,9 +249,9 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                                                         </div>
                                                     </div>
                                                     {certsToDisplay.map(cert => (
-                                                        <div className='argo-table-list__row' key={cert.certType + '_' + cert.certSubType + '_' + cert.serverName}>
+                                                        <div className='kit-table-list__row' key={cert.certType + '_' + cert.certSubType + '_' + cert.serverName}>
                                                             <div className='row'>
-                                                                <IconColumn icon='argo-icon-git' />
+                                                                <IconColumn icon='kit-icon-git' />
                                                                 <div className='columns small-3'>{cert.serverName}</div>
                                                                 <div className='columns small-3'>
                                                                     {cert.certType} {cert.certSubType}
@@ -274,18 +274,18 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                                             )}
                                         </Paginate>
                                     ) : certs.length === 0 ? (
-                                        <EmptyState icon='argo-icon-git'>
+                                        <EmptyState icon='kit-icon-git'>
                                             <h4>No certificates configured</h4>
                                             <h5>You can add further certificates below.</h5>
-                                            <button className='argo-button argo-button--base' onClick={() => setAddTLSCertificate(true)}>
+                                            <button className='kit-button kit-button--base' onClick={() => setAddTLSCertificate(true)}>
                                                 Add TLS certificates
                                             </button>{' '}
-                                            <button className='argo-button argo-button--base' onClick={() => setAddSSHKnownHosts(true)}>
+                                            <button className='kit-button kit-button--base' onClick={() => setAddSSHKnownHosts(true)}>
                                                 Add SSH known hosts
                                             </button>
                                         </EmptyState>
                                     ) : (
-                                        <EmptyState icon='argo-icon-git'>
+                                        <EmptyState icon='kit-icon-git'>
                                             <h4>No certificates matched your search</h4>
                                             <h5>Try adjusting your search query</h5>
                                         </EmptyState>
@@ -301,10 +301,10 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                 onClose={() => setAddTLSCertificate(false)}
                 header={
                     <div>
-                        <button className='argo-button argo-button--base' onClick={() => formApiTLS.current.submitForm(null)}>
+                        <button className='kit-button kit-button--base' onClick={() => formApiTLS.current.submitForm(null)}>
                             Create
                         </button>{' '}
-                        <button onClick={() => setAddTLSCertificate(false)} className='argo-button argo-button--base-o'>
+                        <button onClick={() => setAddTLSCertificate(false)} className='kit-button kit-button--base-o'>
                             Cancel
                         </button>
                     </div>
@@ -324,10 +324,10 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                         <form onSubmit={formApiTLS.submitForm} role='form' className='certs-list width-control' encType='multipart/form-data'>
                             <div className='white-box'>
                                 <p>CREATE TLS REPOSITORY CERTIFICATE</p>
-                                <div className='argo-form-row'>
+                                <div className='kit-form-row'>
                                     <FormField formApi={formApiTLS} label='Repository Server Name' field='serverName' component={Text} />
                                 </div>
-                                <div className='argo-form-row'>
+                                <div className='kit-form-row'>
                                     <FormField formApi={formApiTLS} label='TLS Certificate (PEM format)' field='certData' component={TextArea} />
                                 </div>
                             </div>
@@ -340,10 +340,10 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                 onClose={() => setAddSSHKnownHosts(false)}
                 header={
                     <div>
-                        <button className='argo-button argo-button--base' onClick={() => formApiSSH.current.submitForm(null)}>
+                        <button className='kit-button kit-button--base' onClick={() => formApiSSH.current.submitForm(null)}>
                             Create
                         </button>{' '}
-                        <button onClick={() => setAddSSHKnownHosts(false)} className='argo-button argo-button--base-o'>
+                        <button onClick={() => setAddSSHKnownHosts(false)} className='kit-button kit-button--base-o'>
                             Cancel
                         </button>
                     </div>
@@ -368,7 +368,7 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                                 <p>
                                     <strong>Make sure there are no linebreaks in the keys.</strong>
                                 </p>
-                                <div className='argo-form-row'>
+                                <div className='kit-form-row'>
                                     <FormField formApi={formApiSSH} label='SSH known hosts data' field='certData' component={TextArea} />
                                 </div>
                             </div>

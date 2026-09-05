@@ -1,4 +1,4 @@
-import {Tabs} from 'argo-ui';
+import {Tabs} from '../../../../kit/src';
 import * as jsYaml from 'js-yaml';
 import * as React from 'react';
 import {useEffect, useState} from 'react';

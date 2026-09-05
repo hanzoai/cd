@@ -1,6 +1,6 @@
-import {AutocompleteField, DataLoader, ErrorNotification, FormField, FormSelect, getNestedField, NotificationType, SlidingPanel} from 'argo-ui';
+import {AutocompleteField, DataLoader, ErrorNotification, FormField, FormSelect, getNestedField, NotificationType, SlidingPanel} from '../../../../kit/src';
 import * as React from 'react';
-import {FieldApi, FormApi, FormFieldHOC as ReactFormField, Text, TextArea} from 'argo-ui';
+import {FieldApi, FormApi, FormFieldHOC as ReactFormField, Text, TextArea} from '../../../../kit/src';
 import {cloneDeep} from 'lodash-es';
 import {
     ArrayInputField,
@@ -171,7 +171,7 @@ export const ApplicationParameters = (props: {
         return (
             <div className='application-parameters'>
                 <div className='source-panel-buttons'>
-                    <button key={'add_source_button'} onClick={() => setIsAddingSource(true)} disabled={false} className='argo-button argo-button--base'>
+                    <button key={'add_source_button'} onClick={() => setIsAddingSource(true)} disabled={false} className='kit-button kit-button--base'>
                         {helpTip('Add a new source and append it to the sources field')}
                         <span style={{marginRight: '8px'}} />
                         Add Source
@@ -201,7 +201,7 @@ export const ApplicationParameters = (props: {
                         <div>
                             <button
                                 key={'source_panel_save_button'}
-                                className='argo-button argo-button--base'
+                                className='kit-button kit-button--base'
                                 disabled={isSavingSource}
                                 onClick={() => createApi && createApi.submitForm(null)}>
                                 <Spinner show={isSavingSource} style={{marginRight: '5px'}} />
@@ -213,7 +213,7 @@ export const ApplicationParameters = (props: {
                                     setIsAddingSource(false);
                                     setIsSavingSource(false);
                                 }}
-                                className='argo-button argo-button--base-o'>
+                                className='kit-button kit-button--base-o'>
                                 Cancel
                             </button>
                         </div>

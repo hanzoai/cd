@@ -1,4 +1,4 @@
-import {DropDownMenu, MenuItem} from 'argo-ui';
+import {DropDownMenu, MenuItem} from '../../../../kit/src';
 import * as React from 'react';
 
 export interface ActionMenuProps {
@@ -7,14 +7,14 @@ export interface ActionMenuProps {
 }
 
 // Shared "..." anchor for table action menus. The onMouseDown handler closes any other open dropdown
-// before this one opens: argo-ui's DropDown never broadcasts on open and its anchor stops click
+// before this one opens: the kit's DropDown never broadcasts on open and its anchor stops click
 // propagation, so clicking another anchor would otherwise leave the previous menu open. Triggering a
 // body click first dispatches the outside-click that closes them.
 //
 // Use it as the `anchor` of a DropDownMenu (static items, see ActionMenu) or a DropDown (arbitrary
 // render-prop content, e.g. the application resource list node menu).
 export const ActionMenuButton = () => (
-    <button className='argo-button argo-button--light argo-button--lg argo-button--short' onMouseDown={() => document.body.click()}>
+    <button className='kit-button kit-button--light kit-button--lg kit-button--short' onMouseDown={() => document.body.click()}>
         <i className='fa fa-ellipsis-v' />
     </button>
 );

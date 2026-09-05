@@ -1,7 +1,7 @@
-import {AutocompleteField, FormField, HelpIcon, NotificationsApi, NotificationType, SlidingPanel, Tabs, Tooltip} from 'argo-ui';
+import {AutocompleteField, FormField, HelpIcon, NotificationsApi, NotificationType, SlidingPanel, Tabs, Tooltip} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as React from 'react';
-import {FormApi, Text} from 'argo-ui';
+import {FormApi, Text} from '../../../../kit/src';
 import {RouteComponentProps} from 'react-router';
 import {Link} from 'react-router-dom';
 
@@ -180,7 +180,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
 
     const eventsTab = (proj: Project) => {
         return (
-            <div className='argo-container'>
+            <div className='kit-container'>
                 <ProjectEvents projectName={proj.metadata.name} />
             </div>
         );
@@ -188,17 +188,17 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
 
     const rolesTab = (proj: Project, ctx: any) => {
         return (
-            <div className='argo-container'>
+            <div className='kit-container'>
                 {((proj.spec.roles || []).length > 0 && (
-                    <div className='argo-table-list argo-table-list--clickable'>
-                        <div className='argo-table-list__head'>
+                    <div className='kit-table-list kit-table-list--clickable'>
+                        <div className='kit-table-list__head'>
                             <div className='row'>
                                 <div className='columns small-3'>NAME</div>
                                 <div className='columns small-6'>DESCRIPTION</div>
                             </div>
                         </div>
                         {(proj.spec.roles || []).map(role => (
-                            <div className='argo-table-list__row' key={`${role.name}`} onClick={() => ctx.navigation.goto(`.`, {editRole: role.name})}>
+                            <div className='kit-table-list__row' key={`${role.name}`} onClick={() => ctx.navigation.goto(`.`, {editRole: role.name})}>
                                 <div className='row'>
                                     <div className='columns small-3'>{role.name}</div>
                                     <div className='columns small-6'>{role.description}</div>
@@ -217,7 +217,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
 
     const SyncWindowsTab = (proj: Project, ctx: any) => {
         return (
-            <div className='argo-container'>
+            <div className='kit-container'>
                 {((proj.spec.syncWindows || []).length > 0 && (
                     <DataLoader
                         noLoaderOnInputChange={true}
@@ -226,8 +226,8 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                             return await services.projects.getSyncWindows(proj.metadata.name);
                         }}>
                         {data => (
-                            <div className='argo-table-list argo-table-list--clickable'>
-                                <div className='argo-table-list__head'>
+                            <div className='kit-table-list kit-table-list--clickable'>
+                                <div className='kit-table-list__head'>
                                     <div className='row'>
                                         <div className='columns small-8-elements'>
                                             STATUS
@@ -276,7 +276,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                     </div>
                                 </div>
                                 {(proj.spec.syncWindows || []).map((window, i) => (
-                                    <div className='argo-table-list__row' key={`${i}`} onClick={() => ctx.navigation.goto(`.`, {editWindow: `${i}`})}>
+                                    <div className='kit-table-list__row' key={`${i}`} onClick={() => ctx.navigation.goto(`.`, {editWindow: `${i}`})}>
                                         <div className='row'>
                                             <div className='columns small-8-elements'>
                                                 <span>
@@ -327,7 +327,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
 
     const summaryTab = (proj: Project, globalProj: ProjectSpec & {count: number}, scopedProj: DetailedProjectsResponse) => {
         return (
-            <div className='argo-container'>
+            <div className='kit-container'>
                 <EditablePanel
                     save={item => saveProject(item)}
                     validate={input => ({
@@ -407,7 +407,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                         </div>
                                     ))}
                                     <button
-                                        className='argo-button argo-button--short'
+                                        className='kit-button kit-button--short'
                                         onClick={() => formApi.setValue('spec.sourceRepos', (formApi.values.spec.sourceRepos || []).concat('*'))}>
                                         ADD SOURCE
                                     </button>
@@ -468,7 +468,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                             </div>
                                         ))}
                                         <button
-                                            className='argo-button argo-button--short'
+                                            className='kit-button kit-button--short'
                                             onClick={() => formApi.setValue('spec.sourceNamespaces', (formApi.values.spec.sourceNamespaces || []).concat('*'))}>
                                             ADD SOURCE
                                         </button>
@@ -539,7 +539,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                         </div>
                                     ))}
                                     <button
-                                        className='argo-button argo-button--short'
+                                        className='kit-button kit-button--short'
                                         onClick={() =>
                                             formApi.setValue(
                                                 'spec.destinations',
@@ -647,7 +647,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                     ))}
 
                                     <button
-                                        className='argo-button argo-button--short'
+                                        className='kit-button kit-button--short'
                                         onClick={() =>
                                             formApi.setValue(
                                                 'spec.destinationServiceAccounts',
@@ -708,7 +708,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                         </div>
                                     ))}
                                     <button
-                                        className='argo-button argo-button--short'
+                                        className='kit-button kit-button--short'
                                         onClick={() =>
                                             formApi.setValue(
                                                 'spec.signatureKeys',
@@ -774,7 +774,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                     edit={formApi =>
                         formApi.values.spec.orphanedResources ? (
                             <React.Fragment>
-                                <button className='argo-button argo-button--base' onClick={() => formApi.setValue('spec.orphanedResources', null)}>
+                                <button className='kit-button kit-button--base' onClick={() => formApi.setValue('spec.orphanedResources', null)}>
                                     DISABLE
                                 </button>
                                 <div className='row white-box__details-row'>
@@ -826,7 +826,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                     ))}
                                 <br />
                                 <button
-                                    className='argo-button argo-button--base'
+                                    className='kit-button kit-button--base'
                                     onClick={() =>
                                         formApi.setValue(
                                             'spec.orphanedResources.ignore',
@@ -839,7 +839,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                 </button>
                             </React.Fragment>
                         ) : (
-                            <button className='argo-button argo-button--base' onClick={() => formApi.setValue('spec.orphanedResources.ignore', [])}>
+                            <button className='kit-button kit-button--base' onClick={() => formApi.setValue('spec.orphanedResources.ignore', [])}>
                                 ENABLE
                             </button>
                         )
@@ -929,7 +929,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                         }}
                                         header={
                                             <div>
-                                                <button onClick={() => projectRoleFormApi.current.submitForm(null)} className='argo-button argo-button--base'>
+                                                <button onClick={() => projectRoleFormApi.current.submitForm(null)} className='kit-button kit-button--base'>
                                                     {params.get('newRole') != null ? 'Create' : 'Update'}
                                                 </button>{' '}
                                                 <button
@@ -937,7 +937,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                                         setToken('');
                                                         ctx.navigation.goto('.', {editRole: null, newRole: null}, {replace: true});
                                                     }}
-                                                    className='argo-button argo-button--base-o'>
+                                                    className='kit-button kit-button--base-o'>
                                                     Cancel
                                                 </button>{' '}
                                                 {params.get('newRole') === null ? (
@@ -957,7 +957,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                                                 }
                                                             }
                                                         }}
-                                                        className='argo-button argo-button--base'>
+                                                        className='kit-button kit-button--base'>
                                                         Delete
                                                     </button>
                                                 ) : null}
@@ -1018,7 +1018,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                                         }
                                                         projectSyncWindowsFormApi.current.submitForm(null);
                                                     }}
-                                                    className='argo-button argo-button--base'>
+                                                    className='kit-button kit-button--base'>
                                                     {params.get('newWindow') != null ? 'Create' : 'Update'}
                                                 </button>{' '}
                                                 <button
@@ -1026,7 +1026,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                                         setToken('');
                                                         ctx.navigation.goto('.', {editWindow: null, newWindow: null}, {replace: true});
                                                     }}
-                                                    className='argo-button argo-button--base-o'>
+                                                    className='kit-button kit-button--base-o'>
                                                     Cancel
                                                 </button>{' '}
                                                 {params.get('newWindow') === null ? (
@@ -1047,7 +1047,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                                                 }
                                                             }
                                                         }}
-                                                        className='argo-button argo-button--base'>
+                                                        className='kit-button kit-button--base'>
                                                         Delete
                                                     </button>
                                                 ) : null}

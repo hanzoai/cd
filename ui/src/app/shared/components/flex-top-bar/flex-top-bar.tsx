@@ -1,4 +1,4 @@
-import {Toolbar, Tooltip} from 'argo-ui';
+import {Toolbar, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import {Observable} from 'rxjs';
 import {AuthOption, DataLoader} from '../';
@@ -39,7 +39,7 @@ const FlexTopBarContent = (props: {toolbar: ToolbarWithOptions}) => {
                                 <button
                                     disabled={!!item.disabled}
                                     qe-id={item.qeId}
-                                    className='argo-button argo-button--base'
+                                    className='kit-button kit-button--base'
                                     onClick={() => item.action()}
                                     style={{marginRight: 2}}
                                     key={i}>

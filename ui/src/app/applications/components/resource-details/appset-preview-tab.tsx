@@ -79,19 +79,19 @@ export const AppSetPreviewTab = (props: AppSetPreviewTabProps) => {
                         <div>
                             {editing ? (
                                 <>
-                                    <button className='argo-button argo-button--base' onClick={onPreview}>
+                                    <button className='kit-button kit-button--base' onClick={onPreview}>
                                         Preview
                                     </button>{' '}
-                                    <button className='argo-button argo-button--base-o' onClick={onCancelEdit}>
+                                    <button className='kit-button kit-button--base-o' onClick={onCancelEdit}>
                                         Cancel
                                     </button>
                                 </>
                             ) : (
                                 <>
-                                    <button className='argo-button argo-button--base' onClick={onPreview}>
+                                    <button className='kit-button kit-button--base' onClick={onPreview}>
                                         Preview
                                     </button>{' '}
-                                    <button className='argo-button argo-button--base-o' onClick={onEdit}>
+                                    <button className='kit-button kit-button--base-o' onClick={onEdit}>
                                         Edit
                                     </button>
                                 </>

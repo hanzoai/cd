@@ -149,7 +149,7 @@ export const formatClusterQueryParam = (cluster: Cluster) => {
  * @returns true if SSO should be used, otherwise false
  */
 export function isSSOConfigured(userInfo: UserInfo | null | undefined, authSettings: AuthSettings): boolean {
-    const isExternalIssuer = userInfo?.iss && userInfo.iss !== 'argocd';
+    const isExternalIssuer = userInfo?.iss && userInfo.iss !== 'hanzocd';
     const hasDexConnectors = (authSettings.dexConfig?.connectors?.length ?? 0) > 0;
     const hasOidcConfig = !!authSettings.oidcConfig;
     return isExternalIssuer && (hasDexConnectors || hasOidcConfig);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ReactForm} from 'argo-ui';
+import {ReactForm} from '../../../../kit/src';
 
 import {DataLoader} from '../../../shared/components';
 import {Application} from '../../../shared/models';
@@ -30,8 +30,8 @@ export const ProjectRolePoliciesEdit = (props: ProjectRolePoliciesProps) => {
                 <React.Fragment>
                     <p>POLICY RULES</p>
                     <div>Manage this role's permissions to applications, appsets, repositories, clusters, exec and logs</div>
-                    <div className='argo-table-list'>
-                        <div className='argo-table-list__head'>
+                    <div className='kit-table-list'>
+                        <div className='kit-table-list__head'>
                             <div className='row'>
                                 <div className='columns small-3'>RESOURCE</div>
                                 <div className='columns small-3'>ACTION</div>
@@ -39,7 +39,7 @@ export const ProjectRolePoliciesEdit = (props: ProjectRolePoliciesProps) => {
                                 <div className='columns small-3'>PERMISSION</div>
                             </div>
                         </div>
-                        <div className='argo-table-list__row'>
+                        <div className='kit-table-list__row'>
                             {props.policies.map((policy, i) => (
                                 <Policy
                                     key={i}
@@ -56,7 +56,7 @@ export const ProjectRolePoliciesEdit = (props: ProjectRolePoliciesProps) => {
                             <div className='row'>
                                 <div className='columns small-4'>
                                     <a
-                                        className='argo-button argo-button--base'
+                                        className='kit-button kit-button--base'
                                         onClick={() => {
                                             const newPolicy = generatePolicy(props.projName, props.roleName);
                                             props.formApi.setValue('policies', (props.formApi.values.policies || []).concat(newPolicy));
@@ -172,7 +172,7 @@ function PolicyWrapper(props: PolicyProps) {
                     <option>exec</option>
                 </datalist>
                 <input
-                    className='argo-field'
+                    className='kit-field'
                     list='resource'
                     value={getResource()}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,7 +186,7 @@ function PolicyWrapper(props: PolicyProps) {
                     <option key='wildcard'>*</option>
                 </datalist>
                 <input
-                    className='argo-field'
+                    className='kit-field'
                     list='action'
                     value={getAction()}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -206,7 +206,7 @@ function PolicyWrapper(props: PolicyProps) {
                     <option key='wildcard'>{`${props.projName}/*`}</option>
                 </datalist>
                 <input
-                    className='argo-field'
+                    className='kit-field'
                     list='object'
                     value={getObject()}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -220,7 +220,7 @@ function PolicyWrapper(props: PolicyProps) {
                     <option>deny</option>
                 </datalist>
                 <input
-                    className='argo-field'
+                    className='kit-field'
                     list='permission'
                     value={getPermission()}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

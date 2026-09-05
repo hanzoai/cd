@@ -1,10 +1,10 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .empty-state {
     text-align: center;
     &__icon {
         position: relative;
-        background-color: $argo-color-gray-4;
+        background-color: $kit-color-gray-4;
         width: 15em;
         height: 15em;
         border-radius: 7.5em;

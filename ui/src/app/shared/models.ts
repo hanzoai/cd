@@ -1,4 +1,4 @@
-import {models} from 'argo-ui';
+import {models} from '../../kit/src';
 
 interface ItemsList<T> {
     /**

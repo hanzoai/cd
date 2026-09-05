@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 
 .application-parameters {
     &__labels {
@@ -12,7 +12,7 @@
     }
 
     &__label {
-        background-color: $argo-color-gray-5;
+        background-color: $kit-color-gray-5;
         color: white;
         border-radius: 5px;
         padding: 4px;
@@ -46,7 +46,7 @@
         margin-bottom: 10px;
     }
 
-    .argo-field {
+    .kit-field {
         line-height: 1.15;
     }
 
@@ -80,7 +80,7 @@
             padding-right: 10px;
         }
 
-        .argo-form-row__error-msg {
+        .kit-form-row__error-msg {
             position: static;
             line-height: 1;
         }

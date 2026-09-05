@@ -1,0 +1,101 @@
+@import '../../styles/config';
+@import 'foundation-sites/scss/util/util';
+@import '../../styles/theme';
+
+.top-bar {
+    line-height: $top-bar-height;
+    @include themify($themes) {
+        background: themed('background-2');
+    }
+    transition: right .5s;
+    border-bottom: 1px solid $kit-color-gray-2;
+
+    .theme-dark & {
+        border-color: $kit-color-gray-7;
+    }
+
+    &__left-side {
+        padding-left: 20px;
+        white-space: nowrap;
+    }
+
+    &__right-side {
+        padding-right: 20px;
+        text-align: right;
+    }
+
+    &__title {
+        float: left;
+        font-weight: 500;
+        font-size: .925em;
+        @include themify($themes) {
+            color: themed('light-kit-teal-7');
+        }
+        text-transform: uppercase;
+    }
+
+    &__filter-item a {
+        color: $kit-color-gray-6;
+        font-size: 1em;
+    }
+
+    &__filter {
+        position: relative;
+        &--selected {
+            &::before {
+                position: absolute;
+                top: 15px;
+                right: 10px;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: #009BFF;
+                content: '';
+            }
+        }
+    }
+
+    &__breadcrumbs {
+        float: left;
+        margin-left: -4px;
+        height: $top-bar-height;
+        font-weight: 500;
+        font-size: .8em;
+        @include themify($themes) {
+            color: themed('text-2');
+        }
+
+        a {
+            display: inline-block;
+            padding: 4px;
+            line-height: 1.23;
+            font-weight: 400;
+            color: $kit-color-teal-6;
+            border-radius: 3px;
+
+            &:hover {
+                background-color: $kit-color-gray-2;
+            }
+        }
+
+        &-last-item {
+            display: inline-block;
+            padding: 0 4px;
+        }
+    }
+
+    &__sep {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 8px;
+        width: 0;
+        height: 24px;
+        border-left: 1px solid $kit-color-gray-4;
+        transform: rotate(24deg);
+    }
+
+    &__action-menu {
+        display: inline-flex;
+        gap: 2px;
+    }
+}

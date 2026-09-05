@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .application-labels, .application-labels-tooltip {
     white-space: nowrap;
@@ -8,8 +8,8 @@
 
 .application-labels {
     .application-labels__item {
-        background-color: $argo-color-gray-4;
-        color: $argo-color-gray-8;
+        background-color: $kit-color-gray-4;
+        color: $kit-color-gray-8;
         border-radius: 5px;
         padding: 0 2px;
         margin-right: 2px;

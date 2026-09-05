@@ -174,18 +174,18 @@ describe('addDismissal', () => {
 
 describe('dismissalKey', () => {
     test('changes when content changes (re-shows banner after edit)', () => {
-        const before = dismissalKey('argocd', 'guestbook', 'old');
-        const after = dismissalKey('argocd', 'guestbook', 'new');
+        const before = dismissalKey('hanzocd', 'guestbook', 'old');
+        const after = dismissalKey('hanzocd', 'guestbook', 'new');
         expect(before).not.toBe(after);
     });
 
     test('is stable across calls with the same input', () => {
-        expect(dismissalKey('argocd', 'guestbook', 'msg')).toBe(dismissalKey('argocd', 'guestbook', 'msg'));
+        expect(dismissalKey('hanzocd', 'guestbook', 'msg')).toBe(dismissalKey('hanzocd', 'guestbook', 'msg'));
     });
 
     test('separates different applications with the same content', () => {
-        const a = dismissalKey('argocd', 'app-a', 'msg');
-        const b = dismissalKey('argocd', 'app-b', 'msg');
+        const a = dismissalKey('hanzocd', 'app-a', 'msg');
+        const b = dismissalKey('hanzocd', 'app-b', 'msg');
         expect(a).not.toBe(b);
     });
 });

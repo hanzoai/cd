@@ -1,7 +1,7 @@
-import {MockupList, Tooltip} from 'argo-ui';
+import {MockupList, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Key, KeybindingContext, KeybindingProvider, NumKey, NumKeyToNumber, NumPadKey, useNav} from 'argo-ui/v2';
+import {Key, KeybindingContext, KeybindingProvider, NumKey, NumKeyToNumber, NumPadKey, useNav} from '../../../../kit/v2';
 import {RouteComponentProps} from 'react-router';
 import {combineLatest, from, merge, Observable} from 'rxjs';
 import {bufferTime, delay, filter, map, mergeMap, repeat, retryWhen} from 'rxjs/operators';
@@ -159,7 +159,7 @@ const ApplicationSetsSearchBar = (props: {content: string; ctx: ContextApis; app
                 },
                 renderItem: item => (
                     <React.Fragment>
-                        <i className='icon argo-icon-applicationset' /> {item.label}
+                        <i className='icon kit-icon-applicationset' /> {item.label}
                     </React.Fragment>
                 )
             }}
@@ -180,7 +180,7 @@ const ApplicationSetsToolbar = (props: {
             <ApplicationSetsSearchBar content={query.get('search')} appSets={props.appSets} ctx={props.ctx} />
             <Tooltip content='Toggle Health Status Bar'>
                 <button
-                    className={`applications-list__accordion argo-button argo-button--base${props.healthBarPrefs.showHealthStatusBar ? '-o' : ''}`}
+                    className={`applications-list__accordion kit-button kit-button--base${props.healthBarPrefs.showHealthStatusBar ? '-o' : ''}`}
                     style={{border: 'none'}}
                     onClick={() => {
                         services.viewPreferences.updatePreferences({
@@ -276,7 +276,7 @@ const ApplicationSetTiles = ({appSets}: {appSets: models.ApplicationSet[]}) => {
             {ctx => (
                 <DataLoader load={() => services.viewPreferences.getPreferences()}>
                     {(pref: ViewPreferences) => (
-                        <div className='applications-tiles argo-table-list argo-table-list--clickable' ref={appSetContainerRef}>
+                        <div className='applications-tiles kit-table-list kit-table-list--clickable' ref={appSetContainerRef}>
                             {appSets.map((appSet, i) => (
                                 <AppSetTile
                                     key={AppUtils.appInstanceName(appSet)}
@@ -325,7 +325,7 @@ const ApplicationSetTable = ({appSets}: {appSets: models.ApplicationSet[]}) => {
             {ctx => (
                 <DataLoader load={() => services.viewPreferences.getPreferences()}>
                     {(pref: ViewPreferences) => (
-                        <div className='applications-table argo-table-list argo-table-list--clickable'>
+                        <div className='applications-table kit-table-list kit-table-list--clickable'>
                             {appSets.map((appSet, i) => (
                                 <AppSetTableRow key={AppUtils.appInstanceName(appSet)} appSet={appSet} selected={selectedAppSet === i} pref={pref} ctx={ctx} />
                             ))}
@@ -377,7 +377,7 @@ export const ApplicationSetsList = (props: RouteComponentProps<any>) => {
                                     input={pref.projectsFilter?.join(',')}
                                     load={() => AppUtils.handlePageVisibility(() => loadApplicationSets(pref.projectsFilter))}
                                     loadingRenderer={() => (
-                                        <div className='argo-container'>
+                                        <div className='kit-container'>
                                             <MockupList height={100} marginTop={30} />
                                         </div>
                                     )}>
@@ -408,7 +408,7 @@ export const ApplicationSetsList = (props: RouteComponentProps<any>) => {
                                                 />
                                                 <div className='applications-list'>
                                                     {appSets.length === 0 && (pref.labelsFilter || []).length === 0 ? (
-                                                        <EmptyState icon='argo-icon-applicationset'>
+                                                        <EmptyState icon='kit-icon-applicationset'>
                                                             <h4>No ApplicationSets available to you just yet</h4>
                                                             <h5>ApplicationSets will appear here once created</h5>
                                                         </EmptyState>

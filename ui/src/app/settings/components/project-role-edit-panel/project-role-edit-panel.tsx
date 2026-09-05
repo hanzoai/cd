@@ -1,6 +1,6 @@
-import {FormField} from 'argo-ui';
+import {FormField} from '../../../../kit/src';
 import * as React from 'react';
-import {Form, FormApi, Text} from 'argo-ui';
+import {Form, FormApi, Text} from '../../../../kit/src';
 
 import * as models from '../../../shared/models';
 import {CreateJWTTokenParams, DeleteJWTTokenParams, ProjectRoleParams} from '../../../shared/services';
@@ -49,10 +49,10 @@ export const ProjectRoleEditPanel = (props: ProjectRoleEditPanelProps) => {
                     <form onSubmit={api.submitForm} role='form' className='width-control'>
                         <div className='white-box'>
                             <p>GENERAL</p>
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField formApi={api} label='Role Name' componentProps={{readOnly: props.nameReadonly}} field='roleName' component={Text} />
                             </div>
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField formApi={api} label='Role Description' field='description' component={Text} />
                             </div>
                         </div>

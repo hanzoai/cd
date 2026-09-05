@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import * as moment from 'moment';
 import * as React from 'react';
-import {FieldApi, FormFieldHOC as ReactFormField, Text} from 'argo-ui';
+import {FieldApi, FormFieldHOC as ReactFormField, Text} from '../../../../kit/src';
 import {RouteComponentProps, Link} from 'react-router-dom';
 import {from, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 
-import {FormField, Ticker} from 'argo-ui';
+import {FormField, Ticker} from '../../../../kit/src';
 import {ConnectionStateIcon, DataLoader, EditablePanel, Page, Timestamp, MapInputField} from '../../../shared/components';
 import {Cluster} from '../../../shared/models';
 import {services} from '../../../shared/services';
@@ -54,7 +54,7 @@ export const ClusterDetails = (props: RouteComponentProps<{server: string}> & {o
                     }}>
                     <p />
 
-                    <div className='argo-container'>
+                    <div className='kit-container'>
                         <EditablePanel
                             values={cluster}
                             save={async updated => {

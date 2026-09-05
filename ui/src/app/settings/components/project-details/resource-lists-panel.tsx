@@ -1,6 +1,6 @@
-import {AutocompleteField, FormField, Tooltip} from 'argo-ui';
+import {AutocompleteField, FormField, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
-import {FormApi} from 'argo-ui';
+import {FormApi} from '../../../../kit/src';
 
 import {EditablePanel} from '../../../shared/components';
 import {
@@ -249,7 +249,7 @@ function editList(type: field, formApi: FormApi) {
                 </div>
             ))}
             <button
-                className='argo-button argo-button--short'
+                className='kit-button kit-button--short'
                 onClick={() =>
                     formApi.setValue(`spec.${type}`, (formApi.values.spec[type] || []).concat(isClusterResourceList ? {group: '*', kind: '*', name: ''} : {group: '*', kind: '*'}))
                 }>

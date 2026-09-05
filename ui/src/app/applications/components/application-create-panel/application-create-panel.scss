@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 
 .application-create-panel {
 
@@ -23,7 +23,7 @@
         white-space: pre;
     }
 
-    .row.argo-form-row .columns {
+    .row.kit-form-row .columns {
         padding-left: 0;
     }
 
@@ -34,7 +34,7 @@
     &__multi-source-block {
         margin-bottom: 0.5em;
 
-        .argo-field-container {
+        .kit-field-container {
             display: flex;
             flex-direction: column-reverse;
             align-items: stretch;
@@ -42,12 +42,12 @@
             min-height: 0;
         }
 
-        .argo-field-container > .argo-field,
-        .argo-field-container > .argo-textarea {
+        .kit-field-container > .kit-field,
+        .kit-field-container > .kit-textarea {
             grid-area: unset;
         }
 
-        .argo-field-container > label.argo-label-placeholder {
+        .kit-field-container > label.kit-label-placeholder {
             position: static;
             grid-area: unset;
             align-self: flex-start;
@@ -62,12 +62,12 @@
             }
         }
 
-        .argo-field-container > .argo-field:focus + label.argo-label-placeholder,
-        .argo-field-container > .argo-textarea:focus + label.argo-label-placeholder {
+        .kit-field-container > .kit-field:focus + label.kit-label-placeholder,
+        .kit-field-container > .kit-textarea:focus + label.kit-label-placeholder {
             font-size: 12px;
             transform: none !important;
             @include themify($themes) {
-                color: themed('light-argo-teal-7');
+                color: themed('light-kit-teal-7');
             }
         }
     }
@@ -79,7 +79,7 @@
     &__multi-source-section.white-box {
         margin-bottom: 1rem;
         @include themify($themes) {
-            border: 1px solid themed('light-argo-gray-4');
+            border: 1px solid themed('light-kit-gray-4');
             background-color: themed('background-2');
         }
         box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.12);
@@ -122,7 +122,7 @@
         padding: 4px 8px;
         line-height: 1;
         @include themify($themes) {
-            color: themed('light-argo-teal-7');
+            color: themed('light-kit-teal-7');
         }
     }
 
@@ -143,7 +143,7 @@
     &__multi-source-params {
         margin-top: 0.75rem;
         padding-top: 0.75rem;
-        border-top: 1px solid $argo-color-gray-4;
+        border-top: 1px solid $kit-color-gray-4;
 
         .application-parameters > .white-box.editable-panel {
             box-shadow: none;

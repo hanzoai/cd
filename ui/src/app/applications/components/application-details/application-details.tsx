@@ -1,4 +1,4 @@
-import {NotificationType, SlidingPanel, Tooltip, SplitButtonAction} from 'argo-ui';
+import {NotificationType, SlidingPanel, Tooltip, SplitButtonAction} from '../../../../kit/src';
 import classNames from 'classnames';
 import React, {useState, useEffect, useCallback, useRef, useContext, FC} from 'react';
 import * as ReactDOM from 'react-dom';

@@ -1,4 +1,4 @@
-import {ErrorNotification, NotificationType, Tooltip} from 'argo-ui';
+import {ErrorNotification, NotificationType, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ActionMenu, clusterName, ConnectionStateIcon, DataLoader, EmptyState, IconColumn, Page, Paginate, SearchBar} from '../../../shared/components';
@@ -138,7 +138,7 @@ export const ClustersList = () => {
                         </span>
                     </div>
                     <div className='clusters-list__banner-spacer' />
-                    <div className='argo-container'>
+                    <div className='kit-container'>
                         <DataLoader ref={clustersLoaderRef} load={() => services.clusters.list()}>
                             {(clusters: models.Cluster[]) => {
                                 const filterResults = getClusterFilterResults(clusters, filterPref);
@@ -174,8 +174,8 @@ export const ClustersList = () => {
                                         {filteredClusters.length > 0 ? (
                                             <Paginate page={page} data={filteredClusters} onPageChange={setPage} preferencesKey='clusters-list'>
                                                 {clustersToDisplay => (
-                                                    <div className='argo-table-list argo-table-list--clickable'>
-                                                        <div className='argo-table-list__head'>
+                                                    <div className='kit-table-list kit-table-list--clickable'>
+                                                        <div className='kit-table-list__head'>
                                                             <div className='row'>
                                                                 <IconColumn />
                                                                 <div className='columns small-2 sortable' onClick={() => requestSort('name')}>
@@ -195,11 +195,11 @@ export const ClustersList = () => {
                                                         </div>
                                                         {clustersToDisplay.map(cluster => (
                                                             <div
-                                                                className='argo-table-list__row'
+                                                                className='kit-table-list__row'
                                                                 key={cluster.server}
                                                                 onClick={() => ctx.navigation.goto(`./${encodeURIComponent(cluster.server)}`)}>
                                                                 <div className='row'>
-                                                                    <IconColumn icon='argo-icon-hosts' />
+                                                                    <IconColumn icon='kit-icon-hosts' />
                                                                     <div className='columns small-2'>
                                                                         <Tooltip content={clusterName(cluster.name)}>
                                                                             <span>{clusterName(cluster.name)}</span>
@@ -249,9 +249,9 @@ export const ClustersList = () => {
                                                 )}
                                             </Paginate>
                                         ) : clusters.length === 0 ? (
-                                            <EmptyState icon='argo-icon-hosts'>
+                                            <EmptyState icon='kit-icon-hosts'>
                                                 <h4>No clusters connected</h4>
-                                                <h5>Connect more clusters using argocd CLI</h5>
+                                                <h5>Connect more clusters using hanzocd CLI</h5>
                                             </EmptyState>
                                         ) : (
                                             <EmptyState icon='fa fa-search'>

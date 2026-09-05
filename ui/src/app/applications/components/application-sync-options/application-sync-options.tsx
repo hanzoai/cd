@@ -1,7 +1,7 @@
-import {Checkbox, DataLoader, Select, Tooltip} from 'argo-ui';
+import {Checkbox, DataLoader, Select, Tooltip} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as React from 'react';
-import {ReactForm} from 'argo-ui';
+import {ReactForm} from '../../../../kit/src';
 
 import './application-sync-options.scss';
 import {services} from '../../../shared/services';
@@ -190,7 +190,7 @@ export const ApplicationSyncOptionsField = ReactForm.FormField((props: {fieldApi
     } = props;
     const val = getValue() || [];
     return (
-        <div className='argo-field' style={{borderBottom: '0'}}>
+        <div className='kit-field' style={{borderBottom: '0'}}>
             <ApplicationSyncOptions
                 options={val}
                 onChanged={opts => {

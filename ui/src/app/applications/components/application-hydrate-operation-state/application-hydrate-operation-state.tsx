@@ -1,4 +1,4 @@
-import {Duration, Ticker} from 'argo-ui';
+import {Duration, Ticker} from '../../../../kit/src';
 import * as moment from 'moment';
 import * as React from 'react';
 

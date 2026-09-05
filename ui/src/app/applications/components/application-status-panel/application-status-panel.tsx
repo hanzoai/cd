@@ -1,6 +1,6 @@
-import {HelpIcon} from 'argo-ui';
+import {HelpIcon} from '../../../../kit/src';
 import * as React from 'react';
-import {ARGO_GRAY6_COLOR, DataLoader} from '../../../shared/components';
+import {GRAY6_COLOR, DataLoader} from '../../../shared/components';
 import {Revision} from '../../../shared/components/revision';
 import {revisionUrl} from '../../../shared/components/urls';
 import {Timestamp} from '../../../shared/components/timestamp';
@@ -42,7 +42,7 @@ interface SectionInfo {
 }
 
 const sectionLabel = (info: SectionInfo) => (
-    <label style={{display: 'flex', alignItems: 'flex-start', fontSize: '12px', fontWeight: 600, color: ARGO_GRAY6_COLOR, minHeight: '18px'}}>
+    <label style={{display: 'flex', alignItems: 'flex-start', fontSize: '12px', fontWeight: 600, color: GRAY6_COLOR, minHeight: '18px'}}>
         {info.title}
         {info.helpContent && (
             <span style={{marginLeft: '5px'}}>
@@ -57,7 +57,7 @@ const sectionHeader = (info: SectionInfo, onClick?: () => any) => {
         <div style={{display: 'flex', alignItems: 'center'}}>
             {sectionLabel(info)}
             {onClick && (
-                <button className='argo-button application-status-panel__more-button' onClick={onClick}>
+                <button className='kit-button application-status-panel__more-button' onClick={onClick}>
                     <i className='fa fa-ellipsis-h' />
                 </button>
             )}

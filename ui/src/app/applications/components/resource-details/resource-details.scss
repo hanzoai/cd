@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 
 .resource-details {
     &__header {
@@ -21,7 +21,7 @@
 
 .appset-resource-node-preview__synced-icon {
     margin-right: 6px;
-    color: $argo-success-color;
+    color: $kit-success-color;
 }
 
 .appset-generated-apps-diff__manifest {
@@ -41,5 +41,5 @@
 }
 
 .tabs .fa-stack[data-count='!']:after {
-    background: $argo-status-warning-color;
+    background: $kit-status-warning-color;
 }

@@ -1,9 +1,9 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .white-box {
     &__readiness-gates-alert {
         padding: 20px;
-        border-left: 6px solid $argo-status-warning-color !important;
+        border-left: 6px solid $kit-status-warning-color !important;
 
         ul {
             margin-bottom: 0;

@@ -1,6 +1,6 @@
-import {Checkbox, HelpIcon} from 'argo-ui';
+import {Checkbox, HelpIcon} from '../../../../kit/src';
 import * as React from 'react';
-import {ReactForm} from 'argo-ui';
+import {ReactForm} from '../../../../kit/src';
 
 export const SetFinalizerOnApplication = ReactForm.FormField((props: {fieldApi: ReactForm.FieldApi}) => {
     const {

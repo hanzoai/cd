@@ -1,4 +1,4 @@
-import {Tabs} from 'argo-ui';
+import {Tabs} from '../../../../kit/src';
 import * as React from 'react';
 
 import {AuthOption, EditablePanel, Page, Query} from '../../../shared/components';
@@ -94,7 +94,7 @@ export const AdvancedSettings = () => {
         ];
 
         return (
-            <div className='argo-container'>
+            <div className='kit-container'>
                 <div className='advanced-settings__panels'>
                     {renderPanel('GENERAL', settings, generalItems)}
                     {renderPanel('FEATURES', settings, featuresItems)}
@@ -109,7 +109,7 @@ export const AdvancedSettings = () => {
 
     const jsonTab = (settings: AuthSettings) => {
         return (
-            <div className='argo-container advanced-settings__json'>
+            <div className='kit-container advanced-settings__json'>
                 <MonacoEditor
                     minHeight={600}
                     vScrollBar={true}

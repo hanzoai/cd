@@ -1,0 +1,196 @@
+import * as React from 'react';
+import {fromEvent, Observable, Observer, Subscription} from 'rxjs';
+import {bufferTime, debounceTime, delay, filter, map, mergeMap, repeat, retryWhen, scan, timeout} from 'rxjs/operators';
+
+enum ReadyState {
+    CONNECTING = 0,
+    OPEN = 1,
+    CLOSED = 2,
+    DONE = 4,
+}
+
+export interface ListState<T> {
+    loading: boolean;
+    items: T[];
+}
+
+export const useLoading = (list: any[], minLength?: number) => {
+    const [loading, setLoading] = React.useState(true);
+    // Once enough items have arrived we are no longer loading. This is sticky:
+    // loading only ever transitions from true -> false, mirroring the original
+    // effect which never set loading back to true. Adjusting state during render
+    // (rather than in an effect) avoids the cascading-render that setState-in-effect
+    // would cause.
+    if (loading && list && list.length > (minLength || 0)) {
+        setLoading(false);
+    }
+    return loading;
+};
+
+function fromEventSource(url: string): Observable<string> {
+    return Observable.create((observer: Observer<any>) => {
+        let eventSource = new EventSource(url);
+        eventSource.onmessage = (msg) => observer.next(msg.data);
+        eventSource.onerror = (e) => () => {
+            observer.error(e);
+        };
+
+        const interval = setInterval(() => {
+            if (eventSource && eventSource.readyState === ReadyState.CLOSED) {
+                observer.error('connection got closed unexpectedly');
+            }
+        }, 500);
+        return () => {
+            clearInterval(interval);
+            eventSource.close();
+            eventSource = null;
+        };
+    });
+}
+
+const BUFFER_TIME = 500;
+
+export function handlePageVisibility<T>(src: () => Observable<T>): Observable<T> {
+    return new Observable<T>((observer: Observer<T>) => {
+        let subscription: Subscription;
+        const ensureUnsubscribed = () => {
+            if (subscription) {
+                subscription.unsubscribe();
+                subscription = null;
+            }
+        };
+        const start = () => {
+            ensureUnsubscribed();
+            subscription = src().subscribe(
+                (item: T) => observer.next(item),
+                (err) => observer.error(err),
+                () => observer.complete(),
+            );
+        };
+
+        if (!document.hidden) {
+            start();
+        }
+
+        const visibilityChangeSubscription = fromEvent(document, 'visibilitychange')
+            .pipe(debounceTime(500))
+            .subscribe(() => {
+                if (document.hidden && subscription) {
+                    ensureUnsubscribed();
+                } else if (!document.hidden && !subscription) {
+                    start();
+                }
+            });
+
+        return () => {
+            visibilityChangeSubscription.unsubscribe();
+            ensureUnsubscribed();
+        };
+    });
+}
+
+interface WatchEvent {
+    type?: string;
+}
+
+// NOTE: findItem and getItem must be React.useCallback functions
+export function useWatchList<T, E extends WatchEvent>(url: string, findItem: (item: T, change: E) => boolean, getItem: (change: E) => T, init?: T[]): T[] {
+    const [items, setItems] = React.useState(init as T[]);
+
+    // Reset items to `init` whenever the watch inputs change, before the new
+    // subscription starts delivering data. The original code did this with a
+    // synchronous setItems(init) at the top of the effect; storing the previous
+    // inputs in state and resetting during render (React's "adjust state on a
+    // changed key" pattern) preserves that reset behavior while avoiding a
+    // cascading render from setState-in-effect. The async setItems([...l]) from
+    // the subscription remains in its callback below.
+    const [prevKey, setPrevKey] = React.useState<{init?: T[]; url: string; findItem: typeof findItem; getItem: typeof getItem}>({init, url, findItem, getItem});
+    if (prevKey.init !== init || prevKey.url !== url || prevKey.findItem !== findItem || prevKey.getItem !== getItem) {
+        setPrevKey({init, url, findItem, getItem});
+        setItems(init);
+    }
+
+    React.useEffect(() => {
+        const stream = fromEventSource(url).pipe(map((res) => JSON.parse(res).result as E));
+        let watch = stream.pipe(
+            repeat(),
+            retryWhen((errors) => errors.pipe(delay(500))),
+            scan((aItems, change) => {
+                const index = aItems.findIndex((i) => findItem(i, change));
+                switch (change.type) {
+                    case 'Deleted':
+                        if (index > -1) {
+                            aItems.splice(index, 1);
+                        }
+                        break;
+                    case 'Updated':
+                        if (index > -1) {
+                            const updated = {...aItems[index], ...getItem(change)};
+                            aItems[index] = updated as T;
+                        }
+                        break;
+                    default:
+                        if (index > -1) {
+                            aItems[index] = getItem(change) as T;
+                        } else {
+                            aItems.unshift(getItem(change) as T);
+                        }
+                        break;
+                }
+                return aItems;
+            }, init || []),
+            bufferTime(BUFFER_TIME),
+            mergeMap((l) => l),
+        );
+
+        const sub = handlePageVisibility(() => watch).subscribe((l) => {
+            setItems([...l]);
+        });
+
+        return () => {
+            sub.unsubscribe();
+            watch = null;
+        };
+    }, [init, url, findItem, getItem]);
+    return items;
+}
+
+export function useWatch<T>(url: string, subscribe: boolean, isEqual: (a: T, b: T) => boolean, timeoutAfter?: number) {
+    const [item, setItem] = React.useState({} as T);
+    React.useEffect(() => {
+        if (!subscribe) {
+            return;
+        }
+        const stream = fromEventSource(url).pipe(map((res) => JSON.parse(res).result as T));
+        const watch = stream.pipe(
+            repeat(),
+            retryWhen((errors) => errors.pipe(delay(500))),
+            scan(
+                (acc, update) => {
+                    return {data: update, updated: !isEqual(update, acc.data)};
+                },
+                {data: {} as T, updated: true},
+            ),
+            filter((i) => i.updated),
+            map((i) => i.data),
+        );
+
+        let liveStream = handlePageVisibility(() =>
+            watch.pipe(
+                bufferTime(BUFFER_TIME),
+                mergeMap((r) => r),
+            ),
+        );
+
+        if (timeoutAfter > 0) {
+            liveStream = liveStream.pipe(timeout(timeoutAfter));
+        }
+
+        const sub = liveStream.subscribe((i) => setItem(i));
+        return () => {
+            liveStream = null;
+            sub.unsubscribe();
+        };
+    }, [url, subscribe, timeoutAfter, isEqual]);
+    return item;
+}

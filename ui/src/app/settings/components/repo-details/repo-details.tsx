@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {FormField, HelpIcon} from 'argo-ui';
-import {FormApi, Text} from 'argo-ui';
+import {FormField, HelpIcon} from '../../../../kit/src';
+import {FormApi, Text} from '../../../../kit/src';
 import {EditablePanel, EditablePanelItem, NumberField, Repo} from '../../../shared/components';
 import {NewHTTPSRepoParams} from '../repos-list/repos-list';
 import {AuthSettingsCtx} from '../../../shared/context';

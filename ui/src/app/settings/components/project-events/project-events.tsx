@@ -1,4 +1,4 @@
-import {MockupList} from 'argo-ui';
+import {MockupList} from '../../../../kit/src';
 import * as React from 'react';
 
 import {DataLoader, EventsList} from '../../../shared/components';

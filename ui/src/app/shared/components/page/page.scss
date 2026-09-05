@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 @import '../../config.scss';
 
 .page-wrapper {
@@ -51,18 +51,18 @@
 .login-logout-button {
     border-radius: 3px;
     @include themify($themes) {
-        color: themed('light-argo-teal-7');
+        color: themed('light-kit-teal-7');
     }
     padding: 3px;
     cursor: pointer;
 
     &:focus {
-        color: $argo-color-teal-5;
-        box-shadow: 0 0 0 0.1em $argo-color-teal-5;
+        color: $kit-color-teal-5;
+        box-shadow: 0 0 0 0.1em $kit-color-teal-5;
     }
     &:hover {
         @include themify($themes) {
-            color: themed('light-argo-teal-5');
+            color: themed('light-kit-teal-5');
         }
     }
 }
@@ -95,16 +95,16 @@
     }
 }
 
-.argo-container {
+.kit-container {
     padding: 1em;
 }
 
 // Pin the trailing action menu to the right edge of the row and reserve room so it does not overlap
 // the last column's content.
-.argo-table-list__row {
+.kit-table-list__row {
     .columns:last-child {
         padding-right: 40px;
-        .argo-dropdown {
+        .kit-dropdown {
             position: absolute;
             right: 0;
             top: 50%;
@@ -113,7 +113,7 @@
     }
 }
 
-.argo-table-list {
+.kit-table-list {
     // Lay each row out as a single no-wrap flex line. Foundation's float grid lets columns wrap
     // onto a second row once their combined min-width no longer fits; with flex + nowrap the
     // columns shrink to their min-width (and ellipsize) instead of wrapping.
@@ -141,7 +141,7 @@
     }
 }
 
-.argo-table-list__head {
+.kit-table-list__head {
     .columns.sortable {
         cursor: pointer;
         user-select: none;
@@ -150,9 +150,9 @@
 
 // Reduce the width of a leading column that only holds an item (e.g. an icon), so it does not
 // take up a full grid column. Apply to both the head and row cell to keep columns aligned.
-.argo-table-list__head,
-.argo-table-list__row {
-    .columns.argo-table-list__icon-column {
+.kit-table-list__head,
+.kit-table-list__row {
+    .columns.kit-table-list__icon-column {
         min-width: 60px;
         max-width: 60px;
         // Let the icon use the full column width and avoid the text-overflow ellipsis that the table
@@ -162,7 +162,7 @@
         text-overflow: clip;
         text-align: center;
 
-        // The argo-icon glyphs render at their own intrinsic size. Pin a fixed box and center the
+        // The kit-icon glyphs render at their own intrinsic size. Pin a fixed box and center the
         // glyph so all icons render consistently. Match the ResourceIcon image size: a 40x32
         // border-box with 2px padding leaves a 36x28 glyph area.
         .icon {

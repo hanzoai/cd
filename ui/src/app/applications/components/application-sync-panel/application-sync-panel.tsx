@@ -1,8 +1,8 @@
-import {ErrorNotification, FormField, NotificationType, SlidingPanel, Tooltip} from 'argo-ui';
+import {ErrorNotification, FormField, NotificationType, SlidingPanel, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
-import {Form, FormApi, Text} from 'argo-ui';
+import {Form, FormApi, Text} from '../../../../kit/src';
 
-import {ARGO_WARNING_COLOR, CheckboxField, Spinner} from '../../../shared/components';
+import {WARNING_COLOR, CheckboxField, Spinner} from '../../../shared/components';
 import {Consumer} from '../../../shared/context';
 import * as models from '../../../shared/models';
 import {services} from '../../../shared/services';
@@ -42,13 +42,13 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                         <div>
                             <button
                                 qe-id='application-sync-panel-button-synchronize'
-                                className='argo-button argo-button--base'
+                                className='kit-button kit-button--base'
                                 disabled={isPending}
                                 onClick={() => form.submitForm(null)}>
                                 <Spinner show={isPending} style={{marginRight: '5px'}} />
                                 Synchronize
                             </button>{' '}
-                            <button onClick={() => hide()} qe-id='application-sync-panel-button-cancel' className='argo-button argo-button--base-o'>
+                            <button onClick={() => hide()} qe-id='application-sync-panel-button-cancel' className='kit-button kit-button--base-o'>
                                 Cancel
                             </button>
                         </div>
@@ -92,7 +92,7 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField
                                                             label="Please type 'prune' to confirm this action"
                                                             formApi={api}
@@ -111,7 +111,7 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                                     close();
                                                 }
                                             },
-                                            {name: 'argo-icon-warning', color: 'warning'},
+                                            {name: 'kit-icon-warning', color: 'warning'},
                                             'yellow'
                                         );
                                         if (!confirmed) {
@@ -135,7 +135,7 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                    <div className='argo-form-row'>
+                                                    <div className='kit-form-row'>
                                                         <FormField
                                                             label="Please type 'prune' to confirm this action"
                                                             formApi={api}
@@ -154,7 +154,7 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                                     close();
                                                 }
                                             },
-                                            {name: 'argo-icon-warning', color: 'warning'},
+                                            {name: 'kit-icon-warning', color: 'warning'},
                                             'yellow'
                                         );
                                         if (!confirmed) {
@@ -173,7 +173,7 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                                 <p>
                                                     Are you sure you want to <strong>delete and recreate {selectedResources?.length || 0} resources</strong>?
                                                 </p>
-                                                <div className='argo-form-row'>
+                                                <div className='kit-form-row'>
                                                     <FormField
                                                         label="Please type 'replace' to confirm this action"
                                                         formApi={api}
@@ -192,7 +192,7 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                                 close();
                                             }
                                         },
-                                        {name: 'argo-icon-warning', color: 'warning'},
+                                        {name: 'kit-icon-warning', color: 'warning'},
                                         'yellow'
                                     );
                                     if (!confirmed) {
@@ -214,7 +214,7 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                 if (force) {
                                     const confirmed = await ctx.popup.confirm('Synchronize with force?', () => (
                                         <div>
-                                            <i className='fa fa-exclamation-triangle' style={{color: ARGO_WARNING_COLOR}} /> {FORCE_WARNING} Are you sure you want to continue?
+                                            <i className='fa fa-exclamation-triangle' style={{color: WARNING_COLOR}} /> {FORCE_WARNING} Are you sure you want to continue?
                                         </div>
                                     ));
                                     if (!confirmed) {
@@ -251,11 +251,11 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                     <h6>
                                         Synchronizing application manifests from <a href={source.repoURL}>{source.repoURL}</a>
                                     </h6>
-                                    <div className='argo-form-row'>
+                                    <div className='kit-form-row'>
                                         <FormField formApi={formApi} label='Revision' field='revision' component={Text} />
                                     </div>
 
-                                    <div className='argo-form-row'>
+                                    <div className='kit-form-row'>
                                         <div style={{marginBottom: '1em'}}>
                                             <FormField formApi={formApi} field='syncFlags' component={ApplicationManualSyncFlags} />
                                         </div>
@@ -344,7 +344,7 @@ export const ApplicationSyncPanel = ({application, selectedResource, hide}: {app
                                                         </div>
                                                     );
                                                 })}
-                                            {formApi.errors.resources && <div className='argo-form-row__error-msg'>{formApi.errors.resources}</div>}
+                                            {formApi.errors.resources && <div className='kit-form-row__error-msg'>{formApi.errors.resources}</div>}
                                         </div>
                                     </div>
                                 </form>

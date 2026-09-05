@@ -1,4 +1,4 @@
-import {DropDownMenu} from 'argo-ui';
+import {DropDownMenu} from '../../../kit/src';
 import * as React from 'react';
 import {isValidURL} from '../../shared/utils';
 

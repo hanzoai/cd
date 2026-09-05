@@ -1,4 +1,4 @@
-import {Tooltip} from 'argo-ui';
+import {Tooltip} from '../../../kit/src';
 import * as React from 'react';
 import {useState} from 'react';
 

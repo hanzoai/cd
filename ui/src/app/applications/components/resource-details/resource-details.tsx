@@ -1,4 +1,4 @@
-import {DataLoader, DropDown, Tab, Tabs} from 'argo-ui';
+import {DataLoader, DropDown, Tab, Tabs} from '../../../../kit/src';
 import * as React from 'react';
 import {useState} from 'react';
 import {BehaviorSubject} from 'rxjs';
@@ -326,20 +326,20 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                                 <button
                                     onClick={() => appContext.navigation.goto('.', {deploy: AppUtils.nodeKey(selectedNode)}, {replace: true})}
                                     style={{marginLeft: 'auto', marginRight: '5px'}}
-                                    className='argo-button argo-button--base'>
+                                    className='kit-button kit-button--base'>
                                     <i className='fa fa-sync-alt' /> <span className='show-for-large'>SYNC</span>
                                 </button>
                                 <button
                                     onClick={() => AppUtils.deletePopup(appContext, selectedNode, application, !!data.controlledState, data.childResources, props.appChanged)}
                                     style={{marginRight: '5px'}}
-                                    className='argo-button argo-button--base'>
+                                    className='kit-button kit-button--base'>
                                     <i className='fa fa-trash' /> <span className='show-for-large'>DELETE</span>
                                 </button>
                                 {data.resourceActionsMenuItems?.length > 0 && (
                                     <DropDown
                                         isMenu={true}
                                         anchor={() => (
-                                            <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
+                                            <button className='kit-button kit-button--light kit-button--lg kit-button--short'>
                                                 <i className='fa fa-ellipsis-v' />
                                             </button>
                                         )}>

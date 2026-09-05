@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Tooltip} from 'argo-ui';
+import {Tooltip} from '../../../../kit/src';
 
 export type ContainerGroup = {offset: number; containers: {name: string}[]};
 
@@ -28,7 +28,7 @@ export const ContainerSelector = ({
     if (containerNames.length <= 1) return null;
     return (
         <Tooltip content='Select a container to view logs' interactive={false}>
-            <select className='argo-field' value={containerName} onChange={e => onClickContainer(containerGroup(e.target.value), containerIndex(e.target.value), 'logs')}>
+            <select className='kit-field' value={containerName} onChange={e => onClickContainer(containerGroup(e.target.value), containerIndex(e.target.value), 'logs')}>
                 {containerNames.map(n => (
                     <option key={n} value={n}>
                         {n}

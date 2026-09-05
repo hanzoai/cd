@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ReactForm} from 'argo-ui';
+import {ReactForm} from '../../../kit/src';
 
 export const NumberField = ReactForm.FormField((props: {fieldApi: ReactForm.FieldApi; className: string; onBlur?: () => void}) => {
     const {

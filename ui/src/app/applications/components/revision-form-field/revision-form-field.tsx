@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {FormApi} from 'argo-ui';
+import {FormApi} from '../../../../kit/src';
 
-import {AutocompleteField, DataLoader, DropDownMenu, FormField} from 'argo-ui';
+import {AutocompleteField, DataLoader, DropDownMenu, FormField} from '../../../../kit/src';
 import {RevisionHelpIcon} from '../../../shared/components';
 import {services} from '../../../shared/services';
 import './revision-form-field.scss';
@@ -26,7 +26,7 @@ export function RevisionFormField(props: RevisionFormFieldProps) {
     };
 
     const selectedFilter = props.revisionType || filterType;
-    const rowClass = props.hideLabel ? '' : ' argo-form-row';
+    const rowClass = props.hideLabel ? '' : ' kit-form-row';
     const rowPaddingRight = !props.revisionType ? '45px' : undefined;
     const wrapperClassName = [props.compact ? '' : 'row' + rowClass, 'revision-form-field'].filter(Boolean).join(' ');
     const wrapperStyle: React.CSSProperties = {

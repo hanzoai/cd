@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/theme';
 
 .yaml-editor {
     position: relative;
@@ -17,7 +17,7 @@
         top: 1em;
         z-index: 1;
 
-        .argo-button--base-o {
+        .kit-button--base-o {
             @include themify($themes) {
                 background-color: themed('background-2');
             }

@@ -1,6 +1,6 @@
-import {DataLoader, DropDownMenu} from 'argo-ui';
+import {DataLoader, DropDownMenu} from '../../../../kit/src';
 import * as React from 'react';
-import {FormApi} from 'argo-ui';
+import {FormApi} from '../../../../kit/src';
 import * as models from '../../../shared/models';
 import {services} from '../../../shared/services';
 import {ApplicationParameters} from '../application-parameters/application-parameters';

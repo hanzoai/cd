@@ -17,9 +17,7 @@ jest.mock('./resource-customizations', () => ({
         '*.crossplane.io': true,
         '*.fluxcd.io': true,
         'cert-manager.io': true,
-        'nauth.io': true,
-        '*.promoter.argoproj.io': true,
-        'promoter.argoproj.io': true
+        'nauth.io': true
     }
 }));
 
@@ -86,20 +84,6 @@ describe('ResourceIcon', () => {
             expect(imgs.length).toBeGreaterThan(0);
             expect(imgs[0]).toHaveAttribute('src', 'assets/images/resources/nauth.io/icon.svg');
         });
-
-        it('should show group-based icon for promoter.argoproj.io', () => {
-            render(<ResourceIcon group='promoter.argoproj.io' kind='PromotionStrategy' />);
-            const imgs = screen.getAllByRole('img');
-            expect(imgs.length).toBeGreaterThan(0);
-            expect(imgs[0]).toHaveAttribute('src', 'assets/images/resources/promoter.argoproj.io/icon.svg');
-        });
-
-        it('should show group-based icon for view.promoter.argoproj.io', () => {
-            render(<ResourceIcon group='view.promoter.argoproj.io' kind='PromotionStrategyDetails' />);
-            const imgs = screen.getAllByRole('img');
-            expect(imgs.length).toBeGreaterThan(0);
-            expect(imgs[0]).toHaveAttribute('src', 'assets/images/resources/_.promoter.argoproj.io/icon.svg');
-        });
     });
 
     describe('fallback to kind-based icons (with non-matching group) - THIS IS THE BUG FIX', () => {
@@ -154,7 +138,7 @@ describe('ResourceIcon', () => {
 
         it('should show application icon for kind=Application', () => {
             renderResourceIcon('', 'Application');
-            const icon = document.querySelector('i.argo-icon-application') as HTMLElement;
+            const icon = document.querySelector('i.kit-icon-application') as HTMLElement;
             expect(icon).toBeTruthy();
             expect(icon).toHaveClass('resource-icon__font-icon');
             expectIconBox40x32(icon);
@@ -163,7 +147,7 @@ describe('ResourceIcon', () => {
 
         it('should show applicationset icon for kind=ApplicationSet', () => {
             renderResourceIcon('apps.hanzo.ai', 'ApplicationSet');
-            const icon = document.querySelector('i.argo-icon-applicationset') as HTMLElement;
+            const icon = document.querySelector('i.kit-icon-applicationset') as HTMLElement;
             expect(icon).toBeTruthy();
             expect(icon).toHaveClass('resource-icon__font-icon');
             expectIconBox40x32(icon);

@@ -1,4 +1,4 @@
-import {NotificationType, Tooltip} from 'argo-ui';
+import {NotificationType, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import Moment from 'react-moment';
 import {AuthSettingsCtx, ContextApis} from '../../../shared/context';
@@ -60,7 +60,7 @@ export const AppSetTableRow = ({appSet, selected, pref, ctx}: AppSetTableRowProp
     };
 
     return (
-        <div className={`argo-table-list__row applications-list__entry applications-list__entry--health-${healthStatus} ${selected ? 'applications-tiles__selected' : ''}`}>
+        <div className={`kit-table-list__row applications-list__entry applications-list__entry--health-${healthStatus} ${selected ? 'applications-tiles__selected' : ''}`}>
             <div className='row applications-list__table-row'>
                 {/* The overlay anchor is the row's accessible link: a real link in tab order with an
                     aria-label so screen readers announce the appset name once per row. It sits

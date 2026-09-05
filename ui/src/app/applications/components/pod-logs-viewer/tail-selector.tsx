@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Tooltip} from 'argo-ui';
+import {Tooltip} from '../../../../kit/src';
 
 // TailSelector is a component that renders a dropdown menu of tail options
 export const TailSelector = ({tail, setTail}: {tail: number; setTail: (value: number) => void}) => (
     <Tooltip content='Show the last N lines of the log'>
-        <select className='argo-field' style={{marginRight: '1em'}} onChange={e => setTail(parseInt(e.target.value, 10))} value={tail.toString()}>
+        <select className='kit-field' style={{marginRight: '1em'}} onChange={e => setTail(parseInt(e.target.value, 10))} value={tail.toString()}>
             <option value='100'>100 lines</option>
             <option value='500'>500 lines</option>
             <option value='1000'>1000 lines</option>

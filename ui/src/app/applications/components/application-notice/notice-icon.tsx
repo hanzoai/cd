@@ -1,4 +1,4 @@
-import {Tooltip} from 'argo-ui';
+import {Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import {parseNotice, shouldShowIcon, tooltipPreview} from './notice';
 import './notice.scss';

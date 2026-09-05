@@ -1,6 +1,6 @@
-import {FormField, NotificationType, Tooltip} from 'argo-ui';
+import {FormField, NotificationType, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
-import {Form, FormApi, Text} from 'argo-ui';
+import {Form, FormApi, Text} from '../../../../kit/src';
 
 import {Consumer, ContextApis} from '../../../shared/context';
 import {JwtToken} from '../../../shared/models';
@@ -51,8 +51,8 @@ export const ProjectRoleJWTTokens = (props: ProjectRoleJWTTokensProps) => {
                     </h4>
                     <div>Generate JWT tokens to bind to this role</div>
                     {props.tokens && props.tokens.length > 0 && (
-                        <div className='argo-table-list'>
-                            <div className='argo-table-list__head'>
+                        <div className='kit-table-list'>
+                            <div className='kit-table-list__head'>
                                 <div className='row'>
                                     <div className='columns small-3'>ID</div>
                                     <div className='columns small-4'>ISSUED AT</div>
@@ -71,16 +71,16 @@ export const ProjectRoleJWTTokens = (props: ProjectRoleJWTTokensProps) => {
                         {api => (
                             <form onSubmit={api.submitForm} role='form' className='width-control'>
                                 <div className='white-box'>
-                                    <div className='argo-table-list'>
-                                        <div className='argo-form-row'>
+                                    <div className='kit-table-list'>
+                                        <div className='kit-form-row'>
                                             <FormField formApi={api} label='Token ID' field='id' component={Text} />
                                         </div>
-                                        <div className='argo-form-row'>
+                                        <div className='kit-form-row'>
                                             <FormField formApi={api} label='Expires In' field='expiresIn' component={Text} />
                                         </div>
 
                                         <div>
-                                            <button className='argo-button argo-button--base' onClick={() => createJWTToken(props, api, ctx)}>
+                                            <button className='kit-button kit-button--base' onClick={() => createJWTToken(props, api, ctx)}>
                                                 Create
                                             </button>
                                         </div>
@@ -88,13 +88,13 @@ export const ProjectRoleJWTTokens = (props: ProjectRoleJWTTokensProps) => {
                                 </div>
 
                                 {props.token && (
-                                    <div className='argo-table-list'>
-                                        <div className='argo-table-list__head'>
+                                    <div className='kit-table-list'>
+                                        <div className='kit-table-list__head'>
                                             <div className='row'>
                                                 <div className='columns small-3'>NEW TOKEN</div>
                                             </div>
                                         </div>
-                                        <div className='argo-table-list__row'>
+                                        <div className='kit-table-list__row'>
                                             <div className='white-box'>
                                                 <p style={{overflowWrap: 'break-word'}}>
                                                     {props.token}
@@ -170,7 +170,7 @@ function renderJWTRow(props: ProjectRoleJWTTokensProps, ctx: ContextApis, jwToke
     const isExpired = jwToken.exp && jwToken.exp < Date.now() / 1000;
 
     return (
-        <div className='argo-table-list__row' key={`${jwToken.iat}`}>
+        <div className='kit-table-list__row' key={`${jwToken.iat}`}>
             <div className='row'>
                 <div className='columns small-3 project-role-jwt-tokens__id'>
                     <Tooltip content={jwToken.id}>

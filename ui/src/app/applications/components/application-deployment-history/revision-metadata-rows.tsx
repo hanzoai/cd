@@ -1,4 +1,4 @@
-import {DataLoader} from 'argo-ui';
+import {DataLoader} from '../../../../kit/src';
 import * as React from 'react';
 import {Timestamp} from '../../../shared/components';
 import {ApplicationSource, RevisionMetadata, ChartDetails, OCIMetadata} from '../../../shared/models';

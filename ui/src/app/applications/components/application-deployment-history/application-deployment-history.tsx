@@ -1,4 +1,4 @@
-import {DropDownMenu, Duration} from 'argo-ui';
+import {DropDownMenu, Duration} from '../../../../kit/src';
 import {InitiatedBy} from './initiated-by';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -58,7 +58,7 @@ export const ApplicationDeploymentHistory = ({
                                 <div className='application-deployment-history__item-menu'>
                                     <DropDownMenu
                                         anchor={() => (
-                                            <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
+                                            <button className='kit-button kit-button--light kit-button--lg kit-button--short'>
                                                 <i className='fa fa-ellipsis-v' />
                                             </button>
                                         )}

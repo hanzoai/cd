@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 
 .application-node-info {
     &__manifest {
@@ -27,7 +27,7 @@
     }
 
     &__label {
-        background-color: $argo-color-gray-5;
+        background-color: $kit-color-gray-5;
         color: white;
         border-radius: 5px;
         padding: 4px;
@@ -40,7 +40,7 @@
         text-align: right;
         label {
             padding-right: 2em;
-            color: $argo-color-gray-8;
+            color: $kit-color-gray-8;
             @include themify($themes){
                 color: themed('text-2');
             }
@@ -48,7 +48,7 @@
     }
     &__err_msg {
         padding-right: 2em;
-        color: $argo-failed-color;
+        color: $kit-failed-color;
     }
     &__container {
         display: flex;

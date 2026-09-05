@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import {useRef, useState} from 'react';
 
-import {Autocomplete, AutocompleteApi, AutocompleteOption} from 'argo-ui';
+import {Autocomplete, AutocompleteApi, AutocompleteOption} from '../../../../kit/src';
 
 export interface TagsInputProps {
     tags: string[];
@@ -35,7 +35,7 @@ export function TagsInput(props: TagsInputProps) {
     };
 
     return (
-        <div className={classNames('tags-input argo-field', {'tags-input--focused': state.focused || !!state.input})} onClick={() => inputEl.current && inputEl.current.focus()}>
+        <div className={classNames('tags-input kit-field', {'tags-input--focused': state.focused || !!state.input})} onClick={() => inputEl.current && inputEl.current.focus()}>
             {state.tags.map((tag, i) => (
                 <span className='tags-input__tag' key={tag}>
                     {tag}{' '}

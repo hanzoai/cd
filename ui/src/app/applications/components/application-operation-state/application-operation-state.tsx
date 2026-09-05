@@ -1,4 +1,4 @@
-import {Checkbox, DropDown, Duration, NotificationType, Ticker, HelpIcon, Tooltip} from 'argo-ui';
+import {Checkbox, DropDown, Duration, NotificationType, Ticker, HelpIcon, Tooltip} from '../../../../kit/src';
 import * as moment from 'moment';
 import * as React from 'react';
 
@@ -24,8 +24,8 @@ const Filter = (props: {filters: string[]; setFilters: (f: string[]) => void; op
             isMenu={true}
             anchor={() => (
                 <div title='Filter' style={style}>
-                    <button className='argo-button argo-button--base'>
-                        {title} <i className='argo-icon-filter' aria-hidden='true' />
+                    <button className='kit-button kit-button--base'>
+                        {title} <i className='kit-icon-filter' aria-hidden='true' />
                     </button>
                 </div>
             )}>
@@ -96,7 +96,7 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
             title: '',
             value: (
                 <button
-                    className='argo-button argo-button--base'
+                    className='kit-button kit-button--base'
                     onClick={async () => {
                         const confirmed = await ctx.popup.confirm('Terminate operation', 'Are you sure you want to terminate operation?');
                         if (confirmed) {
@@ -248,8 +248,8 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
                             </Tooltip>
                         </div>
                     </div>
-                    <div className='argo-table-list'>
-                        <div className='argo-table-list__head'>
+                    <div className='kit-table-list'>
+                        <div className='kit-table-list__head'>
                             <div className='row'>
                                 <div className='columns large-1 show-for-large application-operation-state__icons_container_padding'>SYNC WAVE</div>
                                 <div className='columns large-1 show-for-large application-operation-state__icons_container_padding'>KIND</div>
@@ -264,7 +264,7 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
                         </div>
                         {filtered.length > 0 ? (
                             filtered.map((resource, i) => (
-                                <div className='argo-table-list__row' key={i}>
+                                <div className='kit-table-list__row' key={i}>
                                     <div className='row'>
                                         <div className='columns large-1 show-for-large application-operation-state__icons_container_padding' style={{textAlign: 'center'}}>
                                             <div className='application-operation-state__icons_container'>

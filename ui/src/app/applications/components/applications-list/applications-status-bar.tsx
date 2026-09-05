@@ -1,4 +1,4 @@
-import {Tooltip} from 'argo-ui/v2';
+import {Tooltip} from '../../../../kit/v2';
 import * as React from 'react';
 import {COLORS} from '../../../shared/components';
 import {Consumer} from '../../../shared/context';

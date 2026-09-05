@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .project-details {
     .white-box__details-row .fa-times {
@@ -8,13 +8,13 @@
         cursor: pointer;
     }
 
-    .select.argo-field {
+    .select.kit-field {
         padding: 0;
     }
 
     .white-box {
         .help-tip {
-            color: $argo-color-gray-6;
+            color: $kit-color-gray-6;
         }
     }
 
@@ -32,7 +32,7 @@
     }
 
     .white-box__details {
-        .argo-button--short {
+        .kit-button--short {
             margin-top: 1em;
         }
     }

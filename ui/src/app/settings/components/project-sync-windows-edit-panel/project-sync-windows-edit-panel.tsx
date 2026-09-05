@@ -1,6 +1,6 @@
-import {FormField, FormSelect} from 'argo-ui';
+import {FormField, FormSelect} from '../../../../kit/src';
 import * as React from 'react';
-import {Form, FormApi, Text} from 'argo-ui';
+import {Form, FormApi, Text} from '../../../../kit/src';
 
 import {CheckboxField} from '../../../shared/components';
 
@@ -53,24 +53,24 @@ export const ProjectSyncWindowsEditPanel = (props: ProjectSyncWindowsEditPanelPr
                     <form onSubmit={api.submitForm} role='form' className='width-control'>
                         <div className='white-box'>
                             <p>GENERAL</p>
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField formApi={api} label='Kind' field='window.kind' component={FormSelect} componentProps={{options: ['allow', 'deny']}} />
                             </div>
                             <ProjectSyncWindowScheduleEdit projName={api.values.projName} window={api.values.window} formApi={api} />
                             <br />
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField formApi={api} label='Time Zone' componentProps={{options: generateTimezones()}} field='window.timeZone' component={FormSelect} />
                             </div>
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField formApi={api} label='Duration (e.g. "30m" or "1h")' field='window.duration' component={Text} />
                             </div>
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField formApi={api} label='Enable manual sync' field='window.manualSync' component={CheckboxField} />
                             </div>
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField formApi={api} label='Enable sync overrun' field='window.syncOverrun' component={CheckboxField} />
                             </div>
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField
                                     formApi={api}
                                     label='Use AND operator while selecting the apps that match the configured selectors(applications, namespaces and clusters)'
@@ -78,7 +78,7 @@ export const ProjectSyncWindowsEditPanel = (props: ProjectSyncWindowsEditPanelPr
                                     component={CheckboxField}
                                 />
                             </div>
-                            <div className='argo-form-row'>
+                            <div className='kit-form-row'>
                                 <FormField formApi={api} label='Description' field='window.description' component={Text} />
                             </div>
                         </div>

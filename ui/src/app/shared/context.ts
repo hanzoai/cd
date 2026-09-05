@@ -1,9 +1,9 @@
-import {AppContext as ArgoAppContext, NavigationApi, NotificationsApi, PopupApi} from 'argo-ui';
+import {AppContext as KitAppContext, NavigationApi, NotificationsApi, PopupApi} from '../../kit/src';
 import {History} from 'history';
 import * as React from 'react';
 import * as models from './models';
 
-export type AppContext = ArgoAppContext & {apis: {popup: PopupApi; notifications: NotificationsApi; navigation: NavigationApi; baseHref: string}};
+export type AppContext = KitAppContext & {apis: {popup: PopupApi; notifications: NotificationsApi; navigation: NavigationApi; baseHref: string}};
 
 export interface ContextApis {
     popup: PopupApi;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Checkbox} from 'argo-ui/v2';
+import {Checkbox} from '../../../../kit/v2';
 import {ApplicationTree, HealthStatusCode, HealthStatuses, SyncStatusCode, SyncStatuses} from '../../../shared/models';
 import {AppDetailsPreferences, services} from '../../../shared/services';
 import {Context} from '../../../shared/context';

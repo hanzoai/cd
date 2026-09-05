@@ -1,4 +1,4 @@
-import {DataLoader, DropDown, DropDownMenu, MenuItem, Tooltip} from 'argo-ui';
+import {DataLoader, DropDown, DropDownMenu, MenuItem, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import {ReactNode, useContext} from 'react';
 import Moment from 'react-moment';
@@ -74,7 +74,7 @@ export function PodView(props: PodViewProps) {
                                 GROUP BY:&nbsp;
                                 <DropDownMenu
                                     anchor={() => (
-                                        <button className='argo-button argo-button--base-o'>
+                                        <button className='kit-button kit-button--base-o'>
                                             {labelForSortMode[podPrefs.sortMode]}&nbsp;&nbsp;
                                             <i className='fa fa-chevron-circle-down' />
                                         </button>
@@ -87,7 +87,7 @@ export function PodView(props: PodViewProps) {
                                     SORT BY AGE:&nbsp;
                                     <DropDownMenu
                                         anchor={() => (
-                                            <button className='argo-button argo-button--base-o'>
+                                            <button className='kit-button kit-button--base-o'>
                                                 {labelForSortOrder[podPrefs.sortOrder || 'desc']}&nbsp;&nbsp;
                                                 <i className='fa fa-chevron-circle-down' />
                                             </button>
@@ -99,7 +99,7 @@ export function PodView(props: PodViewProps) {
                             {podPrefs.sortMode === 'node' && (
                                 <div className='pod-view__settings__section'>
                                     <button
-                                        className={`argo-button argo-button--base${podPrefs.hideUnschedulable ? '-o' : ''}`}
+                                        className={`kit-button kit-button--base${podPrefs.hideUnschedulable ? '-o' : ''}`}
                                         style={{border: 'none', width: '170px'}}
                                         onClick={() =>
                                             services.viewPreferences.updatePreferences({
@@ -147,7 +147,7 @@ export function PodView(props: PodViewProps) {
                                                             <DropDown
                                                                 isMenu={true}
                                                                 anchor={() => (
-                                                                    <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
+                                                                    <button className='kit-button kit-button--light kit-button--lg kit-button--short'>
                                                                         <i className='fa fa-ellipsis-v' />
                                                                     </button>
                                                                 )}>

@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .application-sync-options {
     &__select {
@@ -16,17 +16,17 @@
         }
     }
     .fa-exclamation-triangle {
-        color: $argo-status-warning-color;
+        color: $kit-status-warning-color;
     }
 
     &__warning {
-        border-left: 5px solid $argo-failed-color-light;
+        border-left: 5px solid $kit-failed-color-light;
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
         margin-top: 1em;
         padding-left: 1em;
         background: white;
-        box-shadow: 1px 2px 3px $argo-color-gray-5;
-        color: $argo-color-gray-6;
+        box-shadow: 1px 2px 3px $kit-color-gray-5;
+        color: $kit-color-gray-6;
     }
 }

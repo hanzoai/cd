@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 
 .settings-overview {
     &__redirect-panel {
@@ -21,7 +21,7 @@
 
         &:hover {
             @include themify($themes) {
-                background-color: themed('light-argo-teal-1');                               
+                background-color: themed('light-kit-teal-1');                               
             }
         }
 
@@ -31,7 +31,7 @@
             float: left;
             margin-right: 10px;
             font-size: 1.6em;
-            color: $argo-success-color;
+            color: $kit-success-color;
         }
 
         &__content {
@@ -42,7 +42,7 @@
 
         &__title {
             font-size: 1.2em;
-            color: $argo-color-teal-6;
+            color: $kit-color-teal-6;
         }
 
         &__description {
@@ -58,7 +58,7 @@
             right: 30px;
             transform: translateY(-50%);
             font-size: 1.4em;
-            color: $argo-color-gray-7;
+            color: $kit-color-gray-7;
         }
     }
 }

@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .paginate {
     position: relative;
@@ -49,14 +49,14 @@
     li.disabled {
         a {
             cursor: default;
-            color: $argo-color-gray-5;
+            color: $kit-color-gray-5;
         }
     }
 
     li.selected {
         a {
             cursor: default;
-            color: $argo-color-gray-8;
+            color: $kit-color-gray-8;
         }
     }
 

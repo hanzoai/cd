@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .new-source-panel {
 
@@ -12,7 +12,7 @@
         white-space: pre;
     }
 
-    .row.argo-form-row .columns {
+    .row.kit-form-row .columns {
         padding-left: 0;
     }
 }

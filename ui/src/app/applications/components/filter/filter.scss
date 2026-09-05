@@ -1,6 +1,6 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 @import 'node_modules/foundation-sites/scss/util/util';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/theme';
 
 $sidebar-color: #30303d;
 $slate: #191826;
@@ -15,7 +15,7 @@ $slate: #191826;
 
     &__header {
         font-size: 13px;
-        color: $argo-color-gray-5;
+        color: $kit-color-gray-5;
         font-weight: 500;
         margin-bottom: 0.5em;
         height: 28px;
@@ -29,7 +29,7 @@ $slate: #191826;
             white-space: nowrap;
         }
 
-        .argo-button {
+        .kit-button {
             flex: none;
             margin-left: auto;
             background: $slate;
@@ -60,21 +60,21 @@ $slate: #191826;
         right: 0;
         cursor: pointer;
         margin-left: auto;
-        color: $argo-color-gray-7;
+        color: $kit-color-gray-7;
         font-size: 20px;
     }
 
     &__error {
-        color: $argo-failed-color-dark;
+        color: $kit-failed-color-dark;
 
         &__retry {
-            color: $argo-running-color;
+            color: $kit-running-color;
             cursor: pointer;
         }
     }
 
     &__loading {
-        color: $argo-running-color;
+        color: $kit-running-color;
     }
 
     &__error,
@@ -132,7 +132,7 @@ $slate: #191826;
         cursor: pointer;
         position: absolute;
         left: 16em;
-        color: $argo-color-gray-6;
+        color: $kit-color-gray-6;
     }
 
     .filters-group__title {
@@ -162,7 +162,7 @@ $slate: #191826;
         margin-bottom: 0em;
         margin-top: -3.5em;
 
-        .argo-button {
+        .kit-button {
             margin-left: auto;
             background: $slate;
             font-size: 10px;

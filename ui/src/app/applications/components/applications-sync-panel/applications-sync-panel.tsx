@@ -1,7 +1,7 @@
-import {ErrorNotification, FormField, NotificationType, SlidingPanel} from 'argo-ui';
+import {ErrorNotification, FormField, NotificationType, SlidingPanel} from '../../../../kit/src';
 import * as React from 'react';
-import {Form, FormApi} from 'argo-ui';
-import {ARGO_WARNING_COLOR, ProgressPopup, Spinner} from '../../../shared/components';
+import {Form, FormApi} from '../../../../kit/src';
+import {WARNING_COLOR, ProgressPopup, Spinner} from '../../../shared/components';
 import {Consumer, ContextApis} from '../../../shared/context';
 import * as models from '../../../shared/models';
 import {services} from '../../../shared/services';
@@ -59,13 +59,13 @@ export const ApplicationsSyncPanel = ({show, apps, hide}: {show: boolean; apps: 
                         <div>
                             <button
                                 qe-id='applications-sync-panel-button-synchronize'
-                                className='argo-button argo-button--base'
+                                className='kit-button kit-button--base'
                                 disabled={isPending}
                                 onClick={() => syncHandler(form, ctx, apps)}>
                                 <Spinner show={isPending} style={{marginRight: '5px'}} />
                                 Sync
                             </button>{' '}
-                            <button onClick={() => hide()} qe-id='applications-sync-panel-button-cancel' className='argo-button argo-button--base-o'>
+                            <button onClick={() => hide()} qe-id='applications-sync-panel-button-cancel' className='kit-button kit-button--base-o'>
                                 Cancel
                             </button>
                         </div>
@@ -80,7 +80,7 @@ export const ApplicationsSyncPanel = ({show, apps, hide}: {show: boolean; apps: 
                             if (force) {
                                 const confirmed = await ctx.popup.confirm('Synchronize with force?', () => (
                                     <div>
-                                        <i className='fa fa-exclamation-triangle' style={{color: ARGO_WARNING_COLOR}} /> {FORCE_WARNING} Are you sure you want to continue?
+                                        <i className='fa fa-exclamation-triangle' style={{color: WARNING_COLOR}} /> {FORCE_WARNING} Are you sure you want to continue?
                                     </div>
                                 ));
                                 if (!confirmed) {
@@ -130,7 +130,7 @@ export const ApplicationsSyncPanel = ({show, apps, hide}: {show: boolean; apps: 
                         }}
                         getApi={setForm}>
                         {formApi => (
-                            <div className='argo-form-row' style={{marginTop: 0}}>
+                            <div className='kit-form-row' style={{marginTop: 0}}>
                                 <h4>Sync app(s)</h4>
                                 {progress !== null && <ProgressPopup onClose={() => setProgress(null)} percentage={progress.percentage} title={progress.title} />}
                                 <div style={{marginBottom: '1em'}}>

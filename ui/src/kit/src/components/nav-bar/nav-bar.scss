@@ -1,0 +1,109 @@
+@import '../../styles/config';
+
+$nav-break-height-md: 900px;
+$nav-break-height-sm: 746px;
+
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding-top: 160px;
+    z-index: $nav-z-index;
+    width: $nav-width;
+    background: linear-gradient(to bottom, #333, #444, #555, #666, #999);
+    box-shadow: inset -2px 0 4px 0 rgba(0,0,0,0.59);
+
+
+    &__logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 8px 6px;
+
+        img {
+            max-width: 104%;
+        }
+    }
+
+    &__item {
+        position: relative;
+        margin: 20px 0;
+        padding-right: 3px;
+        font-size: 34px;
+        color: $white-color;
+        text-align: center;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+
+        &.active {
+            border-color: $kit-color-teal-5;
+        }
+
+        &:hover {
+            color: $kit-color-gray-4;
+        }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &__item-tooltip {
+        position: absolute;
+        top: 50%;
+        left: calc(100% - 6px);
+        transform: translate(0, -50%);
+        padding: 3px 6px;
+        font-size: 12px;
+        background-color: $kit-color-gray-8;
+        border-radius: 3px;
+        transition: opacity .2s 0s, transform .2s 0s, visibility .2s 0s;
+
+        .nav-bar__item:hover & {
+            transition: opacity .2s .5s, transform .2s .5s, visibility .2s .5s;
+        }
+
+        .nav-bar__item:not(:hover) & {
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-20%, -50%);
+        }
+
+        &::after {
+            position: absolute;
+            top: 50%;
+            left: -6px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 6px solid  $kit-color-gray-8;
+            content: '';
+        }
+    }
+
+    &__version {
+        font-size: smaller;
+        color: $kit-color-gray-2;
+        overflow: hidden;
+        text-align: center;
+    }
+}
+
+.nav-bar.nav-bar--compact {
+    .nav-bar__logo {
+        img {
+            display: block;
+            max-width: 85%;
+            margin: 0 auto;
+        }
+    }
+
+    .nav-bar__item {
+        margin: 10px 0;
+        font-size: 25px;
+    }
+}

@@ -1,7 +1,7 @@
 /* eslint-disable no-prototype-builtins */
-import {AutocompleteField, Checkbox, DropDownMenu, ErrorNotification, FormField, FormSelect, HelpIcon, NotificationType} from 'argo-ui';
+import {AutocompleteField, Checkbox, DropDownMenu, ErrorNotification, FormField, FormSelect, HelpIcon, NotificationType} from '../../../../kit/src';
 import * as React from 'react';
-import {FormApi, Text} from 'argo-ui';
+import {FormApi, Text} from '../../../../kit/src';
 import {
     ClipboardText,
     Cluster,
@@ -695,7 +695,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             title: '',
             titleEdit: () => (
                 <button
-                    className='argo-button argo-button--base'
+                    className='kit-button kit-button--base'
                     onClick={() => {
                         setAdjustedCount(adjustedCount + 1);
                     }}>

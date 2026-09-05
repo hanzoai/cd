@@ -1,4 +1,4 @@
-import {HelpIcon} from 'argo-ui';
+import {HelpIcon} from '../../../kit/src';
 import * as React from 'react';
 
 export const RevisionHelpIcon = ({type, top, right}: {type: string; top?: string; right?: string}) => (

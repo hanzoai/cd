@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useContext} from 'react';
 import {Button} from '../../../shared/components/button';
 import {Context} from '../../../shared/context';
-import {NotificationType} from 'argo-ui/src/components/notifications/notifications';
+import {NotificationType} from '../../../../kit/src/components/notifications/notifications';
 import {LogEntry} from '../../../shared/models';
 
 // CopyLogsButton is a button that copies the logs to the clipboard

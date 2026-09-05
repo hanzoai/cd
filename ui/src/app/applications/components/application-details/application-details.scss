@@ -1,6 +1,6 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 @import 'node_modules/foundation-sites/scss/util/util';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/theme';
 @import '../../../shared/config.scss';
 
 $header: 120px;
@@ -28,7 +28,7 @@ $header: 120px;
         padding-bottom: 15px;
     }
 
-    .argo-dropdown__content.is-menu {
+    .kit-dropdown__content.is-menu {
         max-height: 500px;
     }
 
@@ -47,7 +47,7 @@ $header: 120px;
 
     &__warning {
         font-size: 0.8em;
-        color: darken($argo-status-warning-color, 20%);
+        color: darken($kit-status-warning-color, 20%);
         min-height: 1.2rem;
     }
 
@@ -56,8 +56,8 @@ $header: 120px;
         position: fixed;
         margin-top: -20px;
         left: 50%;
-        background-color: $argo-color-gray-7;
-        border: 1px solid $argo-color-gray-5;
+        background-color: $kit-color-gray-7;
+        border: 1px solid $kit-color-gray-5;
         border-radius: 5px;
         padding: 5px 5px;
         font-size: 0.6em;
@@ -90,7 +90,7 @@ $header: 120px;
         }
 
         span {
-            color: $argo-color-teal-5;
+            color: $kit-color-teal-5;
         }
     }
 
@@ -105,7 +105,7 @@ $header: 120px;
         white-space: nowrap;
         i {
             cursor: pointer;
-            color: $argo-color-gray-5;
+            color: $kit-color-gray-5;
             margin: 0 0.5em;
             &::before {
                 font-size: 1.5em;
@@ -113,7 +113,7 @@ $header: 120px;
         }
         i.selected {
             cursor: default;
-            color: $argo-color-gray-7;
+            color: $kit-color-gray-7;
         }
     }
 
@@ -132,17 +132,17 @@ $header: 120px;
 
         &.disabled {
             cursor: default !important;
-            color: $argo-color-gray-3 !important;
+            color: $kit-color-gray-3 !important;
         }
 
         &:focus {
-            background-color: $argo-color-gray-1;
+            background-color: $kit-color-gray-1;
             outline: none;
         }
     }
 
-    .argo-button:has(.application-details__dropdown-anchor-inner):hover .application-details__dropdown-anchor-inner {
-        background-color: $argo-color-gray-5;
+    .kit-button:has(.application-details__dropdown-anchor-inner):hover .application-details__dropdown-anchor-inner {
+        background-color: $kit-color-gray-5;
     }
 
     &__dropdown-anchor-inner {
@@ -159,11 +159,11 @@ $header: 120px;
         transition: background-color 0.2s;
 
         &:hover {
-            background-color: $argo-color-gray-4 !important;
+            background-color: $kit-color-gray-4 !important;
         }
     }
 
-    .argo-table-list__row {
+    .kit-table-list__row {
         .columns.small-1.xxxlarge-1 {
             width: 60px;
             text-align: center;
@@ -183,7 +183,7 @@ $header: 120px;
                 flex: auto;
             }
             .top-bar__left-side {
-                .argo-button {
+                .kit-button {
                     i {
                         @media screen and (max-width: map-get($breakpoints, large)) {
                             margin: 0 auto !important;
@@ -202,10 +202,10 @@ $header: 120px;
                     justify-content: center;
                     height: 50px;
                     align-items: center;
-                    .argo-button {
+                    .kit-button {
                         height: 34px;
                     }
-                    .argo-split-button {
+                    .kit-split-button {
                         height: 34px;
                     }
                 }
@@ -230,7 +230,7 @@ $header: 120px;
         z-index: 1;
         padding: 5px;
         display: inline-block;
-        box-shadow: 1px 1px 3px $argo-color-gray-5;
+        box-shadow: 1px 1px 3px $kit-color-gray-5;
         position: absolute;
 
         @include themify($themes) {
@@ -241,7 +241,7 @@ $header: 120px;
         a {
             padding: 5px;
             margin: 2px;
-            color: $argo-color-gray-6;
+            color: $kit-color-gray-6;
             border: 1px solid transparent;
             border-radius: 5px;
 
@@ -261,18 +261,18 @@ $header: 120px;
                 }
                 &:active {
                     transition: background-color 0.2s, border 0.2s, color 0.2s;
-                    border: 1px $argo-color-teal-5 solid;
+                    border: 1px $kit-color-teal-5 solid;
                 }
             }
 
             &.group-nodes-button-on {
-                color: $argo-color-gray-1;
-                background-color: $argo-color-gray-6;
-                border: 3px solid $argo-color-teal-4;
+                color: $kit-color-gray-1;
+                background-color: $kit-color-gray-6;
+                border: 3px solid $kit-color-teal-4;
                 font-size: 14px;
                 outline-style: solid;
                 &:hover {
-                    background-color: $argo-color-gray-5;
+                    background-color: $kit-color-gray-5;
                 }
 
             }
@@ -295,10 +295,10 @@ $header: 120px;
             text-align-last: right;
             float: right;
             width: 40px;
-            border: 1px $argo-color-gray-5 solid;
-            background-color: $argo-color-gray-3;
+            border: 1px $kit-color-gray-5 solid;
+            background-color: $kit-color-gray-3;
             padding: 2px;
-            color: $argo-color-gray-7;
+            color: $kit-color-gray-7;
         }
     }
 
@@ -369,7 +369,7 @@ $header: 120px;
 }
 
 // DropDown portals menu content to document.body, so these rules cannot live under .application-details.
-.argo-dropdown__content.is-menu {
+.kit-dropdown__content.is-menu {
     margin-left: -16px;
 
     ul li.application-details-app-dropdown__filter {
@@ -384,7 +384,7 @@ $header: 120px;
             flex-shrink: 0;
         }
 
-        .argo-field {
+        .kit-field {
             flex: 1;
             min-width: 0;
             margin: 0;
@@ -398,7 +398,7 @@ $header: 120px;
         padding: 5px 10px;
         font-size: 14px;
         line-height: normal;
-        color: $argo-color-gray-6;
+        color: $kit-color-gray-6;
         border-bottom: none;
 
         .application-details-app-dropdown__resource-icon.icon {

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import * as models from '../../../shared/models';
 import './application-deployment-history.scss';
 import '../../../shared/components/editable-panel/editable-panel.scss';
-import {DataLoader} from 'argo-ui';
+import {DataLoader} from '../../../../kit/src';
 import {Repo, Revision} from '../../../shared/components';
 import {services} from '../../../shared/services';
 import {ApplicationParameters} from '../application-parameters/application-parameters';

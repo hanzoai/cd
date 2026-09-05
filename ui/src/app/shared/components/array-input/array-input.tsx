@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ReactForm, FormValue} from 'argo-ui';
+import {ReactForm, FormValue} from '../../../../kit/src';
 
 /*
     This provide a way to may a form field to an array of items. It allows you to
@@ -32,7 +32,7 @@ export const NameValueEditor = (item: NameValue, onChange?: (item: NameValue) =>
             <input
                 // disable chrome autocomplete
                 autoComplete='fake'
-                className='argo-field'
+                className='kit-field'
                 style={{width: '40%', borderColor: !onChange ? '#eff3f5' : undefined}}
                 placeholder='Name'
                 value={item.name}
@@ -45,7 +45,7 @@ export const NameValueEditor = (item: NameValue, onChange?: (item: NameValue) =>
             <input
                 // disable chrome autocomplete
                 autoComplete='fake'
-                className='argo-field'
+                className='kit-field'
                 style={{width: '40%', borderColor: !onChange ? '#eff3f5' : undefined}}
                 placeholder='Value'
                 value={item.value || ''}
@@ -63,7 +63,7 @@ export const ValueEditor = (item: string, onChange: (item: string) => any) => {
         <input
             // disable chrome autocomplete
             autoComplete='fake'
-            className='argo-field'
+            className='kit-field'
             style={{width: '40%', borderColor: !onChange ? '#eff3f5' : undefined}}
             placeholder='Value'
             value={item || ''}
@@ -98,7 +98,7 @@ export function ArrayInput<T>(props: Props<T>) {
     };
 
     return (
-        <div className='argo-field' style={{border: 0, marginTop: '15px', zIndex: 1}}>
+        <div className='kit-field' style={{border: 0, marginTop: '15px', zIndex: 1}}>
             {props.items.map((item, i) => (
                 <div key={`item-${i}`} style={{marginBottom: '5px'}}>
                     {props.editor(item, (updated: T) => replaceItem(updated, i))}
@@ -110,7 +110,7 @@ export function ArrayInput<T>(props: Props<T>) {
             ))}
             {props.items.length === 0 && <label>No items</label>}
             <div>
-                <button className='argo-button argo-button--base argo-button--short' onClick={() => addItem({} as T)}>
+                <button className='kit-button kit-button--base kit-button--short' onClick={() => addItem({} as T)}>
                     <i style={{cursor: 'pointer'}} className='fa fa-plus' />
                 </button>
             </div>
@@ -152,7 +152,7 @@ export const ResetOrDeleteButton = (props: {
 
     return (
         <button
-            className='argo-button argo-button--base'
+            className='kit-button kit-button--base'
             disabled={disabled}
             title={tooltip}
             style={{fontSize: '12px', display: 'flex', marginLeft: 'auto', marginTop: '8px'}}
@@ -238,7 +238,7 @@ export const StringValueField = ReactForm.FormField(
                     <input
                         // disable chrome autocomplete
                         autoComplete='fake'
-                        className='argo-field'
+                        className='kit-field'
                         style={{width: '40%', display: 'inline-block', marginTop: 25}}
                         placeholder='Value'
                         value={values || ''}

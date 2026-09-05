@@ -1,4 +1,4 @@
-import {DataLoader, DropDownMenu} from 'argo-ui';
+import {DataLoader, DropDownMenu} from '../../../../kit/src';
 import * as React from 'react';
 
 import {services} from '../../../shared/services';
