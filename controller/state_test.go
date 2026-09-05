@@ -2005,7 +2005,7 @@ func TestCompareAppState_CallUpdateRevisionForPaths_ForOCI(t *testing.T) {
 	ctrl := newFakeController(t.Context(), &data, nil)
 
 	source := app.Spec.GetSource()
-	source.RepoURL = "oci://example.com/argo/argo-cd"
+	source.RepoURL = "oci://example.com/hanzoai/cd"
 	sources := make([]v1alpha1.ApplicationSource, 0)
 	sources = append(sources, source)
 
@@ -2025,7 +2025,7 @@ func TestGetRepoObjs_CallUpdateRevisionForPaths_ForMultiSource(t *testing.T) {
 	}
 
 	app.Spec.Sources = v1alpha1.ApplicationSources{
-		{RepoURL: "oci://example.com/argo/argo-cd", TargetRevision: "0.0.1", Helm: &v1alpha1.ApplicationSourceHelm{ValueFiles: []string{"$values/my-path"}}},
+		{RepoURL: "oci://example.com/hanzoai/cd", TargetRevision: "0.0.1", Helm: &v1alpha1.ApplicationSourceHelm{ValueFiles: []string{"$values/my-path"}}},
 		{Ref: "values", RepoURL: "https://git.test.com", TargetRevision: "abc123"},
 		{TargetRevision: "main", RepoURL: "https://git.test.com", Path: "path/to/chart"},
 	}

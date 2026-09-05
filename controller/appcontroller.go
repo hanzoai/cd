@@ -60,7 +60,7 @@ import (
 	"github.com/hanzoai/cd/reposerver/apiclient"
 	applog "github.com/hanzoai/cd/util/app/log"
 	"github.com/hanzoai/cd/util/cd"
-	argodiff "github.com/hanzoai/cd/util/cd/diff"
+	appdiff "github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/env"
 	"github.com/hanzoai/cd/util/stats"
@@ -169,7 +169,7 @@ func NewApplicationController(
 	applicationClientset appclientset.Interface,
 	repoClientset apiclient.Clientset,
 	commitClientset commitclient.Clientset,
-	argoCache *appstatecache.Cache,
+	appStateCache *appstatecache.Cache,
 	kubectl kube.Kubectl,
 	appResyncPeriod time.Duration,
 	appHardResyncPeriod time.Duration,
@@ -201,7 +201,7 @@ func NewApplicationController(
 		log.Info("Using default workqueue rate limiter config")
 	}
 	ctrl := ApplicationController{
-		cache:                             argoCache,
+		cache:                             appStateCache,
 		namespace:                         namespace,
 		kubeClientset:                     kubeClientset,
 		kubectl:                           kubectl,
@@ -314,7 +314,7 @@ func NewApplicationController(
 		}
 	}
 	stateCache := statecache.NewLiveStateCache(db, appInformer, ctrl.settingsMgr, ctrl.metricsServer, ctrl.handleObjectUpdated, clusterSharding, cd.NewResourceTracking())
-	appStateManager := NewAppStateManager(db, applicationClientset, repoClientset, namespace, kubectl, ctrl.onKubectlRun, ctrl.settingsMgr, stateCache, ctrl.metricsServer, argoCache, ctrl.statusRefreshTimeout, cd.NewResourceTracking(), persistResourceHealth, repoErrorGracePeriod, serverSideDiff, ignoreNormalizerOpts)
+	appStateManager := NewAppStateManager(db, applicationClientset, repoClientset, namespace, kubectl, ctrl.onKubectlRun, ctrl.settingsMgr, stateCache, ctrl.metricsServer, appStateCache, ctrl.statusRefreshTimeout, cd.NewResourceTracking(), persistResourceHealth, repoErrorGracePeriod, serverSideDiff, ignoreNormalizerOpts)
 	ctrl.appInformer = appInformer
 	ctrl.appLister = appLister
 	ctrl.projInformer = projInformer
@@ -839,7 +839,7 @@ func (ctrl *ApplicationController) hideSecretData(ctx context.Context, destClust
 			if err != nil {
 				return nil, fmt.Errorf("error getting cluster cache: %w", err)
 			}
-			diffConfig, err := argodiff.NewDiffConfigBuilder().
+			diffConfig, err := appdiff.NewDiffConfigBuilder().
 				WithDiffSettings(app.Spec.IgnoreDifferences, resourceOverrides, compareOptions.IgnoreAggregatedRoles, ctrl.ignoreNormalizerOpts).
 				WithTracking(appLabelKey, trackingMethod).
 				WithNoCache().
@@ -850,7 +850,7 @@ func (ctrl *ApplicationController) hideSecretData(ctx context.Context, destClust
 				return nil, fmt.Errorf("appcontroller error building diff config: %w", err)
 			}
 
-			diffResult, err := argodiff.StateDiff(ctx, live, target, diffConfig)
+			diffResult, err := appdiff.StateDiff(ctx, live, target, diffConfig)
 			if err != nil {
 				return nil, fmt.Errorf("error applying diff: %w", err)
 			}

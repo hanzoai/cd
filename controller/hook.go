@@ -20,7 +20,7 @@ import (
 	"github.com/hanzoai/cd/util/lua"
 
 	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
-	argoutil "github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd"
 	traceutil "github.com/hanzoai/cd/util/trace"
 )
 
@@ -113,7 +113,7 @@ func (ctrl *ApplicationController) executeHooks(ctx context.Context, hookType Ho
 		return false, err
 	}
 	trackingMethod := appv1.TrackingMethod(trackingMethodStr)
-	resourceTracking := argoutil.NewResourceTracking()
+	resourceTracking := cd.NewResourceTracking()
 
 	var revisions []string
 	for _, src := range app.Spec.GetSources() {

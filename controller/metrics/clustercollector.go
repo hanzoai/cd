@@ -9,7 +9,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
 
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	metricsutil "github.com/hanzoai/cd/util/metrics"
 )
 
@@ -59,7 +59,7 @@ type HasClustersInfo interface {
 	GetClustersInfo() []cache.ClusterInfo
 }
 
-type ClusterLister func(ctx context.Context) (*argoappv1.ClusterList, error)
+type ClusterLister func(ctx context.Context) (*appv1.ClusterList, error)
 
 type clusterCollector struct {
 	infoSource    HasClustersInfo
@@ -72,7 +72,7 @@ type clusterCollector struct {
 
 type clusterData struct {
 	info    *cache.ClusterInfo
-	cluster *argoappv1.Cluster
+	cluster *appv1.Cluster
 }
 
 func NewClusterCollector(ctx context.Context, source HasClustersInfo, clusterLister ClusterLister, clusterLabels []string) prometheus.Collector {
@@ -80,7 +80,7 @@ func NewClusterCollector(ctx context.Context, source HasClustersInfo, clusterLis
 		normalizedClusterLabels := metricsutil.NormalizeLabels("label", clusterLabels)
 		descClusterLabels = prometheus.NewDesc(
 			"cd_cluster_labels",
-			"Argo Cluster labels converted to Prometheus labels",
+			"Cluster labels converted to Prometheus labels",
 			append(append(descClusterDefaultLabels, "name"), normalizedClusterLabels...),
 			nil,
 		)
@@ -132,7 +132,7 @@ func (c *clusterCollector) getClusterData() ([]*clusterData, error) {
 		return nil, err
 	}
 
-	clusterMap := map[string]*argoappv1.Cluster{}
+	clusterMap := map[string]*appv1.Cluster{}
 	for i, cluster := range clusters.Items {
 		clusterMap[cluster.Server] = &clusters.Items[i]
 	}

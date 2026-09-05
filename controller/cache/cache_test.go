@@ -31,7 +31,7 @@ import (
 	"github.com/hanzoai/cd/pkg/apis/application"
 	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	dbmocks "github.com/hanzoai/cd/util/db/mocks"
-	argosettings "github.com/hanzoai/cd/util/settings"
+	settings "github.com/hanzoai/cd/util/settings"
 )
 
 type netError string
@@ -40,7 +40,7 @@ func (n netError) Error() string   { return string(n) }
 func (n netError) Timeout() bool   { return false }
 func (n netError) Temporary() bool { return false }
 
-func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *corev1.Secret)) (*fake.Clientset, *argosettings.SettingsManager) {
+func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *corev1.Secret)) (*fake.Clientset, *settings.SettingsManager) {
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
@@ -65,7 +65,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 		opts[i](secret)
 	}
 	kubeClient := fake.NewClientset(cm, secret)
-	settingsManager := argosettings.NewSettingsManager(ctx, kubeClient, "default")
+	settingsManager := settings.NewSettingsManager(ctx, kubeClient, "default")
 
 	return kubeClient, settingsManager
 }
@@ -105,7 +105,7 @@ func TestHandleModEvent_ClusterExcluded(t *testing.T) {
 		appInformer: nil,
 		onObjectUpdated: func(_ map[string]bool, _ corev1.ObjectReference) {
 		},
-		settingsMgr:   &argosettings.SettingsManager{},
+		settingsMgr:   &settings.SettingsManager{},
 		metricsServer: &metrics.MetricsServer{},
 		// returns a shard that never process any cluster
 		clusterSharding:  sharding.NewClusterSharding(db, 0, 1, common.DefaultShardingAlgorithm),
@@ -174,7 +174,7 @@ func TestHandleDeleteEvent_CacheDeadlock(t *testing.T) {
 	db := &dbmocks.DB{}
 	db.EXPECT().GetApplicationControllerReplicas().Return(1)
 	fakeClient := fake.NewClientset()
-	settingsMgr := argosettings.NewSettingsManager(t.Context(), fakeClient, "cd")
+	settingsMgr := settings.NewSettingsManager(t.Context(), fakeClient, "cd")
 	gitopsEngineClusterCache := &mocks.ClusterCache{}
 	clustersCache := liveStateCache{
 		clusters: map[string]cache.ClusterCache{

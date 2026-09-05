@@ -6,9 +6,9 @@ metadata:
     controller-uid: 95052288-f609-11e8-aa53-42010a80021b
     job-name: fail
   name: fail
-  namespace: argoci-workflows
+  namespace: ci-workflows
   resourceVersion: "46534173"
-  selfLink: /apis/batch/v1/namespaces/argoci-workflows/jobs/fail
+  selfLink: /apis/batch/v1/namespaces/ci-workflows/jobs/fail
   uid: 95052288-f609-11e8-aa53-42010a80021b
 spec:
   backoffLimit: 0

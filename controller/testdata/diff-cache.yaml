@@ -29,7 +29,7 @@ metadata:
     service_class: alpha
     stack: gke-v2
   name: velero-test
-  namespace: argo-cd
+  namespace: hanzocd
   ownerReferences:
   - apiVersion: apps.hanzo.ai/v1alpha1
     blockOwnerDeletion: true
@@ -83,7 +83,7 @@ spec:
     - ServerSideApply=true
     - Validate=true
 status:
-  controllerNamespace: argo-cd
+  controllerNamespace: hanzocd
   health:
     status: Healthy
   history:
