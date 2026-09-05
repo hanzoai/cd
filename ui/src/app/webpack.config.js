@@ -139,7 +139,7 @@ const config = {
             'process.env.NODE_ONLINE_ENV': JSON.stringify(process.env.NODE_ONLINE_ENV || 'offline'),
             'process.platform': JSON.stringify('browser'),
             'SYSTEM_INFO': JSON.stringify({
-                version: process.env.ARGO_VERSION || 'latest'
+                version: process.env.CD_VERSION || 'latest'
             })
         }),
         new HtmlWebpackPlugin({ template: 'src/app/index.html' }),

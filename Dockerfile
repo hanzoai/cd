@@ -108,8 +108,8 @@ RUN npm install -g corepack@0.34.6 && corepack enable && pnpm install --frozen-l
 
 COPY ["ui/", "."]
 
-ARG ARGO_VERSION=latest
-ENV ARGO_VERSION=$ARGO_VERSION
+ARG CD_VERSION=latest
+ENV CD_VERSION=$CD_VERSION
 # Note: the UI bundle is architecture-independent. Keep this stage free of any
 # per-target-arch inputs (e.g. TARGETARCH) so buildx builds it once and copies an
 # identical dist into every per-arch image. Otherwise the bundle's contenthash
