@@ -41,7 +41,7 @@ func TestRefreshApp(t *testing.T) {
 	testApp.Name = "test-app"
 	testApp.Namespace = "default"
 	appClientset := appclientset.NewSimpleClientset(&testApp)
-	appIf := appClientset.ArgoprojV1alpha1().Applications("default")
+	appIf := appClientset.AppsV1alpha1().Applications("default")
 	ht := appv1.HydrateTypeNormal
 	_, err := RefreshApp(appIf, "test-app", appv1.RefreshTypeNormal, &ht)
 	require.NoError(t, err)
@@ -1164,7 +1164,7 @@ func TestSetAppOperations(t *testing.T) {
 	t.Parallel()
 	t.Run("Application not existing", func(t *testing.T) {
 		t.Parallel()
-		appIf := appclientset.NewSimpleClientset().ArgoprojV1alpha1().Applications("default")
+		appIf := appclientset.NewSimpleClientset().AppsV1alpha1().Applications("default")
 		app, err := SetAppOperation(appIf, "someapp", &appv1.Operation{Sync: &appv1.SyncOperation{Revision: "aaa"}})
 		require.Error(t, err)
 		assert.Nil(t, app)
@@ -1179,7 +1179,7 @@ func TestSetAppOperations(t *testing.T) {
 			},
 			Operation: &appv1.Operation{Sync: &appv1.SyncOperation{Revision: "aaa"}},
 		}
-		appIf := appclientset.NewSimpleClientset(&a).ArgoprojV1alpha1().Applications("default")
+		appIf := appclientset.NewSimpleClientset(&a).AppsV1alpha1().Applications("default")
 		app, err := SetAppOperation(appIf, "someapp", &appv1.Operation{Sync: &appv1.SyncOperation{Revision: "aaa"}})
 		require.ErrorContains(t, err, "operation is already in progress")
 		assert.Nil(t, app)
@@ -1193,7 +1193,7 @@ func TestSetAppOperations(t *testing.T) {
 				Namespace: "default",
 			},
 		}
-		appIf := appclientset.NewSimpleClientset(&a).ArgoprojV1alpha1().Applications("default")
+		appIf := appclientset.NewSimpleClientset(&a).AppsV1alpha1().Applications("default")
 		app, err := SetAppOperation(appIf, "someapp", &appv1.Operation{Sync: nil})
 		require.ErrorContains(t, err, "Operation unspecified")
 		assert.Nil(t, app)
@@ -1207,7 +1207,7 @@ func TestSetAppOperations(t *testing.T) {
 				Namespace: "default",
 			},
 		}
-		appIf := appclientset.NewSimpleClientset(&a).ArgoprojV1alpha1().Applications("default")
+		appIf := appclientset.NewSimpleClientset(&a).AppsV1alpha1().Applications("default")
 		app, err := SetAppOperation(appIf, "someapp", &appv1.Operation{Sync: &appv1.SyncOperation{Revision: "aaa"}})
 		require.NoError(t, err)
 		assert.NotNil(t, app)

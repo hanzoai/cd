@@ -167,10 +167,10 @@ func NewFakeProjListerFromInterface(appProjects appclient.AppProjectInterface) a
 func NewFakeProjLister(objects ...runtime.Object) applister.AppProjectNamespaceLister {
 	fakeAppClientset := apps.NewSimpleClientset(objects...)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppClientset, 0, appinformer.WithNamespace(""), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
-	projInformer := factory.Argoproj().V1alpha1().AppProjects().Informer()
+	projInformer := factory.Apps().V1alpha1().AppProjects().Informer()
 	cancel := StartInformer(projInformer)
 	defer cancel()
-	return factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(FakeArgoCDNamespace)
+	return factory.Apps().V1alpha1().AppProjects().Lister().AppProjects(FakeArgoCDNamespace)
 }
 
 func NewInMemoryRedis() (*kv.Client, func()) {

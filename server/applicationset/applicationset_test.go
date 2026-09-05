@@ -135,14 +135,14 @@ func newTestAppSetServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforce
 	}
 	fakeAppsClientset := apps.NewSimpleClientset(runtimeObjects...)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, appinformer.WithNamespace(namespace), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
-	fakeProjLister := factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
+	fakeProjLister := factory.Apps().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
 
 	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	f(enforcer)
 	enforcer.SetClaimsEnforcerFunc(rbacpolicy.NewRBACPolicyEnforcer(enforcer, fakeProjLister).EnforceClaims)
 
 	// populate the app informer with the fake objects
-	appInformer := factory.Argoproj().V1alpha1().Applications().Informer()
+	appInformer := factory.Apps().V1alpha1().Applications().Informer()
 	// TODO(jessesuen): probably should return cancel function so tests can stop background informer
 	// ctx, cancel := context.WithCancel(t.Context())
 	go appInformer.Run(ctx.Done())
@@ -150,7 +150,7 @@ func newTestAppSetServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforce
 		panic("Timed out waiting for caches to sync")
 	}
 	// populate the appset informer with the fake objects
-	appsetInformer := factory.Argoproj().V1alpha1().ApplicationSets().Informer()
+	appsetInformer := factory.Apps().V1alpha1().ApplicationSets().Informer()
 	go appsetInformer.Run(ctx.Done())
 	if !k8scache.WaitForCacheSync(ctx.Done(), appsetInformer.HasSynced) {
 		t.Fatal("Timed out waiting for caches to sync")
@@ -181,7 +181,7 @@ func newTestAppSetServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforce
 
 	crClient := cr_fake.NewClientBuilder().WithScheme(scheme).WithObjects(objects...).Build()
 
-	projInformer := factory.Argoproj().V1alpha1().AppProjects().Informer()
+	projInformer := factory.Apps().V1alpha1().AppProjects().Informer()
 	go projInformer.Run(ctx.Done())
 	if !k8scache.WaitForCacheSync(ctx.Done(), projInformer.HasSynced) {
 		panic("Timed out waiting for caches to sync")
@@ -202,7 +202,7 @@ func newTestAppSetServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforce
 		nil,
 		fakeAppsClientset,
 		appsetInformer,
-		factory.Argoproj().V1alpha1().ApplicationSets().Lister(),
+		factory.Apps().V1alpha1().ApplicationSets().Lister(),
 		nil,
 		testNamespace,
 		sync.NewKeyLock(),

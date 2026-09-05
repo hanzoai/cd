@@ -289,9 +289,9 @@ func initializeDefaultProject(opts ServerOpts) error {
 		},
 	}
 
-	_, err := opts.AppClientset.ArgoprojV1alpha1().AppProjects(opts.Namespace).Get(context.Background(), defaultProj.Name, metav1.GetOptions{})
+	_, err := opts.AppClientset.AppsV1alpha1().AppProjects(opts.Namespace).Get(context.Background(), defaultProj.Name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
-		_, err = opts.AppClientset.ArgoprojV1alpha1().AppProjects(opts.Namespace).Create(context.Background(), defaultProj, metav1.CreateOptions{})
+		_, err = opts.AppClientset.AppsV1alpha1().AppProjects(opts.Namespace).Create(context.Background(), defaultProj, metav1.CreateOptions{})
 		if apierrors.IsAlreadyExists(err) {
 			return nil
 		}
@@ -317,14 +317,14 @@ func NewServer(ctx context.Context, opts ServerOpts, appsetOpts ApplicationSetOp
 	projFactory := appinformer.NewSharedInformerFactoryWithOptions(opts.AppClientset, 0, appinformer.WithNamespace(opts.Namespace), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
 	appFactory := appinformer.NewSharedInformerFactoryWithOptions(opts.AppClientset, 0, appinformer.WithNamespace(appInformerNs), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
 
-	projInformer := projFactory.Argoproj().V1alpha1().AppProjects().Informer()
-	projLister := projFactory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(opts.Namespace)
+	projInformer := projFactory.Apps().V1alpha1().AppProjects().Informer()
+	projLister := projFactory.Apps().V1alpha1().AppProjects().Lister().AppProjects(opts.Namespace)
 
-	appInformer := appFactory.Argoproj().V1alpha1().Applications().Informer()
-	appLister := appFactory.Argoproj().V1alpha1().Applications().Lister()
+	appInformer := appFactory.Apps().V1alpha1().Applications().Informer()
+	appLister := appFactory.Apps().V1alpha1().Applications().Lister()
 
-	appsetInformer := appFactory.Argoproj().V1alpha1().ApplicationSets().Informer()
-	appsetLister := appFactory.Argoproj().V1alpha1().ApplicationSets().Lister()
+	appsetInformer := appFactory.Apps().V1alpha1().ApplicationSets().Informer()
+	appsetLister := appFactory.Apps().V1alpha1().ApplicationSets().Lister()
 
 	// When watching cluster-wide (i.e. application.namespaces is configured),
 	// drop objects from namespaces that are not in the allowed list before

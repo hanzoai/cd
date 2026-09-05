@@ -81,8 +81,8 @@ func (_c *SettingsGetter_Get_Call) Run(run func()) *SettingsGetter_Get_Call {
 	return _c
 }
 
-func (_c *SettingsGetter_Get_Call) Return(argoCDSettings *settings.Settings, err error) *SettingsGetter_Get_Call {
-	_c.Call.Return(argoCDSettings, err)
+func (_c *SettingsGetter_Get_Call) Return(settings1 *settings.Settings, err error) *SettingsGetter_Get_Call {
+	_c.Call.Return(settings1, err)
 	return _c
 }
 

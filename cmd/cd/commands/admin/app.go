@@ -341,7 +341,7 @@ func saveToFile(err error, outputFormat string, result reconcileResults, outputP
 }
 
 func getReconcileResults(ctx context.Context, appClientset appclientset.Interface, namespace string, selector string) ([]appReconcileResult, error) {
-	appsList, err := appClientset.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
+	appsList, err := appClientset.AppsV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
 	if err != nil {
 		return nil, fmt.Errorf("error listing namespaced apps: %w", err)
 	}
@@ -378,16 +378,16 @@ func reconcileApplications(
 		appinformers.WithTweakListOptions(func(_ *metav1.ListOptions) {}),
 	)
 
-	appInformer := appInformerFactory.Argoproj().V1alpha1().Applications().Informer()
-	projInformer := appInformerFactory.Argoproj().V1alpha1().AppProjects().Informer()
+	appInformer := appInformerFactory.Apps().V1alpha1().Applications().Informer()
+	projInformer := appInformerFactory.Apps().V1alpha1().AppProjects().Informer()
 	go appInformer.Run(ctx.Done())
 	go projInformer.Run(ctx.Done())
 	if !kubecache.WaitForCacheSync(ctx.Done(), appInformer.HasSynced, projInformer.HasSynced) {
 		return nil, stderrors.New("failed to sync cache")
 	}
 
-	appLister := appInformerFactory.Argoproj().V1alpha1().Applications().Lister()
-	projLister := appInformerFactory.Argoproj().V1alpha1().AppProjects().Lister()
+	appLister := appInformerFactory.Apps().V1alpha1().Applications().Lister()
+	projLister := appInformerFactory.Apps().V1alpha1().AppProjects().Lister()
 	server, err := metrics.NewMetricsServer("", appLister, func(_ any) bool {
 		return true
 	}, func(_ *http.Request) error {
@@ -427,7 +427,7 @@ func reconcileApplications(
 		ignoreNormalizerOpts,
 	)
 
-	appsList, err := appClientset.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
+	appsList, err := appClientset.AppsV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
 	if err != nil {
 		return nil, fmt.Errorf("error listing namespaced apps: %w", err)
 	}

@@ -282,7 +282,7 @@ func TestInitializingExistingDefaultProject(t *testing.T) {
 	cd := NewServer(t.Context(), cdOpts, ApplicationSetOpts{})
 	assert.NotNil(t, cd)
 
-	proj, err := appClientSet.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
+	proj, err := appClientSet.AppsV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.NotNil(t, proj)
 	assert.Equal(t, v1alpha1.DefaultAppProjectName, proj.Name)
@@ -305,7 +305,7 @@ func TestInitializingNotExistingDefaultProject(t *testing.T) {
 	cd := NewServer(t.Context(), cdOpts, ApplicationSetOpts{})
 	assert.NotNil(t, cd)
 
-	proj, err := appClientSet.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
+	proj, err := appClientSet.AppsV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 	require.NoError(t, err)
 	assert.NotNil(t, proj)
 	assert.Equal(t, v1alpha1.DefaultAppProjectName, proj.Name)
@@ -359,7 +359,7 @@ func TestEnforceProjectGroups(t *testing.T) {
 	log.Println(existingProj.ProjectPoliciesString())
 	existingProj.Spec.Roles[0].Groups = nil
 	log.Println(existingProj.ProjectPoliciesString())
-	_, _ = s.AppClientset.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Update(t.Context(), &existingProj, metav1.UpdateOptions{})
+	_, _ = s.AppClientset.AppsV1alpha1().AppProjects(test.FakeArgoCDNamespace).Update(t.Context(), &existingProj, metav1.UpdateOptions{})
 	time.Sleep(100 * time.Millisecond) // this lets the informer get synced
 	assert.False(t, s.enf.Enforce(claims, "projects", "get", existingProj.Name))
 	assert.False(t, s.enf.Enforce(claims, "applications", "get", defaultTestObject))
@@ -1402,7 +1402,7 @@ func TestInitializeDefaultProject_ProjectDoesNotExist(t *testing.T) {
 	err := initializeDefaultProject(cdOpts)
 	require.NoError(t, err)
 
-	proj, err := cdOpts.AppClientset.ArgoprojV1alpha1().
+	proj, err := cdOpts.AppClientset.AppsV1alpha1().
 		AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 
 	require.NoError(t, err)
@@ -1436,7 +1436,7 @@ func TestInitializeDefaultProject_ProjectAlreadyInitialized(t *testing.T) {
 	err := initializeDefaultProject(cdOpts)
 	require.NoError(t, err)
 
-	proj, err := cdOpts.AppClientset.ArgoprojV1alpha1().
+	proj, err := cdOpts.AppClientset.AppsV1alpha1().
 		AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 
 	require.NoError(t, err)

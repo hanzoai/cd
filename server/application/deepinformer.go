@@ -65,9 +65,9 @@ type deepCopyAppClientset struct {
 	appclientset.Interface
 }
 
-func (d *deepCopyAppClientset) ArgoprojV1alpha1() clientset.ArgoprojV1alpha1Interface {
+func (d *deepCopyAppClientset) AppsV1alpha1() clientset.AppsV1alpha1Interface {
 	return &deepCopyTypedClient{
-		ArgoprojV1alpha1Interface: d.Interface.ArgoprojV1alpha1(),
+		AppsV1alpha1Interface: d.Interface.AppsV1alpha1(),
 	}
 }
 
@@ -78,28 +78,28 @@ func (d *deepCopyAppClientset) GetUnderlyingClientSet() appclientset.Interface {
 }
 
 type deepCopyTypedClient struct {
-	clientset.ArgoprojV1alpha1Interface
+	clientset.AppsV1alpha1Interface
 }
 
 func (d *deepCopyTypedClient) RESTClient() rest.Interface {
-	return d.ArgoprojV1alpha1Interface.RESTClient()
+	return d.AppsV1alpha1Interface.RESTClient()
 }
 
 func (d *deepCopyTypedClient) AppProjects(namespace string) clientset.AppProjectInterface {
 	return &deepCopyAppProjectClient{
-		AppProjectInterface: d.ArgoprojV1alpha1Interface.AppProjects(namespace),
+		AppProjectInterface: d.AppsV1alpha1Interface.AppProjects(namespace),
 	}
 }
 
 func (d *deepCopyTypedClient) ApplicationSets(namespace string) clientset.ApplicationSetInterface {
 	return &deepCopyApplicationSetClient{
-		ApplicationSetInterface: d.ArgoprojV1alpha1Interface.ApplicationSets(namespace),
+		ApplicationSetInterface: d.AppsV1alpha1Interface.ApplicationSets(namespace),
 	}
 }
 
 func (d *deepCopyTypedClient) Applications(namespace string) clientset.ApplicationInterface {
 	return &deepCopyApplicationClient{
-		ApplicationInterface: d.ArgoprojV1alpha1Interface.Applications(namespace),
+		ApplicationInterface: d.AppsV1alpha1Interface.Applications(namespace),
 	}
 }
 

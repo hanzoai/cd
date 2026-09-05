@@ -30,7 +30,7 @@ func TestInformerFilterDoesNotCacheDisallowedNamespaces(t *testing.T) {
 	client := apps.NewSimpleClientset(kept, control, dropped)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(client, 0)
 
-	appInformer := factory.Argoproj().V1alpha1().Applications().Informer()
+	appInformer := factory.Apps().V1alpha1().Applications().Informer()
 	require.NoError(t, appInformer.SetTransform(newNamespaceFilterTransform("cd", []string{"team-a"})))
 
 	ctx, cancel := context.WithCancel(t.Context())

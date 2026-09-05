@@ -325,7 +325,7 @@ func (s *Server) Create(ctx context.Context, q *applicationset.ApplicationSetCre
 	s.projectLock.RLock(projectName)
 	defer s.projectLock.RUnlock(projectName)
 
-	created, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).Create(ctx, appset, metav1.CreateOptions{})
+	created, err := s.appclientset.AppsV1alpha1().ApplicationSets(namespace).Create(ctx, appset, metav1.CreateOptions{})
 	if err == nil {
 		s.logAppSetEvent(ctx, created, cd.EventReasonResourceCreated, "created ApplicationSet")
 		s.waitSync(created)
@@ -336,7 +336,7 @@ func (s *Server) Create(ctx context.Context, q *applicationset.ApplicationSetCre
 		return nil, fmt.Errorf("error creating ApplicationSet: %w", err)
 	}
 	// act idempotent if existing spec matches new spec
-	existing, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).Get(ctx, appset.Name, metav1.GetOptions{
+	existing, err := s.appclientset.AppsV1alpha1().ApplicationSets(namespace).Get(ctx, appset.Name, metav1.GetOptions{
 		ResourceVersion: "",
 	})
 	if err != nil {
@@ -403,7 +403,7 @@ func (s *Server) updateAppSet(ctx context.Context, appset *v1alpha1.ApplicationS
 			appset.Annotations = newAppset.Annotations
 		}
 		appset.Finalizers = newAppset.Finalizers
-		res, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(appset.Namespace).Update(ctx, appset, metav1.UpdateOptions{})
+		res, err := s.appclientset.AppsV1alpha1().ApplicationSets(appset.Namespace).Update(ctx, appset, metav1.UpdateOptions{})
 		if err == nil {
 			s.logAppSetEvent(ctx, appset, cd.EventReasonResourceUpdated, "updated ApplicationSets spec")
 			s.waitSync(res)
@@ -413,7 +413,7 @@ func (s *Server) updateAppSet(ctx context.Context, appset *v1alpha1.ApplicationS
 			return nil, err
 		}
 
-		appset, err = s.appclientset.ArgoprojV1alpha1().ApplicationSets(appset.Namespace).Get(ctx, appset.Name, metav1.GetOptions{})
+		appset, err = s.appclientset.AppsV1alpha1().ApplicationSets(appset.Namespace).Get(ctx, appset.Name, metav1.GetOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("error getting ApplicationSets: %w", err)
 		}
@@ -424,7 +424,7 @@ func (s *Server) updateAppSet(ctx context.Context, appset *v1alpha1.ApplicationS
 func (s *Server) Delete(ctx context.Context, q *applicationset.ApplicationSetDeleteRequest) (*applicationset.ApplicationSetResponse, error) {
 	namespace := s.appsetNamespaceOrDefault(q.AppsetNamespace)
 
-	appset, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).Get(ctx, q.Name, metav1.GetOptions{})
+	appset, err := s.appclientset.AppsV1alpha1().ApplicationSets(namespace).Get(ctx, q.Name, metav1.GetOptions{})
 	if err != nil {
 		return nil, fmt.Errorf("error getting ApplicationSets: %w", err)
 	}
@@ -436,7 +436,7 @@ func (s *Server) Delete(ctx context.Context, q *applicationset.ApplicationSetDel
 	s.projectLock.RLock(appset.Spec.Template.Spec.Project)
 	defer s.projectLock.RUnlock(appset.Spec.Template.Spec.Project)
 
-	err = s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).Delete(ctx, q.Name, metav1.DeleteOptions{})
+	err = s.appclientset.AppsV1alpha1().ApplicationSets(namespace).Delete(ctx, q.Name, metav1.DeleteOptions{})
 	if err != nil {
 		return nil, fmt.Errorf("error deleting ApplicationSets: %w", err)
 	}
@@ -552,7 +552,7 @@ func (s *Server) checkCreatePermissions(ctx context.Context, appset *v1alpha1.Ap
 		return err
 	}
 
-	_, err := s.appclientset.ArgoprojV1alpha1().AppProjects(s.ns).Get(ctx, projectName, metav1.GetOptions{})
+	_, err := s.appclientset.AppsV1alpha1().AppProjects(s.ns).Get(ctx, projectName, metav1.GetOptions{})
 	if err != nil {
 		if apierrors.IsNotFound(err) {
 			return status.Errorf(codes.InvalidArgument, "ApplicationSet references project %s which does not exist", projectName)

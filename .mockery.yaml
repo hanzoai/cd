@@ -66,7 +66,7 @@ packages:
       UserGetter: {}
   github.com/hanzoai/cd/util/db:
     interfaces:
-      ArgoDB: {}
+      DB: {}
       RepoCredsDB: {}
   github.com/hanzoai/cd/util/git:
     interfaces:
@@ -77,9 +77,6 @@ packages:
   github.com/hanzoai/cd/util/io:
     interfaces:
       TempPaths: {}
-  github.com/hanzoai/cd/util/notification/cd:
-    interfaces:
-      Service: {}
   github.com/hanzoai/cd/util/oci:
     interfaces:
       Client: {}
