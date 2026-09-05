@@ -295,7 +295,7 @@ cd admin settings rbac validate --namespace cd
 	}
 	clientConfig = cli.AddKubectlFlagsToCmd(command)
 	command.Flags().StringVar(&policyFile, "policy-file", "", "path to the policy file to use")
-	command.Flags().StringVar(&namespace, "namespace", "", "namespace to get argo rbac configmap from")
+	command.Flags().StringVar(&namespace, "namespace", "", "namespace to get the rbac configmap from")
 
 	return command
 }

@@ -56,9 +56,9 @@ cd context cd.hanzo.ai --delete`,
 
 			ctxName := args[0]
 
-			argoCDDir, err := localconfig.DefaultConfigDir()
+			configDir, err := localconfig.DefaultConfigDir()
 			errors.CheckError(err)
-			prevCtxFile := path.Join(argoCDDir, ".prev-ctx")
+			prevCtxFile := path.Join(configDir, ".prev-ctx")
 
 			if ctxName == "-" {
 				prevCtxBytes, err := os.ReadFile(prevCtxFile)

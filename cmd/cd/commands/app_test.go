@@ -925,7 +925,7 @@ func TestAppUrlDefault(t *testing.T) {
 
 func TestTruncateString(t *testing.T) {
 	result := truncateString("cdtool", 2)
-	expectation := "ar..."
+	expectation := "cd..."
 	require.Equalf(t, result, expectation, "Incorrect truncate string %q, should be %q", result, expectation)
 }
 

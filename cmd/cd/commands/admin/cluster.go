@@ -81,8 +81,8 @@ type ClusterWithInfo struct {
 func loadClusters(ctx context.Context, kubeClient kubernetes.Interface, appClient versioned.Interface, replicas int, shardingAlgorithm string, namespace string, portForwardRedis bool, cacheSrc func() (*appstatecache.Cache, error), shard int, redisName string, redisHaProxyName string, redisCompressionStr string) ([]ClusterWithInfo, error) {
 	settingsMgr := settings.NewSettingsManager(ctx, kubeClient, namespace)
 
-	argoDB := db.NewDB(namespace, settingsMgr, kubeClient)
-	clustersList, err := argoDB.ListClusters(ctx)
+	clusterDB := db.NewDB(namespace, settingsMgr, kubeClient)
+	clustersList, err := clusterDB.ListClusters(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func loadClusters(ctx context.Context, kubeClient kubernetes.Interface, appClien
 	if err != nil {
 		return nil, err
 	}
-	clusterShardingCache := sharding.NewClusterSharding(argoDB, shard, replicas, shardingAlgorithm)
+	clusterShardingCache := sharding.NewClusterSharding(clusterDB, shard, replicas, shardingAlgorithm)
 	clusterShardingCache.Init(clustersList, appItems)
 	clusterShards := clusterShardingCache.GetDistribution()
 
@@ -144,7 +144,7 @@ func loadClusters(ctx context.Context, kubeClient kubernetes.Interface, appClien
 			}
 			nsSet := map[string]bool{}
 			for _, app := range apps {
-				destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, argoDB)
+				destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, clusterDB)
 				if err != nil {
 					return fmt.Errorf("error validating application destination: %w", err)
 				}
@@ -249,7 +249,7 @@ func printStatsSummary(clusters []ClusterWithInfo) {
 	_ = w.Flush()
 }
 
-func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.ClientConfig, action func(appClient *versioned.Clientset, argoDB db.DB, clusters map[string][]string) error) error {
+func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.ClientConfig, action func(appClient *versioned.Clientset, clusterDB db.DB, clusters map[string][]string) error) error {
 	clientCfg, err := clientConfig.ClientConfig()
 	if err != nil {
 		return fmt.Errorf("error while creating client config: %w", err)
@@ -263,8 +263,8 @@ func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.Cli
 	appClient := versioned.NewForConfigOrDie(clientCfg)
 
 	settingsMgr := settings.NewSettingsManager(ctx, kubeClient, namespace)
-	argoDB := db.NewDB(namespace, settingsMgr, kubeClient)
-	clustersList, err := argoDB.ListClusters(ctx)
+	clusterDB := db.NewDB(namespace, settingsMgr, kubeClient)
+	clustersList, err := clusterDB.ListClusters(ctx)
 	if err != nil {
 		return fmt.Errorf("error listing clusters: %w", err)
 	}
@@ -277,7 +277,7 @@ func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.Cli
 	for _, cluster := range clustersList.Items {
 		nsSet := map[string]bool{}
 		for _, app := range apps {
-			destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, argoDB)
+			destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, clusterDB)
 			if err != nil {
 				return fmt.Errorf("error validating application destination: %w", err)
 			}
@@ -303,7 +303,7 @@ func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.Cli
 		}
 		clusters[cluster.Server] = namespaces
 	}
-	return action(appClient, argoDB, clusters)
+	return action(appClient, clusterDB, clusters)
 }
 
 func NewClusterNamespacesCommand() *cobra.Command {
@@ -365,13 +365,13 @@ func NewClusterEnableNamespacedMode() *cobra.Command {
 			}
 			pattern := args[0]
 
-			errors.CheckError(runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, argoDB db.DB, clusters map[string][]string) error {
+			errors.CheckError(runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, clusterDB db.DB, clusters map[string][]string) error {
 				for server, namespaces := range clusters {
 					if len(namespaces) == 0 || len(namespaces) > namespacesCount || !glob.Match(pattern, server) {
 						continue
 					}
 
-					cluster, err := argoDB.GetCluster(ctx, server)
+					cluster, err := clusterDB.GetCluster(ctx, server)
 					if err != nil {
 						return fmt.Errorf("error getting cluster from server: %w", err)
 					}
@@ -379,7 +379,7 @@ func NewClusterEnableNamespacedMode() *cobra.Command {
 					cluster.ClusterResources = clusterResources
 					fmt.Printf("Setting cluster %s namespaces to %v...", server, namespaces)
 					if !dryRun {
-						if _, err = argoDB.UpdateCluster(ctx, cluster); err != nil {
+						if _, err = clusterDB.UpdateCluster(ctx, cluster); err != nil {
 							return fmt.Errorf("error updating cluster: %w", err)
 						}
 						fmt.Println("done")
@@ -419,13 +419,13 @@ func NewClusterDisableNamespacedMode() *cobra.Command {
 
 			pattern := args[0]
 
-			errors.CheckError(runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, argoDB db.DB, clusters map[string][]string) error {
+			errors.CheckError(runClusterNamespacesCommand(ctx, clientConfig, func(_ *versioned.Clientset, clusterDB db.DB, clusters map[string][]string) error {
 				for server := range clusters {
 					if !glob.Match(pattern, server) {
 						continue
 					}
 
-					cluster, err := argoDB.GetCluster(ctx, server)
+					cluster, err := clusterDB.GetCluster(ctx, server)
 					if err != nil {
 						return fmt.Errorf("error getting cluster from server: %w", err)
 					}
@@ -437,7 +437,7 @@ func NewClusterDisableNamespacedMode() *cobra.Command {
 					cluster.Namespaces = nil
 					fmt.Printf("Disabling namespaced mode for cluster %s...", server)
 					if !dryRun {
-						if _, err = argoDB.UpdateCluster(ctx, cluster); err != nil {
+						if _, err = clusterDB.UpdateCluster(ctx, cluster); err != nil {
 							return fmt.Errorf("error updating cluster: %w", err)
 						}
 						fmt.Println("done")
@@ -606,7 +606,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			conf, err := clientConfig.ClientConfig()
 			errors.CheckError(err)
 			// Seed a minimal in-memory Hanzo CD environment so settings retrieval succeeds
-			argoCDCM := &corev1.ConfigMap{
+			cdCM := &corev1.ConfigMap{
 				TypeMeta: metav1.TypeMeta{Kind: "ConfigMap", APIVersion: "v1"},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      common.ConfigMapName,
@@ -616,7 +616,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 					},
 				},
 			}
-			argoCDSecret := &corev1.Secret{
+			cdSecret := &corev1.Secret{
 				TypeMeta: metav1.TypeMeta{Kind: "Secret", APIVersion: "v1"},
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      common.SecretName,
@@ -629,7 +629,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 					"server.secretkey": []byte("test"),
 				},
 			}
-			kubeClientset := fake.NewClientset(argoCDCM, argoCDSecret)
+			kubeClientset := fake.NewClientset(cdCM, cdSecret)
 
 			var awsAuthConf *v1alpha1.AWSAuthConfig
 			var execProviderConf *v1alpha1.ExecProviderConfig
@@ -676,9 +676,9 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			}
 
 			settingsMgr := settings.NewSettingsManager(ctx, kubeClientset, DefaultNamespace)
-			argoDB := db.NewDB(DefaultNamespace, settingsMgr, kubeClientset)
+			clusterDB := db.NewDB(DefaultNamespace, settingsMgr, kubeClientset)
 
-			_, err = argoDB.CreateCluster(ctx, clst)
+			_, err = clusterDB.CreateCluster(ctx, clst)
 			errors.CheckError(err)
 
 			secName, err := db.URIToSecretName("cluster", clst.Server)

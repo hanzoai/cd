@@ -264,7 +264,7 @@ status:
 `,
 		},
 		{
-			name:                "Application should not be in the exported manifest when it's neither created in the default argod namespace nor in enabled namespace",
+			name:                "Application should not be in the exported manifest when it's neither created in the default namespace nor in enabled namespace",
 			object:              newApplication("staging"),
 			namespace:           "staging",
 			enabledNamespaces:   []string{"dev", "prod"},

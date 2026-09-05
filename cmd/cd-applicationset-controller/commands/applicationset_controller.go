@@ -46,7 +46,7 @@ import (
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/db"
 	"github.com/hanzoai/cd/util/errors"
-	argosettings "github.com/hanzoai/cd/util/settings"
+	settings "github.com/hanzoai/cd/util/settings"
 )
 
 var gitSubmoduleEnabled = env.ParseBoolFromEnv(common.EnvGitSubmoduleEnabled, true)
@@ -59,7 +59,7 @@ func NewCommand() *cobra.Command {
 		webhookAddr                  string
 		enableLeaderElection         bool
 		applicationSetNamespaces     []string
-		cdRepoServer             string
+		cdRepoServer                 string
 		policy                       string
 		enablePolicyOverride         bool
 		debugLog                     bool
@@ -192,10 +192,10 @@ func NewCommand() *cobra.Command {
 			k8sClient, err := kubernetes.NewForConfig(mgr.GetConfig())
 			errors.CheckError(err)
 
-			argoSettingsMgr := argosettings.NewSettingsManager(ctx, k8sClient, namespace)
-			argoCDDB := db.NewDB(namespace, argoSettingsMgr, k8sClient)
+			settingsMgr := settings.NewSettingsManager(ctx, k8sClient, namespace)
+			appDB := db.NewDB(namespace, settingsMgr, k8sClient)
 
-			clusterInformer, err := argosettings.NewClusterInformer(k8sClient, namespace)
+			clusterInformer, err := settings.NewClusterInformer(k8sClient, namespace)
 			if err != nil {
 				log.Error(err, "unable to create cluster informer")
 				os.Exit(1)
@@ -212,7 +212,7 @@ func NewCommand() *cobra.Command {
 				allowedScmProviders,
 				enableScmProviders,
 				enableGitHubAPIMetrics,
-				github_app.NewAuthCredentials(argoCDDB.(db.RepoCredsDB)),
+				github_app.NewAuthCredentials(appDB.(db.RepoCredsDB)),
 				tokenRefStrictMode, generators.WithProxyURL(scmProxyURL),
 				generators.WithNoProxyList(scmNoProxy))
 
@@ -231,13 +231,13 @@ func NewCommand() *cobra.Command {
 			}
 
 			repoClientset := apiclient.NewRepoServerClientset(cdRepoServer, repoServerTimeoutSeconds, tlsConfig)
-			argoCDService := services.NewArgoCDService(argoCDDB, gitSubmoduleEnabled, repoClientset, enableNewGitFileGlobbing)
+			repos := services.NewArgoCDService(appDB, gitSubmoduleEnabled, repoClientset, enableNewGitFileGlobbing)
 
-			topLevelGenerators := generators.GetGenerators(ctx, mgr.GetClient(), k8sClient, namespace, argoCDService, dynamicClient, scmConfig, clusterInformer)
+			topLevelGenerators := generators.GetGenerators(ctx, mgr.GetClient(), k8sClient, namespace, repos, dynamicClient, scmConfig, clusterInformer)
 			cacheSyncClient := utils.NewCacheSyncingClient(mgr.GetClient(), mgr.GetCache())
 
 			// start a webhook server that listens to incoming webhook payloads
-			webhookHandler, err := webhook.NewWebhookHandler(webhookParallelism, argoSettingsMgr, mgr.GetClient(), topLevelGenerators)
+			webhookHandler, err := webhook.NewWebhookHandler(webhookParallelism, settingsMgr, mgr.GetClient(), topLevelGenerators)
 			if err != nil {
 				log.Error(err, "failed to create webhook handler")
 			}
@@ -262,7 +262,7 @@ func NewCommand() *cobra.Command {
 				Policy:                       policyObj,
 				EnablePolicyOverride:         enablePolicyOverride,
 				KubeClientset:                k8sClient,
-				DB:                       argoCDDB,
+				DB:                           appDB,
 				ArgoCDNamespace:              namespace,
 				ApplicationSetNamespaces:     applicationSetNamespaces,
 				EnableProgressiveSyncs:       enableProgressiveSyncs,

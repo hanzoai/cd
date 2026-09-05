@@ -32,9 +32,9 @@ func (f *fakeVersionServer) Version(_ context.Context, _ *emptypb.Empty) (*versi
 	return &versionpkg.VersionMessage{Version: "v0.0.0-test"}, nil
 }
 
-// makeTestArgoJWT returns a signed JWT with iss:"cd". The signature is checked only
+// makeTestJWT returns a signed JWT with iss:"cd". The signature is checked only
 // by the server; Claims() on the stored token uses ParseUnverified, so any key is fine.
-func makeTestArgoJWT(t *testing.T) string {
+func makeTestJWT(t *testing.T) string {
 	t.Helper()
 	claims := jwt.MapClaims{
 		"iss": "cd",
@@ -101,11 +101,11 @@ func TestNewReloginCommandWithClientOptions(t *testing.T) {
 	assert.Equal(t, 8085, port, "Unexpected default value for --sso-port flag")
 }
 
-// TestReloginUsesArgocdContext is a regression test for https://github.com/argoproj/argo-cd/issues/28453.
+// TestReloginUsesContext is a regression test for https://github.com/argoproj/argo-cd/issues/28453.
 // It verifies that `cd relogin --cd-context <name>` contacts the correct server and
 // persists the refreshed token under the correct context entry, even when that context differs
 // from the active current-context.
-func TestReloginUsesArgocdContext(t *testing.T) {
+func TestReloginUsesContext(t *testing.T) {
 	// Start a plain-text gRPC server that handles the version probe (so apiclient.NewClient
 	// initialises cleanly) and the session Create call (the actual relogin RPC).
 	lc := net.ListenConfig{}
@@ -125,7 +125,7 @@ func TestReloginUsesArgocdContext(t *testing.T) {
 	defer grpcServer.Stop()
 
 	addr := lis.Addr().String()
-	argoJWT := makeTestArgoJWT(t)
+	testJWT := makeTestJWT(t)
 
 	// Two contexts: ctx-a is current; ctx-b points to our mock server.
 	// Using 192.0.2.1 (TEST-NET-1, RFC 5737) for ctx-a so it is unreachable.
@@ -141,8 +141,8 @@ func TestReloginUsesArgocdContext(t *testing.T) {
 			{Server: addr, PlainText: true},
 		},
 		Users: []localconfig.User{
-			{Name: "ctx-a", AuthToken: argoJWT},
-			{Name: "ctx-b", AuthToken: argoJWT},
+			{Name: "ctx-a", AuthToken: testJWT},
+			{Name: "ctx-b", AuthToken: testJWT},
 		},
 	}
 	err = localconfig.WriteLocalConfig(cfg, configFile)
@@ -161,5 +161,5 @@ func TestReloginUsesArgocdContext(t *testing.T) {
 	updated, err := localconfig.ReadLocalConfig(configFile)
 	require.NoError(t, err)
 	assert.Equal(t, newToken, updated.GetToken("ctx-b"), "ctx-b token should be refreshed")
-	assert.Equal(t, argoJWT, updated.GetToken("ctx-a"), "ctx-a token should be unchanged")
+	assert.Equal(t, testJWT, updated.GetToken("ctx-a"), "ctx-a token should be unchanged")
 }

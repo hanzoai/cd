@@ -13,5 +13,5 @@ then
 fi
 
 # Default behavior: simulate an error
-echo "Error: I am a plugin named argocd-error, and I encountered an error." >&2
+echo "Error: I am a plugin named cd-error, and I encountered an error." >&2
 exit 1

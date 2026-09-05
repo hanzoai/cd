@@ -35,10 +35,10 @@ import (
 	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
 	appinformers "github.com/hanzoai/cd/pkg/client/informers/externalversions"
 	reposerverclient "github.com/hanzoai/cd/reposerver/apiclient"
-	"github.com/hanzoai/cd/util/cd"
-	"github.com/hanzoai/cd/util/cd/normalizers"
 	cacheutil "github.com/hanzoai/cd/util/cache"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/config"
 	"github.com/hanzoai/cd/util/db"
@@ -365,12 +365,12 @@ func reconcileApplications(
 	namespace string,
 	repoServerClient reposerverclient.Clientset,
 	selector string,
-	createLiveStateCache func(argoDB db.DB, appInformer kubecache.SharedIndexInformer, settingsMgr *settings.SettingsManager, server *metrics.MetricsServer) cache.LiveStateCache,
+	createLiveStateCache func(appDB db.DB, appInformer kubecache.SharedIndexInformer, settingsMgr *settings.SettingsManager, server *metrics.MetricsServer) cache.LiveStateCache,
 	serverSideDiff bool,
 	ignoreNormalizerOpts normalizers.IgnoreNormalizerOpts,
 ) ([]appReconcileResult, error) {
 	settingsMgr := settings.NewSettingsManager(ctx, kubeClientset, namespace)
-	argoDB := db.NewDB(namespace, settingsMgr, kubeClientset)
+	appDB := db.NewDB(namespace, settingsMgr, kubeClientset)
 	appInformerFactory := appinformers.NewSharedInformerFactoryWithOptions(
 		appClientset,
 		1*time.Hour,
@@ -392,11 +392,11 @@ func reconcileApplications(
 		return true
 	}, func(_ *http.Request) error {
 		return nil
-	}, []string{}, []string{}, argoDB)
+	}, []string{}, []string{}, appDB)
 	if err != nil {
 		return nil, fmt.Errorf("error starting new metrics server: %w", err)
 	}
-	stateCache := createLiveStateCache(argoDB, appInformer, settingsMgr, server)
+	stateCache := createLiveStateCache(appDB, appInformer, settingsMgr, server)
 	if err := stateCache.Init(); err != nil {
 		return nil, fmt.Errorf("error initializing state cache: %w", err)
 	}
@@ -407,7 +407,7 @@ func reconcileApplications(
 	)
 
 	appStateManager := controller.NewAppStateManager(
-		argoDB,
+		appDB,
 		appClientset,
 		repoServerClient,
 		namespace,
@@ -439,7 +439,7 @@ func reconcileApplications(
 	var items []appReconcileResult
 	prevServer := ""
 	for _, app := range appsList.Items {
-		destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, argoDB)
+		destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, appDB)
 		if err != nil {
 			return nil, fmt.Errorf("error getting destination cluster: %w", err)
 		}
@@ -479,6 +479,6 @@ func reconcileApplications(
 	return items, nil
 }
 
-func newLiveStateCache(argoDB db.DB, appInformer kubecache.SharedIndexInformer, settingsMgr *settings.SettingsManager, server *metrics.MetricsServer) cache.LiveStateCache {
-	return cache.NewLiveStateCache(argoDB, appInformer, settingsMgr, server, func(_ map[string]bool, _ corev1.ObjectReference) {}, &sharding.ClusterSharding{}, cd.NewResourceTracking())
+func newLiveStateCache(appDB db.DB, appInformer kubecache.SharedIndexInformer, settingsMgr *settings.SettingsManager, server *metrics.MetricsServer) cache.LiveStateCache {
+	return cache.NewLiveStateCache(appDB, appInformer, settingsMgr, server, func(_ map[string]bool, _ corev1.ObjectReference) {}, &sharding.ClusterSharding{}, cd.NewResourceTracking())
 }

@@ -227,7 +227,7 @@ func NewImportCommand() *cobra.Command {
 
 			errors.CheckError(err)
 			for _, cm := range configMaps.Items {
-				if isArgoCDConfigMap(cm.GetName()) {
+				if isKnownConfigMap(cm.GetName()) {
 					pruneObjects[kube.ResourceKey{Group: "", Kind: "ConfigMap", Name: cm.GetName(), Namespace: cm.GetNamespace()}] = cm
 				}
 			}
@@ -307,7 +307,7 @@ func NewImportCommand() *cobra.Command {
 				}
 
 				// If there is a live object, remove the tracking annotations/label that might conflict
-				// when argo is managed with an application.
+				// when the resource is managed as part of an application.
 				if ignoreTracking && exists {
 					updateTracking(bakObj, &liveObj)
 				}
