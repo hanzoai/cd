@@ -11,7 +11,7 @@
 After your Notifications Engine PR has been merged, Hanzo CD needs to be updated to pull in the version of the notifications engine that contains your change. Here are the steps:
 
 - Retrieve the SHA hash for your commit. You will use this in the next step.
-- From the `argo-cd` folder, run the following command
+- From the `cd` folder, run the following command
 
   `go get github.com/argoproj/notifications-engine@<git-commit-sha>`
 
@@ -44,17 +44,17 @@ and others. Although you can make changes to these files and run them locally, i
 
 4. Run `pnpm start` to start a [storybook](https://storybook.js.org/) dev server and view the components in your browser. Make sure all your changes work as expected. 
 
-5. Use [pnpm link](https://pnpm.io/cli/link) to link Argo UI package to your Hanzo CD repository. (Commands below assume that `argo-ui` and `argo-cd` are both located within the same parent folder)
+5. Use [pnpm link](https://pnpm.io/cli/link) to link Argo UI package to your Hanzo CD repository. (Commands below assume that `argo-ui` and `cd` are both located within the same parent folder)
 
     * `cd argo-ui`
     * `pnpm link`
-    * `cd ../argo-cd/ui`
+    * `cd ../cd/ui`
     * `pnpm link argo-ui`
 
     Once the `argo-ui` package has been successfully linked, test changes in your local development environment. 
 
 6. Commit changes and open a PR to [Argo UI](https://github.com/argoproj/argo-ui). 
 
-7. Once your PR has been merged in Argo UI, `cd` into your `argo-cd/ui` folder and run `pnpm add git+https://github.com/argoproj/argo-ui.git`. This will update the commit SHA in the `ui/pnpm-lock.yaml` file to use the latest master commit for argo-ui. 
+7. Once your PR has been merged in Argo UI, `cd` into your `cd/ui` folder and run `pnpm add git+https://github.com/argoproj/argo-ui.git`. This will update the commit SHA in the `ui/pnpm-lock.yaml` file to use the latest master commit for argo-ui. 
 
 8. Submit changes to `ui/pnpm-lock.yaml` in a PR to Hanzo CD. 

@@ -63,7 +63,7 @@ spec:
     namespace: guestbook
 ```
 
-See [application.yaml](application.yaml) for additional fields. As long as you have completed the first step of [Getting Started](../getting_started.md#1-install-argo-cd), you can apply this with `kubectl apply -n cd -f application.yaml` and Hanzo CD will start deploying the guestbook application.
+See [application.yaml](application.yaml) for additional fields. As long as you have completed the first step of [Getting Started](../getting_started.md#1-install-hanzo-cd), you can apply this with `kubectl apply -n cd -f application.yaml` and Hanzo CD will start deploying the guestbook application.
 
 > [!NOTE]
 > The namespace must match the namespace of your Hanzo CD instance - typically this is `cd`.
@@ -1497,7 +1497,7 @@ stored at [argoproj/argoproj-deployments](https://github.com/argoproj/argoproj-d
 
 ### Server-Side Apply Requirement
 
-When managing Hanzo CD with Hanzo CD, you **must** enable the `ServerSideApply=true` sync option. See the [getting started guide](../getting_started.md#1-install-argo-cd) for details on why server-side apply is required.
+When managing Hanzo CD with Hanzo CD, you **must** enable the `ServerSideApply=true` sync option. See the [getting started guide](../getting_started.md#1-install-hanzo-cd) for details on why server-side apply is required.
 
 Example Application for self-managed Hanzo CD:
 

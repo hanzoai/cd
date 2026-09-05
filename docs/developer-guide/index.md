@@ -15,7 +15,7 @@
 ## Contributing to Hanzo CD documentation
 
 This guide will help you get started quickly with contributing documentation changes, performing the minimum setup you'll need.   
-For backend and frontend contributions, that require a full building-testing-running-locally cycle, please refer to [Contributing to Hanzo CD backend and frontend ](index.md#contributing-to-argo-cd-backend-and-frontend) 
+For backend and frontend contributions, that require a full building-testing-running-locally cycle, please refer to [Contributing to Hanzo CD backend and frontend ](index.md#contributing-to-hanzo-cd-backend-and-frontend) 
 
 ### Fork and clone Hanzo CD repository
 - [Fork and clone Hanzo CD repository](development-environment.md#fork-and-clone-the-repository)
@@ -28,8 +28,8 @@ For backend and frontend contributions, that require a full building-testing-run
 ## Contributing to Hanzo CD Notifications documentation
 
 This guide will help you get started quickly with contributing documentation changes, performing the minimum setup you'll need.
-The notifications docs are located in [notifications-engine](https://github.com/argoproj/notifications-engine) Git repository and require 2 pull requests: one for the `notifications-engine` repo and one for the `argo-cd` repo.
-For backend and frontend contributions, that require a full building-testing-running-locally cycle, please refer to [Contributing to Hanzo CD backend and frontend ](index.md#contributing-to-argo-cd-backend-and-frontend) 
+The notifications docs are located in [notifications-engine](https://github.com/argoproj/notifications-engine) Git repository and require 2 pull requests: one for the `notifications-engine` repo and one for the `cd` repo.
+For backend and frontend contributions, that require a full building-testing-running-locally cycle, please refer to [Contributing to Hanzo CD backend and frontend ](index.md#contributing-to-hanzo-cd-backend-and-frontend) 
 
 ### Fork and clone Hanzo CD repository
 - [Fork and clone Hanzo CD repository](development-environment.md#fork-and-clone-the-repository)
@@ -42,7 +42,7 @@ For backend and frontend contributions, that require a full building-testing-run
 ### Install Go on your machine
 - [Install Go](development-environment.md#install-go)
 
-### Submit your PR to argo-cd
+### Submit your PR to Hanzo CD
 - [Contributing to notifications-engine](dependencies.md#notifications-engine-githubcomargoprojnotifications-engine)
 - [Before submitting a PR](submit-your-pr.md#before-submitting-a-pr)
 - [Choose a correct title for your PR](submit-your-pr.md#title-of-the-pr)
@@ -59,7 +59,7 @@ As is the case with the development process, this document is under constant cha
 - [Install and start a local K8s cluster (Kind, Minikube or K3d)](development-environment.md#install-a-local-k8s-cluster)
 - [Fork and clone Hanzo CD repository](development-environment.md#fork-and-clone-the-repository)
 - [Install additional required development tools](development-environment.md#install-additional-required-development-tools)
-- [Install latest Hanzo CD on your local cluster](development-environment.md#install-latest-argo-cd-on-your-local-cluster)
+- [Install latest Hanzo CD on your local cluster](development-environment.md#install-latest-hanzo-cd-on-your-local-cluster)
 
 ### Set up a development toolchain (local or virtualized)
 - [Understand the differences between the toolchains](toolchain-guide.md#local-vs-virtualized-toolchain)

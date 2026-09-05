@@ -138,7 +138,7 @@ update) this secret, the `cd-repo-server` pods need to be restarted.
 
 Also note, that the certificate should be issued with the correct SAN entries
 for the `cd-repo-server`, containing at least the entries for
-`DNS:cd-repo-server` and `DNS:cd-repo-server.argo-cd.svc` depending
+`DNS:cd-repo-server` and `DNS:cd-repo-server.cd.svc` depending
 on how your workloads connect to the repository server.
 
 ## Configuring inbound TLS for cd-dex-server
@@ -177,7 +177,7 @@ update) this secret, the `cd-dex-server` pods need to be restarted.
 
 Also note, that the certificate should be issued with the correct SAN entries
 for the `cd-dex-server`, containing at least the entries for
-`DNS:cd-dex-server` and `DNS:cd-dex-server.argo-cd.svc` depending
+`DNS:cd-dex-server` and `DNS:cd-dex-server.cd.svc` depending
 on how your workloads connect to the repository server.
 
 ## Configuring TLS between Hanzo CD components

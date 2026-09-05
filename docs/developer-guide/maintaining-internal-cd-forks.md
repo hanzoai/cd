@@ -29,7 +29,7 @@ These values produce the final image names:
 - `quay.io/$IMAGE_NAMESPACE/$IMAGE_REPOSITORY`
 - `ghcr.io/$GHCR_NAMESPACE/$GHCR_REPOSITORY`
 
-Example: if your GitHub account is `my-user`, your fork is `my-argo-cd-fork`, and you want to push release images to `quay.io/my-quay-user/cd`, configure:
+Example: if your GitHub account is `my-user`, your fork is `my-cd-fork`, and you want to push release images to `quay.io/my-quay-user/cd`, configure:
 
 - `IMAGE_NAMESPACE = my-quay-user`
 Your master build images will then be published to `quay.io/my-quay-user/cd:latest`, and the commit tagged images along with the attestations will be published under the Packages (GHCR) of your GitHub fork repo. 

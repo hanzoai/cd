@@ -87,7 +87,7 @@ These instructions will take you through the entire process of getting your Hanz
 You will create a client within Keycloak and configure Hanzo CD to use Keycloak for authentication, using groups set in Keycloak
 to determine privileges in Argo.
 
-You will also be able to authenticate using argo-cd command line.
+You will also be able to authenticate using Hanzo CD command line.
 
 ### Creating a new client in Keycloak
 
@@ -108,9 +108,9 @@ Also you can set __Home URL__ to _/applications_ path and __Valid Post logout re
 
 The __Valid Redirect URIs__ should be set to:
 
-- http://localhost:8085/auth/callback (needed for argo-cd cli, depends on value from [--sso-port](../../user-guide/commands/cd_login.md))
+- http://localhost:8085/auth/callback (needed for Hanzo CD cli, depends on value from [--sso-port](../../user-guide/commands/cd_login.md))
 - https://{hostname}/auth/callback
-- https://{hostname}/pkce/verify (needed for argo-cd UI)
+- https://{hostname}/pkce/verify (needed for Hanzo CD UI)
 
 ![Keycloak configure client](../../assets/keycloak-configure-client-pkce.png "Keycloak configure client")
 
