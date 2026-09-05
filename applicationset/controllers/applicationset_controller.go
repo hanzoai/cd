@@ -96,7 +96,7 @@ type ApplicationSetReconciler struct {
 	Policy               v1alpha1.ApplicationsSyncPolicy
 	EnablePolicyOverride bool
 	utils.Renderer
-	ArgoCDNamespace              string
+	ControllerNamespace              string
 	ApplicationSetNamespaces     []string
 	EnableProgressiveSyncs       bool
 	SCMRootCAPath                string
@@ -601,7 +601,7 @@ func (r *ApplicationSetReconciler) validateGeneratedApplications(ctx context.Con
 		}
 		namesSet[app.Name] = true
 		appProject := &v1alpha1.AppProject{}
-		err := r.Get(ctx, types.NamespacedName{Name: app.Spec.Project, Namespace: r.ArgoCDNamespace}, appProject)
+		err := r.Get(ctx, types.NamespacedName{Name: app.Spec.Project, Namespace: r.ControllerNamespace}, appProject)
 		if err != nil {
 			if apierrors.IsNotFound(err) {
 				errorsByApp[app.QualifiedName()] = fmt.Errorf("application references project %s which does not exist", app.Spec.Project)
