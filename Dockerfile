@@ -33,9 +33,9 @@ RUN ./install.sh helm && \
     ./install.sh git-lfs
 
 ####################################################################################################
-# Argo CD Base - used as the base for both the release and dev argocd images
+# Hanzo CD Base - used as the base for both the release and dev hanzocd images
 ####################################################################################################
-FROM $BASE_IMAGE AS argocd-base
+FROM $BASE_IMAGE AS hanzocd-base
 
 LABEL org.opencontainers.image.source="https://github.com/hanzoai/cd"
 
@@ -47,11 +47,11 @@ ENV CD_USER_ID=999 \
 # renovate: datasource=deb depName=git registryUrl=https://archive.ubuntu.com/ubuntu?suite=resolute&components=main,security&binaryArch=amd64
 ARG GIT_APT_VERSION=1:2.53.0-1ubuntu1
 
-RUN groupadd -g $CD_USER_ID argocd && \
-    useradd -r -u $CD_USER_ID -g argocd argocd && \
-    mkdir -p /home/argocd && \
-    chown argocd:0 /home/argocd && \
-    chmod g=u /home/argocd && \
+RUN groupadd -g $CD_USER_ID hanzocd && \
+    useradd -r -u $CD_USER_ID -g hanzocd hanzocd && \
+    mkdir -p /home/hanzocd && \
+    chown hanzocd:0 /home/hanzocd && \
+    chmod g=u /home/hanzocd && \
     apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get install --no-install-recommends -y \
@@ -82,24 +82,24 @@ WORKDIR /app/config
 RUN mkdir -p tls && \
     mkdir -p gpg/source && \
     mkdir -p gpg/keys && \
-    chown argocd gpg/keys && \
+    chown hanzocd gpg/keys && \
     chmod 0700 gpg/keys
 
-ENV USER=argocd
+ENV USER=hanzocd
 
 # Disable gRPC service config lookups via DNS TXT records to prevent excessive
 # DNS queries for _grpc_config.<hostname> which can cause timeouts in dual-stack
-# environments. This can be overridden via argocd-cmd-params-cm ConfigMap.
+# environments. This can be overridden via hanzocd-cmd-params-cm ConfigMap.
 # See https://github.com/argoproj/argo-cd/issues/24991
 ENV GRPC_ENABLE_TXT_SERVICE_CONFIG=false
 
 USER $CD_USER_ID
-WORKDIR /home/argocd
+WORKDIR /home/hanzocd
 
 ####################################################################################################
-# Argo CD UI stage
+# Hanzo CD UI stage
 ####################################################################################################
-FROM --platform=$BUILDPLATFORM docker.io/library/node:24.17.0@sha256:032e78d7e54e352129831743737e3a83171d9cc5b5896f411649c597ce0b11ea AS argocd-ui
+FROM --platform=$BUILDPLATFORM docker.io/library/node:24.17.0@sha256:032e78d7e54e352129831743737e3a83171d9cc5b5896f411649c597ce0b11ea AS hanzocd-ui
 
 WORKDIR /src
 COPY ["ui/package.json", "ui/pnpm-lock.yaml", "./"]
@@ -117,11 +117,11 @@ ENV ARGO_VERSION=$ARGO_VERSION
 RUN NODE_ENV='production' NODE_ONLINE_ENV='online' NODE_OPTIONS=--max_old_space_size=8192 pnpm build
 
 ####################################################################################################
-# Argo CD Build stage which performs the actual build of Argo CD binaries
+# Hanzo CD Build stage which performs the actual build of Hanzo CD binaries
 ####################################################################################################
-FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.26.5@sha256:63f132d58c1f589f0dcda584933a9bb44bfda1150f1506377f5a902f34d86033 AS argocd-build
+FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.26.5@sha256:63f132d58c1f589f0dcda584933a9bb44bfda1150f1506377f5a902f34d86033 AS hanzocd-build
 
-WORKDIR /go/src/github.com/argoproj/argo-cd
+WORKDIR /go/src/github.com/hanzoai/cd
 
 COPY go.* ./
 RUN mkdir -p gitops-engine
@@ -130,7 +130,7 @@ RUN go mod download
 
 # Perform the build
 COPY . .
-COPY --from=argocd-ui /src/dist/app /go/src/github.com/argoproj/argo-cd/ui/dist/app
+COPY --from=hanzocd-ui /src/dist/app /go/src/github.com/hanzoai/cd/ui/dist/app
 ARG TARGETOS \
     TARGETARCH
 # These build args are optional; if not specified the defaults will be taken from the Makefile
@@ -144,14 +144,14 @@ RUN GIT_COMMIT=$GIT_COMMIT \
     BUILD_DATE=$BUILD_DATE \
     GOOS=$TARGETOS \
     GOARCH=$TARGETARCH \
-    make argocd-all
+    make hanzocd-all
 
 ####################################################################################################
 # Final image
 ####################################################################################################
-FROM argocd-base
+FROM hanzocd-base
 ENTRYPOINT ["/usr/bin/tini", "--"]
-COPY --from=argocd-build /go/src/github.com/argoproj/argo-cd/dist/hanzocd* /usr/local/bin/
+COPY --from=hanzocd-build /go/src/github.com/hanzoai/cd/dist/hanzocd* /usr/local/bin/
 
 USER root
 RUN ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-server && \
@@ -168,6 +168,6 @@ RUN ln -s /usr/local/bin/hanzocd /usr/local/bin/hanzocd-server && \
 # repos sync which way", validated by the same code in CI that consumes it at run
 # time — as opposed to a ConfigMap, which is a second copy that can disagree with
 # the checks. common.DefaultMirrorTable names this path.
-COPY --from=argocd-build /go/src/github.com/argoproj/argo-cd/mirror/repos.json /usr/local/share/cd/repos.json
+COPY --from=hanzocd-build /go/src/github.com/hanzoai/cd/mirror/repos.json /usr/local/share/cd/repos.json
 
 USER $CD_USER_ID

@@ -52,7 +52,7 @@ COPY --from=golang /usr/local/go /usr/local/go
 
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/kubectl
 
-ENV PATH=/dist:/go/bin:/usr/local/go/bin:/go/src/github.com/argoproj/argo-cd/dist:$PATH
+ENV PATH=/dist:/go/bin:/usr/local/go/bin:/go/src/github.com/hanzoai/cd/dist:$PATH
 ENV GOROOT=/usr/local/go
 ENV GOPATH=/go
 

@@ -1,4 +1,4 @@
-FROM argocd-test-tools:latest as base
+FROM hanzocd-test-tools:latest as base
 
 RUN ./install.sh codegen-tools
 RUN ./install.sh codegen-go-tools

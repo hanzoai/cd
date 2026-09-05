@@ -3,8 +3,8 @@
 The test [directory](https://github.com/hanzoai/cd/tree/main/test) contains E2E tests and test applications. The tests assume that Hanzo CD services are installed into `cd-e2e` namespace or cluster in current context. A throw-away
 namespace `cd-e2e***` is created prior to the execution of the tests. The throw-away namespace is used as a target namespace for test applications.
 
-The [/test/e2e/testdata](https://github.com/hanzoai/cd/tree/main/test/e2e/testdata) directory contains various Hanzo CD applications. Before test execution, the directory is copied into `/tmp/argo-e2e***` temp directory (configurable by `CD_E2E_DIR`) and used in tests as a
-Git repository via file url: `file:///tmp/argo-e2e***`.
+The [/test/e2e/testdata](https://github.com/hanzoai/cd/tree/main/test/e2e/testdata) directory contains various Hanzo CD applications. Before test execution, the directory is copied into `/tmp/cd-e2e***` temp directory (configurable by `CD_E2E_DIR`) and used in tests as a
+Git repository via file url: `file:///tmp/cd-e2e***`.
 
 > [!NOTE]
 > You might get an error such as `unable to ls-remote HEAD on repository: failed to list refs: repository not found` when querying the local repository exposed through the e2e server running in a container.
@@ -55,7 +55,7 @@ If you have changed the port for `cd-server`, be sure to also set `CD_SERVER` en
 Some effort has been made to balance test isolation with speed. Tests are isolated as follows as each test gets:
 
 - A random 5 character ID.
-- A unique Git repository containing the `testdata` in `/tmp/argo-e2e/${id}`.
+- A unique Git repository containing the `testdata` in `/tmp/cd-e2e/${id}`.
 - A namespace `cd-e2e-ns-${id}`.
 - A primary name for the app `cd-e2e-${id}`.
 

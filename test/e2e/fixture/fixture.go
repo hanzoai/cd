@@ -58,7 +58,7 @@ const (
 
 	// ensure all repos are in one directory tree, so we can easily clean them up
 	// TmpDir can be overridden via CD_E2E_DIR environment variable
-	defaultTmpDir      = "/tmp/argo-e2e"
+	defaultTmpDir      = "/tmp/cd-e2e"
 	repoDir            = "testdata.git"
 	submoduleDir       = "submodule.git"
 	submoduleParentDir = "submoduleParent.git"
@@ -329,7 +329,7 @@ const (
 
 func RepoURL(urlType RepoURLType) string {
 	// SSH URLs use the container path (defaultTmpDir) because sshd runs inside Docker
-	// where $CD_E2E_DIR is mounted to /tmp/argo-e2e
+	// where $CD_E2E_DIR is mounted to /tmp/cd-e2e
 	switch urlType {
 	// Git server via SSH
 	case RepoURLTypeSSH:
@@ -342,24 +342,24 @@ func RepoURL(urlType RepoURLType) string {
 		return GetEnvWithDefault(EnvRepoURLTypeSSHSubmoduleParent, "ssh://root@localhost:2222"+defaultTmpDir+"/submoduleParent.git")
 	// Git server via HTTPS
 	case RepoURLTypeHTTPS:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPS, "https://localhost:9443/argo-e2e/testdata.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPS, "https://localhost:9443/cd-e2e/testdata.git")
 	// Git "organisation" via HTTPS
 	case RepoURLTypeHTTPSOrg:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPSOrg, "https://localhost:9443/argo-e2e")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSOrg, "https://localhost:9443/cd-e2e")
 	// Git server via HTTPS - Client Cert protected
 	case RepoURLTypeHTTPSClientCert:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPSClientCert, "https://localhost:9444/argo-e2e/testdata.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSClientCert, "https://localhost:9444/cd-e2e/testdata.git")
 	case RepoURLTypeHTTPSSubmodule:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmodule, "https://localhost:9443/argo-e2e/submodule.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmodule, "https://localhost:9443/cd-e2e/submodule.git")
 		// Git submodule parent repo
 	case RepoURLTypeHTTPSSubmoduleParent:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmoduleParent, "https://localhost:9443/argo-e2e/submoduleParent.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmoduleParent, "https://localhost:9443/cd-e2e/submoduleParent.git")
 	// Default - file based Git repository
 	case RepoURLTypeHelm:
-		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/argo-e2e/testdata.git/helm-repo/local")
+		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/cd-e2e/testdata.git/helm-repo/local")
 	// When Helm Repo has sub repos, this is the parent repo URL
 	case RepoURLTypeHelmParent:
-		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/argo-e2e/testdata.git/helm-repo")
+		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/cd-e2e/testdata.git/helm-repo")
 	case RepoURLTypeOCI:
 		return OCIRegistryURL
 	case RepoURLTypeHelmOCI:

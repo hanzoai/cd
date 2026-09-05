@@ -4,9 +4,9 @@ set -e
 
 TAG=${IMAGE_TAG:-'latest'}
 
-docker build --build-arg ARGO_VERSION="${TAG}" -t "${IMAGE_NAMESPACE:-$(whoami)}/argocd-ui:${TAG}" .
+docker build --build-arg ARGO_VERSION="${TAG}" -t "${IMAGE_NAMESPACE:-$(whoami)}/hanzocd-ui:${TAG}" .
 
 if [ "$DOCKER_PUSH" == "true" ]
 then
-    docker push "${IMAGE_NAMESPACE:-$(whoami)}/argocd-ui:${TAG}"
+    docker push "${IMAGE_NAMESPACE:-$(whoami)}/hanzocd-ui:${TAG}"
 fi
