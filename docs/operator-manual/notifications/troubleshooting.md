@@ -45,14 +45,14 @@ kustomize build ./cd-notifications | \
 You can download the `cd` CLI from the GitHub [release](https://github.com/hanzoai/cd/releases)
 attachments.
 
-The binary is available in the `quay.io/argoproj/cd` image. Use the `docker run` and volume mount
+The binary is available in the `ghcr.io/hanzoai/cd` image. Use the `docker run` and volume mount
 to execute binary on any platform. 
 
 **Example:**
 
 ```bash
 docker run --rm -it -w /src -v $(pwd):/src \
-  quay.io/argoproj/cd:<version> \
+  ghcr.io/hanzoai/cd:<version> \
   /app/cd admin notifications trigger get \
   --config-map ./cd-notifications-cm.yaml --secret :empty
 ```

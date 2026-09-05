@@ -37,4 +37,4 @@ Built-in config management tools can be optionally disabled by setting one of th
 keys, in the `cd-cm` ConfigMap, to `false`: `kustomize.enable`, `helm.enable` or `jsonnet.enable`. Once the
 tool is disabled, Hanzo CD will assume the application target directory contains plain Kubernetes YAML manifests.
 
-Disabling unused config management tools can be a helpful security enhancement. Vulnerabilities are sometimes limited to certain config management tools. Even if there is no vulnerability, an attacker may use a certain tool to take advantage of a misconfiguration in an Hanzo CD instance. Disabling unused config management tools limits the tools available to malicious actors.
+Disabling unused config management tools can be a helpful security enhancement. Vulnerabilities are sometimes limited to certain config management tools. Even if there is no vulnerability, an attacker may use a certain tool to take advantage of a misconfiguration in a Hanzo CD instance. Disabling unused config management tools limits the tools available to malicious actors.

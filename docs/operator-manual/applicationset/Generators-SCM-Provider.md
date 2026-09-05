@@ -353,7 +353,7 @@ spec:
           tagFilters:
             - key: organization
               value: platform-engineering
-            - key: argo-ready
+            - key: gitops-ready
   template:
   # ...
 ```

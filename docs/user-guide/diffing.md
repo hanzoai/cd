@@ -103,7 +103,7 @@ data:
     - kube-controller-manager
 ```
 
-It is possible to configure `ignoreDifferences` to be applied to all resources in every Application managed by an Hanzo CD instance. In order to do so, resource customizations can be configured like in the example below:
+It is possible to configure `ignoreDifferences` to be applied to all resources in every Application managed by a Hanzo CD instance. In order to do so, resource customizations can be configured like in the example below:
 
 ```yaml
 data:
@@ -190,7 +190,7 @@ data:
       type: core/v1/PodSpec
 ```
 
-The list of supported Kubernetes types is available in [diffing_known_types.txt](https://raw.githubusercontent.com/hanzoai/cd/main/util/argo/normalizers/diffing_known_types.txt) and additionally:
+The list of supported Kubernetes types is available in [diffing_known_types.txt](https://raw.githubusercontent.com/hanzoai/cd/main/util/cd/normalizers/diffing_known_types.txt) and additionally:
 
 - `core/Quantity`
 - `meta/v1/Duration`

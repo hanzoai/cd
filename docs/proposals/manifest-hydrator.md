@@ -123,7 +123,7 @@ If output is not deterministic, then a preview generated today might not be vali
 
 * The `sourceHydrator` field is mutually exclusive with the `source` and the `sources` field. Should we throw an error if they're both configured, or should we just pick one and ignore the others?
 * How will/should this feature relate to the image updater? Is there an opportunity to share code, since both tools involve pushing to git?
-* Should we enforce a naming convention for hydrated manifest branches, e.g. `argo/...`? This would make it easier to recommend branch protection rules, for example, only allow pushes to `argo/*` from the argo bot.
+* Should we enforce a naming convention for hydrated manifest branches, e.g. `cd/...`? This would make it easier to recommend branch protection rules, for example, only allow pushes to `cd/*` from the cd bot.
 * Should we enforce setting a `sourceHydrator.syncSource.path` to something besides `.`? Setting a path makes it easier to add/remove other apps later if desired.
 
 ## Proposal
@@ -306,7 +306,7 @@ The hydrator will not inject `metadata.namespace` into the hydrated manifests pu
 
 ### Build Environment Support
 
-For sources specified in `spec.source` or `spec.sources`, Hanzo CD [sets certain environment variables](https://argo-cd.readthedocs.io/en/stable/user-guide/build-environment/) before running the manifest hydration tool.
+For sources specified in `spec.source` or `spec.sources`, Hanzo CD [sets certain environment variables](../user-guide/build-environment.md) before running the manifest hydration tool.
 
 Some of these environment variables may change independently of the dry source and therefore break the reproducibility of manifest hydration (see the [Opinions](#opinions) section). Therefore, only some environment variables will be populated for the `spec.sourceHydrator` source.
 

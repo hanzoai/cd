@@ -112,7 +112,7 @@ data:
   pagerduty-key-my-service: <pd-integration-key>
 ```
 
-When an Hanzo CD application has the following subscriptions, user receives application sync failure message from pager duty.
+When a Hanzo CD application has the following subscriptions, user receives application sync failure message from pager duty.
 ```yaml
 apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application

@@ -77,7 +77,7 @@ After substitution, this `guestbook` `ApplicationSet` resource is applied to the
 
 1. The ApplicationSet controller processes the generator entries, producing a set of template parameters.
 2. These parameters are substituted into the template, once for each set of parameters.
-3. Each rendered template is converted into an Hanzo CD `Application` resource, which is then created (or updated) within the Hanzo CD namespace.
+3. Each rendered template is converted into a Hanzo CD `Application` resource, which is then created (or updated) within the Hanzo CD namespace.
 4. Finally, the Hanzo CD controller is notified of these `Application` resources and is responsible for handling them.
 
 
@@ -102,7 +102,7 @@ We can see that the generated values have been substituted into the `server` and
 
 The Applications are now also visible from within the Hanzo CD UI:
 
-![List generator example in Hanzo CD Web UI](../../assets/applicationset/Introduction/List-Example-In-Hanzo CD-Web-UI.png)
+![List generator example in Hanzo CD Web UI](../../assets/applicationset/Introduction/List-Example-In-Hanzo-CD-Web-UI.png)
 
 The ApplicationSet controller will ensure that any changes, updates, or deletions made to `ApplicationSet` resources are automatically applied to the corresponding `Application`(s).
 

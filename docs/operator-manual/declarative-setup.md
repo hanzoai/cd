@@ -12,7 +12,7 @@ All resources, including `Application` and `AppProject` specs, have to be instal
 |-----------------------------------------------------------------------|------------------------------------------------------------------------------------|-----------|--------------------------------------------------------------------------------------|
 | [`cd-cm.yaml`](cd-cm-yaml.md)                                 | cd-cm                                                                          | ConfigMap | General Hanzo CD configuration                                                        |
 | [`cd-repositories.yaml`](cd-repositories-yaml.md)             | my-private-repo / istio-helm-repo / private-helm-repo / private-repo               | Secrets   | Sample repository connection details                                                 |
-| [`cd-repo-creds.yaml`](cd-repo-creds-yaml.md)                    | argoproj-https-creds / argoproj-ssh-creds / github-creds / github-enterprise-creds | Secrets   | Sample repository credential templates                                               |
+| [`cd-repo-creds.yaml`](cd-repo-creds-yaml.md)                    | hanzocd-https-creds / hanzocd-ssh-creds / github-creds / github-enterprise-creds | Secrets   | Sample repository credential templates                                               |
 | [`cd-cmd-params-cm.yaml`](cd-cmd-params-cm-yaml.md)           | cd-cmd-params-cm                                                               | ConfigMap | Hanzo CD env variables configuration                                                  |
 | [`cd-secret.yaml`](cd-secret-yaml.md)                         | cd-secret                                                                      | Secret    | User Passwords, Certificates (deprecated), Signing Key, Dex secrets, Webhook secrets |
 | [`cd-rbac-cm.yaml`](cd-rbac-cm-yaml.md)                       | cd-rbac-cm                                                                     | ConfigMap | RBAC Configuration                                                                   |
@@ -75,8 +75,8 @@ See [application.yaml](application.yaml) for additional fields. As long as you h
 spec:
   project: default
   source:
-    repoURL: https://argoproj.github.io/argo-helm
-    chart: argo
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: redis
 ```
 
 > [!WARNING]
@@ -108,7 +108,7 @@ It is defined by the following key pieces of information:
 > **Projects which can deploy to the Hanzo CD namespace grant admin access**
 >
 > If a Project's `destinations` configuration allows deploying to the namespace in which Hanzo CD is installed, then
-> Applications under that project have admin-level access. [RBAC access](https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/)
+> Applications under that project have admin-level access. [RBAC access](rbac.md)
 > to admin-level Projects should be carefully restricted, and push access to allowed `sourceRepos` should be limited
 > to only admins.
 
@@ -200,7 +200,7 @@ metadata:
     cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/private-repo
+  url: https://github.com/hanzocd/private-repo
   password: my-password
   username: my-username
   project: my-project
@@ -218,7 +218,7 @@ metadata:
     cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: git@github.com:argoproj/my-private-repository.git
+  url: git@github.com:hanzocd/my-private-repository.git
   sshPrivateKey: |
     -----BEGIN OPENSSH PRIVATE KEY-----
     ...
@@ -237,7 +237,7 @@ metadata:
     cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/my-private-repository
+  url: https://github.com/hanzocd/my-private-repository
   githubAppID: 1
   githubAppInstallationID: 2
   githubAppPrivateKey: |
@@ -254,7 +254,7 @@ metadata:
     cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://ghe.example.com/argoproj/my-private-repository
+  url: https://ghe.example.com/hanzocd/my-private-repository
   githubAppID: 1
   githubAppInstallationID: 2
   githubAppEnterpriseBaseUrl: https://ghe.example.com/api/v3
@@ -345,7 +345,7 @@ metadata:
     cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/private-repo
+  url: https://github.com/hanzocd/private-repo
 ---
 apiVersion: v1
 kind: Secret
@@ -356,7 +356,7 @@ metadata:
     cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/other-private-repo
+  url: https://github.com/hanzocd/other-private-repo
 ---
 apiVersion: v1
 kind: Secret
@@ -367,17 +367,17 @@ metadata:
     cd.hanzo.ai/secret-type: repo-creds
 stringData:
   type: git
-  url: https://github.com/argoproj
+  url: https://github.com/hanzocd
   password: my-password
   username: my-username
 ```
 
-In the above example, every repository accessed via HTTPS whose URL is prefixed with `https://github.com/argoproj` would use a username stored in the key `username` and a password stored in the key `password` of the secret `private-repo-creds` for connecting to Git.
+In the above example, every repository accessed via HTTPS whose URL is prefixed with `https://github.com/hanzocd` would use a username stored in the key `username` and a password stored in the key `password` of the secret `private-repo-creds` for connecting to Git.
 
 In order for Hanzo CD to use a credential template for any given repository, the following conditions must be met:
 
 * The repository must either not be configured at all, or if configured, must not contain any credential information (i.e. contain none of `sshPrivateKey`, `username`, `password` )
-* The URL configured for a credential template (e.g. `https://github.com/argoproj`) must match as prefix for the repository URL (e.g. `https://github.com/hanzocd/example-apps`).
+* The URL configured for a credential template (e.g. `https://github.com/hanzocd`) must match as prefix for the repository URL (e.g. `https://github.com/hanzocd/example-apps`).
 
 > [!NOTE]
 > Matching credential template URL prefixes is done on a _best match_ effort, so the longest (best) match will take precedence. The order of definition is not important, as opposed to pre v1.4 configuration.
@@ -532,7 +532,7 @@ metadata:
     cd.hanzo.ai/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/argoproj/private-repo
+  url: https://github.com/hanzocd/private-repo
   proxy: https://proxy-server-url:8888
   noProxy: ".internal.example.com,company.org,10.123.0.0/16"
   password: my-password
@@ -686,7 +686,7 @@ metadata:
     cd.hanzo.ai/secret-type: cluster
 type: Opaque
 stringData:
-  name: "eks-cluster-name-for-argo"
+  name: "eks-cluster-name-for-cd"
   server: "https://xxxyyyzzz.xyz.some-region.eks.amazonaws.com"
   config: |
     {
@@ -721,7 +721,7 @@ The service accounts that need to assume this role are:
 - `cd-applicationset-controller`
 - `cd-server`
 
-If we create role `arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>` for this purpose, the following
+If we create role `arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>` for this purpose, the following
 is an example trust policy suitable for this need. Ensure that the Hanzo CD cluster has an [IAM OIDC provider configured](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) or [Pod Identity agent running](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-agent-setup.html)
 
 **for IRSA:**
@@ -738,7 +738,7 @@ is an example trust policy suitable for this need. Ensure that the Hanzo CD clus
             "Action": "sts:AssumeRole",
             "Condition": {
                 "ArnLike": {
-                  "aws:PrincipalArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
+                  "aws:PrincipalArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>"
                 }
             }
         },
@@ -811,34 +811,34 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
+    eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>"
   name: cd-application-controller
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
+    eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>"
   name: cd-applicationset-controller
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
+    eks.amazonaws.com/role-arn: "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>"
   name: cd-server
 ```
 
 **for Pod Identity:**  
 ```shell
-aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-applicationset-controller --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
-aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-application-controller --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
-aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-server --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>
+aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-applicationset-controller --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>
+aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-application-controller --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>
+aws eks associate-pod-identity -- cluster-name <EKS_CLUSTER_NAME> --namespace cd --service-account cd-server --role-arn arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>
 ```
 
 #### IAM Permission Policy
 
-The Hanzo CD management role (`arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>` in our example) additionally
+The Hanzo CD management role (`arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>` in our example) additionally
 needs to be allowed to assume a role for each cluster added to Hanzo CD.
 
 If we create a role named `<IAM_CLUSTER_ROLE>` for an EKS cluster we are adding to Hanzo CD, we would update the permission 
@@ -892,7 +892,7 @@ set its trust policy to give the Hanzo CD management role permission to assume i
 management role permission to assume this role above, but we also need to permit that action via the cluster role's
 trust policy.
 
-A suitable trust policy allowing the `IAM_CLUSTER_ROLE` to be assumed by the `ARGO_CD_MANAGEMENT_IAM_ROLE_NAME` role looks like this:
+A suitable trust policy allowing the `IAM_CLUSTER_ROLE` to be assumed by the `CD_MANAGEMENT_IAM_ROLE_NAME` role looks like this:
 
 **for IRSA:**
 ```json
@@ -902,7 +902,7 @@ A suitable trust policy allowing the `IAM_CLUSTER_ROLE` to be assumed by the `AR
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
+                "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>"
             },
             "Action": "sts:AssumeRole"
         }
@@ -918,7 +918,7 @@ A suitable trust policy allowing the `IAM_CLUSTER_ROLE` to be assumed by the `AR
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
+                "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>"
             },
             "Action": [
                 "sts:TagSession",
@@ -973,7 +973,7 @@ An example assume role policy for a cluster which is managed by Hanzo CD:
       "Effect" : "Allow",
       "Action" : "sts:AssumeRole",
       "Principal" : {
-        "AWS" : "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ARGO_CD_MANAGEMENT_IAM_ROLE_NAME>"
+        "AWS" : "<arn:aws:iam::<AWS_ACCOUNT_ID>:role/<CD_MANAGEMENT_IAM_ROLE_NAME>"
       }
     }
   }
@@ -1185,7 +1185,7 @@ In addition to the environment variables above, cd-k8s-auth accepts two extra en
 |AAD_ENVIRONMENT_NAME|The azure environment to use, default of AzurePublicCloud|
 |AAD_SERVER_APPLICATION_ID|The optional AAD server application ID, defaults to 6dae42f8-4368-4678-94ff-3960e28e3630|
 
-This is an example of using the [federated workload login flow](https://github.com/Azure/kubelogin#azure-workload-federated-identity-non-interactive).  The federated token file needs to be mounted as a secret into argoCD, so it can be used in the flow.  The location of the token file needs to be set in the environment variable AZURE_FEDERATED_TOKEN_FILE.
+This is an example of using the [federated workload login flow](https://github.com/Azure/kubelogin#azure-workload-federated-identity-non-interactive).  The federated token file needs to be mounted as a secret into Hanzo CD, so it can be used in the flow.  The location of the token file needs to be set in the environment variable AZURE_FEDERATED_TOKEN_FILE.
 
 If your AKS cluster utilizes the [Mutating Admission Webhook](https://azure.github.io/azure-workload-identity/docs/installation/mutating-admission-webhook.html) from the Azure Workload Identity project, follow these steps to enable the `cd-application-controller` and `cd-server` pods to use the federated identity:
 
@@ -1316,13 +1316,13 @@ Helm Chart Repository:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argo-helm
+  name: bitnami-helm
   namespace: cd
   labels:
     cd.hanzo.ai/secret-type: repository
 stringData:
-  name: argo
-  url: https://argoproj.github.io/argo-helm
+  name: bitnami
+  url: https://charts.bitnami.com/bitnami
   type: helm
   username: my-username
   password: my-password
@@ -1486,11 +1486,10 @@ resources:
 
 # changes to config maps
 patches:
-- path: overlays/argo-cd-cm.yaml
+- path: overlays/cd-cm.yaml
 ```
 
-The live example of self managed Hanzo CD config is available at [https://cd.apps.apps.hanzo.ai](https://cd.apps.apps.hanzo.ai) and with configuration
-stored at [argoproj/argoproj-deployments](https://github.com/argoproj/argoproj-deployments/tree/master/cd).
+The live example of self managed Hanzo CD config is available at [https://cd.apps.apps.hanzo.ai](https://cd.apps.apps.hanzo.ai).
 
 > [!NOTE]
 > You will need to sign-in using your GitHub account to get access to [https://cd.apps.apps.hanzo.ai](https://cd.apps.apps.hanzo.ai)

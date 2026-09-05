@@ -91,4 +91,4 @@ Hanzo CD is being actively developed by the community. [Releases](https://github
 
 ## Adoption
 
-A growing list of organizations(https://github.com/hanzoai/cd/blob/master/USERS.md) have officially adopted Hanzo CD.
+A growing list of organizations(https://github.com/hanzoai/cd/blob/main/USERS.md) have officially adopted Hanzo CD.

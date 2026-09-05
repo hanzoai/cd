@@ -11,7 +11,7 @@ Metrics about applications. Scraped at the `cd-metrics:8082/metrics` endpoint.
 | `cd_app_info`                                 |   gauge   | Information about Applications. It contains labels such as `sync_status` and `health_status` that reflect the application state in Hanzo CD. |
 | `cd_app_condition`                            |   gauge   | Report Applications conditions. It contains the conditions currently present in the application status.                                     |
 | `cd_app_k8s_request_total`                    |  counter  | Number of Kubernetes requests executed during application reconciliation                                                                    |
-| `cd_app_labels`                               |   gauge   | Argo Application labels converted to Prometheus labels. Disabled by default. See section below about how to enable it.                      |
+| `cd_app_labels`                               |   gauge   | Hanzo CD Application labels converted to Prometheus labels. Disabled by default. See section below about how to enable it.                      |
 | `cd_app_orphaned_resources_count`             |   gauge   | Number of orphaned resources per application.                                                                                               |
 | `cd_app_reconcile`                            | histogram | Application reconciliation performance in seconds.                                                                                          |
 | `cd_app_sync_total`                           |  counter  | Counter for application sync history                                                                                                        |
@@ -434,7 +434,7 @@ spec:
 
 ## Dashboards
 
-You can find an [example Grafana dashboard](https://github.com/hanzoai/cd/blob/master/examples/dashboard.json) or check the demo instance
+You can find an [example Grafana dashboard](https://github.com/hanzoai/cd/blob/main/examples/dashboard.json) or check the demo instance
 [dashboard](https://grafana.apps.apps.hanzo.ai).
 
 ![dashboard](../assets/dashboard.jpg)

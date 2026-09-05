@@ -43,7 +43,7 @@ This is the high level overview of creation (update/deletion) of an ApplicationS
 
 ![High Level Architecture](./backend-support-appset.png)
 
-1. User issues `cd appset create/update/delete`(or Web UI equivalent) command from CLI, into an Hanzo CD server on which they are logged-in. The command converts the command request into GRPC and sends it off to Hanzo CD API Server.
+1. User issues `cd appset create/update/delete`(or Web UI equivalent) command from CLI, into a Hanzo CD server on which they are logged-in. The command converts the command request into GRPC and sends it off to Hanzo CD API Server.
 
 #### **Hanzo CD API Server:**
 

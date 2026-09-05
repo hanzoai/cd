@@ -14,9 +14,9 @@
 1. From the `Microsoft Entra ID` > `App registrations` menu, choose `+ New registration`
 2. Enter a `Name` for the application (e.g. `Hanzo CD`).
 3. Specify who can use the application (e.g. `Accounts in this organizational directory only`).
-4. Enter Redirect URI (optional) as follows (replacing `my-cd-url` with your Argo URL), then choose `Add`.
+4. Enter Redirect URI (optional) as follows (replacing `my-cd-url` with your Hanzo CD URL), then choose `Add`.
       - **Platform:** `Web`
-      - **Redirect URI:** https://`<my-argo-cd-url>`/auth/callback
+      - **Redirect URI:** https://`<my-cd-url>`/auth/callback
 5. When registration finishes, the Azure portal displays the app registration's Overview pane. You see the Application (client) ID.
       ![Azure App registration's Overview](../../assets/azure-app-registration-overview.png "Azure App registration's Overview")
 
@@ -62,7 +62,7 @@
 2. From the `Users and groups` menu of the app, add any users or groups requiring access to the service.
    ![Azure Enterprise SAML Users](../../assets/azure-enterprise-users.png "Azure Enterprise SAML Users")
 
-### Configure Argo to use the new Entra ID App registration
+### Configure Hanzo CD to use the new Entra ID App registration
 
 1. Edit `cd-cm` and configure the `data.oidc.config` and `data.url` section:
 
@@ -108,7 +108,7 @@
                p, role:org-admin, repositories, delete, *, allow
                g, "84ce98d1-e359-4f3b-85af-985b458de3c6", role:org-admin
 
-4. Mapping role from jwt token to argo.  
+4. Mapping role from jwt token to Hanzo CD.  
    If you want to map the roles from the jwt token to match the default roles (readonly and admin) then you must change the scope variable in the rbac-configmap.
 
             policy.default: role:readonly
@@ -122,7 +122,7 @@
                g, "84ce98d1-e359-4f3b-85af-985b458de3c6", role:org-admin
             scopes: '[groups, email]'
 
-   Refer to [operator-manual/cd-rbac-cm.yaml](https://github.com/hanzoai/cd/blob/master/docs/operator-manual/cd-rbac-cm.yaml) for all of the available variables.
+   Refer to [operator-manual/cd-rbac-cm.yaml](https://github.com/hanzoai/cd/blob/main/docs/operator-manual/cd-rbac-cm.yaml) for all of the available variables.
 
 ## Azure AD Groups Overflow Resolution (200+ Groups)
 
@@ -220,10 +220,10 @@ azure:
 4. Once the application is created, open it from the `Enterprise applications` menu.
 5. From the `Users and groups` menu of the app, add any users or groups requiring access to the service.
    ![Azure Enterprise SAML Users](../../assets/azure-enterprise-users.png "Azure Enterprise SAML Users")
-6. From the `Single sign-on` menu, edit the `Basic SAML Configuration` section as follows (replacing `my-cd-url` with your Argo URL):
-      - **Identifier (Entity ID):** https://`<my-argo-cd-url>`/api/dex/callback
-      - **Reply URL (Assertion Consumer Service URL):** https://`<my-argo-cd-url>`/api/dex/callback
-      - **Sign on URL:** https://`<my-argo-cd-url>`/auth/login
+6. From the `Single sign-on` menu, edit the `Basic SAML Configuration` section as follows (replacing `my-cd-url` with your Hanzo CD URL):
+      - **Identifier (Entity ID):** https://`<my-cd-url>`/api/dex/callback
+      - **Reply URL (Assertion Consumer Service URL):** https://`<my-cd-url>`/api/dex/callback
+      - **Sign on URL:** https://`<my-cd-url>`/auth/login
       - **Relay State:** `<empty>`
       - **Logout Url:** `<empty>`
       ![Azure Enterprise SAML URLs](../../assets/azure-enterprise-saml-urls.png "Azure Enterprise SAML URLs")
@@ -238,12 +238,12 @@ azure:
       - *Keep a copy of the encoded output to be used in the next section.*
 9. From the `Single sign-on` menu, copy the `Login URL` parameter, to be used in the next section.
 
-### Configure Argo to use the new Entra ID Enterprise App
+### Configure Hanzo CD to use the new Entra ID Enterprise App
 
 1. Edit `cd-cm` and add the following `dex.config` to the data section, replacing the `caData`, `my-cd-url` and `my-login-url` your values from the Entra ID App:
 
             data:
-              url: https://my-argo-cd-url
+              url: https://my-cd-url
               dex.config: |
                 logger:
                   level: debug
@@ -253,11 +253,11 @@ azure:
                   id: saml
                   name: saml
                   config:
-                    entityIssuer: https://my-argo-cd-url/api/dex/callback
+                    entityIssuer: https://my-cd-url/api/dex/callback
                     ssoURL: https://my-login-url (e.g. https://login.microsoftonline.com/xxxxx/a/saml2)
                     caData: |
                        MY-BASE64-ENCODED-CERTIFICATE-DATA
-                    redirectURI: https://my-argo-cd-url/api/dex/callback
+                    redirectURI: https://my-cd-url/api/dex/callback
                     usernameAttr: email
                     emailAttr: email
                     groupsAttr: Group
@@ -302,7 +302,7 @@ data:
 ## Validation
 ### Log in to Hanzo CD UI using SSO
 
-1. Open a new browser tab and enter your Hanzo CD URI: https://`<my-argo-cd-url>`
+1. Open a new browser tab and enter your Hanzo CD URI: https://`<my-cd-url>`
    ![Azure SSO Web Log In](../../assets/azure-sso-web-log-in-via-azure.png "Azure SSO Web Log In")
 3. Click `LOGIN VIA AZURE` button to log in with your Microsoft Entra ID account. You’ll see the Hanzo CD applications screen.
    ![Azure SSO Web Application](../../assets/azure-sso-web-application.png "Azure SSO Web Application")
@@ -327,7 +327,7 @@ data:
             'yourid@example.com' logged in successfully
             Context 'my-Hanzo CD-url' updated
 
-   You may get an warning if you are not using a correctly signed certs. Refer to [Why Am I Getting x509: certificate signed by unknown authority When Using The CLI?](https://argo-cd.readthedocs.io/en/stable/faq/#why-am-i-getting-x509-certificate-signed-by-unknown-authority-when-using-the-cli).
+   You may get an warning if you are not using a correctly signed certs. Refer to [Why Am I Getting x509: certificate signed by unknown authority When Using The CLI?](../../faq.md#why-am-i-getting-x509-certificate-signed-by-unknown-authority-when-using-the-cli).
 
 ## Domain hint (optional)
 

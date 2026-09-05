@@ -12,9 +12,9 @@ in one of the following ways:
 
 1. For the local `admin` user, a username/password is exchanged for a JWT using the `/api/v1/session`
    endpoint. This token is signed & issued by the Hanzo CD API server itself and it expires after 24 hours 
-   (this token used not to expire, see [CVE-2021-26921](https://github.com/hanzoai/cd/security/advisories/GHSA-9h6w-j7w4-jr52)).
+   (this token used not to expire, see [CVE-2021-26921](https://nvd.nist.gov/vuln/detail/CVE-2021-26921)).
    When the admin password is updated, all existing admin JWT tokens are immediately revoked.
-   The password is stored as a bcrypt hash in the [`cd-secret`](https://github.com/hanzoai/cd/blob/master/manifests/base/config/cd-secret.yaml) Secret.
+   The password is stored as a bcrypt hash in the [`cd-secret`](https://github.com/hanzoai/cd/blob/main/manifests/base/config/cd-secret.yaml) Secret.
 
 2. For Single Sign-On users, the user completes an OAuth2 login flow to the configured OIDC identity
    provider (either delegated through the bundled Dex provider, or directly to a self-managed OIDC
@@ -121,10 +121,8 @@ cd cluster add CONTEXTNAME
 
 > [!NOTE]
 > Kubernetes 1.24 [stopped automatically creating tokens for Service Accounts](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.24.md#no-really-you-must-read-this-before-you-upgrade).
-> [Starting in Hanzo CD 2.4](https://github.com/hanzoai/cd/pull/9546), `cd cluster add` creates a 
-> ServiceAccount _and_ a non-expiring Service Account token Secret when adding 1.24 clusters. In the future, Hanzo CD 
-> will [add support for the Kubernetes TokenRequest API](https://github.com/argoproj/argo-cd/issues/9610) to avoid 
-> using long-lived tokens.
+> `cd cluster add` creates a ServiceAccount _and_ a non-expiring Service Account token Secret when adding 1.24+
+> clusters. Future Kubernetes versions may require adopting the TokenRequest API to avoid long-lived tokens.
 
 To revoke Hanzo CD's access to a managed cluster, delete the RBAC artifacts against the *_managed_*
 cluster, and remove the cluster entry from Hanzo CD:
@@ -142,7 +140,7 @@ cd cluster rm https://your-kubernetes-cluster-addr
 
 ## Cluster RBAC
 
-By default, Hanzo CD uses a [clusteradmin level role](https://github.com/hanzoai/cd/blob/master/manifests/base/application-controller-roles/cd-application-controller-role.yaml)
+By default, Hanzo CD uses a [clusteradmin level role](https://github.com/hanzoai/cd/blob/main/manifests/base/application-controller-roles/cd-application-controller-role.yaml)
 in order to:
 
 1. watch & operate on cluster state

@@ -15,7 +15,7 @@ last-updated: 2025-05-01
 
 # Deletion Strategy for Progressive Sync
 
-This proposal is building upon the ideas presented in https://github.com/hanzoai/cd/pull/14892 to introduce 
+This proposal is building upon prior ideas to introduce
 deletion strategy for progressive sync. While the original proposal laid the groundwork, this proposal extends to address
 some unanswered sections and changes implementation details.
 

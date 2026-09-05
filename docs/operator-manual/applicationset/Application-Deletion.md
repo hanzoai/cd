@@ -3,7 +3,7 @@
 All `Application` resources created by the ApplicationSet controller (from an ApplicationSet) will contain:
 
 - A `.metadata.ownerReferences` reference back to the *parent* `ApplicationSet` resource
-- An Hanzo CD `resources-finalizer.cd.hanzo.ai` finalizer in `.metadata.finalizers` of the Application if `.syncPolicy.preserveResourcesOnDeletion` is set to false.
+- A Hanzo CD `resources-finalizer.cd.hanzo.ai` finalizer in `.metadata.finalizers` of the Application if `.syncPolicy.preserveResourcesOnDeletion` is set to false.
 
 The end result is that when an ApplicationSet is deleted, the following occurs (in rough order):
 

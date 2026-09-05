@@ -91,8 +91,8 @@ a customized cd-repo-server in order to install required dependencies.
 
 ### Use cases
 
-- UC1: As an Hanzo CD user, I would like to use first-class support provided for additional tools to generate and manage deployable kubernetes manifests
-- UC2: As an Hanzo CD operator, I want to have smooth experience while installing additional tools such as  cdk8s, Tanka, jkcfg, QBEC, Dhall, pulumi, etc.
+- UC1: As a Hanzo CD user, I would like to use first-class support provided for additional tools to generate and manage deployable kubernetes manifests
+- UC2: As a Hanzo CD operator, I want to have smooth experience while installing additional tools such as  cdk8s, Tanka, jkcfg, QBEC, Dhall, pulumi, etc.
 - UC3: As a plugin owner, I want to have some control over the execution environment as I want to package whatever dependent binaries required. 
 
 ### Implementation Details
@@ -128,7 +128,7 @@ initContainers:
   - -n
   - /usr/local/bin/cd
   - /var/run/cd/cd-cmp-server
-  image: quay.io/argoproj/cd:latest
+  image: ghcr.io/hanzoai/cd:latest
   name: copyutil
   volumeMounts:
   - mountPath: /var/run/cd
@@ -251,7 +251,7 @@ initContainers:
   - -n
   - /usr/local/bin/cd
   - /var/run/cd/cd-cmp-server
-  image: quay.io/argoproj/cd:latest
+  image: ghcr.io/hanzoai/cd:latest
   name: copyutil
   volumeMounts:
   - mountPath: /var/run/cd
@@ -265,9 +265,9 @@ volumes:
   name: var-files
 ```
   
-After upgrading to CMP v2, an Hanzo CD operator will have to make following changes,
+After upgrading to CMP v2, a Hanzo CD operator will have to make following changes,
 
-- In order to install a plugin, an Hanzo CD operator will simply have to patch cd-repo-server 
+- In order to install a plugin, a Hanzo CD operator will simply have to patch cd-repo-server 
 to run config management plugin container as a sidecar, with cd-cmp-server as it’s entrypoint:
 
     ```bash

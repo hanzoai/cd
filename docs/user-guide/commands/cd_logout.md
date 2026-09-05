@@ -63,5 +63,5 @@ cd logout cd.hanzo.ai
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 

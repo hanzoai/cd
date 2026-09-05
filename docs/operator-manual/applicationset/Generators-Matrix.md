@@ -22,8 +22,8 @@ As an example, imagine that we have two clusters:
 
 And our application YAMLs are defined in a Git repository:
 
-- [Argo Workflows controller](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-directory/cluster-addons/argo-workflows)
-- [Prometheus operator](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-directory/cluster-addons/prometheus-operator)
+- [Argo Workflows controller](https://github.com/hanzoai/cd/tree/main/applicationset/examples/git-generator-directory/cluster-addons/cd-workflows)
+- [Prometheus operator](https://github.com/hanzoai/cd/tree/main/applicationset/examples/git-generator-directory/cluster-addons/prometheus-operator)
 
 Our goal is to deploy both applications onto both clusters, and, more generally, in the future to automatically deploy new applications in the Git repository, and to new clusters defined within Hanzo CD, as well.
 
@@ -66,10 +66,10 @@ spec:
         namespace: '{{.path.basename}}'
 ```
 
-First, the Git directory generator will scan the Git repository, discovering directories under the specified path. It discovers the argo-workflows and prometheus-operator applications, and produces two corresponding sets of parameters:
+First, the Git directory generator will scan the Git repository, discovering directories under the specified path. It discovers the cd-workflows and prometheus-operator applications, and produces two corresponding sets of parameters:
 ```yaml
-- path: /examples/git-generator-directory/cluster-addons/argo-workflows
-  path.basename: argo-workflows
+- path: /examples/git-generator-directory/cluster-addons/cd-workflows
+  path.basename: cd-workflows
 
 - path: /examples/git-generator-directory/cluster-addons/prometheus-operator
   path.basename: prometheus-operator
@@ -88,8 +88,8 @@ Finally, the Matrix generator will combine both sets of outputs, and produce:
 ```yaml
 - name: staging
   server: https://1.2.3.4
-  path: /examples/git-generator-directory/cluster-addons/argo-workflows
-  path.basename: argo-workflows
+  path: /examples/git-generator-directory/cluster-addons/cd-workflows
+  path.basename: cd-workflows
 
 - name: staging
   server: https://1.2.3.4
@@ -98,15 +98,15 @@ Finally, the Matrix generator will combine both sets of outputs, and produce:
 
 - name: production
   server: https://2.4.6.8
-  path: /examples/git-generator-directory/cluster-addons/argo-workflows
-  path.basename: argo-workflows
+  path: /examples/git-generator-directory/cluster-addons/cd-workflows
+  path.basename: cd-workflows
 
 - name: production
   server: https://2.4.6.8
   path: /examples/git-generator-directory/cluster-addons/prometheus-operator
   path.basename: prometheus-operator
 ```
-(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/matrix).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/main/applicationset/examples/matrix).*)
 
 ## Using Parameters from one child generator in another child generator
 
@@ -127,7 +127,7 @@ spec:
         generators:
           # git generator, 'child' #1
           - git:
-              repoURL: https://github.com/argoproj/applicationset.git
+              repoURL: https://github.com/hanzoai/cd.git
               revision: HEAD
               files:
                 - path: "examples/git-generator-files-discovery/cluster-config/**/config.json"
@@ -143,7 +143,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj/applicationset.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: "examples/git-generator-files-discovery/apps/guestbook"
       destination:
@@ -399,7 +399,7 @@ For example, the below example would be invalid (cluster-generator must come aft
                       kubernetes.io/environment: '{{.path.basename}}' # {{.path.basename}} is produced by git-files generator
               # git generator, 'child' #2
               - git:
-                  repoURL: https://github.com/argoproj/applicationset.git
+                  repoURL: https://github.com/hanzoai/cd.git
                   revision: HEAD
                   files:
                     - path: "examples/git-generator-files-discovery/cluster-config/**/config.json"
@@ -416,7 +416,7 @@ For example, the below example would be invalid (cluster-generator must come aft
                       kubernetes.io/environment: '{{.path.basename}}' # {{.path.basename}} is produced by git-files generator
               # git generator, 'child' #2
               - git:
-                  repoURL: https://github.com/argoproj/applicationset.git
+                  repoURL: https://github.com/hanzoai/cd.git
                   revision: HEAD
                   files:
                     - path: "examples/git-generator-files-discovery/cluster-config/engineering/{{.name}}**/config.json" # {{.name}} is produced by cluster generator

@@ -26,7 +26,7 @@ last-updated: 2023-02-28
 ## Motivation
 Users of Hanzo CD are interested to know how to scale Hanzo CD, what configuration tweaks and deployment options they have, and how far they can push resources (in terms of the number of supported applications, Git repositories, managing clusters, etc.).
 
-While the Hanzo CD documentation [discusses options](https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#scaling-up) to scale up, the actual process is not clear and, as articulated [in this thread](https://github.com/argoproj/argo-cd/issues/9633), oftentimes a point of confusion for users.
+While the Hanzo CD documentation [discusses options](../operator-manual/high_availability.md#scaling-up) to scale up, the actual process is not clear and is oftentimes a point of confusion for users.
 
 By running large-scale benchmarking, we aim at helping the Hanzo CD community with the following:
 
@@ -37,7 +37,7 @@ By running large-scale benchmarking, we aim at helping the Hanzo CD community wi
 
 ### Goals
 1. Create a standard set of repeatable benchmarking procedures to objectively measure the limitations of Hanzo CD.
-    1. This may result in a new `argo-cd-benchmarking` repo under `argoproj-labs` so that anyone can easily replicate it and the development of the procedures can happen outside of the lifecycle for Hanzo CD (unlike [the current `gen-resources` hack](https://github.com/hanzoai/cd/tree/master/hack/gen-resources) in the main project).
+    1. This may result in a new `argo-cd-benchmarking` repo under `argoproj-labs` so that anyone can easily replicate it and the development of the procedures can happen outside of the lifecycle for Hanzo CD (unlike [the current `gen-resources` hack](https://github.com/hanzoai/cd/tree/main/hack/gen-resources) in the main project).
     2. Include detailed test scenarios that account for key scalability factors that allow for easy tweaking of the parameters to simplify testing of alternative scenarios.
 2. Determine the baseline for when tweaking is required on the default configuration (resource allocations and replicas).
     1. One cluster, Applications in In-cluster, default resource allocations.
@@ -98,7 +98,7 @@ This will capture the impact of network throughput on performance.
 This instance will only manage namespace-level resources to determine the impact of monitoring cluster-scoped resources (related to the effect of resource churn in the cluster).
 
 ### Implementation Details/Notes/Constraints [optional]
-There is already some [tooling in the Hanzo CD repository](https://github.com/hanzoai/cd/pull/8037/files) for scalability testing. We plan to build on the existing effort and further push the boundaries of testing it.
+There is already some [tooling in the Hanzo CD repository](https://github.com/hanzoai/cd/tree/main/hack/gen-resources) for scalability testing. We plan to build on the existing effort and further push the boundaries of testing it.
 
 * Automatically set up supporting tooling for capturing metrics (Grafana, Prometheus)
 * Use a local Gitea in the cluster to support many repositories used in testing, and avoid performance variance by depending on the performance of an external git SaaS (ie GitHub)

@@ -23,26 +23,24 @@ last-updated: 2024-02-06
 
 This is the proposal for the UI changes to support multiple sources for an Application.
 
-Related Issues:
-* [Proposal: Support multiple sources for an application](https://github.com/hanzoai/cd/blob/master/docs/proposals/multiple-sources-for-applications.md)
-* [Issue for the Proposal: Support multiple sources for an application](https://github.com/argoproj/argo-cd/issues/677)
+Related: [Proposal: Support multiple sources for an application](https://github.com/hanzoai/cd/blob/main/docs/proposals/multiple-sources-for-applications.md)
 
 ## Summary
 
 This is a follow-on proposal to supporting Multiple Sources for Applications, but for the UI.
 
-The above [original](https://github.com/hanzoai/cd/blob/master/docs/proposals/multiple-sources-for-applications.md#changes-to-ui) ‘core’ proposal deferred
-any design changes for the UI to a separate feature or secondary proposal. The proposal implementation that was made in [PR 10432](https://github.com/hanzoai/cd/pull/10432) 
+The above [original](https://github.com/hanzoai/cd/blob/main/docs/proposals/multiple-sources-for-applications.md#changes-to-ui) ‘core’ proposal deferred
+any design changes for the UI to a separate feature or secondary proposal. The implementation that followed
 enabled the UI to tolerate multi-source applications with the new Sources field, while still supporting the original Source field. 
 
 Here are the current restrictions and limitations of the UI when applications with multiple sources are used:
 
 1. The application’s details page 
-currently shows one ApplicationSource, regardless of whether the application has one source or multiple sources. With the PR 10432 implementation, if the application has multiple sources,
+currently shows one ApplicationSource, regardless of whether the application has one source or multiple sources. With that implementation, if the application has multiple sources,
 the UI displays only the first of the sources. Also, in particular, in the Summary tab, the source parameters are non-editable. 
 
 2. History and Rollback is disabled for multi-source applications. The button is disabled. Jorge has submitted a PR for 
-rollback which includes [controller and UI changes](https://github.com/hanzoai/cd/pull/14124).
+rollback which includes controller and UI changes.
 
    <img height="40%" width="40%" src="images/history-and-rollback-button.png"/>
 
@@ -147,11 +145,11 @@ for single-source apps, and shows source information as shown in Figure 3.
 
 Figure 3: Source information in History
 
-Jorge has submitted a [PR](https://github.com/hanzoai/cd/pull/14124) for rollback which includes controller and UI changes. 
+Jorge has submitted a PR for rollback which includes controller and UI changes. 
 This can be treated as a separate, independent proposal.
 
 Other related changes pertain to the Last Synced Details. The Sync Details panel needs to be updated to show sync info
-from multiple sources.  See [Issue 13215](https://github.com/argoproj/argo-cd/issues/13215).
+from multiple sources.
 
 ### New App Dialog
 
@@ -190,7 +188,7 @@ Here are the general enhancements to be implemented (Upstream issues to be opene
 
 1. Create new Sources tab to replace Parameters tab so that all sources can be displayed (Read-only)
 2. Update History and Rollback to show a summary of all sources of an application
-   As mentioned above, this is already covered by Jorge’s [PR](https://github.com/hanzoai/cd/pull/14124)
+   As mentioned above, this is already covered by Jorge's PR
 3. Add _Add Source_ and _Delete Source_ buttons to Sources tab. This will depend on #1 above. (Update and Delete)
 4. Update New App dialog. (Creation)
    - Support adding multiple sources in New App dialog. (This will likely depend on the Components from #1 and #3)

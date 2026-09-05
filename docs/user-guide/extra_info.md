@@ -1,19 +1,19 @@
 # Add extra Application info
 
 You can add additional information to an Application on your Hanzo CD dashboard.
-If you wish to add clickable links, see [Add external URL](https://argo-cd.readthedocs.io/en/stable/user-guide/external-url/). 
+If you wish to add clickable links, see [Add external URL](external-url.md). 
 
 This is done by providing the 'info' field a key-value in your Application manifest.
 
 Example:
 ```yaml
-project: argo-demo
+project: cd-demo
 source:
   repoURL: 'https://demo'
-  path: argo-demo
+  path: cd-demo
 destination:
   server: https://demo
-  namespace: argo-demo
+  namespace: cd-demo
 info:
   - name: Example:
     value: >-

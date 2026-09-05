@@ -59,11 +59,11 @@ Especially with the advent of multi-source applications, the current approach of
 
 ### Use cases
 
-1. As an Hanzo CD user, I need to **ensure that my applications only sync if every single commit in my source repository has been cryptographically signed** by a trusted contributor.
+1. As a Hanzo CD user, I need to **ensure that my applications only sync if every single commit in my source repository has been cryptographically signed** by a trusted contributor.
     - This effectively prevents unsigned/untrusted commits in the git history.
-1. As an Hanzo CD user, I need to apply a **different level of trust to different source repositories**, especially with multi-source applications.
+1. As a Hanzo CD user, I need to apply a **different level of trust to different source repositories**, especially with multi-source applications.
     - Permitting different source repositories to have a different signing policy, and their flexible evolution in time (gradually introduce signing to multiple repositories, for example).
-1. As an Hanzo CD admin, I need to restrict **distinct sets of contributors in different repositories**.
+1. As a Hanzo CD admin, I need to restrict **distinct sets of contributors in different repositories**.
     - Rather than trusting all the contributors in all project's repositories. This becomes another line of defense in the event of a key compromise.
 
 ## Source verification policy

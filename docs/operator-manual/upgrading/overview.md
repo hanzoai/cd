@@ -8,9 +8,8 @@ Hanzo CD uses semver-like versioning that ensures the following rules:
 
 - The patch release does not introduce any breaking changes. So if you are upgrading from v1.5.1 to v1.5.3
   there should be no special instructions to follow.
-- The minor release might introduce minor changes with a workaround. If you are upgrading from v1.3.0 to v1.5.2
-  please make sure to check upgrading details in both [v1.3 to v1.4](./1.3-1.4.md) and [v1.4 to v1.5](./1.4-1.5.md)
-  upgrading instructions.
+- The minor release might introduce minor changes with a workaround. If you are upgrading across more than one minor
+  version, check the upgrading instructions for each intermediate version.
 - The major release introduces backward incompatible behavior changes. It is recommended to take a backup of
   Hanzo CD settings using the [disaster recovery guide](../disaster_recovery.md).
 
@@ -30,7 +29,7 @@ kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercon
 ```
 
 > [!NOTE]
-> The `--server-side --force-conflicts` flags are required because some Hanzo CD CRDs exceed the size limit for client-side apply. See the [getting started guide](../../getting_started.md#1-install-argo-cd) for more details.
+> The `--server-side --force-conflicts` flags are required because some Hanzo CD CRDs exceed the size limit for client-side apply. See the [getting started guide](../../getting_started.md#1-install-hanzo-cd) for more details.
 
 > [!WARNING]
 > Even though some releases require only image change it is still recommended to apply whole manifests set.
@@ -39,32 +38,7 @@ kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercon
 
 <hr/>
 
-- [v3.4 to v3.5](./3.4-3.5.md)
-- [v3.3 to v3.4](./3.3-3.4.md)
-- [v3.2 to v3.3](./3.2-3.3.md)
-- [v3.1 to v3.2](./3.1-3.2.md)
-- [v3.0 to v3.1](./3.0-3.1.md)
-- [v2.14 to v3.0](./2.14-3.0.md)
-- [v2.13 to v2.14](./2.13-2.14.md)
-- [v2.12 to v2.13](./2.12-2.13.md)
-- [v2.11 to v2.12](./2.11-2.12.md)
-- [v2.10 to v2.11](./2.10-2.11.md)
-- [v2.9 to v2.10](./2.9-2.10.md)
-- [v2.8 to v2.9](./2.8-2.9.md)
-- [v2.7 to v2.8](./2.7-2.8.md)
-- [v2.6 to v2.7](./2.6-2.7.md)
-- [v2.5 to v2.6](./2.5-2.6.md)
-- [v2.4 to v2.5](./2.4-2.5.md)
-- [v2.3 to v2.4](./2.3-2.4.md)
-- [v2.2 to v2.3](./2.2-2.3.md)
-- [v2.1 to v2.2](./2.1-2.2.md)
-- [v2.0 to v2.1](./2.0-2.1.md)
-- [v1.8 to v2.0](./1.8-2.0.md)
-- [v1.7 to v1.8](./1.7-1.8.md)
-- [v1.6 to v1.7](./1.6-1.7.md)
-- [v1.5 to v1.6](./1.5-1.6.md)
-- [v1.4 to v1.5](./1.4-1.5.md)
-- [v1.3 to v1.4](./1.3-1.4.md)
-- [v1.2 to v1.3](./1.2-1.3.md)
-- [v1.1 to v1.2](./1.1-1.2.md)
-- [v1.0 to v1.1](./1.0-1.1.md)
+- [v3.5 to v3.6](./3.5-3.6.md)
+
+Hanzo CD's own release history begins at v3.6. Earlier version numbers belong
+to upstream Argo CD, before this fork existed, and are not duplicated here.

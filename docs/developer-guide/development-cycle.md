@@ -139,4 +139,4 @@ Here are some frequently used make targets (all will run on your machine):
 ---
 Congrats on making it to the end of this runbook! 🚀
 
-For more on Hanzo CD, find us in Slack - <https://slack.cncf.io/> [#argo-contributors](https://cloud-native.slack.com/archives/C020XM04CUW)
+For more on Hanzo CD, see [GitHub Issues](https://github.com/hanzoai/cd/issues).

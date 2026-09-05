@@ -61,8 +61,8 @@ metadata:
   name: cd-server
   namespace: cd
 spec:
-  prefix: /argo-cd
-  rewrite: /argo-cd
+  prefix: /cd
+  rewrite: /cd
   service: https://cd-server:443
 ```
 
@@ -79,15 +79,15 @@ metadata:
 data:
   ## Server properties
   # Value for base href in index.html. Used if Hanzo CD is running behind reverse proxy under subpath different from / (default "/")
-  server.basehref: "/argo-cd"
+  server.basehref: "/cd"
   # Used if Hanzo CD is running behind reverse proxy under subpath different from /
-  server.rootpath: "/argo-cd"
+  server.rootpath: "/cd"
 ```
 
 Login with the `cd` CLI using the extra `--grpc-web-root-path` flag for non-root paths.
 
 ```shell
-cd login <host>:<port> --grpc-web-root-path /argo-cd
+cd login <host>:<port> --grpc-web-root-path /cd
 ```
 
 ## [Contour](https://projectcontour.io/)
@@ -483,10 +483,10 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    alb.ingress.kubernetes.io/backend-protocol-version: GRPC # This tells AWS to send traffic from the ALB using GRPC. Plain HTTP2 can be used, but the health checks won't be available because argo currently downgrades non-grpc calls to HTTP1
+    alb.ingress.kubernetes.io/backend-protocol-version: GRPC # This tells AWS to send traffic from the ALB using GRPC. Plain HTTP2 can be used, but the health checks won't be available because Hanzo CD currently downgrades non-grpc calls to HTTP1
   labels:
-    app: argogrpc
-  name: argogrpc
+    app: cdgrpc
+  name: cdgrpc
   namespace: cd
 spec:
   ports:
@@ -511,7 +511,7 @@ Also note that we can configure the health check to return the gRPC health statu
     annotations:
       alb.ingress.kubernetes.io/backend-protocol: HTTPS
       # Use this annotation (which must match a service name) to route traffic to HTTP2 backends.
-      alb.ingress.kubernetes.io/conditions.argogrpc: |
+      alb.ingress.kubernetes.io/conditions.cdgrpc: |
         [{"field":"http-header","httpHeaderConfig":{"httpHeaderName": "Content-Type", "values":["application/grpc"]}}]
       alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
       # Use this annotation to receive OK - 0 instead of UNIMPLEMENTED - 12 for gRPC health check.
@@ -527,7 +527,7 @@ Also note that we can configure the health check to return the gRPC health statu
         - path: /
           backend:
             service:
-              name: argogrpc # The grpc service must be placed before the cd-server for the listening rules to be created in the correct order
+              name: cdgrpc # The grpc service must be placed before the cd-server for the listening rules to be created in the correct order
               port:
                 number: 443
           pathType: Prefix
@@ -569,7 +569,7 @@ And following lines as patch.yml
 ```yaml
 # Use --insecure so Ingress can send traffic with HTTP
 # --basehref /cd is the subpath like https://IP/cd
-# env was added because of https://github.com/argoproj/argo-cd/issues/3572 error
+# env disables the concurrent login limit, which can misfire behind a reverse proxy
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -835,7 +835,7 @@ You can get that IP address describing the Ingress object like this:
 kubectl -n cd describe ingresses cd | grep Address
 ```
 
-Once the DNS change is propagated, you're ready to use Argo with your Google Cloud Load Balancer
+Once the DNS change is propagated, you're ready to use Hanzo CD with your Google Cloud Load Balancer
 
 ## Authenticating through multiple layers of authenticating reverse proxies
 
@@ -861,7 +861,7 @@ spec:
         - --repo-server
         - cd-repo-server:8081
         - --rootpath
-        - /argo-cd
+        - /cd
 ```
 NOTE: The flag `--rootpath` changes both API Server and UI base URL.
 Example nginx.conf:
@@ -878,8 +878,8 @@ http {
     server {
         listen 443;
 
-        location /argo-cd/ {
-            proxy_pass         https://localhost:8080/argo-cd/;
+        location /cd/ {
+            proxy_pass         https://localhost:8080/cd/;
             proxy_redirect     off;
             proxy_set_header   Host $host;
             proxy_set_header   X-Real-IP $remote_addr;
@@ -891,10 +891,10 @@ http {
     }
 }
 ```
-The `--grpc-web-root-path` flag is used to provide a non-root path (e.g. /Hanzo CD)
+The `--grpc-web-root-path` flag is used to provide a non-root path (e.g. /cd)
 
 ```shell
-$ cd login <host>:<port> --grpc-web-root-path /argo-cd
+$ cd login <host>:<port> --grpc-web-root-path /cd
 ```
 
 ## UI Base Path
@@ -913,7 +913,7 @@ spec:
         - --repo-server
         - cd-repo-server:8081
         - --basehref
-        - /argo-cd
+        - /cd
 ```
 
 NOTE: The flag `--basehref` only changes the UI base URL. The API server will keep using the `/` path so you need to add a URL rewrite rule to the proxy config.
@@ -931,8 +931,8 @@ http {
     server {
         listen 443;
 
-        location /argo-cd {
-            rewrite /argo-cd/(.*) /$1  break;
+        location /cd {
+            rewrite /cd/(.*) /$1  break;
             proxy_pass         https://localhost:8080;
             proxy_redirect     off;
             proxy_set_header   Host $host;

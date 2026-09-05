@@ -81,7 +81,7 @@ cd cert [flags]
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd cert add-ssh](cd_cert_add-ssh.md)	 - Add SSH known host entries for repository servers
 * [cd cert add-tls](cd_cert_add-tls.md)	 - Add TLS certificate data for connecting to repository server SERVERNAME
 * [cd cert list](cd_cert_list.md)	 - List configured certificates

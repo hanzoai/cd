@@ -60,8 +60,8 @@ applications deployed in a given Kubernetes cluster.
 
 ### CLI
 
-Hanzo CD provides a CLI that can be used by users to interact with Argo
-CD API. The CLI can also be used for automation and scripting.
+Hanzo CD provides a CLI that can be used by users to interact with the
+Hanzo CD API. The CLI can also be used for automation and scripting.
 
 ### API Server
 

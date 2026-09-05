@@ -71,7 +71,7 @@ cd repocreds [flags]
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd repocreds add](cd_repocreds_add.md)	 - Add git repository connection parameters
 * [cd repocreds list](cd_repocreds_list.md)	 - List configured repository credentials
 * [cd repocreds rm](cd_repocreds_rm.md)	 - Remove repository credentials

@@ -58,7 +58,7 @@ cd gpg [flags]
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd gpg add](cd_gpg_add.md)	 - Adds a GPG public key to the server's keyring
 * [cd gpg get](cd_gpg_get.md)	 - Get the GPG public key with ID <KEYID> from the server
 * [cd gpg list](cd_gpg_list.md)	 - List configured GPG public keys

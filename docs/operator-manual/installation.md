@@ -83,9 +83,6 @@ resources:
 - https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml
 ```
 
-For an example of this, see the [kustomization.yaml](https://github.com/argoproj/argoproj-deployments/blob/master/cd/kustomization.yaml)
-used to deploy the [Argoproj CI/CD infrastructure](https://github.com/argoproj/argoproj-deployments#argoproj-deployments).
-
 #### Installing Hanzo CD in a Custom Namespace
 If you want to install Hanzo CD in a namespace other than the default cd, you can use Kustomize to apply a patch that updates the ClusterRoleBinding to reference the correct namespace for the ServiceAccount. This ensures that the necessary permissions are correctly set in your custom namespace.
 
@@ -112,8 +109,8 @@ This patch ensures that the ClusterRoleBinding correctly maps to the ServiceAcco
 
 ## Helm
 
-The Hanzo CD can be installed using [Helm](https://helm.sh/). The Helm chart is currently community maintained and available at
-[argo-helm/charts/argo-cd](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd).
+Hanzo CD can be installed using [Helm](https://helm.sh/). The chart is available at
+[charts/cd](https://github.com/hanzoai/cd/tree/main/charts/cd) in this repository.
 
 ## Supported versions
 

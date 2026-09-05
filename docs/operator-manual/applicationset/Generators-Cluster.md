@@ -57,7 +57,7 @@ spec:
         server: '{{.server}}' # 'server' field of the secret
         namespace: guestbook
 ```
-(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/cluster).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/main/applicationset/examples/cluster).*)
 
 In this example, the cluster secret's `name` and `server` fields are used to populate the `Application` resource `name` and `server`, which are then used to target that same cluster.
 
@@ -88,7 +88,7 @@ spec:
   # (...)
 ```
 
-This would match an Hanzo CD cluster secret containing:
+This would match a Hanzo CD cluster secret containing:
 ```yaml
 apiVersion: v1
 kind: Secret

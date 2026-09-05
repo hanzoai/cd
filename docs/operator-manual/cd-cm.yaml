@@ -8,11 +8,11 @@ metadata:
     app.kubernetes.io/part-of: cd
 data:
   # Hanzo CD's externally facing base URL (optional). Required when configuring SSO
-  url: https://argo-cd-demo.apps.hanzo.ai
+  url: https://cd-demo.apps.hanzo.ai
 
   # Additional externally facing base URLs (optional)
   additionalUrls: |
-    - https://argo-cd-demo2.apps.hanzo.ai
+    - https://cd-demo2.apps.hanzo.ai
 
   # Enables application status badge feature
   statusbadge.enabled: "true"
@@ -37,7 +37,7 @@ data:
   ga.anonymizeusers: "false"
 
   # the URL for getting chat help, this will typically be your Slack channel for support
-  help.chatUrl: "https://mycorp.slack.com/argo-cd"
+  help.chatUrl: "https://mycorp.slack.com/cd"
   # the text for getting chat help, defaults to "Chat now!"
   help.chatText: "Chat now!"
   # The URLs to download additional Hanzo CD binaries (besides the Linux with current platform binary included by default)
@@ -51,7 +51,7 @@ data:
   help.download.windows-amd64: "path-or-url-to-download"
 
   # A dex connector configuration (optional). See SSO configuration documentation:
-  # https://github.com/hanzoai/cd/blob/master/docs/operator-manual/user-management/index.md#sso
+  # https://github.com/hanzoai/cd/blob/main/docs/operator-manual/user-management/index.md#sso
   # https://dexidp.io/docs/connectors/
   dex.config: |
     connectors:
@@ -315,7 +315,7 @@ data:
   ui.bannercontent: "Hello there!"
   # Optional link for banner. If set, the entire banner text will become a link.
   # You can have bannercontent without a bannerurl, but not the other way around.
-  ui.bannerurl: "https://argoproj.github.io"
+  ui.bannerurl: "https://example.com"
   # Uncomment to make the banner not show the close buttons, thereby making the banner permanent.
   # Because it is permanent, only one line of text is available to not take up too much real estate in the UI,
   # so it is recommended that the length of the bannercontent text is kept reasonably short. Note that you can
@@ -331,7 +331,7 @@ data:
   # Optional override for the SSO login button label.
   # ui.loginButtonText: "SSO Login"
 
-  # Application reconciliation timeout is the amount of time spent before Argo tries to discover if a new manifests version got
+  # Application reconciliation timeout is the amount of time spent before Hanzo CD tries to discover if a new manifests version got
   # published to the repository. Reconciliation by timeout is disabled if timeout is set to 0. Two minutes by default with additional jitter.
   # For the cd-repo-server this setting defines the expiration
   # value for cached git revisions.
@@ -474,8 +474,8 @@ data:
 
   ### SourceHydrator commit author email (optional).
   # Configures the author email for commits created by the Source Hydrator.
-  # If not specified, defaults to "argo-cd@example.com".
-  commit.author.email: "argo-cd@example.com"
+  # If not specified, defaults to "cd@example.com".
+  commit.author.email: "cd@example.com"
 
   ### SourceHydrator commit message template.
   # This template iterates through the fields in the `.metadata` object,

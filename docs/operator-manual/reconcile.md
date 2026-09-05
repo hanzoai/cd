@@ -1,6 +1,6 @@
 # Reconcile Optimization
 
-By default, an Hanzo CD Application is refreshed every time a resource that belongs to it changes.
+By default, a Hanzo CD Application is refreshed every time a resource that belongs to it changes.
 
 Kubernetes controllers often update the resources they watch periodically, causing continuous reconcile operation on the Application
 and a high CPU usage on the `cd-application-controller`. Hanzo CD allows you to optionally ignore resource updates on specific fields
@@ -39,7 +39,7 @@ data:
     # - .status.refreshTime
 ```
 
-It is possible to configure `ignoreResourceUpdates` to be applied to all tracked resources in every Application managed by an Hanzo CD instance. In order to do so, resource customizations can be configured like in the example below:
+It is possible to configure `ignoreResourceUpdates` to be applied to all tracked resources in every Application managed by a Hanzo CD instance. In order to do so, resource customizations can be configured like in the example below:
 
 ```yaml
 data:

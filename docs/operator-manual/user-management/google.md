@@ -9,7 +9,7 @@ There are three different ways to integrate Hanzo CD login with your Google Work
 - [OpenID Connect plus Google Groups using Dex](#openid-connect-plus-google-groups-using-dex)
   This is the recommended method if you need to use Google Groups membership in your RBAC configuration.
 
-Once you've set up one of the above integrations, be sure to edit `argo-rbac-cm` to configure permissions (as in the example below). See [RBAC Configurations](../rbac.md) for more detailed scenarios.
+Once you've set up one of the above integrations, be sure to edit `cd-rbac-cm` to configure permissions (as in the example below). See [RBAC Configurations](../rbac.md) for more detailed scenarios.
 
 ```yaml
 apiVersion: v1
@@ -48,7 +48,7 @@ If you've never configured this, you'll be redirected straight to this if you tr
 
 6. Click "Create" and save your "Client ID" and your "Client Secret" for later
 
-### Configure Argo to use OpenID Connect
+### Configure Hanzo CD to use OpenID Connect
 
 Edit `cd-cm` and add the following `dex.config` to the data section, replacing `clientID` and `clientSecret` with the values you saved before:
 
@@ -98,13 +98,13 @@ data:
 4. Download the metadata or copy the `SSO URL`, `Certificate`, and optionally `Entity ID` from the identity provider details for use in the next section. Choose `continue`.
 
    - Base64 encode the contents of the certificate file, for example:
-   - `$ cat Hanzo CD.cer | base64`
+   - `$ cat cd.cer | base64`
    - _Keep a copy of the encoded output to be used in the next section._
    - _Ensure that the certificate is in PEM format before base64 encoding_
 
    ![Google Admin IdP Metadata](../../assets/google-admin-idp-metadata.png 'A screenshot of the Google IdP metadata')
 
-5. For both the `ACS URL` and `Entity ID`, use your Argo Dex Callback URL, for example: `https://cd.example.com/api/dex/callback`
+5. For both the `ACS URL` and `Entity ID`, use your Hanzo CD Dex Callback URL, for example: `https://cd.example.com/api/dex/callback`
 
    ![Google Admin Service Provider Details](../../assets/google-admin-service-provider-details.png 'A screenshot of the Google Service Provider Details')
 
@@ -114,7 +114,7 @@ data:
 
 7. Finish creating the application.
 
-### Configure Argo to use the new Google SAML App
+### Configure Hanzo CD to use the new Google SAML App
 
 Edit `cd-cm` and add the following `dex.config` to the data section, replacing the `caData`, `cd.example.com`, `sso-url`, and optionally `google-entity-id` with your values from the Google SAML App:
 

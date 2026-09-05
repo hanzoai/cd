@@ -78,7 +78,7 @@ cd cluster [flags]
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd cluster add](cd_cluster_add.md)	 - cd cluster add CONTEXT
 * [cd cluster get](cd_cluster_get.md)	 - Get cluster information
 * [cd cluster list](cd_cluster_list.md)	 - List configured clusters

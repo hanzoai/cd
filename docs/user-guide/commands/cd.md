@@ -2,7 +2,7 @@
 
 ## cd
 
-cd controls an Hanzo CD server
+cd controls a Hanzo CD server
 
 ```
 cd [flags]

@@ -49,7 +49,7 @@ cd admin settings rbac validate --namespace cd
   -h, --help                           help for validate
       --insecure-skip-tls-verify       If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
       --kubeconfig string              Path to a kube config. Only required if out-of-cluster
-      --namespace string               namespace to get argo rbac configmap from
+      --namespace string               namespace to get the rbac configmap from
       --password string                Password for basic authentication to the API server
       --policy-file string             path to the policy file to use
       --proxy-url string               If provided, this URL will be used to connect via proxy

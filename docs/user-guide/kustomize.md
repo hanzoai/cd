@@ -48,7 +48,7 @@ To use Kustomize with an overlay, point your path to the overlay.
 ## Patches
 Patches are a way to kustomize resources using inline configurations in Hanzo CD applications.  `patches`  follow the same logic as the corresponding Kustomization.  Any patches that target existing Kustomization file will be merged.
 
-This Kustomize example sources manifests from the `/kustomize-guestbook` folder of the `argoproj/example-apps` repository, and patches the `Deployment` to use port `443` on the container.
+This Kustomize example sources manifests from the `/kustomize-guestbook` folder of the `hanzocd/example-apps` repository, and patches the `Deployment` to use port `443` on the container.
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -273,8 +273,8 @@ spec:
 It's possible to [render Helm charts with Kustomize](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/chart.md).
 Doing so requires that you pass the `--enable-helm` flag to the `kustomize build` command.
 This flag is not part of the Kustomize options within Hanzo CD.
-If you would like to render Helm charts through Kustomize in an Hanzo CD application, you have two options:
-You can either create a [custom plugin](https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/), or modify the `cd-cm` ConfigMap to include the `--enable-helm` flag globally for all Kustomize applications:
+If you would like to render Helm charts through Kustomize in a Hanzo CD application, you have two options:
+You can either create a [custom plugin](../operator-manual/config-management-plugins.md), or modify the `cd-cm` ConfigMap to include the `--enable-helm` flag globally for all Kustomize applications:
 
 ```yaml
 apiVersion: v1

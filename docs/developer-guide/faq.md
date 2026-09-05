@@ -4,10 +4,10 @@
 
 ### Can I discuss my contribution ideas somewhere?
 
-Sure thing! You can either open an Enhancement Proposal in our GitHub issue tracker or you can [join us on Slack](https://argoproj.github.io/community/join-slack) in channel #argo-contributors to discuss your ideas and get guidance for submitting a PR.
+Sure thing! Open an Enhancement Proposal in our GitHub issue tracker to discuss your ideas and get guidance for submitting a PR.
 
 > [!NOTE]
-> Regular [contributor meetings](https://argo-cd.readthedocs.io/en/latest/developer-guide/code-contributions/#regular-contributor-meeting) are held weekly. Please follow the link for more details.
+> Regular [contributor meetings](code-contributions.md#regular-contributor-meeting) are held weekly. Please follow the link for more details.
 
 ### No one has looked at my PR yet. Why?
 
@@ -15,9 +15,9 @@ As we have limited resources, it can sometimes take a while for someone to respo
 
 ### How do I get my PR labeled `ready-for-review` ?
 
-Conventionally an initial review is performed by an Argo member or reviewer. Once the initial review is approved, it can be labeled `ready-for-review` and then added to the [Hanzo CD Review](https://github.com/orgs/argoproj/projects/28) Github project. The project dashboard provides a helpful [info panel](https://github.com/orgs/argoproj/projects/28?pane=info) on the review process.
+Conventionally an initial review is performed by a maintainer or reviewer. Once the initial review is approved, it can be labeled `ready-for-review`.
 
-High quality reviews are extremely encouraged from the community. A member/reviewer may work with a community reviewer to get a PR labeled `ready-for-review`. It can then be added to the project dashboard and marked `Community Reviewed`.
+High quality reviews are extremely encouraged from the community. A member/reviewer may work with a community reviewer to get a PR labeled `ready-for-review` and marked `Community Reviewed`.
 
 ### Why has my PR been declined? I put so much work into it!
 

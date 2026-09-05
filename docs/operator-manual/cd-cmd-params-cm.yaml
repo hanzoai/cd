@@ -144,7 +144,6 @@ data:
   controller.k8s.tcp.idle.timeout: "5m"
   # Enable gRPC service config lookups via DNS TXT records (default "false"). By default, gRPC DNS TXT lookups for
   # _grpc_config.<hostname> are disabled to prevent excessive DNS queries that can cause timeouts in dual-stack environments.
-  # See https://github.com/argoproj/argo-cd/issues/24991
   controller.grpc.enable.txt.service.config: "false"
 
   ## Server properties
@@ -247,7 +246,6 @@ data:
   server.k8s.tcp.idle.timeout: "5m"
   # Enable gRPC service config lookups via DNS TXT records (default "false"). By default, gRPC DNS TXT lookups for
   # _grpc_config.<hostname> are disabled to prevent excessive DNS queries that can cause timeouts in dual-stack environments.
-  # See https://github.com/argoproj/argo-cd/issues/24991
   server.grpc.enable.txt.service.config: "false"
 
   ## Repo-server properties
@@ -310,7 +308,6 @@ data:
   reposerver.include.hidden.directories: "false"
   # Enable gRPC service config lookups via DNS TXT records (default "false"). By default, gRPC DNS TXT lookups for
   # _grpc_config.<hostname> are disabled to prevent excessive DNS queries that can cause timeouts in dual-stack environments.
-  # See https://github.com/argoproj/argo-cd/issues/24991
   reposerver.grpc.enable.txt.service.config: "false"
   # Enables profile endpoint on the internal metrics port
   reposerver.profile.enabled: "false"
@@ -326,7 +323,6 @@ data:
   commitserver.metrics.listen.address: "0.0.0.0"
   # Enable gRPC service config lookups via DNS TXT records (default "false"). By default, gRPC DNS TXT lookups for
   # _grpc_config.<hostname> are disabled to prevent excessive DNS queries that can cause timeouts in dual-stack environments.
-  # See https://github.com/argoproj/argo-cd/issues/24991
   commitserver.grpc.enable.txt.service.config: "false"
 
   # Set the logging format. One of: json|text (default "json")
@@ -354,7 +350,7 @@ data:
   # Max concurrent reconciliation limit for the controller (default 10)
   applicationsetcontroller.concurrent.reconciliations.max: "10"
   # Enable new globbing in Git files generator (default "false")
-  # See https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Git-File-Globbing/
+  # See operator-manual/applicationset/Generators-Git-File-Globbing.md
   applicationsetcontroller.enable.new.git.file.globbing: "false"
   # Print debug logs. Takes precedence over loglevel
   applicationsetcontroller.debug: "false"
@@ -418,7 +414,6 @@ data:
   applicationsetcontroller.k8s.tcp.idle.timeout: "5m"
   # Enable gRPC service config lookups via DNS TXT records (default "false"). By default, gRPC DNS TXT lookups for
   # _grpc_config.<hostname> are disabled to prevent excessive DNS queries that can cause timeouts in dual-stack environments.
-  # See https://github.com/argoproj/argo-cd/issues/24991
   applicationsetcontroller.grpc.enable.txt.service.config: "false"
   # Path to the CA certificate file for verifying the repo server's TLS certificate (enables mTLS CA verification)
   applicationsetcontroller.repo.server.ca.cert.path: ""

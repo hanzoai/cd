@@ -21,7 +21,6 @@ last-updated: 2022-08-11
 ## Summary
 
 Enhance the Hanzo CD ApplicationSet resource to embed a rollout strategy for a progressive application resource update after the ApplicationSet spec or Application templates are modified.
-Further discussion and interest has been communicated here: https://github.com/argoproj/argo-cd/issues/9437
 
 ## Motivation
 
@@ -98,7 +97,7 @@ spec:
       name: '{{cluster}}-guestbook'
       labels:
         env: "{{env}}"                                # label can be provided explicitly from a list generator
-        region: "{{metadata.labels.cluster/region}}"  # or pulled from labels on the argo cluster secrets
+        region: "{{metadata.labels.cluster/region}}"  # or pulled from labels on the Hanzo CD cluster secrets
     spec:
       source:
         repoURL: https://github.com/infra-team/cluster-deployments.git
@@ -140,7 +139,7 @@ To implement the “paused” functionality of Applications that are not yet rea
   * Potentially conflicts with user provided auto-sync settings.
   * Provides the benefit of being able to see the full diff of the ApplicationSet change.
 * “Pause” the Application.
-  * Not Yet Implemented: https://github.com/argoproj/argo-cd/issues/4808
+  * Not Yet Implemented
 * Prevent any updates at all to the live Applications via the rolling update strategy defined.
   * This is likely the initial implementation method we'll target.
 
@@ -176,4 +175,3 @@ The idea is to find the best form of an argument why this enhancement should _no
 One alternative we considered was to create an extra CRD specifically to govern the rollout process for an ApplicationSet. We ultimately decided against this approach because all other rollout strategy specs we looked at were implemented in the same CRD resource (K8s Deployments, Argo Rollouts, CAPI MachineDeployments, etc).
 
 Another alternative is to implement Application Dependencies through the application-controller instead. This is a far more complicated approach that requires implementing and maintaining an Application DAG.
-https://github.com/argoproj/argo-cd/issues/7437

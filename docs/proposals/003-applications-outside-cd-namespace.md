@@ -18,9 +18,6 @@ last-updated: 2021-06-05
 Improve Hanzo CDs multi-tenancy model to allow Application CRs to be created
 and consumed from different namespaces than the control plane's namespace.
 
-Related issues:
-- https://github.com/argoproj/argo-cd/issues/3474
-
 ## Open Questions [optional]
 
 * The major open question is, how to name `Application`s in a scenario where
@@ -209,7 +206,7 @@ Add a list of detailed use cases this enhancement intends to take care of.
 
 #### Use case 1: Autonomous self-service of declarative configuration
 
-As a developer, I want to be able to create & manage an Hanzo CD `Application`
+As a developer, I want to be able to create & manage a Hanzo CD `Application`
 in a declarative way, without sending a pull-request to the cluster admin's
 repository and possibly wait for their review, approval and merge. I want
 this process to be in full control of my DevOps team.
@@ -231,7 +228,7 @@ manifests, but I'm currently not allowed to write to the `cd` namespace.
 As an administrator, I want to provide my tenants with a very easy way to
 create their applications from a simple commit to Git, without losing my
 ability to govern and restrict what goes into my cluster.  I want to set up
-an Hanzo CD application that reconciles my tenant's `Application` manifests to
+a Hanzo CD application that reconciles my tenant's `Application` manifests to
 a fixed location (namespace) in my cluster, so that the tenant can just put
 their manifests into the Git repository and Hanzo CD will pick it up from
 there, without having to use complex tools such as Open Policy Agent to
@@ -329,7 +326,6 @@ independently anyway.
 
 List of issues on GitHub tracker regarding the length of the application name:
 
-* https://github.com/argoproj/argo-cd/issues/5595
 
 ### Detailed examples
 
@@ -353,7 +349,7 @@ of uncontrolled association between an `Application` and an `AppProject`.
 A rogue party or process (e.g. malfunctioning CI) could create a tremendous
 amount of unwanted `Application` resources in an allowed source namespace,
 with a potential performance impact on the Hanzo CD installation. However, this
-is also true for a rogue party using the Argo CLI with appropriate Hanzo CD RBAC
+is also true for a rogue party using the Hanzo CD CLI with appropriate Hanzo CD RBAC
 permissions to create applications or even with ApplicationSet.
 
 A possible mitigation to this would be to enforce an (optional) quota to the
@@ -415,4 +411,3 @@ that `Application` resources require to reside in the control plane's cluster
 instead of the ability being created on remote clusters as well.
 
 The `AppSource` proposal can be found here:
-https://github.com/argoproj/argo-cd/issues/6405

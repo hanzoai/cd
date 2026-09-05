@@ -6,12 +6,12 @@
 > If you're using this IdP please consider [contributing](../../developer-guide/docs-site.md) to this document.
 
 <!-- markdownlint-disable MD033 -->
-<div style="text-align:center"><img src="../../../assets/argo.png" /></div>
+<div style="text-align:center"><img src="../../../assets/logo.png" /></div>
 <!-- markdownlint-enable MD033 -->
 
 # Integrating OneLogin and Hanzo CD
 
-These instructions will take you through the entire process of getting your Hanzo CD application authenticating with OneLogin. You will create a custom OIDC application within OneLogin and configure Hanzo CD to use OneLogin for authentication, using UserRoles set in OneLogin to determine privileges in Argo.
+These instructions will take you through the entire process of getting your Hanzo CD application authenticating with OneLogin. You will create a custom OIDC application within OneLogin and configure Hanzo CD to use OneLogin for authentication, using UserRoles set in OneLogin to determine privileges in Hanzo CD.
 
 ## Creating and Configuring OneLogin App
 
@@ -50,7 +50,7 @@ You can update the "Display Name", "Description", "Notes", or the display images
 
 #### Parameters Tab
 
-This tab controls what information is sent to Argo in the token. By default it will contain a Groups field and "Credentials are" is set to "Configured by admin". Leave "Credentials are" as the default.
+This tab controls what information is sent to Hanzo CD in the token. By default it will contain a Groups field and "Credentials are" is set to "Configured by admin". Leave "Credentials are" as the default.
 
 How the Value of the Groups field is configured will vary based on your needs, but to use OneLogin User roles for Hanzo CD privileges, configure the Value of the Groups field with the following:
 
@@ -59,7 +59,7 @@ How the Value of the Groups field is configured will vary based on your needs, b
 3. Set the transform field (below it) to "Semicolon Delimited Input".
 4. Click "Save".
 
-When a user attempts to login to Argo with OneLogin, the User roles in OneLogin, say, Manager, ProductTeam, and TestEngineering, will be included in the Groups field in the token. These are the values needed for Argo to assign permissions.
+When a user attempts to login to Hanzo CD with OneLogin, the User roles in OneLogin, say, Manager, ProductTeam, and TestEngineering, will be included in the Groups field in the token. These are the values needed for Hanzo CD to assign permissions.
 
 The groups field in the token will look similar to the following:
 
@@ -103,11 +103,11 @@ To get up and running, you do not need to make modifications to any settings her
 
 ## Updating OIDC configuration in Hanzo CD
 
-Now that the OIDC application is configured in OneLogin, you can update Argo configuration to communicate with OneLogin, as well as control permissions for those users that authenticate via OneLogin.
+Now that the OIDC application is configured in OneLogin, you can update Hanzo CD configuration to communicate with OneLogin, as well as control permissions for those users that authenticate via OneLogin.
 
-### Tell Argo where OneLogin is
+### Tell Hanzo CD where OneLogin is
 
-Argo needs to have its config map (cd-cm) updated in order to communicate with OneLogin. Consider the following yaml:
+Hanzo CD needs to have its config map (cd-cm) updated in order to communicate with OneLogin. Consider the following yaml:
 
 ```
 apiVersion: v1
@@ -129,7 +129,7 @@ data:
     requestedScopes: ["openid", "profile", "email", "groups"]
 ```
 
-The "url" key should have a value of the hostname of your Argo project.
+The "url" key should have a value of the hostname of your Hanzo CD project.
 
 The "clientID" is taken from the SSO tab of the OneLogin application.
 
@@ -165,4 +165,4 @@ data:
     g, TestEngineering, role:org-admin
 ```
 
-In OneLogin, a user with user role "TestEngineering" will receive Hanzo CD admin privileges when they log in to Argo via OneLogin. All other users will receive the readonly role. The key takeaway here is that "TestEngineering" is passed via the Group field in the token (which is specified in the Parameters tab in OneLogin).
+In OneLogin, a user with user role "TestEngineering" will receive Hanzo CD admin privileges when they log in to Hanzo CD via OneLogin. All other users will receive the readonly role. The key takeaway here is that "TestEngineering" is passed via the Group field in the token (which is specified in the Parameters tab in OneLogin).

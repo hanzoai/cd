@@ -16,7 +16,7 @@ The Git directory generator, one of two subtypes of the Git generator, generates
 
 Suppose you have a Git repository with the following directory structure:
 ```
-├── argo-workflows
+├── cd-workflows
 │   ├── kustomization.yaml
 │   └── namespace-install.yaml
 └── prometheus-operator
@@ -28,7 +28,7 @@ Suppose you have a Git repository with the following directory structure:
 
 This repository contains two directories, one for each of the workloads to deploy:
 
-- an Argo Workflow controller kustomization YAML file
+- an Argo Workflows controller kustomization YAML file
 - a Prometheus Operator Helm chart
 
 We can deploy both workloads, using this example:
@@ -63,7 +63,7 @@ spec:
         syncOptions:
         - CreateNamespace=true
 ```
-(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-directory).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/main/applicationset/examples/git-generator-directory).*)
 
 The generator parameters are:
 
@@ -120,7 +120,7 @@ spec:
         server: https://kubernetes.default.svc
         namespace: '{{.path.basename}}'
 ```
-(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-directory/excludes).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/main/applicationset/examples/git-generator-directory/excludes).*)
 
 This example excludes the `exclude-helm-guestbook` directory from the list of directories scanned for this `ApplicationSet` resource.
 
@@ -324,7 +324,7 @@ spec:
         server: '{{.cluster.address}}'
         namespace: guestbook
 ```
-(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-files-discovery).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/main/applicationset/examples/git-generator-files-discovery).*)
 
 Any `config.json` files found under the `cluster-config` directory will be parameterized based on the `path` wildcard pattern specified. Within each file JSON fields are flattened into key/value pairs, with this ApplicationSet example using the `cluster.address` and `cluster.name` parameters in the template.
 
@@ -389,7 +389,7 @@ spec:
 
 This example excludes the `config.json` file in the `dev` directory from the list of files scanned for this `ApplicationSet` resource.
 
-(*The [full example](https://github.com/hanzoai/cd/tree/master/applicationset/examples/git-generator-files-discovery/excludes).*)
+(*The [full example](https://github.com/hanzoai/cd/tree/main/applicationset/examples/git-generator-files-discovery/excludes).*)
 
 ### Pass additional key-value pairs via `values` field
 

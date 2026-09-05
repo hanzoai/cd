@@ -53,14 +53,14 @@ kubectl -n cd scale deployment/cd-notifications-controller --replicas 0
 When you use the virtualized toolchain, starting local services is as simple as running
 
 ```bash
-cd argo-cd
+cd cd
 make start
 ```
 
 By default, Hanzo CD uses Docker. To use Podman instead, set the `DOCKER` environment variable to `podman` before running the `make` command:
 
 ```shell
-cd argo-cd
+cd cd
 DOCKER=podman make start
 ```
 
@@ -84,19 +84,19 @@ When you use the local toolchain, starting local services can be performed in 3 
 
 #### With "make start-local"
 ```shell
-cd argo-cd
+cd cd
 make start-local CD_GPG_ENABLED=false
 ```
 
 #### With "make run"
 ```shell
-cd argo-cd
+cd cd
 make run CD_GPG_ENABLED=false
 ```
 
 #### With "goreman start"
 ```shell
-cd argo-cd
+cd cd
 CD_GPG_ENABLED=false && goreman start
 ```
 
@@ -131,10 +131,10 @@ export CD_OPTS="--plaintext --insecure"
 #### Docs Changes
 
 The doc-site can be run in a container with `make serve-docs` or locally using `make serve-docs-local`. 
-When the doc-site process is run locally, modifying the docs will auto-reload changes in a preview of the [documentation website](https://argo-cd.readthedocs.io/). 
+When the doc-site process is run locally, modifying the docs will auto-reload changes in a preview of the documentation website. 
 Once running, you can view your locally built documentation on port 8000.
 
-The developer guide has detailed information about the [doc-site process](https://argo-cd.readthedocs.io/en/latest/developer-guide/docs-site/).
+The developer guide has detailed information about the [doc-site process](docs-site.md).
 
 #### UI Changes
 

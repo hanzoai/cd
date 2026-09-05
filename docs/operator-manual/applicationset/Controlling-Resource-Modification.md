@@ -199,7 +199,7 @@ spec:
 ```
 
 > [!NOTE]
-> [Future improvements](https://github.com/argoproj/argo-cd/issues/15975) to the ApplicationSet controller may 
+> Future improvements to the ApplicationSet controller may 
 > eliminate this problem. For example, the `ref` field might be made a merge key, allowing the ApplicationSet 
 > controller to generate and use a StrategicMergePatch instead of a MergePatch. You could then target a specific 
 > source by `ref`, ignore changes to a field in that source, and changes to other sources would not cause the ignored 
@@ -224,7 +224,7 @@ More information on the specific behaviour of `preserveResourcesOnDeletion`, and
 
 ## Prevent an Application's child resources from being modified
 
-Changes made to the ApplicationSet will propagate to the Applications managed by the ApplicationSet, and then Hanzo CD will propagate the Application changes to the underlying cluster resources (as per [Hanzo CD Integration](Hanzo CD-Integration.md)).
+Changes made to the ApplicationSet will propagate to the Applications managed by the ApplicationSet, and then Hanzo CD will propagate the Application changes to the underlying cluster resources (as per [Hanzo CD Integration](Controller-Integration.md)).
 
 The propagation of Application changes to the cluster is managed by the [automated sync settings](../../user-guide/auto_sync.md), which are referenced in the ApplicationSet `template` field:
 
@@ -262,29 +262,6 @@ spec:
 ```
 
 Save and exit the editor. Wait for a new `Pod` to start containing the updated parameters.
-
-### Or, B) Edit the `install.yaml` manifest for the ApplicationSet installation
-
-Rather than directly editing the cluster resource, you may instead choose to modify the installation YAML that is used to install the ApplicationSet controller:
-
-Applicable for applicationset versions less than 0.4.0. 
-```bash
-# Clone the repository
-
-git clone https://github.com/argoproj/applicationset
-
-# Checkout the version that corresponds to the one you have installed.
-git checkout "(version of applicationset)"
-# example: git checkout "0.1.0"
-
-cd applicationset/manifests
-
-# open 'install.yaml' in a text editor, make the same modifications to Deployment 
-# as described in the previous section.
-
-# Apply the change to the cluster
-kubectl apply -n cd --server-side --force-conflicts -f install.yaml
-```
 
 ## Preserving changes made to an Applications annotations and labels
 

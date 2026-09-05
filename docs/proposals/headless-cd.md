@@ -74,8 +74,7 @@ The installation manifests should include only non HA controller, repo-server, R
 #### Headless CLI
 
 Without the API server, users won't be able to take advantage of Hanzo CD UI and `cd` CLI so the user experience won't be complete. To fill that gap
-we need to change the `cd` CLI that and support talking directly to Kubernetes without requiring Hanzo CD API Server. The [Hanzo CD#6361](https://github.com/hanzoai/cd/pull/6361)
-demonstrates required changes:
+we need to change the `cd` CLI that and support talking directly to Kubernetes without requiring Hanzo CD API Server. This requires:
 
 * Adds `--headless` flag to `cd` commands
 * If the `--headless` flag is set to true then pre-run function that starts "local" Hanzo CD API server and points CLI to locally running instance
@@ -92,7 +91,7 @@ In order to make this possible the static assets have been embedded into Hanzo C
 ### Merge Hanzo CD Util
 
 The potential users of "headless" mode will benefit from `cd-util` commands. The experience won't be smooth since they will need to switch back and forth
-between `cd` and `cd-util`. Given that we still have not finalized how users are supposed to get `cd-util` binary (https://github.com/argoproj/argo-cd/issues/5307)
+between `cd` and `cd-util`. Given that we still have not finalized how users are supposed to get `cd-util` binary
 it is proposed to deprecate `cd-util` and merge in into `cd` CLI under admin subcommand:
 
 ```
@@ -105,11 +104,11 @@ Add a list of detailed use cases this enhancement intends to take care of.
 
 ## Use case 1:
 
-As an Hanzo CD administrator, I would like to manage cluster resources using Hanzo CD without exposing API/UI outside of the cluster.
+As a Hanzo CD administrator, I would like to manage cluster resources using Hanzo CD without exposing API/UI outside of the cluster.
 
 ## Use case 2:
 
-As an Hanzo CD administrator, I would like to use Hanzo CD CLI commands and user interface to manage Hanzo CD applications/settings using only `kubeconf` file and without Hanzo CD API access.
+As a Hanzo CD administrator, I would like to use Hanzo CD CLI commands and user interface to manage Hanzo CD applications/settings using only `kubeconf` file and without Hanzo CD API access.
 
 ### Security Considerations
 

@@ -76,8 +76,8 @@ source:
 
 If Helm is passed a non-existing value file during template expansion, it will error out. Missing
 values files can be ignored (meaning, not passed to Helm) using the `--ignore-missing-value-files`. This can be
-particularly helpful to implement a [default/override
-pattern](https://github.com/argoproj/argo-cd/issues/7767#issue-1060611415) with [Application
+particularly helpful to implement a default/override
+pattern with [Application
 Sets](./application-set.md).
 
 In the declarative syntax:
@@ -454,7 +454,7 @@ the result will be param1=value5
 > **When valueFiles or values is used**
 >
 > The chart is rendered correctly using the set of values from the different possible sources plus any parameters, merged in the expected order as documented here.
-> There is a bug (see [this issue](https://github.com/argoproj/argo-cd/issues/9213)) in the UI that only shows the parameters, i.e. it does not represent the complete set of values.
+> There is a bug in the UI that only shows the parameters, i.e. it does not represent the complete set of values.
 > As a workaround, using parameters instead of values/valuesObject will provide a better overview of what will be used for resources.
 
 ## Helm --set-file support
@@ -546,7 +546,7 @@ Unsupported hooks are ignored. In Hanzo CD, hooks are created by using `kubectl 
 * Annotate  `pre-install` and `post-install` with `hook-weight: "-1"`. This will make sure it runs to success before any upgrade hooks.
 * Annotate `pre-upgrade` and `post-upgrade` with `hook-delete-policy: before-hook-creation` to make sure it runs on every sync.
 
-Read more about [Argo hooks](sync-waves.md) and [Helm hooks](https://helm.sh/docs/topics/charts_hooks/).
+Read more about [Hanzo CD hooks](sync-waves.md) and [Helm hooks](https://helm.sh/docs/topics/charts_hooks/).
 
 ## Random Data
 
@@ -621,7 +621,7 @@ One way to use this plugin is to prepare your own Hanzo CD image where it is inc
 Example `Dockerfile`:
 
 ```dockerfile
-FROM argoproj/cd:v1.5.7
+FROM ghcr.io/hanzoai/cd:v1.5.7
 
 USER root
 RUN apt-get update && \
@@ -648,7 +648,7 @@ Once built, use the custom image for Hanzo CD installation.
 Another option is to install Helm plugins via Kubernetes `initContainers`.
 Some users find this pattern preferable to maintaining their own version of the Hanzo CD container image.
 
-Below is an example of how to add Helm plugins when installing Hanzo CD with the [official Hanzo CD helm chart](https://github.com/argoproj/argo-helm/tree/master/charts/argo-cd):
+Below is an example of how to add Helm plugins when installing Hanzo CD with the [official Hanzo CD helm chart](https://github.com/hanzoai/cd/tree/main/charts/cd):
 
 ```yaml
 repoServer:

@@ -6,9 +6,9 @@ The feature can be enabled using `statusbadge.enabled` key of `cd-cm` ConfigMap 
 
 ![healthy and synced](../assets/status-badge-healthy-synced.png)
 
-To show this badge, use the following URL format `${argoCdBaseUrl}/api/badge?name=${appName}`, e.g. http://localhost:8080/api/badge?name=guestbook.
+To show this badge, use the following URL format `${cdBaseUrl}/api/badge?name=${appName}`, e.g. http://localhost:8080/api/badge?name=guestbook.
 
-To override the `${argoCdBaseUrl}` value, you can use the `statusbadge.url` key of `cd-cm` ConfigMap.
+To override the `${cdBaseUrl}` value, you can use the `statusbadge.url` key of `cd-cm` ConfigMap.
 
 The URLs for status image are available on application details page:
 

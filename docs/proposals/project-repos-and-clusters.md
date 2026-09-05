@@ -127,7 +127,7 @@ As a developer, I would like to register credentials of a Kubernetes cluster so 
 
 ### Implementation Details/Notes/Constraints [optional]
 
-As of v2.0.1 Hanzo CD stores Repository non-sensitive metadata in `cd-cm` ConfigMap. This is going to change in https://github.com/argoproj/argo-cd/issues/5436.
+As of v2.0.1 Hanzo CD stores Repository non-sensitive metadata in `cd-cm` ConfigMap. This is going to change in a future release.
 So we would have to wait for #5436 implementation.
 
 ### Detailed examples

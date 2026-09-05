@@ -32,8 +32,8 @@ Hanzo CD container images are signed by [cosign](https://github.com/sigstore/cos
 cosign verify \
 --certificate-identity-regexp https://github.com/hanzoai/cd/.github/workflows/image-reuse.yaml@refs/tags/v \
 --certificate-oidc-issuer https://token.actions.githubusercontent.com \
---certificate-github-workflow-repository "argoproj/argo-cd" \
-quay.io/argoproj/cd:v2.11.3 | jq
+--certificate-github-workflow-repository "hanzoai/cd" \
+ghcr.io/hanzoai/cd:v2.11.3 | jq
 ```
 The command should output the following if the container image was correctly verified:
 ```bash
@@ -45,7 +45,7 @@ The following checks were performed on each of these signatures:
   {
     "critical": {
       "identity": {
-        "docker-reference": "quay.io/argoproj/argo-cd"
+        "docker-reference": "ghcr.io/hanzoai/cd"
       },
       "image": {
         "docker-manifest-digest": "sha256:63dc60481b1b2abf271e1f2b866be8a92962b0e53aaa728902caa8ac8d235277"
@@ -57,7 +57,7 @@ The following checks were performed on each of these signatures:
       "1.3.6.1.4.1.57264.1.2": "push",
       "1.3.6.1.4.1.57264.1.3": "a6ec84da0eaa519cbd91a8f016cf4050c03323b2",
       "1.3.6.1.4.1.57264.1.4": "Publish Hanzo CD Release",
-      "1.3.6.1.4.1.57264.1.5": "argoproj/argo-cd",
+      "1.3.6.1.4.1.57264.1.5": "hanzoai/cd",
       "1.3.6.1.4.1.57264.1.6": "refs/tags/<version>",
       ...
 ```
@@ -73,7 +73,7 @@ Run the following command as per the [slsa-verifier documentation](https://githu
 
 ```bash
 # Get the immutable container image to prevent TOCTOU attacks https://github.com/slsa-framework/slsa-verifier#toctou-attacks
-IMAGE=quay.io/argoproj/cd:v2.7.0
+IMAGE=ghcr.io/hanzoai/cd:v2.7.0
 IMAGE="${IMAGE}@"$(crane digest "${IMAGE}")
 # Verify provenance, including the tag to prevent rollback attacks.
 slsa-verifier verify-image "$IMAGE" \

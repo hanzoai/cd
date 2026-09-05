@@ -19,7 +19,7 @@ This feature needs [App in any namespace](../app-any-namespace.md) feature activ
 
 ### Cluster-scoped Hanzo CD installation
 
-This feature can only be enabled and used when your Hanzo CD ApplicationSet controller is installed as a cluster-wide instance, so it has permissions to list and manipulate resources on a cluster scope. It will *not* work with an Hanzo CD installed in namespace-scoped mode.
+This feature can only be enabled and used when your Hanzo CD ApplicationSet controller is installed as a cluster-wide instance, so it has permissions to list and manipulate resources on a cluster scope. It will *not* work with a Hanzo CD installed in namespace-scoped mode.
 
 ### SCM Providers secrets consideration
 
@@ -79,7 +79,7 @@ If you do not intend to allow users to use the SCM or PR generators, you can dis
 
 It is **highly recommended** to enable SCM Providers secrets restrictions to avoid any secrets exfiltration. This
 recommendation applies even when AppSets-in-any-namespace is disabled, but is especially important when it is enabled,
-since non-Argo-admins may attempt to reference out-of-bounds secrets in the `cd` namespace from an AppSet
+since non-admins may attempt to reference out-of-bounds secrets in the `cd` namespace from an AppSet
 `tokenRef`.
 
 When this mode is enabled, the referenced secret must have a label `cd.hanzo.ai/secret-type` with value

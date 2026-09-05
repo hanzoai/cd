@@ -76,7 +76,7 @@ cd repo rm https://github.com/yourusername/your-repo.git
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd repo add](cd_repo_add.md)	 - Add git, oci or helm repository connection parameters
 * [cd repo get](cd_repo_get.md)	 - Get a configured repository by URL
 * [cd repo list](cd_repo_list.md)	 - List configured repositories

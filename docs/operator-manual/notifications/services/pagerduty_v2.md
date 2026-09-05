@@ -7,7 +7,7 @@ The PagerDuty notification service is used to trigger PagerDuty events and requi
 * `serviceKeys` - a dictionary with the following structure:
   * `service-name: $pagerduty-key-service-name` where `service-name` is the name you want to use for the service to make events for, and `$pagerduty-key-service-name` is a reference to the secret that contains the actual PagerDuty integration key (Events API v2 integration)
 
-If you want multiple Argo apps to trigger events to their respective PagerDuty services, create an integration key in each service you want to setup alerts for.
+If you want multiple Hanzo CD apps to trigger events to their respective PagerDuty services, create an integration key in each service you want to setup alerts for.
 
 To create a PagerDuty integration key, [follow these instructions](https://support.pagerduty.com/docs/services-and-integrations#create-a-generic-events-api-integration) to add an Events API v2 integration to the service of your choice.
 
