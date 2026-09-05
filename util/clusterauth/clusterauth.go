@@ -26,7 +26,7 @@ const (
 	SATokenSecretSuffix       = "-long-lived-token"
 )
 
-// ArgoCDManagerPolicyRules are the policies to give cd-manager
+// ManagerClusterPolicyRules are the policies to give cd-manager
 var ManagerClusterPolicyRules = []rbacv1.PolicyRule{
 	{
 		APIGroups: []string{"*"},
