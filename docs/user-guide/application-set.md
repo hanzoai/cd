@@ -10,7 +10,7 @@ The set of tools provided by the ApplicationSet controller may also be used to a
 
 The ApplicationSet controller automatically generates Hanzo CD Applications based on the contents of an `ApplicationSet` Custom Resource (CR).
 
-Here is an example of an `ApplicationSet` resource that can be used to target an Hanzo CD Application to multiple clusters:
+Here is an example of an `ApplicationSet` resource that can be used to target a Hanzo CD Application to multiple clusters:
 ```yaml
 apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet

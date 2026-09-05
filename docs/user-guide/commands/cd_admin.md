@@ -58,7 +58,7 @@ $ cd admin initial-password reset
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd admin app](cd_admin_app.md)	 - Manage applications configuration
 * [cd admin cluster](cd_admin_cluster.md)	 - Manage clusters configuration
 * [cd admin dashboard](cd_admin_dashboard.md)	 - Starts Hanzo CD Web UI locally

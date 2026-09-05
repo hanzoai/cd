@@ -17,7 +17,7 @@ One additional advantage of adopting applications in any namespace is to allow e
 
 ### Cluster-scoped Hanzo CD installation
 
-This feature can only be enabled and used when your Hanzo CD is installed as a cluster-wide instance, so it has permissions to list and manipulate resources on a cluster scope. It will not work with an Hanzo CD installed in namespace-scoped mode.
+This feature can only be enabled and used when your Hanzo CD is installed as a cluster-wide instance, so it has permissions to list and manipulate resources on a cluster scope. It will not work with a Hanzo CD installed in namespace-scoped mode.
 
 ### Switch resource tracking method
 
@@ -78,7 +78,7 @@ kubectl apply -k examples/k8s-rbac/cd-server-applications/
 
 ### Allowing additional namespaces in an AppProject
 
-Any user with Kubernetes access to the Hanzo CD control plane's namespace (`cd`), especially those with permissions to create or update `Applications` in a declarative way, is to be considered an Hanzo CD admin.
+Any user with Kubernetes access to the Hanzo CD control plane's namespace (`cd`), especially those with permissions to create or update `Applications` in a declarative way, is to be considered a Hanzo CD admin.
 
 This prevented unprivileged Hanzo CD users from declaratively creating or managing `Applications` in the past. Those users were constrained to using the API instead, subject to Hanzo CD RBAC which ensures only `Applications` in allowed `AppProjects` were created.
 
@@ -126,7 +126,7 @@ The `.spec.sourceNamespaces` field of the `AppProject` is a list that can contai
 
 > [!NOTE]
 > Currently it's not possible to have a applicationset in one namespace and have the application
-> be generated in another. See [#11104](https://github.com/argoproj/argo-cd/issues/11104) for more info.
+> be generated in another.
 
 ### Application names
 

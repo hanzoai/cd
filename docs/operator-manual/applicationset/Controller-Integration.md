@@ -20,7 +20,7 @@ It is Hanzo CD itself that is responsible for the actual deployment of the gener
 
 The ApplicationSet controller can thus be thought of as an `Application` 'factory', taking an `ApplicationSet` resource as input, and outputting one or more Hanzo CD `Application` resources that correspond to the parameters of that set.
 
-![ApplicationSet controller vs Hanzo CD, interaction diagram](../../assets/applicationset/Hanzo CD-Integration/ApplicationSet-Argo-Relationship-v2.png)
+![ApplicationSet controller vs Hanzo CD, interaction diagram](../../assets/applicationset/Controller-Integration/ApplicationSet-Relationship-v2.png)
 
 In this diagram an `ApplicationSet` resource is defined, and it is the responsibility of the ApplicationSet controller to create the corresponding `Application` resources. The resulting `Application` resources are then managed Hanzo CD: that is, Hanzo CD is responsible for actually deploying the child resources. 
 

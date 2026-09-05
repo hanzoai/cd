@@ -60,7 +60,7 @@ apiVersion: apps.hanzo.ai/v1alpha1
 kind: ApplicationSet
 metadata:
   name: fb-plugin
-  namespace: argo-system
+  namespace: cd-system
 spec:
   generators:
     - plugin:
@@ -76,20 +76,20 @@ spec:
 
 ### Add a configMap to configure the plugin
 
-The configMap name must match the configMapRef value in the plugin configuration. The configMap must be in the namespace of argo.
+The configMap name must match the configMapRef value in the plugin configuration. The configMap must be in the namespace of Hanzo CD.
 
 ```
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fb-plugin
-  namespace: argo-system
+  namespace: cd-system
 data:
   token: $plugin.myplugin.token # Alternatively $<some_K8S_secret>:plugin.myplugin.token
   baseUrl: http://myplugin.plugin.svc.cluster.local
 ```
 
-- token is used a bearer token in the RPC request. It could be a [sensitive reference](https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sensitive-data-and-sso-client-secrets).
+- token is used a bearer token in the RPC request. It could be a [sensitive reference](../operator-manual/user-management/index.md#sensitive-data-and-sso-client-secrets).
 
 ### Reconciliation logic
 
@@ -120,7 +120,7 @@ I could define a generator matrix like
           - pullRequest:
               github:
                 owner: binboum
-                repo: argo-test
+                repo: gitops-test
                 labels:
                 - preview-matrix
                 tokenRef:
@@ -130,7 +130,7 @@ I could define a generator matrix like
               configMapRef: cm-plugin
               name: plugin-matrix
               params:
-                repo: "argo-test"
+                repo: "gitops-test"
                 branch: "{{.branch}}"
 ```
 
@@ -153,7 +153,7 @@ Values can then be used in the template section :
       name: "fb-matrix-{{.branch}}"
     spec:
       source:
-        repoURL: "git@github.com:binboum/argo-test.git"
+        repoURL: "git@github.com:binboum/gitops-test.git"
         targetRevision: "HEAD"
         path: charts/app-client
         helm:
@@ -162,9 +162,9 @@ Values can then be used in the template section :
             - values.yaml
           values: |
             front:
-              image: registry.my/argo-test/front:{{.branch}}@{{ .digestFront }}
+              image: registry.my/gitops-test/front:{{.branch}}@{{ .digestFront }}
             back:
-              image: registry.my/argo-test/back:{{.branch}}@{{ .digestBack }}
+              image: registry.my/gitops-test/back:{{.branch}}@{{ .digestBack }}
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{.branch}}"

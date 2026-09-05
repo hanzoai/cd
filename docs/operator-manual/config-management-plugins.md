@@ -10,11 +10,11 @@ Helm, OCI, or Git repository. When a config management plugin is correctly confi
 task of building manifests to the plugin.
 
 The following sections will describe how to create, install, and use plugins. Check out the
-[example plugins](https://github.com/hanzoai/cd/tree/master/examples/plugins) for additional guidance.
+[example plugins](https://github.com/hanzoai/cd/tree/main/examples/plugins) for additional guidance.
 
 > [!WARNING]
-> Plugins are granted a level of trust in the Hanzo CD system, so it is important to implement plugins securely. Argo
-> CD administrators should only install plugins from trusted sources, and they should audit plugins to weigh their
+> Plugins are granted a level of trust in the Hanzo CD system, so it is important to implement plugins securely.
+> Hanzo CD administrators should only install plugins from trusted sources, and they should audit plugins to weigh their
 > particular risks and benefits.
 
 ## Installing a config management plugin
@@ -477,7 +477,7 @@ spec:
 ### Make sure the plugin has access to the tools it needs
 
 Plugins configured with cd-cm ran on the Hanzo CD image. This gave it access to all the tools installed on that
-image by default (see the [Dockerfile](https://github.com/hanzoai/cd/blob/master/Dockerfile) for base image and
+image by default (see the [Dockerfile](https://github.com/hanzoai/cd/blob/main/Dockerfile) for base image and
 installed tools).
 
 You can either use a stock image (like ubuntu, busybox, or alpine/k8s) or design your own base image with the tools your plugin needs. For

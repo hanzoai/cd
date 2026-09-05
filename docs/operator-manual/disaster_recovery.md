@@ -15,13 +15,13 @@ export VERSION=v1.0.1
 Export to a backup:
 
 ```bash
-docker run -v ~/.kube:/home/cd/.kube --rm quay.io/argoproj/cd:$VERSION cd admin export > backup.yaml
+docker run -v ~/.kube:/home/cd/.kube --rm ghcr.io/hanzoai/cd:$VERSION cd admin export > backup.yaml
 ```
 
 Import from a backup:
 
 ```bash
-docker run -i -v ~/.kube:/home/cd/.kube --rm quay.io/argoproj/cd:$VERSION cd admin import - < backup.yaml
+docker run -i -v ~/.kube:/home/cd/.kube --rm ghcr.io/hanzoai/cd:$VERSION cd admin import - < backup.yaml
 ```
 
 > [!NOTE]

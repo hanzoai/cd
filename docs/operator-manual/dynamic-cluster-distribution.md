@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Alpha Feature (Since v2.9.0)**
 >
-> This is an experimental, [alpha-quality](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#alpha) feature.
+> This is an experimental, alpha-quality feature.
 > It may be removed in future releases or modified in backwards-incompatible ways.
 
 *Current Status: [Alpha][1] (Since v2.9.0)*

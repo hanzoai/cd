@@ -56,7 +56,7 @@ contains all the required resources.
 Example:
 
 ```
-export CD_VERSION=<desired argo cd release version (e.g. v2.7.0)>
+export CD_VERSION=<desired cd release version (e.g. v2.7.0)>
 kubectl create namespace cd
 kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/$CD_VERSION/manifests/core-install.yaml
 ```
@@ -78,7 +78,7 @@ the process) invoking the CLI needs to have access to the Hanzo CD
 namespace with the proper permission in the `Application` and
 `ApplicationSet` resources for executing a given command.
 
-To use [Hanzo CD CLI](https://argo-cd.readthedocs.io/en/stable/cli_installation) in core mode, it is required to pass the `--core`
+To use [Hanzo CD CLI](../cli_installation.md) in core mode, it is required to pass the `--core`
 flag with the `login` subcommand. The `--core` flag is responsible for spawning a local Hanzo CD API server
 process that handles CLI and Web UI requests.
 

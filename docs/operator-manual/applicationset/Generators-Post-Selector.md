@@ -78,7 +78,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/argoproj-labs/applicationset.git
+        repoURL: https://github.com/hanzoai/cd.git
         targetRevision: HEAD
         path: examples/list-generator/guestbook/{{.cluster}}
       destination:

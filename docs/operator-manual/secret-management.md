@@ -3,8 +3,6 @@
 There are two general ways to populate secrets when doing GitOps: on the destination cluster, or in Hanzo CD during
 manifest generation. We strongly recommend the former, as it is more secure and provides a better user experience.
 
-For further discussion, see [#1364](https://github.com/argoproj/argo-cd/issues/1364).
-
 ## Destination Cluster Secret Management
 
 In this approach, secrets are populated on the destination cluster, and Hanzo CD does not need to directly manage them.

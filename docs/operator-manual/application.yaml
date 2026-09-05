@@ -97,8 +97,8 @@ spec:
       # the Kubernetes version of the target cluster. The value must be semver formatted. Do not prefix with `v`.
       kubeVersion: 1.30.0
 
-      # You can specify the Kubernetes resource API versions to pass to Helm when templating manifests. By default, Argo
-      # CD uses the API versions of the target cluster. The format is [group/]version/kind.
+      # You can specify the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
+      # Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
       apiVersions:
         - traefik.io/v1alpha1/TLSOption
         - v1/Service
@@ -151,8 +151,8 @@ spec:
       # the Kubernetes version of the target cluster. The value must be semver formatted. Do not prefix with `v`.
       kubeVersion: 1.30.0
 
-      # You can specify the Kubernetes resource API versions to pass to Helm when templating manifests. By default, Argo
-      # CD uses the API versions of the target cluster. The format is [group/]version/kind.
+      # You can specify the Kubernetes resource API versions to pass to Helm when templating manifests. By default,
+      # Hanzo CD uses the API versions of the target cluster. The format is [group/]version/kind.
       apiVersions:
         - traefik.io/v1alpha1/TLSOption
         - v1/Service

@@ -69,7 +69,7 @@ metadata:
   labels:
     cd.hanzo.ai/secret-type: repository
 stringData:
-  url: https://github.com/argoproj/private-repo
+  url: https://github.com/hanzocd/private-repo
 ---
 apiVersion: v1
 kind: Secret

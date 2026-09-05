@@ -68,7 +68,7 @@ management tools (Helm, Kustomize, etc.).
 
 ## Summary
 
-[Config Management Plugins](https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/) 
+[Config Management Plugins](../operator-manual/config-management-plugins.md) 
 allow Hanzo CD administrators to define custom manifest generation tooling.
 
 The only existing way for users to parameterize manifest generation is with environment variables.
@@ -92,7 +92,7 @@ More robust CMPs will make it easier to start supporting tools like [Tanka](http
 
 ### 2. Decisions about config management tools are limited by the core code
 
-For example, there's a [Helm bug](https://github.com/argoproj/argo-cd/issues/7291) affecting Hanzo CD users. The fix 
+For example, there's a Helm bug affecting Hanzo CD users. The fix 
 would involve importing the Helm SDK (a very large dependency) into Hanzo CD. Implementing Helm support as a CMP would
 allow us to use that SDK without embedding it in the core code.
 
@@ -105,8 +105,8 @@ actively-developed base. But we need CMP parameters to provide Ksonnet support o
 
 Parameterized CMPs must be:
 * Easy to write
-  * An Hanzo CD admin should be able to write a simple parameterized CMP in just a few lines of code.
-  * An Hanzo CD admin should be able to write an _advanced_ parameterized CMP server relying on thorough docs.
+  * A Hanzo CD admin should be able to write a simple parameterized CMP in just a few lines of code.
+  * A Hanzo CD admin should be able to write an _advanced_ parameterized CMP server relying on thorough docs.
     
     Writing a custom CMP server might be preferable if the parameters announcement code gets too complex to be 
     an inline shell script.
@@ -127,8 +127,8 @@ Parameterized CMPs must be:
 * Proven with a rich demonstration
   * The initial release of this feature should include a CMP implementation of the Helm config tool. This will
     1. Serve as a rich example for others CMP developers to mimic
-    2. Allow us to decouple the Helm config management release cycle from the Argo release cycle
-    3. Allow us to work around [this bug](https://github.com/argoproj/argo-cd/issues/7291) without including the Helm 
+    2. Allow us to decouple the Helm config management release cycle from the Hanzo CD release cycle
+    3. Allow us to work around this bug without including the Helm 
        SDK in the core Hanzo CD code
   * The Helm CMP must be on-par with the native implementation.
     1. It must present an equivalent parameters UI.
@@ -145,13 +145,13 @@ We should not:
 
 #### Use case 1: building Hanzo CD without config management dependencies
 
-As an Hanzo CD developer, I would like to be able to build Hanzo CD without including the Helm SDK as a dependency.
+As a Hanzo CD developer, I would like to be able to build Hanzo CD without including the Helm SDK as a dependency.
 
 The Helm SDK includes the Kubernetes code base. That's a lot of code, and it will make builds unacceptably slow.
 
 #### Use case 2: writing CMPs with rich UI experiences
 
-As an Hanzo CD user, I would like to be able to parameterize manifests built by a CMP.
+As a Hanzo CD user, I would like to be able to parameterize manifests built by a CMP.
 
 For example, if the Hanzo CD administrator has installed a CMP which applies a last-mile kustomize overlay to a Helm
 repo, I would like to be able to pass values to the Helm chart without having to manually discover those parameter names
@@ -166,8 +166,8 @@ Since this proposal is designed to increase CMP adoption, we need to make sure t
 less robust than native tools.
 
 Bugs to fix:
-1. [#8145](https://github.com/argoproj/argo-cd/issues/8145) - `cd app sync/diff --local` doesn't account for sidecar CMPs
-2. [#8243](https://github.com/argoproj/argo-cd/issues/8243) - "Configure plugin via sidecar" ⇒ child resources not pruned on deletion
+1. `cd app sync/diff --local` doesn't account for sidecar CMPs
+2. "Configure plugin via sidecar" ⇒ child resources not pruned on deletion
 
 #### Terms
 
@@ -302,7 +302,7 @@ Environment variable names are set according to these rules:
 1. If a parameter is a `string`, the format is `PARAM_{escaped(name)}` (`escaped` is defined below).
 2. If a parameter is an `array`, the format is `PARAM_{escaped(name_{index})}` (where the first index is 0).
 3. If a parameter is a `map`, the format is `PARAM_{escaped(name_key)}`.
-4. If an escaped env var name matches one in the [build environment](https://argo-cd.readthedocs.io/en/latest/user-guide/build-environment/),
+4. If an escaped env var name matches one in the [build environment](../user-guide/build-environment.md),
    the build environment variable wins.
 5. If more than one parameter name produces the same env var name, the env var later in the list wins.
 
@@ -549,11 +549,11 @@ type ParametersAnnouncement []ParameterAnnouncement
    - name: name-prefix  # expects a string
    - name: helm-parameters-incorrect  # expects a string, the map is ignored
      map:
-       global.image.repository: quay.io/argoproj/cd
+       global.image.repository: ghcr.io/hanzoai/cd
    - name: helm-parameters  # expects a map
      collectionType: map
      map:
-       global.image.repository: quay.io/argoproj/cd
+       global.image.repository: ghcr.io/hanzoai/cd
    ```
 
 5. **Question**: What do we do if a parameter has a missing or absent top-level `name` field?
@@ -567,7 +567,7 @@ type ParametersAnnouncement []ParameterAnnouncement
    - title: Parameter Overrides
      collectionType: map
      map:
-       global.image.repository: quay.io/argoproj/cd
+       global.image.repository: ghcr.io/hanzoai/cd
    ```
 
 ### Detailed examples
@@ -749,7 +749,7 @@ Consider a very simple values.yaml:
 
 ```yaml
 image:
-  repo: quay.io/argoproj/cd
+  repo: ghcr.io/hanzoai/cd
   tag: latest
 ```
 
@@ -762,7 +762,7 @@ The script above will produce the following parameters announcement:
     "title": "Helm Parameters",
     "collectionType": "map",
     "map": {
-      "image.repo": "quay.io/argoproj/cd",
+      "image.repo": "ghcr.io/hanzoai/cd",
       "image.tag": "latest"
     }
   }
@@ -799,8 +799,8 @@ spec:
     "title": "Image Overrides",
     "collectionType": "map",
     "map": {
-      "quay.io/argoproj/cd": "docker.example.com/proxy/argoproj/cd",
-      "ubuntu:latest": "docker.example.com/proxy/argoproj/cd"
+      "ghcr.io/hanzoai/cd": "docker.example.com/proxy/hanzoai/cd",
+      "ubuntu:latest": "docker.example.com/proxy/hanzoai/cd"
     }
   }
 ]

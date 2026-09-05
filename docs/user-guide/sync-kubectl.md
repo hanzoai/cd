@@ -4,7 +4,7 @@ You can use "kubectl" to ask Hanzo CD to synchronize applications the same way y
 
 This "operation" defines how a synchronization should be done and for what resources these synchronization is to be done.
 
-There are many configuration options that can be added to the "operation". Next, a few of them are explained. For more details, you can have a look at the CRD [applications.apps.hanzo.ai](https://github.com/hanzoai/cd/blob/master/manifests/crds/application-crd.yaml). Some of them are required, whereas others are optional.
+There are many configuration options that can be added to the "operation". Next, a few of them are explained. For more details, you can have a look at the CRD [applications.apps.hanzo.ai](https://github.com/hanzoai/cd/blob/main/manifests/crds/application-crd.yaml). Some of them are required, whereas others are optional.
 
 To ask Hanzo CD to synchronize all resources of a given application, we can do:
 
@@ -141,4 +141,4 @@ operations:
       - Prune=false
 ```
 
-For more information about sync options, please refer to [sync-options](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/)
+For more information about sync options, please refer to [sync-options](sync-options.md)

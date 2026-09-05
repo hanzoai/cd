@@ -1,1 +1,1 @@
-Please refer to [the Contribution Guide](https://argo-cd.readthedocs.io/en/latest/developer-guide/code-contributions/)
+Please refer to [the Contribution Guide](developer-guide/code-contributions.md)

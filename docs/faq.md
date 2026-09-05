@@ -20,7 +20,7 @@ which might cause health check to return `Progressing` state instead of `Healthy
 * `Ingress` is considered healthy if `status.loadBalancer.ingress` list is non-empty, with at least one value
   for `hostname` or `IP`. Some ingress controllers
   ([contour](https://github.com/projectcontour/contour/issues/403)
-  , [traefik](https://github.com/argoproj/argo-cd/issues/968#issuecomment-451082913)) don't update
+  , traefik) don't update
   `status.loadBalancer.ingress` field which causes `Ingress` to stuck in `Progressing` state forever.
 
 * `StatefulSet` is considered healthy if value of `status.updatedReplicas` field matches to `spec.replicas` field. Due
@@ -30,7 +30,6 @@ which might cause health check to return `Progressing` state instead of `Healthy
   fix [kubernetes/kubernetes#67570](https://github.com/kubernetes/kubernetes/pull/67570) `StatefulSet` might stay
   in `Progressing` state.
 * Your `StatefulSet` or `DaemonSet` is using `OnDelete` instead of `RollingUpdate` strategy.
-  See [#1881](https://github.com/argoproj/argo-cd/issues/1881).
 * For `SealedSecret`, see [Why are resources of type `SealedSecret` stuck in the `Progressing` state?](#sealed-secret-stuck-progressing)
 
 As workaround Hanzo CD allows providing [health check](operator-manual/health.md) customization which overrides default
@@ -167,8 +166,6 @@ the `application.instanceLabelKey` value in the `cd-cm`. We recommend that you u
 > [!NOTE]
 > When you make this change your applications will become out of sync and will need re-syncing.
 
-See [#1482](https://github.com/argoproj/argo-cd/issues/1482).
-
 ## How often does Hanzo CD check for changes to my Git or Helm repository ?
 
 By default, Hanzo CD checks (polls) Git repositories every 3 minutes to detect changes.
@@ -209,8 +206,6 @@ for cookies. You can get the list of groups by opening "developer tools -> netwo
 
 Decode the token at [https://jwt.io/](https://jwt.io/). That will provide the list of teams that you can remove yourself
 from.
-
-See [#2165](https://github.com/argoproj/argo-cd/issues/2165).
 
 ## Why Am I Getting `rpc error: code = Unavailable desc = transport is closing` When Using The CLI?
 
@@ -394,7 +389,7 @@ Example Hanzo CD component spec (e.g., add to `cd-server`, `cd-repo-server`, `cd
 spec:
     containers:
     - name: cd-server
-      image: quay.io/argoproj/cd:<version>
+      image: ghcr.io/hanzoai/cd:<version>
       env:
       - name: KV_CREDS_DIR_PATH
         value: "/var/run/secrets/redis"
@@ -442,7 +437,7 @@ version is v0.26.11
 
 ### How do I fix the issue?
 
-To completely resolve the issue, upgrade to an Hanzo CD version which contains a static schema supporting all the needed
+To completely resolve the issue, upgrade to a Hanzo CD version which contains a static schema supporting all the needed
 fields.
 
 ### How do I work around the issue?

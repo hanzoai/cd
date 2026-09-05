@@ -89,8 +89,8 @@ The [OCI Image Specification](https://specs.opencontainers.org/image-spec/) make
 
 Two new Media Types will be used for this purpose as defined below:
 
-* `application/vnd.cncf.argoproj.cd.content.v1.tar+gzip` - Primary asset stored within the OCI artifact containing a gzip compressed tar archive of Hanzo CD resources. Further details are outlined in the prior section.
-* `application/vnd.cncf.argoproj.cd.config.v1+json` - An [OCI Image Configuration](https://specs.opencontainers.org/image-spec/config/)
+* `application/vnd.cncf.hanzoai.cd.content.v1.tar+gzip` - Primary asset stored within the OCI artifact containing a gzip compressed tar archive of Hanzo CD resources. Further details are outlined in the prior section.
+* `application/vnd.cncf.hanzoai.cd.config.v1+json` - An [OCI Image Configuration](https://specs.opencontainers.org/image-spec/config/)
 
 
 ### Detailed examples

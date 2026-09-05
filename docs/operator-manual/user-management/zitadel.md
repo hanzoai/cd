@@ -144,8 +144,8 @@ Your Actions page should now look like the following screenshot:
 ## Configuring the Hanzo CD configmaps
 
 Next, we will configure two Hanzo CD configmaps:
-- [cd-cm.yaml](https://github.com/hanzoai/cd/blob/master/docs/operator-manual/cd-cm.yaml)
-- [cd-rbac-cm.yaml](https://github.com/hanzoai/cd/blob/master/docs/operator-manual/cd-rbac-cm.yaml)
+- [cd-cm.yaml](https://github.com/hanzoai/cd/blob/main/docs/operator-manual/cd-cm.yaml)
+- [cd-rbac-cm.yaml](https://github.com/hanzoai/cd/blob/main/docs/operator-manual/cd-rbac-cm.yaml)
 
 Configure your configmaps as follows while making sure to replace the relevant values such as `url`, `issuer`, `clientID`, `clientSecret` and `logoutURL` with ones matching your setup.
 

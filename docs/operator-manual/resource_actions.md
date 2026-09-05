@@ -227,7 +227,7 @@ return actions
 You can define parameters for your custom actions. The parameters are defined in the `parameters` key of the action discovery definition.
 
 <!-- Link directly to the script for people reading the docs in GitHub where embedding doesn't work. -->
-See the [Deployment actions discovery script](https://github.com/hanzoai/cd/blob/master/resource_customizations/apps/Deployment/actions/discovery.lua):
+See the [Deployment actions discovery script](https://github.com/hanzoai/cd/blob/main/resource_customizations/apps/Deployment/actions/discovery.lua):
 
 <!-- Embed the actual script so ReadTheDocs always has an up-to-date example. -->
 ```lua
@@ -243,7 +243,7 @@ A resource action can be bundled into Hanzo CD. Custom resource action scripts a
 The following directory structure must be respected:
 
 ```
-argo-cd
+cd
 |-- resource_customizations
 |    |-- your.crd.group.io                         # CRD group
 |    |    |-- MyKind                               # Resource kind
@@ -256,7 +256,7 @@ argo-cd
 ```
 It is required to provide both discovery tests and action tests for your custom action.
 
-Example of a [complete custom action](https://github.com/hanzoai/cd/tree/master/resource_customizations/apps.hanzo.ai/AnalysisRun/actions) called `terminate` for AnalysisRun.
+Example of a [complete custom action](https://github.com/hanzoai/cd/tree/main/resource_customizations/apps.hanzo.ai/AnalysisRun/actions) called `terminate` for AnalysisRun.
 
 
 Example of `action_test.yaml` file content with `discoveryTests` and `actionTests`:

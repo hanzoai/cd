@@ -6,7 +6,7 @@
 
 Follow these steps to install `Kind` for local development and set it up with Hanzo CD.
 
-To run an Hanzo CD development environment review the [developer guide for running locally](./developer-guide/running-locally.md).
+To run a Hanzo CD development environment review the [developer guide for running locally](./developer-guide/running-locally.md).
 
 ## Install Kind
 

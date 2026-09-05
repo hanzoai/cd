@@ -175,7 +175,7 @@ cd app create guestbook --repo https://github.com/hanzocd/example-apps.git --pat
 
 ### Creating Apps Via UI
 
-Open a browser to the Hanzo CD external UI, and login by visiting the IP/hostname in a browser and use the credentials set in step 4 or locally as explained in [Try Hanzo CD Locally](try_argo_cd_locally.md).
+Open a browser to the Hanzo CD external UI, and login by visiting the IP/hostname in a browser and use the credentials set in step 4 or locally as explained in [Try Hanzo CD Locally](try_cd_locally.md).
 
 After logging in, click the **+ New App** button as shown below:
 

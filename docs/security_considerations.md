@@ -9,8 +9,7 @@
 > [published security advisories](https://github.com/hanzoai/cd/security/advisories).
 
 As a deployment tool, Hanzo CD needs to have production access which makes security a very important topic.
-The Argoproj team takes security very seriously and is continuously working on improving it. Learn more about security
-related features in [Security](./operator-manual/security.md) section.
+Learn more about current security practices in the [Security](./operator-manual/security.md) section.
 
 ## Overview of past and current issues
 

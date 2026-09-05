@@ -21,10 +21,6 @@ last-updated: 2022-04-01
 
 Support more than one source for creating an Application.
 
-Related Issues:
-* [Proposal: Support multiple sources for an application](https://github.com/argoproj/argo-cd/issues/677)
-* [Helm chart + values from Git](https://github.com/argoproj/argo-cd/issues/2789)
-
 ## Open Questions
 * Adding external sources to the Application resource would add additional latencies for creation/reconciliation process. Should we add it to the doc in Risks?
 
@@ -32,7 +28,7 @@ Related Issues:
 
 Currently, Hanzo CD supports Applications with only a single ApplicationSource. In certain scenarios, it would be useful to support more than one source for the application. For example, consider a need to create multiple deployments of the same application and manifests but manifests can come from different sources. Today we would have to copy manifest files from one application to another.
 
-For example, from [one of the comments on this proposal PR](https://github.com/hanzoai/cd/pull/8322/files#r799624767)
+For example, one comment on this proposal noted:
 ```
 An independent support of the Helm charts and their values files. This opens a door to such highly requested scenarios like multiple deployments of the same (possibly external) Helm chart with different values files or an independent migration to a newer Helm chart version for the same applications installed in Test and Production environments.
 ```
@@ -177,10 +173,9 @@ Add a list of detailed use cases this enhancement intends to take care of.
 #### Use case 1:
 As a user, I have an Application that uses the [elasticsearch](https://github.com/helm/charts/tree/master/incubator/elasticsearch) helm chart as source. Today, user needs to create a separate Application to configure the [elasticsearch-exporter](https://github.com/helm/charts/tree/master/stable/elasticsearch-exporter
 ) to expose Prometheus metrics.
-https://github.com/argoproj/argo-cd/issues/677
 
 #### Use case 2:
-As per one of the [comment](https://github.com/argoproj/argo-cd/issues/2789#issuecomment-562495307) on the issue [Helm chart + values files from Git](https://github.com/argoproj/argo-cd/issues/2789):
+As per one comment on the topic:
 ```
 We have a Helm Chart which is used in 30+ Services and each of them is customized for 3 possible environments.
 Replicating this Chart 30 times without a centralized Repo looks dirty. Can be a show stopper for the whole migration.

@@ -136,6 +136,5 @@ metadata:
 ...
 ```
 
-[1]: https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta
 [2]: https://github.com/kubernetes-sigs/structured-merge-diff
 [3]: https://kubernetes.io/docs/reference/using-api/api-concepts/#resourceversion-in-metadata

@@ -19,7 +19,7 @@ last-updated: 2024-02-06
 
 # Decouple Application Sync using Impersonation
 
-Application syncs in Hanzo CD have the same privileges as the Hanzo CD control plane. As a consequence, in a multi-tenant setup, the Hanzo CD control plane privileges needs to match the tenant that needs the highest privileges. As an example, if an Hanzo CD instance has 10 Applications and only one of them requires admin privileges, then the Hanzo CD control plane must have admin privileges in order to be able to sync that one Application. Hanzo CD provides a multi-tenancy model to restrict what each Application can do using `AppProjects`, even though the control plane has higher privileges, however that creates a large attack surface since if Hanzo CD is compromised, attackers would have cluster-admin access to the cluster.
+Application syncs in Hanzo CD have the same privileges as the Hanzo CD control plane. As a consequence, in a multi-tenant setup, the Hanzo CD control plane privileges needs to match the tenant that needs the highest privileges. As an example, if a Hanzo CD instance has 10 Applications and only one of them requires admin privileges, then the Hanzo CD control plane must have admin privileges in order to be able to sync that one Application. Hanzo CD provides a multi-tenancy model to restrict what each Application can do using `AppProjects`, even though the control plane has higher privileges, however that creates a large attack surface since if Hanzo CD is compromised, attackers would have cluster-admin access to the cluster.
 
 The goal of this proposal is to perform the Application sync as a different user using impersonation and use the service account provided in the cluster config purely for control plane operations.
 
@@ -60,7 +60,7 @@ This proposal would allow Hanzo CD administrators to manage the cluster permissi
 ### Assumptions
 
 - Namespaces are pre-populated with one or more `ServiceAccounts` that define the permissions for each `AppProject`.
-- Many users prefer to control access to kubernetes resources through kubernetes RBAC constructs instead of Argo specific constructs.
+- Many users prefer to control access to kubernetes resources through kubernetes RBAC constructs instead of Hanzo CD specific constructs.
 - Each tenant is generally given access to a specific namespace along with a service account, role or cluster role and role binding to control access to that namespace. 
 - `Applications` created by a tenant manage namespaced resources.
 - An `AppProject` can either be mapped to a single tenant or multiple related tenants and the respective destinations that needs to be managed via the `AppProject`, needs to be configured.
@@ -78,7 +78,7 @@ None
 
 ## Proposal
 
-As part of this proposal, it would be possible for an Hanzo CD Admin to specify a service account name in `AppProjects` CR for a single or a group of destinations. A destination is uniquely identified by a target cluster and a namespace combined.
+As part of this proposal, it would be possible for a Hanzo CD Admin to specify a service account name in `AppProjects` CR for a single or a group of destinations. A destination is uniquely identified by a target cluster and a namespace combined.
 
 When applications gets synced, based on its destination (target cluster and namespace combination), the `defaultServiceAccount` configured in the `AppProject` will be selected and used for impersonation when executing the kubectl commands for the sync operation.
 
@@ -629,16 +629,7 @@ spec:
         - edit
 ```
 
-### Related issue
-
-https://github.com/argoproj/argo-cd/issues/7689
-
-
 ### Related links
 
 https://kubernetes.io/docs/reference/access-authn-authz/authentication/#user-impersonation
 
-### Prior art
-
-https://github.com/hanzoai/cd/pull/3377
-https://github.com/hanzoai/cd/pull/7651

@@ -78,7 +78,7 @@ cd appset [flags]
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd appset create](cd_appset_create.md)	 - Create one or more ApplicationSets
 * [cd appset delete](cd_appset_delete.md)	 - Delete one or more ApplicationSets
 * [cd appset generate](cd_appset_generate.md)	 - Generate apps of ApplicationSet rendered templates

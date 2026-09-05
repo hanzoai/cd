@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Beta Feature (Since v3.5.0)**
 >
-> This is a [beta-quality](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta)
+> This is a beta-quality
 > feature that allows you to control the service account used for the sync operation. The configured service account
 > could have lesser privileges required for creating resources compared to the highly privileged access required for
 > the control plane operations.
@@ -15,7 +15,7 @@
 
 Hanzo CD supports syncing `Application` resources using the same service account used for its control plane operations. This feature enables users to decouple service account used for application sync from the service account used for control plane operations.
 
-By default, application syncs in Hanzo CD have the same privileges as the Hanzo CD control plane. As a consequence, in a multi-tenant setup, the Hanzo CD control plane privileges needs to match the tenant that needs the highest privileges. As an example, if an Hanzo CD instance has 10 Applications and only one of them requires admin privileges, then the Hanzo CD control plane must have admin privileges in order to be able to sync that one Application. This provides an opportunity for malicious tenants to gain admin level access. Hanzo CD provides a multi-tenancy model to restrict what each `Application` is authorized to do using `AppProjects`, however it is not secure enough and if Hanzo CD is compromised, attackers will easily gain `cluster-admin` access to the cluster.
+By default, application syncs in Hanzo CD have the same privileges as the Hanzo CD control plane. As a consequence, in a multi-tenant setup, the Hanzo CD control plane privileges needs to match the tenant that needs the highest privileges. As an example, if a Hanzo CD instance has 10 Applications and only one of them requires admin privileges, then the Hanzo CD control plane must have admin privileges in order to be able to sync that one Application. This provides an opportunity for malicious tenants to gain admin level access. Hanzo CD provides a multi-tenancy model to restrict what each `Application` is authorized to do using `AppProjects`, however it is not secure enough and if Hanzo CD is compromised, attackers will easily gain `cluster-admin` access to the cluster.
 
 Some manual steps will need to be performed by the Hanzo CD administrator in order to enable this feature, as it is disabled by default.
 
@@ -41,7 +41,7 @@ A typical tenant onboarding process looks like below:
 2. The platform admin creates one or more Role(s) to manage kubernetes resources in the tenant namespace
 3. The platform admin creates one or more RoleBinding(s) to map the service account to the role(s) created in the previous steps.
 4. The platform admin can choose to use either the [apps-in-any-namespace](./app-any-namespace.md) feature or provide access to tenants to create applications in the Hanzo CD control plane namespace.
-5. If the platform admin chooses apps-in-any-namespace feature, tenants can self-service their Argo applications in their respective tenant namespaces and no additional access needs to be provided for the control plane namespace.
+5. If the platform admin chooses apps-in-any-namespace feature, tenants can self-service their Hanzo CD applications in their respective tenant namespaces and no additional access needs to be provided for the control plane namespace.
 
 ## Implementation details
 

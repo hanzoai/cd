@@ -1,6 +1,6 @@
 # Custom Styles
 
-Hanzo CD imports the majority of its UI stylesheets from the [argo-ui](https://github.com/argoproj/argo-ui) project.
+Hanzo CD imports the majority of its UI stylesheets from its in-tree [component kit](https://github.com/hanzoai/cd/tree/main/ui/src/kit).
 Sometimes, it may be desired to customize certain components of the UI for branding purposes or to
 help distinguish between multiple instances of Hanzo CD running in different environments.
 
@@ -94,7 +94,7 @@ Note that the CSS file should be mounted within a subdirectory of the "/shared/a
 [cd-cmd-params-cm.yaml](./cd-cmd-params-cm.yaml) ConfigMap.
 
 ## Developing Style Overlays
-The styles specified in the injected CSS file should be specific to components and classes defined in [argo-ui](https://github.com/argoproj/argo-ui).
+The styles specified in the injected CSS file should be specific to components and classes defined in the [component kit](https://github.com/hanzoai/cd/tree/main/ui/src/kit).
 It is recommended to test out the styles you wish to apply first by making use of your browser's built-in developer tools.  For a more full-featured
 experience, you may wish to build a separate project using the [Hanzo CD UI dev server](https://webpack.js.org/configuration/dev-server/).
 

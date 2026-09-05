@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Beta Feature (Since v3.5.0)**
 >
-> This is a [beta-quality](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta)
+> This is a beta-quality
 > feature that pushes hydrated manifests to git before syncing them to the cluster.
 
 Tools like Helm and Kustomize allow users to express their Kubernetes manifests in a more concise and reusable way
@@ -521,7 +521,7 @@ Both values are optional. If only one is configured, the configured value will b
 
 ### Credential Templates
 
-Credential templates allow a single credential to be used for multiple repositories. The source hydrator supports credential templates. For example, if you setup credential templates for the URL prefix `https://github.com/argoproj`, these credentials will be used for all repositories with this URL as prefix (e.g. `https://github.com/hanzocd/example-apps`) that do not have their own credentials configured.
+Credential templates allow a single credential to be used for multiple repositories. The source hydrator supports credential templates. For example, if you setup credential templates for the URL prefix `https://github.com/hanzocd`, these credentials will be used for all repositories with this URL as prefix (e.g. `https://github.com/hanzocd/example-apps`) that do not have their own credentials configured.
 For more information, please refer to [Credential templates](private-repositories.md#credential-templates).
 An example of repo-write-creds secret.
 
@@ -535,7 +535,7 @@ metadata:
     cd.hanzo.ai/secret-type: repo-write-creds
 stringData:
   type: git
-  url: https://github.com/argoproj
+  url: https://github.com/hanzocd
   password: my-password
   username: my-username
 ```
@@ -650,7 +650,7 @@ the dry commits for which the hydrator actually ran; it does not advance for dry
 If you consume `hydrator.metadata` notes, account for this: only dry commits that match an Application's
 `manifest-generate-paths` (or all dry commits, when the annotation is unset) are attested on its hydrated branch.
 
-A planned enhancement ([#28556](https://github.com/argoproj/argo-cd/issues/28556)) will add a lightweight
+A planned enhancement will add a lightweight
 commit-server endpoint to advance the git note without a full hydration run (no repo-server render or manifest
 disk compare).
 

@@ -1,13 +1,13 @@
 # Feature Maturity
 
-Hanzo CD features may be marked with a certain [status](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md)
-to indicate their stability and maturity. These are the statuses of non-stable features in Hanzo CD:
+Hanzo CD features may be marked with a certain status to indicate their stability and maturity.
+These are the statuses of non-stable features in Hanzo CD:
 
 > [!CAUTION]
 > **Using Alpha/Beta features risks**
 >
 > Alpha and Beta features do not guarantee backward compatibility and are subject to breaking changes in the future releases.
-> It is highly suggested for Argo users not to rely on these features in production environments, especially if you do not have
+> It is highly suggested not to rely on these features in production environments, especially if you do not have
 > control over the Hanzo CD upgrades.
 > 
 > Furthermore, removal of Alpha features may modify your resources to an unpredictable state after Hanzo CD is upgraded.

@@ -83,8 +83,8 @@ The `.cd-source` is trying to solve two following main use cases:
 
 - Provide the unified way to "override" application parameters in Git and enable the "write back" feature
 for projects like [cd-image-updater](https://github.com/argoproj-labs/cd-image-updater).
-- Support "discovering" applications in the Git repository by projects like [applicationset](https://github.com/argoproj/applicationset)
-(see [git files generator](https://github.com/hanzoai/cd/blob/master/applicationset/examples/git-generator-files-discovery/git-generator-files.yaml))
+- Support "discovering" applications in the Git repository via the built-in [ApplicationSet](../operator-manual/applicationset/index.md) controller
+(see [git files generator](https://github.com/hanzoai/cd/blob/main/applicationset/examples/git-generator-files-discovery/git-generator-files.yaml))
 
 You can also store parameter overrides in an application specific file, if you
 are sourcing multiple applications from a single path in your repository.

@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Beta Feature (Since 2.7.0)**
 >
-> This feature is in the [Beta](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#beta) stage.
+> This feature is in the Beta stage.
 > It is generally considered stable, but there may be unhandled edge cases.
 
 ## Overview
@@ -18,7 +18,7 @@ requests before forwarding to the backend service.
 
 ## Configuration
 
-As proxy extension is in [Alpha][1] phase, the feature is disabled by
+As proxy extension is in Alpha phase, the feature is disabled by
 default. To enable it, it is necessary to configure the feature flag
 in Hanzo CD command parameters. The easiest way to properly enable
 this feature flag is by adding the `server.enable.proxy.extension` key
@@ -389,6 +389,5 @@ In the example above, all requests sent to
 the [cd-secret](../../operator-manual/cd-secret-yaml.md) with
 key `some-extension.authorization.header`
 
-[1]: https://github.com/argoproj/argoproj/blob/master/community/feature-status.md
-[2]: https://argo-cd.readthedocs.io/en/stable/operator-manual/cd-cm.yaml
+[2]: ../../operator-manual/cd-cm.yaml
 [3]: ../../operator-manual/rbac.md#the-extensions-resource

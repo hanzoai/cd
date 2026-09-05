@@ -72,8 +72,8 @@ Declaratively we can do something like this:
 ```yaml
 spec:
   sourceRepos:
-    # Do not use the test repo in argoproj
-    - '!ssh://git@GITHUB.com:argoproj/test'
+    # Do not use the test repo in hanzocd
+    - '!ssh://git@GITHUB.com:hanzocd/test'
     # Nor any Gitlab repo under group/ 
     - '!https://gitlab.com/group/**'
     # Any other repo is fine though
@@ -321,7 +321,7 @@ projectName: `proj-global-test` should be replaced with your own global project 
 
 ## Project scoped Repositories and Clusters
 
-Normally, an Hanzo CD admin creates a project and decides in advance which clusters and Git repositories it defines. However, this creates a problem in scenarios where a developer wants to add a repository or cluster after the initial creation of the project. This forces the developer to contact their Hanzo CD admin again to update the project definition.
+Normally, a Hanzo CD admin creates a project and decides in advance which clusters and Git repositories it defines. However, this creates a problem in scenarios where a developer wants to add a repository or cluster after the initial creation of the project. This forces the developer to contact their Hanzo CD admin again to update the project definition.
 
 It is possible to offer a self-service process for developers so that they can add a repository and/or cluster in a project on their own even after the initial creation of the project.
 
