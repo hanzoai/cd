@@ -795,7 +795,7 @@ func newFakeClient(ns string) *kubefake.Clientset {
 		"app.kubernetes.io/part-of": "cd",
 	}}}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: ns,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",

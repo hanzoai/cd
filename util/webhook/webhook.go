@@ -87,7 +87,7 @@ type appRefreshRequest struct {
 	hydrateType  *v1alpha1.HydrateType
 }
 
-type ArgoCDWebhookHandler struct {
+type Handler struct {
 	sync.WaitGroup                // for testing
 	repoCache                     *cache.Cache
 	serverCache                   *servercache.Cache
@@ -97,7 +97,7 @@ type ArgoCDWebhookHandler struct {
 	appClientset                  appclientset.Interface
 	appsLister                    alpha1.ApplicationLister
 	parsers                       []Extractor
-	settings                      *settings.ArgoCDSettings
+	settings                      *settings.Settings
 	settingsSrc                   settingsSource
 	queue                         chan any
 	refreshQueue                  workqueue.TypedDelayingInterface[*appRefreshRequest]
@@ -106,7 +106,7 @@ type ArgoCDWebhookHandler struct {
 	webhookRefreshJitterThreshold int
 }
 
-func NewHandler(namespace string, applicationNamespaces []string, webhookParallelism int, webhookRefreshWorkers int, appClientset appclientset.Interface, appsLister alpha1.ApplicationLister, set *settings.ArgoCDSettings, settingsSrc settingsSource, repoCache *cache.Cache, serverCache *servercache.Cache, argoDB db.DB, maxWebhookPayloadSizeB int64, webhookRefreshJitter time.Duration, webhookRefreshJitterThreshold int) *ArgoCDWebhookHandler {
+func NewHandler(namespace string, applicationNamespaces []string, webhookParallelism int, webhookRefreshWorkers int, appClientset appclientset.Interface, appsLister alpha1.ApplicationLister, set *settings.Settings, settingsSrc settingsSource, repoCache *cache.Cache, serverCache *servercache.Cache, argoDB db.DB, maxWebhookPayloadSizeB int64, webhookRefreshJitter time.Duration, webhookRefreshJitterThreshold int) *Handler {
 	githubWebhook, err := github.New(github.Options.Secret(set.GetWebhookGitHubSecret()))
 	if err != nil {
 		log.Warnf("Unable to init the GitHub webhook")
@@ -158,7 +158,7 @@ func NewHandler(namespace string, applicationNamespaces []string, webhookParalle
 	log.Debugf("webhookRefreshJitter=%v", webhookRefreshJitter)
 	log.Debugf("webhookRefreshJitterThreshold=%d", webhookRefreshJitterThreshold)
 
-	acdWebhook := ArgoCDWebhookHandler{
+	acdWebhook := Handler{
 		ns:                            namespace,
 		appNs:                         applicationNamespaces,
 		appClientset:                  appClientset,
@@ -182,7 +182,7 @@ func NewHandler(namespace string, applicationNamespaces []string, webhookParalle
 	return &acdWebhook
 }
 
-func (a *ArgoCDWebhookHandler) startWorkerPool(webhookParallelism int) {
+func (a *Handler) startWorkerPool(webhookParallelism int) {
 	compLog := log.WithField("component", "api-server-webhook")
 	for range webhookParallelism {
 		a.Go(func() {
@@ -198,7 +198,7 @@ func (a *ArgoCDWebhookHandler) startWorkerPool(webhookParallelism int) {
 }
 
 // startRefreshWorkers starts worker goroutines to process app refresh requests from the refresh queue
-func (a *ArgoCDWebhookHandler) startRefreshWorkers(count int) {
+func (a *Handler) startRefreshWorkers(count int) {
 	for range count {
 		a.Go(func() {
 			for {
@@ -214,7 +214,7 @@ func (a *ArgoCDWebhookHandler) startRefreshWorkers(count int) {
 }
 
 // processAppRefresh processes a single app refresh request
-func (a *ArgoCDWebhookHandler) processAppRefresh(req *appRefreshRequest) {
+func (a *Handler) processAppRefresh(req *appRefreshRequest) {
 	namespacedAppInterface := a.appClientset.ArgoprojV1alpha1().Applications(req.appNamespace)
 	_, err := cd.RefreshApp(namespacedAppInterface, req.appName, v1alpha1.RefreshTypeNormal, req.hydrateType)
 	if err != nil {
@@ -240,7 +240,7 @@ func ParseRevision(ref string) string {
 
 // affectedRevisionInfo examines a payload from a webhook event, and extracts the repo web URL,
 // the revision, and whether, or not this affected origin/HEAD (the default branch of the repository)
-func (a *ArgoCDWebhookHandler) affectedRevisionInfo(payloadIf any) (webURLs []string, revision string, change changeInfo, touchedHead bool, changedFiles []string) {
+func (a *Handler) affectedRevisionInfo(payloadIf any) (webURLs []string, revision string, change changeInfo, touchedHead bool, changedFiles []string) {
 	switch payload := payloadIf.(type) {
 	case azuredevops.GitPushEvent:
 		// See: https://learn.microsoft.com/en-us/azure/devops/service-hooks/events?view=azure-devops#git.push
@@ -401,7 +401,7 @@ type changeInfo struct {
 }
 
 // HandleEvent handles webhook events for repo push events
-func (a *ArgoCDWebhookHandler) HandleEvent(payload any) {
+func (a *Handler) HandleEvent(payload any) {
 	webhookHandlersInFlight.Inc()
 	defer webhookHandlersInFlight.Dec()
 
@@ -583,7 +583,7 @@ func getURLRegex(originalURL string, regexpFormat string) (*regexp.Regexp, error
 	return repoRegexp, nil
 }
 
-func (a *ArgoCDWebhookHandler) storePreviouslyCachedManifests(app *v1alpha1.Application, change changeInfo, trackingMethod string, appInstanceLabelKey string, installationID string, source v1alpha1.ApplicationSource) error {
+func (a *Handler) storePreviouslyCachedManifests(app *v1alpha1.Application, change changeInfo, trackingMethod string, appInstanceLabelKey string, installationID string, source v1alpha1.ApplicationSource) error {
 	destCluster, err := cd.GetDestinationCluster(context.Background(), app.Spec.Destination, a.db)
 	if err != nil {
 		return fmt.Errorf("error validating destination: %w", err)
@@ -632,7 +632,7 @@ func (a *ArgoCDWebhookHandler) storePreviouslyCachedManifests(app *v1alpha1.Appl
 
 // lookupRepository returns a repository with its credentials for a given URL. If there are no matching repository secret found,
 // then nil repository is returned.
-func (a *ArgoCDWebhookHandler) lookupRepository(ctx context.Context, repoURL string) (*v1alpha1.Repository, error) {
+func (a *Handler) lookupRepository(ctx context.Context, repoURL string) (*v1alpha1.Repository, error) {
 	repositories, err := a.db.ListRepositories(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error listing repositories: %w", err)
@@ -774,7 +774,7 @@ func isHeadTouched(ctx context.Context, bbClient *bb.Client, owner, repoSlug, re
 	return bbRepo.Mainbranch.Name == revision, nil
 }
 
-func (a *ArgoCDWebhookHandler) Handler(w http.ResponseWriter, r *http.Request) {
+func (a *Handler) Handler(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, a.maxWebhookPayloadSizeB)
 	payload, handled, err := a.processWebhook(r)
 	if !handled {
@@ -835,7 +835,7 @@ func isParsingPayloadError(err error) bool {
 // The handled return is true when a parser claimed the request, regardless of
 // whether parsing produced a payload or an error; callers use it to distinguish
 // "unknown webhook event" (false) from "claimed but skipped" (true, nil, nil).
-func (a *ArgoCDWebhookHandler) processWebhook(r *http.Request) (any, bool, error) {
+func (a *Handler) processWebhook(r *http.Request) (any, bool, error) {
 	for _, p := range a.parsers {
 		if p.CanHandle(r) {
 			payload, err := p.Parse(r)
@@ -847,7 +847,7 @@ func (a *ArgoCDWebhookHandler) processWebhook(r *http.Request) (any, bool, error
 }
 
 // Shutdown gracefully shuts down the webhook handler by closing queues and waiting for workers
-func (a *ArgoCDWebhookHandler) Shutdown() {
+func (a *Handler) Shutdown() {
 	close(a.queue)
 	a.refreshQueue.ShutDownWithDrain()
 	a.Wait()

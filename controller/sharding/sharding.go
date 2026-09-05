@@ -310,12 +310,12 @@ func GetOrUpdateShardFromConfigMap(kubeClient kubernetes.Interface, settingsMgr 
 	}
 
 	// fetch the shard mapping configMap
-	shardMappingCM, err := kubeClient.CoreV1().ConfigMaps(settingsMgr.GetNamespace()).Get(context.Background(), common.ArgoCDAppControllerShardConfigMapName, metav1.GetOptions{})
+	shardMappingCM, err := kubeClient.CoreV1().ConfigMaps(settingsMgr.GetNamespace()).Get(context.Background(), common.AppControllerShardConfigMapName, metav1.GetOptions{})
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			return -1, fmt.Errorf("error getting sharding config map: %w", err)
 		}
-		log.Infof("shard mapping configmap %s not found. Creating default shard mapping configmap.", common.ArgoCDAppControllerShardConfigMapName)
+		log.Infof("shard mapping configmap %s not found. Creating default shard mapping configmap.", common.AppControllerShardConfigMapName)
 
 		// if the shard is not set as an environment variable, set the default value of shard to 0 for generating default CM
 		if shard == -1 {
@@ -421,7 +421,7 @@ func getOrUpdateShardNumberForController(shardMappingData []shardApplicationCont
 func generateDefaultShardMappingCM(namespace, hostname string, replicas, shard int) (*corev1.ConfigMap, error) {
 	shardingCM := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDAppControllerShardConfigMapName,
+			Name:      common.AppControllerShardConfigMapName,
 			Namespace: namespace,
 		},
 		Data: map[string]string{},

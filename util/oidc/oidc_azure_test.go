@@ -271,7 +271,7 @@ func TestGetUserGroupsFromAzureOverageClaim(t *testing.T) {
 
 			signature, err := util.MakeSignature(32)
 			require.NoError(t, err)
-			cdSettings := &settings.ArgoCDSettings{
+			cdSettings := &settings.Settings{
 				ServerSignature: signature,
 				OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 			}
@@ -323,7 +323,7 @@ func TestCacheAzureGroupsOverageResponse(t *testing.T) {
 	t.Run("successful cache write is readable", func(t *testing.T) {
 		signature, err := util.MakeSignature(32)
 		require.NoError(t, err)
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			ServerSignature: signature,
 			OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 		}
@@ -354,7 +354,7 @@ func TestCacheAzureGroupsOverageResponse(t *testing.T) {
 	t.Run("cache uses token expiry when no custom setting", func(t *testing.T) {
 		signature, err := util.MakeSignature(32)
 		require.NoError(t, err)
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			ServerSignature: signature,
 			OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 		}
@@ -378,7 +378,7 @@ func TestCacheAzureGroupsOverageResponse(t *testing.T) {
 		signature, err := util.MakeSignature(32)
 		require.NoError(t, err)
 		// Set a custom expiry of 1 minute, shorter than the 5-minute token expiry.
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			ServerSignature: signature,
 			OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true, "userGroupOverageClaimCacheExpiration": "1m"}}`,
 		}
@@ -425,7 +425,7 @@ func TestGetUserGroupsFromAzureOverageClaim_CacheHitAfterFetch(t *testing.T) {
 
 	signature, err := util.MakeSignature(32)
 	require.NoError(t, err)
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		ServerSignature: signature,
 		OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 	}
@@ -482,7 +482,7 @@ func TestGetUserGroupsFromAzureOverageClaim_CorruptCacheCallsAPI(t *testing.T) {
 
 	signature, err := util.MakeSignature(32)
 	require.NoError(t, err)
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		ServerSignature: signature,
 		OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 	}

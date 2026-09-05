@@ -22,7 +22,7 @@ import (
 // TestServerSideDiffMasksSecretData is a regression test for a CVE where the
 // ServerSideDiff endpoint returned plaintext Kubernetes Secret values from etcd.
 func TestServerSideDiffMasksSecretData(t *testing.T) {
-	closer, client, err := ArgoCDClientset.NewApplicationClient()
+	closer, client, err := CDClientset.NewApplicationClient()
 	require.NoError(t, err)
 	defer utilio.Close(closer)
 
@@ -64,7 +64,7 @@ func TestServerSideDiffMasksSecretData(t *testing.T) {
 			)
 			require.NoError(t, err)
 
-			// Fetch the masked live state as ArgoCD sees it.
+			// Fetch the masked live state as Hanzo CD sees it.
 			// This is the same data an attacker would read from managed-resources
 			// before crafting the ServerSideDiff request.
 			resources, err := client.ManagedResources(t.Context(), &applicationpkg.ResourcesQuery{
@@ -118,7 +118,7 @@ func TestServerSideDiffMasksSecretData(t *testing.T) {
 }
 
 // assertServerSideDiffSecretMasked verifies that every value in the data field of the
-// given secret JSON manifest consists only of '+' characters (ArgoCD's masking format).
+// given secret JSON manifest consists only of '+' characters (Hanzo CD's masking format).
 func assertServerSideDiffSecretMasked(t *testing.T, manifest, field string) {
 	t.Helper()
 	if manifest == "" || manifest == "null" {

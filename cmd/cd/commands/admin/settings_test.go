@@ -50,7 +50,7 @@ func newSettingsManager(ctx context.Context, data map[string]string) *settings.S
 	clientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "default",
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
 			},
@@ -59,7 +59,7 @@ func newSettingsManager(ctx context.Context, data map[string]string) *settings.S
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "default",
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 		},
 		Data: map[string][]byte{
 			"admin.password":   []byte("test"),

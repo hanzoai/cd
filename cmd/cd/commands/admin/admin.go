@@ -43,7 +43,7 @@ type cdAdditionalNamespaces struct {
 	applicationsetNamespaces []string
 }
 
-type argoCDClientsets struct {
+type cdClientsets struct {
 	configMaps      dynamic.ResourceInterface
 	secrets         dynamic.ResourceInterface
 	applications    dynamic.ResourceInterface
@@ -86,11 +86,11 @@ $ cd admin initial-password reset
 	return command
 }
 
-func newArgoCDClientsets(config *rest.Config, namespace string) *argoCDClientsets {
+func newArgoCDClientsets(config *rest.Config, namespace string) *cdClientsets {
 	dynamicIf, err := dynamic.NewForConfig(config)
 	errors.CheckError(err)
 
-	return &argoCDClientsets{
+	return &cdClientsets{
 		configMaps:      dynamicIf.Resource(configMapResource).Namespace(namespace),
 		secrets:         dynamicIf.Resource(secretResource).Namespace(namespace),
 		applications:    dynamicIf.Resource(applicationsResource).Namespace(namespace),
@@ -103,7 +103,7 @@ func newArgoCDClientsets(config *rest.Config, namespace string) *argoCDClientset
 // (e.g. cd-secret, repo credentials, or cluster credentials)
 func isArgoCDSecret(un unstructured.Unstructured) bool {
 	secretName := un.GetName()
-	if secretName == common.ArgoCDSecretName {
+	if secretName == common.SecretName {
 		return true
 	}
 	if labels := un.GetLabels(); labels != nil {
@@ -112,7 +112,7 @@ func isArgoCDSecret(un unstructured.Unstructured) bool {
 		}
 	}
 	if annotations := un.GetAnnotations(); annotations != nil {
-		if annotations[common.AnnotationKeyManagedBy] == common.AnnotationValueManagedByArgoCD {
+		if annotations[common.AnnotationKeyManagedBy] == common.AnnotationValueManagedByCD {
 			return true
 		}
 	}
@@ -122,7 +122,7 @@ func isArgoCDSecret(un unstructured.Unstructured) bool {
 // isArgoCDConfigMap returns true if the configmap name is one of argo cd's well known configmaps
 func isArgoCDConfigMap(name string) bool {
 	switch name {
-	case common.ArgoCDConfigMapName, common.ArgoCDRBACConfigMapName, common.ArgoCDKnownHostsConfigMapName, common.ArgoCDTLSCertsConfigMapName:
+	case common.ConfigMapName, common.RBACConfigMapName, common.KnownHostsConfigMapName, common.TLSCertsConfigMapName:
 		return true
 	}
 	return false
@@ -173,7 +173,7 @@ func getAdditionalNamespaces(ctx context.Context, configMapsClient dynamic.Resou
 	applicationNamespaces := make([]string, 0)
 	applicationsetNamespaces := make([]string, 0)
 
-	un, err := configMapsClient.Get(ctx, common.ArgoCDCmdParamsConfigMapName, metav1.GetOptions{})
+	un, err := configMapsClient.Get(ctx, common.CmdParamsConfigMapName, metav1.GetOptions{})
 	errors.CheckError(err)
 	var cm corev1.ConfigMap
 	err = runtime.DefaultUnstructuredConverter.FromUnstructured(un.Object, &cm)

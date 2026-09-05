@@ -16,13 +16,13 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	synccommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/kubetest"
 	"github.com/hanzoai/cd/util/vendored/sync"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -54,10 +54,10 @@ import (
 	servercache "github.com/hanzoai/cd/server/cache"
 	"github.com/hanzoai/cd/server/rbacpolicy"
 	"github.com/hanzoai/cd/test"
-	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/assets"
 	"github.com/hanzoai/cd/util/cache"
 	"github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/db"
 	"github.com/hanzoai/cd/util/grpc"
 	"github.com/hanzoai/cd/util/rbac"
@@ -226,7 +226,7 @@ func newTestAppServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforcer),
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, appinformer.WithNamespace(""), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
 	fakeProjLister := factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
 
-	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	f(enforcer)
 	enforcer.SetClaimsEnforcerFunc(rbacpolicy.NewRBACPolicyEnforcer(enforcer, fakeProjLister).EnforceClaims)
 
@@ -411,7 +411,7 @@ func newTestAppServerWithEnforcerConfigureWithBenchmark(b *testing.B, f func(*rb
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, appinformer.WithNamespace(""), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
 	fakeProjLister := factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
 
-	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	f(enforcer)
 	enforcer.SetClaimsEnforcerFunc(rbacpolicy.NewRBACPolicyEnforcer(enforcer, fakeProjLister).EnforceClaims)
 
@@ -988,7 +988,7 @@ func TestNoAppEnumeration(t *testing.T) {
 
 	t.Run("TerminateOperation", func(t *testing.T) {
 		// The sync operation is already started from the previous test. We just need to set the field that the
-		// controller would set if this were an actual Argo CD environment.
+		// controller would set if this were an actual Hanzo CD environment.
 		setSyncRunningOperationState(t, appServer)
 		_, err := appServer.TerminateOperation(adminCtx, &application.OperationTerminateRequest{Name: new("test")})
 		require.NoError(t, err)

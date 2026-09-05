@@ -148,7 +148,7 @@ func TestNewServer_MTLS_InvalidCACertContent(t *testing.T) {
 	assert.ErrorContains(t, err, "invalid cert data")
 }
 
-func newTestServer(t *testing.T, clientCAPath string, disableTLS bool) (*reposerver.ArgoCDRepoServer, error) {
+func newTestServer(t *testing.T, clientCAPath string, disableTLS bool) (*reposerver.Server, error) {
 	t.Helper()
 
 	metricsServer := metrics.NewMetricsServer()

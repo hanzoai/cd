@@ -106,7 +106,7 @@ test   true     login, apiKey`, output)
 	token, err := RunCli("account", "generate-token", "--account", "test")
 	errors.CheckError(err)
 
-	clientOpts := ArgoCDClientset.ClientOptions()
+	clientOpts := CDClientset.ClientOptions()
 	clientOpts.AuthToken = token
 	testAccountClientset := headless.NewClientOrDie(&clientOpts, &cobra.Command{})
 
@@ -122,7 +122,7 @@ test   true     login, apiKey`, output)
 func TestLoginBadCredentials(t *testing.T) {
 	EnsureCleanState(t)
 
-	closer, sessionClient := ArgoCDClientset.NewSessionClientOrDie()
+	closer, sessionClient := CDClientset.NewSessionClientOrDie()
 	defer utilio.Close(closer)
 
 	requests := []session.SessionCreateRequest{{
@@ -166,7 +166,7 @@ func TestAccountSessionToken(t *testing.T) {
 			assert.True(t, jwtutil.IsValid(token), "Token should be a valid JWT format")
 
 			// Verify the token can be used for authentication
-			clientOpts := ArgoCDClientset.ClientOptions()
+			clientOpts := CDClientset.ClientOptions()
 			clientOpts.AuthToken = token
 			testAccountClientset := headless.NewClientOrDie(&clientOpts, &cobra.Command{})
 

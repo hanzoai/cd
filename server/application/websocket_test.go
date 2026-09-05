@@ -54,7 +54,7 @@ func newEnforcer() *rbac.Enforcer {
 		},
 	})
 
-	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	return enforcer
 }
 

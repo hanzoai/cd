@@ -43,7 +43,7 @@ func (n netError) Temporary() bool { return false }
 func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *corev1.Secret)) (*fake.Clientset, *argosettings.SettingsManager) {
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -53,7 +53,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 	}
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",

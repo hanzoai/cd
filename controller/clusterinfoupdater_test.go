@@ -46,7 +46,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -56,7 +56,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 	}
 	argoCDSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: fakeNamespace,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -108,7 +108,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
 			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
@@ -116,7 +116,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 	}
 	argoCDSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: fakeNamespace,
 			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
@@ -128,7 +128,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 			Namespace: fakeNamespace,
 			Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 		},
 		Data: map[string][]byte{
@@ -163,7 +163,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 
 	emptyArgoCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
 			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
@@ -171,7 +171,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 	}
 	argoCDSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: fakeNamespace,
 			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
@@ -184,7 +184,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 				Namespace: fakeNamespace,
 				Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
 				Annotations: map[string]string{
-					common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+					common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 				},
 			},
 			Data: map[string][]byte{

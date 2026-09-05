@@ -303,14 +303,14 @@ var goodSecretswithCRLF = map[string]string{
 
 func Test_GenerateDexConfig(t *testing.T) {
 	t.Run("Empty settings", func(t *testing.T) {
-		s := settings.ArgoCDSettings{}
+		s := settings.Settings{}
 		config, err := GenerateDexConfigYAML(&s, false)
 		require.NoError(t, err)
 		assert.Nil(t, config)
 	})
 
 	t.Run("Invalid URL", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       invalidURL,
 			DexConfig: goodDexConfig,
 		}
@@ -320,7 +320,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("No URL set", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "",
 			DexConfig: "invalidyaml",
 		}
@@ -330,7 +330,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Invalid YAML", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: "invalidyaml",
 		}
@@ -340,7 +340,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Valid YAML but incorrect Dex config", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: malformedDexConfig,
 		}
@@ -350,7 +350,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Valid YAML but incorrect Dex config", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: badDexConfig,
 		}
@@ -360,7 +360,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Valid YAML and correct Dex config", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: goodDexConfig,
 		}
@@ -370,7 +370,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Secret dereference", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: goodDexConfig,
 			Secrets:   goodSecrets,
@@ -397,7 +397,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Secret dereference with extra white space", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: goodDexConfig,
 			Secrets:   goodSecretswithCRLF,
@@ -424,7 +424,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Logging level", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: goodDexConfig,
 		}
@@ -452,7 +452,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Logging level with config", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: goodDexConfigWithLogger,
 		}
@@ -491,7 +491,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 	})
 
 	t.Run("Custom static clients", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: customStaticClientDexConfig,
 			Secrets:   goodSecretswithCRLF,
@@ -513,7 +513,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 		assert.Len(t, customClient["redirectURIs"].([]any), 1)
 	})
 	t.Run("Custom static clients secret dereference with trailing CRLF", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: customStaticClientDexConfig,
 			Secrets:   goodSecretswithCRLF,
@@ -534,7 +534,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 		assert.Equal(t, "barfoo", customClient["secret"])
 	})
 	t.Run("Override dex oauth2 configuration", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: goodDexConfigWithOauthOverrides,
 		}
@@ -557,7 +557,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 		assert.True(t, skipApprScr)
 	})
 	t.Run("Override dex oauth2 with enabled ApprovalScreen", func(t *testing.T) {
-		s := settings.ArgoCDSettings{
+		s := settings.Settings{
 			URL:       "http://localhost",
 			DexConfig: goodDexConfigWithEnabledApprovalScreen,
 		}
@@ -709,8 +709,8 @@ func Test_GenerateDexConfigYAML(t *testing.T) {
 	})
 }
 
-func argoCDSettings(dexConfig string, secrets map[string]string) *settings.ArgoCDSettings {
-	return &settings.ArgoCDSettings{
+func argoCDSettings(dexConfig string, secrets map[string]string) *settings.Settings {
+	return &settings.Settings{
 		URL:       "http://localhost",
 		DexConfig: dexConfig,
 		Secrets:   secrets,

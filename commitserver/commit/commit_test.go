@@ -131,7 +131,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		// When only email is provided, name defaults to "Argo CD"
+		// When only email is provided, name defaults to "Hanzo CD"
 		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "custom@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()

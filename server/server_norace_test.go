@@ -24,7 +24,7 @@ func TestUserAgent(t *testing.T) {
 	t.Parallel()
 	// !race:
 	// A data race in go-client's `shared_informer.go`, between `sharedProcessor.run(...)` and itself. Based on
-	// the data race, it APPEARS to be intentional, but in any case it's nothing we are doing in Argo CD
+	// the data race, it APPEARS to be intentional, but in any case it's nothing we are doing in Hanzo CD
 	// that is causing this issue.
 
 	s, closer := fakeServer(t)
@@ -50,16 +50,16 @@ func TestUserAgent(t *testing.T) {
 	tests := []testData{
 		{
 			// Reject out-of-date user-agent
-			userAgent: common.ArgoCDUserAgentName + "/0.10.0",
+			userAgent: common.UserAgentName + "/0.10.0",
 			errorMsg:  "unsatisfied client version constraint",
 		},
 		{
 			// Accept up-to-date user-agent
-			userAgent: fmt.Sprintf("%s/%s", common.ArgoCDUserAgentName, currentVersion),
+			userAgent: fmt.Sprintf("%s/%s", common.UserAgentName, currentVersion),
 		},
 		{
 			// Accept up-to-date pre-release user-agent
-			userAgent: fmt.Sprintf("%s/%s-rc1", common.ArgoCDUserAgentName, currentVersion),
+			userAgent: fmt.Sprintf("%s/%s-rc1", common.UserAgentName, currentVersion),
 		},
 		{
 			// Permit custom clients

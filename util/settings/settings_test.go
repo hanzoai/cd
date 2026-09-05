@@ -31,7 +31,7 @@ import (
 func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *corev1.Secret)) (*fake.Clientset, *SettingsManager) {
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -41,7 +41,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 	}
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -60,7 +60,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 
 func TestDocumentedArgoCDConfigMapIsValid(t *testing.T) {
 	var cdCM *corev1.ConfigMap
-	settings := ArgoCDSettings{}
+	settings := Settings{}
 	data, err := os.ReadFile("../../docs/operator-manual/cd-cm.yaml")
 	require.NoError(t, err)
 	err = yaml.Unmarshal(data, &cdCM)
@@ -71,16 +71,16 @@ func TestDocumentedArgoCDConfigMapIsValid(t *testing.T) {
 func TestGetConfigMapByName(t *testing.T) {
 	t.Run("data is never nil", func(t *testing.T) {
 		_, settingsManager := fixtures(t.Context(), nil)
-		cm, err := settingsManager.GetConfigMapByName(common.ArgoCDConfigMapName)
+		cm, err := settingsManager.GetConfigMapByName(common.ConfigMapName)
 		require.NoError(t, err)
 		assert.NotNil(t, cm.Data)
 	})
 	t.Run("cannot update informer value", func(t *testing.T) {
 		_, settingsManager := fixtures(t.Context(), nil)
-		cm1, err := settingsManager.GetConfigMapByName(common.ArgoCDConfigMapName)
+		cm1, err := settingsManager.GetConfigMapByName(common.ConfigMapName)
 		require.NoError(t, err)
 		cm1.Data["test"] = "invalid"
-		cm2, err := settingsManager.GetConfigMapByName(common.ArgoCDConfigMapName)
+		cm2, err := settingsManager.GetConfigMapByName(common.ConfigMapName)
 		require.NoError(t, err)
 		assert.NotContains(t, cm2.Data, "test")
 	})
@@ -89,16 +89,16 @@ func TestGetConfigMapByName(t *testing.T) {
 func TestGetSecretByName(t *testing.T) {
 	t.Run("data is never nil", func(t *testing.T) {
 		_, settingsManager := fixtures(t.Context(), nil, func(secret *corev1.Secret) { secret.Data = nil })
-		secret, err := settingsManager.GetSecretByName(common.ArgoCDSecretName)
+		secret, err := settingsManager.GetSecretByName(common.SecretName)
 		require.NoError(t, err)
 		assert.NotNil(t, secret.Data)
 	})
 	t.Run("cannot update informer value", func(t *testing.T) {
 		_, settingsManager := fixtures(t.Context(), nil)
-		s1, err := settingsManager.GetSecretByName(common.ArgoCDSecretName)
+		s1, err := settingsManager.GetSecretByName(common.SecretName)
 		require.NoError(t, err)
 		s1.Data["test"] = []byte("invalid")
-		s2, err := settingsManager.GetSecretByName(common.ArgoCDSecretName)
+		s2, err := settingsManager.GetSecretByName(common.SecretName)
 		require.NoError(t, err)
 		assert.NotContains(t, s2.Data, "test")
 	})
@@ -190,7 +190,7 @@ func TestGetSettings_InClusterIsEnabledWithMissingServerSecretKey(t *testing.T) 
 	kubeClient := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -200,7 +200,7 @@ func TestGetSettings_InClusterIsEnabledWithMissingServerSecretKey(t *testing.T) 
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -934,7 +934,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -944,7 +944,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -964,7 +964,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -976,7 +976,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -996,7 +996,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1008,7 +1008,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1131,7 +1131,7 @@ userInfoBaseURL: "://users.example.com"
 			kubeClient := fake.NewClientset(
 				&corev1.ConfigMap{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      common.ArgoCDConfigMapName,
+						Name:      common.ConfigMapName,
 						Namespace: "default",
 						Labels: map[string]string{
 							"app.kubernetes.io/part-of": "cd",
@@ -1141,7 +1141,7 @@ userInfoBaseURL: "://users.example.com"
 				},
 				&corev1.Secret{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      common.ArgoCDSecretName,
+						Name:      common.SecretName,
 						Namespace: "default",
 						Labels: map[string]string{
 							"app.kubernetes.io/part-of": "cd",
@@ -1161,13 +1161,13 @@ userInfoBaseURL: "://users.example.com"
 
 func TestRedirectURL(t *testing.T) {
 	cases := map[string][]string{
-		"https://localhost:4000":         {"https://localhost:4000/auth/callback", "https://localhost:4000/v1/dex/callback"},
-		"https://localhost:4000/":        {"https://localhost:4000/auth/callback", "https://localhost:4000/v1/dex/callback"},
+		"https://localhost:4000":     {"https://localhost:4000/auth/callback", "https://localhost:4000/v1/dex/callback"},
+		"https://localhost:4000/":    {"https://localhost:4000/auth/callback", "https://localhost:4000/v1/dex/callback"},
 		"https://localhost:4000/cd":  {"https://localhost:4000/cd/auth/callback", "https://localhost:4000/cd/v1/dex/callback"},
 		"https://localhost:4000/cd/": {"https://localhost:4000/cd/auth/callback", "https://localhost:4000/cd/v1/dex/callback"},
 	}
 	for given, expected := range cases {
-		settings := ArgoCDSettings{URL: given}
+		settings := Settings{URL: given}
 		redirectURL, err := settings.RedirectURL()
 		require.NoError(t, err)
 		assert.Equal(t, expected[0], redirectURL)
@@ -1203,7 +1203,7 @@ func TestGetOIDCSecretTrim(t *testing.T) {
 	kubeClient := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -1215,7 +1215,7 @@ func TestGetOIDCSecretTrim(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -1249,7 +1249,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1261,7 +1261,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1295,7 +1295,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1307,7 +1307,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1342,7 +1342,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1354,7 +1354,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1384,7 +1384,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 	t.Run("Does not parse TLS cert key pair on cache hit", func(t *testing.T) {
 		cm := &corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -1393,7 +1393,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		}
 		secret := &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:            common.ArgoCDSecretName,
+				Name:            common.SecretName,
 				Namespace:       "default",
 				ResourceVersion: "1",
 				Labels: map[string]string{
@@ -1442,7 +1442,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 	t.Run("Parses TLS cert key pair when TLS secret update causes cache miss", func(t *testing.T) {
 		cm := &corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -1451,7 +1451,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		}
 		secret := &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:            common.ArgoCDSecretName,
+				Name:            common.SecretName,
 				Namespace:       "default",
 				ResourceVersion: "1",
 				Labels: map[string]string{
@@ -1512,7 +1512,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1521,7 +1521,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:            common.ArgoCDSecretName,
+					Name:            common.SecretName,
 					Namespace:       "default",
 					ResourceVersion: "1",
 					Labels: map[string]string{
@@ -1571,7 +1571,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1580,7 +1580,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:            common.ArgoCDSecretName,
+					Name:            common.SecretName,
 					Namespace:       "default",
 					ResourceVersion: "1",
 					Labels: map[string]string{
@@ -1630,7 +1630,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 		kubeClient := fake.NewClientset(
 			&corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1642,7 +1642,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 			},
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1701,7 +1701,7 @@ requestedIDTokenClaims: {"groups": {"essential": true}}`,
 	}
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -1711,7 +1711,7 @@ requestedIDTokenClaims: {"groups": {"essential": true}}`,
 	}
 	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: "default",
 		},
 		Data: map[string][]byte{
@@ -1773,7 +1773,7 @@ func TestGetEnableManifestGeneration(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			cm := &corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1783,7 +1783,7 @@ func TestGetEnableManifestGeneration(t *testing.T) {
 			}
 			cdSecret := &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -1831,7 +1831,7 @@ func TestGetHelmSettings(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			cm := &corev1.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
+					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "cd",
@@ -1841,7 +1841,7 @@ func TestGetHelmSettings(t *testing.T) {
 			}
 			cdSecret := &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDSecretName,
+					Name:      common.SecretName,
 					Namespace: "default",
 				},
 				Data: map[string][]byte{
@@ -1878,12 +1878,12 @@ func TestArgoCDSettings_OIDCTLSConfig_OIDCTLSInsecureSkipVerify(t *testing.T) {
 
 	testCases := []struct {
 		name               string
-		settings           *ArgoCDSettings
+		settings           *Settings
 		expectNilTLSConfig bool
 	}{
 		{
 			name: "OIDC configured, no root CA",
-			settings: &ArgoCDSettings{OIDCConfigRAW: `name: Test
+			settings: &Settings{OIDCConfigRAW: `name: Test
 issuer: aaa
 clientID: xxx
 clientSecret: yyy
@@ -1891,7 +1891,7 @@ requestedScopes: ["oidc"]`},
 		},
 		{
 			name: "OIDC configured, valid root CA",
-			settings: &ArgoCDSettings{OIDCConfigRAW: fmt.Sprintf(`
+			settings: &Settings{OIDCConfigRAW: fmt.Sprintf(`
 name: Test
 issuer: aaa
 clientID: xxx
@@ -1903,7 +1903,7 @@ rootCA: |
 		},
 		{
 			name: "OIDC configured, invalid root CA",
-			settings: &ArgoCDSettings{OIDCConfigRAW: `name: Test
+			settings: &Settings{OIDCConfigRAW: `name: Test
 issuer: aaa
 clientID: xxx
 clientSecret: yyy
@@ -1912,12 +1912,12 @@ rootCA: "invalid"`},
 		},
 		{
 			name:               "OIDC not configured, no cert configured",
-			settings:           &ArgoCDSettings{},
+			settings:           &Settings{},
 			expectNilTLSConfig: true,
 		},
 		{
 			name:     "OIDC not configured, cert configured",
-			settings: &ArgoCDSettings{Certificate: &certParsed},
+			settings: &Settings{Certificate: &certParsed},
 		},
 	}
 
@@ -1941,17 +1941,17 @@ func Test_OAuth2AllowedAudiences(t *testing.T) {
 
 	testCases := []struct {
 		name     string
-		settings *ArgoCDSettings
+		settings *Settings
 		expected []string
 	}{
 		{
 			name:     "Empty",
-			settings: &ArgoCDSettings{},
+			settings: &Settings{},
 			expected: []string{},
 		},
 		{
 			name: "OIDC configured, no audiences specified, clientID used",
-			settings: &ArgoCDSettings{OIDCConfigRAW: `name: Test
+			settings: &Settings{OIDCConfigRAW: `name: Test
 issuer: aaa
 clientID: xxx
 clientSecret: yyy
@@ -1960,7 +1960,7 @@ requestedScopes: ["oidc"]`},
 		},
 		{
 			name: "OIDC configured, no audiences specified, clientID and cliClientID used",
-			settings: &ArgoCDSettings{OIDCConfigRAW: `name: Test
+			settings: &Settings{OIDCConfigRAW: `name: Test
 issuer: aaa
 clientID: xxx
 cliClientID: cli-xxx
@@ -1970,7 +1970,7 @@ requestedScopes: ["oidc"]`},
 		},
 		{
 			name: "OIDC configured, audiences specified",
-			settings: &ArgoCDSettings{OIDCConfigRAW: `name: Test
+			settings: &Settings{OIDCConfigRAW: `name: Test
 issuer: aaa
 clientID: xxx
 clientSecret: yyy
@@ -1980,7 +1980,7 @@ allowedAudiences: ["aud1", "aud2"]`},
 		},
 		{
 			name: "Dex configured",
-			settings: &ArgoCDSettings{DexConfig: `connectors:
+			settings: &Settings{DexConfig: `connectors:
   - type: github
     id: github
     name: GitHub
@@ -1990,7 +1990,7 @@ allowedAudiences: ["aud1", "aud2"]`},
       orgs:
       - name: your-github-org
 `},
-			expected: []string{common.ArgoCDClientAppID, common.ArgoCDCLIClientAppID},
+			expected: []string{common.ClientAppID, common.CLIClientAppID},
 		},
 	}
 
@@ -2021,14 +2021,14 @@ func TestReplaceStringSecret(t *testing.T) {
 func TestRedirectURLForRequest(t *testing.T) {
 	testCases := []struct {
 		Name        string
-		Settings    *ArgoCDSettings
+		Settings    *Settings
 		RequestURL  string
 		ExpectedURL string
 		ExpectError bool
 	}{
 		{
 			Name: "Single URL",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				URL: "https://example.org",
 			},
 			RequestURL:  "https://example.org/login",
@@ -2037,7 +2037,7 @@ func TestRedirectURLForRequest(t *testing.T) {
 		},
 		{
 			Name: "Request does not match configured URL.",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				URL: "https://otherhost.org",
 			},
 			RequestURL:  "https://example.org/login",
@@ -2046,7 +2046,7 @@ func TestRedirectURLForRequest(t *testing.T) {
 		},
 		{
 			Name: "Cannot parse URL.",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				URL: ":httpsotherhostorg",
 			},
 			RequestURL:  "https://example.org/login",
@@ -2055,7 +2055,7 @@ func TestRedirectURLForRequest(t *testing.T) {
 		},
 		{
 			Name: "Match extended URL in settings.URL.",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				URL:            "https://otherhost.org",
 				AdditionalURLs: []string{"https://anotherhost.org"},
 			},
@@ -2083,13 +2083,13 @@ func TestRedirectURLForRequest(t *testing.T) {
 func TestRedirectAdditionalURLs(t *testing.T) {
 	testCases := []struct {
 		Name           string
-		Settings       *ArgoCDSettings
+		Settings       *Settings
 		ExpectedResult []string
 		ExpectedError  bool
 	}{
 		{
 			Name: "Good case with two AdditionalURLs",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				URL:            "https://example.org",
 				AdditionalURLs: []string{"https://anotherhost.org", "https://yetanother.org"},
 			},
@@ -2101,7 +2101,7 @@ func TestRedirectAdditionalURLs(t *testing.T) {
 		},
 		{
 			Name: "Bad URL causes error",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				URL:            "https://example.org",
 				AdditionalURLs: []string{":httpsotherhostorg"},
 			},
@@ -2126,40 +2126,40 @@ func TestRedirectAdditionalURLs(t *testing.T) {
 func TestUseAzureWorkloadIdentity(t *testing.T) {
 	testCases := []struct {
 		Name           string
-		Settings       *ArgoCDSettings
+		Settings       *Settings
 		ExpectedResult bool
 	}{
 		{
 			Name: "UseAzureWorkloadIdentity defined and set to true",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: "{ \"azure\": {\"useWorkloadIdentity\": true }}",
 			},
 			ExpectedResult: true,
 		},
 		{
 			Name: "UseAzureWorkloadIdentity defined and set to false",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: "{ \"azure\": {\"useWorkloadIdentity\": false }}",
 			},
 			ExpectedResult: false,
 		},
 		{
 			Name: "UseAzureWorkloadIdentity not defined, with azure key present",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: "{ \"azure\": {}}",
 			},
 			ExpectedResult: false,
 		},
 		{
 			Name: "UseAzureWorkloadIdentity not defined",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: "{}",
 			},
 			ExpectedResult: false,
 		},
 		{
 			Name:           "OIDC config isnot defined",
-			Settings:       &ArgoCDSettings{},
+			Settings:       &Settings{},
 			ExpectedResult: false,
 		},
 	}
@@ -2175,40 +2175,40 @@ func TestUseAzureWorkloadIdentity(t *testing.T) {
 func TestAzureUserGroupOverageClaimEnabled(t *testing.T) {
 	testCases := []struct {
 		Name           string
-		Settings       *ArgoCDSettings
+		Settings       *Settings
 		ExpectedResult bool
 	}{
 		{
 			Name: "enabled and set to true",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {"enableUserGroupOverageClaim": true}}`,
 			},
 			ExpectedResult: true,
 		},
 		{
 			Name: "enabled and set to false",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {"enableUserGroupOverageClaim": false}}`,
 			},
 			ExpectedResult: false,
 		},
 		{
 			Name: "not defined with azure key present",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {}}`,
 			},
 			ExpectedResult: false,
 		},
 		{
 			Name: "not defined",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{}`,
 			},
 			ExpectedResult: false,
 		},
 		{
 			Name:           "OIDC config not defined",
-			Settings:       &ArgoCDSettings{},
+			Settings:       &Settings{},
 			ExpectedResult: false,
 		},
 	}
@@ -2224,54 +2224,54 @@ func TestAzureUserGroupOverageClaimEnabled(t *testing.T) {
 func TestAzureGraphAPIEndpoint(t *testing.T) {
 	testCases := []struct {
 		Name           string
-		Settings       *ArgoCDSettings
+		Settings       *Settings
 		ExpectedResult string
 	}{
 		{
 			Name: "default endpoint when azure section present",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {}}`,
 			},
 			ExpectedResult: "https://graph.microsoft.com/v1.0",
 		},
 		{
 			Name: "custom endpoint for sovereign cloud",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {"graphApiEndpoint": "https://graph.microsoft.us/v1.0"}}`,
 			},
 			ExpectedResult: "https://graph.microsoft.us/v1.0",
 		},
 		{
 			Name: "custom endpoint for China cloud",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {"graphApiEndpoint": "https://microsoftgraph.chinacloudapi.cn/v1.0"}}`,
 			},
 			ExpectedResult: "https://microsoftgraph.chinacloudapi.cn/v1.0",
 		},
 		{
 			Name: "non-https endpoint returns empty string",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {"graphApiEndpoint": "http://graph.microsoft.com/v1.0"}}`,
 			},
 			ExpectedResult: "",
 		},
 		{
 			Name: "non-Microsoft hostname returns empty string",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {"graphApiEndpoint": "https://evil.example.com/v1.0"}}`,
 			},
 			ExpectedResult: "",
 		},
 		{
 			Name: "empty string when no azure section",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{}`,
 			},
 			ExpectedResult: "",
 		},
 		{
 			Name:           "empty string when no OIDC config",
-			Settings:       &ArgoCDSettings{},
+			Settings:       &Settings{},
 			ExpectedResult: "",
 		},
 	}
@@ -2287,33 +2287,33 @@ func TestAzureGraphAPIEndpoint(t *testing.T) {
 func TestAzureUserGroupOverageClaimCacheExpiration(t *testing.T) {
 	testCases := []struct {
 		Name           string
-		Settings       *ArgoCDSettings
+		Settings       *Settings
 		ExpectedResult time.Duration
 	}{
 		{
 			Name: "valid duration",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {"userGroupOverageClaimCacheExpiration": "10m"}}`,
 			},
 			ExpectedResult: 10 * time.Minute,
 		},
 		{
 			Name: "not configured",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {}}`,
 			},
 			ExpectedResult: 0,
 		},
 		{
 			Name: "invalid duration returns 0",
-			Settings: &ArgoCDSettings{
+			Settings: &Settings{
 				OIDCConfigRAW: `{"azure": {"userGroupOverageClaimCacheExpiration": "invalid"}}`,
 			},
 			ExpectedResult: 0,
 		},
 		{
 			Name:           "no OIDC config",
-			Settings:       &ArgoCDSettings{},
+			Settings:       &Settings{},
 			ExpectedResult: 0,
 		},
 	}
@@ -2631,7 +2631,7 @@ func TestGetHydratorReadmeTemplate(t *testing.T) {
 func TestSecretsInformerExcludesClusterSecrets(t *testing.T) {
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -2640,7 +2640,7 @@ func TestSecretsInformerExcludesClusterSecrets(t *testing.T) {
 	}
 	argoSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -2807,14 +2807,14 @@ func TestIsArgoCDConfigMap(t *testing.T) {
 		{
 			name: "cd-cm matches",
 			obj: &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{
-				Name: common.ArgoCDConfigMapName,
+				Name: common.ConfigMapName,
 			}},
 			expected: true,
 		},
 		{
 			name: "other configmap does not match",
 			obj: &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{
-				Name: common.ArgoCDRBACConfigMapName,
+				Name: common.RBACConfigMapName,
 			}},
 			expected: false,
 		},
@@ -2837,7 +2837,7 @@ func TestIsArgoCDConfigMap(t *testing.T) {
 func TestGettersRaceWithResyncInformers(t *testing.T) {
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
 		},
@@ -2845,7 +2845,7 @@ func TestGettersRaceWithResyncInformers(t *testing.T) {
 	}
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -2909,8 +2909,8 @@ func TestGettersRaceWithResyncInformers(t *testing.T) {
 					_, _ = mgr.GetSecretsLister()
 					_, _ = mgr.GetSecretsInformer()
 					_, _ = mgr.GetClusterInformer()
-					_, _ = mgr.GetConfigMapByName(common.ArgoCDConfigMapName)
-					_, _ = mgr.GetSecretByName(common.ArgoCDSecretName)
+					_, _ = mgr.GetConfigMapByName(common.ConfigMapName)
+					_, _ = mgr.GetSecretByName(common.SecretName)
 				}
 			}
 		})

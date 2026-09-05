@@ -6,8 +6,8 @@ package apiclient
 import (
 	context "context"
 	fmt "fmt"
-	v1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	proto "github.com/gogo/protobuf/proto"
+	v1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"

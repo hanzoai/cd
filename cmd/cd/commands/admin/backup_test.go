@@ -42,7 +42,7 @@ func newBackupObject(trackingValue string, trackingLabel bool, trackingAnnotatio
 func newConfigmapObject() *unstructured.Unstructured {
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "cd",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -56,7 +56,7 @@ func newConfigmapObject() *unstructured.Unstructured {
 func newSecretsObject() *unstructured.Unstructured {
 	secret := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -348,10 +348,10 @@ status:
 			kind := tt.object.GetKind()
 			if kind == "Application" || kind == "ApplicationSet" {
 				if security.IsNamespaceEnabled(tt.namespace, "cd", tt.enabledNamespaces) {
-					export(&buf, *tt.object, ArgoCDNamespace)
+					export(&buf, *tt.object, DefaultNamespace)
 				}
 			} else {
-				export(&buf, *tt.object, ArgoCDNamespace)
+				export(&buf, *tt.object, DefaultNamespace)
 			}
 
 			content := buf.String()

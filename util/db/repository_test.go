@@ -18,7 +18,7 @@ var repoArgoCD = &corev1.Secret{
 		Namespace: testNamespace,
 		Name:      "some-repo-secret",
 		Annotations: map[string]string{
-			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 		},
 		Labels: map[string]string{
 			common.LabelKeySecretType: common.LabelValueSecretTypeRepository,
@@ -38,7 +38,7 @@ var repoArgoProj = &corev1.Secret{
 		Namespace: testNamespace,
 		Name:      "some-other-repo-secret",
 		Annotations: map[string]string{
-			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 		},
 		Labels: map[string]string{
 			common.LabelKeySecretType: common.LabelValueSecretTypeRepository,
@@ -58,7 +58,7 @@ var repoArgoCDWrite = &corev1.Secret{
 		Namespace: testNamespace,
 		Name:      "some-repo-secret",
 		Annotations: map[string]string{
-			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 		},
 		Labels: map[string]string{
 			common.LabelKeySecretType: common.LabelValueSecretTypeRepositoryWrite,
@@ -78,7 +78,7 @@ var repoArgoProjWrite = &corev1.Secret{
 		Namespace: testNamespace,
 		Name:      "some-other-repo-secret",
 		Annotations: map[string]string{
-			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 		},
 		Labels: map[string]string{
 			common.LabelKeySecretType: common.LabelValueSecretTypeRepositoryWrite,

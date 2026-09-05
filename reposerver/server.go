@@ -32,8 +32,8 @@ import (
 	tlsutil "github.com/hanzoai/cd/util/tls"
 )
 
-// ArgoCDRepoServer is the repo server implementation
-type ArgoCDRepoServer struct {
+// Server is the repo server implementation
+type Server struct {
 	repoService *repository.Service
 	opts        []grpc.ServerOption
 	tlsConfig   *tls.Config
@@ -46,7 +46,7 @@ type ArgoCDRepoServer struct {
 var tlsHostList = []string{"localhost", "reposerver"}
 
 // NewServer returns a new instance of the Hanzo CD Repo server
-func NewServer(metricsServer *metrics.MetricsServer, cache *reposervercache.Cache, tlsConfCustomizer tlsutil.ConfigCustomizer, initConstants repository.RepoServerInitConstants, gitCredsStore git.CredsStore, clientCAPath string, disableTLS bool) (*ArgoCDRepoServer, error) {
+func NewServer(metricsServer *metrics.MetricsServer, cache *reposervercache.Cache, tlsConfCustomizer tlsutil.ConfigCustomizer, initConstants repository.RepoServerInitConstants, gitCredsStore git.CredsStore, clientCAPath string, disableTLS bool) (*Server, error) {
 	var tlsConfig *tls.Config
 	var healthCheckClientCert *tls.Certificate
 
@@ -127,7 +127,7 @@ func NewServer(metricsServer *metrics.MetricsServer, cache *reposervercache.Cach
 		return nil, fmt.Errorf("failed to initialize the repo service: %w", err)
 	}
 
-	return &ArgoCDRepoServer{
+	return &Server{
 		opts:                  serverOpts,
 		repoService:           repoService,
 		tlsConfig:             tlsConfig,
@@ -136,7 +136,7 @@ func NewServer(metricsServer *metrics.MetricsServer, cache *reposervercache.Cach
 }
 
 // CreateGRPC creates new configured grpc server
-func (a *ArgoCDRepoServer) CreateGRPC() *grpc.Server {
+func (a *Server) CreateGRPC() *grpc.Server {
 	server := grpc.NewServer(a.opts...)
 	versionpkg.RegisterVersionServiceServer(server, version.NewServer(nil, func() (bool, error) {
 		return true, nil
@@ -153,11 +153,11 @@ func (a *ArgoCDRepoServer) CreateGRPC() *grpc.Server {
 }
 
 // GetTLSConfig returns the TLS configuration of the server
-func (a *ArgoCDRepoServer) GetTLSConfig() *tls.Config {
+func (a *Server) GetTLSConfig() *tls.Config {
 	return a.tlsConfig
 }
 
 // GetHealthCheckClientCert returns the ephemeral client certificate used by the liveness probe self-connection
-func (a *ArgoCDRepoServer) GetHealthCheckClientCert() *tls.Certificate {
+func (a *Server) GetHealthCheckClientCert() *tls.Certificate {
 	return a.healthCheckClientCert
 }

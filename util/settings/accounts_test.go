@@ -20,7 +20,7 @@ func TestGetAccounts_NoAccountsConfigured(t *testing.T) {
 	accounts, err := settingsManager.GetAccounts()
 	require.NoError(t, err)
 
-	adminAccount, ok := accounts[common.ArgoCDAdminUsername]
+	adminAccount, ok := accounts[common.AdminUsername]
 	assert.True(t, ok)
 	assert.Equal(t, []AccountCapability{AccountCapabilityLogin}, adminAccount.Capabilities)
 }
@@ -106,7 +106,7 @@ func TestGetAdminAccount(t *testing.T) {
 		secret.Data["admin.passwordMtime"] = []byte(mTime)
 	})
 
-	acc, err := settingsManager.GetAccount(common.ArgoCDAdminUsername)
+	acc, err := settingsManager.GetAccount(common.AdminUsername)
 	require.NoError(t, err)
 
 	assert.Equal(t, "admin-password", acc.PasswordHash)
@@ -167,13 +167,13 @@ func TestAddAccount_AccountAdded(t *testing.T) {
 	err := settingsManager.AddAccount("test", addedAccount)
 	require.NoError(t, err)
 
-	cm, err := clientset.CoreV1().ConfigMaps("default").Get(t.Context(), common.ArgoCDConfigMapName, metav1.GetOptions{})
+	cm, err := clientset.CoreV1().ConfigMaps("default").Get(t.Context(), common.ConfigMapName, metav1.GetOptions{})
 	require.NoError(t, err)
 
 	assert.Equal(t, "login", cm.Data["accounts.test"])
 	assert.Equal(t, "false", cm.Data["accounts.test.enabled"])
 
-	secret, err := clientset.CoreV1().Secrets("default").Get(t.Context(), common.ArgoCDSecretName, metav1.GetOptions{})
+	secret, err := clientset.CoreV1().Secrets("default").Get(t.Context(), common.SecretName, metav1.GetOptions{})
 	require.NoError(t, err)
 
 	assert.Equal(t, "hash", string(secret.Data["accounts.test.password"]))
@@ -210,13 +210,13 @@ func TestUpdateAccount_SuccessfullyUpdated(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	cm, err := clientset.CoreV1().ConfigMaps("default").Get(t.Context(), common.ArgoCDConfigMapName, metav1.GetOptions{})
+	cm, err := clientset.CoreV1().ConfigMaps("default").Get(t.Context(), common.ConfigMapName, metav1.GetOptions{})
 	require.NoError(t, err)
 
 	assert.Equal(t, "login", cm.Data["accounts.test"])
 	assert.Equal(t, "false", cm.Data["accounts.test.enabled"])
 
-	secret, err := clientset.CoreV1().Secrets("default").Get(t.Context(), common.ArgoCDSecretName, metav1.GetOptions{})
+	secret, err := clientset.CoreV1().Secrets("default").Get(t.Context(), common.SecretName, metav1.GetOptions{})
 	require.NoError(t, err)
 
 	assert.Equal(t, "hash", string(secret.Data["accounts.test.password"]))
@@ -236,7 +236,7 @@ func TestUpdateAccount_UpdateAdminPassword(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	secret, err := clientset.CoreV1().Secrets("default").Get(t.Context(), common.ArgoCDSecretName, metav1.GetOptions{})
+	secret, err := clientset.CoreV1().Secrets("default").Get(t.Context(), common.SecretName, metav1.GetOptions{})
 	require.NoError(t, err)
 
 	assert.Equal(t, "newPassword", string(secret.Data["admin.password"]))

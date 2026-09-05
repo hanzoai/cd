@@ -54,10 +54,10 @@ import (
 	"github.com/hanzoai/cd/reposerver/apiclient"
 	mockrepoclient "github.com/hanzoai/cd/reposerver/apiclient/mocks"
 	"github.com/hanzoai/cd/test"
-	"github.com/hanzoai/cd/util/cd"
-	"github.com/hanzoai/cd/util/cd/normalizers"
 	cacheutil "github.com/hanzoai/cd/util/cache"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/settings"
 	utilTest "github.com/hanzoai/cd/util/test"
 )
@@ -244,7 +244,7 @@ func newFakeControllerWithResync(ctx context.Context, data *fakeData, appResyncP
 		nil,
 		0,
 		time.Second*10,
-		common.DefaultPortArgoCDMetrics,
+		common.DefaultPortMetrics,
 		data.metricsCacheExpiration,
 		[]string{},
 		[]string{},
@@ -2652,7 +2652,7 @@ func TestOrphanedIndexDoesNotQueryProjectDuringStartupRace(t *testing.T) {
 		appstatecache.NewCache(cacheutil.NewCache(cacheutil.NewInMemoryCache(time.Minute)), time.Minute),
 		&MockKubectl{Kubectl: &kubetest.MockKubectlCmd{}},
 		time.Minute, time.Hour, time.Second, time.Minute, nil, 0, 10*time.Second,
-		common.DefaultPortArgoCDMetrics, 0,
+		common.DefaultPortMetrics, 0,
 		[]string{}, []string{}, []string{},
 		0, true, nil, nil, nil, false, false,
 		normalizers.IgnoreNormalizerOpts{}, testEnableEventList, false,
@@ -2717,7 +2717,7 @@ func TestOrphanedIndexReturnsNamespaceWhenProjectHasOrphanedResources(t *testing
 		appstatecache.NewCache(cacheutil.NewCache(cacheutil.NewInMemoryCache(time.Minute)), time.Minute),
 		&MockKubectl{Kubectl: &kubetest.MockKubectlCmd{}},
 		time.Minute, time.Hour, time.Second, time.Minute, nil, 0, 10*time.Second,
-		common.DefaultPortArgoCDMetrics, 0,
+		common.DefaultPortMetrics, 0,
 		[]string{}, []string{}, []string{},
 		0, true, nil, nil, nil, false, false,
 		normalizers.IgnoreNormalizerOpts{}, testEnableEventList, false,

@@ -23,7 +23,7 @@ import (
 )
 
 // fakeVersionServer satisfies VersionServiceServer so apiclient.NewClient passes its
-// version probe without requiring a full Argo CD server.
+// version probe without requiring a full Hanzo CD server.
 type fakeVersionServer struct {
 	versionpkg.UnimplementedVersionServiceServer
 }

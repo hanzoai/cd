@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/kubetest"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/kubetest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -114,13 +114,13 @@ func newServerInMemoryCache() *servercache.Cache {
 }
 
 func newNoopEnforcer() *rbac.Enforcer {
-	enf := rbac.NewEnforcer(fake.NewClientset(test.NewFakeConfigMap()), test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
+	enf := rbac.NewEnforcer(fake.NewClientset(test.NewFakeConfigMap()), test.FakeArgoCDNamespace, common.ConfigMapName, nil)
 	enf.EnableEnforce(false)
 	return enf
 }
 
 func newEnforcer() *rbac.Enforcer {
-	enforcer := rbac.NewEnforcer(fake.NewClientset(test.NewFakeConfigMap()), test.FakeArgoCDNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(fake.NewClientset(test.NewFakeConfigMap()), test.FakeArgoCDNamespace, common.RBACConfigMapName, nil)
 	_ = enforcer.SetBuiltinPolicy(assets.BuiltinPolicyCSV)
 	enforcer.SetDefaultRole("role:test")
 	enforcer.SetClaimsEnforcerFunc(func(_ jwt.Claims, _ ...any) bool {
@@ -204,7 +204,7 @@ func TestUpdateCluster_RejectInvalidParams(t *testing.T) {
 		},
 	)
 
-	enf := rbac.NewEnforcer(fake.NewClientset(test.NewFakeConfigMap()), test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
+	enf := rbac.NewEnforcer(fake.NewClientset(test.NewFakeConfigMap()), test.FakeArgoCDNamespace, common.ConfigMapName, nil)
 	_ = enf.SetBuiltinPolicy(`p, role:test, clusters, *, https://127.0.0.1, allow
 p, role:test, clusters, *, allowed-project/*, allow`)
 	enf.SetDefaultRole("role:test")
@@ -443,7 +443,7 @@ func TestDeleteClusterByName(t *testing.T) {
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 		},
 		Data: map[string][]byte{
@@ -493,7 +493,7 @@ func TestRotateAuth(t *testing.T) {
 					common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 				},
 				Annotations: map[string]string{
-					common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+					common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 				},
 			},
 			Data: map[string][]byte{

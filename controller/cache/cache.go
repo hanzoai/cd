@@ -763,7 +763,7 @@ func (c *liveStateCache) isClusterHasApps(apps []any, cluster *appv1.Cluster) bo
 }
 
 func (c *liveStateCache) watchSettings(ctx context.Context) {
-	updateCh := make(chan *settings.ArgoCDSettings, 1)
+	updateCh := make(chan *settings.Settings, 1)
 	c.settingsMgr.Subscribe(updateCh)
 
 	done := false

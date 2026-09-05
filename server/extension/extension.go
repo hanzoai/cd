@@ -35,27 +35,27 @@ const (
 	DefaultIdleConnectionTimeout = 60 * time.Second
 	DefaultMaxIdleConnections    = 30
 
-	// HeaderArgoCDNamespace defines the namespace of the
+	// HeaderCDNamespace defines the namespace of the
 	// argo control plane to be passed to the extension handler.
 	// Example:
 	//     Argocd-Namespace: "namespace"
-	HeaderArgoCDNamespace = "Argocd-Namespace"
+	HeaderCDNamespace = "Argocd-Namespace"
 
-	// HeaderArgoCDApplicationName defines the name of the
+	// HeaderCDApplicationName defines the name of the
 	// expected application header to be passed to the extension
 	// handler. The header value must follow the format:
 	//     "<namespace>:<app-name>"
 	// Example:
 	//     Argocd-Application-Name: "namespace:app-name"
-	HeaderArgoCDApplicationName = "Argocd-Application-Name"
+	HeaderCDApplicationName = "Argocd-Application-Name"
 
-	// HeaderArgoCDProjectName defines the name of the expected
+	// HeaderCDProjectName defines the name of the expected
 	// project header to be passed to the extension handler.
 	// Example:
 	//     Argocd-Project-Name: "default"
-	HeaderArgoCDProjectName = "Argocd-Project-Name"
+	HeaderCDProjectName = "Argocd-Project-Name"
 
-	// HeaderArgoCDTargetClusterURL defines the target cluster URL
+	// HeaderCDTargetClusterURL defines the target cluster URL
 	// that the Hanzo CD application is associated with. This header
 	// will be populated by the extension proxy and passed to the
 	// configured backend service. If this header is passed by
@@ -64,27 +64,27 @@ const (
 	//
 	// Example:
 	//     Argocd-Target-Cluster-URL: "https://kubernetes.default.svc.cluster.local"
-	HeaderArgoCDTargetClusterURL = "Argocd-Target-Cluster-URL"
+	HeaderCDTargetClusterURL = "Argocd-Target-Cluster-URL"
 
-	// HeaderArgoCDTargetClusterName defines the target cluster name
+	// HeaderCDTargetClusterName defines the target cluster name
 	// that the Hanzo CD application is associated with. This header
 	// will be populated by the extension proxy and passed to the
 	// configured backend service. If this header is passed by
 	// the client, its value will be overridden by the extension
 	// handler.
-	HeaderArgoCDTargetClusterName = "Argocd-Target-Cluster-Name"
+	HeaderCDTargetClusterName = "Argocd-Target-Cluster-Name"
 
-	// HeaderArgoCDUsername is the header name that defines the username of the logged
+	// HeaderCDUsername is the header name that defines the username of the logged
 	// in user authenticated by Hanzo CD.
-	HeaderArgoCDUsername = "Argocd-Username"
+	HeaderCDUsername = "Argocd-Username"
 
-	// HeaderArgoCDUserId is the header name that defines the internal user id of the logged
+	// HeaderCDUserId is the header name that defines the internal user id of the logged
 	// in user authenticated by Hanzo CD.
-	HeaderArgoCDUserId = "Argocd-User-Id"
+	HeaderCDUserId = "Argocd-User-Id"
 
-	// HeaderArgoCDGroups is the header name that provides the 'groups'
+	// HeaderCDGroups is the header name that provides the 'groups'
 	// claim from the users authenticated in Hanzo CD.
-	HeaderArgoCDGroups = "Argocd-User-Groups"
+	HeaderCDGroups = "Argocd-User-Groups"
 )
 
 // RequestResources defines the authorization scope for
@@ -107,9 +107,9 @@ type RequestResources struct {
 // The headers expected format is documented in each of the constant
 // types defined for them.
 func ValidateHeaders(r *http.Request) (*RequestResources, error) {
-	appHeader := r.Header.Get(HeaderArgoCDApplicationName)
+	appHeader := r.Header.Get(HeaderCDApplicationName)
 	if appHeader == "" {
-		return nil, fmt.Errorf("header %q must be provided", HeaderArgoCDApplicationName)
+		return nil, fmt.Errorf("header %q must be provided", HeaderCDApplicationName)
 	}
 	appNamespace, appName, err := getAppName(appHeader)
 	if err != nil {
@@ -122,9 +122,9 @@ func ValidateHeaders(r *http.Request) (*RequestResources, error) {
 		return nil, errors.New("invalid value for application name")
 	}
 
-	projName := r.Header.Get(HeaderArgoCDProjectName)
+	projName := r.Header.Get(HeaderCDProjectName)
 	if projName == "" {
-		return nil, fmt.Errorf("header %q must be provided", HeaderArgoCDProjectName)
+		return nil, fmt.Errorf("header %q must be provided", HeaderCDProjectName)
 	}
 	if !cd.IsValidProjectName(projName) {
 		return nil, errors.New("invalid value for project name")
@@ -139,7 +139,7 @@ func ValidateHeaders(r *http.Request) (*RequestResources, error) {
 func getAppName(appHeader string) (string, string, error) {
 	parts := strings.Split(appHeader, ":")
 	if len(parts) != 2 {
-		return "", "", fmt.Errorf("invalid value for %q header: expected format: <namespace>:<app-name>", HeaderArgoCDApplicationName)
+		return "", "", fmt.Errorf("invalid value for %q header: expected format: <namespace>:<app-name>", HeaderCDApplicationName)
 	}
 	return parts[0], parts[1], nil
 }
@@ -236,7 +236,7 @@ type ProxyConfig struct {
 
 // SettingsGetter defines the contract to retrieve Hanzo CD Settings.
 type SettingsGetter interface {
-	Get() (*settings.ArgoCDSettings, error)
+	Get() (*settings.Settings, error)
 }
 
 // DefaultSettingsGetter is the real settings getter implementation.
@@ -252,7 +252,7 @@ func NewDefaultSettingsGetter(mgr *settings.SettingsManager) *DefaultSettingsGet
 }
 
 // Get will retrieve the Hanzo CD settings.
-func (s *DefaultSettingsGetter) Get() (*settings.ArgoCDSettings, error) {
+func (s *DefaultSettingsGetter) Get() (*settings.Settings, error) {
 	return s.settingsMgr.GetSettings()
 }
 
@@ -426,7 +426,7 @@ func proxyKey(extName, cName, cServer string) ProxyKey {
 	}
 }
 
-func parseAndValidateConfig(s *settings.ArgoCDSettings) (*ExtensionConfigs, error) {
+func parseAndValidateConfig(s *settings.Settings) (*ExtensionConfigs, error) {
 	if len(s.ExtensionConfig) == 0 {
 		return nil, errors.New("no extensions configurations found")
 	}
@@ -596,7 +596,7 @@ func (m *Manager) RegisterExtensions() error {
 // configurations from the given settings. If no errors are found, it will
 // iterate over the given configurations building a new extension registry.
 // At the end, it will update the manager with the newly created registry.
-func (m *Manager) UpdateExtensionRegistry(s *settings.ArgoCDSettings) error {
+func (m *Manager) UpdateExtensionRegistry(s *settings.Settings) error {
 	extConfigs, err := parseAndValidateConfig(s)
 	if err != nil {
 		return fmt.Errorf("error parsing extension config: %w", err)
@@ -671,7 +671,7 @@ func appendProxy(registry ProxyRegistry,
 // authorize will enforce rbac rules are satisfied for the given RequestResources.
 // The following validations are executed:
 //   - enforce the subject has permission to read application/project provided
-//     in HeaderArgoCDApplicationName and HeaderArgoCDProjectName.
+//     in HeaderCDApplicationName and HeaderCDProjectName.
 //   - enforce the subject has permission to invoke the extension identified by
 //     extName.
 //   - enforce that the project has permission to access the destination cluster.
@@ -696,11 +696,11 @@ func (m *Manager) authorize(ctx context.Context, rr *RequestResources, extName s
 		return nil, fmt.Errorf("error getting application: %w", err)
 	}
 	if app == nil {
-		return nil, fmt.Errorf("invalid Application provided in the %q header", HeaderArgoCDApplicationName)
+		return nil, fmt.Errorf("invalid Application provided in the %q header", HeaderCDApplicationName)
 	}
 
 	if app.Spec.GetProject() != rr.ProjectName {
-		return nil, fmt.Errorf("project mismatch provided in the %q header", HeaderArgoCDProjectName)
+		return nil, fmt.Errorf("project mismatch provided in the %q header", HeaderCDProjectName)
 	}
 
 	proj, err := m.project.Get(app.Spec.GetProject())
@@ -708,7 +708,7 @@ func (m *Manager) authorize(ctx context.Context, rr *RequestResources, extName s
 		return nil, fmt.Errorf("error getting project: %w", err)
 	}
 	if proj == nil {
-		return nil, fmt.Errorf("invalid project provided in the %q header", HeaderArgoCDProjectName)
+		return nil, fmt.Errorf("invalid project provided in the %q header", HeaderCDProjectName)
 	}
 	destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, m.cluster)
 	if err != nil {
@@ -800,13 +800,13 @@ func (m *Manager) CallExtension() func(http.ResponseWriter, *http.Request) {
 		groups := m.userGetter.GetGroups(r.Context())
 		prepareRequest(r, m.namespace, extName, app, userId, username, groups)
 		m.log.WithFields(log.Fields{
-			HeaderArgoCDUserId:          userId,
-			HeaderArgoCDUsername:        username,
-			HeaderArgoCDGroups:          strings.Join(groups, ","),
-			HeaderArgoCDNamespace:       m.namespace,
-			HeaderArgoCDApplicationName: fmt.Sprintf("%s:%s", app.GetNamespace(), app.GetName()),
-			"extension":                 extName,
-			"path":                      r.URL.Path,
+			HeaderCDUserId:          userId,
+			HeaderCDUsername:        username,
+			HeaderCDGroups:          strings.Join(groups, ","),
+			HeaderCDNamespace:       m.namespace,
+			HeaderCDApplicationName: fmt.Sprintf("%s:%s", app.GetNamespace(), app.GetName()),
+			"extension":             extName,
+			"path":                  r.URL.Path,
 		}).Info("sending proxy extension request")
 		// httpsnoop package is used to properly wrap the responseWriter
 		// and avoid optional intefaces issue:
@@ -835,21 +835,21 @@ func registerMetrics(extName string, metrics httpsnoop.Metrics, extensionMetrics
 //   - Hanzo CD authenticated username
 func prepareRequest(r *http.Request, namespace string, extName string, app *v1alpha1.Application, userId string, username string, groups []string) {
 	r.URL.Path = strings.TrimPrefix(r.URL.Path, fmt.Sprintf("%s/%s", URLPrefix, extName))
-	r.Header.Set(HeaderArgoCDNamespace, namespace)
+	r.Header.Set(HeaderCDNamespace, namespace)
 	if app.Spec.Destination.Name != "" {
-		r.Header.Set(HeaderArgoCDTargetClusterName, app.Spec.Destination.Name)
+		r.Header.Set(HeaderCDTargetClusterName, app.Spec.Destination.Name)
 	}
 	if app.Spec.Destination.Server != "" {
-		r.Header.Set(HeaderArgoCDTargetClusterURL, app.Spec.Destination.Server)
+		r.Header.Set(HeaderCDTargetClusterURL, app.Spec.Destination.Server)
 	}
 	if userId != "" {
-		r.Header.Set(HeaderArgoCDUserId, userId)
+		r.Header.Set(HeaderCDUserId, userId)
 	}
 	if username != "" {
-		r.Header.Set(HeaderArgoCDUsername, username)
+		r.Header.Set(HeaderCDUsername, username)
 	}
 	if len(groups) > 0 {
-		r.Header.Set(HeaderArgoCDGroups, strings.Join(groups, ","))
+		r.Header.Set(HeaderCDGroups, strings.Join(groups, ","))
 	}
 }
 

@@ -52,7 +52,7 @@ var ErrHMACVerificationFailed = errors.New("HMAC verification failed")
 // whose sources reference that repository and revision, and triggers a refresh
 // for each matching Application. Namespace filters are applied according to the
 // handler configuration.
-func (a *ArgoCDWebhookHandler) HandleRegistryEvent(event *RegistryEvent) {
+func (a *Handler) HandleRegistryEvent(event *RegistryEvent) {
 	repoURL := event.OCIRepoURL()
 	normalizedRepoURL := normalizeOCI(repoURL)
 	revision := event.Tag

@@ -94,7 +94,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 	kubeClientWithDexConfig := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -113,7 +113,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -128,7 +128,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 	kubeClientWithOIDCConfig := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -145,7 +145,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -160,7 +160,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 	kubeClientWithOIDCConfigButNoURL := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -177,7 +177,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -192,7 +192,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 	kubeClientWithOIDCConfigButNoLogoutURL := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -208,7 +208,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -223,7 +223,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 	kubeClientWithoutOIDCAndMultipleURLs := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -236,7 +236,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -251,7 +251,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 	kubeClientWithoutOIDCConfig := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -263,7 +263,7 @@ func TestHandlerConstructLogoutURL(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -481,7 +481,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 	kubeClient := fake.NewClientset(
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDConfigMapName,
+				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",
@@ -493,7 +493,7 @@ func TestHandlerRevokeToken(t *testing.T) {
 		},
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      common.ArgoCDSecretName,
+				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
 					"app.kubernetes.io/part-of": "cd",

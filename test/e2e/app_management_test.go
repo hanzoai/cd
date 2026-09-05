@@ -703,7 +703,7 @@ func TestManipulateApplicationResources(t *testing.T) {
 
 			deployment := resources[index]
 
-			closer, client, err := fixture.ArgoCDClientset.NewApplicationClient()
+			closer, client, err := fixture.CDClientset.NewApplicationClient()
 			require.NoError(t, err)
 			defer utilio.Close(closer)
 
@@ -736,7 +736,7 @@ func TestOldStyleResourceAction(t *testing.T) {
 		Sync().
 		Then().
 		And(func(app *Application) {
-			closer, client, err := fixture.ArgoCDClientset.NewApplicationClient()
+			closer, client, err := fixture.CDClientset.NewApplicationClient()
 			require.NoError(t, err)
 			defer utilio.Close(closer)
 
@@ -843,7 +843,7 @@ func TestNewStyleResourceActionPermitted(t *testing.T) {
 		Wait().
 		Then().
 		And(func(app *Application) {
-			closer, client, err := fixture.ArgoCDClientset.NewApplicationClient()
+			closer, client, err := fixture.CDClientset.NewApplicationClient()
 			require.NoError(t, err)
 			defer utilio.Close(closer)
 
@@ -956,7 +956,7 @@ func TestNewStyleResourceActionMixedOk(t *testing.T) {
 		Wait().
 		Then().
 		And(func(app *Application) {
-			closer, client, err := fixture.ArgoCDClientset.NewApplicationClient()
+			closer, client, err := fixture.CDClientset.NewApplicationClient()
 			require.NoError(t, err)
 			defer utilio.Close(closer)
 
@@ -1134,7 +1134,7 @@ func assertResourceActions(t *testing.T, appName string, successful bool, deploy
 		}
 	}
 
-	closer, cdClient := fixture.ArgoCDClientset.NewApplicationClientOrDie()
+	closer, cdClient := fixture.CDClientset.NewApplicationClientOrDie()
 	defer utilio.Close(closer)
 
 	deploymentResource, err := fixture.KubeClientset.AppsV1().Deployments(deploymentNamespace).Get(t.Context(), "guestbook-ui", metav1.GetOptions{})
@@ -1244,7 +1244,7 @@ func TestPermissions(t *testing.T) {
 		Expect(Condition(ApplicationConditionInvalidSpecError, destinationError)).
 		Expect(Condition(ApplicationConditionInvalidSpecError, sourceError)).
 		And(func(app *Application) {
-			closer, cdClient := fixture.ArgoCDClientset.NewApplicationClientOrDie()
+			closer, cdClient := fixture.CDClientset.NewApplicationClientOrDie()
 			defer utilio.Close(closer)
 			appName, appNs := cd.ParseFromQualifiedName(app.Name, "")
 			fmt.Printf("APP NAME: %s\n", appName)
@@ -1556,7 +1556,7 @@ func TestSelfManagedApps(t *testing.T) {
 
 			reconciledCount := 0
 			var lastReconciledAt *metav1.Time
-			for event := range fixture.ArgoCDClientset.WatchApplicationWithRetry(ctx, a.Name, a.ResourceVersion) {
+			for event := range fixture.CDClientset.WatchApplicationWithRetry(ctx, a.Name, a.ResourceVersion) {
 				reconciledAt := event.Application.Status.ReconciledAt
 				if reconciledAt == nil {
 					reconciledAt = &metav1.Time{}
@@ -2854,7 +2854,7 @@ status:
     status: Unknown
     lastTransitionTime: "2023-01-01T00:00:00Z"
 `, ctx.AppName(), fixture.RepoURL(fixture.RepoURLTypeFile))
-			_, err := fixture.RunWithStdin(manifest, "", "kubectl", "apply", "-n", fixture.ArgoCDNamespace, "-f", "-")
+			_, err := fixture.RunWithStdin(manifest, "", "kubectl", "apply", "-n", fixture.E2ENamespace, "-f", "-")
 			require.NoError(t, err)
 		}).
 		Refresh(RefreshTypeNormal).

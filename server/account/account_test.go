@@ -67,7 +67,7 @@ func newTestAccountServerExt(t *testing.T, ctx context.Context, enforceFn rbac.C
 	kubeclientset := fake.NewClientset(cm, secret)
 	settingsMgr := settings.NewSettingsManager(ctx, kubeclientset, testNamespace)
 	sessionMgr := sessionutil.NewSessionManager(settingsMgr, test.NewFakeProjLister(), "", nil, sessionutil.NewUserStateStorage(nil))
-	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	enforcer.SetClaimsEnforcerFunc(enforceFn)
 
 	return NewServer(sessionMgr, settingsMgr, enforcer, testNamespace), session.NewServer(sessionMgr, settingsMgr, nil, nil, nil)
@@ -78,7 +78,7 @@ func getAdminAccount(mgr *settings.SettingsManager) (*settings.Account, error) {
 	if err != nil {
 		return nil, err
 	}
-	adminAccount := accounts[common.ArgoCDAdminUsername]
+	adminAccount := accounts[common.AdminUsername]
 	return &adminAccount, nil
 }
 
