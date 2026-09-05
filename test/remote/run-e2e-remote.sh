@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Should point to the Argo CD API endpoint on the cluster
+# Should point to the Hanzo CD API endpoint on the cluster
 if test "${CD_SERVER}" = ""; then
-	echo "Please set CD_SERVER to the remote Argo CD API endpoint to test." >&2
+	echo "Please set CD_SERVER to the remote Hanzo CD API endpoint to test." >&2
 	exit 1
 fi
 
@@ -15,11 +15,11 @@ export CD_E2E_TEST_TIMEOUT=2h
 # The default timeout for certain operations (such as sync)
 export CD_E2E_DEFAULT_TIMEOUT=30
 
-# Set CD_E2E_NAMESPACE to the namespace the Argo CD we're testing against is
-# running in. Defaults to "argocd-e2e"
-export CD_E2E_NAMESPACE="${CD_E2E_NAMESPACE:-argocd-e2e}"
+# Set CD_E2E_NAMESPACE to the namespace the Hanzo CD we're testing against is
+# running in. Defaults to "cd-e2e"
+export CD_E2E_NAMESPACE="${CD_E2E_NAMESPACE:-cd-e2e}"
 
-# Name prefix the operator sets on resources created for Argo CD instance. This
+# Name prefix the operator sets on resources created for Hanzo CD instance. This
 # is usually also the name of the instance itself.
 export CD_E2E_NAME_PREFIX="${CD_E2E_NAME_PREFIX:-}"
 
@@ -43,7 +43,7 @@ export CD_E2E_SKIP_KSONNET="${CD_E2E_SKIP_KSONNET:-false}"
 
 # Unauthenticated URLs for pushing from CI
 #
-# Use `kubectl port-forward service/argocd-e2e-server 9081:9081` to set up the
+# Use `kubectl port-forward service/cd-e2e-server 9081:9081` to set up the
 # listener required for this.
 export CD_E2E_GIT_SERVICE="http://127.0.0.1:9081/argo-e2e/testdata.git"
 export CD_E2E_HELM_SERVICE="http://127.0.0.1:9081/helm-repo"
@@ -51,14 +51,14 @@ export CD_E2E_GIT_SERVICE_SUBMODULE="http://127.0.0.1:9081/argo-e2e/submodule.gi
 export CD_E2E_GIT_SERVICE_SUBMODULE_PARENT="http://127.0.0.1:9081/argo-e2e/submoduleParent.git"
 
 # URLs used during testing - usually no need to change those
-export CD_E2E_REPO_SSH="ssh://root@argocd-e2e-server:2222/tmp/argo-e2e/testdata.git"
-export CD_E2E_REPO_SSH_SUBMODULE="ssh://root@argocd-e2e-server:2222/tmp/argo-e2e/submodule.git"
-export CD_E2E_REPO_SSH_SUBMODULE_PARENT="ssh://root@argocd-e2e-server:2222/tmp/argo-e2e/submoduleParent.git"
-export CD_E2E_REPO_HTTPS="https://argocd-e2e-server:9443/argo-e2e/testdata.git"
-export CD_E2E_REPO_HTTPS_CLIENT_CERT="https://argocd-e2e-server:9444/argo-e2e/testdata.git"
-export CD_E2E_REPO_HTTPS_SUBMODULE="https://argocd-e2e-server:9443/argo-e2e/submodule.git"
-export CD_E2E_REPO_HTTPS_SUBMODULE_PARENT="https://argocd-e2e-server:9443/argo-e2e/submoduleParent.git"
-export CD_E2E_REPO_HELM="https://argocd-e2e-server:9444/helm-repo"
-export CD_E2E_REPO_DEFAULT="http://argocd-e2e-server:9081/argo-e2e/testdata.git"
+export CD_E2E_REPO_SSH="ssh://root@cd-e2e-server:2222/tmp/argo-e2e/testdata.git"
+export CD_E2E_REPO_SSH_SUBMODULE="ssh://root@cd-e2e-server:2222/tmp/argo-e2e/submodule.git"
+export CD_E2E_REPO_SSH_SUBMODULE_PARENT="ssh://root@cd-e2e-server:2222/tmp/argo-e2e/submoduleParent.git"
+export CD_E2E_REPO_HTTPS="https://cd-e2e-server:9443/argo-e2e/testdata.git"
+export CD_E2E_REPO_HTTPS_CLIENT_CERT="https://cd-e2e-server:9444/argo-e2e/testdata.git"
+export CD_E2E_REPO_HTTPS_SUBMODULE="https://cd-e2e-server:9443/argo-e2e/submodule.git"
+export CD_E2E_REPO_HTTPS_SUBMODULE_PARENT="https://cd-e2e-server:9443/argo-e2e/submoduleParent.git"
+export CD_E2E_REPO_HELM="https://cd-e2e-server:9444/helm-repo"
+export CD_E2E_REPO_DEFAULT="http://cd-e2e-server:9081/argo-e2e/testdata.git"
 
 "$@"

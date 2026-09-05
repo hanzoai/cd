@@ -20,7 +20,7 @@ import (
 	"github.com/hanzoai/cd/applicationset/services/scm_provider"
 	"github.com/hanzoai/cd/applicationset/utils"
 	"github.com/hanzoai/cd/common"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 var _ Generator = (*SCMProviderGenerator)(nil)
@@ -90,7 +90,7 @@ func NewTestSCMProviderGenerator(overrideProvider scm_provider.SCMProviderServic
 	}}
 }
 
-func (g *SCMProviderGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) time.Duration {
+func (g *SCMProviderGenerator) GetRequeueAfter(appSetGenerator *v1alpha1.ApplicationSetGenerator) time.Duration {
 	// Return a requeue default of 30 minutes, if no default is specified.
 
 	if appSetGenerator.SCMProvider.RequeueAfterSeconds != nil {
@@ -100,7 +100,7 @@ func (g *SCMProviderGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alph
 	return DefaultSCMProviderRequeueAfter
 }
 
-func (g *SCMProviderGenerator) GetTemplate(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) *argoprojiov1alpha1.ApplicationSetTemplate {
+func (g *SCMProviderGenerator) GetTemplate(appSetGenerator *v1alpha1.ApplicationSetGenerator) *v1alpha1.ApplicationSetTemplate {
 	return &appSetGenerator.SCMProvider.Template
 }
 
@@ -122,7 +122,7 @@ func (e ErrDisallowedSCMProvider) Error() string {
 	return fmt.Sprintf("scm provider %q not allowed, must use one of the following: %s", e.Provider, strings.Join(e.Allowed, ", "))
 }
 
-func ScmProviderAllowed(applicationSetInfo *argoprojiov1alpha1.ApplicationSet, generator SCMGeneratorWithCustomApiUrl, allowedScmProviders []string) error {
+func ScmProviderAllowed(applicationSetInfo *v1alpha1.ApplicationSet, generator SCMGeneratorWithCustomApiUrl, allowedScmProviders []string) error {
 	url := generator.CustomApiUrl()
 
 	if url == "" || len(allowedScmProviders) == 0 {
@@ -142,7 +142,7 @@ func ScmProviderAllowed(applicationSetInfo *argoprojiov1alpha1.ApplicationSet, g
 	return NewErrDisallowedSCMProvider(url, allowedScmProviders)
 }
 
-func (g *SCMProviderGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator, applicationSetInfo *argoprojiov1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
+func (g *SCMProviderGenerator) GenerateParams(appSetGenerator *v1alpha1.ApplicationSetGenerator, applicationSetInfo *v1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
 	if appSetGenerator == nil {
 		return nil, ErrEmptyAppSetGenerator
 	}
@@ -294,7 +294,7 @@ func (g *SCMProviderGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha
 	return paramsArray, nil
 }
 
-func (g *SCMProviderGenerator) githubProvider(ctx context.Context, github *argoprojiov1alpha1.SCMProviderGeneratorGithub, applicationSetInfo *argoprojiov1alpha1.ApplicationSet, baseHTTPClient *http.Client) (scm_provider.SCMProviderService, error) {
+func (g *SCMProviderGenerator) githubProvider(ctx context.Context, github *v1alpha1.SCMProviderGeneratorGithub, applicationSetInfo *v1alpha1.ApplicationSet, baseHTTPClient *http.Client) (scm_provider.SCMProviderService, error) {
 	httpClient := baseHTTPClient
 	if g.enableGitHubAPIMetrics {
 		metricsCtx := &services.MetricsContext{

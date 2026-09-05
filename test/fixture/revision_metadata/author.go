@@ -5,15 +5,15 @@ import (
 	"strings"
 
 	"github.com/hanzoai/cd/util/errors"
-	argoexec "github.com/hanzoai/cd/util/exec"
+	cdexec "github.com/hanzoai/cd/util/exec"
 )
 
 var Author string
 
 func init() {
-	userName, err := argoexec.RunCommand("git", argoexec.CmdOpts{}, "config", "--get", "user.name")
+	userName, err := cdexec.RunCommand("git", cdexec.CmdOpts{}, "config", "--get", "user.name")
 	errors.CheckError(err)
-	userEmail, err := argoexec.RunCommand("git", argoexec.CmdOpts{}, "config", "--get", "user.email")
+	userEmail, err := cdexec.RunCommand("git", cdexec.CmdOpts{}, "config", "--get", "user.email")
 	errors.CheckError(err)
 	Author = fmt.Sprintf("%s <%s>", strings.TrimSpace(userName), strings.TrimSpace(userEmail))
 }

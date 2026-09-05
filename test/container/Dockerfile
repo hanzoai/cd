@@ -58,8 +58,7 @@ ENV GOPATH=/go
 
 # Disable gRPC service config lookups via DNS TXT records to prevent excessive
 # DNS queries for _grpc_config.<hostname> which can cause timeouts in dual-stack
-# environments. This can be overridden via argocd-cmd-params-cm ConfigMap.
-# See https://github.com/argoproj/argo-cd/issues/24991
+# environments. This can be overridden via the hanzocd-cmd-params-cm ConfigMap.
 ENV GRPC_ENABLE_TXT_SERVICE_CONFIG=false
 
 # Install build and test dependencies
@@ -122,7 +121,7 @@ RUN userdel -r ubuntu && \
     mkdir -p /go/src/github.com/gogo && \
     mkdir -p /go/src/k8s.io && \
     chown -R user /go && \
-    HOME=/home/user git config --global user.name "ArgoCD Test User" && \
+    HOME=/home/user git config --global user.name "Hanzo CD Test User" && \
     HOME=/home/user git config --global user.email "noreply@example.com" && \
     HOME=/home/user git config --global --add safe.directory '*' && \
     mkdir -p /go/src && \

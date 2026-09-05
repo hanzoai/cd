@@ -35,9 +35,9 @@ COPY ./test/fixture/testrepos/nginx.conf /etc/nginx/nginx.conf
 COPY ./test/fixture/testrepos/.htpasswd /etc/nginx/.htpasswd
 COPY ./test/fixture/testrepos/sudoers.conf /etc/sudoers
 COPY ./test/fixture/testrepos/ssh_host_*_key* /etc/ssh/
-COPY ./test/fixture/certs/argocd-e2e-server.crt /etc/certs/argocd-test-server.crt
-COPY ./test/fixture/certs/argocd-e2e-server.key /etc/certs/argocd-test-server.key
-COPY ./test/fixture/certs/argocd-test-ca.crt /etc/certs/argocd-test-ca.crt
+COPY ./test/fixture/certs/cd-e2e-server.crt /etc/certs/cd-test-server.crt
+COPY ./test/fixture/certs/cd-e2e-server.key /etc/certs/cd-test-server.key
+COPY ./test/fixture/certs/cd-test-ca.crt /etc/certs/cd-test-ca.crt
 
 # Entrypoint is required for container's user management
 COPY ./test/remote/entrypoint.sh /usr/local/bin
@@ -52,7 +52,7 @@ COPY ./test/e2e/testdata/ /app/config/testdata/
 RUN useradd -l -u 1000 -d /home/user -s /bin/bash user && \
     echo "user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/user && \
     mkdir -p /home/user && \
-    HOME=/home/user git config --global user.name "ArgoCD Test User" && \
+    HOME=/home/user git config --global user.name "Hanzo CD Test User" && \
     HOME=/home/user git config --global user.email "noreply@example.com" && \
     mkdir -p /var/run/sshd && \
     mkdir -p /root/.ssh && \

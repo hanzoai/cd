@@ -10,14 +10,14 @@ import (
 	"github.com/hanzoai/cd/applicationset/generators"
 	"github.com/hanzoai/cd/applicationset/utils"
 
-	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
-func GenerateApplications(logCtx *log.Entry, applicationSetInfo argov1alpha1.ApplicationSet, g map[string]generators.Generator, renderer utils.Renderer, client client.Client) ([]argov1alpha1.Application, argov1alpha1.ApplicationSetReasonType, error) {
-	var res []argov1alpha1.Application
+func GenerateApplications(logCtx *log.Entry, applicationSetInfo v1alpha1.ApplicationSet, g map[string]generators.Generator, renderer utils.Renderer, client client.Client) ([]v1alpha1.Application, v1alpha1.ApplicationSetReasonType, error) {
+	var res []v1alpha1.Application
 
 	var firstError error
-	var applicationSetReason argov1alpha1.ApplicationSetReasonType
+	var applicationSetReason v1alpha1.ApplicationSetReasonType
 
 	for _, requestedGenerator := range applicationSetInfo.Spec.Generators {
 		t, err := generators.Transform(requestedGenerator, g, applicationSetInfo.Spec.Template, &applicationSetInfo, map[string]any{}, client)
@@ -26,7 +26,7 @@ func GenerateApplications(logCtx *log.Entry, applicationSetInfo argov1alpha1.App
 				Error("error generating application from params")
 			if firstError == nil {
 				firstError = err
-				applicationSetReason = argov1alpha1.ApplicationSetReasonApplicationParamsGenerationError
+				applicationSetReason = v1alpha1.ApplicationSetReasonApplicationParamsGenerationError
 			}
 			continue
 		}
@@ -42,7 +42,7 @@ func GenerateApplications(logCtx *log.Entry, applicationSetInfo argov1alpha1.App
 
 					if firstError == nil {
 						firstError = err
-						applicationSetReason = argov1alpha1.ApplicationSetReasonRenderTemplateParamsError
+						applicationSetReason = v1alpha1.ApplicationSetReasonRenderTemplateParamsError
 					}
 					continue
 				}
@@ -55,7 +55,7 @@ func GenerateApplications(logCtx *log.Entry, applicationSetInfo argov1alpha1.App
 
 						if firstError == nil {
 							firstError = err
-							applicationSetReason = argov1alpha1.ApplicationSetReasonRenderTemplateParamsError
+							applicationSetReason = v1alpha1.ApplicationSetReasonRenderTemplateParamsError
 						}
 						continue
 					}
@@ -79,7 +79,7 @@ func GenerateApplications(logCtx *log.Entry, applicationSetInfo argov1alpha1.App
 	return res, applicationSetReason, firstError
 }
 
-func renderTemplatePatch(r utils.Renderer, app *argov1alpha1.Application, applicationSetInfo argov1alpha1.ApplicationSet, params map[string]any) (*argov1alpha1.Application, error) {
+func renderTemplatePatch(r utils.Renderer, app *v1alpha1.Application, applicationSetInfo v1alpha1.ApplicationSet, params map[string]any) (*v1alpha1.Application, error) {
 	replacedTemplate, err := r.Replace(*applicationSetInfo.Spec.TemplatePatch, params, applicationSetInfo.Spec.GoTemplate, applicationSetInfo.Spec.GoTemplateOptions)
 	if err != nil {
 		return nil, fmt.Errorf("error replacing values in templatePatch: %w", err)
@@ -88,8 +88,8 @@ func renderTemplatePatch(r utils.Renderer, app *argov1alpha1.Application, applic
 	return applyTemplatePatch(app, replacedTemplate)
 }
 
-func GetTempApplication(applicationSetTemplate argov1alpha1.ApplicationSetTemplate) *argov1alpha1.Application {
-	var tmplApplication argov1alpha1.Application
+func GetTempApplication(applicationSetTemplate v1alpha1.ApplicationSetTemplate) *v1alpha1.Application {
+	var tmplApplication v1alpha1.Application
 	tmplApplication.Annotations = applicationSetTemplate.Annotations
 	tmplApplication.Labels = applicationSetTemplate.Labels
 	tmplApplication.Namespace = applicationSetTemplate.Namespace

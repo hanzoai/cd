@@ -7,10 +7,10 @@ import (
 	"slices"
 	"strings"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
-func compileFilters(filters []argoprojiov1alpha1.SCMProviderGeneratorFilter) ([]*Filter, error) {
+func compileFilters(filters []v1alpha1.SCMProviderGeneratorFilter) ([]*Filter, error) {
 	outFilters := make([]*Filter, 0, len(filters))
 	for _, filter := range filters {
 		outFilter := &Filter{}
@@ -93,7 +93,7 @@ func matchFilter(ctx context.Context, provider SCMProviderService, repo *Reposit
 	return true, nil
 }
 
-func ListRepos(ctx context.Context, provider SCMProviderService, filters []argoprojiov1alpha1.SCMProviderGeneratorFilter, cloneProtocol string) ([]*Repository, error) {
+func ListRepos(ctx context.Context, provider SCMProviderService, filters []v1alpha1.SCMProviderGeneratorFilter, cloneProtocol string) ([]*Repository, error) {
 	compiledFilters, err := compileFilters(filters)
 	if err != nil {
 		return nil, err

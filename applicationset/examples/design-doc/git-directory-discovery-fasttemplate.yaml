@@ -7,10 +7,10 @@
 #
 # cluster-deployments
 # └── add-ons
-#     ├── argo-rollouts
+#     ├── cert-manager
 #     │   ├── all.yaml
 #     │   └── kustomization.yaml
-#     ├── argo-workflows
+#     ├── cd-workflows
 #     │   └── install.yaml
 #     ├── grafana
 #     │   ├── Chart.yaml

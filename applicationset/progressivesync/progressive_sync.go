@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	log "github.com/sirupsen/logrus"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -21,7 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 
 	"github.com/hanzoai/cd/applicationset/utils"
-	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -47,15 +47,15 @@ type Dependencies interface {
 	SetAppSetApplicationStatus(
 		ctx context.Context,
 		logCtx *log.Entry,
-		applicationSet *argov1alpha1.ApplicationSet,
-		applicationStatuses []argov1alpha1.ApplicationSetApplicationStatus,
+		applicationSet *v1alpha1.ApplicationSet,
+		applicationStatuses []v1alpha1.ApplicationSetApplicationStatus,
 	) error
 
 	// SetApplicationSetStatusCondition persists ApplicationSet conditions
 	SetApplicationSetStatusCondition(
 		ctx context.Context,
-		applicationSet *argov1alpha1.ApplicationSet,
-		conditions []argov1alpha1.ApplicationSetCondition,
+		applicationSet *v1alpha1.ApplicationSet,
+		conditions []v1alpha1.ApplicationSetCondition,
 		parametersGenerated bool,
 	) error
 }
@@ -74,7 +74,7 @@ func NewManager(client client.Client, dependencies Dependencies) *Manager {
 	}
 }
 
-func (m *Manager) PerformProgressiveSyncs(ctx context.Context, logCtx *log.Entry, appset argov1alpha1.ApplicationSet, applications []argov1alpha1.Application, desiredApplications []argov1alpha1.Application) (map[string]bool, error) {
+func (m *Manager) PerformProgressiveSyncs(ctx context.Context, logCtx *log.Entry, appset v1alpha1.ApplicationSet, applications []v1alpha1.Application, desiredApplications []v1alpha1.Application) (map[string]bool, error) {
 	// Initialize validation tracking
 	m.validationIssues = &ValidationIssues{}
 
@@ -105,18 +105,18 @@ func (m *Manager) PerformProgressiveSyncs(ctx context.Context, logCtx *log.Entry
 
 	progressingCondition := m.getProgressingCondition(&appset)
 	invalidConfigCondition := m.getInvalidRolloutConfig(&appset)
-	conditions := []*argov1alpha1.ApplicationSetCondition{invalidConfigCondition, progressingCondition}
+	conditions := []*v1alpha1.ApplicationSetCondition{invalidConfigCondition, progressingCondition}
 	_ = m.updateApplicationSetApplicationStatusConditions(ctx, &appset, conditions)
 
 	return appsToSync, nil
 }
 
-func (m *Manager) PerformReverseDeletion(ctx context.Context, logCtx *log.Entry, appset argov1alpha1.ApplicationSet, currentApps []argov1alpha1.Application) (time.Duration, error) {
+func (m *Manager) PerformReverseDeletion(ctx context.Context, logCtx *log.Entry, appset v1alpha1.ApplicationSet, currentApps []v1alpha1.Application) (time.Duration, error) {
 	requeueTime := 10 * time.Second
 	stepLength := len(appset.Spec.Strategy.RollingSync.Steps)
 
 	// map applications by name using current applications
-	appMap := make(map[string]*argov1alpha1.Application)
+	appMap := make(map[string]*v1alpha1.Application)
 	for _, app := range currentApps {
 		appMap[app.Name] = &app
 	}
@@ -136,7 +136,7 @@ func (m *Manager) PerformReverseDeletion(ctx context.Context, logCtx *log.Entry,
 	for _, step := range reverseDeleteAppSteps {
 		logCtx.Infof("step %v : app %v", step.Step, step.AppName)
 		app := appMap[step.AppName]
-		retrievedApp := argov1alpha1.Application{}
+		retrievedApp := v1alpha1.Application{}
 		if err := m.Client.Get(ctx, types.NamespacedName{Name: app.Name, Namespace: app.Namespace}, &retrievedApp); err != nil {
 			if apierrors.IsNotFound(err) {
 				logCtx.Infof("application %s successfully deleted", step.AppName)
@@ -170,14 +170,14 @@ func (m *Manager) PerformReverseDeletion(ctx context.Context, logCtx *log.Entry,
 }
 
 // this list tracks which Applications belong to each RollingUpdate step
-func buildAppDependencyList(logCtx *log.Entry, applicationSet argov1alpha1.ApplicationSet, applications []argov1alpha1.Application) ([][]string, map[string]int, *ValidationIssues) {
+func buildAppDependencyList(logCtx *log.Entry, applicationSet v1alpha1.ApplicationSet, applications []v1alpha1.Application) ([][]string, map[string]int, *ValidationIssues) {
 	issues := &ValidationIssues{}
 
 	if applicationSet.Spec.Strategy == nil || applicationSet.Spec.Strategy.Type == "" || applicationSet.Spec.Strategy.Type == "AllAtOnce" {
 		return [][]string{}, map[string]int{}, issues
 	}
 
-	steps := []argov1alpha1.ApplicationSetRolloutStep{}
+	steps := []v1alpha1.ApplicationSetRolloutStep{}
 	if RollingSyncStrategyEnabled(&applicationSet) {
 		steps = applicationSet.Spec.Strategy.RollingSync.Steps
 	}
@@ -245,7 +245,7 @@ func buildAppDependencyList(logCtx *log.Entry, applicationSet argov1alpha1.Appli
 	return appDependencyList, appStepMap, issues
 }
 
-func labelMatchedExpression(val string, matchExpression argov1alpha1.ApplicationMatchExpression) (bool, error) {
+func labelMatchedExpression(val string, matchExpression v1alpha1.ApplicationMatchExpression) (bool, error) {
 	if matchExpression.Operator != "In" && matchExpression.Operator != "NotIn" {
 		return false, fmt.Errorf("skipping AppSet rollingUpdate step Application selection, invalid matchExpression operator provided: %q ", matchExpression.Operator)
 	}
@@ -274,12 +274,12 @@ func getAppStep(appName string, appStepMap map[string]int) int {
 
 // check the status of each Application's status and promote Applications to the next status if needed
 // update AppSet status in-memory, controller will persist it
-func (m *Manager) UpdateApplicationSetApplicationStatus(ctx context.Context, logCtx *log.Entry, applicationSet *argov1alpha1.ApplicationSet, applications []argov1alpha1.Application, desiredApplications []argov1alpha1.Application, appStepMap map[string]int) ([]argov1alpha1.ApplicationSetApplicationStatus, error) {
+func (m *Manager) UpdateApplicationSetApplicationStatus(ctx context.Context, logCtx *log.Entry, applicationSet *v1alpha1.ApplicationSet, applications []v1alpha1.Application, desiredApplications []v1alpha1.Application, appStepMap map[string]int) ([]v1alpha1.ApplicationSetApplicationStatus, error) {
 	now := metav1.Now()
-	appStatuses := make([]argov1alpha1.ApplicationSetApplicationStatus, 0, len(applications))
+	appStatuses := make([]v1alpha1.ApplicationSetApplicationStatus, 0, len(applications))
 
 	// Build a map of desired applications for quick lookup
-	desiredAppsMap := make(map[string]*argov1alpha1.Application)
+	desiredAppsMap := make(map[string]*v1alpha1.Application)
 	for i := range desiredApplications {
 		desiredAppsMap[desiredApplications[i].Name] = &desiredApplications[i]
 	}
@@ -288,16 +288,16 @@ func (m *Manager) UpdateApplicationSetApplicationStatus(ctx context.Context, log
 		appHealthStatus := app.Status.Health.Status
 		appSyncStatus := app.Status.Sync.Status
 
-		currentAppStatus := argov1alpha1.ApplicationSetApplicationStatus{}
+		currentAppStatus := v1alpha1.ApplicationSetApplicationStatus{}
 		idx := utils.FindApplicationStatusIndex(applicationSet.Status.ApplicationStatus, app.Name)
 		if idx == -1 {
 			// AppStatus not found, set default status of "Waiting"
-			currentAppStatus = argov1alpha1.ApplicationSetApplicationStatus{
+			currentAppStatus = v1alpha1.ApplicationSetApplicationStatus{
 				Application:        app.Name,
 				TargetRevisions:    app.Status.GetRevisions(),
 				LastTransitionTime: &now,
 				Message:            "No Application status found, defaulting status to Waiting",
-				Status:             argov1alpha1.ProgressiveSyncWaiting,
+				Status:             v1alpha1.ProgressiveSyncWaiting,
 				Step:               strconv.Itoa(getAppStep(app.Name, appStepMap)),
 			}
 		} else {
@@ -325,7 +325,7 @@ func (m *Manager) UpdateApplicationSetApplicationStatus(ctx context.Context, log
 		if desiredApp, ok := desiredAppsMap[app.Name]; ok {
 			// Compare the desired spec with the current spec to detect non-Git changes
 			// This will catch changes to generator parameters like image tags, helm values, etc.
-			specChanged = !cmp.Equal(desiredApp.Spec, app.Spec, cmpopts.EquateEmpty(), cmpopts.EquateComparable(argov1alpha1.ApplicationDestination{}))
+			specChanged = !cmp.Equal(desiredApp.Spec, app.Spec, cmpopts.EquateEmpty(), cmpopts.EquateComparable(v1alpha1.ApplicationDestination{}))
 		}
 
 		if revisionsChanged || specChanged {
@@ -339,35 +339,35 @@ func (m *Manager) UpdateApplicationSetApplicationStatus(ctx context.Context, log
 			default:
 				newAppStatus.Message = specChangedMsg
 			}
-			newAppStatus.Status = argov1alpha1.ProgressiveSyncWaiting
+			newAppStatus.Status = v1alpha1.ProgressiveSyncWaiting
 			newAppStatus.LastTransitionTime = &now
 		}
 
-		if newAppStatus.Status == argov1alpha1.ProgressiveSyncWaiting {
+		if newAppStatus.Status == v1alpha1.ProgressiveSyncWaiting {
 			// App has changed to waiting because the TargetRevisions changed or it is a new selected app
 			// This does not mean we should always sync the app. The app may not be OutOfSync
 			// and may not require a sync if it does not have differences.
-			if appSyncStatus == argov1alpha1.SyncStatusCodeSynced {
+			if appSyncStatus == v1alpha1.SyncStatusCodeSynced {
 				if app.Status.Health.Status == health.HealthStatusHealthy {
 					newAppStatus.LastTransitionTime = &now
-					newAppStatus.Status = argov1alpha1.ProgressiveSyncHealthy
+					newAppStatus.Status = v1alpha1.ProgressiveSyncHealthy
 					newAppStatus.Message = "Application resource has synced, updating status to Healthy"
 				} else {
 					newAppStatus.LastTransitionTime = &now
-					newAppStatus.Status = argov1alpha1.ProgressiveSyncProgressing
+					newAppStatus.Status = v1alpha1.ProgressiveSyncProgressing
 					newAppStatus.Message = "Application resource has synced, updating status to Progressing"
 				}
 			}
 		} else {
 			// The target revision is the same, so we need to evaluate the current revision progress
-			if currentAppStatus.Status == argov1alpha1.ProgressiveSyncPending {
+			if currentAppStatus.Status == v1alpha1.ProgressiveSyncPending {
 				// No need to evaluate status health further if the application did not change since our last transition
 				if app.Status.ReconciledAt == nil || (newAppStatus.LastTransitionTime != nil && app.Status.ReconciledAt.After(newAppStatus.LastTransitionTime.Time)) {
 					// Validate that at least one sync was trigerred after the pending transition time
 					if app.Status.OperationState != nil && app.Status.OperationState.StartedAt.After(currentAppStatus.LastTransitionTime.Time) {
 						statusLogCtx = statusLogCtx.WithField("app.operation", app.Status.OperationState.Phase)
 						newAppStatus.LastTransitionTime = &now
-						newAppStatus.Status = argov1alpha1.ProgressiveSyncProgressing
+						newAppStatus.Status = v1alpha1.ProgressiveSyncProgressing
 
 						switch {
 						case app.Status.OperationState.Phase.Successful():
@@ -382,18 +382,18 @@ func (m *Manager) UpdateApplicationSetApplicationStatus(ctx context.Context, log
 						// Validate if the application has errors preventing it to be reconciled and perform syncs
 						// If it does, we move it to progressing.
 						newAppStatus.LastTransitionTime = &now
-						newAppStatus.Status = argov1alpha1.ProgressiveSyncProgressing
+						newAppStatus.Status = v1alpha1.ProgressiveSyncProgressing
 						newAppStatus.Message = "Application resource has error and cannot sync, updating status to Progressing"
 					}
 				}
 			}
 
-			if currentAppStatus.Status == argov1alpha1.ProgressiveSyncProgressing {
+			if currentAppStatus.Status == v1alpha1.ProgressiveSyncProgressing {
 				// If the status has reached progressing, we know a sync has been triggered. No matter the result of that operation,
 				// we want an the app to reach the Healthy state for the current revision.
-				if appHealthStatus == health.HealthStatusHealthy && appSyncStatus == argov1alpha1.SyncStatusCodeSynced {
+				if appHealthStatus == health.HealthStatusHealthy && appSyncStatus == v1alpha1.SyncStatusCodeSynced {
 					newAppStatus.LastTransitionTime = &now
-					newAppStatus.Status = argov1alpha1.ProgressiveSyncHealthy
+					newAppStatus.Status = v1alpha1.ProgressiveSyncHealthy
 					newAppStatus.Message = "Application resource became Healthy, updating status from Progressing to Healthy"
 				}
 			}
@@ -419,7 +419,7 @@ func (m *Manager) UpdateApplicationSetApplicationStatus(ctx context.Context, log
 }
 
 // getAppsToSync returns a Map of Applications that should be synced in this progressive sync wave
-func getAppsToSync(applicationSet argov1alpha1.ApplicationSet, appDependencyList [][]string, currentApplications []argov1alpha1.Application) map[string]bool {
+func getAppsToSync(applicationSet v1alpha1.ApplicationSet, appDependencyList [][]string, currentApplications []v1alpha1.Application) map[string]bool {
 	appSyncMap := map[string]bool{}
 	currentAppsMap := map[string]bool{}
 
@@ -451,7 +451,7 @@ func getAppsToSync(applicationSet argov1alpha1.ApplicationSet, appDependencyList
 			}
 
 			appStatus := applicationSet.Status.ApplicationStatus[idx]
-			if appStatus.Status != argov1alpha1.ProgressiveSyncHealthy {
+			if appStatus.Status != v1alpha1.ProgressiveSyncHealthy {
 				// At least one application in this wave is not yet healthy. We cannot proceed to the next wave
 				syncNextWave = false
 				break
@@ -465,31 +465,31 @@ func getAppsToSync(applicationSet argov1alpha1.ApplicationSet, appDependencyList
 	return appSyncMap
 }
 
-func IsRollingSyncStrategy(appset *argov1alpha1.ApplicationSet) bool {
+func IsRollingSyncStrategy(appset *v1alpha1.ApplicationSet) bool {
 	// It's only RollingSync if the type specifically sets it
 	return appset.Spec.Strategy != nil && appset.Spec.Strategy.Type == "RollingSync" && appset.Spec.Strategy.RollingSync != nil
 }
 
-func IsStepsEmpty(appset *argov1alpha1.ApplicationSet) bool {
+func IsStepsEmpty(appset *v1alpha1.ApplicationSet) bool {
 	return len(appset.Spec.Strategy.RollingSync.Steps) == 0
 }
 
-func RollingSyncStrategyEnabled(appset *argov1alpha1.ApplicationSet) bool {
+func RollingSyncStrategyEnabled(appset *v1alpha1.ApplicationSet) bool {
 	// ProgressiveSync is enabled if the strategy is set to `RollingSync` + steps slice is not empty
 	return IsRollingSyncStrategy(appset) && len(appset.Spec.Strategy.RollingSync.Steps) > 0
 }
 
-func IsDeletionOrderReversed(appset *argov1alpha1.ApplicationSet) bool {
+func IsDeletionOrderReversed(appset *v1alpha1.ApplicationSet) bool {
 	// When progressive sync is enabled + deletionOrder is set to Reverse (case-insensitive)
 	return RollingSyncStrategyEnabled(appset) && strings.EqualFold(appset.Spec.Strategy.DeletionOrder, ReverseDeletionOrder)
 }
 
-func isApplicationWithError(app argov1alpha1.Application) bool {
+func isApplicationWithError(app v1alpha1.Application) bool {
 	for _, condition := range app.Status.Conditions {
-		if condition.Type == argov1alpha1.ApplicationConditionInvalidSpecError {
+		if condition.Type == v1alpha1.ApplicationConditionInvalidSpecError {
 			return true
 		}
-		if condition.Type == argov1alpha1.ApplicationConditionUnknownError {
+		if condition.Type == v1alpha1.ApplicationConditionUnknownError {
 			return true
 		}
 	}
@@ -497,10 +497,10 @@ func isApplicationWithError(app argov1alpha1.Application) bool {
 }
 
 // check Applications that are in Waiting status and promote them to Pending if needed
-func (m *Manager) UpdateApplicationSetApplicationStatusProgress(ctx context.Context, logCtx *log.Entry, applicationSet *argov1alpha1.ApplicationSet, appsToSync map[string]bool, appStepMap map[string]int) ([]argov1alpha1.ApplicationSetApplicationStatus, error) {
+func (m *Manager) UpdateApplicationSetApplicationStatusProgress(ctx context.Context, logCtx *log.Entry, applicationSet *v1alpha1.ApplicationSet, appsToSync map[string]bool, appStepMap map[string]int) ([]v1alpha1.ApplicationSetApplicationStatus, error) {
 	now := metav1.Now()
 
-	appStatuses := make([]argov1alpha1.ApplicationSetApplicationStatus, 0, len(applicationSet.Status.ApplicationStatus))
+	appStatuses := make([]v1alpha1.ApplicationSetApplicationStatus, 0, len(applicationSet.Status.ApplicationStatus))
 
 	// if we have no RollingUpdate steps, clear out the existing ApplicationStatus entries
 	if RollingSyncStrategyEnabled(applicationSet) {
@@ -513,7 +513,7 @@ func (m *Manager) UpdateApplicationSetApplicationStatusProgress(ctx context.Cont
 		for _, appStatus := range applicationSet.Status.ApplicationStatus {
 			totalCountMap[appStepMap[appStatus.Application]]++
 
-			if appStatus.Status == argov1alpha1.ProgressiveSyncPending || appStatus.Status == argov1alpha1.ProgressiveSyncProgressing {
+			if appStatus.Status == v1alpha1.ProgressiveSyncPending || appStatus.Status == v1alpha1.ProgressiveSyncProgressing {
 				updateCountMap[appStepMap[appStatus.Application]]++
 			}
 		}
@@ -570,9 +570,9 @@ func (m *Manager) UpdateApplicationSetApplicationStatusProgress(ctx context.Cont
 				}
 			}
 
-			if appStatus.Status == argov1alpha1.ProgressiveSyncWaiting && appsToSync[appStatus.Application] && maxUpdateAllowed {
+			if appStatus.Status == v1alpha1.ProgressiveSyncWaiting && appsToSync[appStatus.Application] && maxUpdateAllowed {
 				appStatus.LastTransitionTime = &now
-				appStatus.Status = argov1alpha1.ProgressiveSyncPending
+				appStatus.Status = v1alpha1.ProgressiveSyncPending
 				appStatus.Message = "Application moved to Pending status, watching for the Application resource to start Progressing"
 
 				statusLogCtx.WithFields(log.Fields{
@@ -597,16 +597,16 @@ func (m *Manager) UpdateApplicationSetApplicationStatusProgress(ctx context.Cont
 	return appStatuses, nil
 }
 
-func (m *Manager) getProgressingCondition(applicationSet *argov1alpha1.ApplicationSet) *argov1alpha1.ApplicationSetCondition {
+func (m *Manager) getProgressingCondition(applicationSet *v1alpha1.ApplicationSet) *v1alpha1.ApplicationSetCondition {
 	if !IsRollingSyncStrategy(applicationSet) {
 		return nil
 	}
 	completedWaves := map[string]bool{}
 	for _, appStatus := range applicationSet.Status.ApplicationStatus {
 		if v, ok := completedWaves[appStatus.Step]; !ok {
-			completedWaves[appStatus.Step] = appStatus.Status == argov1alpha1.ProgressiveSyncHealthy
+			completedWaves[appStatus.Step] = appStatus.Status == v1alpha1.ProgressiveSyncHealthy
 		} else {
-			completedWaves[appStatus.Step] = v && appStatus.Status == argov1alpha1.ProgressiveSyncHealthy
+			completedWaves[appStatus.Step] = v && appStatus.Status == v1alpha1.ProgressiveSyncHealthy
 		}
 	}
 
@@ -627,46 +627,46 @@ func (m *Manager) getProgressingCondition(applicationSet *argov1alpha1.Applicati
 	}
 
 	if isProgressing {
-		return &argov1alpha1.ApplicationSetCondition{
-			Type:    argov1alpha1.ApplicationSetConditionRolloutProgressing,
-			Status:  argov1alpha1.ApplicationSetConditionStatusTrue,
+		return &v1alpha1.ApplicationSetCondition{
+			Type:    v1alpha1.ApplicationSetConditionRolloutProgressing,
+			Status:  v1alpha1.ApplicationSetConditionStatusTrue,
 			Message: "ApplicationSet is performing rollout of step " + progressingStep,
-			Reason:  argov1alpha1.ApplicationSetReasonApplicationSetModified,
+			Reason:  v1alpha1.ApplicationSetReasonApplicationSetModified,
 		}
 	}
 
-	return &argov1alpha1.ApplicationSetCondition{
-		Type:    argov1alpha1.ApplicationSetConditionRolloutProgressing,
-		Status:  argov1alpha1.ApplicationSetConditionStatusFalse,
+	return &v1alpha1.ApplicationSetCondition{
+		Type:    v1alpha1.ApplicationSetConditionRolloutProgressing,
+		Status:  v1alpha1.ApplicationSetConditionStatusFalse,
 		Message: "ApplicationSet Rollout has completed",
-		Reason:  argov1alpha1.ApplicationSetReasonApplicationSetRolloutComplete,
+		Reason:  v1alpha1.ApplicationSetReasonApplicationSetRolloutComplete,
 	}
 }
 
-func (m *Manager) getInvalidRolloutConfig(applicationSet *argov1alpha1.ApplicationSet) *argov1alpha1.ApplicationSetCondition {
+func (m *Manager) getInvalidRolloutConfig(applicationSet *v1alpha1.ApplicationSet) *v1alpha1.ApplicationSetCondition {
 	if !IsRollingSyncStrategy(applicationSet) {
 		return nil
 	}
 	if m.validationIssues.HasIssues() {
-		return &argov1alpha1.ApplicationSetCondition{
-			Type:    argov1alpha1.ApplicationSetConditionInvalidRolloutConfig,
-			Status:  argov1alpha1.ApplicationSetConditionStatusTrue,
-			Reason:  argov1alpha1.ApplicationSetReasonInvalidRolloutConfig,
+		return &v1alpha1.ApplicationSetCondition{
+			Type:    v1alpha1.ApplicationSetConditionInvalidRolloutConfig,
+			Status:  v1alpha1.ApplicationSetConditionStatusTrue,
+			Reason:  v1alpha1.ApplicationSetReasonInvalidRolloutConfig,
 			Message: m.validationIssues.getConditionMessage(),
 		}
 	}
 
-	return &argov1alpha1.ApplicationSetCondition{
-		Type:    argov1alpha1.ApplicationSetConditionInvalidRolloutConfig,
-		Status:  argov1alpha1.ApplicationSetConditionStatusFalse,
+	return &v1alpha1.ApplicationSetCondition{
+		Type:    v1alpha1.ApplicationSetConditionInvalidRolloutConfig,
+		Status:  v1alpha1.ApplicationSetConditionStatusFalse,
 		Message: "Rolling Sync Configured correctly",
-		Reason:  argov1alpha1.ApplicationSetReasonValidRolloutConfig,
+		Reason:  v1alpha1.ApplicationSetReasonValidRolloutConfig,
 	}
 }
 
-func (m *Manager) updateApplicationSetApplicationStatusConditions(ctx context.Context, applicationSet *argov1alpha1.ApplicationSet, conditions []*argov1alpha1.ApplicationSetCondition) []argov1alpha1.ApplicationSetCondition {
+func (m *Manager) updateApplicationSetApplicationStatusConditions(ctx context.Context, applicationSet *v1alpha1.ApplicationSet, conditions []*v1alpha1.ApplicationSetCondition) []v1alpha1.ApplicationSetCondition {
 	// filter out nil conditions
-	var filteredConditions []argov1alpha1.ApplicationSetCondition
+	var filteredConditions []v1alpha1.ApplicationSetCondition
 	for _, condition := range conditions {
 		if condition != nil {
 			filteredConditions = append(filteredConditions, *condition)
@@ -683,8 +683,8 @@ func (m *Manager) updateApplicationSetApplicationStatusConditions(ctx context.Co
 	return applicationSet.Status.Conditions
 }
 
-func (m *Manager) SyncDesiredApplications(logCtx *log.Entry, applicationSet *argov1alpha1.ApplicationSet, appsToSync map[string]bool, desiredApplications []argov1alpha1.Application) []argov1alpha1.Application {
-	rolloutApps := []argov1alpha1.Application{}
+func (m *Manager) SyncDesiredApplications(logCtx *log.Entry, applicationSet *v1alpha1.ApplicationSet, appsToSync map[string]bool, desiredApplications []v1alpha1.Application) []v1alpha1.Application {
+	rolloutApps := []v1alpha1.Application{}
 	for i := range desiredApplications {
 		pruneEnabled := false
 
@@ -696,7 +696,7 @@ func (m *Manager) SyncDesiredApplications(logCtx *log.Entry, applicationSet *arg
 
 		appSetStatusPending := false
 		idx := utils.FindApplicationStatusIndex(applicationSet.Status.ApplicationStatus, desiredApplications[i].Name)
-		if idx > -1 && applicationSet.Status.ApplicationStatus[idx].Status == argov1alpha1.ProgressiveSyncPending {
+		if idx > -1 && applicationSet.Status.ApplicationStatus[idx].Status == v1alpha1.ProgressiveSyncPending {
 			// only trigger a sync for Applications that are in Pending status, since this is governed by maxUpdate
 			appSetStatusPending = true
 		}
@@ -713,23 +713,23 @@ func (m *Manager) SyncDesiredApplications(logCtx *log.Entry, applicationSet *arg
 }
 
 // used by the RollingSync Progressive Sync strategy to trigger a sync of a particular Application resource
-func syncApplication(application argov1alpha1.Application, prune bool) argov1alpha1.Application {
-	operation := argov1alpha1.Operation{
-		InitiatedBy: argov1alpha1.OperationInitiator{
+func syncApplication(application v1alpha1.Application, prune bool) v1alpha1.Application {
+	operation := v1alpha1.Operation{
+		InitiatedBy: v1alpha1.OperationInitiator{
 			Username:  "applicationset-controller",
 			Automated: true,
 		},
-		Info: []*argov1alpha1.Info{
+		Info: []*v1alpha1.Info{
 			{
 				Name:  "Reason",
 				Value: "ApplicationSet RollingSync triggered a sync of this Application resource",
 			},
 		},
-		Sync: &argov1alpha1.SyncOperation{},
+		Sync: &v1alpha1.SyncOperation{},
 		// Set a retry limit of 5, aligning with the default in Hanzo CD's appcontroller auto-sync behavior.
 		// This provides consistency for retry behavior across controllers.
 		// See: https://github.com/hanzoai/cd/blob/af9ebac0bb35dc16eb034c1cefaf7c92d1029927/controller/appcontroller.go#L2126
-		Retry: argov1alpha1.RetryStrategy{Limit: 5},
+		Retry: v1alpha1.RetryStrategy{Limit: 5},
 	}
 
 	if application.Spec.SyncPolicy != nil {

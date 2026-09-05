@@ -9,7 +9,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/hanzoai/cd/applicationset/utils"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 var _ Generator = (*MatrixGenerator)(nil)
@@ -32,7 +32,7 @@ func NewMatrixGenerator(supportedGenerators map[string]Generator) Generator {
 	return m
 }
 
-func (m *MatrixGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator, appSet *argoprojiov1alpha1.ApplicationSet, client client.Client) ([]map[string]any, error) {
+func (m *MatrixGenerator) GenerateParams(appSetGenerator *v1alpha1.ApplicationSetGenerator, appSet *v1alpha1.ApplicationSet, client client.Client) ([]map[string]any, error) {
 	if appSetGenerator.Matrix == nil {
 		return nil, ErrEmptyAppSetGenerator
 	}
@@ -79,7 +79,7 @@ func (m *MatrixGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha1.App
 	return res, nil
 }
 
-func (m *MatrixGenerator) getParams(appSetBaseGenerator argoprojiov1alpha1.ApplicationSetNestedGenerator, appSet *argoprojiov1alpha1.ApplicationSet, params map[string]any, client client.Client) ([]map[string]any, error) {
+func (m *MatrixGenerator) getParams(appSetBaseGenerator v1alpha1.ApplicationSetNestedGenerator, appSet *v1alpha1.ApplicationSet, params map[string]any, client client.Client) ([]map[string]any, error) {
 	matrixGen, err := getMatrixGenerator(appSetBaseGenerator)
 	if err != nil {
 		return nil, err
@@ -90,7 +90,7 @@ func (m *MatrixGenerator) getParams(appSetBaseGenerator argoprojiov1alpha1.Appli
 	}
 
 	t, err := Transform(
-		argoprojiov1alpha1.ApplicationSetGenerator{
+		v1alpha1.ApplicationSetGenerator{
 			List:                    appSetBaseGenerator.List,
 			Clusters:                appSetBaseGenerator.Clusters,
 			Git:                     appSetBaseGenerator.Git,
@@ -103,7 +103,7 @@ func (m *MatrixGenerator) getParams(appSetBaseGenerator argoprojiov1alpha1.Appli
 			Selector:                appSetBaseGenerator.Selector,
 		},
 		m.supportedGenerators,
-		argoprojiov1alpha1.ApplicationSetTemplate{},
+		v1alpha1.ApplicationSetTemplate{},
 		appSet,
 		params,
 		client)
@@ -124,14 +124,14 @@ func (m *MatrixGenerator) getParams(appSetBaseGenerator argoprojiov1alpha1.Appli
 
 const maxDuration time.Duration = 1<<63 - 1
 
-func (m *MatrixGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) time.Duration {
+func (m *MatrixGenerator) GetRequeueAfter(appSetGenerator *v1alpha1.ApplicationSetGenerator) time.Duration {
 	res := maxDuration
 	var found bool
 
 	for _, r := range appSetGenerator.Matrix.Generators {
 		matrixGen, _ := getMatrixGenerator(r)
 		mergeGen, _ := getMergeGenerator(r)
-		base := &argoprojiov1alpha1.ApplicationSetGenerator{
+		base := &v1alpha1.ApplicationSetGenerator{
 			List:                    r.List,
 			Clusters:                r.Clusters,
 			Git:                     r.Git,
@@ -159,17 +159,17 @@ func (m *MatrixGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alpha1.Ap
 	return NoRequeueAfter
 }
 
-func getMatrixGenerator(r argoprojiov1alpha1.ApplicationSetNestedGenerator) (*argoprojiov1alpha1.MatrixGenerator, error) {
+func getMatrixGenerator(r v1alpha1.ApplicationSetNestedGenerator) (*v1alpha1.MatrixGenerator, error) {
 	if r.Matrix == nil {
 		return nil, nil
 	}
-	matrix, err := argoprojiov1alpha1.ToNestedMatrixGenerator(r.Matrix)
+	matrix, err := v1alpha1.ToNestedMatrixGenerator(r.Matrix)
 	if err != nil {
 		return nil, err
 	}
 	return matrix.ToMatrixGenerator(), nil
 }
 
-func (m *MatrixGenerator) GetTemplate(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) *argoprojiov1alpha1.ApplicationSetTemplate {
+func (m *MatrixGenerator) GetTemplate(appSetGenerator *v1alpha1.ApplicationSetGenerator) *v1alpha1.ApplicationSetTemplate {
 	return &appSetGenerator.Matrix.Template
 }

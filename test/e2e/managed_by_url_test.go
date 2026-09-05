@@ -53,7 +53,7 @@ func TestManagedByURLWithAnnotation(t *testing.T) {
 			// Configure deep links that use the managed-by-url template variable
 			deepLinksConfig := `- url: "{{.managedByURL}}/applications/{{.app.metadata.name}}"
   title: "Managed By Instance"
-  description: "Open in managing ArgoCD instance"`
+  description: "Open in managing Hanzo CD instance"`
 
 			// Update the cd-cm configmap to include our test deep links and URL
 			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.E2ENamespace).Get(t.Context(), "cd-cm", metav1.GetOptions{})
@@ -97,7 +97,7 @@ func TestManagedByURLWithAnnotation(t *testing.T) {
 				if link.Url != nil && *link.Url == expectedLink {
 					found = true
 					assert.Equal(t, "Managed By Instance", *link.Title)
-					assert.Equal(t, "Open in managing ArgoCD instance", *link.Description)
+					assert.Equal(t, "Open in managing Hanzo CD instance", *link.Description)
 					break
 				}
 			}
@@ -129,7 +129,7 @@ func TestManagedByURLFallbackToCurrentInstance(t *testing.T) {
 			// Configure deep links that use the managed-by-url template variable
 			deepLinksConfig := `- url: "{{.managedByURL}}/applications/{{.app.metadata.name}}"
   title: "Managed By Instance"
-  description: "Open in managing ArgoCD instance"`
+  description: "Open in managing Hanzo CD instance"`
 
 			// Update the cd-cm configmap to include our test deep links and URL
 			configMap, err := fixture.KubeClientset.CoreV1().ConfigMaps(fixture.E2ENamespace).Get(t.Context(), "cd-cm", metav1.GetOptions{})
@@ -178,7 +178,7 @@ func TestManagedByURLFallbackToCurrentInstance(t *testing.T) {
 				if link.Url != nil && *link.Url == expectedLink {
 					found = true
 					assert.Equal(t, "Managed By Instance", *link.Title)
-					assert.Equal(t, "Open in managing ArgoCD instance", *link.Description)
+					assert.Equal(t, "Open in managing Hanzo CD instance", *link.Description)
 					break
 				}
 			}

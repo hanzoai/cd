@@ -37,11 +37,11 @@ const (
 	// and in which Application resources should be created.
 	E2ENamespace = "cd-e2e"
 
-	// ArgoCDExternalNamespace is an external namespace to test additional namespaces
-	ArgoCDExternalNamespace ExternalNamespace = "cd-e2e-external"
+	// CDExternalNamespace is an external namespace to test additional namespaces
+	CDExternalNamespace ExternalNamespace = "cd-e2e-external"
 
-	// ArgoCDExternalNamespace2 is an external namespace to test additional namespaces
-	ArgoCDExternalNamespace2 ExternalNamespace = "cd-e2e-external-2"
+	// CDExternalNamespace2 is an external namespace to test additional namespaces
+	CDExternalNamespace2 ExternalNamespace = "cd-e2e-external-2"
 
 	// ApplicationsResourcesNamespace is the namespace into which temporary resources (such as Deployments/Pods/etc)
 	// can be deployed, such as using it as the target namespace in an Application resource.
@@ -99,8 +99,8 @@ func GetE2EFixtureK8sClient(t *testing.T) *E2EFixtureK8sClient {
 
 		internalClientVars.AppSetClientset = internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(TestNamespace())
 		internalClientVars.ExternalAppSetClientsets = map[ExternalNamespace]dynamic.ResourceInterface{
-			ArgoCDExternalNamespace:  internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(string(ArgoCDExternalNamespace)),
-			ArgoCDExternalNamespace2: internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(string(ArgoCDExternalNamespace2)),
+			CDExternalNamespace:  internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(string(CDExternalNamespace)),
+			CDExternalNamespace2: internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(string(CDExternalNamespace2)),
 		}
 	})
 	return internalClientVars
@@ -140,19 +140,19 @@ func EnsureCleanState(t *testing.T) {
 		},
 		func() error {
 			// Clean up ApplicationSets in cd-e2e-external namespace (don't delete the namespace itself as it's shared)
-			return fixtureClient.ExternalAppSetClientsets[ArgoCDExternalNamespace].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.ExternalAppSetClientsets[CDExternalNamespace].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// Clean up ApplicationSets in cd-e2e-external-2 namespace (don't delete the namespace itself as it's shared)
-			return fixtureClient.ExternalAppSetClientsets[ArgoCDExternalNamespace2].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.ExternalAppSetClientsets[CDExternalNamespace2].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// Clean up Applications in cd-e2e-external namespace
-			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(ArgoCDExternalNamespace)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(CDExternalNamespace)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// Clean up Applications in cd-e2e-external-2 namespace
-			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(ArgoCDExternalNamespace2)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(CDExternalNamespace2)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		// delete resources
 		func() error {
@@ -222,7 +222,7 @@ func waitForExpectedClusterState(t *testing.T) error {
 		SourceRepos:              []string{"*"},
 		Destinations:             []v1alpha1.ApplicationDestination{{Namespace: "*", Server: "*"}},
 		ClusterResourceWhitelist: []v1alpha1.ClusterResourceRestrictionItem{{Group: "*", Kind: "*"}},
-		SourceNamespaces:         []string{string(ArgoCDExternalNamespace), string(ArgoCDExternalNamespace2)},
+		SourceNamespaces:         []string{string(CDExternalNamespace), string(CDExternalNamespace2)},
 	})
 
 	// Wait up to 60 seconds for all the ApplicationSets to delete

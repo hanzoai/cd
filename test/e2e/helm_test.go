@@ -544,7 +544,7 @@ func TestHelmDependenciesPermissionDenied(t *testing.T) {
 	fixture.SkipOnEnv(t, "HELM")
 
 	ctx := projectFixture.Given(t)
-	ctx.Name("argo-helm-project-denied").
+	ctx.Name("cd-helm-project-denied").
 		Destination("*,*").
 		When().
 		Create().

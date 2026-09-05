@@ -9,26 +9,26 @@ import (
 	"github.com/stretchr/testify/require"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
-func getNestedListGenerator(json string) *argoprojiov1alpha1.ApplicationSetNestedGenerator {
-	return &argoprojiov1alpha1.ApplicationSetNestedGenerator{
-		List: &argoprojiov1alpha1.ListGenerator{
+func getNestedListGenerator(json string) *v1alpha1.ApplicationSetNestedGenerator {
+	return &v1alpha1.ApplicationSetNestedGenerator{
+		List: &v1alpha1.ListGenerator{
 			Elements: []apiextensionsv1.JSON{{Raw: []byte(json)}},
 		},
 	}
 }
 
-func getTerminalListGeneratorMultiple(jsons []string) argoprojiov1alpha1.ApplicationSetTerminalGenerator {
+func getTerminalListGeneratorMultiple(jsons []string) v1alpha1.ApplicationSetTerminalGenerator {
 	elements := make([]apiextensionsv1.JSON, len(jsons))
 
 	for i, json := range jsons {
 		elements[i] = apiextensionsv1.JSON{Raw: []byte(json)}
 	}
 
-	generator := argoprojiov1alpha1.ApplicationSetTerminalGenerator{
-		List: &argoprojiov1alpha1.ListGenerator{
+	generator := v1alpha1.ApplicationSetTerminalGenerator{
+		List: &v1alpha1.ListGenerator{
 			Elements: elements,
 		},
 	}
@@ -54,20 +54,20 @@ func TestMergeGenerate(t *testing.T) {
 
 	testCases := []struct {
 		name           string
-		baseGenerators []argoprojiov1alpha1.ApplicationSetNestedGenerator
+		baseGenerators []v1alpha1.ApplicationSetNestedGenerator
 		mergeKeys      []string
 		expectedErr    error
 		expected       []map[string]any
 	}{
 		{
 			name:           "no generators",
-			baseGenerators: []argoprojiov1alpha1.ApplicationSetNestedGenerator{},
+			baseGenerators: []v1alpha1.ApplicationSetNestedGenerator{},
 			mergeKeys:      []string{"b"},
 			expectedErr:    ErrLessThanTwoGeneratorsInMerge,
 		},
 		{
 			name: "one generator",
-			baseGenerators: []argoprojiov1alpha1.ApplicationSetNestedGenerator{
+			baseGenerators: []v1alpha1.ApplicationSetNestedGenerator{
 				*getNestedListGenerator(`{"a": "1_1","b": "same","c": "1_3"}`),
 			},
 			mergeKeys:   []string{"b"},
@@ -75,7 +75,7 @@ func TestMergeGenerate(t *testing.T) {
 		},
 		{
 			name: "happy flow - generate paramSets",
-			baseGenerators: []argoprojiov1alpha1.ApplicationSetNestedGenerator{
+			baseGenerators: []v1alpha1.ApplicationSetNestedGenerator{
 				*getNestedListGenerator(`{"a": "1_1","b": "same","c": "1_3"}`),
 				*getNestedListGenerator(`{"a": "2_1","b": "same"}`),
 				*getNestedListGenerator(`{"a": "3_1","b": "different","c": "3_3"}`), // gets ignored because its merge key value isn't in the base params set
@@ -87,7 +87,7 @@ func TestMergeGenerate(t *testing.T) {
 		},
 		{
 			name: "merge keys absent - do not merge",
-			baseGenerators: []argoprojiov1alpha1.ApplicationSetNestedGenerator{
+			baseGenerators: []v1alpha1.ApplicationSetNestedGenerator{
 				*getNestedListGenerator(`{"a": "a"}`),
 				*getNestedListGenerator(`{"a": "a"}`),
 			},
@@ -98,7 +98,7 @@ func TestMergeGenerate(t *testing.T) {
 		},
 		{
 			name: "merge key present in first set, absent in second - do not merge",
-			baseGenerators: []argoprojiov1alpha1.ApplicationSetNestedGenerator{
+			baseGenerators: []v1alpha1.ApplicationSetNestedGenerator{
 				*getNestedListGenerator(`{"a": "a"}`),
 				*getNestedListGenerator(`{"b": "b"}`),
 			},
@@ -109,10 +109,10 @@ func TestMergeGenerate(t *testing.T) {
 		},
 		{
 			name: "merge nested matrix with some lists",
-			baseGenerators: []argoprojiov1alpha1.ApplicationSetNestedGenerator{
+			baseGenerators: []v1alpha1.ApplicationSetNestedGenerator{
 				{
-					Matrix: toAPIExtensionsJSON(t, &argoprojiov1alpha1.NestedMatrixGenerator{
-						Generators: []argoprojiov1alpha1.ApplicationSetTerminalGenerator{
+					Matrix: toAPIExtensionsJSON(t, &v1alpha1.NestedMatrixGenerator{
+						Generators: []v1alpha1.ApplicationSetTerminalGenerator{
 							getTerminalListGeneratorMultiple([]string{`{"a": "1"}`, `{"a": "2"}`}),
 							getTerminalListGeneratorMultiple([]string{`{"b": "1"}`, `{"b": "2"}`}),
 						},
@@ -130,11 +130,11 @@ func TestMergeGenerate(t *testing.T) {
 		},
 		{
 			name: "merge nested merge with some lists",
-			baseGenerators: []argoprojiov1alpha1.ApplicationSetNestedGenerator{
+			baseGenerators: []v1alpha1.ApplicationSetNestedGenerator{
 				{
-					Merge: toAPIExtensionsJSON(t, &argoprojiov1alpha1.NestedMergeGenerator{
+					Merge: toAPIExtensionsJSON(t, &v1alpha1.NestedMergeGenerator{
 						MergeKeys: []string{"a"},
-						Generators: []argoprojiov1alpha1.ApplicationSetTerminalGenerator{
+						Generators: []v1alpha1.ApplicationSetTerminalGenerator{
 							getTerminalListGeneratorMultiple([]string{`{"a": "1", "b": "1"}`, `{"a": "2", "b": "2"}`}),
 							getTerminalListGeneratorMultiple([]string{`{"a": "1", "b": "3", "c": "added"}`, `{"a": "3", "b": "2"}`}), // First gets merged, second gets ignored
 						},
@@ -156,7 +156,7 @@ func TestMergeGenerate(t *testing.T) {
 		t.Run(testCaseCopy.name, func(t *testing.T) {
 			t.Parallel()
 
-			appSet := &argoprojiov1alpha1.ApplicationSet{}
+			appSet := &v1alpha1.ApplicationSet{}
 
 			mergeGenerator := NewMergeGenerator(
 				map[string]Generator{
@@ -174,11 +174,11 @@ func TestMergeGenerate(t *testing.T) {
 				},
 			)
 
-			got, err := mergeGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-				Merge: &argoprojiov1alpha1.MergeGenerator{
+			got, err := mergeGenerator.GenerateParams(&v1alpha1.ApplicationSetGenerator{
+				Merge: &v1alpha1.MergeGenerator{
 					Generators: testCaseCopy.baseGenerators,
 					MergeKeys:  testCaseCopy.mergeKeys,
-					Template:   argoprojiov1alpha1.ApplicationSetTemplate{},
+					Template:   v1alpha1.ApplicationSetTemplate{},
 				},
 			}, appSet, nil)
 
