@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: quay.io/argoprojlabs/cd-e2e-container:0.1
+        image: ghcr.io/hanzoai/cd-e2e-container:0.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -39,7 +39,7 @@ spec:
   restartPolicy: Never
   containers:
   - name: main
-    image: quay.io/argoprojlabs/cd-e2e-container:0.1
+    image: ghcr.io/hanzoai/cd-e2e-container:0.1
     imagePullPolicy: IfNotPresent
     command: [sh, -c, "sleep 10"]
 
@@ -56,6 +56,6 @@ spec:
   restartPolicy: Never
   containers:
   - name: main
-    image: quay.io/argoprojlabs/cd-e2e-container:0.1
+    image: ghcr.io/hanzoai/cd-e2e-container:0.1
     imagePullPolicy: IfNotPresent
     command: [sh, -c, "sleep 10"]

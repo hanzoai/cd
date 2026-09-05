@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/argoprojlabs/cd-e2e-container
+  repository: ghcr.io/hanzoai/cd-e2e-container
   tag: 0.1
   pullPolicy: IfNotPresent
 

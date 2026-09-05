@@ -76,7 +76,7 @@ Example:
 ```yaml
 kustomize:
   images:
-    - quay.io/argoprojlabs/cd-e2e-container:0.2
+    - ghcr.io/hanzoai/cd-e2e-container:0.2
 ```
 
 The `.cd-source` is trying to solve two following main use cases:

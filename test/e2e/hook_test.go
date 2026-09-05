@@ -52,7 +52,7 @@ func testHookSuccessful(t *testing.T, hookType HookType) {
 		Expect(ResourceSyncStatusIs("Pod", "pod", SyncStatusCodeSynced)).
 		Expect(ResourceHealthIs("Pod", "pod", health.HealthStatusHealthy)).
 		Expect(ResourceResultNumbering(2)).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "hook", Status: ResultCodeSynced, Message: "pod/hook created", HookType: hookType, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(hookType)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "hook", Status: ResultCodeSynced, Message: "pod/hook created", HookType: hookType, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(hookType)})).
 		Expect(Pod(func(p corev1.Pod) bool {
 			// Completed hooks should not have a finalizer
 			_, isHook := p.GetAnnotations()[AnnotationKeyHook]
@@ -139,7 +139,7 @@ func TestPreSyncHookFailure(t *testing.T) {
 		Expect(SyncStatusIs(SyncStatusCodeOutOfSync)).
 		Expect(OperationPhaseIs(OperationFailed)).
 		Expect(ResourceResultNumbering(1)).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "hook", Status: ResultCodeSynced, Message: `container "main" failed with exit code 1`, HookType: HookTypePreSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypePreSync)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "hook", Status: ResultCodeSynced, Message: `container "main" failed with exit code 1`, HookType: HookTypePreSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypePreSync)})).
 		Expect(ResourceHealthIs("Pod", "pod", health.HealthStatusMissing)).
 		Expect(ResourceSyncStatusIs("Pod", "pod", SyncStatusCodeOutOfSync)).
 		Expect(Pod(func(p corev1.Pod) bool {
@@ -249,7 +249,7 @@ spec:
   containers:
     - command:
         - "true"
-      image: "quay.io/argoprojlabs/cd-e2e-container:0.1"
+      image: "ghcr.io/hanzoai/cd-e2e-container:0.1"
       imagePullPolicy: IfNotPresent
       name: main
   restartPolicy: Never
@@ -259,7 +259,7 @@ spec:
 		CreateApp().
 		Sync().
 		Then().
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "sync-fail-hook", Message: "pod/sync-fail-hook created", HookType: HookTypeSyncFail, Status: ResultCodeSynced, HookPhase: OperationSucceeded, SyncPhase: SyncPhaseSyncFail})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "sync-fail-hook", Message: "pod/sync-fail-hook created", HookType: HookTypeSyncFail, Status: ResultCodeSynced, HookPhase: OperationSucceeded, SyncPhase: SyncPhaseSyncFail})).
 		Expect(OperationPhaseIs(OperationFailed))
 }
 
@@ -281,7 +281,7 @@ spec:
   containers:
     - command:
         - "true"
-      image: "quay.io/argoprojlabs/cd-e2e-container:0.1"
+      image: "ghcr.io/hanzoai/cd-e2e-container:0.1"
       imagePullPolicy: IfNotPresent
       name: main
   restartPolicy: Never
@@ -297,7 +297,7 @@ spec:
   containers:
     - command:
         - "false"
-      image: "quay.io/argoprojlabs/cd-e2e-container:0.1"
+      image: "ghcr.io/hanzoai/cd-e2e-container:0.1"
       imagePullPolicy: IfNotPresent
       name: main
   restartPolicy: Never
@@ -308,8 +308,8 @@ spec:
 		Sync().
 		Then().
 		Expect(ResourceResultNumbering(4)).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Name: "successful-sync-fail-hook", Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Status: ResultCodeSynced, Message: "pod/successful-sync-fail-hook created", HookType: HookTypeSyncFail, HookPhase: OperationSucceeded, SyncPhase: SyncPhaseSyncFail})).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Name: "failed-sync-fail-hook", Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Status: ResultCodeSynced, Message: `container "main" failed with exit code 1`, HookType: HookTypeSyncFail, HookPhase: OperationFailed, SyncPhase: SyncPhaseSyncFail})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Name: "successful-sync-fail-hook", Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Status: ResultCodeSynced, Message: "pod/successful-sync-fail-hook created", HookType: HookTypeSyncFail, HookPhase: OperationSucceeded, SyncPhase: SyncPhaseSyncFail})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Name: "failed-sync-fail-hook", Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Status: ResultCodeSynced, Message: `container "main" failed with exit code 1`, HookType: HookTypeSyncFail, HookPhase: OperationFailed, SyncPhase: SyncPhaseSyncFail})).
 		Expect(OperationPhaseIs(OperationFailed)).
 		Expect(Pod(func(p corev1.Pod) bool {
 			// Completed hooks should not have a finalizer
@@ -333,7 +333,7 @@ spec:
   containers:
     - command:
         - "true"
-      image: "quay.io/argoprojlabs/cd-e2e-container:0.1"
+      image: "ghcr.io/hanzoai/cd-e2e-container:0.1"
       imagePullPolicy: IfNotPresent
       name: main
   restartPolicy: Never`
@@ -351,8 +351,8 @@ spec:
 		Sync().
 		Then().
 		Expect(ResourceResultNumbering(3)).
-		Expect(ResourceResultMatches(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "invalid-hook", Status: ResultCodeSyncFailed, Message: `Pod "invalid-hook" is invalid`, HookType: HookTypeSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypeSync)})).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "hook", Status: ResultCodeSynced, Message: "pod/hook created", HookType: HookTypeSync, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypeSync)})).
+		Expect(ResourceResultMatches(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "invalid-hook", Status: ResultCodeSyncFailed, Message: `Pod "invalid-hook" is invalid`, HookType: HookTypeSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypeSync)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "hook", Status: ResultCodeSynced, Message: "pod/hook created", HookType: HookTypeSync, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypeSync)})).
 		Expect(OperationPhaseIs(OperationFailed)).
 		Expect(Pod(func(p corev1.Pod) bool {
 			// Completed hooks should not have a finalizer
@@ -375,7 +375,7 @@ spec:
   containers:
     - command:
         - "true"
-      image: "quay.io/argoprojlabs/cd-e2e-container:0.1"
+      image: "ghcr.io/hanzoai/cd-e2e-container:0.1"
       imagePullPolicy: IfNotPresent
       name: main
   restartPolicy: Never`
@@ -395,7 +395,7 @@ spec:
   containers:
     - command:
         - "true"
-      image: "quay.io/argoprojlabs/cd-e2e-container:0.1"
+      image: "ghcr.io/hanzoai/cd-e2e-container:0.1"
       imagePullPolicy: IfNotPresent
       name: main
   restartPolicy: Never
@@ -411,8 +411,8 @@ spec:
 		Sync().
 		Then().
 		Expect(ResourceResultNumbering(4)).
-		Expect(ResourceResultMatches(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "invalid-sync-fail-hook", Status: ResultCodeSyncFailed, Message: `Pod "invalid-sync-fail-hook" is invalid`, HookType: HookTypeSyncFail, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypeSyncFail)})).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "successful-sync-fail-hook", Status: ResultCodeSynced, Message: "pod/successful-sync-fail-hook created", HookType: HookTypeSyncFail, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypeSyncFail)})).
+		Expect(ResourceResultMatches(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "invalid-sync-fail-hook", Status: ResultCodeSyncFailed, Message: `Pod "invalid-sync-fail-hook" is invalid`, HookType: HookTypeSyncFail, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypeSyncFail)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "successful-sync-fail-hook", Status: ResultCodeSynced, Message: "pod/successful-sync-fail-hook created", HookType: HookTypeSyncFail, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypeSyncFail)})).
 		Expect(OperationPhaseIs(OperationFailed)).
 		Expect(Pod(func(p corev1.Pod) bool {
 			// Completed hooks should not have a finalizer
@@ -650,7 +650,7 @@ func testHookFinalizer(t *testing.T, hookType HookType) {
 		Expect(ResourceSyncStatusIs("Pod", "pod", SyncStatusCodeSynced)).
 		Expect(ResourceHealthIs("Pod", "pod", health.HealthStatusHealthy)).
 		Expect(ResourceResultNumbering(2)).
-		Expect(ResourceResultIs(ResourceResult{Group: "batch", Version: "v1", Kind: "Job", Namespace: ctx.DeploymentNamespace(), Name: "hook", Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Message: "Resource has finalizer", HookType: hookType, Status: ResultCodeSynced, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(hookType)}))
+		Expect(ResourceResultIs(ResourceResult{Group: "batch", Version: "v1", Kind: "Job", Namespace: ctx.DeploymentNamespace(), Name: "hook", Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Message: "Resource has finalizer", HookType: hookType, Status: ResultCodeSynced, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(hookType)}))
 }
 
 // test terminate operation stops running hooks
@@ -668,7 +668,7 @@ spec:
   containers:
     - command: [ "/bin/sh", "-c", "--" ]
       args: [ "%s" ]
-      image: "quay.io/argoprojlabs/cd-e2e-container:0.1"
+      image: "ghcr.io/hanzoai/cd-e2e-container:0.1"
       imagePullPolicy: IfNotPresent
       name: main
   restartPolicy: Never`, deletePolicy, name, cmd)
@@ -708,18 +708,18 @@ spec:
 		Sync().
 		Then().
 		Expect(ResourceResultNumbering(6)).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "complete-delete-on-success", Status: ResultCodeSynced, Message: "pod/complete-delete-on-success created", HookType: HookTypePreSync, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypePreSync)})).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "complete-delete-on-create", Status: ResultCodeSynced, Message: "pod/complete-delete-on-create created", HookType: HookTypePreSync, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypePreSync)})).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "complete-delete-on-failed", Status: ResultCodeSynced, Message: "pod/complete-delete-on-failed created", HookType: HookTypePreSync, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypePreSync)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "complete-delete-on-success", Status: ResultCodeSynced, Message: "pod/complete-delete-on-success created", HookType: HookTypePreSync, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypePreSync)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "complete-delete-on-create", Status: ResultCodeSynced, Message: "pod/complete-delete-on-create created", HookType: HookTypePreSync, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypePreSync)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "complete-delete-on-failed", Status: ResultCodeSynced, Message: "pod/complete-delete-on-failed created", HookType: HookTypePreSync, HookPhase: OperationSucceeded, SyncPhase: SyncPhase(HookTypePreSync)})).
 		Expect(OperationPhaseIs(OperationRunning)).
 		When().
 		TerminateOp().
 		Then().
 		Expect(OperationPhaseIs(OperationFailed)).
 		// Running hooks are terminated
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "running-delete-on-success", Status: ResultCodeSynced, Message: "Terminated", HookType: HookTypePreSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypePreSync)})).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "running-delete-on-create", Status: ResultCodeSynced, Message: "Terminated", HookType: HookTypePreSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypePreSync)})).
-		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.1"}, Name: "running-delete-on-failed", Status: ResultCodeSynced, Message: "Terminated", HookType: HookTypePreSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypePreSync)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "running-delete-on-success", Status: ResultCodeSynced, Message: "Terminated", HookType: HookTypePreSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypePreSync)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "running-delete-on-create", Status: ResultCodeSynced, Message: "Terminated", HookType: HookTypePreSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypePreSync)})).
+		Expect(ResourceResultIs(ResourceResult{Version: "v1", Kind: "Pod", Namespace: ctx.DeploymentNamespace(), Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.1"}, Name: "running-delete-on-failed", Status: ResultCodeSynced, Message: "Terminated", HookType: HookTypePreSync, HookPhase: OperationFailed, SyncPhase: SyncPhase(HookTypePreSync)})).
 		// terminated hooks finalizer is removed and are deleted successfully
 		Expect(podDeletedOrTerminatingWithoutFinalizer("running-delete-on-success")).
 		Expect(podDeletedOrTerminatingWithoutFinalizer("running-delete-on-create")).

@@ -25,7 +25,7 @@ cd admin app generate-spec APPNAME [flags]
 	cd admin app generate-spec nginx-ingress --repo https://charts.helm.sh/stable --helm-chart nginx-ingress --revision 1.24.3 --dest-namespace default --dest-server https://kubernetes.default.svc
 
 	# Generate declarative config for a Kustomize app
-	cd admin app generate-spec kustomize-guestbook --repo https://github.com/hanzocd/example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image quay.io/argoprojlabs/cd-e2e-container:0.1
+	cd admin app generate-spec kustomize-guestbook --repo https://github.com/hanzocd/example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image ghcr.io/hanzoai/cd-e2e-container:0.1
 
 	# Generate declarative config for a app using a custom tool:
 	cd admin app generate-spec kasane --repo https://github.com/hanzocd/example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane

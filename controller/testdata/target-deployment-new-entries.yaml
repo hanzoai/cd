@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: guestbook-ui
-          image: 'quay.io/argoprojlabs/cd-e2e-container:0.1'
+          image: 'ghcr.io/hanzoai/cd-e2e-container:0.1'
           env:
             - name: SOME_ENV_VAR
               value: some_value
