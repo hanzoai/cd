@@ -133,7 +133,7 @@ This proposal assumes that the ApplicationSet controller is still an optional, s
 This command proposal differs significantly from how the cd app create command is designed: notice the lack of parameters to appset create/apply besides the filename. Rather than creating an application(set) by adding support for a large number of parameters, eg:
 
 ```shell
-cd app create guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
+cd app create guestbook --repo https://github.com/hanzocd/example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
 ```
 
 Instead appset create and appset apply will just take as a parameter, a path to a YAML file, in the form of a standard ApplicationSet CR:

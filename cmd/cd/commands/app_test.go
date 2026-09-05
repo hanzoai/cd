@@ -1567,7 +1567,7 @@ func TestPrintApplicationTableWide(t *testing.T) {
 					Namespace: "default",
 				},
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps",
+					RepoURL:        "https://github.com/hanzocd/example-apps",
 					Path:           "guestbook",
 					TargetRevision: "123",
 				},
@@ -1587,7 +1587,7 @@ func TestPrintApplicationTableWide(t *testing.T) {
 		return nil
 	})
 	require.NoError(t, err)
-	expectation := "NAME      CLUSTER                NAMESPACE  PROJECT  STATUS     HEALTH   SYNCPOLICY  CONDITIONS  REPO                                             PATH       TARGET\napp-name  http://localhost:8080  default    prj      OutOfSync  Healthy  Manual      <none>      https://github.com/argoproj/argocd-example-apps  guestbook  123\napp-name  http://localhost:8080  default    prj      OutOfSync  Healthy  Manual      <none>      https://github.com/argoproj/argocd-example-apps  guestbook  123\n"
+	expectation := "NAME      CLUSTER                NAMESPACE  PROJECT  STATUS     HEALTH   SYNCPOLICY  CONDITIONS  REPO                                             PATH       TARGET\napp-name  http://localhost:8080  default    prj      OutOfSync  Healthy  Manual      <none>      https://github.com/hanzocd/example-apps  guestbook  123\napp-name  http://localhost:8080  default    prj      OutOfSync  Healthy  Manual      <none>      https://github.com/hanzocd/example-apps  guestbook  123\n"
 	assert.Equal(t, output, expectation)
 }
 
@@ -1841,7 +1841,7 @@ func testApp(name, project string, labels map[string]string, annotations map[str
 		},
 		Spec: v1alpha1.ApplicationSpec{
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL: "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL: "https://github.com/hanzocd/example-apps.git",
 			},
 			Project: project,
 		},

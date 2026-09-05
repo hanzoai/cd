@@ -48,7 +48,7 @@ To use Kustomize with an overlay, point your path to the overlay.
 ## Patches
 Patches are a way to kustomize resources using inline configurations in Hanzo CD applications.  `patches`  follow the same logic as the corresponding Kustomization.  Any patches that target existing Kustomization file will be merged.
 
-This Kustomize example sources manifests from the `/kustomize-guestbook` folder of the `argoproj/argocd-example-apps` repository, and patches the `Deployment` to use port `443` on the container.
+This Kustomize example sources manifests from the `/kustomize-guestbook` folder of the `argoproj/example-apps` repository, and patches the `Deployment` to use port `443` on the container.
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -56,7 +56,7 @@ metadata:
   name: kustomize-inline-example
 namespace: test1
 resources:
-  - https://github.com/argoproj/argocd-example-apps//kustomize-guestbook/
+  - https://github.com/hanzocd/example-apps//kustomize-guestbook/
 patches:
   - target:
       kind: Deployment
@@ -83,7 +83,7 @@ spec:
   project: default
   source:
     path: kustomize-guestbook
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: master
     kustomize:
       patches:
@@ -221,7 +221,7 @@ metadata:
   name: guestbook
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: kustomize-guestbook
 
@@ -257,7 +257,7 @@ spec:
     server: https://kubernetes.default.svc
   source:
     path: kustomize-guestbook
-    repoURL: https://github.com/argoproj/argocd-example-apps
+    repoURL: https://github.com/hanzocd/example-apps
     targetRevision: HEAD
     kustomize:
       commonAnnotationsEnvsubst: true

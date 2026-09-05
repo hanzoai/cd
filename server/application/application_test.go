@@ -508,7 +508,7 @@ metadata:
 spec:
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     ksonnet:
       environment: default
@@ -526,7 +526,7 @@ metadata:
 spec:
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     ksonnet:
       environment: default
@@ -546,7 +546,7 @@ metadata:
 spec:
   source:
     path: some/path
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     ksonnet:
       environment: default
@@ -569,12 +569,12 @@ func newMultiSourceTestApp(opts ...func(app *v1alpha1.Application)) *v1alpha1.Ap
 	multiSourceApp.Spec = v1alpha1.ApplicationSpec{
 		Sources: []v1alpha1.ApplicationSource{
 			{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				Path:           "helm-guestbook",
 				TargetRevision: "appbranch1",
 			},
 			{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				Path:           "kustomize-guestbook",
 				TargetRevision: "appbranch2",
 			},
@@ -1721,7 +1721,7 @@ func TestUpdateApp(t *testing.T) {
 			Application: updateApp,
 		})
 		require.Error(t, err)
-		require.ErrorContains(t, err, "application repo https://github.com/argoproj/argocd-example-apps.git is not permitted in project 'restricted-proj'")
+		require.ErrorContains(t, err, "application repo https://github.com/hanzocd/example-apps.git is not permitted in project 'restricted-proj'")
 		require.ErrorContains(t, err, "application destination server 'fake-cluster' and namespace 'fake-dest-ns' do not match any of the allowed destinations in project 'restricted-proj'")
 	})
 	t.Run("Cannot update application project to inexisting", func(t *testing.T) {
@@ -2643,7 +2643,7 @@ func TestSyncRBACOverrideNotRequired_DiffRevisionWithAutosyncPrevented(t *testin
 		Revisions:       []string{"revisionbranch1"},
 	}
 	_, err = appServer.Sync(ctx, syncReq)
-	assert.EqualError(t, err, "rpc error: code = FailedPrecondition desc = Cannot sync source https://github.com/argoproj/argocd-example-apps.git to revisionbranch1: auto-sync currently set to appbranch1",
+	assert.EqualError(t, err, "rpc error: code = FailedPrecondition desc = Cannot sync source https://github.com/hanzocd/example-apps.git to revisionbranch1: auto-sync currently set to appbranch1",
 		"should not be able to sync to different revision with auto-sync enabled, multi-source app")
 }
 
@@ -4166,7 +4166,7 @@ func Test_RevisionMetadata(t *testing.T) {
 	singleSourceApp.Name = "single-source-app"
 	singleSourceApp.Spec = v1alpha1.ApplicationSpec{
 		Source: &v1alpha1.ApplicationSource{
-			RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+			RepoURL:        "https://github.com/hanzocd/example-apps.git",
 			Path:           "helm-guestbook",
 			TargetRevision: "HEAD",
 		},
@@ -4177,12 +4177,12 @@ func Test_RevisionMetadata(t *testing.T) {
 	multiSourceApp.Spec = v1alpha1.ApplicationSpec{
 		Sources: []v1alpha1.ApplicationSource{
 			{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				Path:           "helm-guestbook",
 				TargetRevision: "HEAD",
 			},
 			{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				Path:           "kustomize-guestbook",
 				TargetRevision: "HEAD",
 			},

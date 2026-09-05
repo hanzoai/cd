@@ -45,10 +45,10 @@ After you modify the `default` project, any application that attempts to use it 
 
 ### Creating Projects
 
-Additional projects can be created to give separate teams different levels of access to namespaces. The following command creates a new project `myproject` which can deploy applications to namespace `mynamespace` of cluster `https://kubernetes.default.svc`. The permitted Git source repository is set to `https://github.com/argoproj/argocd-example-apps.git` repository.
+Additional projects can be created to give separate teams different levels of access to namespaces. The following command creates a new project `myproject` which can deploy applications to namespace `mynamespace` of cluster `https://kubernetes.default.svc`. The permitted Git source repository is set to `https://github.com/hanzocd/example-apps.git` repository.
 
 ```bash
-cd proj create myproject -d https://kubernetes.default.svc,mynamespace -s https://github.com/argoproj/argocd-example-apps.git
+cd proj create myproject -d https://kubernetes.default.svc,mynamespace -s https://github.com/hanzocd/example-apps.git
 ```
 
 ### Managing Projects
@@ -360,7 +360,7 @@ type: Opaque
 stringData:
   project: my-project1                                     # Project scoped 
   name: cd-example-apps
-  url: https://github.com/argoproj/argocd-example-apps.git
+  url: https://github.com/hanzocd/example-apps.git
   username: ****
   password: ****
 ```

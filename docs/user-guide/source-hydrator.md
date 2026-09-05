@@ -103,7 +103,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       path: helm-guestbook
       targetRevision: HEAD
     syncSource:
@@ -197,7 +197,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       path: helm-guestbook
       targetRevision: HEAD
       helm:
@@ -224,7 +224,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       path: kustomize-guestbook
       targetRevision: HEAD
       kustomize:
@@ -249,7 +249,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       path: guestbook
       targetRevision: HEAD
       directory:
@@ -271,7 +271,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       path: my-plugin-app
       targetRevision: HEAD
       plugin:
@@ -308,7 +308,7 @@ spec:
     namespace: default
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       path: helm-guestbook
       targetRevision: HEAD
     syncSource:
@@ -521,7 +521,7 @@ Both values are optional. If only one is configured, the configured value will b
 
 ### Credential Templates
 
-Credential templates allow a single credential to be used for multiple repositories. The source hydrator supports credential templates. For example, if you setup credential templates for the URL prefix `https://github.com/argoproj`, these credentials will be used for all repositories with this URL as prefix (e.g. `https://github.com/argoproj/argocd-example-apps`) that do not have their own credentials configured.
+Credential templates allow a single credential to be used for multiple repositories. The source hydrator supports credential templates. For example, if you setup credential templates for the URL prefix `https://github.com/argoproj`, these credentials will be used for all repositories with this URL as prefix (e.g. `https://github.com/hanzocd/example-apps`) that do not have their own credentials configured.
 For more information, please refer to [Credential templates](private-repositories.md#credential-templates).
 An example of repo-write-creds secret.
 

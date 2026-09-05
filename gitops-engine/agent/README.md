@@ -7,8 +7,8 @@ The main difference is that the agent is syncing one Git repository into the sam
 
 ## Quick Start
 
-By default, the agent is configured to use manifests from [guestbook](https://github.com/argoproj/argocd-example-apps/tree/master/guestbook)
-directory in https://github.com/argoproj/argocd-example-apps repository.
+By default, the agent is configured to use manifests from [guestbook](https://github.com/hanzocd/example-apps/tree/master/guestbook)
+directory in https://github.com/hanzocd/example-apps repository.
 
 The agent supports two modes:
 

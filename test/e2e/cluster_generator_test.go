@@ -29,7 +29,7 @@ func TestSimpleClusterGeneratorExternalNamespace(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -55,7 +55,7 @@ func TestSimpleClusterGeneratorExternalNamespace(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -125,7 +125,7 @@ func TestSimpleClusterGenerator(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -150,7 +150,7 @@ func TestSimpleClusterGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -216,7 +216,7 @@ func TestClusterGeneratorWithLocalCluster(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -272,7 +272,7 @@ func TestClusterGeneratorWithLocalCluster(t *testing.T) {
 							Spec: v1alpha1.ApplicationSpec{
 								Project: "default",
 								Source: &v1alpha1.ApplicationSource{
-									RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+									RepoURL:        "https://github.com/hanzocd/example-apps.git",
 									TargetRevision: "HEAD",
 									Path:           "guestbook",
 								},
@@ -330,7 +330,7 @@ func TestSimpleClusterGeneratorAddingCluster(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -360,7 +360,7 @@ func TestSimpleClusterGeneratorAddingCluster(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -409,7 +409,7 @@ func TestSimpleClusterGeneratorDeletingCluster(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -440,7 +440,7 @@ func TestSimpleClusterGeneratorDeletingCluster(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -490,7 +490,7 @@ func TestClusterGeneratorWithFlatListMode(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "helm-guestbook",
 			},
@@ -531,7 +531,7 @@ func TestClusterGeneratorWithFlatListMode(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "helm-guestbook",
 							Helm: &v1alpha1.ApplicationSourceHelm{

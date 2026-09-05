@@ -1324,7 +1324,7 @@ func clusterSecret() *corev1.Secret {
 func getGenerators() (*v1alpha1.GitGenerator, *generatorsMock.Generator, *v1alpha1.ClusterGenerator) {
 	const guestBook = "guestbook"
 	gitGeneratorSpec := &v1alpha1.GitGenerator{
-		RepoURL:  "https://github.com/argoproj/argocd-example-apps.git",
+		RepoURL:  "https://github.com/hanzocd/example-apps.git",
 		Revision: "HEAD",
 		Directories: []v1alpha1.GitDirectoryGeneratorItem{
 			{Path: guestBook},

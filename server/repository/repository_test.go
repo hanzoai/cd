@@ -200,7 +200,7 @@ var (
 			Project: "default",
 			Sources: []appsv1.ApplicationSource{
 				{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://github.com/hanzocd/example-apps.git",
 					Path:           "sock-shop",
 					TargetRevision: "HEAD",
 				},
@@ -220,7 +220,7 @@ var (
 					Revision: "HEAD",
 					Sources: []appsv1.ApplicationSource{
 						{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "1.0.0",
 						},
 					},
@@ -792,7 +792,7 @@ func TestRepositoryServerGetAppDetails(t *testing.T) {
 		repoServerClientset := mocks.Clientset{RepoServerServiceClient: repoServerClient}
 		enforcer := newEnforcer(kubeclientset)
 
-		url0 := "https://github.com/argoproj/argocd-example-apps.git"
+		url0 := "https://github.com/hanzocd/example-apps.git"
 		url1 := "https://helm.elastic.co"
 		helmRepos := []*appsv1.Repository{{Repo: url0}, {Repo: url1}}
 		db := &dbmocks.DB{}

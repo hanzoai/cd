@@ -95,7 +95,7 @@ Project:            default
 Server:             in-cluster
 Namespace:          default
 URL:                http://localhost:8080/applications/guestbook
-Repo:               https://github.com/argoproj/argocd-example-apps.git
+Repo:               https://github.com/hanzocd/example-apps.git
 Target:
 Path:               guestbook
 SyncWindow:         Sync Denied

@@ -30,7 +30,7 @@ func TestListMergeGenerator(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://github.com/hanzocd/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           name,
 				},
@@ -60,7 +60,7 @@ func TestListMergeGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "{{path}}",
 						},
@@ -77,7 +77,7 @@ func TestListMergeGenerator(t *testing.T) {
 							Generators: []v1alpha1.ApplicationSetNestedGenerator{
 								{
 									Git: &v1alpha1.GitGenerator{
-										RepoURL: "https://github.com/argoproj/argocd-example-apps.git",
+										RepoURL: "https://github.com/hanzocd/example-apps.git",
 										Directories: []v1alpha1.GitDirectoryGeneratorItem{
 											{
 												Path: "*guestbook*",
@@ -148,7 +148,7 @@ func TestClusterMergeGenerator(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://github.com/hanzocd/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           name,
 				},
@@ -183,7 +183,7 @@ func TestClusterMergeGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "{{path}}",
 						},
@@ -215,7 +215,7 @@ func TestClusterMergeGenerator(t *testing.T) {
 											},
 											{
 												Git: &v1alpha1.GitGenerator{
-													RepoURL: "https://github.com/argoproj/argocd-example-apps.git",
+													RepoURL: "https://github.com/hanzocd/example-apps.git",
 													Directories: []v1alpha1.GitDirectoryGeneratorItem{
 														{
 															Path: "*guestbook*",
@@ -289,7 +289,7 @@ func TestMergeTerminalMergeGeneratorSelector(t *testing.T) {
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "default",
 				Source: &v1alpha1.ApplicationSource{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://github.com/hanzocd/example-apps.git",
 					TargetRevision: "HEAD",
 					Path:           name,
 				},
@@ -318,7 +318,7 @@ func TestMergeTerminalMergeGeneratorSelector(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "{{path}}",
 						},
@@ -339,7 +339,7 @@ func TestMergeTerminalMergeGeneratorSelector(t *testing.T) {
 										Generators: []v1alpha1.ApplicationSetTerminalGenerator{
 											{
 												Git: &v1alpha1.GitGenerator{
-													RepoURL: "https://github.com/argoproj/argocd-example-apps.git",
+													RepoURL: "https://github.com/hanzocd/example-apps.git",
 													Directories: []v1alpha1.GitDirectoryGeneratorItem{
 														{
 															Path: "*guestbook*",
@@ -385,7 +385,7 @@ func TestMergeTerminalMergeGeneratorSelector(t *testing.T) {
 				Generators: []v1alpha1.ApplicationSetTerminalGenerator{
 					{
 						Git: &v1alpha1.GitGenerator{
-							RepoURL: "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL: "https://github.com/hanzocd/example-apps.git",
 							Directories: []v1alpha1.GitDirectoryGeneratorItem{
 								{
 									Path: "*guestbook*",

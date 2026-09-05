@@ -75,7 +75,7 @@ type: Opaque
 stringData:
   project: my-project1                                     # new project field
   name: cd-example-apps
-  url: https://github.com/argoproj/argocd-example-apps.git
+  url: https://github.com/hanzocd/example-apps.git
   username: ****
   password: ****
 ```
