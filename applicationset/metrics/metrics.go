@@ -7,7 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	applisters "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
 	metricsutil "github.com/hanzoai/cd/util/metrics"
 	"github.com/hanzoai/cd/util/metrics/kubectl"
@@ -39,10 +39,10 @@ type appsetCollector struct {
 	lister applisters.ApplicationSetLister
 	// appsClientSet appclientset.Interface
 	labels []string
-	filter func(appset *argoappv1.ApplicationSet) bool
+	filter func(appset *v1alpha1.ApplicationSet) bool
 }
 
-func NewApplicationsetMetrics(appsetLister applisters.ApplicationSetLister, appsetLabels []string, appsetFilter func(appset *argoappv1.ApplicationSet) bool) ApplicationsetMetrics {
+func NewApplicationsetMetrics(appsetLister applisters.ApplicationSetLister, appsetLabels []string, appsetFilter func(appset *v1alpha1.ApplicationSet) bool) ApplicationsetMetrics {
 	reconcileHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Name: "cd_appset_reconcile",
@@ -66,11 +66,11 @@ func NewApplicationsetMetrics(appsetLister applisters.ApplicationSetLister, apps
 	}
 }
 
-func (m *ApplicationsetMetrics) ObserveReconcile(appset *argoappv1.ApplicationSet, duration time.Duration) {
+func (m *ApplicationsetMetrics) ObserveReconcile(appset *v1alpha1.ApplicationSet, duration time.Duration) {
 	m.reconcileHistogram.WithLabelValues(appset.Namespace, appset.Name).Observe(duration.Seconds())
 }
 
-func newAppsetCollector(lister applisters.ApplicationSetLister, labels []string, filter func(appset *argoappv1.ApplicationSet) bool) *appsetCollector {
+func newAppsetCollector(lister applisters.ApplicationSetLister, labels []string, filter func(appset *v1alpha1.ApplicationSet) bool) *appsetCollector {
 	descAppsetDefaultLabels = []string{"namespace", "name"}
 
 	if len(labels) > 0 {
@@ -110,7 +110,7 @@ func (c *appsetCollector) Collect(ch chan<- prometheus.Metric) {
 	}
 }
 
-func collectAppset(appset *argoappv1.ApplicationSet, labelsToCollect []string, ch chan<- prometheus.Metric) {
+func collectAppset(appset *v1alpha1.ApplicationSet, labelsToCollect []string, ch chan<- prometheus.Metric) {
 	labelValues := make([]string, 0)
 	commonLabelValues := []string{appset.Namespace, appset.Name}
 
@@ -121,7 +121,7 @@ func collectAppset(appset *argoappv1.ApplicationSet, labelsToCollect []string, c
 	resourceUpdateStatus := "Unknown"
 
 	for _, condition := range appset.Status.Conditions {
-		if condition.Type == argoappv1.ApplicationSetConditionResourcesUpToDate {
+		if condition.Type == v1alpha1.ApplicationSetConditionResourcesUpToDate {
 			resourceUpdateStatus = condition.Reason
 		}
 	}

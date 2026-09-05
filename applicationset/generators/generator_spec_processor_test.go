@@ -11,7 +11,7 @@ import (
 
 	"github.com/hanzoai/cd/applicationset/services/mocks"
 
-	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 	"github.com/stretchr/testify/mock"
 	corev1 "k8s.io/api/core/v1"
@@ -67,18 +67,18 @@ func TestMatchValues(t *testing.T) {
 				"List": listGenerator,
 			}
 
-			applicationSetInfo := argov1alpha1.ApplicationSet{
+			applicationSetInfo := v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argov1alpha1.ApplicationSetSpec{
+				Spec: v1alpha1.ApplicationSetSpec{
 					GoTemplate: false,
 				},
 			}
 
-			results, err := Transform(argov1alpha1.ApplicationSetGenerator{
+			results, err := Transform(v1alpha1.ApplicationSetGenerator{
 				Selector: testCase.selector,
-				List: &argov1alpha1.ListGenerator{
+				List: &v1alpha1.ListGenerator{
 					Elements: testCase.elements,
 					Template: emptyTemplate(),
 				},
@@ -151,18 +151,18 @@ func TestMatchValuesGoTemplate(t *testing.T) {
 				"List": listGenerator,
 			}
 
-			applicationSetInfo := argov1alpha1.ApplicationSet{
+			applicationSetInfo := v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argov1alpha1.ApplicationSetSpec{
+				Spec: v1alpha1.ApplicationSetSpec{
 					GoTemplate: true,
 				},
 			}
 
-			results, err := Transform(argov1alpha1.ApplicationSetGenerator{
+			results, err := Transform(v1alpha1.ApplicationSetGenerator{
 				Selector: testCase.selector,
-				List: &argov1alpha1.ListGenerator{
+				List: &v1alpha1.ListGenerator{
 					Elements: testCase.elements,
 					Template: emptyTemplate(),
 				},
@@ -189,14 +189,14 @@ func TestTransForm(t *testing.T) {
 				MatchLabels: map[string]string{"server": "https://production-01.example.com"},
 			},
 			expected: []map[string]any{{
-				"metadata.annotations.foo.example.com":           "production",
+				"metadata.annotations.foo.example.com":    "production",
 				"metadata.labels.cd.hanzo.ai/secret-type": "cluster",
-				"metadata.labels.environment":                    "production",
-				"metadata.labels.org":                            "bar",
-				"name":                                           "production_01/west",
-				"nameNormalized":                                 "production-01-west",
-				"server":                                         "https://production-01.example.com",
-				"project":                                        "",
+				"metadata.labels.environment":             "production",
+				"metadata.labels.org":                     "bar",
+				"name":                                    "production_01/west",
+				"nameNormalized":                          "production-01-west",
+				"server":                                  "https://production-01.example.com",
+				"project":                                 "",
 			}},
 		},
 		{
@@ -205,14 +205,14 @@ func TestTransForm(t *testing.T) {
 				MatchLabels: map[string]string{"server": "https://some-really-long-url-that-will-exceed-63-characters.com"},
 			},
 			expected: []map[string]any{{
-				"metadata.annotations.foo.example.com":           "production",
+				"metadata.annotations.foo.example.com":    "production",
 				"metadata.labels.cd.hanzo.ai/secret-type": "cluster",
-				"metadata.labels.environment":                    "production",
-				"metadata.labels.org":                            "bar",
-				"name":                                           "some-really-long-server-url",
-				"nameNormalized":                                 "some-really-long-server-url",
-				"server":                                         "https://some-really-long-url-that-will-exceed-63-characters.com",
-				"project":                                        "",
+				"metadata.labels.environment":             "production",
+				"metadata.labels.org":                     "bar",
+				"name":                                    "some-really-long-server-url",
+				"nameNormalized":                          "some-really-long-server-url",
+				"server":                                  "https://some-really-long-url-that-will-exceed-63-characters.com",
+				"project":                                 "",
 			}},
 		},
 	}
@@ -223,19 +223,19 @@ func TestTransForm(t *testing.T) {
 				"Clusters": getMockClusterGenerator(),
 			}
 
-			applicationSetInfo := argov1alpha1.ApplicationSet{
+			applicationSetInfo := v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argov1alpha1.ApplicationSetSpec{},
+				Spec: v1alpha1.ApplicationSetSpec{},
 			}
 
 			results, err := Transform(
-				argov1alpha1.ApplicationSetGenerator{
+				v1alpha1.ApplicationSetGenerator{
 					Selector: testCase.selector,
-					Clusters: &argov1alpha1.ClusterGenerator{
+					Clusters: &v1alpha1.ClusterGenerator{
 						Selector: metav1.LabelSelector{},
-						Template: argov1alpha1.ApplicationSetTemplate{},
+						Template: v1alpha1.ApplicationSetTemplate{},
 						Values:   nil,
 					},
 				},
@@ -269,8 +269,8 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"metadata": map[string]any{
 					"labels": map[string]string{
 						"cd.hanzo.ai/secret-type": "cluster",
-						"environment":                    "production",
-						"org":                            "bar",
+						"environment":             "production",
+						"org":                     "bar",
 					},
 					"annotations": map[string]string{
 						"foo.example.com": "production",
@@ -291,8 +291,8 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"metadata": map[string]any{
 					"labels": map[string]string{
 						"cd.hanzo.ai/secret-type": "cluster",
-						"environment":                    "staging",
-						"org":                            "foo",
+						"environment":             "staging",
+						"org":                     "foo",
 					},
 					"annotations": map[string]string{
 						"foo.example.com": "staging",
@@ -323,8 +323,8 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"environment":             "production",
+							"org":                     "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -339,8 +339,8 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"environment":             "production",
+							"org":                     "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -370,8 +370,8 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"environment":             "staging",
+							"org":                     "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -386,8 +386,8 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"environment":             "production",
+							"org":                     "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -402,8 +402,8 @@ func TestTransFormGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"environment":             "production",
+							"org":                     "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -426,8 +426,8 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"metadata": map[string]any{
 					"labels": map[string]string{
 						"cd.hanzo.ai/secret-type": "cluster",
-						"environment":                    "staging",
-						"org":                            "foo",
+						"environment":             "staging",
+						"org":                     "foo",
 					},
 					"annotations": map[string]string{
 						"foo.example.com": "staging",
@@ -446,21 +446,21 @@ func TestTransFormGoTemplate(t *testing.T) {
 				"Clusters": getMockClusterGenerator(),
 			}
 
-			applicationSetInfo := argov1alpha1.ApplicationSet{
+			applicationSetInfo := v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argov1alpha1.ApplicationSetSpec{
+				Spec: v1alpha1.ApplicationSetSpec{
 					GoTemplate: true,
 				},
 			}
 
 			results, err := Transform(
-				argov1alpha1.ApplicationSetGenerator{
+				v1alpha1.ApplicationSetGenerator{
 					Selector: testCase.selector,
-					Clusters: &argov1alpha1.ClusterGenerator{
+					Clusters: &v1alpha1.ClusterGenerator{
 						Selector: metav1.LabelSelector{},
-						Template: argov1alpha1.ApplicationSetTemplate{},
+						Template: v1alpha1.ApplicationSetTemplate{},
 						Values:   testCase.values,
 					},
 				},
@@ -474,9 +474,9 @@ func TestTransFormGoTemplate(t *testing.T) {
 	}
 }
 
-func emptyTemplate() argov1alpha1.ApplicationSetTemplate {
-	return argov1alpha1.ApplicationSetTemplate{
-		Spec: argov1alpha1.ApplicationSpec{
+func emptyTemplate() v1alpha1.ApplicationSetTemplate {
+	return v1alpha1.ApplicationSetTemplate{
+		Spec: v1alpha1.ApplicationSpec{
 			Project: "project",
 		},
 	}
@@ -494,8 +494,8 @@ func getMockClusterGenerator() Generator {
 				Namespace: "namespace",
 				Labels: map[string]string{
 					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "staging",
-					"org":                            "foo",
+					"environment":             "staging",
+					"org":                     "foo",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "staging",
@@ -518,8 +518,8 @@ func getMockClusterGenerator() Generator {
 				Namespace: "namespace",
 				Labels: map[string]string{
 					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"environment":             "production",
+					"org":                     "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -542,8 +542,8 @@ func getMockClusterGenerator() Generator {
 				Namespace: "namespace",
 				Labels: map[string]string{
 					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"environment":             "production",
+					"org":                     "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -562,9 +562,9 @@ func getMockClusterGenerator() Generator {
 }
 
 func getMockGitGenerator() Generator {
-	argoCDServiceMock := &mocks.Repos{}
-	argoCDServiceMock.EXPECT().GetDirectories(mock.Anything, mock.Anything, mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return([]string{"app1", "app2", "app_3", "p1/app4"}, nil)
-	gitGenerator := NewGitGenerator(argoCDServiceMock, "namespace")
+	repoServiceMock := &mocks.Repos{}
+	repoServiceMock.EXPECT().GetDirectories(mock.Anything, mock.Anything, mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return([]string{"app1", "app2", "app_3", "p1/app4"}, nil)
+	gitGenerator := NewGitGenerator(repoServiceMock, "namespace")
 	return gitGenerator
 }
 
@@ -578,8 +578,8 @@ func TestGetRelevantGenerators(t *testing.T) {
 	testGenerators["Merge"] = NewMergeGenerator(testGenerators)
 	testGenerators["List"] = NewListGenerator()
 
-	requestedGenerator := &argov1alpha1.ApplicationSetGenerator{
-		List: &argov1alpha1.ListGenerator{
+	requestedGenerator := &v1alpha1.ApplicationSetGenerator{
+		List: &v1alpha1.ListGenerator{
 			Elements: []apiextensionsv1.JSON{{Raw: []byte(`{"cluster": "cluster","url": "url","values":{"foo":"bar"}}`)}},
 		},
 	}
@@ -588,10 +588,10 @@ func TestGetRelevantGenerators(t *testing.T) {
 	assert.Len(t, relevantGenerators, 1)
 	assert.IsType(t, &ListGenerator{}, relevantGenerators[0])
 
-	requestedGenerator = &argov1alpha1.ApplicationSetGenerator{
-		Clusters: &argov1alpha1.ClusterGenerator{
+	requestedGenerator = &v1alpha1.ApplicationSetGenerator{
+		Clusters: &v1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{},
-			Template: argov1alpha1.ApplicationSetTemplate{},
+			Template: v1alpha1.ApplicationSetTemplate{},
 			Values:   nil,
 		},
 	}
@@ -600,14 +600,14 @@ func TestGetRelevantGenerators(t *testing.T) {
 	assert.Len(t, relevantGenerators, 1)
 	assert.IsType(t, &ClusterGenerator{}, relevantGenerators[0])
 
-	requestedGenerator = &argov1alpha1.ApplicationSetGenerator{
-		Git: &argov1alpha1.GitGenerator{
+	requestedGenerator = &v1alpha1.ApplicationSetGenerator{
+		Git: &v1alpha1.GitGenerator{
 			RepoURL:             "",
 			Directories:         nil,
 			Files:               nil,
 			Revision:            "",
 			RequeueAfterSeconds: nil,
-			Template:            argov1alpha1.ApplicationSetTemplate{},
+			Template:            v1alpha1.ApplicationSetTemplate{},
 		},
 	}
 
@@ -617,14 +617,14 @@ func TestGetRelevantGenerators(t *testing.T) {
 }
 
 func TestInterpolateGenerator(t *testing.T) {
-	requestedGenerator := &argov1alpha1.ApplicationSetGenerator{
-		Clusters: &argov1alpha1.ClusterGenerator{
+	requestedGenerator := &v1alpha1.ApplicationSetGenerator{
+		Clusters: &v1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
 					"cd.hanzo.ai/secret-type": "cluster",
-					"path-basename":                  "{{path.basename}}",
-					"path-zero":                      "{{path[0]}}",
-					"path-full":                      "{{path}}",
+					"path-basename":           "{{path.basename}}",
+					"path-zero":               "{{path[0]}}",
+					"path-full":               "{{path}}",
 				},
 			},
 		},
@@ -645,17 +645,17 @@ func TestInterpolateGenerator(t *testing.T) {
 	assert.Equal(t, "p1", interpolatedGenerator.Clusters.Selector.MatchLabels["path-zero"])
 	assert.Equal(t, "p1/p2/app3", interpolatedGenerator.Clusters.Selector.MatchLabels["path-full"])
 
-	fileNamePath := argov1alpha1.GitFileGeneratorItem{
+	fileNamePath := v1alpha1.GitFileGeneratorItem{
 		Path: "{{name}}",
 	}
-	fileServerPath := argov1alpha1.GitFileGeneratorItem{
+	fileServerPath := v1alpha1.GitFileGeneratorItem{
 		Path: "{{server}}",
 	}
 
-	requestedGenerator = &argov1alpha1.ApplicationSetGenerator{
-		Git: &argov1alpha1.GitGenerator{
-			Files:    append([]argov1alpha1.GitFileGeneratorItem{}, fileNamePath, fileServerPath),
-			Template: argov1alpha1.ApplicationSetTemplate{},
+	requestedGenerator = &v1alpha1.ApplicationSetGenerator{
+		Git: &v1alpha1.GitGenerator{
+			Files:    append([]v1alpha1.GitFileGeneratorItem{}, fileNamePath, fileServerPath),
+			Template: v1alpha1.ApplicationSetTemplate{},
 		},
 	}
 	clusterGeneratorParams := map[string]any{
@@ -671,15 +671,15 @@ func TestInterpolateGenerator(t *testing.T) {
 }
 
 func TestInterpolateGenerator_go(t *testing.T) {
-	requestedGenerator := &argov1alpha1.ApplicationSetGenerator{
-		Clusters: &argov1alpha1.ClusterGenerator{
+	requestedGenerator := &v1alpha1.ApplicationSetGenerator{
+		Clusters: &v1alpha1.ClusterGenerator{
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"cd.hanzo.ai/secret-type": "cluster",
-					"path-basename":                  "{{base .path.path}}",
-					"path-zero":                      "{{index .path.segments 0}}",
-					"path-full":                      "{{.path.path}}",
-					"kubernetes.io/environment":      `{{default "foo" .my_label}}`,
+					"cd.hanzo.ai/secret-type":   "cluster",
+					"path-basename":             "{{base .path.path}}",
+					"path-zero":                 "{{index .path.segments 0}}",
+					"path-full":                 "{{.path.path}}",
+					"kubernetes.io/environment": `{{default "foo" .my_label}}`,
 				},
 			},
 		},
@@ -700,17 +700,17 @@ func TestInterpolateGenerator_go(t *testing.T) {
 	assert.Equal(t, "p1", interpolatedGenerator.Clusters.Selector.MatchLabels["path-zero"])
 	assert.Equal(t, "p1/p2/app3", interpolatedGenerator.Clusters.Selector.MatchLabels["path-full"])
 
-	fileNamePath := argov1alpha1.GitFileGeneratorItem{
+	fileNamePath := v1alpha1.GitFileGeneratorItem{
 		Path: "{{.name}}",
 	}
-	fileServerPath := argov1alpha1.GitFileGeneratorItem{
+	fileServerPath := v1alpha1.GitFileGeneratorItem{
 		Path: "{{.server}}",
 	}
 
-	requestedGenerator = &argov1alpha1.ApplicationSetGenerator{
-		Git: &argov1alpha1.GitGenerator{
-			Files:    append([]argov1alpha1.GitFileGeneratorItem{}, fileNamePath, fileServerPath),
-			Template: argov1alpha1.ApplicationSetTemplate{},
+	requestedGenerator = &v1alpha1.ApplicationSetGenerator{
+		Git: &v1alpha1.GitGenerator{
+			Files:    append([]v1alpha1.GitFileGeneratorItem{}, fileNamePath, fileServerPath),
+			Template: v1alpha1.ApplicationSetTemplate{},
 		},
 	}
 	clusterGeneratorParams := map[string]any{
@@ -727,7 +727,7 @@ func TestInterpolateGenerator_go(t *testing.T) {
 
 func TestInterpolateGeneratorError(t *testing.T) {
 	type args struct {
-		requestedGenerator *argov1alpha1.ApplicationSetGenerator
+		requestedGenerator *v1alpha1.ApplicationSetGenerator
 		params             map[string]any
 		useGoTemplate      bool
 		goTemplateOptions  []string
@@ -735,7 +735,7 @@ func TestInterpolateGeneratorError(t *testing.T) {
 	tests := []struct {
 		name           string
 		args           args
-		want           argov1alpha1.ApplicationSetGenerator
+		want           v1alpha1.ApplicationSetGenerator
 		expectedErrStr string
 	}{
 		{name: "Empty Gen", args: args{
@@ -743,17 +743,17 @@ func TestInterpolateGeneratorError(t *testing.T) {
 			params:             nil,
 			useGoTemplate:      false,
 			goTemplateOptions:  nil,
-		}, want: argov1alpha1.ApplicationSetGenerator{}, expectedErrStr: "generator is empty"},
+		}, want: v1alpha1.ApplicationSetGenerator{}, expectedErrStr: "generator is empty"},
 		{name: "No Params", args: args{
-			requestedGenerator: &argov1alpha1.ApplicationSetGenerator{},
+			requestedGenerator: &v1alpha1.ApplicationSetGenerator{},
 			params:             map[string]any{},
 			useGoTemplate:      false,
 			goTemplateOptions:  nil,
-		}, want: argov1alpha1.ApplicationSetGenerator{}, expectedErrStr: ""},
+		}, want: v1alpha1.ApplicationSetGenerator{}, expectedErrStr: ""},
 		{name: "Error templating", args: args{
-			requestedGenerator: &argov1alpha1.ApplicationSetGenerator{Git: &argov1alpha1.GitGenerator{
+			requestedGenerator: &v1alpha1.ApplicationSetGenerator{Git: &v1alpha1.GitGenerator{
 				RepoURL:  "foo",
-				Files:    []argov1alpha1.GitFileGeneratorItem{{Path: "path/{{ index .rmap (default .override .test) }}"}},
+				Files:    []v1alpha1.GitFileGeneratorItem{{Path: "path/{{ index .rmap (default .override .test) }}"}},
 				Revision: "main",
 				Values: map[string]string{
 					"git_test":  "{{ toPrettyJson . }}",
@@ -767,7 +767,7 @@ func TestInterpolateGeneratorError(t *testing.T) {
 			},
 			useGoTemplate:     true,
 			goTemplateOptions: []string{},
-		}, want: argov1alpha1.ApplicationSetGenerator{}, expectedErrStr: "failed to replace parameters in generator: failed to execute go template path/{{ index .rmap (default .override .test) }}: template: base:1:8: executing \"base\" at <index .rmap (default .override .test)>: error calling index: index of untyped nil"},
+		}, want: v1alpha1.ApplicationSetGenerator{}, expectedErrStr: "failed to replace parameters in generator: failed to execute go template path/{{ index .rmap (default .override .test) }}: template: base:1:8: executing \"base\" at <index .rmap (default .override .test)>: error calling index: index of untyped nil"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -783,20 +783,20 @@ func TestInterpolateGeneratorError(t *testing.T) {
 }
 
 func TestInterpolateGeneratorValuesHandling(t *testing.T) {
-	applicationSetTemplate := argov1alpha1.ApplicationSetTemplate{
-		ApplicationSetTemplateMeta: argov1alpha1.ApplicationSetTemplateMeta{
+	applicationSetTemplate := v1alpha1.ApplicationSetTemplate{
+		ApplicationSetTemplateMeta: v1alpha1.ApplicationSetTemplateMeta{
 			Labels:      map[string]string{},
 			Annotations: map[string]string{},
 			Finalizers:  []string{},
 		},
-		Spec: argov1alpha1.ApplicationSpec{
-			IgnoreDifferences: argov1alpha1.IgnoreDifferences{},
-			Info:              []argov1alpha1.Info{},
-			Sources:           argov1alpha1.ApplicationSources{},
+		Spec: v1alpha1.ApplicationSpec{
+			IgnoreDifferences: v1alpha1.IgnoreDifferences{},
+			Info:              []v1alpha1.Info{},
+			Sources:           v1alpha1.ApplicationSources{},
 		},
 	}
 	type args struct {
-		requestedGenerator *argov1alpha1.ApplicationSetGenerator
+		requestedGenerator *v1alpha1.ApplicationSetGenerator
 		params             map[string]any
 		useGoTemplate      bool
 		goTemplateOptions  []string
@@ -804,16 +804,16 @@ func TestInterpolateGeneratorValuesHandling(t *testing.T) {
 	tests := []struct {
 		name           string
 		args           args
-		want           argov1alpha1.ApplicationSetGenerator
+		want           v1alpha1.ApplicationSetGenerator
 		expectedErrStr string
 	}{
 		{
 			name: "Generator with values set",
 			args: args{
-				requestedGenerator: &argov1alpha1.ApplicationSetGenerator{
-					Git: &argov1alpha1.GitGenerator{
+				requestedGenerator: &v1alpha1.ApplicationSetGenerator{
+					Git: &v1alpha1.GitGenerator{
 						RepoURL:  "https://somewhere.com/per-cluster/{{.name}}.git",
-						Files:    []argov1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
+						Files:    []v1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
 						Revision: "main",
 						Values: map[string]string{
 							"appname": "{{ .path.basenameNormalized }}",
@@ -828,16 +828,16 @@ func TestInterpolateGeneratorValuesHandling(t *testing.T) {
 				useGoTemplate:     true,
 				goTemplateOptions: []string{},
 			},
-			want: argov1alpha1.ApplicationSetGenerator{
-				Git: &argov1alpha1.GitGenerator{
+			want: v1alpha1.ApplicationSetGenerator{
+				Git: &v1alpha1.GitGenerator{
 					RepoURL:  "https://somewhere.com/per-cluster/in-cluster.git",
-					Files:    []argov1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
+					Files:    []v1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
 					Revision: "main",
 					Values: map[string]string{
 						// must stay not interpolated
 						"appname": "{{ .path.basenameNormalized }}",
 					},
-					Directories: []argov1alpha1.GitDirectoryGeneratorItem{},
+					Directories: []v1alpha1.GitDirectoryGeneratorItem{},
 					Template:    applicationSetTemplate,
 				},
 			},
@@ -846,10 +846,10 @@ func TestInterpolateGeneratorValuesHandling(t *testing.T) {
 		{
 			name: "Generator with no values set",
 			args: args{
-				requestedGenerator: &argov1alpha1.ApplicationSetGenerator{
-					Git: &argov1alpha1.GitGenerator{
+				requestedGenerator: &v1alpha1.ApplicationSetGenerator{
+					Git: &v1alpha1.GitGenerator{
 						RepoURL:  "https://somewhere.com/per-cluster/{{.name}}.git",
-						Files:    []argov1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
+						Files:    []v1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
 						Revision: "main",
 						Values:   map[string]string{},
 						Template: applicationSetTemplate,
@@ -862,13 +862,13 @@ func TestInterpolateGeneratorValuesHandling(t *testing.T) {
 				useGoTemplate:     true,
 				goTemplateOptions: []string{},
 			},
-			want: argov1alpha1.ApplicationSetGenerator{
-				Git: &argov1alpha1.GitGenerator{
+			want: v1alpha1.ApplicationSetGenerator{
+				Git: &v1alpha1.GitGenerator{
 					RepoURL:     "https://somewhere.com/per-cluster/in-cluster.git",
-					Files:       []argov1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
+					Files:       []v1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
 					Revision:    "main",
 					Values:      map[string]string{},
-					Directories: []argov1alpha1.GitDirectoryGeneratorItem{},
+					Directories: []v1alpha1.GitDirectoryGeneratorItem{},
 					Template:    applicationSetTemplate,
 				},
 			},
@@ -877,10 +877,10 @@ func TestInterpolateGeneratorValuesHandling(t *testing.T) {
 		{
 			name: "Generator with values set without go templates",
 			args: args{
-				requestedGenerator: &argov1alpha1.ApplicationSetGenerator{
-					Git: &argov1alpha1.GitGenerator{
+				requestedGenerator: &v1alpha1.ApplicationSetGenerator{
+					Git: &v1alpha1.GitGenerator{
 						RepoURL:  "https://somewhere.com/per-cluster/{{name}}.git",
-						Files:    []argov1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
+						Files:    []v1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
 						Revision: "main",
 						Values: map[string]string{
 							"appname": "{{ .path.basenameNormalized }}",
@@ -894,15 +894,15 @@ func TestInterpolateGeneratorValuesHandling(t *testing.T) {
 				},
 				useGoTemplate: false,
 			},
-			want: argov1alpha1.ApplicationSetGenerator{
-				Git: &argov1alpha1.GitGenerator{
+			want: v1alpha1.ApplicationSetGenerator{
+				Git: &v1alpha1.GitGenerator{
 					RepoURL:  "https://somewhere.com/per-cluster/in-cluster.git",
-					Files:    []argov1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
+					Files:    []v1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
 					Revision: "main",
 					Values: map[string]string{
 						"appname": "{{ .path.basenameNormalized }}",
 					},
-					Directories: []argov1alpha1.GitDirectoryGeneratorItem{},
+					Directories: []v1alpha1.GitDirectoryGeneratorItem{},
 					Template:    applicationSetTemplate,
 				},
 			},
@@ -911,10 +911,10 @@ func TestInterpolateGeneratorValuesHandling(t *testing.T) {
 		{
 			name: "Generator without values set and no go templates",
 			args: args{
-				requestedGenerator: &argov1alpha1.ApplicationSetGenerator{
-					Git: &argov1alpha1.GitGenerator{
+				requestedGenerator: &v1alpha1.ApplicationSetGenerator{
+					Git: &v1alpha1.GitGenerator{
 						RepoURL:  "https://somewhere.com/per-cluster/{{name}}.git",
-						Files:    []argov1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
+						Files:    []v1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
 						Revision: "main",
 						Values:   map[string]string{},
 						Template: applicationSetTemplate,
@@ -926,13 +926,13 @@ func TestInterpolateGeneratorValuesHandling(t *testing.T) {
 				},
 				useGoTemplate: false,
 			},
-			want: argov1alpha1.ApplicationSetGenerator{
-				Git: &argov1alpha1.GitGenerator{
+			want: v1alpha1.ApplicationSetGenerator{
+				Git: &v1alpha1.GitGenerator{
 					RepoURL:     "https://somewhere.com/per-cluster/in-cluster.git",
-					Files:       []argov1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
+					Files:       []v1alpha1.GitFileGeneratorItem{{Path: "somedir/*"}},
 					Revision:    "main",
 					Values:      map[string]string{},
-					Directories: []argov1alpha1.GitDirectoryGeneratorItem{},
+					Directories: []v1alpha1.GitDirectoryGeneratorItem{},
 					Template:    applicationSetTemplate,
 				},
 			},

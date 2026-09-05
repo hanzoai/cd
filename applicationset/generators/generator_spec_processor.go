@@ -11,7 +11,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/labels"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 	"dario.cat/mergo"
 	log "github.com/sirupsen/logrus"
@@ -23,11 +23,11 @@ const (
 
 type TransformResult struct {
 	Params   []map[string]any
-	Template argoprojiov1alpha1.ApplicationSetTemplate
+	Template v1alpha1.ApplicationSetTemplate
 }
 
 // Transform a spec generator to list of paramSets and a template
-func Transform(requestedGenerator argoprojiov1alpha1.ApplicationSetGenerator, allGenerators map[string]Generator, baseTemplate argoprojiov1alpha1.ApplicationSetTemplate, appSet *argoprojiov1alpha1.ApplicationSet, genParams map[string]any, client client.Client) ([]TransformResult, error) {
+func Transform(requestedGenerator v1alpha1.ApplicationSetGenerator, allGenerators map[string]Generator, baseTemplate v1alpha1.ApplicationSetTemplate, appSet *v1alpha1.ApplicationSet, genParams map[string]any, client client.Client) ([]TransformResult, error) {
 	// This is a custom version of the `LabelSelectorAsSelector` that is in k8s.io/apimachinery. This has been copied
 	// verbatim from that package, with the difference that we do not have any restrictions on label values. This is done
 	// so that, among other things, we can match on cluster urls.
@@ -101,7 +101,7 @@ func Transform(requestedGenerator argoprojiov1alpha1.ApplicationSetGenerator, al
 	return res, firstError
 }
 
-func GetRelevantGenerators(requestedGenerator *argoprojiov1alpha1.ApplicationSetGenerator, generators map[string]Generator) []Generator {
+func GetRelevantGenerators(requestedGenerator *v1alpha1.ApplicationSetGenerator, generators map[string]Generator) []Generator {
 	var res []Generator
 
 	v := reflect.Indirect(reflect.ValueOf(requestedGenerator))
@@ -162,7 +162,7 @@ func normalizeMapForFlatten(in map[string]any) map[string]any {
 	return out
 }
 
-func mergeGeneratorTemplate(g Generator, requestedGenerator *argoprojiov1alpha1.ApplicationSetGenerator, applicationSetTemplate argoprojiov1alpha1.ApplicationSetTemplate) (argoprojiov1alpha1.ApplicationSetTemplate, error) {
+func mergeGeneratorTemplate(g Generator, requestedGenerator *v1alpha1.ApplicationSetGenerator, applicationSetTemplate v1alpha1.ApplicationSetTemplate) (v1alpha1.ApplicationSetTemplate, error) {
 	// Make a copy of the value from `GetTemplate()` before merge, rather than copying directly into
 	// the provided parameter (which will touch the original resource object returned by client-go)
 	dest := g.GetTemplate(requestedGenerator).DeepCopy()
@@ -174,12 +174,12 @@ func mergeGeneratorTemplate(g Generator, requestedGenerator *argoprojiov1alpha1.
 
 // InterpolateGenerator allows interpolating the matrix's 2nd child generator with values from the 1st child generator
 // "params" parameter is an array, where each index corresponds to a generator. Each index contains a map w/ that generator's parameters.
-func InterpolateGenerator(requestedGenerator *argoprojiov1alpha1.ApplicationSetGenerator, params map[string]any, useGoTemplate bool, goTemplateOptions []string) (argoprojiov1alpha1.ApplicationSetGenerator, error) {
+func InterpolateGenerator(requestedGenerator *v1alpha1.ApplicationSetGenerator, params map[string]any, useGoTemplate bool, goTemplateOptions []string) (v1alpha1.ApplicationSetGenerator, error) {
 	render := utils.Render{}
 	interpolatedGenerator, err := render.RenderGeneratorParams(requestedGenerator, params, useGoTemplate, goTemplateOptions)
 	if err != nil {
 		log.WithError(err).WithField("interpolatedGenerator", interpolatedGenerator).Error("error interpolating generator with other generator's parameter")
-		return argoprojiov1alpha1.ApplicationSetGenerator{}, err
+		return v1alpha1.ApplicationSetGenerator{}, err
 	}
 
 	return *interpolatedGenerator, nil

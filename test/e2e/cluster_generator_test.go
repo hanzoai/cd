@@ -14,7 +14,7 @@ import (
 )
 
 func TestSimpleClusterGeneratorExternalNamespace(t *testing.T) {
-	externalNamespace := string(utils.ArgoCDExternalNamespace)
+	externalNamespace := string(utils.CDExternalNamespace)
 
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
@@ -47,7 +47,7 @@ func TestSimpleClusterGeneratorExternalNamespace(t *testing.T) {
 		// Create a ClusterGenerator-based ApplicationSet
 		When().
 		CreateClusterSecret("my-secret", "cluster1", "https://kubernetes.default.svc").
-		SwitchToExternalNamespace(utils.ArgoCDExternalNamespace).
+		SwitchToExternalNamespace(utils.CDExternalNamespace).
 		Create(v1alpha1.ApplicationSet{
 			Spec: v1alpha1.ApplicationSetSpec{
 				Template: v1alpha1.ApplicationSetTemplate{

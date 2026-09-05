@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestFilterBranchMatchBadRegexp(t *testing.T) {
@@ -25,7 +25,7 @@ func TestFilterBranchMatchBadRegexp(t *testing.T) {
 		},
 		nil,
 	)
-	filters := []argoprojiov1alpha1.PullRequestGeneratorFilter{
+	filters := []v1alpha1.PullRequestGeneratorFilter{
 		{
 			BranchMatch: new("("),
 		},
@@ -74,7 +74,7 @@ func TestFilterBranchMatch(t *testing.T) {
 		},
 		nil,
 	)
-	filters := []argoprojiov1alpha1.PullRequestGeneratorFilter{
+	filters := []v1alpha1.PullRequestGeneratorFilter{
 		{
 			BranchMatch: new("w"),
 		},
@@ -125,7 +125,7 @@ func TestFilterTargetBranchMatch(t *testing.T) {
 		},
 		nil,
 	)
-	filters := []argoprojiov1alpha1.PullRequestGeneratorFilter{
+	filters := []v1alpha1.PullRequestGeneratorFilter{
 		{
 			TargetBranchMatch: new("1"),
 		},
@@ -176,7 +176,7 @@ func TestFilterTitleMatch(t *testing.T) {
 		},
 		nil,
 	)
-	filters := []argoprojiov1alpha1.PullRequestGeneratorFilter{
+	filters := []v1alpha1.PullRequestGeneratorFilter{
 		{
 			TitleMatch: new("\\[filter]"),
 		},
@@ -227,7 +227,7 @@ func TestMultiFilterOrWithTitle(t *testing.T) {
 		},
 		nil,
 	)
-	filters := []argoprojiov1alpha1.PullRequestGeneratorFilter{
+	filters := []v1alpha1.PullRequestGeneratorFilter{
 		{
 			TitleMatch: new("\\[filter]"),
 		},
@@ -282,7 +282,7 @@ func TestMultiFilterOr(t *testing.T) {
 		},
 		nil,
 	)
-	filters := []argoprojiov1alpha1.PullRequestGeneratorFilter{
+	filters := []v1alpha1.PullRequestGeneratorFilter{
 		{
 			BranchMatch: new("w"),
 		},
@@ -346,7 +346,7 @@ func TestMultiFilterOrWithTargetBranchFilterOrWithTitleFilter(t *testing.T) {
 		},
 		nil,
 	)
-	filters := []argoprojiov1alpha1.PullRequestGeneratorFilter{
+	filters := []v1alpha1.PullRequestGeneratorFilter{
 		{
 			BranchMatch:       new("w"),
 			TargetBranchMatch: new("1"),
@@ -396,7 +396,7 @@ func TestNoFilters(t *testing.T) {
 		},
 		nil,
 	)
-	filters := []argoprojiov1alpha1.PullRequestGeneratorFilter{}
+	filters := []v1alpha1.PullRequestGeneratorFilter{}
 	repos, err := ListPullRequests(t.Context(), provider, filters)
 	require.NoError(t, err)
 	assert.Len(t, repos, 2)

@@ -14,7 +14,7 @@ import (
 // Add a custom CA certificate to the test and also create the certificate file
 // on the file system, so cd-server and cd-repo-server can use it.
 // TODO: Should be moved to the EnsureCleanState since this acts on the controller
-// globally https://github.com/argoproj/argo-cd/issues/24307
+// globally
 func AddCustomCACert(t *testing.T) {
 	t.Helper()
 	caCertPath, err := filepath.Abs("../fixture/certs/cd-test-ca.crt")

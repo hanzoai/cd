@@ -348,7 +348,7 @@ func (a *Actions) Declarative(filename string) *Actions {
 func (a *Actions) DeclarativeWithCustomRepo(filename string, repoURL string) *Actions {
 	a.context.T().Helper()
 	values := map[string]any{
-		"ArgoCDNamespace":     fixture.TestNamespace(),
+		"CDNamespace":         fixture.TestNamespace(),
 		"DeploymentNamespace": a.context.DeploymentNamespace(),
 		"Name":                a.context.AppName(),
 		"Path":                a.context.path,

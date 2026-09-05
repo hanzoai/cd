@@ -16,7 +16,7 @@ import (
 )
 
 func TestCreateRepositoryWithProject(t *testing.T) {
-	ctx := projectFixture.Given(t).Name("argo-project")
+	ctx := projectFixture.Given(t).Name("cd-project")
 	prjConsequence := ctx.
 		When().
 		Create().
@@ -51,7 +51,7 @@ func TestCreateRepositoryNonAdminUserPermissionDenied(t *testing.T) {
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
-		Project("argo-project").
+		Project("cd-project").
 		IgnoreErrors().
 		Create().
 		Then().
@@ -78,7 +78,7 @@ func TestCreateRepositoryNonAdminUserWithWrongProject(t *testing.T) {
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
-		Project("argo-project").
+		Project("cd-project").
 		IgnoreErrors().
 		Create().
 		Then().
@@ -97,17 +97,17 @@ func TestDeleteRepositoryRbacAllowed(t *testing.T) {
 			{
 				Resource: "repositories",
 				Action:   "create",
-				Scope:    "argo-project/*",
+				Scope:    "cd-project/*",
 			},
 			{
 				Resource: "repositories",
 				Action:   "delete",
-				Scope:    "argo-project/*",
+				Scope:    "cd-project/*",
 			},
 			{
 				Resource: "repositories",
 				Action:   "get",
-				Scope:    "argo-project/*",
+				Scope:    "cd-project/*",
 			},
 		}, "org-admin")
 
@@ -115,12 +115,12 @@ func TestDeleteRepositoryRbacAllowed(t *testing.T) {
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
-		Project("argo-project").
+		Project("cd-project").
 		Create().
 		Then().
 		And(func(r *Repository, _ error) {
 			assert.Equal(t, r.Repo, path)
-			assert.Equal(t, "argo-project", r.Project)
+			assert.Equal(t, "cd-project", r.Project)
 		}).
 		When().
 		Delete().
@@ -140,17 +140,17 @@ func TestDeleteRepositoryRbacDenied(t *testing.T) {
 			{
 				Resource: "repositories",
 				Action:   "create",
-				Scope:    "argo-project/*",
+				Scope:    "cd-project/*",
 			},
 			{
 				Resource: "repositories",
 				Action:   "delete",
-				Scope:    "argo-pr/*",
+				Scope:    "cd-pr/*",
 			},
 			{
 				Resource: "repositories",
 				Action:   "get",
-				Scope:    "argo-project/*",
+				Scope:    "cd-project/*",
 			},
 		}, "org-admin")
 
@@ -158,12 +158,12 @@ func TestDeleteRepositoryRbacDenied(t *testing.T) {
 	repoFixture.GivenWithSameState(ctx).
 		When().
 		Path(path).
-		Project("argo-project").
+		Project("cd-project").
 		Create().
 		Then().
 		And(func(r *Repository, _ error) {
 			assert.Equal(t, r.Repo, path)
-			assert.Equal(t, "argo-project", r.Project)
+			assert.Equal(t, "cd-project", r.Project)
 		}).
 		When().
 		IgnoreErrors().
@@ -179,7 +179,7 @@ func TestDeleteRepository(t *testing.T) {
 	repoFixture.Given(t).
 		When().
 		Path(path).
-		Project("argo-project").
+		Project("cd-project").
 		Create().
 		Then().
 		And(func(r *Repository, _ error) {
@@ -198,7 +198,7 @@ func TestListRepoCLIOutput(t *testing.T) {
 	repoFixture.Given(t).
 		When().
 		Path(path).
-		Project("argo-project").
+		Project("cd-project").
 		Create().
 		Then().
 		AndCLIOutput(func(output string, _ error) {
@@ -209,7 +209,7 @@ func TestListRepoCLIOutput(t *testing.T) {
 		Then().
 		AndCLIOutput(func(output string, _ error) {
 			assert.Equal(t, `TYPE  NAME  REPO                                     INSECURE  OCI    LFS    CREDS  STATUS      MESSAGE  PROJECT
-git         https://github.com/hanzoai/cd.git  false     false  false  false  Successful           argo-project`, output)
+git         https://github.com/hanzoai/cd.git  false     false  false  false  Successful           cd-project`, output)
 		})
 }
 
@@ -218,7 +218,7 @@ func TestGetRepoCLIOutput(t *testing.T) {
 	repoFixture.Given(t).
 		When().
 		Path(path).
-		Project("argo-project").
+		Project("cd-project").
 		Create().
 		Then().
 		AndCLIOutput(func(output string, _ error) {
@@ -229,7 +229,7 @@ func TestGetRepoCLIOutput(t *testing.T) {
 		Then().
 		AndCLIOutput(func(output string, _ error) {
 			assert.Equal(t, `TYPE  NAME  REPO                                     INSECURE  OCI    LFS    CREDS  STATUS      MESSAGE  PROJECT
-git         https://github.com/hanzoai/cd.git  false     false  false  false  Successful           argo-project`, output)
+git         https://github.com/hanzoai/cd.git  false     false  false  false  Successful           cd-project`, output)
 		})
 }
 

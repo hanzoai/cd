@@ -3,7 +3,7 @@
 # Simple helper script to kill all running processes in the container that
 # belong to the root user.
 
-# DO NOT RUN OUTSIDE THE DOCKER CONTAINER EXECUTING ARGO CD TESTS.
+# DO NOT RUN OUTSIDE THE DOCKER CONTAINER EXECUTING HANZO CD TESTS.
 # YOU HAVE BEEN WARNED.
 
 cleanup() {

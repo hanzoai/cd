@@ -24,7 +24,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	argoappsv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/glob"
 )
 
@@ -51,7 +51,7 @@ func init() {
 }
 
 type Renderer interface {
-	RenderTemplateParams(tmpl *argoappsv1.Application, syncPolicy *argoappsv1.ApplicationSetSyncPolicy, params map[string]any, useGoTemplate bool, goTemplateOptions []string) (*argoappsv1.Application, error)
+	RenderTemplateParams(tmpl *v1alpha1.Application, syncPolicy *v1alpha1.ApplicationSetSyncPolicy, params map[string]any, useGoTemplate bool, goTemplateOptions []string) (*v1alpha1.Application, error)
 	Replace(tmpl string, replaceMap map[string]any, useGoTemplate bool, goTemplateOptions []string) (string, error)
 }
 
@@ -273,7 +273,7 @@ func isNillable(v reflect.Value) bool {
 	return false
 }
 
-func (r *Render) RenderTemplateParams(tmpl *argoappsv1.Application, syncPolicy *argoappsv1.ApplicationSetSyncPolicy, params map[string]any, useGoTemplate bool, goTemplateOptions []string) (*argoappsv1.Application, error) {
+func (r *Render) RenderTemplateParams(tmpl *v1alpha1.Application, syncPolicy *v1alpha1.ApplicationSetSyncPolicy, params map[string]any, useGoTemplate bool, goTemplateOptions []string) (*v1alpha1.Application, error) {
 	if tmpl == nil {
 		return nil, errors.New("application template is empty")
 	}
@@ -289,7 +289,7 @@ func (r *Render) RenderTemplateParams(tmpl *argoappsv1.Application, syncPolicy *
 		return nil, err
 	}
 
-	replacedTmpl := destination.Interface().(*argoappsv1.Application)
+	replacedTmpl := destination.Interface().(*v1alpha1.Application)
 
 	// Add the 'resources-finalizer' finalizer if:
 	// The template application doesn't have any finalizers, and:
@@ -298,7 +298,7 @@ func (r *Render) RenderTemplateParams(tmpl *argoappsv1.Application, syncPolicy *
 	// See TestRenderTemplateParamsFinalizers in util_test.go for test-based definition of behaviour
 	if (syncPolicy == nil || !syncPolicy.PreserveResourcesOnDeletion) &&
 		len(replacedTmpl.Finalizers) == 0 {
-		replacedTmpl.Finalizers = []string{argoappsv1.ResourcesFinalizerName}
+		replacedTmpl.Finalizers = []string{v1alpha1.ResourcesFinalizerName}
 	}
 
 	return replacedTmpl, nil
@@ -310,7 +310,7 @@ var filteredGeneratorTypes = getFilteredGeneratorTypes()
 // find generator types that have Values field
 func getFilteredGeneratorTypes() map[string]bool {
 	result := map[string]bool{}
-	t := reflect.TypeFor[argoappsv1.ApplicationSetGenerator]()
+	t := reflect.TypeFor[v1alpha1.ApplicationSetGenerator]()
 	for field := range t.Fields() {
 		genPtrType := field.Type
 		if genPtrType.Kind() == reflect.Pointer && strings.HasSuffix(genPtrType.String(), "Generator") {
@@ -334,7 +334,7 @@ func isMissingKeyError(err error) bool {
 		strings.Contains(msg, "can't evaluate field")
 }
 
-func (r *Render) RenderGeneratorParams(gen *argoappsv1.ApplicationSetGenerator, params map[string]any, useGoTemplate bool, goTemplateOptions []string) (*argoappsv1.ApplicationSetGenerator, error) {
+func (r *Render) RenderGeneratorParams(gen *v1alpha1.ApplicationSetGenerator, params map[string]any, useGoTemplate bool, goTemplateOptions []string) (*v1alpha1.ApplicationSetGenerator, error) {
 	if gen == nil {
 		return nil, errors.New("generator is empty")
 	}
@@ -390,7 +390,7 @@ func (r *Render) RenderGeneratorParams(gen *argoappsv1.ApplicationSetGenerator, 
 		return nil, fmt.Errorf("failed to replace parameters in generator: %w", err)
 	}
 
-	replacedGen := destination.Interface().(*argoappsv1.ApplicationSetGenerator)
+	replacedGen := destination.Interface().(*v1alpha1.ApplicationSetGenerator)
 
 	return replacedGen, nil
 }
@@ -442,7 +442,7 @@ func (r *Render) Replace(tmpl string, replaceMap map[string]any, useGoTemplate b
 }
 
 // Log a warning if there are unrecognized generators
-func CheckInvalidGenerators(applicationSetInfo *argoappsv1.ApplicationSet) error {
+func CheckInvalidGenerators(applicationSetInfo *v1alpha1.ApplicationSet) error {
 	hasInvalidGenerators, invalidGenerators := invalidGenerators(applicationSetInfo)
 	var errorMessage error
 	if len(invalidGenerators) > 0 {
@@ -466,7 +466,7 @@ func CheckInvalidGenerators(applicationSetInfo *argoappsv1.ApplicationSet) error
 
 // Return true if there are unknown generators specified in the application set.  If we can discover the names
 // of these generators, return the names as the keys in a map
-func invalidGenerators(applicationSetInfo *argoappsv1.ApplicationSet) (bool, map[string]bool) {
+func invalidGenerators(applicationSetInfo *v1alpha1.ApplicationSet) (bool, map[string]bool) {
 	names := make(map[string]bool)
 	hasInvalidGenerators := false
 	for index, generator := range applicationSetInfo.Spec.Generators {
@@ -489,7 +489,7 @@ func invalidGenerators(applicationSetInfo *argoappsv1.ApplicationSet) (bool, map
 	return hasInvalidGenerators, names
 }
 
-func addInvalidGeneratorNames(names map[string]bool, applicationSetInfo *argoappsv1.ApplicationSet, index int) {
+func addInvalidGeneratorNames(names map[string]bool, applicationSetInfo *v1alpha1.ApplicationSet, index int) {
 	// The generator names are stored in the "kubectl.kubernetes.io/last-applied-configuration" annotation
 	config := applicationSetInfo.Annotations["kubectl.kubernetes.io/last-applied-configuration"]
 	var values map[string]any
@@ -631,7 +631,7 @@ func GetOptionalHTTPClient(optionalHTTPClient ...*http.Client) *http.Client {
 	return &http.Client{}
 }
 
-func FindApplicationStatusIndex(appStatuses []argoappsv1.ApplicationSetApplicationStatus, application string) int {
+func FindApplicationStatusIndex(appStatuses []v1alpha1.ApplicationSetApplicationStatus, application string) int {
 	for i := range appStatuses {
 		if appStatuses[i].Application == application {
 			return i

@@ -25,7 +25,7 @@ func TestKustomize2AppSource(t *testing.T) {
 				"get", kind, name,
 				"-ojsonpath={.metadata.labels.patched-by}")
 			require.NoError(t, err)
-			assert.Equal(t, "argo-cd", labelValue, "wrong value of 'patched-by' label of %s %s", kind, name)
+			assert.Equal(t, "hanzo-cd", labelValue, "wrong value of 'patched-by' label of %s %s", kind, name)
 		}
 	}
 
@@ -48,7 +48,7 @@ func TestKustomize2AppSource(t *testing.T) {
 				"op": "add",
 				"path": "/spec/source/kustomize/commonLabels",
 				"value": {
-					"patched-by": "argo-cd"
+					"patched-by": "hanzo-cd"
 				}
 			}
 		]`).

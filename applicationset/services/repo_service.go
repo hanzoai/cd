@@ -10,7 +10,7 @@ import (
 	utilio "github.com/hanzoai/cd/util/io"
 )
 
-type argoCDService struct {
+type repoService struct {
 	getRepository                   func(ctx context.Context, url, project string) (*v1alpha1.Repository, error)
 	submoduleEnabled                bool
 	newFileGlobbingEnabled          bool
@@ -27,7 +27,7 @@ type Repos interface {
 }
 
 func NewArgoCDService(db db.DB, submoduleEnabled bool, repoClientset apiclient.Clientset, newFileGlobbingEnabled bool) Repos {
-	return &argoCDService{
+	return &repoService{
 		getRepository:          db.GetRepository,
 		submoduleEnabled:       submoduleEnabled,
 		newFileGlobbingEnabled: newFileGlobbingEnabled,
@@ -50,7 +50,7 @@ func NewArgoCDService(db db.DB, submoduleEnabled bool, repoClientset apiclient.C
 	}
 }
 
-func (a *argoCDService) GetFiles(ctx context.Context, repoURL, revision, project, pattern string, noRevisionCache bool, sourceIntegrity *v1alpha1.SourceIntegrity) (map[string][]byte, error) {
+func (a *repoService) GetFiles(ctx context.Context, repoURL, revision, project, pattern string, noRevisionCache bool, sourceIntegrity *v1alpha1.SourceIntegrity) (map[string][]byte, error) {
 	repo, err := a.getRepository(ctx, repoURL, project)
 	if err != nil {
 		return nil, fmt.Errorf("error in GetRepository: %w", err)
@@ -74,7 +74,7 @@ func (a *argoCDService) GetFiles(ctx context.Context, repoURL, revision, project
 	return fileResponse.GetMap(), nil
 }
 
-func (a *argoCDService) GetDirectories(ctx context.Context, repoURL, revision, project string, noRevisionCache bool, sourceIntegrity *v1alpha1.SourceIntegrity) ([]string, error) {
+func (a *repoService) GetDirectories(ctx context.Context, repoURL, revision, project string, noRevisionCache bool, sourceIntegrity *v1alpha1.SourceIntegrity) ([]string, error) {
 	repo, err := a.getRepository(ctx, repoURL, project)
 	if err != nil {
 		return nil, fmt.Errorf("error in GetRepository: %w", err)

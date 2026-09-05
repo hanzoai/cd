@@ -36,7 +36,7 @@ import (
 	"github.com/hanzoai/cd/applicationset/generators/mocks"
 	appsetmetrics "github.com/hanzoai/cd/applicationset/metrics"
 	"github.com/hanzoai/cd/applicationset/utils"
-	argocommon "github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/common"
 	"github.com/hanzoai/cd/pkg/apis/application"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	applog "github.com/hanzoai/cd/util/app/log"
@@ -45,12 +45,12 @@ import (
 	testutil "github.com/hanzoai/cd/util/test"
 )
 
-// getDefaultTestClientSet creates a Clientset with the default argo objects
+// getDefaultTestClientSet creates a Clientset with the default cd objects
 // and objects specified in parameters
 func getDefaultTestClientSet(obj ...runtime.Object) *kubefake.Clientset {
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      argocommon.SecretName,
+			Name:      common.SecretName,
 			Namespace: "cd",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -62,9 +62,9 @@ func getDefaultTestClientSet(obj ...runtime.Object) *kubefake.Clientset {
 		},
 	}
 
-	emptyArgoCDConfigMap := &corev1.ConfigMap{
+	emptyCDConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      argocommon.ConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "cd",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -73,7 +73,7 @@ func getDefaultTestClientSet(obj ...runtime.Object) *kubefake.Clientset {
 		Data: map[string]string{},
 	}
 
-	kubeclientset := kubefake.NewClientset(append(obj, emptyArgoCDConfigMap, argoCDSecret)...)
+	kubeclientset := kubefake.NewClientset(append(obj, emptyCDConfigMap, cdSecret)...)
 	return kubeclientset
 }
 
@@ -784,7 +784,6 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 			},
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/issues/9101#issuecomment-1191138278
 			name: "Ensure that ignored targetRevision difference doesn't cause an update, even if another field changes",
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
@@ -980,7 +979,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 			},
 		},
 		{
-			name: "Demonstrate limitation of MergePatch", // Maybe we can fix this in Argo CD 3.0: https://github.com/argoproj/argo-cd/issues/15975
+			name: "Demonstrate limitation of MergePatch", // Maybe this can be fixed in a future release.
 			appSet: v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "name",
@@ -1169,7 +1168,7 @@ func TestCreateOrUpdateInCluster(t *testing.T) {
 						Namespace:       "namespace",
 						ResourceVersion: "2",
 						Finalizers: []string{
-							"non-argo-finalizer",
+							"non-cd-finalizer",
 							v1alpha1.PreDeleteFinalizerName,
 							v1alpha1.PreDeleteFinalizerName + "/stage1",
 							v1alpha1.PostDeleteFinalizerName,
@@ -1644,19 +1643,19 @@ func TestRemoveFinalizerOnInvalidDestination_FinalizerTypes(t *testing.T) {
 			expectedFinalizers: nil,
 		},
 		{
-			name:               "contains only argo finalizer",
+			name:               "contains only cd finalizer",
 			existingFinalizers: []string{v1alpha1.ResourcesFinalizerName},
 			expectedFinalizers: nil,
 		},
 		{
-			name:               "contains only non-argo finalizer",
-			existingFinalizers: []string{"non-argo-finalizer"},
-			expectedFinalizers: []string{"non-argo-finalizer"},
+			name:               "contains only non-cd finalizer",
+			existingFinalizers: []string{"non-cd-finalizer"},
+			expectedFinalizers: []string{"non-cd-finalizer"},
 		},
 		{
-			name:               "contains both argo and non-argo finalizer",
-			existingFinalizers: []string{"non-argo-finalizer", v1alpha1.ResourcesFinalizerName},
-			expectedFinalizers: []string{"non-argo-finalizer"},
+			name:               "contains both cd and non-cd finalizer",
+			existingFinalizers: []string{"non-cd-finalizer", v1alpha1.ResourcesFinalizerName},
+			expectedFinalizers: []string{"non-cd-finalizer"},
 		},
 	} {
 		t.Run(c.name, func(t *testing.T) {
@@ -1692,7 +1691,7 @@ func TestRemoveFinalizerOnInvalidDestination_FinalizerTypes(t *testing.T) {
 					Name:      "my-secret",
 					Namespace: "namespace",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 				Data: map[string][]byte{
@@ -1715,7 +1714,7 @@ func TestRemoveFinalizerOnInvalidDestination_FinalizerTypes(t *testing.T) {
 			settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, "cd")
 			// Initialize the settings manager to ensure cluster cache is ready
 			_ = settingsMgr.ResyncInformers()
-			argodb := db.NewDB("cd", settingsMgr, kubeclientset)
+			cdDB := db.NewDB("cd", settingsMgr, kubeclientset)
 
 			clusterInformer, err := settings.NewClusterInformer(kubeclientset, "namespace")
 			require.NoError(t, err)
@@ -1728,7 +1727,7 @@ func TestRemoveFinalizerOnInvalidDestination_FinalizerTypes(t *testing.T) {
 				Recorder:      record.NewFakeRecorder(10),
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
-				DB:            argodb,
+				DB:            cdDB,
 			}
 			clusterList, err := utils.ListClusters(clusterInformer)
 			require.NoError(t, err)
@@ -1859,7 +1858,7 @@ func TestRemoveFinalizerOnInvalidDestination_DestinationTypes(t *testing.T) {
 					Name:      "my-secret",
 					Namespace: "cd",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 				Data: map[string][]byte{
@@ -1881,7 +1880,7 @@ func TestRemoveFinalizerOnInvalidDestination_DestinationTypes(t *testing.T) {
 			settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, "cd")
 			// Initialize the settings manager to ensure cluster cache is ready
 			_ = settingsMgr.ResyncInformers()
-			argodb := db.NewDB("cd", settingsMgr, kubeclientset)
+			cdDB := db.NewDB("cd", settingsMgr, kubeclientset)
 
 			clusterInformer, err := settings.NewClusterInformer(kubeclientset, "cd")
 			require.NoError(t, err)
@@ -1894,7 +1893,7 @@ func TestRemoveFinalizerOnInvalidDestination_DestinationTypes(t *testing.T) {
 				Recorder:      record.NewFakeRecorder(10),
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
-				DB:            argodb,
+				DB:            cdDB,
 			}
 
 			clusterList, err := utils.ListClusters(clusterInformer)
@@ -2630,7 +2629,7 @@ func TestValidateGeneratedApplications(t *testing.T) {
 					Name:      "my-secret",
 					Namespace: "cd",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 				Data: map[string][]byte{
@@ -2642,14 +2641,14 @@ func TestValidateGeneratedApplications(t *testing.T) {
 
 			kubeclientset := getDefaultTestClientSet(secret)
 
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := ApplicationSetReconciler{
 				Client:          client,
 				Scheme:          scheme,
 				Recorder:        record.NewFakeRecorder(1),
 				Generators:      map[string]generators.Generator{},
-				DB:              argodb,
+				DB:              cdDB,
 				ArgoCDNamespace: "namespace",
 				KubeClientset:   kubeclientset,
 				Metrics:         metrics,
@@ -2709,7 +2708,7 @@ func TestReconcilerValidationProjectErrorBehaviour(t *testing.T) {
 	client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&appSet, &project).WithStatusSubresource(&appSet).WithIndex(&v1alpha1.Application{}, ".metadata.controller", appControllerIndexer).Build()
 	metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-	argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+	cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 	clusterInformer, err := settings.NewClusterInformer(kubeclientset, "cd")
 	require.NoError(t, err)
@@ -2722,7 +2721,7 @@ func TestReconcilerValidationProjectErrorBehaviour(t *testing.T) {
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		DB:              argodb,
+		DB:              cdDB,
 		KubeClientset:   kubeclientset,
 		Policy:          v1alpha1.ApplicationsSyncPolicySync,
 		ArgoCDNamespace: "cd",
@@ -3219,7 +3218,7 @@ func TestSetApplicationSetStatusCondition(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&c.appset).WithIndex(&v1alpha1.Application{}, ".metadata.controller", appControllerIndexer).WithStatusSubresource(&c.appset).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := ApplicationSetReconciler{
 				Client:   client,
@@ -3229,7 +3228,7 @@ func TestSetApplicationSetStatusCondition(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				DB:            argodb,
+				DB:            cdDB,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -3291,7 +3290,7 @@ func applicationsUpdateSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 			Name:      "my-cluster",
 			Namespace: "cd",
 			Labels: map[string]string{
-				argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
 		},
 		Data: map[string][]byte{
@@ -3308,7 +3307,7 @@ func applicationsUpdateSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 	client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&appSet, &defaultProject, secret).WithStatusSubresource(&appSet).WithIndex(&v1alpha1.Application{}, ".metadata.controller", appControllerIndexer).Build()
 	metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-	argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+	cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 	clusterInformer, err := settings.NewClusterInformer(kubeclientset, "cd")
 	require.NoError(t, err)
 
@@ -3322,7 +3321,7 @@ func applicationsUpdateSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		DB:                   argodb,
+		DB:                   cdDB,
 		ArgoCDNamespace:      "cd",
 		KubeClientset:        kubeclientset,
 		Policy:               v1alpha1.ApplicationsSyncPolicySync,
@@ -3465,7 +3464,7 @@ func TestReconcilePopulatesResourcesStatusOnFirstRun(t *testing.T) {
 			Name:      "my-cluster",
 			Namespace: "cd",
 			Labels: map[string]string{
-				argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
 		},
 		Data: map[string][]byte{
@@ -3484,7 +3483,7 @@ func TestReconcilePopulatesResourcesStatusOnFirstRun(t *testing.T) {
 		Build()
 	metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-	argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+	cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 	clusterInformer, err := settings.NewClusterInformer(kubeclientset, "cd")
 	require.NoError(t, err)
 
@@ -3496,7 +3495,7 @@ func TestReconcilePopulatesResourcesStatusOnFirstRun(t *testing.T) {
 		Renderer:        &utils.Render{},
 		Recorder:        record.NewFakeRecorder(1),
 		Generators:      map[string]generators.Generator{"List": generators.NewListGenerator()},
-		DB:              argodb,
+		DB:              cdDB,
 		ArgoCDNamespace: "cd",
 		KubeClientset:   kubeclientset,
 		Policy:          v1alpha1.ApplicationsSyncPolicySync,
@@ -3579,7 +3578,7 @@ func applicationsDeleteSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 			Name:      "my-cluster",
 			Namespace: "cd",
 			Labels: map[string]string{
-				argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
 		},
 		Data: map[string][]byte{
@@ -3596,7 +3595,7 @@ func applicationsDeleteSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 	client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&appSet, &defaultProject, secret).WithStatusSubresource(&appSet).WithIndex(&v1alpha1.Application{}, ".metadata.controller", appControllerIndexer).Build()
 	metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-	argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+	cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 	clusterInformer, err := settings.NewClusterInformer(kubeclientset, "cd")
 	require.NoError(t, err)
@@ -3611,7 +3610,7 @@ func applicationsDeleteSyncPolicyTest(t *testing.T, applicationsSyncPolicy v1alp
 		Generators: map[string]generators.Generator{
 			"List": generators.NewListGenerator(),
 		},
-		DB:                   argodb,
+		DB:                   cdDB,
 		ArgoCDNamespace:      "cd",
 		KubeClientset:        kubeclientset,
 		Policy:               v1alpha1.ApplicationsSyncPolicySync,
@@ -3793,7 +3792,7 @@ func TestPolicies(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&appSet, &defaultProject).WithStatusSubresource(&appSet).WithIndex(&v1alpha1.Application{}, ".metadata.controller", appControllerIndexer).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			clusterInformer, err := settings.NewClusterInformer(kubeclientset, "cd")
 			require.NoError(t, err)
@@ -3808,7 +3807,7 @@ func TestPolicies(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				DB:              argodb,
+				DB:              cdDB,
 				ArgoCDNamespace: "cd",
 				KubeClientset:   kubeclientset,
 				Policy:          policy,
@@ -4001,7 +4000,7 @@ func TestSetApplicationSetApplicationStatus(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&cc.appSet).WithStatusSubresource(&cc.appSet).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := ApplicationSetReconciler{
 				Client:   client,
@@ -4011,7 +4010,7 @@ func TestSetApplicationSetApplicationStatus(t *testing.T) {
 				Generators: map[string]generators.Generator{
 					"List": generators.NewListGenerator(),
 				},
-				DB:            argodb,
+				DB:            cdDB,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -4272,14 +4271,14 @@ func TestUpdateResourceStatus(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithStatusSubresource(&cc.appSet).WithObjects(&cc.appSet).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := ApplicationSetReconciler{
 				Client:                  client,
 				Scheme:                  scheme,
 				Recorder:                record.NewFakeRecorder(1),
 				Generators:              map[string]generators.Generator{},
-				DB:                      argodb,
+				DB:                      cdDB,
 				KubeClientset:           kubeclientset,
 				Metrics:                 metrics,
 				MaxResourcesStatusCount: cc.maxResourcesStatusCount,
@@ -4362,14 +4361,14 @@ func TestResourceStatusAreOrdered(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithStatusSubresource(&cc.appSet).WithObjects(&cc.appSet).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := ApplicationSetReconciler{
 				Client:        client,
 				Scheme:        scheme,
 				Recorder:      record.NewFakeRecorder(1),
 				Generators:    map[string]generators.Generator{},
-				DB:            argodb,
+				DB:            cdDB,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -4510,7 +4509,7 @@ func TestApplicationOwnsHandler(t *testing.T) {
 			ObjectNew: &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Annotations: nil}},
 		}}, want: false},
 		{name: "DifferentApplicationFinalizers", args: args{e: event.UpdateEvent{
-			ObjectOld: &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Finalizers: []string{"argo"}}},
+			ObjectOld: &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Finalizers: []string{"some"}}},
 			ObjectNew: &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Finalizers: []string{"none"}}},
 		}}, want: true},
 		{name: "DifferentApplicationFinalizersNil", args: args{e: event.UpdateEvent{
@@ -4755,7 +4754,7 @@ func TestApplicationSetOwnsHandlerUpdate(t *testing.T) {
 		{
 			name: "annotation removed",
 			appSetOld: buildAppSet(map[string]string{
-				argocommon.AnnotationApplicationSetRefresh: "true",
+				common.AnnotationApplicationSetRefresh: "true",
 			}),
 			appSetNew:              buildAppSet(map[string]string{}),
 			enableProgressiveSyncs: false,
@@ -4764,10 +4763,10 @@ func TestApplicationSetOwnsHandlerUpdate(t *testing.T) {
 		{
 			name: "annotation not removed",
 			appSetOld: buildAppSet(map[string]string{
-				argocommon.AnnotationApplicationSetRefresh: "true",
+				common.AnnotationApplicationSetRefresh: "true",
 			}),
 			appSetNew: buildAppSet(map[string]string{
-				argocommon.AnnotationApplicationSetRefresh: "true",
+				common.AnnotationApplicationSetRefresh: "true",
 			}),
 			enableProgressiveSyncs: false,
 			want:                   false,
@@ -4776,7 +4775,7 @@ func TestApplicationSetOwnsHandlerUpdate(t *testing.T) {
 			name:      "annotation added",
 			appSetOld: buildAppSet(map[string]string{}),
 			appSetNew: buildAppSet(map[string]string{
-				argocommon.AnnotationApplicationSetRefresh: "true",
+				common.AnnotationApplicationSetRefresh: "true",
 			}),
 			enableProgressiveSyncs: false,
 			want:                   true,
@@ -5300,7 +5299,7 @@ func TestReconcileAddsFinalizer_WhenDeletionOrderReverse(t *testing.T) {
 				WithIndex(&v1alpha1.Application{}, ".metadata.controller", appControllerIndexer).
 				Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := ApplicationSetReconciler{
 				Client:                 client,
@@ -5308,7 +5307,7 @@ func TestReconcileAddsFinalizer_WhenDeletionOrderReverse(t *testing.T) {
 				Renderer:               &utils.Render{},
 				Recorder:               record.NewFakeRecorder(1),
 				Generators:             map[string]generators.Generator{},
-				DB:                     argodb,
+				DB:                     cdDB,
 				KubeClientset:          kubeclientset,
 				Metrics:                metrics,
 				EnableProgressiveSyncs: cc.progressiveSyncEnabled,
@@ -5381,7 +5380,7 @@ func TestReconcileProgressiveSyncDisabled(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&cc.appSet).WithStatusSubresource(&cc.appSet).WithIndex(&v1alpha1.Application{}, ".metadata.controller", appControllerIndexer).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := ApplicationSetReconciler{
 				Client:                 client,
@@ -5389,7 +5388,7 @@ func TestReconcileProgressiveSyncDisabled(t *testing.T) {
 				Renderer:               &utils.Render{},
 				Recorder:               record.NewFakeRecorder(1),
 				Generators:             map[string]generators.Generator{},
-				DB:                     argodb,
+				DB:                     cdDB,
 				KubeClientset:          kubeclientset,
 				Metrics:                metrics,
 				EnableProgressiveSyncs: cc.enableProgressiveSyncs,

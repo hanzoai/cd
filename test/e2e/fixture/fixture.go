@@ -65,7 +65,7 @@ const (
 
 	GuestbookPath = "guestbook"
 
-	ProjectName = "argo-project"
+	ProjectName = "cd-project"
 
 	// cmp plugin sock file path
 	PluginSockFilePath = "/app/config/plugin"
@@ -89,23 +89,23 @@ const (
 )
 
 var (
-	KubeClientset           kubernetes.Interface
-	KubeConfig              *rest.Config
-	DynamicClientset        dynamic.Interface
-	AppClientset            appclientset.Interface
-	CDClientset             apiclient.Client
-	Mapper                  meta.RESTMapper
-	adminUsername           string
-	AdminPassword           string
-	apiServerAddress        string
-	token                   string
-	plainText               bool
-	testsRun                map[string]bool
-	argoCDServerName        string
-	argoCDRedisHAProxyName  string
-	argoCDRedisName         string
-	argoCDRepoServerName    string
-	argoCDAppControllerName string
+	KubeClientset       kubernetes.Interface
+	KubeConfig          *rest.Config
+	DynamicClientset    dynamic.Interface
+	AppClientset        appclientset.Interface
+	CDClientset         apiclient.Client
+	Mapper              meta.RESTMapper
+	adminUsername       string
+	AdminPassword       string
+	apiServerAddress    string
+	token               string
+	plainText           bool
+	testsRun            map[string]bool
+	cdServerName        string
+	cdRedisHAProxyName  string
+	cdRedisName         string
+	cdRepoServerName    string
+	cdAppControllerName string
 )
 
 type RepoURLType string
@@ -206,11 +206,11 @@ func init() {
 	adminUsername = GetEnvWithDefault(EnvAdminUsername, defaultAdminUsername)
 	AdminPassword = GetEnvWithDefault(EnvAdminPassword, defaultAdminPassword)
 
-	argoCDServerName = GetEnvWithDefault(EnvServerName, common.DefaultServerName)
-	argoCDRedisHAProxyName = GetEnvWithDefault(EnvRedisHAProxyName, common.DefaultRedisHaProxyName)
-	argoCDRedisName = GetEnvWithDefault(EnvRedisName, common.DefaultRedisName)
-	argoCDRepoServerName = GetEnvWithDefault(EnvRepoServerName, common.DefaultRepoServerName)
-	argoCDAppControllerName = GetEnvWithDefault(EnvAppControllerName, common.DefaultApplicationControllerName)
+	cdServerName = GetEnvWithDefault(EnvServerName, common.DefaultServerName)
+	cdRedisHAProxyName = GetEnvWithDefault(EnvRedisHAProxyName, common.DefaultRedisHaProxyName)
+	cdRedisName = GetEnvWithDefault(EnvRedisName, common.DefaultRedisName)
+	cdRepoServerName = GetEnvWithDefault(EnvRepoServerName, common.DefaultRepoServerName)
+	cdAppControllerName = GetEnvWithDefault(EnvAppControllerName, common.DefaultApplicationControllerName)
 
 	dialTime := 30 * time.Second
 	tlsTestResult, err := grpcutil.TestTLS(apiServerAddress, dialTime)
@@ -220,11 +220,11 @@ func init() {
 		Insecure:          true,
 		ServerAddr:        apiServerAddress,
 		PlainText:         !tlsTestResult.TLS,
-		ServerName:        argoCDServerName,
-		RedisHaProxyName:  argoCDRedisHAProxyName,
-		RedisName:         argoCDRedisName,
-		RepoServerName:    argoCDRepoServerName,
-		AppControllerName: argoCDAppControllerName,
+		ServerName:        cdServerName,
+		RedisHaProxyName:  cdRedisHAProxyName,
+		RedisName:         cdRedisName,
+		RepoServerName:    cdRepoServerName,
+		AppControllerName: cdAppControllerName,
 	})
 	errors.CheckError(err)
 
@@ -285,11 +285,11 @@ func loginAs(username, password string) error {
 		ServerAddr:        apiServerAddress,
 		AuthToken:         token,
 		PlainText:         plainText,
-		ServerName:        argoCDServerName,
-		RedisHaProxyName:  argoCDRedisHAProxyName,
-		RedisName:         argoCDRedisName,
-		RepoServerName:    argoCDRepoServerName,
-		AppControllerName: argoCDAppControllerName,
+		ServerName:        cdServerName,
+		RedisHaProxyName:  cdRedisHAProxyName,
+		RedisName:         cdRedisName,
+		RepoServerName:    cdRepoServerName,
+		AppControllerName: cdAppControllerName,
 	})
 	return err
 }

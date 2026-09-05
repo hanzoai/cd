@@ -18,14 +18,14 @@ import (
 	"sigs.k8s.io/yaml"
 
 	"github.com/hanzoai/cd/applicationset/utils"
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	metricsutil "github.com/hanzoai/cd/util/metrics"
 )
 
 var (
 	applicationsetNamespaces = []string{"cd", "test-namespace1"}
 
-	filter = func(appset *argoappv1.ApplicationSet) bool {
+	filter = func(appset *v1alpha1.ApplicationSet) bool {
 		return utils.IsNamespaceAllowed(applicationsetNamespaces, appset.Namespace)
 	}
 
@@ -148,13 +148,13 @@ spec:
         targetRevision: HEAD
 `
 
-func newFakeAppsets(fakeAppsetYAML string) []argoappv1.ApplicationSet {
-	var results []argoappv1.ApplicationSet
+func newFakeAppsets(fakeAppsetYAML string) []v1alpha1.ApplicationSet {
+	var results []v1alpha1.ApplicationSet
 
 	appsetRawYamls := strings.SplitSeq(fakeAppsetYAML, "---")
 
 	for appsetRawYaml := range appsetRawYamls {
-		var appset argoappv1.ApplicationSet
+		var appset v1alpha1.ApplicationSet
 		err := yaml.Unmarshal([]byte(appsetRawYaml), &appset)
 		if err != nil {
 			panic(err)
@@ -231,9 +231,9 @@ cd_appset_reconcile_count{name="test1",namespace="cd"} 1
 `)
 }
 
-func initializeClient(appsets []argoappv1.ApplicationSet) ctrlclient.WithWatch {
+func initializeClient(appsets []v1alpha1.ApplicationSet) ctrlclient.WithWatch {
 	scheme := runtime.NewScheme()
-	err := argoappv1.AddToScheme(scheme)
+	err := v1alpha1.AddToScheme(scheme)
 	if err != nil {
 		panic(err)
 	}

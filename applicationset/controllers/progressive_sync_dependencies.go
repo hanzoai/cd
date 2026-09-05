@@ -5,7 +5,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 /**
@@ -20,8 +20,8 @@ import (
 func (r *ApplicationSetReconciler) SetAppSetApplicationStatus(
 	ctx context.Context,
 	logCtx *log.Entry,
-	applicationSet *argov1alpha1.ApplicationSet,
-	applicationStatuses []argov1alpha1.ApplicationSetApplicationStatus,
+	applicationSet *v1alpha1.ApplicationSet,
+	applicationStatuses []v1alpha1.ApplicationSetApplicationStatus,
 ) error {
 	// Delegate to existing controller method
 	return r.setAppSetApplicationStatus(ctx, logCtx, applicationSet, applicationStatuses)
@@ -29,8 +29,8 @@ func (r *ApplicationSetReconciler) SetAppSetApplicationStatus(
 
 func (r *ApplicationSetReconciler) SetApplicationSetStatusCondition(
 	ctx context.Context,
-	applicationSet *argov1alpha1.ApplicationSet,
-	conditions []argov1alpha1.ApplicationSetCondition,
+	applicationSet *v1alpha1.ApplicationSet,
+	conditions []v1alpha1.ApplicationSetCondition,
 	parametersGenerated bool,
 ) error {
 	// Delegate to existing controller method

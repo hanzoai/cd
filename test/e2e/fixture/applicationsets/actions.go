@@ -74,7 +74,7 @@ func (a *Actions) SwitchToExternalNamespace(namespace utils.ExternalNamespace) *
 	return a
 }
 
-func (a *Actions) SwitchToArgoCDNamespace() *Actions {
+func (a *Actions) SwitchToCDNamespace() *Actions {
 	a.context.switchToNamespace = ""
 	log.Infof("switched to cd namespace: %s", utils.E2ENamespace)
 	return a

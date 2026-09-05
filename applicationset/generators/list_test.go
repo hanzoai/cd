@@ -8,7 +8,7 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 func TestGenerateListParams(t *testing.T) {
@@ -29,15 +29,15 @@ func TestGenerateListParams(t *testing.T) {
 	for _, testCase := range testCases {
 		listGenerator := NewListGenerator()
 
-		applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+		applicationSetInfo := v1alpha1.ApplicationSet{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: "set",
 			},
-			Spec: argoprojiov1alpha1.ApplicationSetSpec{},
+			Spec: v1alpha1.ApplicationSetSpec{},
 		}
 
-		got, err := listGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-			List: &argoprojiov1alpha1.ListGenerator{
+		got, err := listGenerator.GenerateParams(&v1alpha1.ApplicationSetGenerator{
+			List: &v1alpha1.ListGenerator{
 				Elements: testCase.elements,
 			},
 		}, &applicationSetInfo, nil)
@@ -65,17 +65,17 @@ func TestGenerateListParamsGoTemplate(t *testing.T) {
 	for _, testCase := range testCases {
 		listGenerator := NewListGenerator()
 
-		applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+		applicationSetInfo := v1alpha1.ApplicationSet{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: "set",
 			},
-			Spec: argoprojiov1alpha1.ApplicationSetSpec{
+			Spec: v1alpha1.ApplicationSetSpec{
 				GoTemplate: true,
 			},
 		}
 
-		got, err := listGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-			List: &argoprojiov1alpha1.ListGenerator{
+		got, err := listGenerator.GenerateParams(&v1alpha1.ApplicationSetGenerator{
+			List: &v1alpha1.ListGenerator{
 				Elements: testCase.elements,
 			},
 		}, &applicationSetInfo, nil)

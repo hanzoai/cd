@@ -11,11 +11,11 @@ import (
 	"github.com/hanzoai/cd/util/settings"
 )
 
-func GetGenerators(ctx context.Context, c client.Client, k8sClient kubernetes.Interface, controllerNamespace string, argoCDService services.Repos, dynamicClient dynamic.Interface, scmConfig SCMConfig, clusterInformer *settings.ClusterInformer) map[string]Generator {
+func GetGenerators(ctx context.Context, c client.Client, k8sClient kubernetes.Interface, controllerNamespace string, repoService services.Repos, dynamicClient dynamic.Interface, scmConfig SCMConfig, clusterInformer *settings.ClusterInformer) map[string]Generator {
 	terminalGenerators := map[string]Generator{
 		"List":                    NewListGenerator(),
 		"Clusters":                NewClusterGenerator(c, controllerNamespace),
-		"Git":                     NewGitGenerator(argoCDService, controllerNamespace),
+		"Git":                     NewGitGenerator(repoService, controllerNamespace),
 		"SCMProvider":             NewSCMProviderGenerator(c, scmConfig),
 		"ClusterDecisionResource": NewDuckTypeGenerator(ctx, dynamicClient, k8sClient, controllerNamespace, clusterInformer),
 		"PullRequest":             NewPullRequestGenerator(c, scmConfig),

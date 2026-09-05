@@ -96,7 +96,7 @@ func TestSyncOptionsValidateFalse(t *testing.T) {
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded))
 	// NOTE: it is a bug that we do not detect this as OutOfSync. This is because we
-	// are dropping fields as part of remarshalling. See: https://github.com/argoproj/argo-cd/issues/1787
+	// are dropping fields as part of remarshalling.
 	// Expect(SyncStatusIs(SyncStatusCodeOutOfSync))
 }
 

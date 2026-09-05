@@ -890,14 +890,14 @@ func TestUpdateApplicationSetApplicationStatus(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&cc.appSet).WithStatusSubresource(&cc.appSet).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := &ApplicationSetReconciler{
 				Client:        client,
 				Scheme:        scheme,
 				Recorder:      record.NewFakeRecorder(1),
 				Generators:    map[string]generators.Generator{},
-				DB:        argodb,
+				DB:            cdDB,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}
@@ -1651,14 +1651,14 @@ func TestUpdateApplicationSetApplicationStatusProgress(t *testing.T) {
 			client := fake.NewClientBuilder().WithScheme(scheme).WithObjects(&cc.appSet).WithStatusSubresource(&cc.appSet).Build()
 			metrics := appsetmetrics.NewFakeAppsetMetrics()
 
-			argodb := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
+			cdDB := db.NewDB("cd", settings.NewSettingsManager(t.Context(), kubeclientset, "cd"), kubeclientset)
 
 			r := &ApplicationSetReconciler{
 				Client:        client,
 				Scheme:        scheme,
 				Recorder:      record.NewFakeRecorder(1),
 				Generators:    map[string]generators.Generator{},
-				DB:        argodb,
+				DB:            cdDB,
 				KubeClientset: kubeclientset,
 				Metrics:       metrics,
 			}

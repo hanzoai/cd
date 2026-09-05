@@ -10,13 +10,13 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/hanzoai/cd/test/fixture/test"
-	argoexec "github.com/hanzoai/cd/util/exec"
+	cdexec "github.com/hanzoai/cd/util/exec"
 )
 
 func TestKustomizeVersion(t *testing.T) {
 	t.Parallel()
 	test.CIOnly(t)
-	out, err := argoexec.RunCommand("kustomize", argoexec.CmdOpts{}, "version")
+	out, err := cdexec.RunCommand("kustomize", cdexec.CmdOpts{}, "version")
 	require.NoError(t, err)
 	assert.Contains(t, out, "v5.", "kustomize should be version 5")
 }
@@ -41,7 +41,7 @@ func TestBuildManifests(t *testing.T) {
 			return nil
 		}
 		dirName := filepath.Dir(path)
-		_, err = argoexec.RunCommand("kustomize", argoexec.CmdOpts{}, "build", dirName)
+		_, err = cdexec.RunCommand("kustomize", cdexec.CmdOpts{}, "build", dirName)
 		return err
 	})
 	require.NoError(t, err)

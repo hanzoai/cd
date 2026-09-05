@@ -13,7 +13,7 @@ import (
 
 	"github.com/hanzoai/cd/applicationset/utils"
 	"github.com/hanzoai/cd/common"
-	argoappsetv1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 var _ Generator = (*ClusterGenerator)(nil)
@@ -37,15 +37,15 @@ func NewClusterGenerator(c client.Client, namespace string) Generator {
 
 // GetRequeueAfter never requeue the cluster generator because the `clusterSecretEventHandler` will requeue the appsets
 // when the cluster secrets change
-func (g *ClusterGenerator) GetRequeueAfter(_ *argoappsetv1alpha1.ApplicationSetGenerator) time.Duration {
+func (g *ClusterGenerator) GetRequeueAfter(_ *v1alpha1.ApplicationSetGenerator) time.Duration {
 	return NoRequeueAfter
 }
 
-func (g *ClusterGenerator) GetTemplate(appSetGenerator *argoappsetv1alpha1.ApplicationSetGenerator) *argoappsetv1alpha1.ApplicationSetTemplate {
+func (g *ClusterGenerator) GetTemplate(appSetGenerator *v1alpha1.ApplicationSetGenerator) *v1alpha1.ApplicationSetTemplate {
 	return &appSetGenerator.Clusters.Template
 }
 
-func (g *ClusterGenerator) GenerateParams(appSetGenerator *argoappsetv1alpha1.ApplicationSetGenerator, appSet *argoappsetv1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
+func (g *ClusterGenerator) GenerateParams(appSetGenerator *v1alpha1.ApplicationSetGenerator, appSet *v1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
 	logCtx := log.WithField("applicationset", appSet.GetName()).WithField("namespace", appSet.GetNamespace())
 	if appSetGenerator == nil {
 		return nil, ErrEmptyAppSetGenerator
@@ -90,9 +90,9 @@ func (g *ClusterGenerator) GenerateParams(appSetGenerator *argoappsetv1alpha1.Ap
 	// Add the in-cluster last if it doesn't have a secret, and we're not ignoring in-cluster
 	if !ignoreLocalClusters && !utils.SecretsContainInClusterCredentials(secretsList) {
 		params := map[string]any{}
-		params["name"] = argoappsetv1alpha1.KubernetesInClusterName
-		params["nameNormalized"] = argoappsetv1alpha1.KubernetesInClusterName
-		params["server"] = argoappsetv1alpha1.KubernetesInternalAPIServerAddr
+		params["name"] = v1alpha1.KubernetesInClusterName
+		params["nameNormalized"] = v1alpha1.KubernetesInClusterName
+		params["server"] = v1alpha1.KubernetesInternalAPIServerAddr
 		params["project"] = ""
 
 		err = appendTemplatedValues(appSetGenerator.Clusters.Values, params, appSet.Spec.GoTemplate, appSet.Spec.GoTemplateOptions)
@@ -125,7 +125,7 @@ func (p *paramHolder) consolidate() []map[string]any {
 	return p.params
 }
 
-func (g *ClusterGenerator) getClusterParameters(cluster corev1.Secret, appSet *argoappsetv1alpha1.ApplicationSet) map[string]any {
+func (g *ClusterGenerator) getClusterParameters(cluster corev1.Secret, appSet *v1alpha1.ApplicationSet) map[string]any {
 	params := map[string]any{}
 
 	params["name"] = string(cluster.Data["name"])
@@ -162,7 +162,7 @@ func (g *ClusterGenerator) getClusterParameters(cluster corev1.Secret, appSet *a
 	return params
 }
 
-func (g *ClusterGenerator) getSecretsByClusterName(log *log.Entry, appSetGenerator *argoappsetv1alpha1.ApplicationSetGenerator) (map[string]corev1.Secret, error) {
+func (g *ClusterGenerator) getSecretsByClusterName(log *log.Entry, appSetGenerator *v1alpha1.ApplicationSetGenerator) (map[string]corev1.Secret, error) {
 	clusterSecretList := &corev1.SecretList{}
 
 	selector := metav1.AddLabelToSelector(&appSetGenerator.Clusters.Selector, common.LabelKeySecretType, common.LabelValueSecretTypeCluster)

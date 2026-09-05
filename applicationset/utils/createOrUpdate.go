@@ -18,9 +18,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
-	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/cd"
-	argodiff "github.com/hanzoai/cd/util/cd/diff"
+	"github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
 )
 
@@ -44,18 +44,18 @@ var appEquality = conversion.EqualitiesOrDie(
 	func(a, b fields.Selector) bool {
 		return a.String() == b.String()
 	},
-	func(a, b argov1alpha1.ApplicationDestination) bool {
+	func(a, b v1alpha1.ApplicationDestination) bool {
 		return a.Namespace == b.Namespace && a.Name == b.Name && a.Server == b.Server
 	},
 )
 
 // BuildIgnoreDiffConfig constructs a DiffConfig from the ApplicationSet's ignoreDifferences rules.
 // Returns nil when ignoreDifferences is empty.
-func BuildIgnoreDiffConfig(ignoreDifferences argov1alpha1.ApplicationSetIgnoreDifferences, ignoreNormalizerOpts normalizers.IgnoreNormalizerOpts) (argodiff.DiffConfig, error) {
+func BuildIgnoreDiffConfig(ignoreDifferences v1alpha1.ApplicationSetIgnoreDifferences, ignoreNormalizerOpts normalizers.IgnoreNormalizerOpts) (diff.DiffConfig, error) {
 	if len(ignoreDifferences) == 0 {
 		return nil, nil
 	}
-	return argodiff.NewDiffConfigBuilder().
+	return diff.NewDiffConfigBuilder().
 		WithDiffSettings(ignoreDifferences.ToApplicationIgnoreDifferences(), nil, false, ignoreNormalizerOpts).
 		WithNoCache().
 		Build()
@@ -63,8 +63,8 @@ func BuildIgnoreDiffConfig(ignoreDifferences argov1alpha1.ApplicationSetIgnoreDi
 
 // CreateOrUpdate overrides "sigs.k8s.io/controller-runtime" function
 // in sigs.k8s.io/controller-runtime/pkg/controller/controllerutil/controllerutil.go
-// to add equality for argov1alpha1.ApplicationDestination
-// argov1alpha1.ApplicationDestination has a private variable, so the default
+// to add equality for v1alpha1.ApplicationDestination
+// v1alpha1.ApplicationDestination has a private variable, so the default
 // implementation fails to compare it.
 //
 // CreateOrUpdate creates or updates the given object in the Kubernetes
@@ -79,7 +79,7 @@ func BuildIgnoreDiffConfig(ignoreDifferences argov1alpha1.ApplicationSetIgnoreDi
 // The MutateFn is called regardless of creating or updating an object.
 //
 // It returns the executed operation and an error.
-func CreateOrUpdate(ctx context.Context, logCtx *log.Entry, c client.Client, diffConfig argodiff.DiffConfig, obj *argov1alpha1.Application, f controllerutil.MutateFn) (controllerutil.OperationResult, error) {
+func CreateOrUpdate(ctx context.Context, logCtx *log.Entry, c client.Client, diffConfig diff.DiffConfig, obj *v1alpha1.Application, f controllerutil.MutateFn) (controllerutil.OperationResult, error) {
 	key := client.ObjectKeyFromObject(obj)
 	if err := c.Get(ctx, key, obj); err != nil {
 		if !errors.IsNotFound(err) {
@@ -130,7 +130,7 @@ func CreateOrUpdate(ctx context.Context, logCtx *log.Entry, c client.Client, dif
 	return controllerutil.OperationResultUpdated, nil
 }
 
-func LogPatch(logCtx *log.Entry, patch client.Patch, obj *argov1alpha1.Application) {
+func LogPatch(logCtx *log.Entry, patch client.Patch, obj *v1alpha1.Application) {
 	patchBytes, err := patch.Data(obj)
 	if err != nil {
 		logCtx.Errorf("failed to generate patch: %v", err)
@@ -157,7 +157,7 @@ func mutate(f controllerutil.MutateFn, key client.ObjectKey, obj client.Object) 
 
 // applyIgnoreDifferences applies the ignore differences rules to the found application. It modifies the applications in place.
 // diffConfig may be nil, in which case this is a no-op.
-func applyIgnoreDifferences(diffConfig argodiff.DiffConfig, found *argov1alpha1.Application, generatedApp *argov1alpha1.Application) error {
+func applyIgnoreDifferences(diffConfig diff.DiffConfig, found *v1alpha1.Application, generatedApp *v1alpha1.Application) error {
 	if diffConfig == nil {
 		return nil
 	}
@@ -171,7 +171,7 @@ func applyIgnoreDifferences(diffConfig argodiff.DiffConfig, found *argov1alpha1.
 	if err != nil {
 		return fmt.Errorf("failed to convert found application to unstructured: %w", err)
 	}
-	result, err := argodiff.Normalize([]*unstructured.Unstructured{unstructuredFound}, []*unstructured.Unstructured{unstructuredGenerated}, diffConfig)
+	result, err := diff.Normalize([]*unstructured.Unstructured{unstructuredFound}, []*unstructured.Unstructured{unstructuredGenerated}, diffConfig)
 	if err != nil {
 		return fmt.Errorf("failed to normalize application spec: %w", err)
 	}
@@ -182,7 +182,7 @@ func applyIgnoreDifferences(diffConfig argodiff.DiffConfig, found *argov1alpha1.
 	if err != nil {
 		return fmt.Errorf("failed to marshal normalized app to json: %w", err)
 	}
-	foundNormalized := &argov1alpha1.Application{}
+	foundNormalized := &v1alpha1.Application{}
 	err = json.Unmarshal(foundJSONNormalized, &foundNormalized)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal normalized app to json: %w", err)
@@ -195,7 +195,7 @@ func applyIgnoreDifferences(diffConfig argodiff.DiffConfig, found *argov1alpha1.
 	if err != nil {
 		return fmt.Errorf("failed to marshal normalized app to json: %w", err)
 	}
-	generatedAppNormalized := &argov1alpha1.Application{}
+	generatedAppNormalized := &v1alpha1.Application{}
 	err = json.Unmarshal(generatedJSONNormalized, &generatedAppNormalized)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal normalized app json to structured app: %w", err)

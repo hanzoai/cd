@@ -3,7 +3,7 @@ package controllers
 import (
 	"testing"
 
-	argocommon "github.com/hanzoai/cd/common"
+	"github.com/hanzoai/cd/common"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -17,7 +17,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 type mockAddRateLimitingInterface struct {
@@ -32,27 +32,27 @@ func (obj *mockAddRateLimitingInterface) Add(item reconcile.Request) {
 func TestClusterEventHandler(t *testing.T) {
 	t.Parallel()
 	scheme := runtime.NewScheme()
-	err := argov1alpha1.AddToScheme(scheme)
+	err := v1alpha1.AddToScheme(scheme)
 	require.NoError(t, err)
 
-	err = argov1alpha1.AddToScheme(scheme)
+	err = v1alpha1.AddToScheme(scheme)
 	require.NoError(t, err)
 
 	tests := []struct {
 		name             string
-		items            []argov1alpha1.ApplicationSet
+		items            []v1alpha1.ApplicationSet
 		secret           corev1.Secret
 		expectedRequests []ctrl.Request
 	}{
 		{
 			name:  "no application sets should mean no requests",
-			items: []argov1alpha1.ApplicationSet{},
+			items: []v1alpha1.ApplicationSet{},
 			secret: corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -60,16 +60,16 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a cluster generator should produce a request",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
 							},
 						},
 					},
@@ -80,7 +80,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -90,16 +90,16 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "multiple cluster generators should produce multiple requests",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
 							},
 						},
 					},
@@ -109,10 +109,10 @@ func TestClusterEventHandler(t *testing.T) {
 						Name:      "my-app-set2",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
 							},
 						},
 					},
@@ -123,7 +123,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -134,16 +134,16 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "non-cluster generator should not match",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
 							},
 						},
 					},
@@ -153,10 +153,10 @@ func TestClusterEventHandler(t *testing.T) {
 						Name:      "app-set-non-cluster",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								List: &argov1alpha1.ListGenerator{},
+								List: &v1alpha1.ListGenerator{},
 							},
 						},
 					},
@@ -167,7 +167,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -177,16 +177,16 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "cluster generators in other namespaces should not match",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "my-namespace-not-allowed",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
 							},
 						},
 					},
@@ -197,24 +197,24 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
 			expectedRequests: []reconcile.Request{},
 		},
 		{
-			name: "non-argo cd secret should not match",
-			items: []argov1alpha1.ApplicationSet{
+			name: "non-cd secret should not match",
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "another-namespace",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
 							},
 						},
 					},
@@ -230,19 +230,19 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a matrix generator with a cluster generator should produce a request",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Matrix: &argov1alpha1.MatrixGenerator{
-									Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+								Matrix: &v1alpha1.MatrixGenerator{
+									Generators: []v1alpha1.ApplicationSetNestedGenerator{
 										{
-											Clusters: &argov1alpha1.ClusterGenerator{},
+											Clusters: &v1alpha1.ClusterGenerator{},
 										},
 									},
 								},
@@ -256,7 +256,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -266,19 +266,19 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a matrix generator with non cluster generator should not match",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Matrix: &argov1alpha1.MatrixGenerator{
-									Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+								Matrix: &v1alpha1.MatrixGenerator{
+									Generators: []v1alpha1.ApplicationSetNestedGenerator{
 										{
-											List: &argov1alpha1.ListGenerator{},
+											List: &v1alpha1.ListGenerator{},
 										},
 									},
 								},
@@ -292,7 +292,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -300,17 +300,17 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a matrix generator with a nested matrix generator containing a cluster generator should produce a request",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Matrix: &argov1alpha1.MatrixGenerator{
-									Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+								Matrix: &v1alpha1.MatrixGenerator{
+									Generators: []v1alpha1.ApplicationSetNestedGenerator{
 										{
 											Matrix: &apiextensionsv1.JSON{
 												Raw: []byte(
@@ -342,7 +342,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -352,17 +352,17 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a matrix generator with a nested matrix generator containing non cluster generator should not match",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Matrix: &argov1alpha1.MatrixGenerator{
-									Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+								Matrix: &v1alpha1.MatrixGenerator{
+									Generators: []v1alpha1.ApplicationSetNestedGenerator{
 										{
 											Matrix: &apiextensionsv1.JSON{
 												Raw: []byte(
@@ -393,7 +393,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -401,19 +401,19 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a merge generator with a cluster generator should produce a request",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Merge: &argov1alpha1.MergeGenerator{
-									Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+								Merge: &v1alpha1.MergeGenerator{
+									Generators: []v1alpha1.ApplicationSetNestedGenerator{
 										{
-											Clusters: &argov1alpha1.ClusterGenerator{},
+											Clusters: &v1alpha1.ClusterGenerator{},
 										},
 									},
 								},
@@ -427,7 +427,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -437,19 +437,19 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a matrix generator with non cluster generator should not match",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Merge: &argov1alpha1.MergeGenerator{
-									Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+								Merge: &v1alpha1.MergeGenerator{
+									Generators: []v1alpha1.ApplicationSetNestedGenerator{
 										{
-											List: &argov1alpha1.ListGenerator{},
+											List: &v1alpha1.ListGenerator{},
 										},
 									},
 								},
@@ -463,7 +463,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -471,17 +471,17 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a merge generator with a nested merge generator containing a cluster generator should produce a request",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Merge: &argov1alpha1.MergeGenerator{
-									Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+								Merge: &v1alpha1.MergeGenerator{
+									Generators: []v1alpha1.ApplicationSetNestedGenerator{
 										{
 											Merge: &apiextensionsv1.JSON{
 												Raw: []byte(
@@ -513,7 +513,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -523,17 +523,17 @@ func TestClusterEventHandler(t *testing.T) {
 		},
 		{
 			name: "a merge generator with a nested merge generator containing non cluster generator should not match",
-			items: []argov1alpha1.ApplicationSet{
+			items: []v1alpha1.ApplicationSet{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "my-app-set",
 						Namespace: "cd",
 					},
-					Spec: argov1alpha1.ApplicationSetSpec{
-						Generators: []argov1alpha1.ApplicationSetGenerator{
+					Spec: v1alpha1.ApplicationSetSpec{
+						Generators: []v1alpha1.ApplicationSetGenerator{
 							{
-								Merge: &argov1alpha1.MergeGenerator{
-									Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+								Merge: &v1alpha1.MergeGenerator{
+									Generators: []v1alpha1.ApplicationSetNestedGenerator{
 										{
 											Merge: &apiextensionsv1.JSON{
 												Raw: []byte(
@@ -564,7 +564,7 @@ func TestClusterEventHandler(t *testing.T) {
 					Namespace: "cd",
 					Name:      "my-secret",
 					Labels: map[string]string{
-						argocommon.LabelKeySecretType: argocommon.LabelValueSecretTypeCluster,
+						common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 					},
 				},
 			},
@@ -575,7 +575,7 @@ func TestClusterEventHandler(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
-			appSetList := argov1alpha1.ApplicationSetList{
+			appSetList := v1alpha1.ApplicationSetList{
 				Items: test.items,
 			}
 
@@ -598,8 +598,8 @@ func TestClusterEventHandler(t *testing.T) {
 
 func TestNestedGeneratorHasClusterGenerator_NestedClusterGenerator(t *testing.T) {
 	t.Parallel()
-	nested := argov1alpha1.ApplicationSetNestedGenerator{
-		Clusters: &argov1alpha1.ClusterGenerator{},
+	nested := v1alpha1.ApplicationSetNestedGenerator{
+		Clusters: &v1alpha1.ClusterGenerator{},
 	}
 
 	hasClusterGenerator, err := nestedGeneratorHasClusterGenerator(nested)
@@ -610,7 +610,7 @@ func TestNestedGeneratorHasClusterGenerator_NestedClusterGenerator(t *testing.T)
 
 func TestNestedGeneratorHasClusterGenerator_NestedMergeGenerator(t *testing.T) {
 	t.Parallel()
-	nested := argov1alpha1.ApplicationSetNestedGenerator{
+	nested := v1alpha1.ApplicationSetNestedGenerator{
 		Merge: &apiextensionsv1.JSON{
 			Raw: []byte(
 				`{
@@ -638,7 +638,7 @@ func TestNestedGeneratorHasClusterGenerator_NestedMergeGenerator(t *testing.T) {
 
 func TestNestedGeneratorHasClusterGenerator_NestedMergeGeneratorWithInvalidJSON(t *testing.T) {
 	t.Parallel()
-	nested := argov1alpha1.ApplicationSetNestedGenerator{
+	nested := v1alpha1.ApplicationSetNestedGenerator{
 		Merge: &apiextensionsv1.JSON{
 			Raw: []byte(
 				`{
