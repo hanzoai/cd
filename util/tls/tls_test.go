@@ -414,7 +414,7 @@ func TestCreateServerTLSConfig(t *testing.T) {
 		assert.Len(t, tlsc.Certificates, 1)
 		c, err := x509.ParseCertificate(tlsc.Certificates[0].Certificate[0])
 		require.NoError(t, err)
-		assert.Equal(t, []string{"Argo CD"}, c.Subject.Organization)
+		assert.Equal(t, []string{"Hanzo CD"}, c.Subject.Organization)
 		assert.Equal(t, tls.NoClientCert, tlsc.ClientAuth)
 	})
 

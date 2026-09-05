@@ -59,7 +59,7 @@ func lookupGit(si *v1alpha1.SourceIntegrity, repoURL string) gitFunc {
 	}
 	if nPolicies > 1 {
 		// Multiple matching policies is an error. BUT, it has to return a check that fails for every repo.
-		// This is to make sure that a mistake in argo cd configuration does not disable verification until fixed.
+		// This is to make sure that a configuration mistake does not disable verification until fixed.
 		msg := fmt.Sprintf("multiple (%d) git source integrity policies found for repo URL: %s", nPolicies, repoURL)
 		log.Warn(msg)
 		return func(_ context.Context, _ git.Client, _ string) (*v1alpha1.SourceIntegrityCheckResult, string, error) {

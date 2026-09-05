@@ -133,7 +133,7 @@ func setRestartedAtAnnotationOnPodTemplate(un *unstructured.Unstructured) error 
 
 // Helper: normalize Flux requestedAt annotation across FluxCD kinds
 func setFluxRequestedAtAnnotation(un *unstructured.Unstructured) error {
-	return unstructured.SetNestedStringMap(un.Object, map[string]string{"reconcile.fluxcd.io/requestedAt": "By Argo CD at: 0001-01-01T00:00:00"}, "metadata", "annotations")
+	return unstructured.SetNestedStringMap(un.Object, map[string]string{"reconcile.fluxcd.io/requestedAt": "By Hanzo CD at: 0001-01-01T00:00:00"}, "metadata", "annotations")
 }
 
 // Helper: normalize PostgreSQL CNPG Cluster annotations while preserving existing ones
