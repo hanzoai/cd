@@ -52,7 +52,7 @@ func newSettingsManager(ctx context.Context, data map[string]string) *settings.S
 			Namespace: "default",
 			Name:      common.ConfigMapName,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: data,

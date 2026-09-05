@@ -23,7 +23,7 @@ message RepositoryCertificateQuery {
 // Request to create a set of certificates
 message RepositoryCertificateCreateRequest {
   // List of certificates to be created
-  github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryCertificateList certificates = 1;
+  github.com.hanzoai.cd.pkg.apis.application.v1alpha1.RepositoryCertificateList certificates = 1;
   // Whether to upsert already existing certificates
   bool upsert = 2;
 }
@@ -32,12 +32,12 @@ message RepositoryCertificateResponse {}
 
 service CertificateService {
   // List all available repository certificates
-  rpc ListCertificates(RepositoryCertificateQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
+  rpc ListCertificates(RepositoryCertificateQuery) returns (github.com.hanzoai.cd.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
     option (google.api.http).get = "/v1/certificates";
   }
 
   // Creates repository certificates on the server 
-  rpc CreateCertificate(RepositoryCertificateCreateRequest) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
+  rpc CreateCertificate(RepositoryCertificateCreateRequest) returns (github.com.hanzoai.cd.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
     option (google.api.http) = {
       post: "/v1/certificates"
       body: "certificates"
@@ -45,7 +45,7 @@ service CertificateService {
   }
 
   // Delete the certificates that match the RepositoryCertificateQuery
-  rpc DeleteCertificate(RepositoryCertificateQuery) returns (github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
+  rpc DeleteCertificate(RepositoryCertificateQuery) returns (github.com.hanzoai.cd.pkg.apis.application.v1alpha1.RepositoryCertificateList) {
     option (google.api.http).delete = "/v1/certificates";
   }
 }

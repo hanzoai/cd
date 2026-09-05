@@ -108,7 +108,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "time() - max(process_start_time_seconds{job=\"argocd-server-metrics\",namespace=~\"$namespace\",project=~\"$project\"})",
+          "expr": "time() - max(process_start_time_seconds{job=\"hanzocd-server-metrics\",namespace=~\"$namespace\",project=~\"$project\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1705,7 +1705,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_memstats_heap_alloc_bytes{job=\"argocd-server-metrics\",namespace=~\"$namespace\"}",
+              "expr": "go_memstats_heap_alloc_bytes{job=\"hanzocd-server-metrics\",namespace=~\"$namespace\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -1791,7 +1791,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_goroutines{job=\"argocd-server-metrics\",namespace=~\"$namespace\"}",
+              "expr": "go_goroutines{job=\"hanzocd-server-metrics\",namespace=~\"$namespace\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{pod}}",
@@ -1877,7 +1877,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "go_gc_duration_seconds{job=\"argocd-server-metrics\", quantile=\"1\", namespace=~\"$namespace\"}",
+              "expr": "go_gc_duration_seconds{job=\"hanzocd-server-metrics\", quantile=\"1\", namespace=~\"$namespace\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{pod}}",
@@ -1978,7 +1978,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "increase(grpc_server_handled_total{job=\"argocd-server-metrics\",grpc_service=\"application.ApplicationService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
+              "expr": "increase(grpc_server_handled_total{job=\"hanzocd-server-metrics\",grpc_service=\"application.ApplicationService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{grpc_code}},{{grpc_method}},{{pod}}",
@@ -2072,7 +2072,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "increase(grpc_server_handled_total{job=\"argocd-server-metrics\",grpc_service=\"cluster.ClusterService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
+              "expr": "increase(grpc_server_handled_total{job=\"hanzocd-server-metrics\",grpc_service=\"cluster.ClusterService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{grpc_code}},{{grpc_method}},{{pod}}",
@@ -2166,7 +2166,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "increase(grpc_server_handled_total{job=\"argocd-server-metrics\",grpc_service=\"project.ProjectService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
+              "expr": "increase(grpc_server_handled_total{job=\"hanzocd-server-metrics\",grpc_service=\"project.ProjectService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{grpc_code}},{{grpc_method}},{{pod}}",
@@ -2260,7 +2260,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "increase(grpc_server_handled_total{job=\"argocd-server-metrics\",grpc_service=\"repository.RepositoryService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
+              "expr": "increase(grpc_server_handled_total{job=\"hanzocd-server-metrics\",grpc_service=\"repository.RepositoryService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{grpc_code}},{{grpc_method}},{{pod}}",
@@ -2354,7 +2354,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "increase(grpc_server_handled_total{job=\"argocd-server-metrics\",grpc_service=\"session.SessionService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
+              "expr": "increase(grpc_server_handled_total{job=\"hanzocd-server-metrics\",grpc_service=\"session.SessionService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{grpc_code}},{{grpc_method}},{{pod}}",
@@ -2448,7 +2448,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "increase(grpc_server_handled_total{job=\"argocd-server-metrics\",grpc_service=\"version.VersionService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
+              "expr": "increase(grpc_server_handled_total{job=\"hanzocd-server-metrics\",grpc_service=\"version.VersionService\",namespace=~\"$namespace\"}[10m]) > 0 or on() vector (0)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{grpc_code}},{{grpc_method}},{{pod}}",
@@ -2542,7 +2542,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "increase(grpc_server_handled_total{job=\"argocd-server-metrics\",grpc_service=\"account.AccountService\",namespace=~\"$namespace\"}[10m]) > 1 or on() vector (0)",
+              "expr": "increase(grpc_server_handled_total{job=\"hanzocd-server-metrics\",grpc_service=\"account.AccountService\",namespace=~\"$namespace\"}[10m]) > 1 or on() vector (0)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{grpc_code}},{{grpc_method}},{{pod}}",

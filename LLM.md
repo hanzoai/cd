@@ -269,6 +269,93 @@ hunting a `require` line that was never the problem. That is what a stale
 `github.com/hanzoai/deploy/...` path looks like after the module rename to
 `github.com/hanzoai/cd`.
 
+**Running `clientgen`/`mockgen` outside Docker** (`make clientgen`, `make
+mockgen`, or `make codegen-local`/`codegen-local-fast`): `make mod-vendor-local`
+first — `hack/update-codegen.sh` reads `vendor/k8s.io/code-generator/kube_codegen.sh`
+directly and there's no vendor/ by default. That script also `sed -e '/go
+install/d'` on its own vendored copy — the upstream self-install of
+`deepcopy-gen`/`client-gen`/`informer-gen`/`lister-gen` is deliberately stripped,
+so those binaries must already be on `PATH` (`./hack/installers/install-codegen-go-tools.sh`
+puts them in `dist/`, which update-codegen.sh prepends to PATH) or every
+generator call fails `command not found` — `set -x` still traces the call
+cleanly, it just never wrote anything. `make mockgen` needs `mockery` the same
+way (that installer script gets it too).
+
+client-gen names the clientset accessor after the group's first DNS label, so
+after a regen off group `apps.hanzo.ai` the symbols are `AppsV1alpha1()` /
+`AppsV1alpha1Interface` / `AppsV1alpha1Client`, and the informer factory's group
+accessor is `Apps()` (its `.V1alpha1()` child is unaffected — only the group
+segment renames). None of that is generated in the ~40 hand-written call sites
+across `controller/`, `server/`, `util/`, `cmd/`, `hack/gen-resources/`, and
+`test/` that hold a `versioned.Interface` — a clientgen run does not fix those,
+they still say `.ArgoprojV1alpha1()` / `.Argoproj()` until someone renames them
+too, and `go build ./...` won't tell you until it hits every one.
+
+**`make protogen`/`make openapigen` can vandalize the shared Go module cache.**
+`go-to-protobuf`'s "clean stale output before regenerating" step resolves
+`k8s.io/api`, `k8s.io/apimachinery`, `k8s.io/apiextensions-apiserver` (the
+`--apimachinery-packages` entries) through the module cache (`$(go env
+GOMODCACHE)`) even with `GO111MODULE=off` set, not through the `vendor/` copy
+the script stages into `$GOPATH/src`. The cache ships read-only
+(`dr-xr-xr-x`/`444`); if it's writable (e.g. after `chmod -R u+w` to get past a
+`permission denied` abort), the tool deletes those packages' own
+`generated.proto`/`generated.pb.go` and does not always recreate them, which
+breaks every OTHER project on the machine that imports them. Fix: `chmod -R
+u+w` only the exact `k8s.io/{api,apimachinery,apiextensions-apiserver}@<ver>`
+dirs immediately before the run, and immediately after (success or fail) `rm
+-rf` those same dirs and `go mod download <module>@<version>` to re-extract
+from the untouched, hash-verified zip cache (`go mod verify` after — "all
+modules verified" proves no lasting damage). Never leave the cache chmod'd
+writable between runs.
+
+Once regenerated, `pkg/apis/application/v1alpha1/generated.proto`'s `package`
+line is derived mechanically from the Go import path
+(`github.com/hanzoai/cd/pkg/apis/application/v1alpha1` →
+`github.com.hanzoai.cd.pkg.apis.application.v1alpha1`) — no `.v3.` segment,
+because this module has none. Every hand-written `.proto` (`server/*`,
+`reposerver/*`, `commitserver/*`) that references application/v1alpha1 types
+by fully-qualified name must match that exact string or `protoc` fails "is not
+defined"; grep for `argoproj.argo_cd` across `*.proto` to find stale ones.
+
+**`app.kubernetes.io/part-of` has exactly one live value: `hanzocd`.**
+`util/settings/settings.go`'s `isSettingsObject`/`partOfCDSelector`/the
+ConfigMap-informer's label selector all hard-check `hanzocd` — that's what
+every real manifest carries. `hack/gen-crd-spec/main.go`,
+`cmd/cd/commands/admin/settings.go` (`setSettingsMeta`), and
+`test/testdata.go`'s `NewFakeConfigMap`/`NewFakeSecret` (used by ~30 test
+files) previously stamped `cd` instead — a silent version of
+[[silent-failure-pattern]]: `util/settings` tests panicked on a 0-item slice
+because the fixture the informer needed was invisible to it. The other ~90
+`part-of: cd` literals scattered through unrelated `*_test.go` files never
+touch that selector and were left alone on purpose — check with `git log` on
+this file before assuming they're fair game too.
+
+**Multiple stale local scratch-path conventions from the pre-rename codebase,
+now unified** (all self-consistent-but-wrong, not lookup-key mismatches, so low
+risk to touch as a block, but verify with `rg` before assuming any are still
+stale): `/tmp/argocd-local` → `/tmp/cd-local` (Procfiles, Makefile
+`start-local`/`run-in-test-*`), `/tmp/argocd-e2e-env` → `/tmp/cd-e2e-env`
+(matches `test/e2e/fixture/goreman.go`'s `e2eEnvVariableFilePath`, the actual
+restart-marker file both Procfiles check for), `/tmp/argo-e2e` → `/tmp/cd-e2e`
+(matches `test/e2e/fixture/fixture.go`'s `defaultTmpDir`/`CD_E2E_DIR`, wired
+through `test/remote/`, `test/fixture/testrepos/`, and the SSH-kustomize
+testdata — all hardcode the literal path, not just the env var default), and
+the GOPATH-style container mount `/go/src/github.com/argoproj/argo-cd` →
+`/go/src/github.com/hanzoai/cd` (`Makefile`'s `DOCKER_WORKDIR`/`LEGACY_PATH`/
+`DOCKER_SRC_MOUNT`, `test/container/Dockerfile`'s `PATH`,
+`test/container/reaper.sh`'s in-container guard, `test/fixture/testrepos/start-git.sh`).
+None of these are Go-module-path-sensitive (module mode doesn't care what
+directory a build runs in) — purely cosmetic, but every consumer of a given
+literal has to move together or the guard/mount on the other end silently
+stops matching.
+
+The e2e container image the manifests actually reference is
+`ghcr.io/hanzoai/cd-e2e-container` (tags `0.1`/`0.2`/`0.3`, already published —
+see `reposerver/repository/repository_test.go`); `quay.io/argoprojlabs/cd-e2e-container`
+is the pre-fork name and should never come back — check
+`test/e2e/multiarch-container/build.sh` (the actual publish script) stays
+pointed at `ghcr.io/hanzoai/` too, not just the ~100 consumers.
+
 ## Conventions
 
 - Paths are `/v1/…` — never an `/api/` prefix.

@@ -111,7 +111,7 @@ func NewFakeConfigMap() *corev1.ConfigMap {
 			Name:      common.ConfigMapName,
 			Namespace: FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: make(map[string]string),
@@ -129,7 +129,7 @@ func NewFakeSecret() *corev1.Secret {
 			Name:      common.SecretName,
 			Namespace: FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{

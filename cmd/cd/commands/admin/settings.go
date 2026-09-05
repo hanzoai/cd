@@ -60,7 +60,7 @@ func setSettingsMeta(obj metav1.Object) {
 	if labels == nil {
 		labels = make(map[string]string)
 	}
-	labels["app.kubernetes.io/part-of"] = "cd"
+	labels["app.kubernetes.io/part-of"] = "hanzocd"
 	obj.SetLabels(labels)
 }
 

@@ -34,7 +34,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: data,
@@ -44,7 +44,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{},
@@ -193,7 +193,7 @@ func TestGetSettings_InClusterIsEnabledWithMissingServerSecretKey(t *testing.T) 
 				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "cd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string]string{},
@@ -203,7 +203,7 @@ func TestGetSettings_InClusterIsEnabledWithMissingServerSecretKey(t *testing.T) 
 				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "cd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string][]byte{
@@ -937,7 +937,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: nil,
@@ -947,7 +947,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -967,7 +967,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string]string{
@@ -979,7 +979,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -999,7 +999,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string]string{
@@ -1011,7 +1011,7 @@ func TestSettingsManager_GetSettings(t *testing.T) {
 					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1134,7 +1134,7 @@ userInfoBaseURL: "://users.example.com"
 						Name:      common.ConfigMapName,
 						Namespace: "default",
 						Labels: map[string]string{
-							"app.kubernetes.io/part-of": "cd",
+							"app.kubernetes.io/part-of": "hanzocd",
 						},
 					},
 					Data: tc.configMapData,
@@ -1144,7 +1144,7 @@ userInfoBaseURL: "://users.example.com"
 						Name:      common.SecretName,
 						Namespace: "default",
 						Labels: map[string]string{
-							"app.kubernetes.io/part-of": "cd",
+							"app.kubernetes.io/part-of": "hanzocd",
 						},
 					},
 					Data: map[string][]byte{
@@ -1206,7 +1206,7 @@ func TestGetOIDCSecretTrim(t *testing.T) {
 				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "cd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string]string{
@@ -1218,7 +1218,7 @@ func TestGetOIDCSecretTrim(t *testing.T) {
 				Name:      common.SecretName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "cd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string][]byte{
@@ -1252,7 +1252,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string]string{
@@ -1264,7 +1264,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1298,7 +1298,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string]string{
@@ -1310,7 +1310,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1345,7 +1345,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string]string{
@@ -1357,7 +1357,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1387,7 +1387,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "cd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 		}
@@ -1397,7 +1397,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				Namespace:       "default",
 				ResourceVersion: "1",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "cd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string][]byte{
@@ -1445,7 +1445,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				Name:      common.ConfigMapName,
 				Namespace: "default",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "cd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 		}
@@ -1455,7 +1455,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 				Namespace:       "default",
 				ResourceVersion: "1",
 				Labels: map[string]string{
-					"app.kubernetes.io/part-of": "cd",
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			},
 			Data: map[string][]byte{
@@ -1515,7 +1515,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 			},
@@ -1525,7 +1525,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Namespace:       "default",
 					ResourceVersion: "1",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1574,7 +1574,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 			},
@@ -1584,7 +1584,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Namespace:       "default",
 					ResourceVersion: "1",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1633,7 +1633,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string]string{
@@ -1645,7 +1645,7 @@ func Test_GetTLSConfiguration(t *testing.T) {
 					Name:      common.SecretName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -1704,7 +1704,7 @@ requestedIDTokenClaims: {"groups": {"essential": true}}`,
 			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: data,
@@ -1725,7 +1725,7 @@ requestedIDTokenClaims: {"groups": {"essential": true}}`,
 			Name:      "ext",
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -1776,7 +1776,7 @@ func TestGetEnableManifestGeneration(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: tc.data,
@@ -1834,7 +1834,7 @@ func TestGetHelmSettings(t *testing.T) {
 					Name:      common.ConfigMapName,
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: tc.data,
@@ -1854,7 +1854,7 @@ func TestGetHelmSettings(t *testing.T) {
 					Name:      "acme",
 					Namespace: "default",
 					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "cd",
+						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 				Data: map[string][]byte{
@@ -2634,7 +2634,7 @@ func TestSecretsInformerExcludesClusterSecrets(t *testing.T) {
 			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 	}
@@ -2643,7 +2643,7 @@ func TestSecretsInformerExcludesClusterSecrets(t *testing.T) {
 			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{},
@@ -2761,7 +2761,7 @@ func TestIsSettingsObject(t *testing.T) {
 		{
 			name: "secret with part-of=cd matches",
 			obj: &corev1.Secret{ObjectMeta: metav1.ObjectMeta{
-				Labels: map[string]string{"app.kubernetes.io/part-of": "cd"},
+				Labels: map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 			}},
 			expected: true,
 		},
@@ -2780,7 +2780,7 @@ func TestIsSettingsObject(t *testing.T) {
 		{
 			name: "configmap with part-of=cd matches",
 			obj: &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{
-				Labels: map[string]string{"app.kubernetes.io/part-of": "cd"},
+				Labels: map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 			}},
 			expected: true,
 		},
@@ -2839,7 +2839,7 @@ func TestGettersRaceWithResyncInformers(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
 			Namespace: "default",
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
+			Labels:    map[string]string{"app.kubernetes.io/part-of": "hanzocd"},
 		},
 		Data: map[string]string{},
 	}
@@ -2848,7 +2848,7 @@ func TestGettersRaceWithResyncInformers(t *testing.T) {
 			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 				common.LabelKeySecretType:   common.LabelValueSecretTypeRepository,
 			},
 		},
@@ -2861,7 +2861,7 @@ func TestGettersRaceWithResyncInformers(t *testing.T) {
 			Name:      "cluster-secret",
 			Namespace: "default",
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 				common.LabelKeySecretType:   common.LabelValueSecretTypeCluster,
 			},
 		},
