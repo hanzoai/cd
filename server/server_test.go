@@ -70,7 +70,7 @@ func fakeServer(t *testing.T) (*FakeArgoCDServer, func()) {
 		panic(err)
 	}
 
-	argoCDOpts := ServerOpts{
+	cdOpts := ServerOpts{
 		ListenPort:            port,
 		Namespace:             test.FakeArgoCDNamespace,
 		KubeClientset:         kubeclientset,
@@ -93,7 +93,7 @@ func fakeServer(t *testing.T) (*FakeArgoCDServer, func()) {
 		DynamicClientset:        dynamicClient,
 		KubeControllerClientset: fakeClient,
 	}
-	srv := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	srv := NewServer(t.Context(), cdOpts, ApplicationSetOpts{})
 	fakeSrv := &FakeArgoCDServer{srv, tmpAssetsDir}
 	return fakeSrv, closer
 }
@@ -272,14 +272,14 @@ func TestInitializingExistingDefaultProject(t *testing.T) {
 
 	mockRepoClient := &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}}
 
-	argoCDOpts := ServerOpts{
+	cdOpts := ServerOpts{
 		Namespace:     test.FakeArgoCDNamespace,
 		KubeClientset: kubeclientset,
 		AppClientset:  appClientSet,
 		RepoClientset: mockRepoClient,
 	}
 
-	cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	cd := NewServer(t.Context(), cdOpts, ApplicationSetOpts{})
 	assert.NotNil(t, cd)
 
 	proj, err := appClientSet.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
@@ -295,14 +295,14 @@ func TestInitializingNotExistingDefaultProject(t *testing.T) {
 	appClientSet := apps.NewSimpleClientset()
 	mockRepoClient := &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}}
 
-	argoCDOpts := ServerOpts{
+	cdOpts := ServerOpts{
 		Namespace:     test.FakeArgoCDNamespace,
 		KubeClientset: kubeclientset,
 		AppClientset:  appClientSet,
 		RepoClientset: mockRepoClient,
 	}
 
-	cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	cd := NewServer(t.Context(), cdOpts, ApplicationSetOpts{})
 	assert.NotNil(t, cd)
 
 	proj, err := appClientSet.ArgoprojV1alpha1().AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
@@ -617,13 +617,13 @@ func TestAuthenticate(t *testing.T) {
 			kubeclientset := fake.NewSimpleClientset(cm, secret)
 			appClientSet := apps.NewSimpleClientset()
 			mockRepoClient := &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}}
-			argoCDOpts := ServerOpts{
+			cdOpts := ServerOpts{
 				Namespace:     test.FakeArgoCDNamespace,
 				KubeClientset: kubeclientset,
 				AppClientset:  appClientSet,
 				RepoClientset: mockRepoClient,
 			}
-			cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+			cd := NewServer(t.Context(), cdOpts, ApplicationSetOpts{})
 			ctx := t.Context()
 			if testData.user != "" {
 				token, err := cd.sessionMgr.Create(testData.user, 0, "abc")
@@ -754,7 +754,7 @@ connectors:
 			// override required oidc config fields but keep other configs as passed in
 			additionalOIDCConfig.Name = "Okta"
 			additionalOIDCConfig.Issuer = oidcServer.URL
-			additionalOIDCConfig.ClientID = "argo-cd"
+			additionalOIDCConfig.ClientID = "okta-client"
 			additionalOIDCConfig.ClientSecret = "$oidc.okta.clientSecret"
 			oidcConfigString, err := yaml.Marshal(additionalOIDCConfig)
 			require.NoError(t, err)
@@ -767,16 +767,16 @@ connectors:
 	kubeclientset := fake.NewSimpleClientset(cm, secret)
 	appClientSet := apps.NewSimpleClientset()
 	mockRepoClient := &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}}
-	argoCDOpts := ServerOpts{
+	cdOpts := ServerOpts{
 		Namespace:     test.FakeArgoCDNamespace,
 		KubeClientset: kubeclientset,
 		AppClientset:  appClientSet,
 		RepoClientset: mockRepoClient,
 	}
 	if withFakeSSO && useDexForSSO {
-		argoCDOpts.DexServerAddr = ts.URL
+		cdOpts.DexServerAddr = ts.URL
 	}
-	cd = NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	cd = NewServer(t.Context(), cdOpts, ApplicationSetOpts{})
 	var err error
 	cd.ssoClientApp, err = oidc.NewClientApp(cd.settings, cd.DexServerAddr, cd.DexTLSConfig, cd.BaseHRef, cache.NewInMemoryCache(24*time.Hour))
 	require.NoError(t, err)
@@ -801,13 +801,13 @@ func TestGetClaims(t *testing.T) {
 		{
 			test: "GetClaims",
 			claims: jwt.MapClaims{
-				"aud": "argo-cd",
+				"aud": "cd",
 				"exp": defaultExpiry,
 				"sub": "randomUser",
 			},
 			expectedErrorContains: "",
 			expectedClaims: jwt.MapClaims{
-				"aud": "argo-cd",
+				"aud": "cd",
 				"exp": defaultExpiryUnix,
 				"sub": "randomUser",
 			},
@@ -1353,13 +1353,13 @@ func Test_getToken(t *testing.T) {
 }
 
 func TestTranslateGrpcCookieHeader(t *testing.T) {
-	argoCDOpts := ServerOpts{
+	cdOpts := ServerOpts{
 		Namespace:     test.FakeArgoCDNamespace,
 		KubeClientset: fake.NewSimpleClientset(test.NewFakeConfigMap(), test.NewFakeSecret()),
 		AppClientset:  apps.NewSimpleClientset(),
 		RepoClientset: &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}},
 	}
-	cd := NewServer(t.Context(), argoCDOpts, ApplicationSetOpts{})
+	cd := NewServer(t.Context(), cdOpts, ApplicationSetOpts{})
 
 	t.Run("TokenIsNotEmpty", func(t *testing.T) {
 		recorder := httptest.NewRecorder()
@@ -1392,17 +1392,17 @@ func TestTranslateGrpcCookieHeader(t *testing.T) {
 }
 
 func TestInitializeDefaultProject_ProjectDoesNotExist(t *testing.T) {
-	argoCDOpts := ServerOpts{
+	cdOpts := ServerOpts{
 		Namespace:     test.FakeArgoCDNamespace,
 		KubeClientset: fake.NewSimpleClientset(test.NewFakeConfigMap(), test.NewFakeSecret()),
 		AppClientset:  apps.NewSimpleClientset(),
 		RepoClientset: &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}},
 	}
 
-	err := initializeDefaultProject(argoCDOpts)
+	err := initializeDefaultProject(cdOpts)
 	require.NoError(t, err)
 
-	proj, err := argoCDOpts.AppClientset.ArgoprojV1alpha1().
+	proj, err := cdOpts.AppClientset.ArgoprojV1alpha1().
 		AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 
 	require.NoError(t, err)
@@ -1426,17 +1426,17 @@ func TestInitializeDefaultProject_ProjectAlreadyInitialized(t *testing.T) {
 		},
 	}
 
-	argoCDOpts := ServerOpts{
+	cdOpts := ServerOpts{
 		Namespace:     test.FakeArgoCDNamespace,
 		KubeClientset: fake.NewSimpleClientset(test.NewFakeConfigMap(), test.NewFakeSecret()),
 		AppClientset:  apps.NewSimpleClientset(&existingDefaultProject),
 		RepoClientset: &mocks.Clientset{RepoServerServiceClient: &mocks.RepoServerServiceClient{}},
 	}
 
-	err := initializeDefaultProject(argoCDOpts)
+	err := initializeDefaultProject(cdOpts)
 	require.NoError(t, err)
 
-	proj, err := argoCDOpts.AppClientset.ArgoprojV1alpha1().
+	proj, err := cdOpts.AppClientset.ArgoprojV1alpha1().
 		AppProjects(test.FakeArgoCDNamespace).Get(t.Context(), v1alpha1.DefaultAppProjectName, metav1.GetOptions{})
 
 	require.NoError(t, err)
@@ -1454,17 +1454,17 @@ func TestOIDCConfigChangeDetection_SecretsChanged(t *testing.T) {
 
 	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 
-	argoSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
+	cdSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
-	originalOIDCConfig := argoSettings.OIDCConfig()
+	originalOIDCConfig := cdSettings.OIDCConfig()
 
 	assert.Equal(t, originalOIDCConfig.ClientID, originalSecrets["k8ssecret:clientid"], "expected ClientID be replaced by secret value")
 	assert.Equal(t, originalOIDCConfig.ClientSecret, originalSecrets["k8ssecret:clientsecret"], "expected ClientSecret be replaced by secret value")
 
 	// When
 	newSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "a!Better!Secret"}
-	argoSettings.Secrets = newSecrets
-	result := checkOIDCConfigChange(originalOIDCConfig, &argoSettings)
+	cdSettings.Secrets = newSecrets
+	result := checkOIDCConfigChange(originalOIDCConfig, &cdSettings)
 
 	// Then
 	assert.True(t, result, "secrets have changed, expect interpolated OIDCConfig to change")
@@ -1482,9 +1482,9 @@ func TestOIDCConfigChangeDetection_ConfigChanged(t *testing.T) {
 
 	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 
-	argoSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
+	cdSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
-	originalOIDCConfig := argoSettings.OIDCConfig()
+	originalOIDCConfig := cdSettings.OIDCConfig()
 
 	assert.Equal(t, originalOIDCConfig.ClientID, originalSecrets["k8ssecret:clientid"], "expected ClientID be replaced by secret value")
 	assert.Equal(t, originalOIDCConfig.ClientSecret, originalSecrets["k8ssecret:clientsecret"], "expected ClientSecret be replaced by secret value")
@@ -1497,8 +1497,8 @@ func TestOIDCConfigChangeDetection_ConfigChanged(t *testing.T) {
 	})
 
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
-	argoSettings.OIDCConfigRAW = string(newRawOICDConfig)
-	result := checkOIDCConfigChange(originalOIDCConfig, &argoSettings)
+	cdSettings.OIDCConfigRAW = string(newRawOICDConfig)
+	result := checkOIDCConfigChange(originalOIDCConfig, &cdSettings)
 
 	// Then
 	assert.True(t, result, "no error expected since OICD config created")
@@ -1506,8 +1506,8 @@ func TestOIDCConfigChangeDetection_ConfigChanged(t *testing.T) {
 
 func TestOIDCConfigChangeDetection_ConfigCreated(t *testing.T) {
 	// Given
-	argoSettings := settings_util.Settings{OIDCConfigRAW: ""}
-	originalOIDCConfig := argoSettings.OIDCConfig()
+	cdSettings := settings_util.Settings{OIDCConfigRAW: ""}
+	originalOIDCConfig := cdSettings.OIDCConfig()
 
 	// When
 	newRawOICDConfig, err := yaml.Marshal(&settings_util.OIDCConfig{
@@ -1517,9 +1517,9 @@ func TestOIDCConfigChangeDetection_ConfigCreated(t *testing.T) {
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 	newSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
-	argoSettings.OIDCConfigRAW = string(newRawOICDConfig)
-	argoSettings.Secrets = newSecrets
-	result := checkOIDCConfigChange(originalOIDCConfig, &argoSettings)
+	cdSettings.OIDCConfigRAW = string(newRawOICDConfig)
+	cdSettings.Secrets = newSecrets
+	result := checkOIDCConfigChange(originalOIDCConfig, &cdSettings)
 
 	// Then
 	assert.True(t, result, "no error expected since new OICD config created")
@@ -1535,17 +1535,17 @@ func TestOIDCConfigChangeDetection_ConfigDeleted(t *testing.T) {
 
 	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 
-	argoSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
+	cdSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
-	originalOIDCConfig := argoSettings.OIDCConfig()
+	originalOIDCConfig := cdSettings.OIDCConfig()
 
 	assert.Equal(t, originalOIDCConfig.ClientID, originalSecrets["k8ssecret:clientid"], "expected ClientID be replaced by secret value")
 	assert.Equal(t, originalOIDCConfig.ClientSecret, originalSecrets["k8ssecret:clientsecret"], "expected ClientSecret be replaced by secret value")
 
 	// When
-	argoSettings.OIDCConfigRAW = ""
-	argoSettings.Secrets = make(map[string]string)
-	result := checkOIDCConfigChange(originalOIDCConfig, &argoSettings)
+	cdSettings.OIDCConfigRAW = ""
+	cdSettings.Secrets = make(map[string]string)
+	result := checkOIDCConfigChange(originalOIDCConfig, &cdSettings)
 
 	// Then
 	assert.True(t, result, "no error expected since OICD config deleted")
@@ -1561,15 +1561,15 @@ func TestOIDCConfigChangeDetection_NoChange(t *testing.T) {
 
 	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
 
-	argoSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
+	cdSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
-	originalOIDCConfig := argoSettings.OIDCConfig()
+	originalOIDCConfig := cdSettings.OIDCConfig()
 
 	assert.Equal(t, originalOIDCConfig.ClientID, originalSecrets["k8ssecret:clientid"], "expected ClientID be replaced by secret value")
 	assert.Equal(t, originalOIDCConfig.ClientSecret, originalSecrets["k8ssecret:clientsecret"], "expected ClientSecret be replaced by secret value")
 
 	// When
-	result := checkOIDCConfigChange(originalOIDCConfig, &argoSettings)
+	result := checkOIDCConfigChange(originalOIDCConfig, &cdSettings)
 
 	// Then
 	assert.False(t, result, "no error since no config change")
@@ -1590,7 +1590,7 @@ func TestIsMainJsBundle(t *testing.T) {
 		},
 		{
 			name:           "localhost and deep path with valid main bundle",
-			url:            "https://localhost:8080/some/argo-cd-instance/main.e4188e5adc97bbfc00c3.js",
+			url:            "https://localhost:8080/some/cd-instance/main.e4188e5adc97bbfc00c3.js",
 			isMainJsBundle: true,
 		},
 		{
@@ -1706,7 +1706,7 @@ func TestReplaceBaseHRef(t *testing.T) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Argo CD</title>
+    <title>Hanzo CD</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='icon' type='image/png' href='assets/favicon/favicon-32x32.png' sizes='32x32'/>
@@ -1718,7 +1718,7 @@ func TestReplaceBaseHRef(t *testing.T) {
     <noscript>
         <p>
         Your browser does not support JavaScript. Please enable JavaScript to view the site.
-        Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
+        Alternatively, Hanzo CD can be used with the <a href="https://docs.hanzo.ai/en/stable/cli_installation/">Hanzo CD CLI</a>.
         </p>
     </noscript>
     <div id="app"></div>
@@ -1730,7 +1730,7 @@ func TestReplaceBaseHRef(t *testing.T) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Argo CD</title>
+    <title>Hanzo CD</title>
     <base href="/path1/path2/path3/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='icon' type='image/png' href='assets/favicon/favicon-32x32.png' sizes='32x32'/>
@@ -1742,7 +1742,7 @@ func TestReplaceBaseHRef(t *testing.T) {
     <noscript>
         <p>
         Your browser does not support JavaScript. Please enable JavaScript to view the site.
-        Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
+        Alternatively, Hanzo CD can be used with the <a href="https://docs.hanzo.ai/en/stable/cli_installation/">Hanzo CD CLI</a>.
         </p>
     </noscript>
     <div id="app"></div>
@@ -1758,7 +1758,7 @@ func TestReplaceBaseHRef(t *testing.T) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Argo CD</title>
+    <title>Hanzo CD</title>
     <base href="/any/path/test/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='icon' type='image/png' href='assets/favicon/favicon-32x32.png' sizes='32x32'/>
@@ -1770,7 +1770,7 @@ func TestReplaceBaseHRef(t *testing.T) {
     <noscript>
         <p>
         Your browser does not support JavaScript. Please enable JavaScript to view the site.
-        Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
+        Alternatively, Hanzo CD can be used with the <a href="https://docs.hanzo.ai/en/stable/cli_installation/">Hanzo CD CLI</a>.
         </p>
     </noscript>
     <div id="app"></div>
@@ -1782,7 +1782,7 @@ func TestReplaceBaseHRef(t *testing.T) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Argo CD</title>
+    <title>Hanzo CD</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='icon' type='image/png' href='assets/favicon/favicon-32x32.png' sizes='32x32'/>
@@ -1794,7 +1794,7 @@ func TestReplaceBaseHRef(t *testing.T) {
     <noscript>
         <p>
         Your browser does not support JavaScript. Please enable JavaScript to view the site.
-        Alternatively, Argo CD can be used with the <a href="https://argoproj.github.io/argo-cd/cli_installation/">Argo CD CLI</a>.
+        Alternatively, Hanzo CD can be used with the <a href="https://docs.hanzo.ai/en/stable/cli_installation/">Hanzo CD CLI</a>.
         </p>
     </noscript>
     <div id="app"></div>
