@@ -21,7 +21,7 @@ Application deployment and lifecycle management should be automated, auditable, 
 
 ```bash
 kubectl create namespace cd
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml
 ```
 
 The `--server-side --force-conflicts` flags are required due to CRD size limitations. See the [getting started guide](getting_started.md) for details.

@@ -14,7 +14,7 @@ To read more about it, refer to the official documentation at [telepresence.io](
 First of all, install Hanzo CD on your cluster
 ```shell
 kubectl create ns cd
-curl -sSfL https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml | kubectl apply -n cd -f -
+curl -sSfL https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml | kubectl apply -n cd -f -
 ```
 
 ## Connect

@@ -39,8 +39,8 @@ If you are using one of the `*-install.yaml` manifests to install Hanzo CD, you 
 For example,
 
 ```
-Without hydrator: https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-With hydrator:    https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install-with-hydrator.yaml
+Without hydrator: https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml
+With hydrator:    https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install-with-hydrator.yaml
 ```
 
 > [!IMPORTANT]

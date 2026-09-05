@@ -190,7 +190,7 @@ data:
       type: core/v1/PodSpec
 ```
 
-The list of supported Kubernetes types is available in [diffing_known_types.txt](https://raw.githubusercontent.com/argoproj/argo-cd/master/util/argo/normalizers/diffing_known_types.txt) and additionally:
+The list of supported Kubernetes types is available in [diffing_known_types.txt](https://raw.githubusercontent.com/hanzoai/cd/main/util/argo/normalizers/diffing_known_types.txt) and additionally:
 
 - `core/Quantity`
 - `meta/v1/Duration`

@@ -194,7 +194,7 @@ In this specific scenario, service account name `generic-deployer` will get used
 
 - Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
+kubectl apply --server-side -f https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml -n cd
 ```
 
 - Enable the impersonation feature in Hanzo CD.
@@ -258,7 +258,7 @@ In this specific scenario, service account name `guestbook-deployer` will get us
 
 - Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
+kubectl apply --server-side -f https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml -n cd
 ```
 
 - Enable the impersonation feature in Hanzo CD.
@@ -326,7 +326,7 @@ spec:
 
 - Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
+kubectl apply --server-side -f https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml -n cd
 ```
 
 - Enable the impersonation feature in Hanzo CD.
@@ -399,7 +399,7 @@ spec:
 
 - Install Hanzo CD in the `cd` namespace.
 ```shell
-kubectl apply --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -n cd
+kubectl apply --server-side -f https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml -n cd
 ```
 
 - Enable the impersonation feature in Hanzo CD.
