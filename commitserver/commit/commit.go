@@ -241,7 +241,7 @@ func (s *Service) initGitClient(ctx context.Context, logCtx *log.Entry, r *apicl
 	}
 	authorEmail := r.AuthorEmail
 	if authorEmail == "" {
-		authorEmail = "argo-cd@example.com"
+		authorEmail = "cd@example.com"
 	}
 
 	logCtx.Debugf("Author config: request name='%s', request email='%s', final name='%s', final email='%s'",

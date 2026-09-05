@@ -178,7 +178,7 @@ func writeTempCACert(t *testing.T) string {
 
 	cert, err := utilstls.GenerateX509KeyPair(utilstls.CertOptions{
 		Hosts:        []string{"localhost"},
-		Organization: "Argo CD Test CA",
+		Organization: "Hanzo CD Test CA",
 		IsCA:         true,
 		ECDSACurve:   "P256",
 	})

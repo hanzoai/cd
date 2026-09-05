@@ -46,7 +46,7 @@ type CommitHydratedManifestsRequest struct {
 	DryCommitMetadata *v1alpha1.RevisionMetadata `protobuf:"bytes,7,opt,name=dryCommitMetadata,proto3" json:"dryCommitMetadata,omitempty"`
 	// AuthorName is the author name to use for the commit. If empty, defaults to "Hanzo CD".
 	AuthorName string `protobuf:"bytes,8,opt,name=authorName,proto3" json:"authorName,omitempty"`
-	// AuthorEmail is the author email to use for the commit. If empty, defaults to "argo-cd@example.com".
+	// AuthorEmail is the author email to use for the commit. If empty, defaults to "cd@example.com".
 	AuthorEmail string `protobuf:"bytes,9,opt,name=authorEmail,proto3" json:"authorEmail,omitempty"`
 	// ReadmeMessage is the message content for README template updates.
 	ReadmeMessage        string   `protobuf:"bytes,10,opt,name=readmeMessage,proto3" json:"readmeMessage,omitempty"`
