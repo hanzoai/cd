@@ -360,7 +360,7 @@ const (
 	// DefaultCMPWorkDirName defines the work directory name used by the cmp-server
 	DefaultCMPWorkDirName = "_cmp_server"
 
-	ConfigMapPluginDeprecationWarning = "hanzocd-cm plugins are deprecated, and support will be removed in v2.7. Upgrade your plugin to be installed via sidecar. https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/"
+	ConfigMapPluginDeprecationWarning = "hanzocd-cm plugins are deprecated, and support will be removed in v2.7. Upgrade your plugin to be installed via sidecar. https://docs.hanzo.ai/en/stable/user-guide/config-management-plugins/"
 )
 
 const (
