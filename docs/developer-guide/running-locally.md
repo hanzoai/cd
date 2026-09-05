@@ -46,8 +46,8 @@ kubectl -n cd scale deployment/cd-notifications-controller --replicas 0
 
 ## Running Hanzo CD locally, outside of K8s cluster
 #### Prerequisites
-1. [Deploy Hanzo CD resources to your cluster](running-locally.md#deploy-argo-cd-resources-to-your-cluster)   
-2. [Scale down any Hanzo CD instance in your cluster](running-locally.md#scale-down-any-argo-cd-instance-in-your-cluster)
+1. [Deploy Hanzo CD resources to your cluster](running-locally.md#deploy-hanzo-cd-resources-to-your-cluster)   
+2. [Scale down any Hanzo CD instance in your cluster](running-locally.md#scale-down-any-hanzo-cd-instance-in-your-cluster)
 
 ### Start local services (virtualized toolchain)
 When you use the virtualized toolchain, starting local services is as simple as running

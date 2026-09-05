@@ -38,7 +38,7 @@ management tools (Helm, Kustomize, etc.).
         + [Non-Goals](#non-goals)
     * [Proposal](#proposal)
         + [Use cases](#use-cases)
-            - [Use case 1: building Hanzo CD without config management dependencies](#use-case-1-building-argo-cd-without-config-management-dependencies)
+            - [Use case 1: building Hanzo CD without config management dependencies](#use-case-1-building-hanzo-cd-without-config-management-dependencies)
             - [Use case 2: writing CMPs with rich UI experiences](#use-case-2-writing-cmps-with-rich-ui-experiences)
         + [Implementation Details/Notes/Constraints](#implementation-detailsnotesconstraints)
             - [Prerequisites](#prerequisites)

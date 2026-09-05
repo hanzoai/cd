@@ -14,7 +14,7 @@
 1. From the `Microsoft Entra ID` > `App registrations` menu, choose `+ New registration`
 2. Enter a `Name` for the application (e.g. `Hanzo CD`).
 3. Specify who can use the application (e.g. `Accounts in this organizational directory only`).
-4. Enter Redirect URI (optional) as follows (replacing `my-argo-cd-url` with your Argo URL), then choose `Add`.
+4. Enter Redirect URI (optional) as follows (replacing `my-cd-url` with your Argo URL), then choose `Add`.
       - **Platform:** `Web`
       - **Redirect URI:** https://`<my-argo-cd-url>`/auth/callback
 5. When registration finishes, the Azure portal displays the app registration's Overview pane. You see the Application (client) ID.
@@ -220,7 +220,7 @@ azure:
 4. Once the application is created, open it from the `Enterprise applications` menu.
 5. From the `Users and groups` menu of the app, add any users or groups requiring access to the service.
    ![Azure Enterprise SAML Users](../../assets/azure-enterprise-users.png "Azure Enterprise SAML Users")
-6. From the `Single sign-on` menu, edit the `Basic SAML Configuration` section as follows (replacing `my-argo-cd-url` with your Argo URL):
+6. From the `Single sign-on` menu, edit the `Basic SAML Configuration` section as follows (replacing `my-cd-url` with your Argo URL):
       - **Identifier (Entity ID):** https://`<my-argo-cd-url>`/api/dex/callback
       - **Reply URL (Assertion Consumer Service URL):** https://`<my-argo-cd-url>`/api/dex/callback
       - **Sign on URL:** https://`<my-argo-cd-url>`/auth/login
@@ -240,7 +240,7 @@ azure:
 
 ### Configure Argo to use the new Entra ID Enterprise App
 
-1. Edit `cd-cm` and add the following `dex.config` to the data section, replacing the `caData`, `my-argo-cd-url` and `my-login-url` your values from the Entra ID App:
+1. Edit `cd-cm` and add the following `dex.config` to the data section, replacing the `caData`, `my-cd-url` and `my-login-url` your values from the Entra ID App:
 
             data:
               url: https://my-argo-cd-url
@@ -313,19 +313,19 @@ data:
 
 1. Open terminal, execute the below command.
 
-            cd login <my-argo-cd-url> --grpc-web-root-path / --sso
+            cd login <my-Hanzo CD-url> --grpc-web-root-path / --sso
 
 2. You will see the below message after entering your credentials from the browser.
    ![Azure SSO CLI Log In](../../assets/azure-sso-cli-log-in-success.png "Azure SSO CLI Log In")
 3. Your terminal output will be similar as below.
    
-            WARNING: server certificate had error: x509: certificate is valid for ingress.local, not my-argo-cd-url. Proceed insecurely (y/n)? y
+            WARNING: server certificate had error: x509: certificate is valid for ingress.local, not my-Hanzo CD-url. Proceed insecurely (y/n)? y
             Opening browser for authentication
             INFO[0003] RequestedClaims: map[groups:essential:true ]
             Performing authorization_code flow login: https://login.microsoftonline.com/XXXXXXXXXXXXX/oauth2/v2.0/authorize?access_type=offline&claims=%7B%22id_token%22%3A%7B%22groups%22%3A%7B%22essential%22%3Atrue%7D%7D%7D&client_id=XXXXXXXXXXXXX&code_challenge=XXXXXXXXXXXXX&code_challenge_method=S256&redirect_uri=http%3A%2F%2Flocalhost%3A8085%2Fauth%2Fcallback&response_type=code&scope=openid+profile+email+offline_access&state=XXXXXXXX
             Authentication successful
             'yourid@example.com' logged in successfully
-            Context 'my-argo-cd-url' updated
+            Context 'my-Hanzo CD-url' updated
 
    You may get an warning if you are not using a correctly signed certs. Refer to [Why Am I Getting x509: certificate signed by unknown authority When Using The CLI?](https://argo-cd.readthedocs.io/en/stable/faq/#why-am-i-getting-x509-certificate-signed-by-unknown-authority-when-using-the-cli).
 

@@ -515,7 +515,7 @@ data:
 
 **Configuration Keys:**
 * `commit.author.name`: The git commit author name (defaults to `"Hanzo CD"` if not set)
-* `commit.author.email`: The git commit author email (defaults to `"argo-cd@example.com"` if not set)
+* `commit.author.email`: The git commit author email (defaults to `"cd@example.com"` if not set)
 
 Both values are optional. If only one is configured, the configured value will be used and the other will use its default.
 

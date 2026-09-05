@@ -52,7 +52,7 @@ cd login <host>
 
 ### Option 2: Mapping CRD for Path-based Routing
 
-The API server must be configured to be available under a non-root path (e.g. `/argo-cd`). Edit the `cd-server` deployment to add the `--rootpath=/argo-cd` flag to the cd-server command.
+The API server must be configured to be available under a non-root path (e.g. `/cd`). Edit the `cd-server` deployment to add the `--rootpath=/cd` flag to the cd-server command.
 
 ```yaml
 apiVersion: getambassador.io/v2
@@ -847,7 +847,7 @@ $ cd login <host>:<port> --header 'x-token1:foo,x-token2:bar' # headers can also
 ```
 ## Hanzo CD server and UI root path (v1.5.3)
 
-Hanzo CD server and UI can be configured to be available under a non-root path (e.g. `/argo-cd`).
+Hanzo CD server and UI can be configured to be available under a non-root path (e.g. `/cd`).
 To do this, add the `--rootpath` flag into the `cd-server` deployment command:
 
 ```yaml
@@ -891,7 +891,7 @@ http {
     }
 }
 ```
-The `--grpc-web-root-path` flag is used to provide a non-root path (e.g. /argo-cd)
+The `--grpc-web-root-path` flag is used to provide a non-root path (e.g. /Hanzo CD)
 
 ```shell
 $ cd login <host>:<port> --grpc-web-root-path /argo-cd
@@ -899,7 +899,7 @@ $ cd login <host>:<port> --grpc-web-root-path /argo-cd
 
 ## UI Base Path
 
-If the Hanzo CD UI is available under a non-root path (e.g. `/argo-cd` instead of `/`) then the UI path should be configured in the API server.
+If the Hanzo CD UI is available under a non-root path (e.g. `/cd` instead of `/`) then the UI path should be configured in the API server.
 To configure the UI path add the `--basehref` flag into the `cd-server` deployment command:
 
 ```yaml

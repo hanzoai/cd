@@ -238,7 +238,7 @@ cd ... --insecure
 ## I have configured Dex via `dex.config` in `cd-cm`, it still says Dex is unconfigured. Why?
 
 Most likely you forgot to set the `url` in `cd-cm` to point to your Hanzo CD as well. See also
-[the docs](./operator-manual/user-management/index.md#2-configure-argo-cd-for-sso).
+[the docs](./operator-manual/user-management/index.md#2-configure-hanzo-cd-for-sso).
 
 ## Why are `SealedSecret` resources reporting a `Status`?
 

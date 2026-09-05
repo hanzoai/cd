@@ -74,7 +74,7 @@ The installation manifests should include only non HA controller, repo-server, R
 #### Headless CLI
 
 Without the API server, users won't be able to take advantage of Hanzo CD UI and `cd` CLI so the user experience won't be complete. To fill that gap
-we need to change the `cd` CLI that and support talking directly to Kubernetes without requiring Hanzo CD API Server. The [argo-cd#6361](https://github.com/hanzoai/cd/pull/6361)
+we need to change the `cd` CLI that and support talking directly to Kubernetes without requiring Hanzo CD API Server. The [Hanzo CD#6361](https://github.com/hanzoai/cd/pull/6361)
 demonstrates required changes:
 
 * Adds `--headless` flag to `cd` commands

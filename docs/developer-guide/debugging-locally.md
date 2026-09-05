@@ -30,7 +30,7 @@ This configuration example will be used as the basis for the next steps.
 > The Procfile for a component may change with time. Please go through the Procfile and make sure you use the latest configuration for debugging.
 
 ### Configure component env variables
-The component that you will run in your IDE for debugging (`api-server` in our case) will need env variables. Copy the env variables from `Procfile`, located in the `argo-cd` root folder of your development branch. The env variables are located before the `$COMMAND` section in the `sh -c` section of the component run command.
+The component that you will run in your IDE for debugging (`api-server` in our case) will need env variables. Copy the env variables from `Procfile`, located in the `cd` root folder of your development branch. The env variables are located before the `$COMMAND` section in the `sh -c` section of the component run command.
 You can keep them in `.env` file and then have the IDE launch configuration point to that file. Obviously, you can adjust the env variables to your needs when debugging a specific configuration.
 
 Example for an `api-server.env` file:
@@ -58,7 +58,7 @@ Using the market place / plugin manager of your IDE. The below example configura
 
 ### Configure component IDE launch configuration
 #### VSCode example
-Next, you will need to create a launch configuration, with the relevant args. Copy the args from `Procfile`, located in the `argo-cd` root folder of your development branch. The args are located after the `$COMMAND` section in the `sh -c` section of the component run command.
+Next, you will need to create a launch configuration, with the relevant args. Copy the args from `Procfile`, located in the `cd` root folder of your development branch. The args are located after the `$COMMAND` section in the `sh -c` section of the component run command.
 Example for an `api-server` launch configuration, based on our above example for `api-server` configuration in `Procfile`: 
 ``` json
     {
@@ -85,7 +85,7 @@ Example for an `api-server` launch configuration, based on our above example for
 ```
 
 #### Goland example
-Next, you will need to create a launch configuration, with the relevant parameters. Copy the parameters from `Procfile`, located in the `argo-cd` root folder of your development branch. The parameters are located after the `$COMMAND` section in the `sh -c` section of the component run command.
+Next, you will need to create a launch configuration, with the relevant parameters. Copy the parameters from `Procfile`, located in the `cd` root folder of your development branch. The parameters are located after the `$COMMAND` section in the `sh -c` section of the component run command.
 Example for an `api-server` launch configuration snippet, based on our above example for `api-server` configuration in `Procfile`: 
 ``` xml 
 <component name="ProjectRunConfigurationManager">
