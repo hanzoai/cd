@@ -2,7 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   generation: 4
-  name: argo-example
+  name: cd-example
   namespace: open-cluster-management-global-set
 spec:
   disabled: true
@@ -56,5 +56,5 @@ spec:
   remediationAction: inform
 status:
   placement:
-    - placement: argo-example-placement
-      placementBinding: argo-example-placement
+    - placement: cd-example-placement
+      placementBinding: cd-example-placement

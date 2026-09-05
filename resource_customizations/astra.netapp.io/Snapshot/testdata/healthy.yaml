@@ -7,7 +7,7 @@ metadata:
   finalizers:
     - astra.netapp.io/finalizer
   generation: 2
-  name: argo-presync-20240424142317
+  name: cd-presync-20240424142317
   namespace: astra-connector
   ownerReferences:
     - apiVersion: astra.netapp.io/v1
@@ -23,7 +23,7 @@ spec:
   volumeSnapshotsCreatedTimeout: 0s
   volumeSnapshotsReadyToUseTimeout: 0s
 status:
-  appArchivePath: ghost_0af10ee8-772b-4367-8334-44f9e4ad2849/snapshots/20240424142318_argo-presync-20240424142317_152faab3-0374-4cef-bac9-6e7940b06aa9
+  appArchivePath: ghost_0af10ee8-772b-4367-8334-44f9e4ad2849/snapshots/20240424142318_cd-presync-20240424142317_152faab3-0374-4cef-bac9-6e7940b06aa9
   completionTimestamp: "2024-04-24T14:23:43Z"
   conditions:
     - lastTransitionTime: "2024-04-24T14:23:18Z"

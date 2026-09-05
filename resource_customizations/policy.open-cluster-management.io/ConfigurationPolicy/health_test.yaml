@@ -6,8 +6,8 @@ tests:
   - healthStatus:
       status: Degraded
       message: >-
-        violation - namespaces [argo-example] not found; violation - namespaces
-        [argo-example-2] not found
+        violation - namespaces [cd-example] not found; violation - namespaces
+        [cd-example-2] not found
     inputPath: testdata/degraded.yaml
   - healthStatus:
       status: Progressing
@@ -16,12 +16,12 @@ tests:
   - healthStatus:
       status: Healthy
       message: >-
-        notification - namespaces [argo-example] was created successfully;
-        notification - namespaces [argo-example-2] was created successfully
+        notification - namespaces [cd-example] was created successfully;
+        notification - namespaces [cd-example-2] was created successfully
     inputPath: testdata/healthy_created.yaml
   - healthStatus:
       status: Healthy
       message: >-
-        notification - namespaces [argo-example] found as specified;
-        notification - namespaces [argo-example-2] found as specified
+        notification - namespaces [cd-example] found as specified;
+        notification - namespaces [cd-example-2] found as specified
     inputPath: testdata/healthy_found.yaml

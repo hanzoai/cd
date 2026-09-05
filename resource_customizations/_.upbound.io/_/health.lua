@@ -1,4 +1,4 @@
--- Health check copied from here: https://github.com/crossplane/docs/blob/9fe744889fc150ca71e5298d90b4133f79ea20f2/content/master/guides/crossplane-with-argo-cd.md
+-- Health check copied from here: https://github.com/crossplane/docs/blob/9fe744889fc150ca71e5298d90b4133f79ea20f2/content/master/guides/crossplane-with-cd.md
 
 health_status = {
   status = "Progressing",

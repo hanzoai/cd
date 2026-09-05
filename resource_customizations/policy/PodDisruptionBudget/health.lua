@@ -8,7 +8,7 @@ if obj.status ~= nil then
   if obj.status.conditions ~= nil then
     for i, condition in ipairs(obj.status.conditions) do
       -- InsufficientPods can have valid use cases
-      -- See a discussion in https://github.com/argoproj/argo-cd/issues/20171 for more details
+      -- See a discussion in https://github.com/hanzocd/cd/issues/20171 for more details
       if condition.status == "False" and condition.reason ~= "InsufficientPods" then
         hs.status = "Degraded"
         hs.message = "PodDisruptionBudget has " .. condition.reason

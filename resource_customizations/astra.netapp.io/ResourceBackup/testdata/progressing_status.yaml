@@ -14,16 +14,16 @@ metadata:
       blockOwnerDeletion: true
       controller: true
       kind: Snapshot
-      name: argo-presync-20240424213020
+      name: cd-presync-20240424213020
       uid: 0796d78d-e751-4835-a0d4-be61b9f9076a
   resourceVersion: "10661760"
   uid: 6ed660f0-95be-4369-b548-15cb094a44c2
 spec:
-  appArchivePath: ghost_0af10ee8-772b-4367-8334-44f9e4ad2849/snapshots/20240424213020_argo-presync-20240424213020_0796d78d-e751-4835-a0d4-be61b9f9076a
+  appArchivePath: ghost_0af10ee8-772b-4367-8334-44f9e4ad2849/snapshots/20240424213020_cd-presync-20240424213020_0796d78d-e751-4835-a0d4-be61b9f9076a
   appVaultRef: astra-gcp-backup-743cfd150129
   applicationRef: ghost
 status:
-  appArchivePath: ghost_0af10ee8-772b-4367-8334-44f9e4ad2849/snapshots/20240424213020_argo-presync-20240424213020_0796d78d-e751-4835-a0d4-be61b9f9076a
+  appArchivePath: ghost_0af10ee8-772b-4367-8334-44f9e4ad2849/snapshots/20240424213020_cd-presync-20240424213020_0796d78d-e751-4835-a0d4-be61b9f9076a
   conditions:
     - lastTransitionTime: "2024-04-24T21:30:21Z"
       message: Successfully reconciled

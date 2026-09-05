@@ -12,13 +12,13 @@ metadata:
       blockOwnerDeletion: true
       controller: true
       kind: Snapshot
-      name: argo-presync-20240425163524
+      name: cd-presync-20240425163524
       uid: 073d13d7-4a0c-4c5e-914f-331ef6d00de2
   resourceVersion: "11335239"
   uid: 9bfcda95-2731-47dc-8eb2-6e83ae19da00
 spec:
   action: snapshot
-  appArchivePath: ghost_0af10ee8-772b-4367-8334-44f9e4ad2849/snapshots/20240425163526_argo-presync-20240425163524_073d13d7-4a0c-4c5e-914f-331ef6d00de2
+  appArchivePath: ghost_0af10ee8-772b-4367-8334-44f9e4ad2849/snapshots/20240425163526_cd-presync-20240425163524_073d13d7-4a0c-4c5e-914f-331ef6d00de2
   appVaultRef: astra-gcp-backup-743cfd150129
   applicationRef: ghost
   completionTimeout: 0s
