@@ -17,7 +17,7 @@ go_mod_install() {
     go install "$1@$module_version"
 }
 
-# All binaries are compiled into the argo-cd/dist directory, which is added to the PATH during codegen
+# All binaries are compiled into the dist directory, which is added to the PATH during codegen
 export GOBIN="${SRCROOT}/dist"
 mkdir -p "$GOBIN"
 

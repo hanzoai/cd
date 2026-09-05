@@ -20,12 +20,12 @@ import (
 )
 
 type ApplicationGenerator struct {
-	argoClientSet *appclientset.Clientset
-	clientSet     *kubernetes.Clientset
+	appClientSet *appclientset.Clientset
+	clientSet    *kubernetes.Clientset
 }
 
-func NewApplicationGenerator(argoClientSet *appclientset.Clientset, clientSet *kubernetes.Clientset) Generator {
-	return &ApplicationGenerator{argoClientSet, clientSet}
+func NewApplicationGenerator(appClientSet *appclientset.Clientset, clientSet *kubernetes.Clientset) Generator {
+	return &ApplicationGenerator{appClientSet, clientSet}
 }
 
 func (generator *ApplicationGenerator) buildRandomSource(repositories []*v1alpha1.Repository) (*v1alpha1.ApplicationSource, error) {
@@ -71,7 +71,7 @@ func (generator *ApplicationGenerator) Generate(opts *util.GenerateOpts) error {
 	if err != nil {
 		return err
 	}
-	applications := generator.argoClientSet.ArgoprojV1alpha1().Applications(opts.Namespace)
+	applications := generator.appClientSet.ArgoprojV1alpha1().Applications(opts.Namespace)
 	for i := 0; i < opts.ApplicationOpts.Samples; i++ {
 		log.Printf("Generate application #%v", i)
 		source, err := generator.buildSource(opts, repositories)
@@ -106,7 +106,7 @@ func (generator *ApplicationGenerator) Generate(opts *util.GenerateOpts) error {
 
 func (generator *ApplicationGenerator) Clean(opts *util.GenerateOpts) error {
 	log.Print("Clean applications")
-	applications := generator.argoClientSet.ArgoprojV1alpha1().Applications(opts.Namespace)
+	applications := generator.appClientSet.ArgoprojV1alpha1().Applications(opts.Namespace)
 	return applications.DeleteCollection(context.TODO(), metav1.DeleteOptions{}, metav1.ListOptions{
 		LabelSelector: "app.kubernetes.io/generated-by=cd-generator",
 	})

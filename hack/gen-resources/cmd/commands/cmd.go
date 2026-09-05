@@ -59,16 +59,16 @@ func NewGenerateCommand(opts *util.GenerateOpts) *cobra.Command {
 			if err != nil {
 				log.Fatalf("Failed to retrieve configuration, %v", err.Error())
 			}
-			argoClientSet := util.ConnectToK8sArgoClientSet()
+			appClientSet := util.ConnectToK8sAppClientSet()
 			clientSet := util.ConnectToK8sClientSet()
 
 			settingsMgr := settings.NewSettingsManager(context.TODO(), clientSet, opts.Namespace)
-			argoDB := db.NewDB(opts.Namespace, settingsMgr, clientSet)
+			appDB := db.NewDB(opts.Namespace, settingsMgr, clientSet)
 
-			pg := generator.NewProjectGenerator(argoClientSet)
-			ag := generator.NewApplicationGenerator(argoClientSet, clientSet)
+			pg := generator.NewProjectGenerator(appClientSet)
+			ag := generator.NewApplicationGenerator(appClientSet, clientSet)
 			rg := generator.NewRepoGenerator(util.ConnectToK8sClientSet())
-			cg := generator.NewClusterGenerator(argoDB, util.ConnectToK8sClientSet(), util.ConnectToK8sConfig())
+			cg := generator.NewClusterGenerator(appDB, util.ConnectToK8sClientSet(), util.ConnectToK8sConfig())
 
 			err = pg.Generate(opts)
 			if err != nil {
@@ -98,14 +98,14 @@ func NewCleanCommand(opts *util.GenerateOpts) *cobra.Command {
 		Short: "Clean entities",
 		Long:  "Clean entities",
 		Run: func(_ *cobra.Command, _ []string) {
-			argoClientSet := util.ConnectToK8sArgoClientSet()
+			appClientSet := util.ConnectToK8sAppClientSet()
 			clientSet := util.ConnectToK8sClientSet()
 			settingsMgr := settings.NewSettingsManager(context.TODO(), clientSet, opts.Namespace)
-			argoDB := db.NewDB(opts.Namespace, settingsMgr, clientSet)
+			appDB := db.NewDB(opts.Namespace, settingsMgr, clientSet)
 
-			pg := generator.NewProjectGenerator(argoClientSet)
-			ag := generator.NewApplicationGenerator(argoClientSet, clientSet)
-			cg := generator.NewClusterGenerator(argoDB, clientSet, util.ConnectToK8sConfig())
+			pg := generator.NewProjectGenerator(appClientSet)
+			ag := generator.NewApplicationGenerator(appClientSet, clientSet)
+			cg := generator.NewClusterGenerator(appDB, clientSet, util.ConnectToK8sConfig())
 			rg := generator.NewRepoGenerator(clientSet)
 
 			err := pg.Clean(opts)

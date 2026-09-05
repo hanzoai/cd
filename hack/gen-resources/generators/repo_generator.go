@@ -32,7 +32,7 @@ func NewRepoGenerator(clientSet *kubernetes.Clientset) Generator {
 }
 
 func fetchRepos(ctx context.Context, token string, page int) ([]Repo, error) {
-	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://api.github.com/repos/argoproj/example-apps/forks?per_page=100&page=%v", page), http.NoBody)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://api.github.com/repos/hanzocd/example-apps/forks?per_page=100&page=%v", page), http.NoBody)
 	req.Header.Set("Authorization", token)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {

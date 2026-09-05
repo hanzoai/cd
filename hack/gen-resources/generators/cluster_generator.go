@@ -18,7 +18,7 @@ import (
 	"k8s.io/client-go/tools/remotecommand"
 
 	"github.com/hanzoai/cd/hack/gen-resources/util"
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/db"
 	"github.com/hanzoai/cd/util/helm"
 )
@@ -207,11 +207,11 @@ func (cg *ClusterGenerator) generate(i int, opts *util.GenerateOpts) error {
 	log.Printf("Cluster server uri is %s", uri)
 
 	log.Print("Create cluster")
-	_, err = cg.db.CreateCluster(context.TODO(), &argoappv1.Cluster{
+	_, err = cg.db.CreateCluster(context.TODO(), &appv1.Cluster{
 		Server: uri,
 		Name:   opts.ClusterOpts.ClusterNamePrefix + "-" + util.GetRandomString(),
-		Config: argoappv1.ClusterConfig{
-			TLSClientConfig: argoappv1.TLSClientConfig{
+		Config: appv1.ClusterConfig{
+			TLSClientConfig: appv1.TLSClientConfig{
 				Insecure:   false,
 				ServerName: "kubernetes.default.svc",
 				CAData:     caData,
@@ -219,8 +219,8 @@ func (cg *ClusterGenerator) generate(i int, opts *util.GenerateOpts) error {
 				KeyData:    key,
 			},
 		},
-		Info: argoappv1.ClusterInfo{
-			ConnectionState: argoappv1.ConnectionState{},
+		Info: appv1.ClusterInfo{
+			ConnectionState: appv1.ConnectionState{},
 			ServerVersion:   "1.18",
 		},
 		Namespaces: []string{opts.ClusterOpts.DestinationNamespace},
