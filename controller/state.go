@@ -44,7 +44,7 @@ import (
 	"github.com/hanzoai/cd/util/app/path"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 	"github.com/hanzoai/cd/util/cd"
-	argodiff "github.com/hanzoai/cd/util/cd/diff"
+	appdiff "github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/db"
 	"github.com/hanzoai/cd/util/git"
@@ -107,7 +107,7 @@ type comparisonResult struct {
 	resources            []v1alpha1.ResourceStatus
 	managedResources     []managedResource
 	reconciliationResult sync.ReconciliationResult
-	diffConfig           argodiff.DiffConfig
+	diffConfig           appdiff.DiffConfig
 	appSourceType        v1alpha1.ApplicationSourceType
 	// appSourceTypes stores the SourceType for each application source under sources field
 	appSourceTypes []v1alpha1.ApplicationSourceType
@@ -922,7 +922,7 @@ func (m *appStateManager) CompareAppState(ctx context.Context, app *v1alpha1.App
 
 	useDiffCache := useDiffCache(noCache, manifestInfos, sources, app, manifestRevisions, m.statusRefreshTimeout, serverSideDiff, logCtx)
 
-	diffConfigBuilder := argodiff.NewDiffConfigBuilder().
+	diffConfigBuilder := appdiff.NewDiffConfigBuilder().
 		WithDiffSettings(app.Spec.IgnoreDifferences, resourceOverrides, compareOptions.IgnoreAggregatedRoles, m.ignoreNormalizerOpts).
 		WithTracking(appLabelKey, string(trackingMethod))
 
@@ -971,7 +971,7 @@ func (m *appStateManager) CompareAppState(ctx context.Context, app *v1alpha1.App
 	err = func() (retErr error) {
 		_, diffSpan := tracer.Start(ctx, "controller.diff")
 		defer func() { traceutil.EndSpan(diffSpan, retErr) }()
-		diffResults, retErr = argodiff.StateDiffs(ctx, reconciliation.Live, reconciliation.Target, diffConfig)
+		diffResults, retErr = appdiff.StateDiffs(ctx, reconciliation.Live, reconciliation.Target, diffConfig)
 		return retErr
 	}()
 	if err != nil {

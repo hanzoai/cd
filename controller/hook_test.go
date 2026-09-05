@@ -17,7 +17,7 @@ func TestIsHookOfType(t *testing.T) {
 		expected bool
 	}{
 		{
-			name:     "ArgoCD PreDelete hook",
+			name:     "PreDelete hook",
 			hookType: PreDeleteHookType,
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expected: true,
@@ -29,7 +29,7 @@ func TestIsHookOfType(t *testing.T) {
 			expected: true,
 		},
 		{
-			name:     "ArgoCD PostDelete hook",
+			name:     "PostDelete hook",
 			hookType: PostDeleteHookType,
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: true,
@@ -77,17 +77,17 @@ func TestIsHook(t *testing.T) {
 		expected bool
 	}{
 		{
-			name:     "ArgoCD PreDelete hook",
+			name:     "PreDelete hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expected: true,
 		},
 		{
-			name:     "ArgoCD PostDelete hook",
+			name:     "PostDelete hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: true,
 		},
 		{
-			name:     "ArgoCD PreSync hook",
+			name:     "PreSync hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PreSync"},
 			expected: true,
 		},
@@ -115,7 +115,7 @@ func TestIsPreDeleteHook(t *testing.T) {
 		expected bool
 	}{
 		{
-			name:     "ArgoCD PreDelete hook",
+			name:     "PreDelete hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expected: true,
 		},
@@ -125,7 +125,7 @@ func TestIsPreDeleteHook(t *testing.T) {
 			expected: true,
 		},
 		{
-			name:     "ArgoCD PostDelete hook",
+			name:     "PostDelete hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: false,
 		},
@@ -135,7 +135,7 @@ func TestIsPreDeleteHook(t *testing.T) {
 			expected: true,
 		},
 		{
-			name:     "ArgoCD PostDelete & PreDelete hook",
+			name:     "PostDelete & PreDelete hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete,PreDelete"},
 			expected: true,
 		},
@@ -158,7 +158,7 @@ func TestIsPostDeleteHook(t *testing.T) {
 		expected bool
 	}{
 		{
-			name:     "ArgoCD PostDelete hook",
+			name:     "PostDelete hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete"},
 			expected: true,
 		},
@@ -168,12 +168,12 @@ func TestIsPostDeleteHook(t *testing.T) {
 			expected: true,
 		},
 		{
-			name:     "ArgoCD PreDelete hook",
+			name:     "PreDelete hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete"},
 			expected: false,
 		},
 		{
-			name:     "ArgoCD PostDelete & PreDelete hook",
+			name:     "PostDelete & PreDelete hook",
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PostDelete,PreDelete"},
 			expected: true,
 		},
@@ -295,7 +295,7 @@ func TestMultiHookOfType(t *testing.T) {
 		},
 
 		{
-			name:     "ArgoCD PreDelete &  PostDelete hook",
+			name:     "PreDelete & PostDelete hook",
 			hookType: []HookType{PreDeleteHookType, PostDeleteHookType},
 			annot:    map[string]string{"cd.hanzo.ai/hook": "PreDelete,PostDelete"},
 			expected: true,

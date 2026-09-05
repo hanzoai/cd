@@ -77,7 +77,7 @@ const (
 	EnvClusterCacheEventsProcessingInterval = "CD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL"
 
 	// AnnotationIgnoreResourceUpdates when set to true on an untracked resource,
-	// argo will apply `ignoreResourceUpdates` configuration on it.
+	// the controller will apply `ignoreResourceUpdates` configuration on it.
 	AnnotationIgnoreResourceUpdates = "cd.hanzo.ai/ignore-resource-updates"
 )
 
@@ -404,7 +404,7 @@ func shouldHashManifest(appName string, gvk schema.GroupVersionKind, un *unstruc
 	// Best      - Only hash for resources that are part of an app or their dependencies
 	// (current) - Only hash for resources that are part of an app + all apps that might be from an ApplicationSet
 	// Orphan    - If orphan is enabled, hash should be made on all resource of that namespace and a config to disable it
-	// Worst     - Hash all resources watched by Argo
+	// Worst     - Hash all resources watched by the controller
 	isTrackedResource := appName != "" || (gvk.Group == application.Group && gvk.Kind == application.ApplicationKind)
 
 	// If the resource is not a tracked resource, we will look up cd.hanzo.ai/ignore-resource-updates and decide

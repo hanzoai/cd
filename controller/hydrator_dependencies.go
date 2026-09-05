@@ -9,7 +9,7 @@ import (
 	"github.com/hanzoai/cd/controller/hydrator/types"
 	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/reposerver/apiclient"
-	argoutil "github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -70,7 +70,7 @@ func (ctrl *ApplicationController) GetRepoObjs(ctx context.Context, app *appv1.A
 		return nil, nil, fmt.Errorf("failed to get tracking method: %w", err)
 	}
 	for _, obj := range objs {
-		if err := argoutil.NewResourceTracking().RemoveAppInstance(obj, trackingMethod); err != nil {
+		if err := cd.NewResourceTracking().RemoveAppInstance(obj, trackingMethod); err != nil {
 			return nil, nil, fmt.Errorf("failed to remove the app instance value: %w", err)
 		}
 	}
@@ -92,7 +92,7 @@ func (ctrl *ApplicationController) RequestAppRefresh(appName string, appNamespac
 
 	// This function is called for each app after a hydrate operation is completed so that the app controller can pick
 	// up the newly-hydrated changes. So we pass nil hydrateType to avoid a hydrate loop.
-	_, err := argoutil.RefreshApp(ctrl.applicationClientset.ArgoprojV1alpha1().Applications(appNamespace), appName, appv1.RefreshTypeNormal, nil)
+	_, err := cd.RefreshApp(ctrl.applicationClientset.ArgoprojV1alpha1().Applications(appNamespace), appName, appv1.RefreshTypeNormal, nil)
 	if err != nil {
 		return fmt.Errorf("failed to request app refresh: %w", err)
 	}

@@ -246,7 +246,7 @@ definitions:
 
           Populated by the system. Read-only. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids
         type: string
-  io.argoproj.v1alpha1.Application:
+  ai.hanzo.apps.v1alpha1.Application:
     description: Application is a definition of Application resource.
     type: object
     required:

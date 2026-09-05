@@ -26,7 +26,7 @@ import (
 const (
 	defaultSecretUpdateInterval = 10 * time.Second
 
-	EnvClusterInfoTimeout = "ARGO_CD_UPDATE_CLUSTER_INFO_TIMEOUT"
+	EnvClusterInfoTimeout = "CD_UPDATE_CLUSTER_INFO_TIMEOUT"
 )
 
 var clusterInfoTimeout = env.ParseDurationFromEnv(EnvClusterInfoTimeout, defaultSecretUpdateInterval, defaultSecretUpdateInterval, 1*time.Minute)

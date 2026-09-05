@@ -44,7 +44,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 		{&now, errors.New("sync failed"), v1alpha1.ConnectionStatusFailed},
 	}
 
-	emptyArgoCDConfigMap := &corev1.ConfigMap{
+	emptyConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
@@ -54,7 +54,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 		},
 		Data: map[string]string{},
 	}
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.SecretName,
 			Namespace: fakeNamespace,
@@ -67,16 +67,16 @@ func TestClusterSecretUpdater(t *testing.T) {
 			"server.secretkey": nil,
 		},
 	}
-	kubeclientset := fake.NewClientset(emptyArgoCDConfigMap, argoCDSecret)
+	kubeclientset := fake.NewClientset(emptyConfigMap, cdSecret)
 	appclientset := appsfake.NewSimpleClientset()
 	appInformer := appinformers.NewApplicationInformer(appclientset, "", time.Minute, cache.Indexers{})
 	settingsManager := settings.NewSettingsManager(t.Context(), kubeclientset, fakeNamespace)
-	argoDB := db.NewDB(fakeNamespace, settingsManager, kubeclientset)
+	db := db.NewDB(fakeNamespace, settingsManager, kubeclientset)
 	ctx, cancel := context.WithCancel(t.Context())
 	defer cancel()
 
 	appCache := appstate.NewCache(cacheutil.NewCache(cacheutil.NewInMemoryCache(time.Minute)), time.Minute)
-	cluster, err := argoDB.CreateCluster(ctx, &v1alpha1.Cluster{Server: "http://minikube"})
+	cluster, err := db.CreateCluster(ctx, &v1alpha1.Cluster{Server: "http://minikube"})
 	require.NoError(t, err, "Test prepare test data create cluster failed")
 
 	for _, test := range tests {
@@ -88,7 +88,7 @@ func TestClusterSecretUpdater(t *testing.T) {
 		}
 
 		lister := applisters.NewApplicationLister(appInformer.GetIndexer()).Applications(fakeNamespace)
-		updater := NewClusterInfoUpdater(nil, argoDB, lister, appCache, nil, nil, fakeNamespace)
+		updater := NewClusterInfoUpdater(nil, db, lister, appCache, nil, nil, fakeNamespace)
 
 		err = updater.updateClusterInfo(t.Context(), *cluster, info)
 		require.NoError(t, err, "Invoking updateClusterInfo failed.")
@@ -106,7 +106,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 	const clusterServer = "https://prod.example.com"
 	const clusterName = "prod"
 
-	emptyArgoCDConfigMap := &corev1.ConfigMap{
+	emptyConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
@@ -114,7 +114,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 		},
 		Data: map[string]string{},
 	}
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.SecretName,
 			Namespace: fakeNamespace,
@@ -138,9 +138,9 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 		},
 	}
 
-	kubeclientset := fake.NewClientset(emptyArgoCDConfigMap, argoCDSecret, clusterSecret)
+	kubeclientset := fake.NewClientset(emptyConfigMap, cdSecret, clusterSecret)
 	settingsManager := settings.NewSettingsManager(t.Context(), kubeclientset, fakeNamespace)
-	argoDB := db.NewDB(fakeNamespace, settingsManager, kubeclientset)
+	db := db.NewDB(fakeNamespace, settingsManager, kubeclientset)
 
 	apps := []*v1alpha1.Application{
 		{Spec: v1alpha1.ApplicationSpec{Destination: v1alpha1.ApplicationDestination{Name: clusterName}}},
@@ -148,7 +148,7 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 		{Spec: v1alpha1.ApplicationSpec{Destination: v1alpha1.ApplicationDestination{Server: "https://other.example.com"}}},
 	}
 
-	updater := &clusterInfoUpdater{db: argoDB, namespace: fakeNamespace}
+	updater := &clusterInfoUpdater{db: db, namespace: fakeNamespace}
 	cluster := v1alpha1.Cluster{Server: clusterServer}
 
 	info := updater.getUpdatedClusterInfo(t.Context(), apps, cluster, nil, metav1.Now())
@@ -161,7 +161,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 	const clusterServer = "https://prod.example.com"
 	const clusterName = "prod"
 
-	emptyArgoCDConfigMap := &corev1.ConfigMap{
+	emptyConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
@@ -169,7 +169,7 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 		},
 		Data: map[string]string{},
 	}
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.SecretName,
 			Namespace: fakeNamespace,
@@ -197,18 +197,18 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 
 	// Two secrets share the same cluster name
 	kubeclientset := fake.NewClientset(
-		emptyArgoCDConfigMap, argoCDSecret,
+		emptyConfigMap, cdSecret,
 		makeClusterSecret("prod-cluster-1", clusterServer),
 		makeClusterSecret("prod-cluster-2", "https://prod2.example.com"),
 	)
 	settingsManager := settings.NewSettingsManager(t.Context(), kubeclientset, fakeNamespace)
-	argoDB := db.NewDB(fakeNamespace, settingsManager, kubeclientset)
+	db := db.NewDB(fakeNamespace, settingsManager, kubeclientset)
 
 	apps := []*v1alpha1.Application{
 		{Spec: v1alpha1.ApplicationSpec{Destination: v1alpha1.ApplicationDestination{Name: clusterName}}},
 	}
 
-	updater := &clusterInfoUpdater{db: argoDB, namespace: fakeNamespace}
+	updater := &clusterInfoUpdater{db: db, namespace: fakeNamespace}
 	cluster := v1alpha1.Cluster{Server: clusterServer}
 
 	info := updater.getUpdatedClusterInfo(t.Context(), apps, cluster, nil, metav1.Now())

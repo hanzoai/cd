@@ -19,7 +19,7 @@ import (
 	ctrlmetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
 
 	"github.com/hanzoai/cd/common"
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	applister "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
 	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/db"
@@ -169,7 +169,7 @@ func NewMetricsServer(addr string, appLister applister.ApplicationLister, appFil
 		normalizedLabels := metricsutil.NormalizeLabels("label", appLabels)
 		descAppLabels = prometheus.NewDesc(
 			"cd_app_labels",
-			"Argo Application labels converted to Prometheus labels",
+			"Application labels converted to Prometheus labels",
 			append(descAppDefaultLabels, normalizedLabels...),
 			nil,
 		)
@@ -246,7 +246,7 @@ func (m *MetricsServer) RegisterClustersInfoSource(ctx context.Context, source H
 }
 
 // IncSync increments the sync counter for an application
-func (m *MetricsServer) IncSync(app *argoappv1.Application, destServer string, state *argoappv1.OperationState) {
+func (m *MetricsServer) IncSync(app *appv1.Application, destServer string, state *appv1.OperationState) {
 	if !state.Phase.Completed() {
 		return
 	}
@@ -255,7 +255,7 @@ func (m *MetricsServer) IncSync(app *argoappv1.Application, destServer string, s
 }
 
 // IncAppSyncDuration observes app sync duration
-func (m *MetricsServer) IncAppSyncDuration(app *argoappv1.Application, destServer string, state *argoappv1.OperationState) {
+func (m *MetricsServer) IncAppSyncDuration(app *appv1.Application, destServer string, state *appv1.OperationState) {
 	if state.FinishedAt != nil {
 		m.syncDuration.WithLabelValues(app.Namespace, app.Name, app.Spec.GetProject(), destServer).
 			Add(float64(time.Duration(state.FinishedAt.Unix() - state.StartedAt.Unix())))
@@ -274,7 +274,7 @@ func (m *MetricsServer) DecKubectlExecPending(command string) {
 	m.kubectlExecPendingGauge.WithLabelValues(m.hostname, command).Dec()
 }
 
-func (m *MetricsServer) SetOrphanedResourcesMetric(app *argoappv1.Application, numOrphanedResources int) {
+func (m *MetricsServer) SetOrphanedResourcesMetric(app *appv1.Application, numOrphanedResources int) {
 	m.orphanedResourcesGauge.WithLabelValues(app.Namespace, app.Name, app.Spec.GetProject()).Set(float64(numOrphanedResources))
 }
 
@@ -284,7 +284,7 @@ func (m *MetricsServer) IncClusterEventsCount(server, group, kind string) {
 }
 
 // IncKubernetesRequest increments the kubernetes requests counter for an application
-func (m *MetricsServer) IncKubernetesRequest(app *argoappv1.Application, server, statusCode, verb, resourceKind, resourceNamespace string) {
+func (m *MetricsServer) IncKubernetesRequest(app *appv1.Application, server, statusCode, verb, resourceKind, resourceNamespace string) {
 	var namespace, name, project string
 	isDryRun := false
 	if app != nil {
@@ -315,7 +315,7 @@ func (m *MetricsServer) ObserveResourceEventsProcessingDuration(server string, d
 }
 
 // IncReconcile increments the reconcile counter for an application
-func (m *MetricsServer) IncReconcile(app *argoappv1.Application, destServer string, duration time.Duration) {
+func (m *MetricsServer) IncReconcile(app *appv1.Application, destServer string, duration time.Duration) {
 	m.reconcileHistogram.WithLabelValues(app.Namespace, destServer).Observe(duration.Seconds())
 }
 
@@ -421,7 +421,7 @@ func boolFloat64(b bool) float64 {
 	return 0
 }
 
-func (c *appCollector) collectApps(ch chan<- prometheus.Metric, app *argoappv1.Application, destServer string) {
+func (c *appCollector) collectApps(ch chan<- prometheus.Metric, app *appv1.Application, destServer string) {
 	addConstMetric := func(desc *prometheus.Desc, t prometheus.ValueType, v float64, lv ...string) {
 		project := app.Spec.GetProject()
 		lv = append([]string{app.Namespace, app.Name, project}, lv...)
@@ -439,7 +439,7 @@ func (c *appCollector) collectApps(ch chan<- prometheus.Metric, app *argoappv1.A
 	}
 	syncStatus := app.Status.Sync.Status
 	if syncStatus == "" {
-		syncStatus = argoappv1.SyncStatusCodeUnknown
+		syncStatus = appv1.SyncStatusCodeUnknown
 	}
 	healthStatus := app.Status.Health.Status
 	if healthStatus == "" {

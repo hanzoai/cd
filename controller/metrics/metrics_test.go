@@ -24,7 +24,7 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"sigs.k8s.io/yaml"
 
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned/fake"
 	appinformer "github.com/hanzoai/cd/pkg/client/informers/externalversions"
 	applister "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
@@ -256,8 +256,8 @@ func init() {
 	settings_util.ConfigureGoClientFeatures()
 }
 
-func newFakeApp(fakeAppYAML string) *argoappv1.Application {
-	var app argoappv1.Application
+func newFakeApp(fakeAppYAML string) *appv1.Application {
+	var app appv1.Application
 	err := yaml.Unmarshal([]byte(fakeAppYAML), &app)
 	if err != nil {
 		panic(err)
@@ -325,7 +325,7 @@ func runTest(t *testing.T, cfg TestMetricServerConfig) {
 	defer cancel()
 	mockDB := mocks.NewArgoDB(t)
 	mockDB.EXPECT().GetClusterServersByName(mock.Anything, "cluster1").Return([]string{"https://localhost:6443"}, nil).Maybe()
-	mockDB.EXPECT().GetCluster(mock.Anything, "https://localhost:6443").Return(&argoappv1.Cluster{Name: "cluster1", Server: "https://localhost:6443"}, nil).Maybe()
+	mockDB.EXPECT().GetCluster(mock.Anything, "https://localhost:6443").Return(&appv1.Cluster{Name: "cluster1", Server: "https://localhost:6443"}, nil).Maybe()
 	metricsServ, err := NewMetricsServer("localhost:8082", appLister, appFilter, noOpHealthCheck, cfg.AppLabels, cfg.AppConditions, mockDB)
 	require.NoError(t, err)
 
@@ -487,11 +487,11 @@ cd_app_sync_total{dest_server="https://localhost:6443",dry_run="false",name="my-
 `
 
 	fakeApp := newFakeApp(fakeApp)
-	metricsServ.IncSync(fakeApp, "https://localhost:6443", &argoappv1.OperationState{Phase: common.OperationRunning})
-	metricsServ.IncSync(fakeApp, "https://localhost:6443", &argoappv1.OperationState{Phase: common.OperationFailed})
-	metricsServ.IncSync(fakeApp, "https://localhost:6443", &argoappv1.OperationState{Phase: common.OperationError})
-	metricsServ.IncSync(fakeApp, "https://localhost:6443", &argoappv1.OperationState{Phase: common.OperationSucceeded})
-	metricsServ.IncSync(fakeApp, "https://localhost:6443", &argoappv1.OperationState{Phase: common.OperationSucceeded})
+	metricsServ.IncSync(fakeApp, "https://localhost:6443", &appv1.OperationState{Phase: common.OperationRunning})
+	metricsServ.IncSync(fakeApp, "https://localhost:6443", &appv1.OperationState{Phase: common.OperationFailed})
+	metricsServ.IncSync(fakeApp, "https://localhost:6443", &appv1.OperationState{Phase: common.OperationError})
+	metricsServ.IncSync(fakeApp, "https://localhost:6443", &appv1.OperationState{Phase: common.OperationSucceeded})
+	metricsServ.IncSync(fakeApp, "https://localhost:6443", &appv1.OperationState{Phase: common.OperationSucceeded})
 
 	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, "/metrics", http.NoBody)
 	require.NoError(t, err)
