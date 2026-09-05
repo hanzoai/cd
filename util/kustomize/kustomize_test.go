@@ -46,18 +46,18 @@ func TestKustomizeBuild(t *testing.T) {
 	namespace := "custom-namespace"
 	kustomize := NewKustomizeApp(appPath, appPath, git.NopCreds{}, "", "", "", "")
 	env := &v1alpha1.Env{
-		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: "argo-cd-tests"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: "cd-tests"},
 	}
 	kustomizeSource := v1alpha1.ApplicationSourceKustomize{
 		NamePrefix: namePrefix,
 		NameSuffix: nameSuffix,
 		Images:     v1alpha1.KustomizeImages{"nginx:1.15.5"},
 		CommonLabels: map[string]string{
-			"app.kubernetes.io/managed-by": "argo-cd",
+			"app.kubernetes.io/managed-by": "cd",
 			"app.kubernetes.io/part-of":    "${CD_APP_NAME}",
 		},
 		CommonAnnotations: map[string]string{
-			"app.kubernetes.io/managed-by": "argo-cd",
+			"app.kubernetes.io/managed-by": "cd",
 			"app.kubernetes.io/part-of":    "${CD_APP_NAME}",
 		},
 		Namespace:                 namespace,
@@ -87,12 +87,12 @@ func TestKustomizeBuild(t *testing.T) {
 		case "StatefulSet":
 			assert.Equal(t, namePrefix+"web"+nameSuffix, obj.GetName())
 			assert.Equal(t, map[string]string{
-				"app.kubernetes.io/managed-by": "argo-cd",
-				"app.kubernetes.io/part-of":    "argo-cd-tests",
+				"app.kubernetes.io/managed-by": "cd",
+				"app.kubernetes.io/part-of":    "cd-tests",
 			}, obj.GetLabels())
 			assert.Equal(t, map[string]string{
-				"app.kubernetes.io/managed-by": "argo-cd",
-				"app.kubernetes.io/part-of":    "argo-cd-tests",
+				"app.kubernetes.io/managed-by": "cd",
+				"app.kubernetes.io/part-of":    "cd-tests",
 			}, obj.GetAnnotations())
 			replicas, ok, err := unstructured.NestedInt64(obj.Object, "spec", "replicas")
 			require.NoError(t, err)
@@ -103,12 +103,12 @@ func TestKustomizeBuild(t *testing.T) {
 			assert.Equal(t, namePrefix+"nginx-deployment"+nameSuffix, obj.GetName())
 			assert.Equal(t, map[string]string{
 				"app":                          "nginx",
-				"app.kubernetes.io/managed-by": "argo-cd",
-				"app.kubernetes.io/part-of":    "argo-cd-tests",
+				"app.kubernetes.io/managed-by": "cd",
+				"app.kubernetes.io/part-of":    "cd-tests",
 			}, obj.GetLabels())
 			assert.Equal(t, map[string]string{
-				"app.kubernetes.io/managed-by": "argo-cd",
-				"app.kubernetes.io/part-of":    "argo-cd-tests",
+				"app.kubernetes.io/managed-by": "cd",
+				"app.kubernetes.io/part-of":    "cd-tests",
 			}, obj.GetAnnotations())
 			replicas, ok, err := unstructured.NestedInt64(obj.Object, "spec", "replicas")
 			require.NoError(t, err)
@@ -208,12 +208,12 @@ func TestKustomizeBuildForceCommonLabels(t *testing.T) {
 			ExpectedLabels: map[string]string{
 				"app":  "nginx",
 				"foo":  "edited",
-				"test": "argo-cd-tests",
+				"test": "cd-tests",
 			},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -229,7 +229,7 @@ func TestKustomizeBuildForceCommonLabels(t *testing.T) {
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -280,7 +280,7 @@ func TestKustomizeBuildForceCommonAnnotations(t *testing.T) {
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -299,12 +299,12 @@ func TestKustomizeBuildForceCommonAnnotations(t *testing.T) {
 				"baz":   "quux",
 				"one":   "edited",
 				"two":   "",
-				"three": "argo-cd-tests",
+				"three": "cd-tests",
 			},
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -321,7 +321,7 @@ func TestKustomizeBuildForceCommonAnnotations(t *testing.T) {
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -368,7 +368,7 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -387,7 +387,7 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -406,7 +406,7 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -426,7 +426,7 @@ func TestKustomizeLabelWithoutSelector(t *testing.T) {
 			Env: &v1alpha1.Env{
 				&v1alpha1.EnvEntry{
 					Name:  "CD_APP_NAME",
-					Value: "argo-cd-tests",
+					Value: "cd-tests",
 				},
 			},
 		},
@@ -470,7 +470,7 @@ func TestKustomizeCustomVersion(t *testing.T) {
 		Version: "special",
 	}
 	env := &v1alpha1.Env{
-		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: "argo-cd-tests"},
+		&v1alpha1.EnvEntry{Name: "CD_APP_NAME", Value: "cd-tests"},
 	}
 	objs, images, _, err := kustomize.Build(&kustomizeSource, nil, env, nil)
 	require.NoError(t, err)
@@ -481,7 +481,7 @@ func TestKustomizeCustomVersion(t *testing.T) {
 
 	content, err := os.ReadFile(envOutputFile)
 	require.NoError(t, err)
-	assert.Equal(t, "CD_APP_NAME=argo-cd-tests\n", string(content))
+	assert.Equal(t, "CD_APP_NAME=cd-tests\n", string(content))
 }
 
 func TestKustomizeBuildComponents(t *testing.T) {

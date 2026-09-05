@@ -9,7 +9,7 @@ import (
 
 var index = Index{
 	Entries: map[string]Entries{
-		"argo-cd": {
+		"cd": {
 			{Version: "~0.7.3"},
 			{Version: "0.7.1"},
 			{Version: "0.5.4"},
@@ -32,8 +32,8 @@ func TestIndex_GetEntries(t *testing.T) {
 	})
 	t.Run("Found", func(t *testing.T) {
 		t.Parallel()
-		ts, err := index.GetEntries("argo-cd")
+		ts, err := index.GetEntries("cd")
 		require.NoError(t, err)
-		assert.Len(t, ts, len(index.Entries["argo-cd"]))
+		assert.Len(t, ts, len(index.Entries["cd"]))
 	})
 }
