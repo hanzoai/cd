@@ -52,24 +52,24 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var tokenString string
 	var oidcConfig *settings.OIDCConfig
 
-	argoCDSettings, err := h.settingsMgr.GetSettings()
+	cdSettings, err := h.settingsMgr.GetSettings()
 	if err != nil {
-		http.Error(w, "Failed to retrieve argoCD settings: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to retrieve Hanzo CD settings: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	argoURL, err := argoCDSettings.ArgoURLForRequest(r)
+	cdURL, err := cdSettings.URLForRequest(r)
 	if err != nil {
 		log.Warnf("unable to find Hanzo CD URL from config: %v", err)
 	}
-	if argoURL == "" {
+	if cdURL == "" {
 		// golang does not provide any easy way to determine scheme of current request
 		// so redirecting ot http which will auto-redirect too https if necessary
 		host := strings.TrimRight(r.Host, "/")
-		argoURL = "http://" + host + "/" + strings.TrimRight(strings.TrimLeft(h.rootPath, "/"), "/")
+		cdURL = "http://" + host + "/" + strings.TrimRight(strings.TrimLeft(h.rootPath, "/"), "/")
 	}
 
-	logoutRedirectURL := strings.TrimRight(strings.TrimLeft(argoURL, "/"), "/")
+	logoutRedirectURL := strings.TrimRight(strings.TrimLeft(cdURL, "/"), "/")
 
 	cookies := r.Cookies()
 	tokenString, err = httputil.JoinCookies(common.AuthCookieName, cookies)
@@ -130,10 +130,10 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if argoCDSettings.OIDCConfig() == nil || argoCDSettings.OIDCConfig().LogoutURL == "" || issuer == session.SessionManagerClaimsIssuer {
+	if cdSettings.OIDCConfig() == nil || cdSettings.OIDCConfig().LogoutURL == "" || issuer == session.SessionManagerClaimsIssuer {
 		http.Redirect(w, r, logoutRedirectURL, http.StatusSeeOther)
 	} else {
-		oidcConfig = argoCDSettings.OIDCConfig()
+		oidcConfig = cdSettings.OIDCConfig()
 		logoutURL := constructLogoutURL(oidcConfig.LogoutURL, tokenString, logoutRedirectURL)
 		http.Redirect(w, r, logoutURL, http.StatusSeeOther)
 	}

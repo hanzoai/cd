@@ -140,10 +140,10 @@ connectors:
     orgs:
     - name: your-github-org
 staticClients:
-- id: argo-workflow
-  name: Argo Workflow
+- id: other-app
+  name: Other App
   redirectURIs:
-  - https://argo/oauth2/callback
+  - https://other-app.example.com/oauth2/callback
   secret:  $dex.acme.clientSecret
 `
 
@@ -254,7 +254,7 @@ connectors:
   name: Some OIDC Provider
   config:
     issuer: https://accounts.example.com
-    clientID: argo-cd
+    clientID: cd
     clientSecret: $dex.oidc.clientSecret
     redirectURI: http://localhost/callback
     scopes:
@@ -509,7 +509,7 @@ func Test_GenerateDexConfig(t *testing.T) {
 		assert.Len(t, clients, 4)
 
 		customClient := clients[3].(map[string]any)
-		assert.Equal(t, "argo-workflow", customClient["id"].(string))
+		assert.Equal(t, "other-app", customClient["id"].(string))
 		assert.Len(t, customClient["redirectURIs"].([]any), 1)
 	})
 	t.Run("Custom static clients secret dereference with trailing CRLF", func(t *testing.T) {
@@ -686,7 +686,7 @@ func Test_GenerateDexConfigYAML(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			config, err := GenerateDexConfigYAML(argoCDSettings(tc.dexConfig, tc.secrets), false)
+			config, err := GenerateDexConfigYAML(testSettings(tc.dexConfig, tc.secrets), false)
 			require.NoError(t, err)
 			require.NotNil(t, config)
 
@@ -700,7 +700,7 @@ func Test_GenerateDexConfigYAML(t *testing.T) {
 	}
 
 	t.Run("top-level issuer is NOT escaped even if it contained a dollar sign", func(t *testing.T) {
-		config, err := GenerateDexConfigYAML(argoCDSettings(goodDexConfigLDAPWithDollarSign,
+		config, err := GenerateDexConfigYAML(testSettings(goodDexConfigLDAPWithDollarSign,
 			map[string]string{"dex.ldap.bindPW": "test$test"}), false)
 		require.NoError(t, err)
 		var dexCfg map[string]any
@@ -709,7 +709,7 @@ func Test_GenerateDexConfigYAML(t *testing.T) {
 	})
 }
 
-func argoCDSettings(dexConfig string, secrets map[string]string) *settings.Settings {
+func testSettings(dexConfig string, secrets map[string]string) *settings.Settings {
 	return &settings.Settings{
 		URL:       "http://localhost",
 		DexConfig: dexConfig,
