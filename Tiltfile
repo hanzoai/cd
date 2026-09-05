@@ -36,7 +36,7 @@ cluster_version = decode_yaml(local('kubectl version -o yaml'))
 platform = cluster_version['serverVersion']['platform']
 arch = platform.split('/')[1]
 
-# build the argocd binary on code changes
+# build the cd binary on code changes
 code_deps = [
     'applicationset',
     'cmd',
@@ -54,18 +54,18 @@ code_deps = [
 ]
 local_resource(
     'build',
-    'CGO_ENABLED=0 GOOS=linux GOARCH=' + arch + ' go build -gcflags="all=-N -l" -mod=readonly -o .tilt-bin/argocd_linux cmd/main.go',
+    'CGO_ENABLED=0 GOOS=linux GOARCH=' + arch + ' go build -gcflags="all=-N -l" -mod=readonly -o .tilt-bin/cd_linux cmd/main.go',
     deps = code_deps,
     ignore = ['**/*_test.go'],
     allow_parallel=True,
 )
 
-# deploy the argocd manifests
+# deploy the manifests
 k8s_yaml(kustomize('manifests/dev-tilt'))
 
 # build dev image
 docker_build_with_restart(
-    'quay.io/argoproj/argocd:latest', 
+    'ghcr.io/hanzoai/cd:latest', 
     context='.',
     dockerfile='Dockerfile.tilt',
     entrypoint=[
@@ -82,7 +82,7 @@ docker_build_with_restart(
     ],
     platform=platform,
     live_update=[
-        sync('.tilt-bin/argocd_linux', '/usr/local/bin/argocd'),
+        sync('.tilt-bin/cd_linux', '/usr/local/bin/cd'),
     ],
     only=[
         '.tilt-bin',
@@ -92,9 +92,9 @@ docker_build_with_restart(
     restart_file='/tilt/.restart-proc'
 )
 
-# build image for argocd-cli jobs
+# build image for cli jobs
 docker_build(
-    'argocd-job', 
+    'hanzocd-job', 
     context='.',
     dockerfile='Dockerfile.tilt',
     platform=platform,
@@ -105,23 +105,23 @@ docker_build(
     ]
 )
 
-# track argocd-server resources and port forward
+# track server resources and port forward
 k8s_resource(
-    workload='argocd-server',
+    workload='hanzocd-server',
     objects=[
-        'argocd-server:serviceaccount',
-        'argocd-server:role',
-        'argocd-server:rolebinding',
-        'argocd-cm:configmap',
-        'argocd-cmd-params-cm:configmap',
-        'argocd-gpg-keys-cm:configmap',
-        'argocd-rbac-cm:configmap',
-        'argocd-ssh-known-hosts-cm:configmap',
-        'argocd-tls-certs-cm:configmap',
-        'argocd-secret:secret',
-        'argocd-server-network-policy:networkpolicy',
-        'argocd-server:clusterrolebinding',
-        'argocd-server:clusterrole',
+        'hanzocd-server:serviceaccount',
+        'hanzocd-server:role',
+        'hanzocd-server:rolebinding',
+        'hanzocd-cm:configmap',
+        'hanzocd-cmd-params-cm:configmap',
+        'hanzocd-gpg-keys-cm:configmap',
+        'hanzocd-rbac-cm:configmap',
+        'hanzocd-ssh-known-hosts-cm:configmap',
+        'hanzocd-tls-certs-cm:configmap',
+        'hanzocd-secret:secret',
+        'hanzocd-server-network-policy:networkpolicy',
+        'hanzocd-server:clusterrolebinding',
+        'hanzocd-server:clusterrole',
     ],
     port_forwards=[
         '8080:8080',
@@ -135,19 +135,19 @@ k8s_resource(
 k8s_resource(
     new_name='cluster-resources',
     objects=[
-        'applications.argoproj.io:customresourcedefinition',
-        'applicationsets.argoproj.io:customresourcedefinition',
-        'appprojects.argoproj.io:customresourcedefinition',
-        'argocd:namespace'
+        'applications.hanzoai.io:customresourcedefinition',
+        'applicationsets.hanzoai.io:customresourcedefinition',
+        'appprojects.hanzoai.io:customresourcedefinition',
+        'cd:namespace'
     ]
 )
 
-# track argocd-repo-server resources and port forward
+# track hanzocd-repo-server resources and port forward
 k8s_resource(
-    workload='argocd-repo-server',
+    workload='hanzocd-repo-server',
     objects=[
-        'argocd-repo-server:serviceaccount',
-        'argocd-repo-server-network-policy:networkpolicy',
+        'hanzocd-repo-server:serviceaccount',
+        'hanzocd-repo-server-network-policy:networkpolicy',
     ],
     port_forwards=[
         '8081:8081',
@@ -157,14 +157,14 @@ k8s_resource(
     resource_deps=['build']
 )
 
-# track argocd-redis resources and port forward
+# track hanzocd-redis resources and port forward
 k8s_resource(
-    workload='argocd-redis',
+    workload='hanzocd-redis',
     objects=[
-        'argocd-redis:serviceaccount',
-        'argocd-redis:role',
-        'argocd-redis:rolebinding',
-        'argocd-redis-network-policy:networkpolicy',
+        'hanzocd-redis:serviceaccount',
+        'hanzocd-redis:role',
+        'hanzocd-redis:rolebinding',
+        'hanzocd-redis-network-policy:networkpolicy',
     ],
     port_forwards=[
         '6379:6379',
@@ -172,16 +172,16 @@ k8s_resource(
     resource_deps=['build']
 )
 
-# track argocd-applicationset-controller resources
+# track hanzocd-applicationset-controller resources
 k8s_resource(
-    workload='argocd-applicationset-controller',
+    workload='hanzocd-applicationset-controller',
     objects=[
-        'argocd-applicationset-controller:serviceaccount',
-        'argocd-applicationset-controller-network-policy:networkpolicy',
-        'argocd-applicationset-controller:role',
-        'argocd-applicationset-controller:rolebinding',
-        'argocd-applicationset-controller:clusterrolebinding',
-        'argocd-applicationset-controller:clusterrole',
+        'hanzocd-applicationset-controller:serviceaccount',
+        'hanzocd-applicationset-controller-network-policy:networkpolicy',
+        'hanzocd-applicationset-controller:role',
+        'hanzocd-applicationset-controller:rolebinding',
+        'hanzocd-applicationset-controller:clusterrolebinding',
+        'hanzocd-applicationset-controller:clusterrole',
     ],
     port_forwards=[
         '9347:2345',
@@ -191,16 +191,16 @@ k8s_resource(
     resource_deps=['build']
 )
 
-# track argocd-application-controller resources
+# track hanzocd-application-controller resources
 k8s_resource(
-    workload='argocd-application-controller',
+    workload='hanzocd-application-controller',
     objects=[
-        'argocd-application-controller:serviceaccount',
-        'argocd-application-controller-network-policy:networkpolicy',
-        'argocd-application-controller:role',
-        'argocd-application-controller:rolebinding',
-        'argocd-application-controller:clusterrolebinding',
-        'argocd-application-controller:clusterrole',
+        'hanzocd-application-controller:serviceaccount',
+        'hanzocd-application-controller-network-policy:networkpolicy',
+        'hanzocd-application-controller:role',
+        'hanzocd-application-controller:rolebinding',
+        'hanzocd-application-controller:clusterrolebinding',
+        'hanzocd-application-controller:clusterrole',
     ],
     port_forwards=[
         '9348:2345',
@@ -209,16 +209,16 @@ k8s_resource(
     resource_deps=['build']
 )
 
-# track argocd-notifications-controller resources
+# track hanzocd-notifications-controller resources
 k8s_resource(
-    workload='argocd-notifications-controller',
+    workload='hanzocd-notifications-controller',
     objects=[
-        'argocd-notifications-controller:serviceaccount',
-        'argocd-notifications-controller-network-policy:networkpolicy',
-        'argocd-notifications-controller:role',
-        'argocd-notifications-controller:rolebinding',
-        'argocd-notifications-cm:configmap',
-        'argocd-notifications-secret:secret',
+        'hanzocd-notifications-controller:serviceaccount',
+        'hanzocd-notifications-controller-network-policy:networkpolicy',
+        'hanzocd-notifications-controller:role',
+        'hanzocd-notifications-controller:rolebinding',
+        'hanzocd-notifications-cm:configmap',
+        'hanzocd-notifications-secret:secret',
     ],
     port_forwards=[
         '9349:2345',
@@ -227,24 +227,24 @@ k8s_resource(
     resource_deps=['build']
 )
 
-# track argocd-dex-server resources
+# track hanzocd-dex-server resources
 k8s_resource(
-    workload='argocd-dex-server',
+    workload='hanzocd-dex-server',
     objects=[
-        'argocd-dex-server:serviceaccount',
-        'argocd-dex-server-network-policy:networkpolicy',
-        'argocd-dex-server:role',
-        'argocd-dex-server:rolebinding',
+        'hanzocd-dex-server:serviceaccount',
+        'hanzocd-dex-server-network-policy:networkpolicy',
+        'hanzocd-dex-server:role',
+        'hanzocd-dex-server:rolebinding',
     ],
     resource_deps=['build']
 )
 
-# track argocd-commit-server resources
+# track hanzocd-commit-server resources
 k8s_resource(
-    workload='argocd-commit-server',
+    workload='hanzocd-commit-server',
     objects=[
-        'argocd-commit-server:serviceaccount',
-        'argocd-commit-server-network-policy:networkpolicy',
+        'hanzocd-commit-server:serviceaccount',
+        'hanzocd-commit-server-network-policy:networkpolicy',
     ],
     port_forwards=[
         '9350:2345',
@@ -268,7 +268,7 @@ local_resource(
 
 # docker for ui
 docker_build(
-    'argocd-ui',
+    'hanzocd-ui',
     context='.',
     dockerfile='Dockerfile.ui.tilt',
     entrypoint=['sh', '-c', 'cd /app/ui && pnpm start'],
@@ -279,9 +279,9 @@ docker_build(
     ],
 )
 
-# track argocd-ui resources and port forward
+# track hanzocd-ui resources and port forward
 k8s_resource(
-    workload='argocd-ui',
+    workload='hanzocd-ui',
     port_forwards=[
         '4000:4000',
     ],

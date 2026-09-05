@@ -689,18 +689,6 @@ applicationset-controller:
 checksums:
 	sha256sum ./dist/$(BIN_NAME)-* | awk -F './dist/' '{print $$1 $$2}' > ./dist/$(BIN_NAME)-$(TARGET_VERSION)-checksums.txt
 
-.PHONY: snyk-container-tests
-snyk-container-tests:
-	./hack/snyk-container-tests.sh
-
-.PHONY: snyk-non-container-tests
-snyk-non-container-tests:
-	./hack/snyk-non-container-tests.sh
-
-.PHONY: snyk-report
-snyk-report:
-	./hack/snyk-report.sh $(target_branch)
-
 .PHONY: help
 help:
 	@echo 'Note: Generally an item w/ (-local) will run inside docker unless you use the -local variant'
