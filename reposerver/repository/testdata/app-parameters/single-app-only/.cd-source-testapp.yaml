@@ -1,3 +1,3 @@
 kustomize:
   images:
-    - quay.io/argoprojlabs/cd-e2e-container:0.3
+    - ghcr.io/hanzoai/cd-e2e-container:0.3

@@ -1468,7 +1468,7 @@ func TestGenerateHelmWithURL(t *testing.T) {
 		ApplicationSource: &v1alpha1.ApplicationSource{
 			Path: ".",
 			Helm: &v1alpha1.ApplicationSourceHelm{
-				ValueFiles:   []string{"https://raw.githubusercontent.com/argoproj/example-apps/master/helm-guestbook/values.yaml"},
+				ValueFiles:   []string{"https://raw.githubusercontent.com/hanzocd/example-apps/master/helm-guestbook/values.yaml"},
 				ValuesObject: &runtime.RawExtension{Raw: []byte(`cluster: {slaveCount: 2}`)},
 			},
 		},
@@ -2129,7 +2129,7 @@ func TestGetAppDetailsWithAppParameterFile(t *testing.T) {
 				},
 			})
 			require.NoError(t, err)
-			assert.Equal(t, []string{"quay.io/argoprojlabs/cd-e2e-container:0.2"}, details.Kustomize.Images)
+			assert.Equal(t, []string{"ghcr.io/hanzoai/cd-e2e-container:0.2"}, details.Kustomize.Images)
 		})
 	})
 	t.Run("No app specific override", func(t *testing.T) {
@@ -2144,7 +2144,7 @@ func TestGetAppDetailsWithAppParameterFile(t *testing.T) {
 				AppName: "testapp",
 			})
 			require.NoError(t, err)
-			assert.Equal(t, []string{"quay.io/argoprojlabs/cd-e2e-container:0.2"}, details.Kustomize.Images)
+			assert.Equal(t, []string{"ghcr.io/hanzoai/cd-e2e-container:0.2"}, details.Kustomize.Images)
 		})
 	})
 	t.Run("Only app specific override", func(t *testing.T) {
@@ -2159,7 +2159,7 @@ func TestGetAppDetailsWithAppParameterFile(t *testing.T) {
 				AppName: "testapp",
 			})
 			require.NoError(t, err)
-			assert.Equal(t, []string{"quay.io/argoprojlabs/cd-e2e-container:0.3"}, details.Kustomize.Images)
+			assert.Equal(t, []string{"ghcr.io/hanzoai/cd-e2e-container:0.3"}, details.Kustomize.Images)
 		})
 	})
 	t.Run("App specific override", func(t *testing.T) {
@@ -2174,7 +2174,7 @@ func TestGetAppDetailsWithAppParameterFile(t *testing.T) {
 				AppName: "testapp",
 			})
 			require.NoError(t, err)
-			assert.Equal(t, []string{"quay.io/argoprojlabs/cd-e2e-container:0.3"}, details.Kustomize.Images)
+			assert.Equal(t, []string{"ghcr.io/hanzoai/cd-e2e-container:0.3"}, details.Kustomize.Images)
 		})
 	})
 	t.Run("App specific overrides containing non-mergeable field", func(t *testing.T) {
@@ -2189,7 +2189,7 @@ func TestGetAppDetailsWithAppParameterFile(t *testing.T) {
 				AppName: "unmergeable",
 			})
 			require.NoError(t, err)
-			assert.Equal(t, []string{"quay.io/argoprojlabs/cd-e2e-container:0.3"}, details.Kustomize.Images)
+			assert.Equal(t, []string{"ghcr.io/hanzoai/cd-e2e-container:0.3"}, details.Kustomize.Images)
 		})
 	})
 	t.Run("Broken app-specific overrides", func(t *testing.T) {
@@ -2261,7 +2261,7 @@ func TestGenerateManifestsWithAppParameterFile(t *testing.T) {
 			require.True(t, ok)
 			image, ok, _ := unstructured.NestedString(containers[0].(map[string]any), "image")
 			require.True(t, ok)
-			assert.Equal(t, "quay.io/argoprojlabs/cd-e2e-container:0.2", image)
+			assert.Equal(t, "ghcr.io/hanzoai/cd-e2e-container:0.2", image)
 		})
 	})
 
@@ -2291,7 +2291,7 @@ func TestGenerateManifestsWithAppParameterFile(t *testing.T) {
 			require.True(t, ok)
 			image, ok, _ := unstructured.NestedString(containers[0].(map[string]any), "image")
 			require.True(t, ok)
-			assert.Equal(t, "quay.io/argoprojlabs/cd-e2e-container:0.2", image)
+			assert.Equal(t, "ghcr.io/hanzoai/cd-e2e-container:0.2", image)
 		})
 	})
 
@@ -2322,7 +2322,7 @@ func TestGenerateManifestsWithAppParameterFile(t *testing.T) {
 			require.True(t, ok)
 			image, ok, _ := unstructured.NestedString(containers[0].(map[string]any), "image")
 			require.True(t, ok)
-			assert.Equal(t, "quay.io/argoprojlabs/cd-e2e-container:0.3", image)
+			assert.Equal(t, "ghcr.io/hanzoai/cd-e2e-container:0.3", image)
 		})
 	})
 
@@ -2375,7 +2375,7 @@ func TestGenerateManifestsWithAppParameterFile(t *testing.T) {
 			require.True(t, ok)
 			image, ok, _ := unstructured.NestedString(containers[0].(map[string]any), "image")
 			require.True(t, ok)
-			assert.Equal(t, "quay.io/argoprojlabs/cd-e2e-container:0.1", image)
+			assert.Equal(t, "ghcr.io/hanzoai/cd-e2e-container:0.1", image)
 		})
 	})
 
@@ -3321,7 +3321,7 @@ func TestInit(t *testing.T) {
 	})
 
 	repoPath := path.Join(dir, "repo1")
-	initGitRepo(t, newGitRepoOptions{path: repoPath, remote: "https://github.com/argo-cd/test-repo1", createPath: true, addEmptyCommit: false})
+	initGitRepo(t, newGitRepoOptions{path: repoPath, remote: "https://github.com/hanzoai/cd-test-repo1", createPath: true, addEmptyCommit: false})
 
 	service := newService(t, ".")
 	service.rootDir = dir
@@ -3330,7 +3330,7 @@ func TestInit(t *testing.T) {
 
 	_, err := os.ReadDir(dir)
 	require.Error(t, err)
-	initGitRepo(t, newGitRepoOptions{path: path.Join(dir, "repo2"), remote: "https://github.com/argo-cd/test-repo2", createPath: true, addEmptyCommit: false})
+	initGitRepo(t, newGitRepoOptions{path: path.Join(dir, "repo2"), remote: "https://github.com/hanzoai/cd-test-repo2", createPath: true, addEmptyCommit: false})
 }
 
 // TestCheckoutRevisionCanGetNonstandardRefs shows that we can fetch a revision that points to a non-standard ref. In

@@ -580,7 +580,7 @@ func newMTLSServer(t *testing.T, clientCAs *x509.CertPool) *mTLSServerFixture {
 
 	serverCert, err := utilstls.GenerateX509KeyPair(utilstls.CertOptions{
 		Hosts:        []string{"localhost", "127.0.0.1"},
-		Organization: "Argo CD Integration Test Server",
+		Organization: "Hanzo CD Integration Test Server",
 		IsCA:         false,
 		ECDSACurve:   "P256",
 		ValidFor:     time.Hour,
@@ -626,7 +626,7 @@ func generateClientCA(t *testing.T, cn string) (*tls.Certificate, *x509.Certific
 	t.Helper()
 	cert, err := utilstls.GenerateX509KeyPair(utilstls.CertOptions{
 		Hosts:        []string{cn},
-		Organization: "Argo CD Integration Test",
+		Organization: "Hanzo CD Integration Test",
 		IsCA:         true,
 		ECDSACurve:   "P256",
 		ValidFor:     time.Hour,

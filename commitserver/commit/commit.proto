@@ -22,7 +22,7 @@ message CommitHydratedManifestsRequest {
   github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1.RevisionMetadata dryCommitMetadata = 7;
   // AuthorName is the author name to use for the commit. If empty, defaults to "Hanzo CD".
   string authorName = 8;
-  // AuthorEmail is the author email to use for the commit. If empty, defaults to "argo-cd@example.com".
+  // AuthorEmail is the author email to use for the commit. If empty, defaults to "cd@example.com".
   string authorEmail = 9;
   // ReadmeMessage is the message content for README template updates.
   string readmeMessage = 10;

@@ -119,7 +119,7 @@ Argocd-reference-commit-sha: abc123
 	assert.Equal(t, drySha, topMetadata.DrySHA)
 	assert.Equal(t, metadata.Author, topMetadata.Author)
 	assert.Equal(t, "test-message", topMetadata.Subject)
-	// The body should exclude the Argocd- trailers.
+	// The body should exclude the reference-commit-sha trailer.
 	assert.Equal(t, "Signed-off-by: Test User <test@example.com>\n", topMetadata.Body)
 	assert.Equal(t, metadata.Date.Format(time.RFC3339), topMetadata.Date)
 	assert.Equal(t, metadata.References, topMetadata.References)
@@ -225,7 +225,7 @@ Argocd-reference-commit-sha: abc123
 	assert.Equal(t, drySha, topMetadata.DrySHA)
 	assert.Equal(t, metadata.Author, topMetadata.Author)
 	assert.Equal(t, "test-message", topMetadata.Subject)
-	// The body should exclude the Argocd- trailers.
+	// The body should exclude the reference-commit-sha trailer.
 	assert.Equal(t, "Signed-off-by: Test User <test@example.com>\n", topMetadata.Body)
 	assert.Equal(t, metadata.Date.Format(time.RFC3339), topMetadata.Date)
 	assert.Equal(t, metadata.References, topMetadata.References)
