@@ -20,13 +20,13 @@ command to upgrade Hanzo CD. Make sure to replace `<version>` with the required 
 **Non-HA**:
 
 ```bash
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/<version>/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/<version>/manifests/install.yaml
 ```
 
 **HA**:
 
 ```bash
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/<version>/manifests/ha/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/<version>/manifests/ha/install.yaml
 ```
 
 > [!NOTE]

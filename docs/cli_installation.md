@@ -42,7 +42,7 @@ rm cd-linux-amd64
 You can download the latest stable release by executing below steps:
 
 ```bash
-VERSION=$(curl -L -s https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION)
+VERSION=$(curl -L -s https://raw.githubusercontent.com/hanzoai/cd/main/VERSION)
 curl -sSL -o cd-linux-amd64 https://github.com/hanzoai/cd/releases/download/v$VERSION/cd-linux-amd64
 sudo install -m 555 cd-linux-amd64 /usr/local/bin/cd
 rm cd-linux-amd64

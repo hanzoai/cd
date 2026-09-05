@@ -58,7 +58,7 @@ Example:
 ```
 export CD_VERSION=<desired argo cd release version (e.g. v2.7.0)>
 kubectl create namespace cd
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/$CD_VERSION/manifests/core-install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/$CD_VERSION/manifests/core-install.yaml
 ```
 
 ## Using

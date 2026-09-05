@@ -80,7 +80,7 @@ kind: Kustomization
 
 namespace: cd
 resources:
-- https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+- https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml
 ```
 
 For an example of this, see the [kustomization.yaml](https://github.com/argoproj/argoproj-deployments/blob/master/cd/kustomization.yaml)
@@ -96,7 +96,7 @@ kind: Kustomization
 
 namespace: <your-custom-namespace>
 resources:
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml
 
 
 patches:

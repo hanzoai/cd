@@ -549,7 +549,7 @@ You can put Hanzo CD behind Istio using the following configuration. This exampl
 First we need to make sure that we can run Hanzo CD with subpath (i.e. /cd). For this we have used install.yaml from cd project as is
 
 ```bash
-curl -kLs -o install.yaml https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+curl -kLs -o install.yaml https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml
 ```
 
 Save the following file as `kustomization.yaml`:
