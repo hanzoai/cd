@@ -141,7 +141,7 @@ func TestSanitizedRepository(t *testing.T) {
 	repo := &Repository{
 		Repo:                              "https://github.com/hanzoai/cd.git",
 		Type:                              "git",
-		Name:                              "argo-cd",
+		Name:                              "cd",
 		Username:                          "admin",
 		Password:                          "super-secret-password",
 		SSHPrivateKey:                     "-----BEGIN RSA PRIVATE KEY-----",
