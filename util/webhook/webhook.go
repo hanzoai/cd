@@ -106,7 +106,7 @@ type Handler struct {
 	webhookRefreshJitterThreshold int
 }
 
-func NewHandler(namespace string, applicationNamespaces []string, webhookParallelism int, webhookRefreshWorkers int, appClientset appclientset.Interface, appsLister alpha1.ApplicationLister, set *settings.Settings, settingsSrc settingsSource, repoCache *cache.Cache, serverCache *servercache.Cache, argoDB db.DB, maxWebhookPayloadSizeB int64, webhookRefreshJitter time.Duration, webhookRefreshJitterThreshold int) *Handler {
+func NewHandler(namespace string, applicationNamespaces []string, webhookParallelism int, webhookRefreshWorkers int, appClientset appclientset.Interface, appsLister alpha1.ApplicationLister, set *settings.Settings, settingsSrc settingsSource, repoCache *cache.Cache, serverCache *servercache.Cache, appDB db.DB, maxWebhookPayloadSizeB int64, webhookRefreshJitter time.Duration, webhookRefreshJitterThreshold int) *Handler {
 	githubWebhook, err := github.New(github.Options.Secret(set.GetWebhookGitHubSecret()))
 	if err != nil {
 		log.Warnf("Unable to init the GitHub webhook")
@@ -167,7 +167,7 @@ func NewHandler(namespace string, applicationNamespaces []string, webhookParalle
 		repoCache:                     repoCache,
 		serverCache:                   serverCache,
 		settings:                      set,
-		db:                            argoDB,
+		db:                            appDB,
 		queue:                         make(chan any, payloadQueueSize),
 		refreshQueue:                  workqueue.NewTypedDelayingQueue[*appRefreshRequest](),
 		maxWebhookPayloadSizeB:        maxWebhookPayloadSizeB,
@@ -309,19 +309,19 @@ func (a *Handler) affectedRevisionInfo(payloadIf any) (webURLs []string, revisio
 		if a.settings.GetWebhookBitbucketUUID() != "" {
 			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()
-			argoRepo, err := a.lookupRepository(ctx, webURLs[0])
+			repo, err := a.lookupRepository(ctx, webURLs[0])
 			if err != nil {
 				log.Warnf("error trying to find a matching repo for URL %s: %v", payload.Repository.Links.HTML.Href, err)
 				break
 			}
-			if argoRepo == nil {
+			if repo == nil {
 				// it could be a public repository with no repo creds stored.
 				// initialize with empty bearer token to use the no auth bitbucket client.
 				log.Debugf("no bitbucket repository configured for URL %s, initializing with empty bearer token", webURLs[0])
-				argoRepo = &v1alpha1.Repository{BearerToken: "", Repo: webURLs[0]}
+				repo = &v1alpha1.Repository{BearerToken: "", Repo: webURLs[0]}
 			}
 			apiBaseURL := strings.ReplaceAll(payload.Repository.Links.Self.Href, "/repositories/"+payload.Repository.FullName, "")
-			bbClient, err := newBitbucketClient(ctx, argoRepo, apiBaseURL)
+			bbClient, err := newBitbucketClient(ctx, repo, apiBaseURL)
 			if err != nil {
 				log.Warnf("error creating Bitbucket client for repo %s: %v", payload.Repository.Name, err)
 				break
