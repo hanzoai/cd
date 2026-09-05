@@ -42,7 +42,7 @@ func newTestSyncCtx(getResourceFunc *func(ctx context.Context, config *rest.Conf
 	sc := syncContext{
 		config:    &rest.Config{},
 		rawConfig: &rest.Config{},
-		namespace: testingutils.FakeArgoCDNamespace,
+		namespace: testingutils.FakeNamespace,
 		revision:  "FooBarBaz",
 		disco:     &fakedisco.FakeDiscovery{Fake: &testcore.Fake{Resources: testingutils.StaticAPIResources}},
 		log:       textlogger.NewLogger(textlogger.NewConfig()).WithValues("application", "fake-app"),
@@ -115,7 +115,7 @@ func TestSyncNamespaceCreatedBeforeDryRunWithoutFailure(t *testing.T) {
 
 	ns := &unstructured.Unstructured{}
 	ns.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
-	ns.SetName(testingutils.FakeArgoCDNamespace)
+	ns.SetName(testingutils.FakeNamespace)
 
 	fakeDynamicClient := fake.NewSimpleDynamicClient(runtime.NewScheme())
 	fakeDynamicClient.PrependReactor("get", "namespaces", func(action testcore.Action) (bool, runtime.Object, error) {
@@ -290,7 +290,7 @@ func TestSyncSuccessfully(t *testing.T) {
 		})))
 
 	pod := testingutils.NewPod()
-	pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod.SetNamespace(testingutils.FakeNamespace)
 	syncCtx.resources = groupResources(ReconciliationResult{
 		Live:   []*unstructured.Unstructured{nil, pod},
 		Target: []*unstructured.Unstructured{newSvc, nil},
@@ -320,11 +320,11 @@ func TestSyncSuccessfully(t *testing.T) {
 
 func TestSyncSuccessfully_Multistep(t *testing.T) {
 	newSvc := testingutils.NewService()
-	newSvc.SetNamespace(testingutils.FakeArgoCDNamespace)
+	newSvc.SetNamespace(testingutils.FakeNamespace)
 	testingutils.Annotate(newSvc, synccommon.AnnotationSyncWave, "0")
 
 	newSvc2 := testingutils.NewService()
-	newSvc.SetNamespace(testingutils.FakeArgoCDNamespace)
+	newSvc.SetNamespace(testingutils.FakeNamespace)
 	newSvc2.SetName("new-svc-2")
 	testingutils.Annotate(newSvc2, synccommon.AnnotationSyncWave, "5")
 
@@ -459,9 +459,9 @@ func TestSync_MultistepResourceDeletionMidstep(t *testing.T) {
 func TestSyncDeleteSuccessfully(t *testing.T) {
 	syncCtx := newTestSyncCtx(nil, WithOperationSettings(false, true, false, false))
 	svc := testingutils.NewService()
-	svc.SetNamespace(testingutils.FakeArgoCDNamespace)
+	svc.SetNamespace(testingutils.FakeNamespace)
 	pod := testingutils.NewPod()
-	pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod.SetNamespace(testingutils.FakeNamespace)
 	syncCtx.resources = groupResources(ReconciliationResult{
 		Live:   []*unstructured.Unstructured{svc, pod},
 		Target: []*unstructured.Unstructured{nil, nil},
@@ -723,7 +723,7 @@ func TestSyncPruneFailure(t *testing.T) {
 	syncCtx.resourceOps = &mockResourceOps
 	testSvc := testingutils.NewService()
 	testSvc.SetName("test-service")
-	testSvc.SetNamespace(testingutils.FakeArgoCDNamespace)
+	testSvc.SetNamespace(testingutils.FakeNamespace)
 	syncCtx.resources = groupResources(ReconciliationResult{
 		Live:   []*unstructured.Unstructured{testSvc},
 		Target: []*unstructured.Unstructured{testSvc},
@@ -818,7 +818,7 @@ func TestServerResourcesRetry(t *testing.T) {
 		syncCtx.disco = discovery.NewDiscoveryClientForConfigOrDie(&rest.Config{Host: httpServer.URL})
 		testSvc := testingutils.NewService()
 		testSvc.SetName("test-service")
-		testSvc.SetNamespace(testingutils.FakeArgoCDNamespace)
+		testSvc.SetNamespace(testingutils.FakeNamespace)
 		syncCtx.resources = groupResources(ReconciliationResult{
 			Live:   []*unstructured.Unstructured{testSvc, testSvc, testSvc, testSvc},
 			Target: []*unstructured.Unstructured{testSvc, testSvc, testSvc, testSvc},
@@ -927,7 +927,7 @@ func TestSync_getSyncTasks_FailureMessage(t *testing.T) {
 
 	liveSvc := testingutils.NewService()
 	liveSvc.SetName("test-service")
-	liveSvc.SetNamespace(testingutils.FakeArgoCDNamespace)
+	liveSvc.SetNamespace(testingutils.FakeNamespace)
 	targetSvc := liveSvc.DeepCopy()
 
 	reactorCalls := 0
@@ -1000,7 +1000,7 @@ func TestDoNotSyncOrPruneHooks(t *testing.T) {
 	targetPod.SetAnnotations(map[string]string{synccommon.AnnotationKeyHook: "PreSync"})
 	liveSvc := testingutils.NewService()
 	liveSvc.SetName("do-not-prune-me")
-	liveSvc.SetNamespace(testingutils.FakeArgoCDNamespace)
+	liveSvc.SetNamespace(testingutils.FakeNamespace)
 	liveSvc.SetAnnotations(map[string]string{synccommon.AnnotationKeyHook: "PreSync"})
 
 	syncCtx.hooks = []*unstructured.Unstructured{targetPod, liveSvc}
@@ -1014,7 +1014,7 @@ func TestDoNotPruneAppLevelPruneFalse(t *testing.T) {
 	syncCtx := newTestSyncCtx(nil, WithOperationSettings(false, true, false, false))
 	pod := testingutils.NewPod()
 	syncCtx.defaultPruneOption = new("false")
-	pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod.SetNamespace(testingutils.FakeNamespace)
 	syncCtx.resources = groupResources(ReconciliationResult{
 		Live:   []*unstructured.Unstructured{pod},
 		Target: []*unstructured.Unstructured{nil},
@@ -1042,7 +1042,7 @@ func TestDoNotPruneResourceLevelPruneFalse(t *testing.T) {
 
 		pod.SetAnnotations(map[string]string{synccommon.AnnotationSyncOptions: "Prune=false"})
 
-		pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+		pod.SetNamespace(testingutils.FakeNamespace)
 		syncCtx.resources = groupResources(ReconciliationResult{
 			Live:   []*unstructured.Unstructured{pod},
 			Target: []*unstructured.Unstructured{nil},
@@ -1066,7 +1066,7 @@ func TestPruneConfirmResourceLevel(t *testing.T) {
 		syncCtx := newTestSyncCtx(nil, WithOperationSettings(false, true, false, false))
 		pod := testingutils.NewPod()
 		pod.SetAnnotations(map[string]string{synccommon.AnnotationSyncOptions: "Prune=confirm"})
-		pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+		pod.SetNamespace(testingutils.FakeNamespace)
 		syncCtx.resources = groupResources(ReconciliationResult{
 			Live:   []*unstructured.Unstructured{pod},
 			Target: []*unstructured.Unstructured{nil},
@@ -1098,7 +1098,7 @@ func TestPruneConfirmAppLevel(t *testing.T) {
 	syncCtx := newTestSyncCtx(nil, WithOperationSettings(false, true, false, false))
 	pod := testingutils.NewPod()
 	syncCtx.defaultPruneOption = new("confirm")
-	pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod.SetNamespace(testingutils.FakeNamespace)
 	syncCtx.resources = groupResources(ReconciliationResult{
 		Live:   []*unstructured.Unstructured{pod},
 		Target: []*unstructured.Unstructured{nil},
@@ -1137,7 +1137,7 @@ func TestSyncOptionValidate(t *testing.T) {
 			syncCtx := newTestSyncCtx(nil)
 			pod := testingutils.NewPod()
 			pod.SetAnnotations(map[string]string{synccommon.AnnotationSyncOptions: tt.annotationVal})
-			pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+			pod.SetNamespace(testingutils.FakeNamespace)
 			syncCtx.resources = groupResources(ReconciliationResult{
 				Live:   []*unstructured.Unstructured{pod},
 				Target: []*unstructured.Unstructured{pod},
@@ -1169,9 +1169,9 @@ func TestSync_Replace(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			syncCtx := newTestSyncCtx(nil)
 
-			tc.target.SetNamespace(testingutils.FakeArgoCDNamespace)
+			tc.target.SetNamespace(testingutils.FakeNamespace)
 			if tc.live != nil {
-				tc.live.SetNamespace(testingutils.FakeArgoCDNamespace)
+				tc.live.SetNamespace(testingutils.FakeNamespace)
 			}
 			syncCtx.resources = groupResources(ReconciliationResult{
 				Live:   []*unstructured.Unstructured{tc.live},
@@ -1193,7 +1193,7 @@ func TestSync_HookWithReplaceAndBeforeHookCreation_AlreadyDeleted(t *testing.T) 
 	syncCtx := newTestSyncCtx(nil)
 
 	target := withReplaceAnnotation(testingutils.NewPod())
-	target.SetNamespace(testingutils.FakeArgoCDNamespace)
+	target.SetNamespace(testingutils.FakeNamespace)
 	target = testingutils.Annotate(target, synccommon.AnnotationKeyHookDeletePolicy, string(synccommon.HookDeletePolicyBeforeHookCreation))
 	target = testingutils.Annotate(target, synccommon.AnnotationKeyHook, string(synccommon.SyncPhasePreSync))
 	live := target.DeepCopy()
@@ -1244,9 +1244,9 @@ func TestSync_ServerSideApply(t *testing.T) {
 			syncCtx := newTestSyncCtx(nil)
 			syncCtx.serverSideApplyManager = tc.manager
 
-			tc.target.SetNamespace(testingutils.FakeArgoCDNamespace)
+			tc.target.SetNamespace(testingutils.FakeNamespace)
 			if tc.live != nil {
-				tc.live.SetNamespace(testingutils.FakeArgoCDNamespace)
+				tc.live.SetNamespace(testingutils.FakeNamespace)
 			}
 			syncCtx.resources = groupResources(ReconciliationResult{
 				Live:   []*unstructured.Unstructured{tc.live},
@@ -1311,9 +1311,9 @@ func TestSync_Force(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			syncCtx := newTestSyncCtx(nil)
 
-			tc.target.SetNamespace(testingutils.FakeArgoCDNamespace)
+			tc.target.SetNamespace(testingutils.FakeNamespace)
 			if tc.live != nil {
-				tc.live.SetNamespace(testingutils.FakeArgoCDNamespace)
+				tc.live.SetNamespace(testingutils.FakeNamespace)
 			}
 			syncCtx.resources = groupResources(ReconciliationResult{
 				Live:   []*unstructured.Unstructured{tc.live},
@@ -1429,7 +1429,7 @@ func TestObjectsGetANamespace(t *testing.T) {
 
 	assert.True(t, successful)
 	assert.Len(t, tasks, 1)
-	assert.Equal(t, testingutils.FakeArgoCDNamespace, tasks[0].namespace())
+	assert.Equal(t, testingutils.FakeNamespace, tasks[0].namespace())
 	assert.Empty(t, pod.GetNamespace())
 }
 
@@ -1437,11 +1437,11 @@ func TestNamespaceAutoCreation(t *testing.T) {
 	pod := testingutils.NewPod()
 	namespace := testingutils.NewNamespace()
 	syncCtx := newTestSyncCtx(nil)
-	syncCtx.namespace = testingutils.FakeArgoCDNamespace
+	syncCtx.namespace = testingutils.FakeNamespace
 	syncCtx.syncNamespace = func(_, _ *unstructured.Unstructured) (bool, error) {
 		return true, nil
 	}
-	namespace.SetName(testingutils.FakeArgoCDNamespace)
+	namespace.SetName(testingutils.FakeNamespace)
 
 	task, err := createNamespaceTask(syncCtx.namespace)
 	require.NoError(t, err, "Failed creating test data: namespace task")
@@ -1519,14 +1519,14 @@ func TestNamespaceAutoCreation(t *testing.T) {
 
 func TestNamespaceAutoCreationForNonExistingNs(t *testing.T) {
 	getResourceFunc := func(_ context.Context, _ *rest.Config, _ schema.GroupVersionKind, _ string, _ string) (*unstructured.Unstructured, error) {
-		return nil, apierrors.NewNotFound(schema.GroupResource{}, testingutils.FakeArgoCDNamespace)
+		return nil, apierrors.NewNotFound(schema.GroupResource{}, testingutils.FakeNamespace)
 	}
 
 	pod := testingutils.NewPod()
 	namespace := testingutils.NewNamespace()
 	syncCtx := newTestSyncCtx(&getResourceFunc)
-	syncCtx.namespace = testingutils.FakeArgoCDNamespace
-	namespace.SetName(testingutils.FakeArgoCDNamespace)
+	syncCtx.namespace = testingutils.FakeNamespace
+	namespace.SetName(testingutils.FakeNamespace)
 
 	t.Run("pre-sync task should exist and namespace creator should be called", func(t *testing.T) {
 		syncCtx.resources = groupResources(ReconciliationResult{
@@ -1685,7 +1685,7 @@ func TestBeforeHookCreation(t *testing.T) {
 	syncCtx := newTestSyncCtx(nil)
 	hookObj := testingutils.Annotate(testingutils.Annotate(testingutils.NewPod(), synccommon.AnnotationKeyHook, "Sync"), synccommon.AnnotationKeyHookDeletePolicy, "BeforeHookCreation")
 	hookObj.SetFinalizers([]string{hook.HookFinalizer})
-	hookObj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	hookObj.SetNamespace(testingutils.FakeNamespace)
 	syncCtx.resources = groupResources(ReconciliationResult{
 		Live:   []*unstructured.Unstructured{hookObj},
 		Target: []*unstructured.Unstructured{nil},
@@ -1755,7 +1755,7 @@ func TestSync_ExistingHooksWithFinalizer(t *testing.T) {
 func TestSync_FailedSyncWithSyncFailHook_ApplyFailed(t *testing.T) {
 	// Tests that other SyncFail Hooks run even if one of them fail.
 	pod := testingutils.NewPod()
-	pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod.SetNamespace(testingutils.FakeNamespace)
 	successfulSyncFailHook := newHook("successful-sync-fail-hook", synccommon.HookTypeSyncFail, synccommon.HookDeletePolicyBeforeHookCreation)
 	failedSyncFailHook := newHook("failed-sync-fail-hook", synccommon.HookTypeSyncFail, synccommon.HookDeletePolicyBeforeHookCreation)
 
@@ -2234,7 +2234,7 @@ func TestSync_SyncWaveHook(t *testing.T) {
 func TestSync_SyncWaveHookError(t *testing.T) {
 	syncCtx := newTestSyncCtx(nil, WithOperationSettings(false, false, false, false))
 	pod1 := testingutils.NewPod()
-	pod1.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod1.SetNamespace(testingutils.FakeNamespace)
 	pod1.SetName("pod-1")
 
 	syncHook := newHook("sync-hook", synccommon.HookTypeSync, synccommon.HookDeletePolicyBeforeHookCreation)
@@ -2331,13 +2331,13 @@ func TestPruneLast(t *testing.T) {
 func diffResultList() *diff.DiffResultList {
 	pod1 := testingutils.NewPod()
 	pod1.SetName("pod-1")
-	pod1.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod1.SetNamespace(testingutils.FakeNamespace)
 	pod2 := testingutils.NewPod()
 	pod2.SetName("pod-2")
-	pod2.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod2.SetNamespace(testingutils.FakeNamespace)
 	pod3 := testingutils.NewPod()
 	pod3.SetName("pod-3")
-	pod3.SetNamespace(testingutils.FakeArgoCDNamespace)
+	pod3.SetNamespace(testingutils.FakeNamespace)
 
 	diffResultList := diff.DiffResultList{
 		Modified: true,
@@ -2766,7 +2766,7 @@ func BenchmarkSync(b *testing.B) {
 
 		manifest := strings.ReplaceAll(podManifest, "${containers}", containerStr)
 		pod := testingutils.Unstructured(manifest)
-		pod.SetNamespace(testingutils.FakeArgoCDNamespace)
+		pod.SetNamespace(testingutils.FakeNamespace)
 
 		syncCtx := newTestSyncCtx(nil, WithOperationSettings(false, true, false, false))
 		syncCtx.log = logr.Discard()
@@ -2880,7 +2880,7 @@ func TestPerformCSAUpgradeMigration_NoMigrationNeeded(t *testing.T) {
 
 	// Object with only SSA manager (operation: Apply), no CSA manager (operation: Update)
 	obj := testingutils.NewPod()
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 	obj.SetManagedFields([]metav1.ManagedFieldsEntry{
 		{
 			Manager:   "cd-controller",
@@ -2911,7 +2911,7 @@ func TestPerformCSAUpgradeMigration_WithCSAManager(t *testing.T) {
 
 	// Create the live object with a CSA manager (operation: Update)
 	obj := testingutils.NewPod()
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 	obj.SetManagedFields([]metav1.ManagedFieldsEntry{
 		{
 			Manager:   "kubectl-client-side-apply",
@@ -2956,7 +2956,7 @@ func TestPerformCSAUpgradeMigration_ConflictRetry(t *testing.T) {
 	_ = corev1.AddToScheme(scheme)
 
 	obj := testingutils.NewPod()
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 	obj.SetManagedFields([]metav1.ManagedFieldsEntry{
 		{
 			Manager:   "kubectl-client-side-apply",
@@ -3023,7 +3023,7 @@ func diffResultListClusterResource() *diff.DiffResultList {
 
 func TestTerminate(t *testing.T) {
 	obj := testingutils.NewPod()
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 
 	syncCtx := newTestSyncCtx(nil,
 		WithInitialState(synccommon.OperationRunning, "", []synccommon.ResourceSyncResult{{
@@ -3051,7 +3051,7 @@ func TestTerminate_Hooks_Running(t *testing.T) {
 	hook3 := newHook("hook-3", synccommon.HookTypeSync, synccommon.HookDeletePolicyHookSucceeded)
 
 	obj := testingutils.NewPod()
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 
 	syncCtx := newTestSyncCtx(nil,
 		WithHealthOverride(resourceNameHealthOverride(map[string]health.HealthStatusCode{
@@ -3129,7 +3129,7 @@ func TestTerminate_Hooks_Running_Healthy(t *testing.T) {
 	hook3 := newHook("hook-3", synccommon.HookTypeSync, synccommon.HookDeletePolicyHookSucceeded)
 
 	obj := testingutils.NewPod()
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 
 	syncCtx := newTestSyncCtx(nil,
 		WithHealthOverride(resourceNameHealthOverride(map[string]health.HealthStatusCode{
@@ -3211,7 +3211,7 @@ func TestTerminate_Hooks_Completed(t *testing.T) {
 	hook3 := newHook("hook-3", synccommon.HookTypeSync, synccommon.HookDeletePolicyHookSucceeded)
 
 	obj := testingutils.NewPod()
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 
 	syncCtx := newTestSyncCtx(nil,
 		WithHealthOverride(resourceNameHealthOverride(map[string]health.HealthStatusCode{
@@ -3290,7 +3290,7 @@ func TestTerminate_Hooks_Error(t *testing.T) {
 	hook1 := newHook("hook-1", synccommon.HookTypeSync, synccommon.HookDeletePolicyBeforeHookCreation)
 
 	obj := testingutils.NewPod()
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 
 	syncCtx := newTestSyncCtx(nil,
 		WithHealthOverride(resourceNameHealthOverride(map[string]health.HealthStatusCode{

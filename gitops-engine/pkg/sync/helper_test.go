@@ -35,7 +35,7 @@ func getResourceResult(resources []synccommon.ResourceSyncResult, resourceKey ku
 func newHook(name string, hookType synccommon.HookType, deletePolicy synccommon.HookDeletePolicy) *unstructured.Unstructured {
 	obj := testingutils.NewPod()
 	obj.SetName(name)
-	obj.SetNamespace(testingutils.FakeArgoCDNamespace)
+	obj.SetNamespace(testingutils.FakeNamespace)
 	testingutils.Annotate(obj, synccommon.AnnotationKeyHook, string(hookType))
 	testingutils.Annotate(obj, synccommon.AnnotationKeyHookDeletePolicy, string(deletePolicy))
 	obj.SetFinalizers([]string{hook.HookFinalizer})
