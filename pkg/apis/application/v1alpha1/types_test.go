@@ -27,21 +27,21 @@ func TestAppProject_IsSourcePermitted(t *testing.T) {
 		appSource   string
 		isPermitted bool
 	}{{
-		projSources: []string{"*"}, appSource: "https://github.com/argoproj/test.git", isPermitted: true,
+		projSources: []string{"*"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: true,
 	}, {
-		projSources: []string{"https://github.com/argoproj/test.git"}, appSource: "https://github.com/argoproj/test.git", isPermitted: true,
+		projSources: []string{"https://github.com/hanzoai/test.git"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: true,
 	}, {
-		projSources: []string{"ssh://git@GITHUB.com:argoproj/test"}, appSource: "ssh://git@github.com:argoproj/test", isPermitted: true,
+		projSources: []string{"ssh://git@GITHUB.com:hanzoai/test"}, appSource: "ssh://git@github.com:hanzoai/test", isPermitted: true,
 	}, {
-		projSources: []string{"https://github.com/argoproj/*"}, appSource: "https://github.com/argoproj/argoproj.git", isPermitted: true,
+		projSources: []string{"https://github.com/hanzoai/*"}, appSource: "https://github.com/hanzoai/hanzoai.git", isPermitted: true,
 	}, {
 		projSources: []string{"https://github.com/test1/test.git", "https://github.com/test2/test.git"}, appSource: "https://github.com/test2/test.git", isPermitted: true,
 	}, {
-		projSources: []string{"https://github.com/argoproj/test1.git"}, appSource: "https://github.com/argoproj/test2.git", isPermitted: false,
+		projSources: []string{"https://github.com/hanzoai/test1.git"}, appSource: "https://github.com/hanzoai/test2.git", isPermitted: false,
 	}, {
-		projSources: []string{"https://github.com/argoproj/*.git"}, appSource: "https://github.com/argoproj1/test2.git", isPermitted: false,
+		projSources: []string{"https://github.com/hanzoai/*.git"}, appSource: "https://github.com/hanzoai1/test2.git", isPermitted: false,
 	}, {
-		projSources: []string{"https://github.com/argoproj/foo"}, appSource: "https://github.com/argoproj/foo1", isPermitted: false,
+		projSources: []string{"https://github.com/hanzoai/foo"}, appSource: "https://github.com/hanzoai/foo1", isPermitted: false,
 	}, {
 		projSources: []string{"https://gitlab.com/group/*"}, appSource: "https://gitlab.com/group/repo/owner", isPermitted: false,
 	}, {
@@ -70,15 +70,15 @@ func TestAppProject_IsNegatedSourcePermitted(t *testing.T) {
 		appSource   string
 		isPermitted bool
 	}{{
-		projSources: []string{"!https://github.com/argoproj/test.git"}, appSource: "https://github.com/argoproj/test.git", isPermitted: false,
+		projSources: []string{"!https://github.com/hanzoai/test.git"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: false,
 	}, {
-		projSources: []string{"!ssh://git@GITHUB.com:argoproj/test"}, appSource: "ssh://git@github.com:argoproj/test", isPermitted: false,
+		projSources: []string{"!ssh://git@GITHUB.com:hanzoai/test"}, appSource: "ssh://git@github.com:hanzoai/test", isPermitted: false,
 	}, {
-		projSources: []string{"!https://github.com/argoproj/*"}, appSource: "https://github.com/argoproj/argoproj.git", isPermitted: false,
+		projSources: []string{"!https://github.com/hanzoai/*"}, appSource: "https://github.com/hanzoai/hanzoai.git", isPermitted: false,
 	}, {
 		projSources: []string{"https://github.com/test1/test.git", "!https://github.com/test2/test.git"}, appSource: "https://github.com/test2/test.git", isPermitted: false,
 	}, {
-		projSources: []string{"!https://github.com/argoproj/foo*"}, appSource: "https://github.com/argoproj/foo1", isPermitted: false,
+		projSources: []string{"!https://github.com/hanzoai/foo*"}, appSource: "https://github.com/hanzoai/foo1", isPermitted: false,
 	}, {
 		projSources: []string{"!https://gitlab.com/group/*/*"}, appSource: "https://gitlab.com/group/repo/owner", isPermitted: false,
 	}, {
@@ -86,11 +86,11 @@ func TestAppProject_IsNegatedSourcePermitted(t *testing.T) {
 	}, {
 		projSources: []string{"!https://gitlab.com/group/**"}, appSource: "https://gitlab.com/group/sub-group/repo/owner", isPermitted: false,
 	}, {
-		projSources: []string{"*"}, appSource: "https://github.com/argoproj/test.git", isPermitted: true,
+		projSources: []string{"*"}, appSource: "https://github.com/hanzoai/test.git", isPermitted: true,
 	}, {
-		projSources: []string{"https://github.com/argoproj/test1.git", "*"}, appSource: "https://github.com/argoproj/test2.git", isPermitted: true,
+		projSources: []string{"https://github.com/hanzoai/test1.git", "*"}, appSource: "https://github.com/hanzoai/test2.git", isPermitted: true,
 	}, {
-		projSources: []string{"!https://github.com/argoproj/*.git", "*"}, appSource: "https://github.com/argoproj1/test2.git", isPermitted: true,
+		projSources: []string{"!https://github.com/hanzoai/*.git", "*"}, appSource: "https://github.com/hanzoai1/test2.git", isPermitted: true,
 	}}
 
 	for _, data := range testData {
@@ -4362,7 +4362,7 @@ func TestApplicationSourcePluginParameters_Environ_map(t *testing.T) {
 			Name: "helm-parameters",
 			OptionalMap: &OptionalMap{
 				Map: map[string]string{
-					"image.repo": "quay.io/argoproj/argo-cd",
+					"image.repo": "ghcr.io/hanzoai/cd",
 					"image.tag":  "v2.4.0",
 				},
 			},
@@ -4371,7 +4371,7 @@ func TestApplicationSourcePluginParameters_Environ_map(t *testing.T) {
 	environ, err := params.Environ()
 	require.NoError(t, err)
 	assert.Len(t, environ, 3)
-	assert.Contains(t, environ, "PARAM_HELM_PARAMETERS_IMAGE_REPO=quay.io/argoproj/argo-cd")
+	assert.Contains(t, environ, "PARAM_HELM_PARAMETERS_IMAGE_REPO=ghcr.io/hanzoai/cd")
 	assert.Contains(t, environ, "PARAM_HELM_PARAMETERS_IMAGE_TAG=v2.4.0")
 	paramsJSON, err := json.Marshal(params)
 	require.NoError(t, err)
@@ -4390,7 +4390,7 @@ func TestApplicationSourcePluginParameters_Environ_all(t *testing.T) {
 			},
 			OptionalMap: &OptionalMap{
 				Map: map[string]string{
-					"image.repo": "quay.io/argoproj/argo-cd",
+					"image.repo": "ghcr.io/hanzoai/cd",
 					"image.tag":  "v2.4.0",
 				},
 			},
@@ -4402,7 +4402,7 @@ func TestApplicationSourcePluginParameters_Environ_all(t *testing.T) {
 	assert.Contains(t, environ, "PARAM_SOME_NAME=1.2.3")
 	assert.Contains(t, environ, "PARAM_SOME_NAME_0=redis")
 	assert.Contains(t, environ, "PARAM_SOME_NAME_1=minio")
-	assert.Contains(t, environ, "PARAM_SOME_NAME_IMAGE_REPO=quay.io/argoproj/argo-cd")
+	assert.Contains(t, environ, "PARAM_SOME_NAME_IMAGE_REPO=ghcr.io/hanzoai/cd")
 	assert.Contains(t, environ, "PARAM_SOME_NAME_IMAGE_TAG=v2.4.0")
 	paramsJSON, err := json.Marshal(params)
 	require.NoError(t, err)
@@ -4582,38 +4582,38 @@ func TestApplicationSpec_GetSourcePtrByIndex(t *testing.T) {
 			name: "HasMultipleSources_ReturnsFirstSource",
 			application: ApplicationSpec{
 				Sources: []ApplicationSource{
-					{RepoURL: "https://github.com/argoproj/test1.git"},
-					{RepoURL: "https://github.com/argoproj/test2.git"},
+					{RepoURL: "https://github.com/hanzoai/test1.git"},
+					{RepoURL: "https://github.com/hanzoai/test2.git"},
 				},
 			},
 			sourceIndex: 0,
-			expected:    &ApplicationSource{RepoURL: "https://github.com/argoproj/test1.git"},
+			expected:    &ApplicationSource{RepoURL: "https://github.com/hanzoai/test1.git"},
 		},
 		{
 			name: "HasMultipleSources_ReturnsSourceAtIndex",
 			application: ApplicationSpec{
 				Sources: []ApplicationSource{
-					{RepoURL: "https://github.com/argoproj/test1.git"},
-					{RepoURL: "https://github.com/argoproj/test2.git"},
+					{RepoURL: "https://github.com/hanzoai/test1.git"},
+					{RepoURL: "https://github.com/hanzoai/test2.git"},
 				},
 			},
 			sourceIndex: 1,
-			expected:    &ApplicationSource{RepoURL: "https://github.com/argoproj/test2.git"},
+			expected:    &ApplicationSource{RepoURL: "https://github.com/hanzoai/test2.git"},
 		},
 		{
 			name: "HasSingleSource_ReturnsSource",
 			application: ApplicationSpec{
-				Source: &ApplicationSource{RepoURL: "https://github.com/argoproj/test.git"},
+				Source: &ApplicationSource{RepoURL: "https://github.com/hanzoai/test.git"},
 			},
 			sourceIndex: 0,
-			expected:    &ApplicationSource{RepoURL: "https://github.com/argoproj/test.git"},
+			expected:    &ApplicationSource{RepoURL: "https://github.com/hanzoai/test.git"},
 		},
 		{
 			name: "HasSourceHydrator_NegativeIndex_ReturnsDrySource",
 			application: ApplicationSpec{
 				SourceHydrator: &SourceHydrator{
 					DrySource: DrySource{
-						RepoURL:        "https://github.com/argoproj/dry.git",
+						RepoURL:        "https://github.com/hanzoai/dry.git",
 						Path:           "dry-path",
 						TargetRevision: "main",
 					},
@@ -4625,7 +4625,7 @@ func TestApplicationSpec_GetSourcePtrByIndex(t *testing.T) {
 			},
 			sourceIndex: -1,
 			expected: &ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/dry.git",
+				RepoURL:        "https://github.com/hanzoai/dry.git",
 				Path:           "dry-path",
 				TargetRevision: "main",
 			},
@@ -4635,7 +4635,7 @@ func TestApplicationSpec_GetSourcePtrByIndex(t *testing.T) {
 			application: ApplicationSpec{
 				SourceHydrator: &SourceHydrator{
 					DrySource: DrySource{
-						RepoURL:        "https://github.com/argoproj/dry.git",
+						RepoURL:        "https://github.com/hanzoai/dry.git",
 						Path:           "dry-path",
 						TargetRevision: "main",
 					},
@@ -4647,7 +4647,7 @@ func TestApplicationSpec_GetSourcePtrByIndex(t *testing.T) {
 			},
 			sourceIndex: 0,
 			expected: &ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/dry.git",
+				RepoURL:        "https://github.com/hanzoai/dry.git",
 				Path:           "sync-path",
 				TargetRevision: "hydrated",
 			},
@@ -4657,7 +4657,7 @@ func TestApplicationSpec_GetSourcePtrByIndex(t *testing.T) {
 			application: ApplicationSpec{
 				SourceHydrator: &SourceHydrator{
 					DrySource: DrySource{
-						RepoURL:        "https://github.com/argoproj/dry.git",
+						RepoURL:        "https://github.com/hanzoai/dry.git",
 						Path:           "dry-path",
 						TargetRevision: "main",
 					},
@@ -4669,7 +4669,7 @@ func TestApplicationSpec_GetSourcePtrByIndex(t *testing.T) {
 			},
 			sourceIndex: 1,
 			expected: &ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/dry.git",
+				RepoURL:        "https://github.com/hanzoai/dry.git",
 				Path:           "sync-path",
 				TargetRevision: "hydrated",
 			},
