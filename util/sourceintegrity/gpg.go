@@ -625,7 +625,6 @@ func SyncKeyRingFromDirectory(basePath string) ([]string, []string, error) {
 }
 
 // Result of a git commit verification
-// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 type pgpVerifyResult struct {
 	// Date the signature was made
 	Date string
@@ -644,7 +643,6 @@ type pgpVerifyResult struct {
 }
 
 // Signature verification results
-// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 const (
 	verifyResultGood    = "Good"
 	verifyResultBad     = "Bad"
@@ -653,10 +651,8 @@ const (
 )
 
 // maxVerificationLinesToParse is a maximum number of lines to parse for a gpg verify-commit output
-// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 const maxVerificationLinesToParse = 40
 
-// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 var (
 	// Regular expression to match the start of a commit signature verification
 	verificationStartMatch = regexp.MustCompile(`^gpg: Signature made ([a-zA-Z0-9\ :]+)$`)
@@ -671,7 +667,6 @@ var (
 	verificationStatusMatch = regexp.MustCompile(`^gpg: ([a-zA-Z]+) signature from "([^"]+)" \[([a-zA-Z]+)\]$`)
 )
 
-// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 func VerifyGnuPGSignature(revision string, validKeys []string, verifyResult string) (condition *appsv1.ApplicationCondition) { // nolint:staticcheck
 	now := metav1.Now()
 	// We need to have some data in the verification result to parse, otherwise there was no signature
@@ -711,7 +706,6 @@ func VerifyGnuPGSignature(revision string, validKeys []string, verifyResult stri
 }
 
 // parseGitCommitVerification parses the output of "git verify-commit" and returns the result
-// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 func parseGitCommitVerification(signature string) pgpVerifyResult {
 	result := pgpVerifyResult{Result: verifyResultUnknown}
 	parseOk := false
@@ -815,7 +809,6 @@ func parseGitCommitVerification(signature string) pgpVerifyResult {
 	return unknownResult(fmt.Sprintf("Could not parse output of verify-commit, no verification data found, lines parsed %d.", linesParsed))
 }
 
-// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 func CommitSignatureError(ctx context.Context, verifyCommit bool, gitClient git.Client, revision string, repo *appsv1.Repository) error {
 	if IsGPGEnabled() && verifyCommit {
 		cs, err := gitClient.VerifyCommitSignature(ctx, revision) // nolint:staticcheck

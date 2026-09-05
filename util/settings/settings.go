@@ -786,7 +786,7 @@ func (mgr *SettingsManager) getConfigMap() (*corev1.ConfigMap, error) {
 }
 
 // Returns the ConfigMap with the given name from the cluster.
-// The ConfigMap must be labeled with "app.kubernetes.io/part-of: cd" in
+// The ConfigMap must be labeled with "app.kubernetes.io/part-of: hanzocd" in
 // order to be retrievable.
 func (mgr *SettingsManager) GetConfigMapByName(configMapName string) (*corev1.ConfigMap, error) {
 	err := mgr.ensureSynced(false)

@@ -22,10 +22,10 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/cespare/xxhash/v2"
 	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	synccommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
-	"github.com/cespare/xxhash/v2"
 	"github.com/robfig/cron/v3"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
@@ -1727,7 +1727,7 @@ type RevisionMetadata struct {
 	// SignatureInfo contains a hint on the signer if the revision was signed with GPG, and signature verification is enabled.
 	//
 	// Deprecated: Use SourceIntegrityResult for more detailed information. SignatureInfo will be removed with the next major version.
-	SignatureInfo string `json:"signatureInfo,omitempty" protobuf:"bytes,5,opt,name=signatureInfo"` // TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+	SignatureInfo string `json:"signatureInfo,omitempty" protobuf:"bytes,5,opt,name=signatureInfo"`
 	// References contains references to information that's related to this commit in some way.
 	References            []RevisionReference         `json:"references,omitempty" protobuf:"bytes,6,opt,name=references"`
 	SourceIntegrityResult *SourceIntegrityCheckResult `json:"sourceIntegrityResult,omitempty" protobuf:"bytes,7,opt,name=sourceIntegrityResult"`
@@ -2823,7 +2823,7 @@ func (s *OrphanedResourcesMonitorSettings) IsWarn() bool {
 // SignatureKey is the specification of a key required to verify commit signatures with
 //
 // Deprecated: Use SourceIntegrity instead. SignatureKeys will be removed with the next major version.
-type SignatureKey struct { // TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+type SignatureKey struct {
 	// The ID of the key in hexadecimal notation
 	KeyID string `json:"keyID" protobuf:"bytes,1,name=keyID"`
 }
@@ -2852,7 +2852,7 @@ type AppProjectSpec struct {
 	// SignatureKeys contains a list of PGP key IDs that commits in Git must be signed with in order to be allowed for sync
 	//
 	// Deprecated: Use SourceIntegrity instead. SignatureKeys will be removed with the next major version.
-	SignatureKeys []SignatureKey `json:"signatureKeys,omitempty" protobuf:"bytes,10,opt,name=signatureKeys"` // TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
+	SignatureKeys []SignatureKey `json:"signatureKeys,omitempty" protobuf:"bytes,10,opt,name=signatureKeys"`
 	// ClusterResourceBlacklist contains list of blacklisted cluster level resources
 	ClusterResourceBlacklist []ClusterResourceRestrictionItem `json:"clusterResourceBlacklist,omitempty" protobuf:"bytes,11,opt,name=clusterResourceBlacklist"`
 	// SourceNamespaces defines the namespaces application resources are allowed to be created in
