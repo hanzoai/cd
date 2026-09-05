@@ -9,11 +9,11 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
+	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"github.com/hanzoai/cd/gitops-engine/pkg/sync/hook"
 	"github.com/hanzoai/cd/gitops-engine/pkg/sync/ignore"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
-	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -23,17 +23,17 @@ import (
 	resourceutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
 
 	"github.com/hanzoai/cd/cmd/cd/commands/headless"
-	argocommon "github.com/hanzoai/cd/common"
+	cdcommon "github.com/hanzoai/cd/common"
 	"github.com/hanzoai/cd/controller"
 	cdclient "github.com/hanzoai/cd/pkg/apiclient"
 	"github.com/hanzoai/cd/pkg/apiclient/application"
 	clusterpkg "github.com/hanzoai/cd/pkg/apiclient/cluster"
 	"github.com/hanzoai/cd/pkg/apiclient/settings"
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	repoapiclient "github.com/hanzoai/cd/reposerver/apiclient"
 	"github.com/hanzoai/cd/reposerver/repository"
 	"github.com/hanzoai/cd/util/cd"
-	argodiff "github.com/hanzoai/cd/util/cd/diff"
+	cddiff "github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/errors"
@@ -87,7 +87,7 @@ func getInfoProviderFromState(state *application.ManagedResourcesResponse) kube.
 func manifestsToUnstructured(manifests []string) ([]*unstructured.Unstructured, error) {
 	result := make([]*unstructured.Unstructured, 0, len(manifests))
 	for _, manifest := range manifests {
-		obj, err := argoappv1.UnmarshalToUnstructured(manifest)
+		obj, err := appv1.UnmarshalToUnstructured(manifest)
 		if err != nil {
 			return nil, err
 		}
@@ -152,14 +152,14 @@ func getComparisonObjects(
 // Deprecated: Prefer server-side generation since local side generation does not support plugins
 func getLocalObjects(
 	ctx context.Context,
-	app *argoappv1.Application,
-	proj *argoappv1.AppProject,
+	app *appv1.Application,
+	proj *appv1.AppProject,
 	local string,
 	localRepoRoot string,
-	argoSettings *settings.Settings,
-	clusterInfo *argoappv1.ClusterInfo,
+	serverSettings *settings.Settings,
+	clusterInfo *appv1.ClusterInfo,
 ) []*unstructured.Unstructured {
-	manifestStrings := getLocalObjectsString(ctx, app, proj, local, localRepoRoot, argoSettings, clusterInfo)
+	manifestStrings := getLocalObjectsString(ctx, app, proj, local, localRepoRoot, serverSettings, clusterInfo)
 	objs := make([]*unstructured.Unstructured, 0, len(manifestStrings))
 	for i := range manifestStrings {
 		obj := &unstructured.Unstructured{}
@@ -181,27 +181,27 @@ func getLocalObjects(
 // Deprecated: Prefer server-side generation since local side generation does not support plugins
 func getLocalObjectsString(
 	ctx context.Context,
-	app *argoappv1.Application,
-	proj *argoappv1.AppProject,
+	app *appv1.Application,
+	proj *appv1.AppProject,
 	local string,
 	localRepoRoot string,
-	argoSettings *settings.Settings,
-	clusterInfo *argoappv1.ClusterInfo,
+	serverSettings *settings.Settings,
+	clusterInfo *appv1.ClusterInfo,
 ) []string {
 	source := app.Spec.GetSource()
 	res, err := repository.GenerateManifests(ctx, local, localRepoRoot, source.TargetRevision, &repoapiclient.ManifestRequest{
-		Repo:                            &argoappv1.Repository{Repo: source.RepoURL},
-		AppLabelKey:                     argoSettings.AppLabelKey,
-		AppName:                         app.InstanceName(argoSettings.ControllerNamespace),
+		Repo:                            &appv1.Repository{Repo: source.RepoURL},
+		AppLabelKey:                     serverSettings.AppLabelKey,
+		AppName:                         app.InstanceName(serverSettings.ControllerNamespace),
 		Namespace:                       app.Spec.Destination.Namespace,
 		ApplicationSource:               &source,
-		KustomizeOptions:                argoSettings.KustomizeOptions,
+		KustomizeOptions:                serverSettings.KustomizeOptions,
 		KubeVersion:                     clusterInfo.ServerVersion,
 		ApiVersions:                     clusterInfo.APIVersions,
-		TrackingMethod:                  argoSettings.TrackingMethod,
+		TrackingMethod:                  serverSettings.TrackingMethod,
 		ProjectName:                     proj.Name,
 		ProjectSourceRepos:              proj.Spec.SourceRepos,
-		AnnotationManifestGeneratePaths: app.GetAnnotation(argoappv1.AnnotationKeyManifestGeneratePaths),
+		AnnotationManifestGeneratePaths: app.GetAnnotation(appv1.AnnotationKeyManifestGeneratePaths),
 	}, true, &git.NoopCredsStore{}, resource.MustParse("0"), nil)
 	errors.CheckError(err)
 
@@ -212,7 +212,7 @@ func getLocalObjectsString(
 
 // newServerSideDiffStrategy creates a server-side diff strategy with all dependencies
 func newServerSideDiffStrategy(
-	app *argoappv1.Application,
+	app *appv1.Application,
 	appIf application.ApplicationServiceClient,
 	appName string,
 	appNs string,
@@ -225,11 +225,11 @@ func newServerSideDiffStrategy(
 		}
 
 		// For server-side diff, we need to create aligned arrays
-		liveResources := make([]*argoappv1.ResourceDiff, 0, len(items))
+		liveResources := make([]*appv1.ResourceDiff, 0, len(items))
 		targetManifests := make([]string, 0, len(items))
 
 		for _, item := range items {
-			liveResource := &argoappv1.ResourceDiff{
+			liveResource := &appv1.ResourceDiff{
 				Group:     item.key.Group,
 				Kind:      item.key.Kind,
 				Namespace: item.key.Namespace,
@@ -275,7 +275,7 @@ func newServerSideDiffStrategy(
 		g, errGroupCtx := errgroup.WithContext(ctx)
 		g.SetLimit(concurrency)
 
-		batchResults := make([][]*argoappv1.ResourceDiff, len(batches))
+		batchResults := make([][]*appv1.ResourceDiff, len(batches))
 
 		for idx, batch := range batches {
 			i := idx
@@ -318,21 +318,21 @@ func newServerSideDiffStrategy(
 
 // newClientSideDiffStrategy creates a client-side diff strategy with all dependencies
 func newClientSideDiffStrategy(
-	app *argoappv1.Application,
-	argoSettings *settings.Settings,
+	app *appv1.Application,
+	serverSettings *settings.Settings,
 	ignoreNormalizerOpts normalizers.IgnoreNormalizerOpts,
 ) (diffStrategy, error) {
 	// Build resource overrides map
-	overrides := make(map[string]argoappv1.ResourceOverride)
-	for k := range argoSettings.ResourceOverrides {
-		val := argoSettings.ResourceOverrides[k]
+	overrides := make(map[string]appv1.ResourceOverride)
+	for k := range serverSettings.ResourceOverrides {
+		val := serverSettings.ResourceOverrides[k]
 		overrides[k] = *val
 	}
 
 	ignoreAggregatedRoles := false
-	diffConfig, err := argodiff.NewDiffConfigBuilder().
+	diffConfig, err := cddiff.NewDiffConfigBuilder().
 		WithDiffSettings(app.Spec.IgnoreDifferences, overrides, ignoreAggregatedRoles, ignoreNormalizerOpts).
-		WithTracking(argoSettings.AppLabelKey, argoSettings.TrackingMethod).
+		WithTracking(serverSettings.AppLabelKey, serverSettings.TrackingMethod).
 		WithNoCache().
 		WithLogger(logutils.NewLogrusLogger(logutils.NewWithCurrentConfig())).
 		Build()
@@ -344,7 +344,7 @@ func newClientSideDiffStrategy(
 		results := make([]*diff.DiffResult, len(items))
 
 		for i, item := range items {
-			diffRes, err := argodiff.StateDiff(ctx, item.live, item.target, diffConfig)
+			diffRes, err := cddiff.StateDiff(ctx, item.live, item.target, diffConfig)
 			if err != nil {
 				return nil, err
 			}
@@ -442,9 +442,9 @@ func newLocalServerSideProvider(
 // reducing client-side complexity and improving consistency with the server's manifest generation logic.
 func newLocalClientSideProvider(
 	clusterIf clusterpkg.ClusterServiceClient,
-	argoSettings *settings.Settings,
-	app *argoappv1.Application,
-	proj *argoappv1.AppProject,
+	serverSettings *settings.Settings,
+	app *appv1.Application,
+	proj *appv1.AppProject,
 	localPath string,
 	localRepoRoot string,
 ) manifestProvider {
@@ -463,7 +463,7 @@ func newLocalClientSideProvider(
 			proj,
 			localPath,
 			localRepoRoot,
-			argoSettings,
+			serverSettings,
 			&cluster.Info,
 		), nil
 	}
@@ -511,8 +511,8 @@ func newLiveManifestProvider(liveState *application.ManagedResourcesResponse, ex
 // This ensures namespace normalization and tracking annotation updates after deduplication
 func newNormalizeTargetManifestsProvider(
 	provider manifestProvider,
-	app *argoappv1.Application,
-	argoSettings *settings.Settings,
+	app *appv1.Application,
+	serverSettings *settings.Settings,
 	infoProvider kube.ResourceInfoProvider,
 ) manifestProvider {
 	return func(ctx context.Context) ([]*unstructured.Unstructured, error) {
@@ -530,11 +530,11 @@ func newNormalizeTargetManifestsProvider(
 			func(u *unstructured.Unstructured) error {
 				return resourceTracking.SetAppInstance(
 					u,
-					argoSettings.AppLabelKey,
-					app.InstanceName(argoSettings.ControllerNamespace),
+					serverSettings.AppLabelKey,
+					app.InstanceName(serverSettings.ControllerNamespace),
 					app.Spec.Destination.Namespace,
-					argoappv1.TrackingMethod(argoSettings.TrackingMethod),
-					argoSettings.GetInstallationID(),
+					appv1.TrackingMethod(serverSettings.TrackingMethod),
+					serverSettings.GetInstallationID(),
 				)
 			},
 		)
@@ -593,12 +593,12 @@ func compareManifests(
 			continue
 		}
 
-		live, err := argoappv1.UnmarshalToUnstructured(liveState)
+		live, err := appv1.UnmarshalToUnstructured(liveState)
 		if err != nil {
 			return nil, err
 		}
 
-		target, err := argoappv1.UnmarshalToUnstructured(targetState)
+		target, err := appv1.UnmarshalToUnstructured(targetState)
 		if err != nil {
 			return nil, err
 		}
@@ -697,10 +697,10 @@ func NewApplicationDiffCommand(clientOpts *cdclient.ClientOptions) *cobra.Comman
 			errors.CheckError(err)
 			conn, settingsIf := clientset.NewSettingsClientOrDie()
 			defer io.Close(conn)
-			argoSettings, err := settingsIf.Get(ctx, &settings.SettingsQuery{})
+			serverSettings, err := settingsIf.Get(ctx, &settings.SettingsQuery{})
 			errors.CheckError(err)
 
-			hasServerSideDiffAnnotation := resourceutil.HasAnnotationOption(app, argocommon.AnnotationCompareOptions, "ServerSideDiff=true")
+			hasServerSideDiffAnnotation := resourceutil.HasAnnotationOption(app, cdcommon.AnnotationCompareOptions, "ServerSideDiff=true")
 
 			// Use annotation if flag not explicitly set
 			if !c.Flags().Changed("server-side-diff") {
@@ -744,7 +744,7 @@ func NewApplicationDiffCommand(clientOpts *cdclient.ClientOptions) *cobra.Comman
 					fmt.Fprint(os.Stderr, "Warning: local diff without --server-side-generate is deprecated and does not work with plugins. Server-side generation will be the default in v2.7.")
 					conn, clusterIf := clientset.NewClusterClientOrDie()
 					defer io.Close(conn)
-					getTargetManifests = newLocalClientSideProvider(clusterIf, argoSettings, app, proj.Project, local, localRepoRoot)
+					getTargetManifests = newLocalClientSideProvider(clusterIf, serverSettings, app, proj.Project, local, localRepoRoot)
 					// Local diff does not support to hide the configurable annotations in the secrets.
 					// To not have constant partial diffs, we exclude secrets from the diff.
 					excludeSecret = true
@@ -755,7 +755,7 @@ func NewApplicationDiffCommand(clientOpts *cdclient.ClientOptions) *cobra.Comman
 			}
 
 			// Wrap target manifest provider with normalization since the manifest are have not been applied to kubernetes
-			getTargetManifests = newNormalizeTargetManifestsProvider(getTargetManifests, app, argoSettings, infoProvider)
+			getTargetManifests = newNormalizeTargetManifestsProvider(getTargetManifests, app, serverSettings, infoProvider)
 
 			// Create live manifest provider
 			getLiveManifests := newLiveManifestProvider(liveState, excludeSecret)
@@ -765,7 +765,7 @@ func NewApplicationDiffCommand(clientOpts *cdclient.ClientOptions) *cobra.Comman
 			if serverSideDiff {
 				diffHandler = newServerSideDiffStrategy(app, appIf, appName, appNs, serverSideDiffConcurrency, serverSideDiffMaxBatchKB)
 			} else {
-				clientSideDiff, err := newClientSideDiffStrategy(app, argoSettings, ignoreNormalizerOpts)
+				clientSideDiff, err := newClientSideDiffStrategy(app, serverSettings, ignoreNormalizerOpts)
 				errors.CheckError(err)
 				diffHandler = clientSideDiff
 			}

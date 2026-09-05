@@ -168,7 +168,7 @@ func NewGenRepoSpecCommand() *cobra.Command {
 			err = cmdutil.ValidateBearerTokenForGitOnly(repoOpts.Repo.BearerToken, repoOpts.Repo.Type)
 			errors.CheckError(err)
 
-			argoCDCM := &corev1.ConfigMap{
+			cdCM := &corev1.ConfigMap{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       "ConfigMap",
 					APIVersion: "v1",
@@ -181,11 +181,11 @@ func NewGenRepoSpecCommand() *cobra.Command {
 					},
 				},
 			}
-			kubeClientset := fake.NewClientset(argoCDCM)
+			kubeClientset := fake.NewClientset(cdCM)
 			settingsMgr := settings.NewSettingsManager(ctx, kubeClientset, DefaultNamespace)
-			argoDB := db.NewDB(DefaultNamespace, settingsMgr, kubeClientset)
+			appDB := db.NewDB(DefaultNamespace, settingsMgr, kubeClientset)
 
-			_, err = argoDB.CreateRepository(ctx, &repoOpts.Repo)
+			_, err = appDB.CreateRepository(ctx, &repoOpts.Repo)
 			errors.CheckError(err)
 
 			secret, err := kubeClientset.CoreV1().Secrets(DefaultNamespace).Get(ctx, db.RepoURLToSecretName(repoSecretPrefix, repoOpts.Repo.Repo, repoOpts.Repo.Project), metav1.GetOptions{})

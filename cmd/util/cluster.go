@@ -17,7 +17,7 @@ import (
 	clientcmdapiv1 "k8s.io/client-go/tools/clientcmd/api/v1"
 	"sigs.k8s.io/yaml"
 
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/errors"
 )
 
@@ -68,8 +68,8 @@ func PrintKubeContexts(ca clientcmd.ConfigAccess) {
 	}
 }
 
-func NewCluster(name string, namespaces []string, clusterResources bool, conf *rest.Config, managerBearerToken string, awsAuthConf *argoappv1.AWSAuthConfig, execProviderConf *argoappv1.ExecProviderConfig, labels, annotations map[string]string) *argoappv1.Cluster {
-	tlsClientConfig := argoappv1.TLSClientConfig{
+func NewCluster(name string, namespaces []string, clusterResources bool, conf *rest.Config, managerBearerToken string, awsAuthConf *appv1.AWSAuthConfig, execProviderConf *appv1.ExecProviderConfig, labels, annotations map[string]string) *appv1.Cluster {
+	tlsClientConfig := appv1.TLSClientConfig{
 		Insecure:   conf.Insecure,
 		ServerName: conf.ServerName,
 		CAData:     conf.CAData,
@@ -92,12 +92,12 @@ func NewCluster(name string, namespaces []string, clusterResources bool, conf *r
 		tlsClientConfig.KeyData = data
 	}
 
-	clst := argoappv1.Cluster{
+	clst := appv1.Cluster{
 		Server:           conf.Host,
 		Name:             name,
 		Namespaces:       namespaces,
 		ClusterResources: clusterResources,
-		Config: argoappv1.ClusterConfig{
+		Config: appv1.ClusterConfig{
 			TLSClientConfig:    tlsClientConfig,
 			AWSAuthConfig:      awsAuthConf,
 			ExecProviderConfig: execProviderConf,

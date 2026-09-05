@@ -105,10 +105,10 @@ data:
 
 	require.NoError(t, err)
 
-	argoCDSettings, err := settingsManager.GetSettings()
+	cdSettings, err := settingsManager.GetSettings()
 	require.NoError(t, err)
 
-	assert.Equal(t, "https://mycd.com", argoCDSettings.URL)
+	assert.Equal(t, "https://mycd.com", cdSettings.URL)
 }
 
 func TestValidator(t *testing.T) {

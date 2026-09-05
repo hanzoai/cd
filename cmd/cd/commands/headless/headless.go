@@ -242,7 +242,7 @@ func MaybeStartLocalServer(ctx context.Context, clientOpts *apiclient.ClientOpti
 	scheme := runtime.NewScheme()
 	err = v1alpha1.AddToScheme(scheme)
 	if err != nil {
-		return nil, fmt.Errorf("error adding argo resources to scheme: %w", err)
+		return nil, fmt.Errorf("error adding resources to scheme: %w", err)
 	}
 	err = corev1.AddToScheme(scheme)
 	if err != nil {

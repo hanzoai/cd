@@ -23,7 +23,7 @@ import (
 	"github.com/hanzoai/cd/common"
 	cdclient "github.com/hanzoai/cd/pkg/apiclient"
 	clusterpkg "github.com/hanzoai/cd/pkg/apiclient/cluster"
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/clusterauth"
 	"github.com/hanzoai/cd/util/errors"
@@ -111,24 +111,24 @@ func NewClusterAddCommand(clientOpts *cdclient.ClientOptions, pathOpts *clientcm
 			conf, err := getRestConfig(pathOpts, contextName)
 			errors.CheckError(err)
 			if clusterOpts.ProxyUrl != "" {
-				u, err := argoappv1.ParseProxyUrl(clusterOpts.ProxyUrl)
+				u, err := appv1.ParseProxyUrl(clusterOpts.ProxyUrl)
 				errors.CheckError(err)
 				conf.Proxy = http.ProxyURL(u)
 			}
 			clientset, err := kubernetes.NewForConfig(conf)
 			errors.CheckError(err)
 			managerBearerToken := ""
-			var awsAuthConf *argoappv1.AWSAuthConfig
-			var execProviderConf *argoappv1.ExecProviderConfig
+			var awsAuthConf *appv1.AWSAuthConfig
+			var execProviderConf *appv1.ExecProviderConfig
 			switch {
 			case clusterOpts.AwsClusterName != "":
-				awsAuthConf = &argoappv1.AWSAuthConfig{
+				awsAuthConf = &appv1.AWSAuthConfig{
 					ClusterName: clusterOpts.AwsClusterName,
 					RoleARN:     clusterOpts.AwsRoleArn,
 					Profile:     clusterOpts.AwsProfile,
 				}
 			case clusterOpts.ExecProviderCommand != "":
-				execProviderConf = &argoappv1.ExecProviderConfig{
+				execProviderConf = &appv1.ExecProviderConfig{
 					Command:     clusterOpts.ExecProviderCommand,
 					Args:        clusterOpts.ExecProviderArgs,
 					Env:         clusterOpts.ExecProviderEnv,
@@ -173,7 +173,7 @@ func NewClusterAddCommand(clientOpts *cdclient.ClientOptions, pathOpts *clientcm
 			err = applyServerProxyOverride(c.Flags().Changed("server-proxy-url"), clusterOpts.ServerProxyURL, clst)
 			errors.CheckError(err)
 			if clusterOpts.InClusterEndpoint() {
-				clst.Server = argoappv1.KubernetesInternalAPIServerAddr
+				clst.Server = appv1.KubernetesInternalAPIServerAddr
 			} else if clusterOpts.ClusterEndpoint == string(cmdutil.KubePublicEndpoint) {
 				endpoint, caData, err := cmdutil.GetKubePublicEndpoint(clientset)
 				if err != nil || endpoint == "" {
@@ -238,14 +238,14 @@ func getRestConfig(pathOpts *clientcmd.PathOptions, ctxName string) (*rest.Confi
 }
 
 // applyServerProxyOverride encapsulates the logic for handling the --server-proxy-url flag.
-// When changed is true, it validates non-empty values using argoappv1.ParseProxyUrl and
+// When changed is true, it validates non-empty values using appv1.ParseProxyUrl and
 // applies the override (including clearing the value when serverProxyURL is an explicit empty string).
-func applyServerProxyOverride(changed bool, serverProxyURL string, clst *argoappv1.Cluster) error {
+func applyServerProxyOverride(changed bool, serverProxyURL string, clst *appv1.Cluster) error {
 	if !changed {
 		return nil
 	}
 	if serverProxyURL != "" {
-		if _, err := argoappv1.ParseProxyUrl(serverProxyURL); err != nil {
+		if _, err := appv1.ParseProxyUrl(serverProxyURL); err != nil {
 			return err
 		}
 	}
@@ -292,7 +292,7 @@ func NewClusterSetCommand(clientOpts *cdclient.ClientOptions) *cobra.Command {
 			errors.CheckError(err)
 			if updatedFields != nil {
 				clusterUpdateRequest := clusterpkg.ClusterUpdateRequest{
-					Cluster: &argoappv1.Cluster{
+					Cluster: &appv1.Cluster{
 						Name:        clusterOptions.Name,
 						Namespaces:  namespaces,
 						Labels:      labelsMap,
@@ -359,7 +359,7 @@ cd cluster get in-cluster`,
 			}
 			conn, clusterIf := headless.NewClientOrDie(clientOpts, c).NewClusterClientOrDie()
 			defer utilio.Close(conn)
-			clusters := make([]argoappv1.Cluster, 0)
+			clusters := make([]appv1.Cluster, 0)
 			for _, clusterSelector := range args {
 				clst, err := clusterIf.Get(ctx, getQueryBySelector(clusterSelector))
 				errors.CheckError(err)
@@ -390,14 +390,14 @@ func strWithDefault(value string, def string) string {
 	return value
 }
 
-func formatNamespaces(cluster argoappv1.Cluster) string {
+func formatNamespaces(cluster appv1.Cluster) string {
 	if len(cluster.Namespaces) == 0 {
 		return "all namespaces"
 	}
 	return strings.Join(cluster.Namespaces, ", ")
 }
 
-func printClusterDetails(clusters []argoappv1.Cluster) {
+func printClusterDetails(clusters []appv1.Cluster) {
 	for _, cluster := range clusters {
 		fmt.Print("Cluster information\n\n")
 		fmt.Printf("  Server URL:            %s\n", cluster.Server)
@@ -488,7 +488,7 @@ cd cluster rm cluster-name`,
 }
 
 // Print table of cluster information
-func printClusterTable(clusters []argoappv1.Cluster) {
+func printClusterTable(clusters []appv1.Cluster) {
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 	_, _ = fmt.Fprint(w, "SERVER\tNAME\tVERSION\tSTATUS\tMESSAGE\tPROJECT\n")
 	for _, c := range clusters {
@@ -514,7 +514,7 @@ func getQueryBySelector(clusterSelector string) *clusterpkg.ClusterQuery {
 }
 
 // Print list of cluster servers
-func printClusterServers(clusters []argoappv1.Cluster) {
+func printClusterServers(clusters []appv1.Cluster) {
 	for _, c := range clusters {
 		fmt.Println(c.Server)
 	}

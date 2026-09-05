@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Hello from argocd_my-plugin"
+echo "Hello from cd_my-plugin"
 
 if [ "$#" -gt 0 ]; then
     echo "Arguments received: $@"

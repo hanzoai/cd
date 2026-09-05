@@ -17,7 +17,7 @@ import (
 )
 
 func Test_loadClusters(t *testing.T) {
-	argoCDCM := &corev1.ConfigMap{
+	cdCM := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cd-cm",
 			Namespace: "cd",
@@ -27,7 +27,7 @@ func Test_loadClusters(t *testing.T) {
 		},
 		Data: map[string]string{},
 	}
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cd-secret",
 			Namespace: "cd",
@@ -50,7 +50,7 @@ func Test_loadClusters(t *testing.T) {
 		},
 	}
 	ctx := t.Context()
-	kubeClient := fake.NewClientset(argoCDCM, argoCDSecret)
+	kubeClient := fake.NewClientset(cdCM, cdSecret)
 	appClient := fakeapps.NewSimpleClientset(app)
 	cacheSrc := func() (*appstate.Cache, error) {
 		return appstate.NewCache(cacheutil.NewCache(cacheutil.NewInMemoryCache(time.Minute)), time.Minute), nil

@@ -119,8 +119,8 @@ func isArgoCDSecret(un unstructured.Unstructured) bool {
 	return false
 }
 
-// isArgoCDConfigMap returns true if the configmap name is one of argo cd's well known configmaps
-func isArgoCDConfigMap(name string) bool {
+// isKnownConfigMap returns true if the configmap name is one of the well known configmaps
+func isKnownConfigMap(name string) bool {
 	switch name {
 	case common.ConfigMapName, common.RBACConfigMapName, common.KnownHostsConfigMapName, common.TLSCertsConfigMapName:
 		return true

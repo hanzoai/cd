@@ -225,7 +225,7 @@ func NewCommand() *cobra.Command {
 				contentTypesList = strings.Split(contentTypes, ";")
 			}
 
-			argoCDOpts := server.ServerOpts{
+			serverOpts := server.ServerOpts{
 				Insecure:                insecure,
 				ListenPort:              listenPort,
 				ListenHost:              listenHost,
@@ -272,7 +272,7 @@ func NewCommand() *cobra.Command {
 			stats.RegisterStackDumper()
 			stats.StartStatsTicker(10 * time.Minute)
 			stats.RegisterHeapDumper("memprofile")
-			cd := server.NewServer(ctx, argoCDOpts, appsetOpts)
+			cd := server.NewServer(ctx, serverOpts, appsetOpts)
 			cd.Init(ctx)
 			for {
 				var closer func()

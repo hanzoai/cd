@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "Fetching the version of Argo CD..."
-argocd version --short --client
+echo "Fetching the version of Hanzo CD..."
+cd version --short --client
