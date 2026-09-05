@@ -11,14 +11,14 @@ spec:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: argo-example
+          name: cd-example
       recreateOption: None
     - complianceType: musthave
       objectDefinition:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: argo-example-2
+          name: cd-example-2
       recreateOption: None
   pruneObjectBehavior: None
   remediationAction: inform

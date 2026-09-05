@@ -7,7 +7,7 @@ metadata:
   finalizers:
     - astra.netapp.io/finalizer
   generation: 2
-  name: argo-presync-20240424211703
+  name: cd-presync-20240424211703
   namespace: astra-connector
   ownerReferences:
     - apiVersion: astra.netapp.io/v1

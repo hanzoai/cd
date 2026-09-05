@@ -27,5 +27,5 @@ if obj.status ~= nil and (obj.status.health ~= nil or obj.status.expectedNodes ~
 end
 
 hs.status = "Unknown"
-hs.message = "Elastic Beat status is unknown. Ensure your Hanzo CD is current and then check for/file a bug report: https://github.com/argoproj/argo-cd/issues"
+hs.message = "Elastic Beat status is unknown. Ensure your Hanzo CD is current and then check for/file a bug report: https://github.com/hanzocd/cd/issues"
 return hs
