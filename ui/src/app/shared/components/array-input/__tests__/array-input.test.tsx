@@ -13,7 +13,7 @@ import {
     ResetOrDeleteButton,
     NameValue,
 } from '../array-input';
-import {Form, FormApi} from 'argo-ui';
+import {Form, FormApi} from '../../../../../kit/src';
 
 // ---------------------------------------------------------------------------
 // Helper: render an ArrayInput field inside a Form and return the FormApi

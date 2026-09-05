@@ -1,7 +1,7 @@
-import {FormField, NotificationType, SlidingPanel} from 'argo-ui';
+import {FormField, NotificationType, SlidingPanel} from '../../../../kit/src';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Form, FormApi, TextArea} from 'argo-ui';
+import {Form, FormApi, TextArea} from '../../../../kit/src';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {ActionMenu, DataLoader, EmptyState, ErrorNotification, Page, Paginate, SearchBar} from '../../../shared/components';
@@ -145,7 +145,7 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
                 }}
             />
             <div className='gpgkeys-list'>
-                <div className='argo-container'>
+                <div className='kit-container'>
                     <DataLoader
                         load={() => services.gpgkeys.list()}
                         ref={ref => {
@@ -183,8 +183,8 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
                                     {filteredGpgKeys.length > 0 ? (
                                         <Paginate page={page} data={filteredGpgKeys} onPageChange={setPage} preferencesKey='gpgkeys-list'>
                                             {gpgkeysToDisplay => (
-                                                <div className='argo-table-list'>
-                                                    <div className='argo-table-list__head'>
+                                                <div className='kit-table-list'>
+                                                    <div className='kit-table-list__head'>
                                                         <div className='row'>
                                                             <div className='columns small-3 sortable' onClick={() => requestSort('keyId')}>
                                                                 KEY ID
@@ -201,7 +201,7 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
                                                         </div>
                                                     </div>
                                                     {gpgkeysToDisplay.map(gpgkey => (
-                                                        <div className='argo-table-list__row' key={gpgkey.keyID}>
+                                                        <div className='kit-table-list__row' key={gpgkey.keyID}>
                                                             <div className='row'>
                                                                 <div className='columns small-3'>
                                                                     <i className='fa fa-key' /> {gpgkey.keyID}
@@ -228,7 +228,7 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
                                         <EmptyState icon='fa fa-key'>
                                             <h4>No GnuPG public keys currently configured</h4>
                                             <h5>You can add GnuPG public keys below.</h5>
-                                            <button className='argo-button argo-button--base' onClick={() => setAddGnuPGKey(true)}>
+                                            <button className='kit-button kit-button--base' onClick={() => setAddGnuPGKey(true)}>
                                                 Add GnuPG public key
                                             </button>
                                         </EmptyState>
@@ -249,10 +249,10 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
                 onClose={() => setAddGnuPGKey(false)}
                 header={
                     <div>
-                        <button className='argo-button argo-button--base' onClick={() => formApi.current.submitForm(null)}>
+                        <button className='kit-button kit-button--base' onClick={() => formApi.current.submitForm(null)}>
                             Create
                         </button>{' '}
-                        <button onClick={() => setAddGnuPGKey(false)} className='argo-button argo-button--base-o'>
+                        <button onClick={() => setAddGnuPGKey(false)} className='kit-button kit-button--base-o'>
                             Cancel
                         </button>
                     </div>
@@ -270,7 +270,7 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
                         <form onSubmit={formApi.submitForm} role='form' className='gpgkeys-list width-control' encType='multipart/form-data'>
                             <div className='white-box'>
                                 <p>ADD GnuPG PUBLIC KEY</p>
-                                <div className='argo-form-row'>
+                                <div className='kit-form-row'>
                                     <FormField formApi={formApi} label='GnuPG public key data (ASCII-armored)' field='keyData' component={TextArea} />
                                 </div>
                             </div>

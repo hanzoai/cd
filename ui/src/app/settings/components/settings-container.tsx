@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Redirect, Route, RouteComponentProps, Switch} from 'react-router';
-import {KeybindingProvider} from 'argo-ui/v2';
+import {KeybindingProvider} from '../../../kit/v2';
 
 import {AccountDetails} from './account-details/account-details';
 import {AccountsList} from './accounts-list/accounts-list';

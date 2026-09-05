@@ -1,4 +1,4 @@
-import {DropDownMenu, NotificationType, Tooltip} from 'argo-ui';
+import {DropDownMenu, NotificationType, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import Moment from 'react-moment';
 import {Cluster} from '../../../shared/components';
@@ -69,7 +69,7 @@ export const ApplicationTableRow = ({app, selected, pref, ctx, syncApplication, 
     };
 
     return (
-        <div className={`argo-table-list__row applications-list__entry applications-list__entry--health-${healthStatus} ${selected ? 'applications-tiles__selected' : ''}`}>
+        <div className={`kit-table-list__row applications-list__entry applications-list__entry--health-${healthStatus} ${selected ? 'applications-tiles__selected' : ''}`}>
             <div className={`row applications-list__table-row ${app.status.sourceHydrator?.currentOperation ? 'applications-table-row--with-hydrator' : ''}`}>
                 {/* The overlay anchor is the row's accessible link: a real link in tab order with an
                     aria-label so screen readers announce the application name once per row. It sits
@@ -107,7 +107,7 @@ export const ApplicationTableRow = ({app, selected, pref, ctx, syncApplication, 
                                 <div className='show-for-xxlarge applications-list__meta-label'>Name:</div>
                                 <div className='applications-list__meta-value'>
                                     {/* Rendered before the name so it stays visible when the name truncates with ellipsis;
-                                        the column's `overflow:hidden; white-space:nowrap` (argo-ui table-list) clips trailing
+                                        the column's `overflow:hidden; white-space:nowrap` (kit table-list) clips trailing
                                         inline children. The tile view does the opposite because there the title wraps. */}
                                     <NoticeIcon annotations={app.metadata.annotations} />
                                     <Tooltip
@@ -183,7 +183,7 @@ export const ApplicationTableRow = ({app, selected, pref, ctx, syncApplication, 
                     </CellLink>
                     <DropDownMenu
                         anchor={() => (
-                            <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
+                            <button className='kit-button kit-button--light kit-button--lg kit-button--short'>
                                 <i className='fa fa-ellipsis-v' />
                             </button>
                         )}

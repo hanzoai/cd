@@ -15,3 +15,13 @@ They are vendored rather than depended on so the gRPC surface in grpc-http
 can be removed on our own schedule. Kubernetes client-go requires gRPC
 transitively, so isolating it in one directory is the realistic first step
 toward eliminating it rather than a claim that it is already gone.
+
+---
+
+ui/src/kit/ contains the component library from Argo UI
+(https://github.com/argoproj/argo-ui), licensed under Apache-2.0:
+
+    Copyright 2017-2018 The Argo Authors
+
+Vendored in-tree rather than depended on as an external package, with the
+component and utility class names given our own naming rather than upstream's.

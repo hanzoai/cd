@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .application-operation-state {
     &__icons_container {
@@ -19,11 +19,11 @@
     }
 
     &__images-count {
-        color: $argo-running-color;
+        color: $kit-running-color;
         font-size: 0.9em;
         
         &:hover {
-            color: $argo-running-color-dark;
+            color: $kit-running-color-dark;
         }
     }
 

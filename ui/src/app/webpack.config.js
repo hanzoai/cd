@@ -40,7 +40,7 @@ const tsxRule = reactCompiler
               configFile: false,
               // Strip types and transform JSX only; leave ES modules intact so
               // webpack resolves imports (preset-env's module transform changed
-              // resolution and surfaced spurious missing-dep errors in argo-ui).
+              // resolution and surfaced spurious missing-dep errors in the kit).
               // esbuild's existing /\.js$/ rule handles final JS lowering.
               presets: [
                   ['@babel/preset-react', {runtime: 'automatic'}],
@@ -60,7 +60,7 @@ const tsxRule = reactCompiler
 const proxyConf = {
     target: process.env.CD_API_URL || 'http://localhost:8080',
     secure: false,
-    // Rewrite Host header when proxying to a remote API server (e.g. a hosted Argo CD instance).
+    // Rewrite Host header when proxying to a remote API server (e.g. a hosted CD instance).
     changeOrigin: !!process.env.CD_API_URL
 };
 
@@ -77,13 +77,10 @@ const config = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
         alias: {
-            'react-form': require.resolve('argo-ui/src/components/form/compat.tsx'),
+            'react-form': require.resolve('../kit/src/components/form/compat.tsx'),
         },
         fallback: { fs: false }
     },
-    ignoreWarnings: [{
-        module: new RegExp('/node_modules/argo-ui/.*')
-    }],
     module: {
         rules: [
             tsxRule,
@@ -111,7 +108,7 @@ const config = {
                         loader: 'sass-loader',
                         options: {
                             sassOptions: {
-                                // The SCSS imports argo-ui as 'node_modules/argo-ui/...'
+                                // The SCSS imports the kit as 'src/kit/...'
                                 // (a path relative to the ui root), so the ui root must
                                 // be a load path; keep node_modules for bare imports.
                                 // sass-loader's modern API reads loadPaths, not the
@@ -152,7 +149,7 @@ const config = {
                     to: 'assets'
                 },
                 {
-                    from: 'node_modules/argo-ui/src/assets',
+                    from: 'src/kit/src/assets',
                     to: 'assets'
                 },
                 {
@@ -177,7 +174,7 @@ const config = {
         }),
         codecovWebpackPlugin({
             enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-            bundleName: "argo-cd-ui",
+            bundleName: "hanzo-cd-ui",
             uploadToken: process.env.CODECOV_TOKEN,
         }),
     ],

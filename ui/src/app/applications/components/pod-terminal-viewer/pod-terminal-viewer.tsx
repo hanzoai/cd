@@ -8,8 +8,8 @@ import {useCallback, useEffect} from 'react';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 import {fromEvent, ReplaySubject, Subject} from 'rxjs';
 import {Context} from '../../../shared/context';
-import {Tooltip} from 'argo-ui/v2';
-import {ErrorNotification, NotificationType} from 'argo-ui';
+import {Tooltip} from '../../../../kit/v2';
+import {ErrorNotification, NotificationType} from '../../../../kit/src';
 export interface PodTerminalViewerProps {
     applicationName: string;
     applicationNamespace: string;

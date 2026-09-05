@@ -1,6 +1,6 @@
-import {HelpIcon} from 'argo-ui';
+import {HelpIcon} from '../../../../kit/src';
 import * as React from 'react';
-import {ARGO_GRAY6_COLOR} from '../../../shared/components';
+import {GRAY6_COLOR} from '../../../shared/components';
 import {Timestamp} from '../../../shared/components/timestamp';
 import * as models from '../../../shared/models';
 import {getAppSetConditionCategory, getAppSetHealthStatus, HealthStatusIcon} from '../utils';
@@ -18,7 +18,7 @@ interface SectionInfo {
 }
 
 const sectionLabel = (info: SectionInfo) => (
-    <label style={{display: 'flex', alignItems: 'flex-start', fontSize: '12px', fontWeight: 600, color: ARGO_GRAY6_COLOR, minHeight: '18px'}}>
+    <label style={{display: 'flex', alignItems: 'flex-start', fontSize: '12px', fontWeight: 600, color: GRAY6_COLOR, minHeight: '18px'}}>
         {info.title}
         {info.helpContent && (
             <span style={{marginLeft: '5px'}}>

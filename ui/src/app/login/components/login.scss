@@ -1,8 +1,8 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 // The sign-in page: one card, on the ground the rest of the product uses.
 //
-// What it replaced was Argo's own layout — a full-height white column pinned to
+// What it replaced was the stock layout — a full-height white column pinned to
 // the right of a dark field, with the mark blown up to half the viewport in the
 // middle of it and the stock line "Let's get stuff deployed!" above. Three
 // copies of the same logo, two grounds fighting over one screen, and nothing
@@ -25,15 +25,15 @@ $soft: rgba(255, 255, 255, 0.56);
     background: $ground;
     color: $ink;
 
-    // Argo draws its own field styles from a light palette. These four are the
+    // The kit draws its own field styles from a light palette. These four are the
     // only ones the form needs to read on a dark ground.
-    .argo-field {
+    .kit-field {
         border-bottom: 1px solid $edge;
         background: transparent;
         color: $ink;
     }
 
-    .argo-form-row__error-msg {
+    .kit-form-row__error-msg {
         color: #ff6b6b;
         font-size: 13px;
         padding-top: 8px;
@@ -82,9 +82,9 @@ $soft: rgba(255, 255, 255, 0.56);
         padding-top: 24px;
     }
 
-    // argo-ui ships its buttons uppercase. A control that shouts one line and
+    // The kit ships its buttons uppercase. A control that shouts one line and
     // whispers the next is two voices; these are the product's own.
-    .argo-button {
+    .kit-button {
         text-transform: none;
         letter-spacing: 0;
         font-size: 14px;

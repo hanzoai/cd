@@ -1,9 +1,9 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 @import 'node_modules/foundation-sites/scss/util/util';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/theme';
 
 .help-tip {
-    color: $argo-color-gray-4;
+    color: $kit-color-gray-4;
 }
 
 @mixin responsive-widths {
@@ -61,8 +61,8 @@
         display: flex;
         padding: 1px 5px;
         cursor: pointer;
-        color: $argo-color-gray-6;
-        border: 1px solid $argo-color-gray-5;
+        color: $kit-color-gray-6;
+        border: 1px solid $kit-color-gray-5;
     }
 
     &__item {
@@ -109,17 +109,17 @@
 
         & {
             a.error {
-                color: $argo-failed-color-dark;
+                color: $kit-failed-color-dark;
             }
         }
         & {
             a.warning {
-                color: $argo-status-warning-color;
+                color: $kit-status-warning-color;
             }
         }
         & {
             a.info {
-                color: $argo-success-color;
+                color: $kit-success-color;
             }
         }
 
@@ -152,21 +152,21 @@
             color: themed('text-1');
         }
         &--highlight {
-            color: $argo-color-teal-6;
+            color: $kit-color-teal-6;
         }
 
         &--Running a,
         &--Terminating a {
-            color: $argo-running-color;
+            color: $kit-running-color;
         }
 
         &--Error a,
         &--Failed a {
-            color: $argo-failed-color;
+            color: $kit-failed-color;
         }
 
         &--Succeeded a {
-            color: $argo-success-color;
+            color: $kit-success-color;
         }
 
         i {
@@ -236,9 +236,9 @@
             display: inline;
             border-radius: 5px;
             padding: 2px;
-            border: 1px solid $argo-color-gray-5;
+            border: 1px solid $kit-color-gray-5;
             &:hover {
-                background-color: $argo-color-gray-4;
+                background-color: $kit-color-gray-4;
             }
         }
 

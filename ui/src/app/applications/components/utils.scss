@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/theme';
 
 .propagation-policy-list {
     display: flex;
@@ -15,7 +15,7 @@
         cursor: pointer;
 
         @include themify($themes) {
-            color: themed('light-argo-gray-6');        
+            color: themed('light-kit-gray-6');        
         }
     }
 
@@ -38,9 +38,9 @@ i.utils-health-status-icon {
     border-radius: 5px;
     vertical-align: middle;
     padding: 2px;
-    border: 1px solid $argo-color-gray-5;
+    border: 1px solid $kit-color-gray-5;
     &:hover {
-        background-color: $argo-color-gray-4;
+        background-color: $kit-color-gray-4;
     }
 }
 

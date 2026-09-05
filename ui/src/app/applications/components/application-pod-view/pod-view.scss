@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 $pod-size: 25px;
 $gutter: 3px;
@@ -22,7 +22,7 @@ $pod-age-icon-clr: #ffce25;
         &__section {
             margin-left: 10px;
             padding-right: 10px;
-            border-right: 1px solid $argo-color-gray-4;
+            border-right: 1px solid $kit-color-gray-4;
             &:last-child {
                 border-right: none;
             }
@@ -68,8 +68,8 @@ $pod-age-icon-clr: #ffce25;
             justify-content: end;
             div {
                 border-radius: 3px;
-                background-color: $argo-color-gray-3;
-                color: $argo-color-gray-7;
+                background-color: $kit-color-gray-3;
+                color: $kit-color-gray-7;
                 margin-right: 5px;
                 padding: 3px 5px;
             }
@@ -78,8 +78,8 @@ $pod-age-icon-clr: #ffce25;
             margin: 1em 0;
             padding: 10px;
             border-radius: 3px;
-            background-color: $argo-color-gray-3;
-            color: $argo-color-gray-6;
+            background-color: $kit-color-gray-3;
+            color: $kit-color-gray-6;
             max-height: 100px;
             overflow: auto;
              &__item {
@@ -115,7 +115,7 @@ $pod-age-icon-clr: #ffce25;
                 display: flex;
                 flex-wrap: wrap;
                 width: 100%;
-                background-color: $argo-color-gray-3;
+                background-color: $kit-color-gray-3;
                 border-radius: 3px;
                 padding: $gutter * 2;
                 margin-right: -1 * $gutter;
@@ -132,44 +132,44 @@ $pod-age-icon-clr: #ffce25;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: $argo-color-gray-5;
+            background-color: $kit-color-gray-5;
             i.fa {
                 color: white !important;
             }
             &--succeeded,
             &--healthy {
-                background-color: $argo-success-color;
+                background-color: $kit-success-color;
                 &:hover {
-                    background-color: $argo-success-color-dark;
+                    background-color: $kit-success-color-dark;
                 }
             }
             &--pending,
             &--suspended {
-                background-color: $argo-status-warning-color;
+                background-color: $kit-status-warning-color;
                 &:hover {
-                    background-color: darken($argo-status-warning-color, 10%);
+                    background-color: darken($kit-status-warning-color, 10%);
                 }
             }
             &--running,
             &--progressing {
-                background-color: $argo-running-color;
+                background-color: $kit-running-color;
                 &:hover {
-                    background-color: $argo-running-color-dark;
+                    background-color: $kit-running-color-dark;
                 }
             }
             &--failed,
             &--degraded {
-                background-color: $argo-failed-color;
+                background-color: $kit-failed-color;
                 border: 2px solid rgba(0, 0, 0, 0.3);
                 &:hover {
-                    background-color: $argo-failed-color-dark;
+                    background-color: $kit-failed-color-dark;
                 }
             }
             &--unknown,
             &--missing {
-                background-color: $argo-color-gray-5;
+                background-color: $kit-color-gray-5;
                 &:hover {
-                    background-color: $argo-color-gray-6;
+                    background-color: $kit-color-gray-6;
                 }
             }
             &__new-pod-icon {
@@ -194,16 +194,16 @@ $pod-age-icon-clr: #ffce25;
             }
 
             &__stat-icon-app {
-                background-color: $argo-color-teal-7;
+                background-color: $kit-color-teal-7;
             }
 
             &__stat-icon-neighbors {
-                background-color: $argo-color-gray-6;
+                background-color: $kit-color-gray-6;
             }
 
             &__stat {
                 &__bar {
-                    background-color: $argo-color-gray-4;
+                    background-color: $kit-color-gray-4;
                     height: $max-rows * $pod-size;
                     width: $stat-width;
                     position: relative;
@@ -214,21 +214,21 @@ $pod-age-icon-clr: #ffce25;
 
                     &--fill {
                         position: absolute;
-                        background-color: $argo-color-teal-7;
+                        background-color: $kit-color-teal-7;
                         width: 100%;
                         bottom: 0;
                     }
 
                     &--neighbors {
-                        background-color: $argo-color-gray-6;
+                        background-color: $kit-color-gray-6;
                     }
 
                     &:hover > &--fill {
-                        background-color: $argo-color-teal-8;
+                        background-color: $kit-color-teal-8;
                     }
 
                     &:hover &--neighbors {
-                        background-color: $argo-color-gray-7;
+                        background-color: $kit-color-gray-7;
                     }
                 }
             }
@@ -241,7 +241,7 @@ $pod-age-icon-clr: #ffce25;
 
             &.disabled {
                 cursor: default !important;
-                color: $argo-color-gray-3 !important;
+                color: $kit-color-gray-3 !important;
             }
         }
     }

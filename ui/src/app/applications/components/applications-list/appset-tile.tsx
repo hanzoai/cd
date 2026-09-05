@@ -1,4 +1,4 @@
-import {NotificationType, Tooltip} from 'argo-ui';
+import {NotificationType, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import {ContextApis, AuthSettingsCtx} from '../../../shared/context';
 import * as models from '../../../shared/models';
@@ -62,7 +62,7 @@ export const AppSetTile = ({appSet, selected, pref, ctx, tileRef}: AppSetTilePro
     return (
         <div
             ref={tileRef}
-            className={`argo-table-list__row applications-list__entry applications-list__entry--health-${healthStatus} ${selected ? 'applications-tiles__selected' : ''}`}>
+            className={`kit-table-list__row applications-list__entry applications-list__entry--health-${healthStatus} ${selected ? 'applications-tiles__selected' : ''}`}>
             <a
                 className='row applications-tiles__wrapper'
                 href={appSetLink.href}
@@ -73,7 +73,7 @@ export const AppSetTile = ({appSet, selected, pref, ctx, tileRef}: AppSetTilePro
                     {/* Header row with icon, title, and action buttons */}
                     <div className='row'>
                         <div className='columns small-11 applications-tiles__title-col'>
-                            <i className='icon argo-icon-applicationset' />
+                            <i className='icon kit-icon-applicationset' />
                             <Tooltip content={AppUtils.appInstanceName(appSet)}>
                                 <span className='applications-list__title'>{AppUtils.appQualifiedName(appSet, useAuthSettingsCtx?.appsInAnyNamespaceEnabled)}</span>
                             </Tooltip>

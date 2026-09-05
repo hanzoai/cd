@@ -1,4 +1,4 @@
-import {DataLoader} from 'argo-ui';
+import {DataLoader} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as React from 'react';
 import {useEffect, useMemo, useState, useRef} from 'react';
@@ -64,7 +64,7 @@ const colors = [blue, magenta];
 const reset = '\u001b[0m';
 const whiteOnYellow = '\u001b[1m\u001b[43;1m\u001b[37m';
 
-// Default colors using argo-ui theme variables
+// Default colors using the kit's theme variables
 const POD_COLORS_LIGHT = ['var(--pod-background-light)'];
 const POD_COLORS_DARK = ['var(--pod-background-dark)'];
 

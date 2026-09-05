@@ -1,6 +1,6 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 @import 'node_modules/foundation-sites/scss/util/util';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/theme';
 
 .search-bar {
     &__wrapper {
@@ -12,7 +12,7 @@
         line-height: normal;
         position: relative; // Required for autocomplete dropdown positioning
 
-        // argo-ui's Autocomplete positions the menu with inline styles (position: fixed + JS-measured
+        // The kit's Autocomplete positions the menu with inline styles (position: fixed + JS-measured
         // top/left/width from the input's bounding rect). We re-anchor it to this wrapper instead so it
         // spans the full search bar and tracks the focus-expand width animation for free. !important is
         // required because inline styles can only be overridden with !important.
@@ -30,10 +30,10 @@
             gap: 8px;
             padding: 5px 10px;
             font-size: 14px;
-            color: $argo-color-gray-6;
+            color: $kit-color-gray-6;
             line-height: normal;
 
-            // Font-icon glyphs (e.g. `icon argo-icon-application`) inherit the global
+            // Font-icon glyphs (e.g. `icon kit-icon-application`) inherit the global
             // `.icon { font-size: 2em }` rule, which renders them at 28px. Constrain them
             // to match the row text size.
             i.icon {
@@ -44,7 +44,7 @@
 
     &__input {
         @include themify($themes) {
-            background-color: themed('light-argo-gray-2');
+            background-color: themed('light-kit-gray-2');
             border: 1px solid themed('border');
         }
         border-radius: 7px;
@@ -60,11 +60,11 @@
         }
         i {
             font-size: 12px;
-            color: $argo-color-gray-6;
+            color: $kit-color-gray-6;
         }
         .keyboard-hint {
-            border: 1px solid $argo-color-gray-5;
-            color: $argo-color-gray-7;
+            border: 1px solid $kit-color-gray-5;
+            color: $kit-color-gray-7;
             border-radius: 3px;
             padding: 0 7px;
             font-size: 12px;
@@ -73,22 +73,22 @@
             text-align: center;
         }
         &:focus-within {
-            border: 1px solid $argo-color-teal-5;
+            border: 1px solid $kit-color-teal-5;
             @include breakpoint(large up) {
                 width: 500px;
             }
             i {
-                color: $argo-color-gray-7;
+                color: $kit-color-gray-7;
             }
             .keyboard-hint {
                 display: none;
             }
         }
-        .argo-field {
+        .kit-field {
             border: none;
             font-weight: 500;
             &::placeholder {
-                color: $argo-color-gray-6;
+                color: $kit-color-gray-6;
             }
         }
     }

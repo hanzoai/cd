@@ -1,4 +1,4 @@
-import {DataLoader, DropDown} from 'argo-ui';
+import {DataLoader, DropDown} from '../../../../kit/src';
 import * as React from 'react';
 
 import {Context} from '../../../shared/context';
@@ -6,7 +6,7 @@ import {services} from '../../../shared/services';
 import {getAppUrl} from '../utils';
 
 function resourceIconClass(objectListKind: string): string {
-    return objectListKind === 'applicationset' ? 'argo-icon-applicationset' : 'argo-icon-application';
+    return objectListKind === 'applicationset' ? 'kit-icon-applicationset' : 'kit-icon-application';
 }
 
 export const ApplicationsDetailsAppDropdown = (props: {appName: string; objectListKind: string}) => {
@@ -27,7 +27,7 @@ export const ApplicationsDetailsAppDropdown = (props: {appName: string; objectLi
                     <li className='application-details-app-dropdown__filter'>
                         <span className='application-details-app-dropdown__filter-spacer' aria-hidden='true' />
                         <input
-                            className='argo-field'
+                            className='kit-field'
                             value={appFilter}
                             onChange={e => setAppFilter(e.target.value)}
                             ref={el => {

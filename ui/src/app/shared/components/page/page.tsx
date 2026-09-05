@@ -1,4 +1,4 @@
-import {DataLoader, Page as ArgoPage, Toolbar} from 'argo-ui';
+import {DataLoader, Page as KitPage, Toolbar} from '../../../../kit/src';
 import * as React from 'react';
 import {BehaviorSubject, Observable} from 'rxjs';
 
@@ -62,7 +62,7 @@ export const Page = (props: PageProps) => {
         <DataLoader load={() => services.viewPreferences.getPreferences()}>
             {pref => (
                 <div className={`${applyPageWrapper ? 'page-wrapper' : ''} ${pref.hideSidebar ? 'sb-page-wrapper__sidebar-collapsed' : 'sb-page-wrapper'}`}>
-                    <ArgoPage title={props.title} children={props.children} topBarTitle={props.topBarTitle} useTitleOnly={props.useTitleOnly} toolbar={props.toolbar} />
+                    <KitPage title={props.title} children={props.children} topBarTitle={props.topBarTitle} useTitleOnly={props.useTitleOnly} toolbar={props.toolbar} />
                 </div>
             )}
         </DataLoader>

@@ -1,7 +1,7 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 
-$pod-background-light: $argo-color-teal-3;
+$pod-background-light: $kit-color-teal-3;
 $pod-background-dark: $dark-theme-background-2;
 :root {
     --pod-background-light: #{$pod-background-light};
@@ -19,15 +19,15 @@ $pod-background-dark: $dark-theme-background-2;
     &--inverted {
         background-color: black;
         color: white;
-        scrollbar-color: $argo-color-gray-5 $dark-theme-background-2;
+        scrollbar-color: $kit-color-gray-5 $dark-theme-background-2;
     }
 
     &__settings {
         display: flex;
 
-        .argo-checkbox,
-        .argo-checkbox input,
-        .argo-checkbox input:focus {
+        .kit-checkbox,
+        .kit-checkbox input,
+        .kit-checkbox input:focus {
             appearance: none;
             outline: none !important;
             border: none !important;
@@ -44,7 +44,7 @@ $pod-background-dark: $dark-theme-background-2;
             }
         }
 
-        .argo-field {
+        .kit-field {
             @include themify($themes){
                 background-color: themed('background-2');
             }
@@ -57,7 +57,7 @@ $pod-background-dark: $dark-theme-background-2;
             align-items: center;
         }
 
-        .argo-button {
+        .kit-button {
             margin-right: 5px;
             border: 1px solid transparent;
 
@@ -72,7 +72,7 @@ $pod-background-dark: $dark-theme-background-2;
         margin-left: auto;
         width: 320px;
 
-        .argo-button {
+        .kit-button {
             display: flex;
             align-items: center;
         }
@@ -292,11 +292,11 @@ $pod-background-dark: $dark-theme-background-2;
 }
 
 .copySuccess {
-    // ARGO_SUCCESS_COLOR
+    // SUCCESS_COLOR
     background-color: #22c55e !important;
 }
 .copyFailure {
-    // ARGO_FAILED_COLOR
+    // FAILED_COLOR
     background-color: #ef4444 !important;
 }
 .copyStandard {
@@ -305,7 +305,7 @@ $pod-background-dark: $dark-theme-background-2;
 
 .container-item {
     font-size: 0.9em;
-    color: $argo-color-teal-5;
+    color: $kit-color-teal-5;
 }
 
 code {

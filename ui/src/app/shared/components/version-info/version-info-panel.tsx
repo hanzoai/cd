@@ -1,4 +1,4 @@
-import {DataLoader, SlidingPanel, Tooltip} from 'argo-ui';
+import {DataLoader, SlidingPanel, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import {useState} from 'react';
 import {VersionMessage} from '../../models';
@@ -33,7 +33,7 @@ export function VersionPanel({isShown, onClose, version}: VersionPanelProps) {
         return (
             <>
                 {Object.entries(formattedVersion).map(([key, value]) => (
-                    <div className='argo-table-list__row' key={key}>
+                    <div className='kit-table-list__row' key={key}>
                         <div className='row'>
                             <div className='columns small-4' title={key}>
                                 <strong>{key}</strong>
@@ -67,7 +67,7 @@ export function VersionPanel({isShown, onClose, version}: VersionPanelProps) {
         }
 
         return (
-            <button className='argo-button argo-button--base' style={{marginTop: '1em', minWidth: '18ch'}} onClick={() => onCopy(version)}>
+            <button className='kit-button kit-button--base' style={{marginTop: '1em', minWidth: '18ch'}} onClick={() => onCopy(version)}>
                 <i className={'fa ' + img} />
                 &nbsp;&nbsp;{text}
             </button>
@@ -94,7 +94,7 @@ export function VersionPanel({isShown, onClose, version}: VersionPanelProps) {
                     {version => (
                         <ThemeWrapper theme={pref.theme}>
                             <SlidingPanel header={header} isShown={isShown} onClose={onClose} hasCloseButton={true} isNarrow={true}>
-                                <div className='argo-table-list'>{buildVersionTable(version)}</div>
+                                <div className='kit-table-list'>{buildVersionTable(version)}</div>
                                 <div>
                                     <Tooltip content='Copy all version info as JSON'>{getCopyButton(version)}</Tooltip>
                                 </div>

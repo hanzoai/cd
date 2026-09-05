@@ -1,4 +1,4 @@
-import {Popup} from 'argo-ui';
+import {Popup} from '../../../../kit/src';
 import * as React from 'react';
 import {ProgressBar} from './progress-bar';
 import './progress-popup.scss';
@@ -11,7 +11,7 @@ const Footer = ({percentage, onClose}: {percentage: number; onClose: () => void}
     return (
         <div className='progress-popup__footer'>
             {percentage >= 100 && (
-                <button className='argo-button argo-button--base-o' onClick={() => onClose()}>
+                <button className='kit-button kit-button--base-o' onClick={() => onClose()}>
                     Close
                 </button>
             )}

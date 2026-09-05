@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .application-fullscreen-logs {
     position: fixed;
@@ -9,7 +9,7 @@
     z-index: 20;
     height: 100%;
     padding: 20px 30px;
-    background-color: $argo-color-gray-3;
+    background-color: $kit-color-gray-3;
     
     .theme-dark & {
         background-color: #171717;

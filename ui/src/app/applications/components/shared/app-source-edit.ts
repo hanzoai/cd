@@ -1,4 +1,4 @@
-import {FormApi} from 'argo-ui';
+import {FormApi} from '../../../../kit/src';
 import * as models from '../../../shared/models';
 
 /** Shared with application-create-panel and application-parameters/source-panel. */

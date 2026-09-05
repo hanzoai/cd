@@ -1,4 +1,4 @@
-import {useData, Checkbox} from 'argo-ui/v2';
+import {useData, Checkbox} from '../../../../kit/v2';
 import * as minimatch from 'minimatch';
 import * as React from 'react';
 import {

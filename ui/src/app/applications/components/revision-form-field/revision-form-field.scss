@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/theme';
 
 .revision-form-field {
     display: flex;
@@ -11,7 +11,7 @@
     min-width: 0;
 }
 
-.revision-form-field .argo-field-container {
+.revision-form-field .kit-field-container {
     display: flex;
     flex-direction: column-reverse;
     align-items: stretch;
@@ -19,12 +19,12 @@
     min-height: 0;
 }
 
-.revision-form-field .argo-field-container > .argo-field,
-.revision-form-field .argo-field-container > .argo-textarea {
+.revision-form-field .kit-field-container > .kit-field,
+.revision-form-field .kit-field-container > .kit-textarea {
     grid-area: unset;
 }
 
-.revision-form-field .argo-field-container > label.argo-label-placeholder {
+.revision-form-field .kit-field-container > label.kit-label-placeholder {
     position: static;
     grid-area: unset;
     align-self: flex-start;
@@ -39,12 +39,12 @@
     }
 }
 
-.revision-form-field .argo-field-container > .argo-field:focus + label.argo-label-placeholder,
-.revision-form-field .argo-field-container > .argo-textarea:focus + label.argo-label-placeholder {
+.revision-form-field .kit-field-container > .kit-field:focus + label.kit-label-placeholder,
+.revision-form-field .kit-field-container > .kit-textarea:focus + label.kit-label-placeholder {
     font-size: 12px;
     transform: none !important;
     @include themify($themes) {
-        color: themed('light-argo-teal-7');
+        color: themed('light-kit-teal-7');
     }
 }
 

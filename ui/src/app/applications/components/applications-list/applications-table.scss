@@ -1,11 +1,11 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 $applications-list-label-min: 5.75rem;
 $applications-list-xxlarge: calc(map-get($breakpoints, xxlarge) - 1px);
 
 .applications-table {
 
-    .argo-table-list__row {
+    .kit-table-list__row {
         line-height: 26px;
         padding-top: 4px;
         padding-bottom: 4px;
@@ -14,7 +14,7 @@ $applications-list-xxlarge: calc(map-get($breakpoints, xxlarge) - 1px);
 
     .applications-list__table-row {
         // No `position: relative` here on purpose: the overlay link anchors to the already-positioned
-        // outer `.argo-table-list__row` (argo-ui sets it `position: relative`), so it spans the full
+        // outer `.kit-table-list__row` (the kit sets it `position: relative`), so it spans the full
         // row including that element's left padding. Making this inner Foundation `.row` a containing
         // block would shrink the overlay to the narrower inner row instead.
 
@@ -32,10 +32,10 @@ $applications-list-xxlarge: calc(map-get($breakpoints, xxlarge) - 1px);
             z-index: 2;
         }
 
-        // `.argo-dropdown` is `position: static` by default (argo-ui dropdown.scss), so
+        // `.kit-dropdown` is `position: static` by default (kit dropdown.scss), so
         // z-index alone wouldn't lift it above the overlay link. Promote it to positioned
         // so the `…` action menu still receives its own clicks.
-        .argo-dropdown {
+        .kit-dropdown {
             position: relative;
             z-index: 2;
         }
@@ -79,7 +79,7 @@ $applications-list-xxlarge: calc(map-get($breakpoints, xxlarge) - 1px);
         // Keyboard focus indicator — the anchor itself is invisible, so draw the outline
         // on its bounding box (the whole row) for keyboard users.
         &:focus-visible {
-            outline: 2px solid $argo-color-teal-5;
+            outline: 2px solid $kit-color-teal-5;
             outline-offset: -2px;
         }
     }

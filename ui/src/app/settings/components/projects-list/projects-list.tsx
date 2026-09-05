@@ -1,6 +1,6 @@
-import {FormField, NotificationType, SlidingPanel} from 'argo-ui';
+import {FormField, NotificationType, SlidingPanel} from '../../../../kit/src';
 import * as React from 'react';
-import {Form, FormApi, Text} from 'argo-ui';
+import {Form, FormApi, Text} from '../../../../kit/src';
 
 import {DataLoader, EmptyState, ErrorNotification, IconColumn, Page, Paginate, SearchBar} from '../../../shared/components';
 import {Context} from '../../../shared/context';
@@ -45,7 +45,7 @@ export function ProjectsList() {
                     )
                 }}
             />
-            <div className='projects argo-container'>
+            <div className='projects kit-container'>
                 <DataLoader load={() => services.projects.list()}>
                     {projects => {
                         const filteredProjects = projects
@@ -71,8 +71,8 @@ export function ProjectsList() {
                                 {filteredProjects.length > 0 ? (
                                     <Paginate page={page} data={filteredProjects} onPageChange={setPage} preferencesKey='projects-list'>
                                         {projectsToDisplay => (
-                                            <div className='argo-table-list argo-table-list--clickable'>
-                                                <div className='argo-table-list__head'>
+                                            <div className='kit-table-list kit-table-list--clickable'>
+                                                <div className='kit-table-list__head'>
                                                     <div className='row'>
                                                         <IconColumn />
                                                         <div className='columns small-3 sortable' onClick={() => requestSort('name')}>
@@ -86,7 +86,7 @@ export function ProjectsList() {
                                                     </div>
                                                 </div>
                                                 {projectsToDisplay.map(proj => (
-                                                    <div className='argo-table-list__row' key={proj.metadata.name} onClick={() => ctx.navigation.goto(`./${proj.metadata.name}`)}>
+                                                    <div className='kit-table-list__row' key={proj.metadata.name} onClick={() => ctx.navigation.goto(`./${proj.metadata.name}`)}>
                                                         <div className='row'>
                                                             <IconColumn icon='fa fa-object-group' />
                                                             <div className='columns small-3'>{proj.metadata.name}</div>
@@ -101,7 +101,7 @@ export function ProjectsList() {
                                     <EmptyState icon='fa fa-object-group'>
                                         <h4>No projects yet</h4>
                                         <h5>Create new projects to group your applications</h5>
-                                        <button className='argo-button argo-button--base' onClick={() => ctx.navigation.goto('.', {add: true}, {replace: true})}>
+                                        <button className='kit-button kit-button--base' onClick={() => ctx.navigation.goto('.', {add: true}, {replace: true})}>
                                             New project
                                         </button>
                                     </EmptyState>
@@ -122,10 +122,10 @@ export function ProjectsList() {
                 isMiddle={true}
                 header={
                     <div>
-                        <button onClick={() => formApiRef.current && formApiRef.current.submitForm(null)} className='argo-button argo-button--base'>
+                        <button onClick={() => formApiRef.current && formApiRef.current.submitForm(null)} className='kit-button kit-button--base'>
                             Create
                         </button>{' '}
-                        <button onClick={() => ctx.navigation.goto('.', {add: null}, {replace: true})} className='argo-button argo-button--base-o'>
+                        <button onClick={() => ctx.navigation.goto('.', {add: null}, {replace: true})} className='kit-button kit-button--base-o'>
                             Cancel
                         </button>
                     </div>
@@ -151,10 +151,10 @@ export function ProjectsList() {
                         <form onSubmit={api.submitForm} role='form' className='width-control'>
                             <div className='white-box'>
                                 <p>GENERAL</p>
-                                <div className='argo-form-row'>
+                                <div className='kit-form-row'>
                                     <FormField formApi={api} label='Project Name' field='metadata.name' component={Text} />
                                 </div>
-                                <div className='argo-form-row'>
+                                <div className='kit-form-row'>
                                     <FormField formApi={api} label='Description' field='spec.description' component={Text} />
                                 </div>
                             </div>

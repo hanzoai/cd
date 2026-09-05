@@ -1,6 +1,6 @@
-import {AutocompleteField, DataLoader, DropDownMenu, FormField} from 'argo-ui';
+import {AutocompleteField, DataLoader, DropDownMenu, FormField} from '../../../../kit/src';
 import * as React from 'react';
-import {FormApi} from 'argo-ui';
+import {FormApi} from '../../../../kit/src';
 import {RevisionHelpIcon} from '../../../shared/components';
 import * as models from '../../../shared/models';
 import {services} from '../../../shared/services';
@@ -141,7 +141,7 @@ export const SourcePanel = (props: SourcePanelProps) => {
                         repoType={repoType}
                         fieldValue={fieldPath(idx, 'targetRevision')}
                     />
-                    <div className='argo-form-row'>
+                    <div className='kit-form-row'>
                         <DataLoader
                             input={{repoURL: specSourceForRevision?.repoURL, revision: specSourceForRevision?.targetRevision}}
                             load={async src =>
@@ -175,7 +175,7 @@ export const SourcePanel = (props: SourcePanelProps) => {
                             repoType={repoType}
                             fieldValue={fieldPath(idx, 'targetRevision')}
                         />
-                        <div className='argo-form-row'>
+                        <div className='kit-form-row'>
                             <DataLoader
                                 input={{repoURL: specSourceForRevision?.repoURL, revision: specSourceForRevision?.targetRevision}}
                                 load={async src =>
@@ -211,7 +211,7 @@ export const SourcePanel = (props: SourcePanelProps) => {
                             const chartName = isMulti ? spec.sources?.[props.sourceIndex as number]?.chart : spec.source?.chart;
                             const selectedChart = charts.find(chart => chart.name === chartName);
                             return (
-                                <div className='row argo-form-row'>
+                                <div className='row kit-form-row'>
                                     <div className='columns small-10'>
                                         <FormField
                                             formApi={props.formApi}

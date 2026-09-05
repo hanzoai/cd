@@ -105,7 +105,7 @@ interface ReposFilterProps {
     collapsed?: boolean;
 }
 
-const getTypeIcon = (type: string) => <i className={'icon argo-icon-' + type} style={{fontSize: '16px', display: 'flex', alignItems: 'center'}} />;
+const getTypeIcon = (type: string) => <i className={'icon kit-icon-' + type} style={{fontSize: '16px', display: 'flex', alignItems: 'center'}} />;
 
 const getTypeLabel = (type: string) => {
     switch (type) {

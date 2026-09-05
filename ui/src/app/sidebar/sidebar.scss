@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/v2/styles/colors.scss';
+@import 'src/kit/v2/styles/colors.scss';
 @import '../shared/config.scss';
 
 $deselected-text: #a3a3a3;
@@ -117,7 +117,7 @@ $deselected-text: #a3a3a3;
 
         &--active {
             color: #fafafa;
-            // Out-specify argo-ui's global `a:hover { color: accent }` so the active item stays paper-white.
+            // Out-specify the kit's global `a:hover { color: accent }` so the active item stays paper-white.
             &:hover,
             &:focus {
                 color: #fafafa;

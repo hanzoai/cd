@@ -1,4 +1,4 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .applications-tiles {
     display: grid;
@@ -76,7 +76,7 @@
         }
     }
 
-    .argo-table-list__row {
+    .kit-table-list__row {
         padding-top: 0;
         padding-bottom: 0;
 
@@ -93,7 +93,7 @@
         }
     }
     &__selected {
-        box-shadow: 0 0 0 1px $argo-color-teal-5;
+        box-shadow: 0 0 0 1px $kit-color-teal-5;
     }
 
     .applications-list__title {
@@ -174,7 +174,7 @@
             justify-content: center;
 
             &:hover {
-                color: $argo-color-teal-5;
+                color: $kit-color-teal-5;
             }
 
             &.managed-by-url-invalid {

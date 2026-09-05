@@ -26,10 +26,10 @@ export const ResourceIcon = ({group, kind, customStyle}: {group: string; kind: s
         return <img src={'assets/images/infrastructure_components/' + kind + '.svg'} alt={kind} style={{padding: '2px', ...RESOURCE_ICON_IMG_STYLE, ...customStyle}} />;
     }
     if (kind === 'Application') {
-        return <i title={kind} className='icon argo-icon-application resource-icon__font-icon' style={{...RESOURCE_ICON_FONT_STYLE, ...customStyle}} />;
+        return <i title={kind} className='icon kit-icon-application resource-icon__font-icon' style={{...RESOURCE_ICON_FONT_STYLE, ...customStyle}} />;
     }
     if (kind === 'ApplicationSet') {
-        return <i title={kind} className='icon argo-icon-applicationset resource-icon__font-icon' style={{...RESOURCE_ICON_FONT_STYLE, ...customStyle}} />;
+        return <i title={kind} className='icon kit-icon-applicationset resource-icon__font-icon' style={{...RESOURCE_ICON_FONT_STYLE, ...customStyle}} />;
     }
     // First, check for group-based custom icons
     if (group) {

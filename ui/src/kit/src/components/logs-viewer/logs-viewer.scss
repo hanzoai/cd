@@ -1,0 +1,13 @@
+@import '../../styles/config';
+@import 'xterm/css/xterm';
+
+.logs-viewer {
+    font: normal 13px/1.2 'Courier', sans-serif;
+    line-height: 20px;
+    height: 100%;
+    overflow: hidden;
+
+    &__container {
+        height: 100%;
+    }
+}

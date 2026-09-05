@@ -1,4 +1,4 @@
-import {DropDown, Tooltip} from 'argo-ui';
+import {DropDown, Tooltip} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as dagre from 'dagre';
 import * as React from 'react';
@@ -623,7 +623,7 @@ function renderPodGroup(
                             key={node.uid}
                             isMenu={true}
                             anchor={() => (
-                                <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
+                                <button className='kit-button kit-button--light kit-button--lg kit-button--short'>
                                     <i className='fa fa-ellipsis-v' />
                                 </button>
                             )}>
@@ -976,7 +976,7 @@ function renderResourceNode(props: ApplicationResourceTreeProps, node: ResourceT
                     <DropDown
                         isMenu={true}
                         anchor={() => (
-                            <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
+                            <button className='kit-button kit-button--light kit-button--lg kit-button--short'>
                                 <i className='fa fa-ellipsis-v' />
                             </button>
                         )}>

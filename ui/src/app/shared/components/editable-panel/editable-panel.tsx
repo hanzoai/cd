@@ -1,8 +1,8 @@
-import {ErrorNotification, HelpIcon, NotificationType} from 'argo-ui';
+import {ErrorNotification, HelpIcon, NotificationType} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as React from 'react';
 import {type ReactNode, useCallback, useContext, useEffect, useRef, useState, Fragment} from 'react';
-import {Form, type FormApi} from 'argo-ui';
+import {Form, type FormApi} from '../../../../kit/src';
 import {helpTip} from '../../../applications/components/utils';
 import {Context} from '../../context';
 import {Spinner} from '../spinner';
@@ -192,18 +192,18 @@ function EditablePanel<T extends {} = {}>({
                                             onModeSwitch();
                                         }}
                                         disabled={hasMultipleSources}
-                                        className='argo-button argo-button--base'>
+                                        className='kit-button kit-button--base'>
                                         {hasMultipleSources && helpTip('Sources are not editable for applications with multiple sources. You can edit them in the "Manifest" tab.')}{' '}
                                         Edit
                                     </button>
                                 )}
                                 {isEditing && (
                                     <>
-                                        <button disabled={isSaving} onClick={() => !isSaving && formApiRef.current?.submitForm(null)} className='argo-button argo-button--base'>
+                                        <button disabled={isSaving} onClick={() => !isSaving && formApiRef.current?.submitForm(null)} className='kit-button kit-button--base'>
                                             <Spinner show={isSaving} style={{marginRight: '5px'}} />
                                             Save
                                         </button>{' '}
-                                        <button onClick={handleCancel} className='argo-button argo-button--base-o'>
+                                        <button onClick={handleCancel} className='kit-button kit-button--base-o'>
                                             Cancel
                                         </button>
                                     </>

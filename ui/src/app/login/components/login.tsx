@@ -1,7 +1,7 @@
-import {FormField} from 'argo-ui';
+import {FormField} from '../../../kit/src';
 import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
-import {Form, Text} from 'argo-ui';
+import {Form, Text} from '../../../kit/src';
 import {RouteComponentProps} from 'react-router';
 import {AuthSettings} from '../../shared/models';
 import {services} from '../../shared/services';
@@ -81,7 +81,7 @@ export function Login(props: RouteComponentProps<{}>) {
                 {ssoConfigured && (
                     <div className='login__box_saml'>
                         <a href={`auth/login?return_url=${encodeURIComponent(returnUrl)}`}>
-                            <button className='argo-button argo-button--base argo-button--full-width argo-button--xlg'>
+                            <button className='kit-button kit-button--base kit-button--full-width kit-button--xlg'>
                                 {(authSettings.uiLoginButtonText && <span>{authSettings.uiLoginButtonText}</span>) ||
                                     (authSettings.oidcConfig && <span>Log in via {authSettings.oidcConfig.name}</span>) ||
                                     (authSettings.dexConfig.connectors.length === 1 && <span>Log in via {authSettings.dexConfig.connectors[0].name}</span>) || (
@@ -89,7 +89,7 @@ export function Login(props: RouteComponentProps<{}>) {
                                     )}
                             </button>
                         </a>
-                        {hasSsoLoginError && <div className='argo-form-row__error-msg'>Login failed.</div>}
+                        {hasSsoLoginError && <div className='kit-form-row__error-msg'>Login failed.</div>}
                         {authSettings && !authSettings.userLoginsDisabled && (
                             <div className='login__saml-separator'>
                                 <span>or</span>
@@ -107,7 +107,7 @@ export function Login(props: RouteComponentProps<{}>) {
                         })}>
                         {formApi => (
                             <form role='form' onSubmit={formApi.submitForm}>
-                                <div className='argo-form-row'>
+                                <div className='kit-form-row'>
                                     <FormField
                                         formApi={formApi}
                                         label='Username'
@@ -116,7 +116,7 @@ export function Login(props: RouteComponentProps<{}>) {
                                         componentProps={{name: 'username', autoCapitalize: 'none', autoComplete: 'username'}}
                                     />
                                 </div>
-                                <div className='argo-form-row'>
+                                <div className='kit-form-row'>
                                     <FormField
                                         formApi={formApi}
                                         label='Password'
@@ -124,10 +124,10 @@ export function Login(props: RouteComponentProps<{}>) {
                                         component={Text}
                                         componentProps={{name: 'password', type: 'password', autoComplete: 'password'}}
                                     />
-                                    {loginError && <div className='argo-form-row__error-msg'>{loginError}</div>}
+                                    {loginError && <div className='kit-form-row__error-msg'>{loginError}</div>}
                                 </div>
                                 <div className='login__form-row'>
-                                    <button disabled={loginInProgress} className='argo-button argo-button--full-width argo-button--xlg' type='submit'>
+                                    <button disabled={loginInProgress} className='kit-button kit-button--full-width kit-button--xlg' type='submit'>
                                         Sign In
                                     </button>
                                 </div>
@@ -136,7 +136,7 @@ export function Login(props: RouteComponentProps<{}>) {
                     </Form>
                 )}
                 {authSettings && authSettings.userLoginsDisabled && !ssoConfigured && (
-                    <div className='argo-form-row__error-msg'>Login is disabled. Please contact your system administrator.</div>
+                    <div className='kit-form-row__error-msg'>Login is disabled. Please contact your system administrator.</div>
                 )}
                 <div className='login__footer'>
                     <span>Hanzo AI</span>

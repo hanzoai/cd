@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {DataLoader, Page} from '../../../shared/components';
 import {services} from '../../../shared/services';
-import {Select, SelectOption} from 'argo-ui';
+import {Select, SelectOption} from '../../../../kit/src';
 
 require('./appearance-list.scss');
 
@@ -15,7 +15,7 @@ export const AppearanceList = () => {
             <DataLoader load={() => services.viewPreferences.getPreferences()}>
                 {pref => (
                     <div className='appearance-list'>
-                        <div className='argo-container'>
+                        <div className='kit-container'>
                             <div className='appearance-list__panel'>
                                 <div className='row'>
                                     <span>Theme</span>
