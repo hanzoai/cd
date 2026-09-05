@@ -68,7 +68,7 @@ ifdef TEST_TOOLS_NAMESPACE
 TEST_TOOLS_PREFIX=${TEST_TOOLS_NAMESPACE}/
 endif
 
-# You can change the ports where ArgoCD components will be listening on by
+# You can change the ports where Hanzo CD components will be listening on by
 # setting the appropriate environment variables before running make.
 CD_E2E_APISERVER_PORT?=8080
 CD_E2E_REPOSERVER_PORT?=8081
@@ -563,7 +563,7 @@ start: test-tools-image
 	$(DOCKER) version
 	$(call run-in-test-server,make CD_PROCFILE=test/container/Procfile start-local CD_START=${CD_START})
 
-# Starts a local instance of ArgoCD
+# Starts a local instance of Hanzo CD
 .PHONY: start-local
 start-local: mod-vendor-local dep-ui-local cli-local
 	# check we can connect to Docker to start Redis
@@ -634,7 +634,7 @@ show-go-version: test-tools-image
 	@echo -n "Docker Go version: "
 	$(call run-in-test-client,go version)
 
-# Installs all tools required to build and test ArgoCD locally
+# Installs all tools required to build and test Hanzo CD locally
 .PHONY: install-tools-local
 install-tools-local: install-test-tools-local install-codegen-tools-local install-go-tools-local
 
@@ -711,10 +711,10 @@ help:
 	@echo
 	@echo 'components:'
 	@echo '  applicationset-controller -- applicationset controller'
-	@echo '  cli(-local)               -- argocd cli program'
+	@echo '  cli(-local)               -- cd cli program'
 	@echo '  controller                -- controller (orchestrator)'
 	@echo '  repo-server               -- repo server (manage repository instances)'
-	@echo '  server                    -- argocd web application'
+	@echo '  server                    -- cd web application'
 	@echo
 	@echo 'build:'
 	@echo '  image                     -- make image of the following items'
