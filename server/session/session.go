@@ -69,14 +69,14 @@ func (s *Server) Create(_ context.Context, q *session.SessionCreateRequest) (*se
 		s.mgr.IncLoginRequestCounter(failure)
 		return nil, err
 	}
-	argoCDSettings, err := s.settingsMgr.GetSettings()
+	cdSettings, err := s.settingsMgr.GetSettings()
 	if err != nil {
 		s.mgr.IncLoginRequestCounter(failure)
 		return nil, err
 	}
 	jwtToken, err := s.mgr.Create(
 		fmt.Sprintf("%s:%s", q.Username, settings.AccountCapabilityLogin),
-		int64(argoCDSettings.UserSessionDuration.Seconds()),
+		int64(cdSettings.UserSessionDuration.Seconds()),
 		uniqueId.String())
 	if err != nil {
 		s.mgr.IncLoginRequestCounter(failure)

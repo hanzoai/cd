@@ -93,7 +93,7 @@ var (
 		Repo:           "https://test",
 		Type:           "test",
 		Name:           "test",
-		Username:       "argo",
+		Username:       "test",
 		Insecure:       false,
 		EnableLFS:      false,
 		EnableOCI:      false,
@@ -259,13 +259,13 @@ func TestRepositoryServer(t *testing.T) {
 	settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
 	enforcer := newEnforcer(kubeclientset)
 	appLister, projInformer := newAppAndProjLister(defaultProj)
-	argoDB := db.NewDB("default", settingsMgr, kubeclientset)
+	cdDB := db.NewDB("default", settingsMgr, kubeclientset)
 
 	t.Run("Test_getRepo", func(t *testing.T) {
 		repoServerClient := mocks.RepoServerServiceClient{}
 		repoServerClientset := mocks.Clientset{RepoServerServiceClient: &repoServerClient}
 
-		s := NewServer(&repoServerClientset, argoDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, false)
+		s := NewServer(&repoServerClientset, cdDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, false)
 		url := "https://test"
 		repo, _ := s.getRepo(t.Context(), url, "")
 		assert.Equal(t, repo.Repo, url)
@@ -276,7 +276,7 @@ func TestRepositoryServer(t *testing.T) {
 		repoServerClient.EXPECT().TestRepository(mock.Anything, mock.Anything).Return(&apiclient.TestRepositoryResponse{}, nil)
 		repoServerClientset := mocks.Clientset{RepoServerServiceClient: repoServerClient}
 
-		s := NewServer(&repoServerClientset, argoDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, false)
+		s := NewServer(&repoServerClientset, cdDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, false)
 		url := "https://test"
 		_, err := s.ValidateAccess(t.Context(), &repository.RepoAccessQuery{
 			Repo: url,
@@ -289,7 +289,7 @@ func TestRepositoryServer(t *testing.T) {
 		repoServerClient.EXPECT().TestRepository(mock.Anything, mock.Anything).Return(&apiclient.TestRepositoryResponse{}, nil)
 		repoServerClientset := mocks.Clientset{RepoServerServiceClient: repoServerClient}
 
-		s := NewServer(&repoServerClientset, argoDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, true)
+		s := NewServer(&repoServerClientset, cdDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, true)
 		url := "https://test"
 		_, err := s.ValidateWriteAccess(t.Context(), &repository.RepoAccessQuery{
 			Repo: url,

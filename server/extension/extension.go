@@ -36,7 +36,7 @@ const (
 	DefaultMaxIdleConnections    = 30
 
 	// HeaderCDNamespace defines the namespace of the
-	// argo control plane to be passed to the extension handler.
+	// CD control plane to be passed to the extension handler.
 	// Example:
 	//     Argocd-Namespace: "namespace"
 	HeaderCDNamespace = "Argocd-Namespace"

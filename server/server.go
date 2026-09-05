@@ -204,7 +204,7 @@ type Server struct {
 	indexData          []byte
 	indexDataErr       error
 	staticAssets       http.FileSystem
-	serviceSet         *ArgoCDServiceSet
+	serviceSet         *ServiceSet
 	extensionManager   *extension.Manager
 	Shutdown           func()
 	terminateRequested atomic.Bool
@@ -419,8 +419,8 @@ func (server *Server) healthCheck(r *http.Request) error {
 		return errors.New("API Server is not available: it either hasn't started or is restarting")
 	}
 	if val, ok := r.URL.Query()["full"]; ok && len(val) > 0 && val[0] == "true" {
-		argoDB := db.NewDB(server.Namespace, server.settingsMgr, server.KubeClientset)
-		_, err := argoDB.ListClusters(r.Context())
+		cdDB := db.NewDB(server.Namespace, server.settingsMgr, server.KubeClientset)
+		_, err := cdDB.ListClusters(r.Context())
 		if err != nil && strings.Contains(err.Error(), notObjectErrMsg) {
 			return err
 		}
@@ -573,7 +573,7 @@ func (server *Server) Run(ctx context.Context, listeners *Listeners) {
 	// reads those hooks. If this is called first, there may be a data race.
 	server.userStateStorage.Init(ctx)
 
-	svcSet := newArgoCDServiceSet(server)
+	svcSet := newServiceSet(server)
 	if server.sessionMgr != nil {
 		server.sessionMgr.CollectMetrics(metricsServ)
 	}
@@ -758,8 +758,8 @@ func (server *Server) checkServeErr(name string, err error) {
 	}
 }
 
-func checkOIDCConfigChange(currentOIDCConfig *settings_util.OIDCConfig, newArgoCDSettings *settings_util.Settings) bool {
-	newOIDCConfig := newArgoCDSettings.OIDCConfig()
+func checkOIDCConfigChange(currentOIDCConfig *settings_util.OIDCConfig, newCDSettings *settings_util.Settings) bool {
+	newOIDCConfig := newCDSettings.OIDCConfig()
 
 	if (currentOIDCConfig != nil && newOIDCConfig == nil) || (currentOIDCConfig == nil && newOIDCConfig != nil) {
 		return true
@@ -984,7 +984,7 @@ func (server *Server) newGRPCServer(prometheusRegistry *prometheus.Registry) (*g
 	return grpcS, server.serviceSet.AppResourceTreeFn
 }
 
-type ArgoCDServiceSet struct {
+type ServiceSet struct {
 	ClusterService        *cluster.Server
 	RepoService           *repository.Server
 	RepoCredsService      *repocreds.Server
@@ -1000,7 +1000,7 @@ type ArgoCDServiceSet struct {
 	VersionService        *version.Server
 }
 
-func newArgoCDServiceSet(a *Server) *ArgoCDServiceSet {
+func newServiceSet(a *Server) *ServiceSet {
 	kubectl := kubeutil.NewKubectl()
 	clusterService := cluster.NewServer(a.db, a.enf, a.Cache, kubectl)
 	repoService := repository.NewServer(a.RepoClientset, a.db, a.enf, a.Cache, a.appLister, a.projInformer, a.Namespace, a.settingsMgr, a.HydratorEnabled)
@@ -1073,7 +1073,7 @@ func newArgoCDServiceSet(a *Server) *ArgoCDServiceSet {
 		return sett.AnonymousUserEnabled, err
 	})
 
-	return &ArgoCDServiceSet{
+	return &ServiceSet{
 		ClusterService:        clusterService,
 		RepoService:           repoService,
 		RepoCredsService:      repoCredsService,
@@ -1228,10 +1228,10 @@ func (server *Server) newHTTPServer(ctx context.Context, port int, grpcWebHandle
 	server.registerDexHandlers(mux)
 
 	// Webhook handler for git events (Note: cache timeouts are hardcoded because API server does not write to cache and not really using them)
-	argoDB := db.NewDB(server.Namespace, server.settingsMgr, server.KubeClientset)
-	acdWebhookHandler := webhook.NewHandler(server.Namespace, server.ApplicationNamespaces, server.WebhookParallelism, server.WebhookRefreshWorkers, server.AppClientset, server.appLister, server.settings, server.settingsMgr, server.RepoServerCache, server.Cache, argoDB, server.settingsMgr.GetMaxWebhookPayloadSize(), server.settingsMgr.GetWebhookRefreshJitter(), server.settingsMgr.GetWebhookRefreshJitterThreshold())
+	cdDB := db.NewDB(server.Namespace, server.settingsMgr, server.KubeClientset)
+	webhookHandler := webhook.NewHandler(server.Namespace, server.ApplicationNamespaces, server.WebhookParallelism, server.WebhookRefreshWorkers, server.AppClientset, server.appLister, server.settings, server.settingsMgr, server.RepoServerCache, server.Cache, cdDB, server.settingsMgr.GetMaxWebhookPayloadSize(), server.settingsMgr.GetWebhookRefreshJitter(), server.settingsMgr.GetWebhookRefreshJitterThreshold())
 
-	mux.HandleFunc("/v1/webhook", acdWebhookHandler.Handler)
+	mux.HandleFunc("/v1/webhook", webhookHandler.Handler)
 
 	// Serve cli binaries directly from API server
 	registerDownloadHandlers(mux, "/download")
@@ -1534,11 +1534,11 @@ func (server *Server) Authenticate(ctx context.Context) (context.Context, error)
 	}
 
 	if claimsErr != nil {
-		argoCDSettings, err := server.settingsMgr.GetSettings()
+		cdSettings, err := server.settingsMgr.GetSettings()
 		if err != nil {
 			return ctx, status.Errorf(codes.Internal, "unable to load settings: %v", err)
 		}
-		if !argoCDSettings.AnonymousUserEnabled {
+		if !cdSettings.AnonymousUserEnabled {
 			return ctx, claimsErr
 		}
 		//nolint:staticcheck

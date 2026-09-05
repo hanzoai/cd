@@ -1452,7 +1452,7 @@ func TestOIDCConfigChangeDetection_SecretsChanged(t *testing.T) {
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 
-	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedcdoauthsecret"}
 
 	cdSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
@@ -1480,7 +1480,7 @@ func TestOIDCConfigChangeDetection_ConfigChanged(t *testing.T) {
 
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 
-	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedcdoauthsecret"}
 
 	cdSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
@@ -1516,7 +1516,7 @@ func TestOIDCConfigChangeDetection_ConfigCreated(t *testing.T) {
 		ClientSecret: "$k8ssecret:clientsecret",
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
-	newSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	newSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedcdoauthsecret"}
 	cdSettings.OIDCConfigRAW = string(newRawOICDConfig)
 	cdSettings.Secrets = newSecrets
 	result := checkOIDCConfigChange(originalOIDCConfig, &cdSettings)
@@ -1533,7 +1533,7 @@ func TestOIDCConfigChangeDetection_ConfigDeleted(t *testing.T) {
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 
-	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedcdoauthsecret"}
 
 	cdSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 
@@ -1559,7 +1559,7 @@ func TestOIDCConfigChangeDetection_NoChange(t *testing.T) {
 	})
 	require.NoError(t, err, "no error expected when marshalling OIDC config")
 
-	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedargooauthsecret"}
+	originalSecrets := map[string]string{"k8ssecret:clientid": "cd", "k8ssecret:clientsecret": "sharedcdoauthsecret"}
 
 	cdSettings := settings_util.Settings{OIDCConfigRAW: string(rawOIDCConfig), Secrets: originalSecrets}
 

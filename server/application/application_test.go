@@ -1930,8 +1930,8 @@ func TestDeleteResourcesRBAC(t *testing.T) {
 	appServer := newTestAppServer(t, testApp)
 	appServer.enf.SetDefaultRole("")
 
-	argoCM := map[string]string{"server.rbac.disableApplicationFineGrainedRBACInheritance": "false"}
-	appServerWithRBACInheritance := newTestAppServerWithEnforcerConfigure(t, func(_ *rbac.Enforcer) {}, argoCM, testApp)
+	cdCM := map[string]string{"server.rbac.disableApplicationFineGrainedRBACInheritance": "false"}
+	appServerWithRBACInheritance := newTestAppServerWithEnforcerConfigure(t, func(_ *rbac.Enforcer) {}, cdCM, testApp)
 	appServerWithRBACInheritance.enf.SetDefaultRole("")
 
 	req := application.ApplicationResourceDeleteRequest{
@@ -2023,8 +2023,8 @@ func TestPatchResourcesRBAC(t *testing.T) {
 	appServer := newTestAppServer(t, testApp)
 	appServer.enf.SetDefaultRole("")
 
-	argoCM := map[string]string{"server.rbac.disableApplicationFineGrainedRBACInheritance": "false"}
-	appServerWithRBACInheritance := newTestAppServerWithEnforcerConfigure(t, func(_ *rbac.Enforcer) {}, argoCM, testApp)
+	cdCM := map[string]string{"server.rbac.disableApplicationFineGrainedRBACInheritance": "false"}
+	appServerWithRBACInheritance := newTestAppServerWithEnforcerConfigure(t, func(_ *rbac.Enforcer) {}, cdCM, testApp)
 	appServerWithRBACInheritance.enf.SetDefaultRole("")
 
 	req := application.ApplicationResourcePatchRequest{

@@ -840,14 +840,14 @@ func TestCreateDeepLinksObject_ManagedByURL(t *testing.T) {
 			Object: map[string]any{
 				"metadata": map[string]any{
 					"annotations": map[string]any{
-						appv1.AnnotationKeyManagedByURL: "https://example.com/argo",
+						appv1.AnnotationKeyManagedByURL: "https://example.com/cd",
 					},
 				},
 			},
 		}
 
 		result := deeplinks.CreateDeepLinksObject(nil, app, nil, nil)
-		require.Equal(t, "https://example.com/argo", result[deeplinks.ManagedByURLKey])
+		require.Equal(t, "https://example.com/cd", result[deeplinks.ManagedByURLKey])
 	})
 
 	t.Run("omits managed-by-url if annotation missing", func(t *testing.T) {
