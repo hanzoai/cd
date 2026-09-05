@@ -120,12 +120,12 @@ func TestCreateRepoCredentials(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	creds, err := db.CreateRepositoryCredentials(t.Context(), &v1alpha1.RepoCreds{
-		URL:      "https://github.com/argoproj/",
+		URL:      "https://github.com/hanzocd/",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/", creds.URL)
+	assert.Equal(t, "https://github.com/hanzocd/", creds.URL)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(credSecretPrefix, creds.URL, ""), metav1.GetOptions{})
 	require.NoError(t, err)
@@ -156,12 +156,12 @@ func TestCreateWriteRepoCredentials(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	creds, err := db.CreateWriteRepositoryCredentials(t.Context(), &v1alpha1.RepoCreds{
-		URL:      "https://github.com/argoproj/",
+		URL:      "https://github.com/hanzocd/",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/", creds.URL)
+	assert.Equal(t, "https://github.com/hanzocd/", creds.URL)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(credWriteSecretPrefix, creds.URL, ""), metav1.GetOptions{})
 	require.NoError(t, err)
@@ -545,12 +545,12 @@ func TestFuzzyEquivalence(t *testing.T) {
 	assert.Nil(t, repo)
 
 	repo, err = db.CreateRepository(ctx, &v1alpha1.Repository{
-		Repo: "https://github.com/argoproj/cd-example-APPS",
+		Repo: "https://github.com/HanzoCD/Example-Apps",
 	})
 	require.ErrorContains(t, err, "already exists")
 	assert.Nil(t, repo)
 
-	repo, err = db.GetRepository(ctx, "https://github.com/argoproj/cd-example-APPS", "")
+	repo, err = db.GetRepository(ctx, "https://github.com/HanzoCD/Example-Apps", "")
 	require.NoError(t, err)
 	assert.Equal(t, "https://github.com/hanzocd/example-apps", repo.Repo)
 }

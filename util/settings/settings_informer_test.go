@@ -43,7 +43,7 @@ func assertNotFired(t *testing.T, ch <-chan struct{}) {
 	}
 }
 
-func argoCDConfigMap() *corev1.ConfigMap {
+func testConfigMap() *corev1.ConfigMap {
 	return &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: common.ConfigMapName, Namespace: "cd"}}
 }
 
@@ -55,24 +55,24 @@ func repositorySecret() *corev1.Secret {
 	}}
 }
 
-func TestArgoCDConfigMapEventHandler(t *testing.T) {
+func TestConfigMapEventHandler(t *testing.T) {
 	t.Run("add/update/delete of cd-cm triggers a change", func(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
-		h := mgr.argoCDConfigMapEventHandler()
+		h := mgr.configMapEventHandler()
 
-		h.OnAdd(argoCDConfigMap(), false)
+		h.OnAdd(testConfigMap(), false)
 		waitFired(t, fired)
 
-		h.OnUpdate(argoCDConfigMap(), argoCDConfigMap())
+		h.OnUpdate(testConfigMap(), testConfigMap())
 		waitFired(t, fired)
 
-		h.OnDelete(argoCDConfigMap())
+		h.OnDelete(testConfigMap())
 		waitFired(t, fired)
 	})
 
 	t.Run("a different configmap does not trigger a change", func(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
-		h := mgr.argoCDConfigMapEventHandler()
+		h := mgr.configMapEventHandler()
 
 		other := &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Name: "cd-rbac-cm", Namespace: "cd"}}
 		h.OnAdd(other, false)
@@ -83,15 +83,15 @@ func TestArgoCDConfigMapEventHandler(t *testing.T) {
 
 	t.Run("delete unwraps a tombstone wrapping cd-cm", func(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
-		h := mgr.argoCDConfigMapEventHandler()
+		h := mgr.configMapEventHandler()
 
-		h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/cd-cm", Obj: argoCDConfigMap()})
+		h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/cd-cm", Obj: testConfigMap()})
 		waitFired(t, fired)
 	})
 
 	t.Run("delete of a tombstone wrapping nil or an unexpected type is ignored", func(t *testing.T) {
 		mgr, fired := newChangeTrackingManager(t)
-		h := mgr.argoCDConfigMapEventHandler()
+		h := mgr.configMapEventHandler()
 
 		assert.NotPanics(t, func() {
 			h.OnDelete(cache.DeletedFinalStateUnknown{Key: "cd/gone", Obj: nil})

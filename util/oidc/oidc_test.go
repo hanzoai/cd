@@ -995,13 +995,13 @@ func TestGenerateAppState_NoReturnURL(t *testing.T) {
 	req := httptest.NewRequestWithContext(t.Context(), http.MethodGet, "/", http.NoBody)
 	encrypted, err := crypto.Encrypt([]byte("123"), key)
 	require.NoError(t, err)
-	app, err := NewClientApp(cdSettings, "", nil, "/argo-cd", cache.NewInMemoryCache(24*time.Hour))
+	app, err := NewClientApp(cdSettings, "", nil, "/cd", cache.NewInMemoryCache(24*time.Hour))
 	require.NoError(t, err)
 
 	req.AddCookie(&http.Cookie{Name: common.StateCookieName, Value: hex.EncodeToString(encrypted)})
 	returnURL, _, err := app.verifyAppState(req, httptest.NewRecorder(), "123")
 	require.NoError(t, err)
-	assert.Equal(t, "/argo-cd", returnURL)
+	assert.Equal(t, "/cd", returnURL)
 }
 
 func TestGetUserInfo(t *testing.T) {
@@ -1294,7 +1294,7 @@ func TestGetUserInfo(t *testing.T) {
 			cdSettings := &settings.Settings{ServerSignature: signature}
 			encryptionKey, err := cdSettings.GetServerEncryptionKey()
 			require.NoError(t, err)
-			a, _ := NewClientApp(cdSettings, "", nil, "/argo-cd", tt.cache)
+			a, _ := NewClientApp(cdSettings, "", nil, "/cd", tt.cache)
 
 			for _, item := range tt.cacheItems {
 				var newValue []byte
@@ -1387,7 +1387,7 @@ issuer: http://localhost:63231
 enableUserInfoGroups: true
 userInfoPath: /`,
 			}
-			a, err := NewClientApp(cdSettings, "", nil, "/argo-cd", userInfoCache)
+			a, err := NewClientApp(cdSettings, "", nil, "/cd", userInfoCache)
 			require.NoError(t, err, "failed creating clientapp")
 
 			// prepoluate cache to predict what the GetUserInfo function will return to the SetGroupsClaimFromEndpoint function (without having to mock the userinfo response)

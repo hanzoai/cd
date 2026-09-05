@@ -235,7 +235,7 @@ func (mgr *SessionManager) Parse(tokenString string) (jwt.Claims, string, error)
 	// head of the token to identify which key to use, but the parsed token (head and claims) is provided
 	// to the callback, providing flexibility.
 	var claims jwt.MapClaims
-	argoCDSettings, err := mgr.settingsMgr.GetSettings()
+	cdSettings, err := mgr.settingsMgr.GetSettings()
 	if err != nil {
 		return nil, "", err
 	}
@@ -244,7 +244,7 @@ func (mgr *SessionManager) Parse(tokenString string) (jwt.Claims, string, error)
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return argoCDSettings.ServerSignature, nil
+		return cdSettings.ServerSignature, nil
 	})
 	if err != nil {
 		return nil, "", err
@@ -575,15 +575,15 @@ func (mgr *SessionManager) VerifyToken(ctx context.Context, tokenString string) 
 			return nil, "", err
 		}
 
-		argoSettings, err := mgr.settingsMgr.GetSettings()
+		cdSettings, err := mgr.settingsMgr.GetSettings()
 		if err != nil {
 			return nil, "", fmt.Errorf("cannot access settings while verifying the token: %w", err)
 		}
-		if argoSettings == nil {
+		if cdSettings == nil {
 			return nil, "", errors.New("settings are not available while verifying the token")
 		}
 
-		idToken, err := prov.Verify(ctx, tokenString, argoSettings)
+		idToken, err := prov.Verify(ctx, tokenString, cdSettings)
 		// The token verification has failed. If the token has expired, we will
 		// return a dummy claims only containing a value for the issuer, so the
 		// UI can handle expired tokens appropriately.

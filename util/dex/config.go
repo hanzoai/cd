@@ -77,13 +77,13 @@ func GenerateDexConfigYAML(cdSettings *settings.Settings, disableTLS bool) ([]by
 	if err != nil {
 		return nil, fmt.Errorf("failed to infer additional redirect urls from config: %w", err)
 	}
-	argoCDStaticClient := map[string]any{
+	cdStaticClient := map[string]any{
 		"id":           common.ClientAppID,
 		"name":         common.ClientAppName,
 		"secret":       cdSettings.DexOAuth2ClientSecret(),
 		"redirectURIs": append([]string{redirectURL}, additionalRedirectURLs...),
 	}
-	argoCDPKCEStaticClient := map[string]any{
+	cdPKCEStaticClient := map[string]any{
 		"id":   "argo-cd-pkce",
 		"name": "Hanzo CD PKCE",
 		"redirectURIs": []string{
@@ -91,7 +91,7 @@ func GenerateDexConfigYAML(cdSettings *settings.Settings, disableTLS bool) ([]by
 		},
 		"public": true,
 	}
-	argoCDCLIStaticClient := map[string]any{
+	cdCLIStaticClient := map[string]any{
 		"id":     common.CLIClientAppID,
 		"name":   common.CLIClientAppName,
 		"public": true,
@@ -103,9 +103,9 @@ func GenerateDexConfigYAML(cdSettings *settings.Settings, disableTLS bool) ([]by
 
 	staticClients, ok := dexCfg["staticClients"].([]any)
 	if ok {
-		dexCfg["staticClients"] = append([]any{argoCDStaticClient, argoCDCLIStaticClient, argoCDPKCEStaticClient}, staticClients...)
+		dexCfg["staticClients"] = append([]any{cdStaticClient, cdCLIStaticClient, cdPKCEStaticClient}, staticClients...)
 	} else {
-		dexCfg["staticClients"] = []any{argoCDStaticClient, argoCDCLIStaticClient, argoCDPKCEStaticClient}
+		dexCfg["staticClients"] = []any{cdStaticClient, cdCLIStaticClient, cdPKCEStaticClient}
 	}
 
 	dexRedirectURL, err := cdSettings.DexRedirectURL()
