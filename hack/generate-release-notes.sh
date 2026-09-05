@@ -43,20 +43,20 @@ cat <<-EOM
 ### Non-HA:
 
 \`\`\`shell
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/$version/manifests/install.yaml
+kubectl create namespace hanzocd
+kubectl apply -n hanzocd -f https://raw.githubusercontent.com/hanzoai/cd/$version/manifests/install.yaml
 \`\`\`
 
 ### HA:
 
 \`\`\`shell
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/$version/manifests/ha/install.yaml
+kubectl create namespace hanzocd
+kubectl apply -n hanzocd -f https://raw.githubusercontent.com/hanzoai/cd/$version/manifests/ha/install.yaml
 \`\`\`
 
 ## Release signatures
 
-All Argo CD container images and CLI binaries are signed by cosign. See the [documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/signed-release-assets/) on how to verify the signatures.
+All Hanzo CD container images and CLI binaries are signed by cosign. See the [documentation](https://docs.hanzo.ai/en/stable/operator-manual/signed-release-assets/) on how to verify the signatures.
 \`\`\`shell
 -----BEGIN PUBLIC KEY-----
 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEesHEB7vX5Y2RxXypjMy1nI1z7iRG
@@ -66,7 +66,7 @@ JI9/gt/sYqzpsa65aaNP4npM43DDxoIy/MQBo9s/mxGxmA+8UXeDpVC9vw==
 
 ## Upgrading
 
-If upgrading from a different minor version, be sure to read the [upgrading](https://argo-cd.readthedocs.io/en/stable/operator-manual/upgrading/overview/) documentation.
+If upgrading from a different minor version, be sure to read the [upgrading](https://docs.hanzo.ai/en/stable/operator-manual/upgrading/overview/) documentation.
 
 EOM
 

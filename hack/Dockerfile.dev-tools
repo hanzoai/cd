@@ -6,7 +6,7 @@ RUN ./install.sh lint-tools
 
 RUN mkdir -p /home/user && chmod 777 /home/user
 
-RUN git config --system user.name "ArgoCD Test User"
+RUN git config --system user.name "Hanzo CD Test User"
 RUN git config --system user.email "noreply@example.com"
 
 RUN mkdir -p /go/pkg && chmod 777 /go/pkg

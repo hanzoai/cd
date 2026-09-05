@@ -16,7 +16,7 @@ PROJECT_ROOT=$(
 )
 PATH="${PROJECT_ROOT}/dist:${PATH}"
 GOPATH=$(go env GOPATH)
-GOPATH_PROJECT_ROOT="${GOPATH}/src/github.com/argoproj/argo-cd"
+GOPATH_PROJECT_ROOT="${GOPATH}/src/github.com/hanzoai/cd"
 
 # output tool versions
 go version

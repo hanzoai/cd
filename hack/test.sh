@@ -11,7 +11,7 @@ TEST_RESULTS=${TEST_RESULTS:-test-results}
 TEST_FLAGS=${TEST_FLAGS:-}
 DIST_DIR=${DIST_DIR:-dist}
 
-# Add DIST_DIR to PATH so binaries installed for argo are found first
+# Add DIST_DIR to PATH so locally built binaries are found first
 export PATH="${DIST_DIR}:${PATH}"
 
 if test "${CD_TEST_PARALLELISM:-}" != ""; then
