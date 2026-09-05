@@ -58,7 +58,7 @@ func fixtures(ctx context.Context, data map[string]string, opts ...func(secret *
 	return kubeClient, settingsManager
 }
 
-func TestDocumentedArgoCDConfigMapIsValid(t *testing.T) {
+func TestDocumentedConfigMapIsValid(t *testing.T) {
 	var cdCM *corev1.ConfigMap
 	settings := Settings{}
 	data, err := os.ReadFile("../../docs/operator-manual/cd-cm.yaml")
@@ -167,16 +167,16 @@ func TestInClusterServerAddressEnabled(t *testing.T) {
 	_, settingsManager := fixtures(t.Context(), map[string]string{
 		"cluster.inClusterEnabled": "true",
 	})
-	argoCDCM, err := settingsManager.getConfigMap()
+	cm, err := settingsManager.getConfigMap()
 	require.NoError(t, err)
-	assert.Equal(t, "true", argoCDCM.Data[inClusterEnabledKey])
+	assert.Equal(t, "true", cm.Data[inClusterEnabledKey])
 
 	_, settingsManager = fixtures(t.Context(), map[string]string{
 		"cluster.inClusterEnabled": "false",
 	})
-	argoCDCM, err = settingsManager.getConfigMap()
+	cm, err = settingsManager.getConfigMap()
 	require.NoError(t, err)
-	assert.NotEqual(t, "true", argoCDCM.Data[inClusterEnabledKey])
+	assert.NotEqual(t, "true", cm.Data[inClusterEnabledKey])
 }
 
 func TestInClusterServerAddressEnabledByDefault(t *testing.T) {
@@ -1665,27 +1665,27 @@ func Test_GetTLSConfiguration(t *testing.T) {
 	})
 }
 
-func TestDownloadArgoCDBinaryUrls(t *testing.T) {
+func TestDownloadBinaryUrls(t *testing.T) {
 	_, settingsManager := fixtures(t.Context(), map[string]string{
 		"help.download.darwin-amd64": "some-url",
 	})
-	argoCDCM, err := settingsManager.getConfigMap()
+	cm, err := settingsManager.getConfigMap()
 	require.NoError(t, err)
-	assert.Equal(t, "some-url", argoCDCM.Data["help.download.darwin-amd64"])
+	assert.Equal(t, "some-url", cm.Data["help.download.darwin-amd64"])
 
 	_, settingsManager = fixtures(t.Context(), map[string]string{
 		"help.download.linux-s390x": "some-url",
 	})
-	argoCDCM, err = settingsManager.getConfigMap()
+	cm, err = settingsManager.getConfigMap()
 	require.NoError(t, err)
-	assert.Equal(t, "some-url", argoCDCM.Data["help.download.linux-s390x"])
+	assert.Equal(t, "some-url", cm.Data["help.download.linux-s390x"])
 
 	_, settingsManager = fixtures(t.Context(), map[string]string{
 		"help.download.unsupported": "some-url",
 	})
-	argoCDCM, err = settingsManager.getConfigMap()
+	cm, err = settingsManager.getConfigMap()
 	require.NoError(t, err)
-	assert.Equal(t, "some-url", argoCDCM.Data["help.download.unsupported"])
+	assert.Equal(t, "some-url", cm.Data["help.download.unsupported"])
 }
 
 func TestSecretKeyRef(t *testing.T) {
@@ -1872,7 +1872,7 @@ func TestGetHelmSettings(t *testing.T) {
 	}
 }
 
-func TestArgoCDSettings_OIDCTLSConfig_OIDCTLSInsecureSkipVerify(t *testing.T) {
+func TestSettings_OIDCTLSConfig_OIDCTLSInsecureSkipVerify(t *testing.T) {
 	certParsed, err := tls.X509KeyPair(test.Cert, test.PrivateKey)
 	require.NoError(t, err)
 
@@ -2638,7 +2638,7 @@ func TestSecretsInformerExcludesClusterSecrets(t *testing.T) {
 			},
 		},
 	}
-	argoSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.SecretName,
 			Namespace: "default",
@@ -2675,7 +2675,7 @@ func TestSecretsInformerExcludesClusterSecrets(t *testing.T) {
 		},
 	}
 
-	kubeClient := fake.NewClientset(cm, argoSecret, repoSecret, clusterSecret)
+	kubeClient := fake.NewClientset(cm, cdSecret, repoSecret, clusterSecret)
 	settingsManager := NewSettingsManager(t.Context(), kubeClient, "default")
 
 	t.Run("secrets lister excludes cluster secrets", func(t *testing.T) {
@@ -2798,7 +2798,7 @@ func TestIsSettingsObject(t *testing.T) {
 	}
 }
 
-func TestIsArgoCDConfigMap(t *testing.T) {
+func TestIsConfigMap(t *testing.T) {
 	tests := []struct {
 		name     string
 		obj      any
@@ -2826,7 +2826,7 @@ func TestIsArgoCDConfigMap(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.expected, isArgoCDConfigMap(tt.obj))
+			assert.Equal(t, tt.expected, isConfigMap(tt.obj))
 		})
 	}
 }

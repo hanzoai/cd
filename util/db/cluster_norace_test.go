@@ -21,7 +21,7 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 	// !race:
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
 	// https://github.com/argoproj/argo-cd/issues/4755
-	emptyArgoCDConfigMap := &corev1.ConfigMap{
+	emptyConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
@@ -31,7 +31,7 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 		},
 		Data: map[string]string{},
 	}
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.SecretName,
 			Namespace: fakeNamespace,
@@ -44,7 +44,7 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 			"server.secretkey": nil,
 		},
 	}
-	kubeclientset := fake.NewClientset(emptyArgoCDConfigMap, argoCDSecret)
+	kubeclientset := fake.NewClientset(emptyConfigMap, cdSecret)
 	settingsManager := settings.NewSettingsManager(t.Context(), kubeclientset, fakeNamespace)
 	db := NewDB(fakeNamespace, settingsManager, kubeclientset)
 	completed := runWatchTest(t, db, []func(old *v1alpha1.Cluster, new *v1alpha1.Cluster){
@@ -77,7 +77,7 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 	// !race:
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
 	// https://github.com/argoproj/argo-cd/issues/4755
-	emptyArgoCDConfigMap := &corev1.ConfigMap{
+	emptyConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
@@ -87,7 +87,7 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 		},
 		Data: map[string]string{},
 	}
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.SecretName,
 			Namespace: fakeNamespace,
@@ -100,7 +100,7 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 			"server.secretkey": nil,
 		},
 	}
-	kubeclientset := fake.NewClientset(emptyArgoCDConfigMap, argoCDSecret)
+	kubeclientset := fake.NewClientset(emptyConfigMap, cdSecret)
 	settingsManager := settings.NewSettingsManager(t.Context(), kubeclientset, fakeNamespace)
 	db := NewDB(fakeNamespace, settingsManager, kubeclientset)
 	completed := runWatchTest(t, db, []func(old *v1alpha1.Cluster, new *v1alpha1.Cluster){
@@ -133,7 +133,7 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 	// !race:
 	// Intermittent failure when running with -race, likely due to race condition
 	// https://github.com/argoproj/argo-cd/issues/4755
-	emptyArgoCDConfigMap := &corev1.ConfigMap{
+	emptyConfigMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
@@ -143,7 +143,7 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 		},
 		Data: map[string]string{},
 	}
-	argoCDSecretWithoutSecretKey := &corev1.Secret{
+	secretWithoutSecretKey := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.SecretName,
 			Namespace: fakeNamespace,
@@ -155,7 +155,7 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 			"admin.password": nil,
 		},
 	}
-	kubeclientset := fake.NewClientset(emptyArgoCDConfigMap, argoCDSecretWithoutSecretKey)
+	kubeclientset := fake.NewClientset(emptyConfigMap, secretWithoutSecretKey)
 	settingsManager := settings.NewSettingsManager(t.Context(), kubeclientset, fakeNamespace)
 	db := NewDB(fakeNamespace, settingsManager, kubeclientset)
 	completed := runWatchTest(t, db, []func(old *v1alpha1.Cluster, new *v1alpha1.Cluster){
@@ -171,7 +171,7 @@ func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 	// !race:
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
 	// https://github.com/argoproj/argo-cd/issues/4755
-	argoCDConfigMapWithInClusterServerAddressDisabled := &corev1.ConfigMap{
+	configMapWithInClusterServerAddressDisabled := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.ConfigMapName,
 			Namespace: fakeNamespace,
@@ -181,7 +181,7 @@ func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 		},
 		Data: map[string]string{"cluster.inClusterEnabled": "false"},
 	}
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      common.SecretName,
 			Namespace: fakeNamespace,
@@ -194,7 +194,7 @@ func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 			"server.secretkey": nil,
 		},
 	}
-	kubeclientset := fake.NewClientset(argoCDConfigMapWithInClusterServerAddressDisabled, argoCDSecret)
+	kubeclientset := fake.NewClientset(configMapWithInClusterServerAddressDisabled, cdSecret)
 	settingsManager := settings.NewSettingsManager(t.Context(), kubeclientset, fakeNamespace)
 	db := NewDB(fakeNamespace, settingsManager, kubeclientset)
 	completed := runWatchTest(t, db, []func(_ *v1alpha1.Cluster, _ *v1alpha1.Cluster){

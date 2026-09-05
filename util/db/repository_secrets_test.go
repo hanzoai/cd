@@ -28,8 +28,8 @@ func TestSecretsRepositoryBackend_CreateRepository(t *testing.T) {
 		repoBackend *secretsRepositoryBackend
 	}
 	repo := &appsv1.Repository{
-		Name:                  "ArgoCD",
-		Repo:                  "git@github.com:argoproj/argo-cd.git",
+		Name:                  "SomeRepo",
+		Repo:                  "git@github.com:hanzoai/cd.git",
 		Username:              "someUsername",
 		Password:              "somePassword",
 		InsecureIgnoreHostKey: false,
@@ -142,13 +142,13 @@ func TestSecretsRepositoryBackend_GetRepository(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
-				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", ""),
+				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai/cd.git", ""),
 				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
-				"name":     []byte("ArgoCD"),
-				"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+				"name":     []byte("SomeRepo"),
+				"url":      []byte("git@github.com:hanzoai/cd.git"),
 				"username": []byte("someUsername"),
 				"password": []byte("somePassword"),
 			},
@@ -156,13 +156,13 @@ func TestSecretsRepositoryBackend_GetRepository(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
-				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", "testProject"),
+				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai/cd.git", "testProject"),
 				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
-				"name":     []byte("Scoped ArgoCD"),
-				"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+				"name":     []byte("Scoped SomeRepo"),
+				"url":      []byte("git@github.com:hanzoai/cd.git"),
 				"username": []byte("someScopedUsername"),
 				"password": []byte("someScopedPassword"),
 				"project":  []byte("testProject"),
@@ -176,7 +176,7 @@ func TestSecretsRepositoryBackend_GetRepository(t *testing.T) {
 			},
 			Data: map[string][]byte{
 				"name":     []byte("UserManagedRepo"),
-				"url":      []byte("git@github.com:argoproj/argoproj.git"),
+				"url":      []byte("git@github.com:hanzocd/example-apps.git"),
 				"username": []byte("someOtherUsername"),
 				"password": []byte("someOtherPassword"),
 			},
@@ -189,7 +189,7 @@ func TestSecretsRepositoryBackend_GetRepository(t *testing.T) {
 			},
 			Data: map[string][]byte{
 				"name":     []byte("Scoped UserManagedRepo"),
-				"url":      []byte("git@github.com:argoproj/argoproj.git"),
+				"url":      []byte("git@github.com:hanzocd/example-apps.git"),
 				"username": []byte("someOtherUsername"),
 				"password": []byte("someOtherPassword"),
 				"project":  []byte("testProject"),
@@ -204,36 +204,36 @@ func TestSecretsRepositoryBackend_GetRepository(t *testing.T) {
 		settingsMgr:   settings.NewSettingsManager(t.Context(), clientset, testNamespace),
 	}}
 
-	repository, err := testee.GetRepository(t.Context(), "git@github.com:argoproj/argo-cd.git", "")
+	repository, err := testee.GetRepository(t.Context(), "git@github.com:hanzoai/cd.git", "")
 	require.NoError(t, err)
 	assert.NotNil(t, repository)
-	assert.Equal(t, "ArgoCD", repository.Name)
-	assert.Equal(t, "git@github.com:argoproj/argo-cd.git", repository.Repo)
+	assert.Equal(t, "SomeRepo", repository.Name)
+	assert.Equal(t, "git@github.com:hanzoai/cd.git", repository.Repo)
 	assert.Equal(t, "someUsername", repository.Username)
 	assert.Equal(t, "somePassword", repository.Password)
 
-	repository, err = testee.GetRepository(t.Context(), "git@github.com:argoproj/argoproj.git", "")
+	repository, err = testee.GetRepository(t.Context(), "git@github.com:hanzocd/example-apps.git", "")
 	require.NoError(t, err)
 	assert.NotNil(t, repository)
 	assert.Equal(t, "UserManagedRepo", repository.Name)
-	assert.Equal(t, "git@github.com:argoproj/argoproj.git", repository.Repo)
+	assert.Equal(t, "git@github.com:hanzocd/example-apps.git", repository.Repo)
 	assert.Equal(t, "someOtherUsername", repository.Username)
 	assert.Equal(t, "someOtherPassword", repository.Password)
 
-	repository, err = testee.GetRepository(t.Context(), "git@github.com:argoproj/argo-cd.git", "testProject")
+	repository, err = testee.GetRepository(t.Context(), "git@github.com:hanzoai/cd.git", "testProject")
 	require.NoError(t, err)
 	assert.NotNil(t, repository)
-	assert.Equal(t, "Scoped ArgoCD", repository.Name)
-	assert.Equal(t, "git@github.com:argoproj/argo-cd.git", repository.Repo)
+	assert.Equal(t, "Scoped SomeRepo", repository.Name)
+	assert.Equal(t, "git@github.com:hanzoai/cd.git", repository.Repo)
 	assert.Equal(t, "someScopedUsername", repository.Username)
 	assert.Equal(t, "someScopedPassword", repository.Password)
 	assert.Equal(t, "testProject", repository.Project)
 
-	repository, err = testee.GetRepository(t.Context(), "git@github.com:argoproj/argoproj.git", "testProject")
+	repository, err = testee.GetRepository(t.Context(), "git@github.com:hanzocd/example-apps.git", "testProject")
 	require.NoError(t, err)
 	assert.NotNil(t, repository)
 	assert.Equal(t, "Scoped UserManagedRepo", repository.Name)
-	assert.Equal(t, "git@github.com:argoproj/argoproj.git", repository.Repo)
+	assert.Equal(t, "git@github.com:hanzocd/example-apps.git", repository.Repo)
 	assert.Equal(t, "someOtherUsername", repository.Username)
 	assert.Equal(t, "someOtherPassword", repository.Password)
 	assert.Equal(t, "testProject", repository.Project)
@@ -244,13 +244,13 @@ func TestSecretsRepositoryBackend_ListRepositories(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
-				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", ""),
+				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai/cd.git", ""),
 				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
-				"name":     []byte("ArgoCD"),
-				"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+				"name":     []byte("SomeRepo"),
+				"url":      []byte("git@github.com:hanzoai/cd.git"),
 				"username": []byte("someUsername"),
 				"password": []byte("somePassword"),
 			},
@@ -263,7 +263,7 @@ func TestSecretsRepositoryBackend_ListRepositories(t *testing.T) {
 			},
 			Data: map[string][]byte{
 				"name":     []byte("UserManagedRepo"),
-				"url":      []byte("git@github.com:argoproj/argoproj.git"),
+				"url":      []byte("git@github.com:hanzocd/example-apps.git"),
 				"username": []byte("someOtherUsername"),
 				"password": []byte("someOtherPassword"),
 			},
@@ -283,12 +283,12 @@ func TestSecretsRepositoryBackend_ListRepositories(t *testing.T) {
 
 	for _, repository := range repositories {
 		switch repository.Name {
-		case "ArgoCD":
-			assert.Equal(t, "git@github.com:argoproj/argo-cd.git", repository.Repo)
+		case "SomeRepo":
+			assert.Equal(t, "git@github.com:hanzoai/cd.git", repository.Repo)
 			assert.Equal(t, "someUsername", repository.Username)
 			assert.Equal(t, "somePassword", repository.Password)
 		case "UserManagedRepo":
-			assert.Equal(t, "git@github.com:argoproj/argoproj.git", repository.Repo)
+			assert.Equal(t, "git@github.com:hanzocd/example-apps.git", repository.Repo)
 			assert.Equal(t, "someOtherUsername", repository.Username)
 			assert.Equal(t, "someOtherPassword", repository.Password)
 		default:
@@ -300,33 +300,33 @@ func TestSecretsRepositoryBackend_ListRepositories(t *testing.T) {
 func TestSecretsRepositoryBackend_UpdateRepository(t *testing.T) {
 	managedRepository := &appsv1.Repository{
 		Name:     "Managed",
-		Repo:     "git@github.com:argoproj/argo-cd.git",
+		Repo:     "git@github.com:hanzoai/cd.git",
 		Username: "someUsername",
 		Password: "somePassword",
 	}
 	managedProjectRepository := &appsv1.Repository{
 		Name:     "Managed",
-		Repo:     "git@github.com:argoproj/argo-cd.git",
+		Repo:     "git@github.com:hanzoai/cd.git",
 		Username: "someUsername",
 		Password: "somePassword",
 		Project:  "someProject",
 	}
 	userProvidedRepository := &appsv1.Repository{
 		Name:     "User Provided",
-		Repo:     "git@github.com:argoproj/argoproj.git",
+		Repo:     "git@github.com:hanzocd/example-apps.git",
 		Username: "someOtherUsername",
 		Password: "someOtherPassword",
 	}
 	userProvidedProjectRepository := &appsv1.Repository{
 		Name:     "User Provided",
-		Repo:     "git@github.com:argoproj/argoproj.git",
+		Repo:     "git@github.com:hanzocd/example-apps.git",
 		Username: "someOtherUsername",
 		Password: "someOtherPassword",
 		Project:  "someProject",
 	}
 	newRepository := &appsv1.Repository{
 		Name:     "New",
-		Repo:     "git@github.com:argoproj/argo-events.git",
+		Repo:     "git@github.com:hanzoai/events.git",
 		Username: "foo",
 		Password: "bar",
 	}
@@ -455,8 +455,8 @@ func TestSecretsRepositoryBackend_UpdateRepository(t *testing.T) {
 }
 
 func TestSecretsRepositoryBackend_DeleteRepository(t *testing.T) {
-	managedSecretName := RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", "")
-	managedScopedSecretName := RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", "someProject")
+	managedSecretName := RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai/cd.git", "")
+	managedScopedSecretName := RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai/cd.git", "someProject")
 	repoSecrets := []runtime.Object{
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
@@ -466,8 +466,8 @@ func TestSecretsRepositoryBackend_DeleteRepository(t *testing.T) {
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
-				"name":     []byte("ArgoCD"),
-				"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+				"name":     []byte("SomeRepo"),
+				"url":      []byte("git@github.com:hanzoai/cd.git"),
 				"username": []byte("someUsername"),
 				"password": []byte("somePassword"),
 			},
@@ -480,8 +480,8 @@ func TestSecretsRepositoryBackend_DeleteRepository(t *testing.T) {
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepository},
 			},
 			Data: map[string][]byte{
-				"name":     []byte("ArgoCD"),
-				"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+				"name":     []byte("SomeRepo"),
+				"url":      []byte("git@github.com:hanzoai/cd.git"),
 				"username": []byte("someUsername"),
 				"password": []byte("somePassword"),
 				"project":  []byte("someProject"),
@@ -495,7 +495,7 @@ func TestSecretsRepositoryBackend_DeleteRepository(t *testing.T) {
 			},
 			Data: map[string][]byte{
 				"name":     []byte("UserManagedRepo"),
-				"url":      []byte("git@github.com:argoproj/argoproj.git"),
+				"url":      []byte("git@github.com:hanzocd/example-apps.git"),
 				"username": []byte("someOtherUsername"),
 				"password": []byte("someOtherPassword"),
 			},
@@ -509,7 +509,7 @@ func TestSecretsRepositoryBackend_DeleteRepository(t *testing.T) {
 		settingsMgr:   settings.NewSettingsManager(t.Context(), clientset, testNamespace),
 	}}
 
-	err := testee.DeleteRepository(t.Context(), "git@github.com:argoproj/argo-cd.git", "")
+	err := testee.DeleteRepository(t.Context(), "git@github.com:hanzoai/cd.git", "")
 	require.NoError(t, err)
 
 	_, err = clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), managedSecretName, metav1.GetOptions{})
@@ -518,13 +518,13 @@ func TestSecretsRepositoryBackend_DeleteRepository(t *testing.T) {
 	_, err = clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), managedScopedSecretName, metav1.GetOptions{})
 	require.NoError(t, err)
 
-	err = testee.DeleteRepository(t.Context(), "git@github.com:argoproj/argo-cd.git", "someProject")
+	err = testee.DeleteRepository(t.Context(), "git@github.com:hanzoai/cd.git", "someProject")
 	require.NoError(t, err)
 
 	_, err = clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), managedScopedSecretName, metav1.GetOptions{})
 	require.Error(t, err)
 
-	err = testee.DeleteRepository(t.Context(), "git@github.com:argoproj/argoproj.git", "")
+	err = testee.DeleteRepository(t.Context(), "git@github.com:hanzocd/example-apps.git", "")
 	require.NoError(t, err)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), "user-managed", metav1.GetOptions{})
@@ -551,7 +551,7 @@ func TestSecretsRepositoryBackend_CreateRepoCreds(t *testing.T) {
 		{
 			name: "minimal_https_fields",
 			repoCreds: appsv1.RepoCreds{
-				URL:       "git@github.com:argoproj",
+				URL:       "git@github.com:hanzoai",
 				Username:  "someUsername",
 				Password:  "somePassword",
 				EnableOCI: true,
@@ -625,12 +625,12 @@ func TestSecretsRepositoryBackend_GetRepoCreds(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
-				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj", ""),
+				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai", ""),
 				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
-				"url":      []byte("git@github.com:argoproj"),
+				"url":      []byte("git@github.com:hanzoai"),
 				"username": []byte("someUsername"),
 				"password": []byte("somePassword"),
 			},
@@ -670,10 +670,10 @@ func TestSecretsRepositoryBackend_GetRepoCreds(t *testing.T) {
 		settingsMgr:   settings.NewSettingsManager(t.Context(), clientset, testNamespace),
 	}}
 
-	repoCred, err := testee.GetRepoCreds(t.Context(), "git@github.com:argoproj")
+	repoCred, err := testee.GetRepoCreds(t.Context(), "git@github.com:hanzoai")
 	require.NoError(t, err)
 	require.NotNil(t, repoCred)
-	assert.Equal(t, "git@github.com:argoproj", repoCred.URL)
+	assert.Equal(t, "git@github.com:hanzoai", repoCred.URL)
 	assert.Equal(t, "someUsername", repoCred.Username)
 	assert.Equal(t, "somePassword", repoCred.Password)
 
@@ -696,12 +696,12 @@ func TestSecretsRepositoryBackend_ListRepoCreds(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
-				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj", ""),
+				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai", ""),
 				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
-				"url":      []byte("git@github.com:argoproj"),
+				"url":      []byte("git@github.com:hanzoai"),
 				"username": []byte("someUsername"),
 				"password": []byte("somePassword"),
 			},
@@ -730,13 +730,13 @@ func TestSecretsRepositoryBackend_ListRepoCreds(t *testing.T) {
 	repoCreds, err := testee.ListRepoCreds(t.Context())
 	require.NoError(t, err)
 	assert.Len(t, repoCreds, 2)
-	assert.Contains(t, repoCreds, "git@github.com:argoproj")
+	assert.Contains(t, repoCreds, "git@github.com:hanzoai")
 	assert.Contains(t, repoCreds, "git@gitlab.com")
 }
 
 func TestSecretsRepositoryBackend_UpdateRepoCreds(t *testing.T) {
 	managedCreds := &appsv1.RepoCreds{
-		URL:      "git@github.com:argoproj",
+		URL:      "git@github.com:hanzoai",
 		Username: "someUsername",
 		Password: "somePassword",
 	}
@@ -821,7 +821,7 @@ func TestSecretsRepositoryBackend_UpdateRepoCreds(t *testing.T) {
 }
 
 func TestSecretsRepositoryBackend_DeleteRepoCreds(t *testing.T) {
-	managedSecretName := RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", "")
+	managedSecretName := RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai/cd.git", "")
 	repoSecrets := []runtime.Object{
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
@@ -831,7 +831,7 @@ func TestSecretsRepositoryBackend_DeleteRepoCreds(t *testing.T) {
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
-				"url":      []byte("git@github.com:argoproj"),
+				"url":      []byte("git@github.com:hanzoai"),
 				"username": []byte("someUsername"),
 				"password": []byte("somePassword"),
 			},
@@ -857,7 +857,7 @@ func TestSecretsRepositoryBackend_DeleteRepoCreds(t *testing.T) {
 		settingsMgr:   settings.NewSettingsManager(t.Context(), clientset, testNamespace),
 	}}
 
-	err := testee.DeleteRepoCreds(t.Context(), "git@github.com:argoproj")
+	err := testee.DeleteRepoCreds(t.Context(), "git@github.com:hanzoai")
 	require.NoError(t, err)
 
 	_, err = clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), managedSecretName, metav1.GetOptions{})
@@ -877,12 +877,12 @@ func TestSecretsRepositoryBackend_GetAllHelmRepoCreds(t *testing.T) {
 		&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace:   testNamespace,
-				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj", ""),
+				Name:        RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai", ""),
 				Annotations: map[string]string{common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD},
 				Labels:      map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds},
 			},
 			Data: map[string][]byte{
-				"url":      []byte("git@github.com:argoproj"),
+				"url":      []byte("git@github.com:hanzoai"),
 				"username": []byte("someUsername"),
 				"password": []byte("somePassword"),
 				"type":     []byte("helm"),
@@ -1001,14 +1001,14 @@ func TestRaceConditionInRepoCredsOperations(t *testing.T) {
 	// Create a single shared secret that will be accessed concurrently
 	sharedSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", ""),
+			Name:      RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai/cd.git", ""),
 			Namespace: testNamespace,
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds,
 			},
 		},
 		Data: map[string][]byte{
-			"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+			"url":      []byte("git@github.com:hanzoai/cd.git"),
 			"username": []byte("test-user"),
 			"password": []byte("test-pass"),
 		},
@@ -1016,7 +1016,7 @@ func TestRaceConditionInRepoCredsOperations(t *testing.T) {
 
 	// Create test credentials that we'll use for conversion
 	repoCreds := &appsv1.RepoCreds{
-		URL:      "git@github.com:argoproj/argo-cd.git",
+		URL:      "git@github.com:hanzoai/cd.git",
 		Username: "test-user",
 		Password: "test-pass",
 	}
@@ -1082,14 +1082,14 @@ func TestRaceConditionInRepositoryOperations(t *testing.T) {
 	// Create a single shared secret that will be accessed concurrently
 	sharedSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      RepoURLToSecretName(repoSecretPrefix, "git@github.com:argoproj/argo-cd.git", ""),
+			Name:      RepoURLToSecretName(repoSecretPrefix, "git@github.com:hanzoai/cd.git", ""),
 			Namespace: testNamespace,
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepository,
 			},
 		},
 		Data: map[string][]byte{
-			"url":      []byte("git@github.com:argoproj/argo-cd.git"),
+			"url":      []byte("git@github.com:hanzoai/cd.git"),
 			"name":     []byte("test-repo"),
 			"username": []byte("test-user"),
 			"password": []byte("test-pass"),
@@ -1099,7 +1099,7 @@ func TestRaceConditionInRepositoryOperations(t *testing.T) {
 	// Create test repository that we'll use for conversion
 	repo := &appsv1.Repository{
 		Name:     "test-repo",
-		Repo:     "git@github.com:argoproj/argo-cd.git",
+		Repo:     "git@github.com:hanzoai/cd.git",
 		Username: "test-user",
 		Password: "test-pass",
 	}
@@ -1169,7 +1169,7 @@ func TestCreateReadAndWriteSecretForSameURL(t *testing.T) {
 
 	repo := &appsv1.Repository{
 		Name:     "TestRepo",
-		Repo:     "git@github.com:argoproj/argo-cd.git",
+		Repo:     "git@github.com:hanzoai/cd.git",
 		Username: "user",
 		Password: "pass",
 	}
@@ -1215,7 +1215,7 @@ func TestRepositoryToSecret(t *testing.T) {
 	s := &corev1.Secret{}
 	repo := &appsv1.Repository{
 		Name:                             "Name",
-		Repo:                             "git@github.com:argoproj/argo-cd.git",
+		Repo:                             "git@github.com:hanzoai/cd.git",
 		Username:                         "Username",
 		Password:                         "Password",
 		SSHPrivateKey:                    "SSHPrivateKey",
@@ -1275,7 +1275,7 @@ func TestCreateReadAndWriteRepoCredsSecretForSameURL(t *testing.T) {
 	settingsMgr := settings.NewSettingsManager(t.Context(), clientset, testNamespace)
 
 	creds := &appsv1.RepoCreds{
-		URL:      "git@github.com:argoproj/argo-cd.git",
+		URL:      "git@github.com:hanzoai/cd.git",
 		Username: "user",
 		Password: "pass",
 	}

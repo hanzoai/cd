@@ -130,7 +130,7 @@ type db struct {
 	settingsMgr   *settings.SettingsManager
 }
 
-// NewDB returns a new instance of the argo database
+// NewDB returns a new instance of the database
 func NewDB(namespace string, settingsMgr *settings.SettingsManager, kubeclientset kubernetes.Interface) DB {
 	return &db{
 		settingsMgr:   settingsMgr,

@@ -1,8 +1,8 @@
 {
-  "issuer": "https://argocd.example.com/api/dex",
-  "authorization_endpoint": "https://argocd.example.com/api/dex/auth",
-  "token_endpoint": "https://argocd.example.com/api/dex/token",
-  "jwks_uri": "https://argocd.example.com/api/dex/keys",
+  "issuer": "https://cd.example.com/api/dex",
+  "authorization_endpoint": "https://cd.example.com/api/dex/auth",
+  "token_endpoint": "https://cd.example.com/api/dex/token",
+  "jwks_uri": "https://cd.example.com/api/dex/keys",
   "response_types_supported": [
     "code"
   ],

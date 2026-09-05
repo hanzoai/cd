@@ -66,7 +66,7 @@ func (db *db) ListConfiguredGPGPublicKeys(_ context.Context) (map[string]*appsv1
 
 	// We have to verify all PGP keys in the ConfigMap to be valid keys before. To do so,
 	// we write each single one out to a temporary file and validate them through gpg.
-	// This is not optimal, but the executil from argo-pkg does not support writing to
+	// This is not optimal, but exec does not support writing to
 	// stdin of the forked process. So for now, we must live with that.
 	for k, p := range keysCM.Data {
 		expectedKeyID, err := sourceintegrity.KeyID(k)

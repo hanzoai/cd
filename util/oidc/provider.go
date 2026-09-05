@@ -31,7 +31,7 @@ type Provider interface {
 
 	ParseConfig() (*OIDCConfiguration, error)
 
-	Verify(ctx context.Context, tokenString string, argoSettings *settings.Settings) (*gooidc.IDToken, error)
+	Verify(ctx context.Context, tokenString string, cdSettings *settings.Settings) (*gooidc.IDToken, error)
 }
 
 type providerImpl struct {
@@ -89,7 +89,7 @@ func (t tokenVerificationError) Error() string {
 	return "token verification failed for all audiences: " + strings.Join(errorStrings, ", ")
 }
 
-func (p *providerImpl) Verify(ctx context.Context, tokenString string, argoSettings *settings.Settings) (*gooidc.IDToken, error) {
+func (p *providerImpl) Verify(ctx context.Context, tokenString string, cdSettings *settings.Settings) (*gooidc.IDToken, error) {
 	// According to the JWT spec, the aud claim is optional. The spec also says (emphasis mine):
 	//
 	//   If the principal processing the claim does not identify itself with a value in the "aud" claim _when this
@@ -118,9 +118,9 @@ func (p *providerImpl) Verify(ctx context.Context, tokenString string, argoSetti
 
 	var idToken *gooidc.IDToken
 	if !unverifiedHasAudClaim {
-		idToken, err = p.verify(ctx, "", tokenString, argoSettings.SkipAudienceCheckWhenTokenHasNoAudience())
+		idToken, err = p.verify(ctx, "", tokenString, cdSettings.SkipAudienceCheckWhenTokenHasNoAudience())
 	} else {
-		allowedAudiences := argoSettings.OAuth2AllowedAudiences()
+		allowedAudiences := cdSettings.OAuth2AllowedAudiences()
 		span.SetAttributes(attribute.StringSlice("allowedAudiences", allowedAudiences))
 		if len(allowedAudiences) == 0 {
 			span.SetStatus(codes.Error, "token has an audience claim, but no allowed audiences are configured")
