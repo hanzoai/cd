@@ -12,7 +12,7 @@
       "id": "63738bb582c8b540af7bcfc18f87c575c3ed66e0",
       "tree_id": "64897da445207e409ad05af93b1f349ad0a4ee19",
       "distinct": true,
-      "message": "Add staging-argocd-demo environment",
+      "message": "Add staging-cd-demo environment",
       "timestamp": "2018-05-04T15:40:02-07:00",
       "url": "https://github.com/jessesuen/test-repo/commit/63738bb582c8b540af7bcfc18f87c575c3ed66e0",
       "author": {
@@ -26,8 +26,8 @@
         "username": "jessesuen"
       },
       "added": [
-        "ksapps/test-app/environments/staging-argocd-demo/main.jsonnet",
-        "ksapps/test-app/environments/staging-argocd-demo/params.libsonnet"
+        "ksapps/test-app/environments/staging-cd-demo/main.jsonnet",
+        "ksapps/test-app/environments/staging-cd-demo/params.libsonnet"
       ],
       "removed": [
 
@@ -41,7 +41,7 @@
     "id": "63738bb582c8b540af7bcfc18f87c575c3ed66e0",
     "tree_id": "64897da445207e409ad05af93b1f349ad0a4ee19",
     "distinct": true,
-    "message": "Add staging-argocd-demo environment",
+    "message": "Add staging-cd-demo environment",
     "timestamp": "2018-05-04T15:40:02-07:00",
     "url": "https://github.com/jessesuen/test-repo/commit/63738bb582c8b540af7bcfc18f87c575c3ed66e0",
     "author": {
@@ -55,8 +55,8 @@
       "username": "jessesuen"
     },
     "added": [
-      "ksapps/test-app/environments/staging-argocd-demo/main.jsonnet",
-      "ksapps/test-app/environments/staging-argocd-demo/params.libsonnet"
+      "ksapps/test-app/environments/staging-cd-demo/main.jsonnet",
+      "ksapps/test-app/environments/staging-cd-demo/params.libsonnet"
     ],
     "removed": [
 

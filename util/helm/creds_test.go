@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	argoutils "github.com/hanzoai/cd/util"
+	cdutil "github.com/hanzoai/cd/util"
 	"github.com/hanzoai/cd/util/workloadidentity"
 	"github.com/hanzoai/cd/util/workloadidentity/mocks"
 )
@@ -31,7 +31,7 @@ func TestGetAccessTokenShouldReturnTokenFromCacheIfPresent(t *testing.T) {
 	workloadIdentityMock := &mocks.TokenProvider{}
 	creds := NewAzureWorkloadIdentityCreds("contoso.azurecr.io/charts", "", nil, nil, false, workloadIdentityMock)
 
-	cacheKey, err := argoutils.GenerateCacheKey("accesstoken-%s", "contoso.azurecr.io")
+	cacheKey, err := cdutil.GenerateCacheKey("accesstoken-%s", "contoso.azurecr.io")
 	require.NoError(t, err, "Error generating cache key")
 
 	// Store the token in the cache
@@ -48,7 +48,7 @@ func TestGetPasswordShouldReturnTokenFromCacheIfPresent(t *testing.T) {
 	workloadIdentityMock := &mocks.TokenProvider{}
 	creds := NewAzureWorkloadIdentityCreds("contoso.azurecr.io/charts", "", nil, nil, false, workloadIdentityMock)
 
-	cacheKey, err := argoutils.GenerateCacheKey("accesstoken-%s", "contoso.azurecr.io")
+	cacheKey, err := cdutil.GenerateCacheKey("accesstoken-%s", "contoso.azurecr.io")
 	require.NoError(t, err, "Error generating cache key")
 
 	// Store the token in the cache

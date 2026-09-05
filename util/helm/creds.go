@@ -16,7 +16,7 @@ import (
 	gocache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"
 
-	argoutils "github.com/hanzoai/cd/util"
+	cdutil "github.com/hanzoai/cd/util"
 	"github.com/hanzoai/cd/util/env"
 	"github.com/hanzoai/cd/util/workloadidentity"
 )
@@ -128,7 +128,7 @@ func (creds AzureWorkloadIdentityCreds) GetAccessToken() (string, error) {
 	ctx := context.Background()
 
 	// Compute hash as key for refresh token in the cache
-	key, err := argoutils.GenerateCacheKey("accesstoken-%s", registryHost)
+	key, err := cdutil.GenerateCacheKey("accesstoken-%s", registryHost)
 	if err != nil {
 		return "", fmt.Errorf("failed to compute key for cache: %w", err)
 	}

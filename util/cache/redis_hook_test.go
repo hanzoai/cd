@@ -18,7 +18,7 @@ func Test_ReconnectCallbackHookCalled(t *testing.T) {
 	defer mr.Close()
 
 	called := false
-	hook := NewArgoRedisHook(func() {
+	hook := NewRedisReconnectHook(func() {
 		called = true
 	})
 
@@ -39,7 +39,7 @@ func Test_ReconnectCallbackHookNotCalled(t *testing.T) {
 	defer mr.Close()
 
 	called := false
-	hook := NewArgoRedisHook(func() {
+	hook := NewRedisReconnectHook(func() {
 		called = true
 	})
 

@@ -31,7 +31,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	kubetesting "k8s.io/client-go/testing"
 
-	argov1 "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
+	applisters "github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
 	servercache "github.com/hanzoai/cd/server/cache"
 	"github.com/hanzoai/cd/util/cache/appstate"
 	"github.com/hanzoai/cd/util/db"
@@ -120,19 +120,19 @@ func NewMockHandlerForBitbucketCallback(reactor *reactorDef, applicationNamespac
 				SSHPrivateKey: "test-ssh-key",
 			},
 		}, nil)
-	argoSettings := settings.Settings{WebhookBitbucketUUID: "abcd-efgh-ijkl-mnop"}
+	testSettings := settings.Settings{WebhookBitbucketUUID: "abcd-efgh-ijkl-mnop"}
 	defaultMaxPayloadSize := int64(50) * 1024 * 1024
-	return newMockHandler(reactor, applicationNamespaces, defaultMaxPayloadSize, mockDB, &argoSettings, objects...)
+	return newMockHandler(reactor, applicationNamespaces, defaultMaxPayloadSize, mockDB, &testSettings, objects...)
 }
 
 type fakeAppsLister struct {
-	argov1.ApplicationLister
-	argov1.ApplicationNamespaceLister
+	applisters.ApplicationLister
+	applisters.ApplicationNamespaceLister
 	namespace string
 	clientset *appclientset.Clientset
 }
 
-func (f *fakeAppsLister) Applications(namespace string) argov1.ApplicationNamespaceLister {
+func (f *fakeAppsLister) Applications(namespace string) applisters.ApplicationNamespaceLister {
 	return &fakeAppsLister{namespace: namespace, clientset: f.clientset}
 }
 
@@ -150,7 +150,7 @@ func (f *fakeAppsLister) List(selector labels.Selector) ([]*v1alpha1.Application
 	return apps, nil
 }
 
-func newMockHandler(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, argoDB db.DB, argoSettings *settings.Settings, objects ...runtime.Object) *Handler {
+func newMockHandler(reactor *reactorDef, applicationNamespaces []string, maxPayloadSize int64, appDB db.DB, testSettings *settings.Settings, objects ...runtime.Object) *Handler {
 	appClientset := appclientset.NewSimpleClientset(objects...)
 	if reactor != nil {
 		defaultReactor := appClientset.ReactionChain[0]
@@ -161,12 +161,12 @@ func newMockHandler(reactor *reactorDef, applicationNamespaces []string, maxPayl
 		appClientset.AddReactor(reactor.verb, reactor.resource, reactor.reaction)
 	}
 	cacheClient := cacheutil.NewCache(cacheutil.NewInMemoryCache(1 * time.Hour))
-	return NewHandler("cd", applicationNamespaces, 10, 10, appClientset, &fakeAppsLister{clientset: appClientset}, argoSettings, &fakeSettingsSrc{}, cache.NewCache(
+	return NewHandler("cd", applicationNamespaces, 10, 10, appClientset, &fakeAppsLister{clientset: appClientset}, testSettings, &fakeSettingsSrc{}, cache.NewCache(
 		cacheClient,
 		1*time.Minute,
 		1*time.Minute,
 		10*time.Second,
-	), servercache.NewCache(appstate.NewCache(cacheClient, time.Minute), time.Minute, time.Minute), argoDB, maxPayloadSize, 0, 10)
+	), servercache.NewCache(appstate.NewCache(cacheClient, time.Minute), time.Minute, time.Minute), appDB, maxPayloadSize, 0, 10)
 }
 
 func TestGitHubCommitEvent(t *testing.T) {

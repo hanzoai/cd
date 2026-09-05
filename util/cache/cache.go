@@ -59,7 +59,7 @@ func buildRedisClient(redisAddress, password, username string, redisDB, maxRetri
 
 	client := kv.NewClient(opts)
 
-	client.AddHook(kv.Hook(NewArgoRedisHook(func() {
+	client.AddHook(kv.Hook(NewRedisReconnectHook(func() {
 		*client = *buildRedisClient(redisAddress, password, username, redisDB, maxRetries, tlsConfig)
 	})))
 
@@ -81,7 +81,7 @@ func buildFailoverRedisClient(sentinelMaster, sentinelUsername, sentinelPassword
 
 	client := kv.NewFailoverClient(opts)
 
-	client.AddHook(kv.Hook(NewArgoRedisHook(func() {
+	client.AddHook(kv.Hook(NewRedisReconnectHook(func() {
 		*client = *buildFailoverRedisClient(sentinelMaster, sentinelUsername, sentinelPassword, password, username, redisDB, maxRetries, tlsConfig, sentinelAddresses)
 	})))
 
