@@ -31,7 +31,7 @@ import (
 	"github.com/hanzoai/cd/applicationset/services"
 	appsetstatus "github.com/hanzoai/cd/applicationset/status"
 	appsetutils "github.com/hanzoai/cd/applicationset/utils"
-	argocommon "github.com/hanzoai/cd/common"
+	cdcommon "github.com/hanzoai/cd/common"
 	"github.com/hanzoai/cd/pkg/apiclient/applicationset"
 	eventspb "github.com/hanzoai/cd/pkg/apiclient/events"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
@@ -112,7 +112,7 @@ func (s *Server) Watch(q *applicationset.ApplicationSetWatchQuery, ws applicatio
 			return
 		}
 	}
-	events := make(chan *v1alpha1.ApplicationSetWatchEvent, argocommon.WatchAPIBufferSize)
+	events := make(chan *v1alpha1.ApplicationSetWatchEvent, cdcommon.WatchAPIBufferSize)
 	// Subscribe before listing so that events arriving between list and subscribe are not lost
 	unsubscribe := s.appSetBroadcaster.Subscribe(events)
 	defer unsubscribe()
@@ -367,11 +367,11 @@ func (s *Server) Create(ctx context.Context, q *applicationset.ApplicationSetCre
 }
 
 func (s *Server) generateApplicationSetApps(ctx context.Context, logEntry *log.Entry, appset v1alpha1.ApplicationSet) ([]v1alpha1.Application, error) {
-	argoCDDB := s.db
+	cdDB := s.db
 
-	scmConfig := generators.NewSCMConfig(s.ScmRootCAPath, s.AllowedScmProviders, s.EnableScmProviders, s.EnableGitHubAPIMetrics, github_app.NewAuthCredentials(argoCDDB.(db.RepoCredsDB)), true)
-	argoCDService := services.NewArgoCDService(s.db, s.GitSubmoduleEnabled, s.repoClientSet, s.EnableNewGitFileGlobbing)
-	appSetGenerators := generators.GetGenerators(ctx, s.client, s.k8sClient, s.ns, argoCDService, s.dynamicClient, scmConfig, s.clusterInformer)
+	scmConfig := generators.NewSCMConfig(s.ScmRootCAPath, s.AllowedScmProviders, s.EnableScmProviders, s.EnableGitHubAPIMetrics, github_app.NewAuthCredentials(cdDB.(db.RepoCredsDB)), true)
+	cdService := services.NewArgoCDService(s.db, s.GitSubmoduleEnabled, s.repoClientSet, s.EnableNewGitFileGlobbing)
+	appSetGenerators := generators.GetGenerators(ctx, s.client, s.k8sClient, s.ns, cdService, s.dynamicClient, scmConfig, s.clusterInformer)
 
 	apps, _, err := appsettemplate.GenerateApplications(logEntry, appset, appSetGenerators, &appsetutils.Render{}, s.client)
 	if err != nil {

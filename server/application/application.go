@@ -41,7 +41,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 
-	argocommon "github.com/hanzoai/cd/common"
+	cdcommon "github.com/hanzoai/cd/common"
 	"github.com/hanzoai/cd/pkg/apiclient/application"
 	eventspb "github.com/hanzoai/cd/pkg/apiclient/events"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
@@ -70,7 +70,7 @@ import (
 	resourceutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
 
 	applicationType "github.com/hanzoai/cd/pkg/apis/application"
-	argodiff "github.com/hanzoai/cd/util/cd/diff"
+	cddiff "github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
 	kubeutil "github.com/hanzoai/cd/util/kube"
 )
@@ -84,7 +84,7 @@ const (
 
 var (
 	ErrCacheMiss       = cacheutil.ErrCacheMiss
-	watchAPIBufferSize = env.ParseNumFromEnv(argocommon.EnvWatchAPIBufferSize, 1000, 0, math.MaxInt32)
+	watchAPIBufferSize = env.ParseNumFromEnv(cdcommon.EnvWatchAPIBufferSize, 1000, 0, math.MaxInt32)
 )
 
 // Server provides an Application service
@@ -190,13 +190,13 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 		if err := s.enf.EnforceErr(ctx.Value("claims"), rbac.ResourceApplications, action, givenRBACName); err != nil {
 			logCtx.WithFields(map[string]any{
 				"project":                project,
-				argocommon.SecurityField: argocommon.SecurityMedium,
+				cdcommon.SecurityField: cdcommon.SecurityMedium,
 			}).Warnf("user tried to %s application which they do not have access to: %s", action, err)
 			// Do a GET on the app. This ensures that the timing of a "no access" response is the same as a "yes access,
 			// but the app is in a different project" response. We don't want the user inferring the existence of the
 			// app from response time.
 			_, _ = getApp()
-			return nil, nil, argocommon.PermissionDeniedAPIError
+			return nil, nil, cdcommon.PermissionDeniedAPIError
 		}
 	}
 	a, err := getApp()
@@ -209,10 +209,10 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 			// We don't know if the user was allowed to get the Application, and we don't want to leak information about
 			// the Application's existence. Return 403.
 			logCtx.Warn("application does not exist")
-			return nil, nil, argocommon.PermissionDeniedAPIError
+			return nil, nil, cdcommon.PermissionDeniedAPIError
 		}
 		logCtx.Errorf("failed to get application: %s", err)
-		return nil, nil, argocommon.PermissionDeniedAPIError
+		return nil, nil, cdcommon.PermissionDeniedAPIError
 	}
 	// Even if we performed an initial RBAC check (because the request was fully parameterized), we still need to
 	// perform a second RBAC check to ensure that the user has access to the actual Application's project (not just the
@@ -220,7 +220,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 	if err := s.enf.EnforceErr(ctx.Value("claims"), rbac.ResourceApplications, action, a.RBACName(s.ns)); err != nil {
 		logCtx.WithFields(map[string]any{
 			"project":                a.Spec.Project,
-			argocommon.SecurityField: argocommon.SecurityMedium,
+			cdcommon.SecurityField: cdcommon.SecurityMedium,
 		}).Warnf("user tried to %s application which they do not have access to: %s", action, err)
 		if project != "" {
 			// The user specified a project. We would have returned a 404 if the user had access to the app, but the app
@@ -230,7 +230,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 		}
 		// The user didn't specify a project. We always return permission denied for both lack of access and lack of
 		// existence.
-		return nil, nil, argocommon.PermissionDeniedAPIError
+		return nil, nil, cdcommon.PermissionDeniedAPIError
 	}
 	effectiveProject := "default"
 	if a.Spec.Project != "" {
@@ -239,7 +239,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 	if project != "" && effectiveProject != project {
 		logCtx.WithFields(map[string]any{
 			"project":                a.Spec.Project,
-			argocommon.SecurityField: argocommon.SecurityMedium,
+			cdcommon.SecurityField: cdcommon.SecurityMedium,
 		}).Warnf("user tried to %s application in project %s, but the application is in project %s", action, project, effectiveProject)
 		// The user has access to the app, but the app is in a different project. Return 404, meaning "app doesn't
 		// exist in that project".
@@ -384,7 +384,7 @@ func (s *Server) Create(ctx context.Context, q *application.ApplicationCreateReq
 	if a.Operation != nil {
 		log.WithFields(applog.GetAppLogFields(a)).
 			WithFields(log.Fields{
-				argocommon.SecurityField: argocommon.SecurityLow,
+				cdcommon.SecurityField: cdcommon.SecurityLow,
 			}).Warn("User attempted to set operation on application creation. This could have allowed them to bypass branch protection rules by setting manifests directly. Ignoring the set operation.")
 		a.Operation = nil
 	}
@@ -1154,7 +1154,7 @@ func (s *Server) getAppProject(ctx context.Context, a *v1alpha1.Application, log
 	// Unknown error, log it but return the vague error to the user
 	logCtx.WithFields(map[string]any{
 		"project":                a.Spec.Project,
-		argocommon.SecurityField: argocommon.SecurityMedium,
+		cdcommon.SecurityField: cdcommon.SecurityMedium,
 	}).Warnf("error getting app project: %s", err)
 	return nil, vagueError
 }
@@ -1493,7 +1493,7 @@ func (s *Server) getAppLiveResource(ctx context.Context, action string, q *appli
 		action = fmt.Sprintf("%s/%s/%s/%s/%s", action, q.GetGroup(), q.GetKind(), q.GetNamespace(), q.GetResourceName())
 	}
 	a, p, err := s.getApplicationEnforceRBACInformer(ctx, action, q.GetProject(), q.GetAppNamespace(), q.GetName())
-	if !fineGrainedInheritanceDisabled && err != nil && errors.Is(err, argocommon.PermissionDeniedAPIError) && (action == rbac.ActionDelete || action == rbac.ActionUpdate) {
+	if !fineGrainedInheritanceDisabled && err != nil && errors.Is(err, cdcommon.PermissionDeniedAPIError) && (action == rbac.ActionDelete || action == rbac.ActionUpdate) {
 		action = fmt.Sprintf("%s/%s/%s/%s/%s", action, q.GetGroup(), q.GetKind(), q.GetNamespace(), q.GetResourceName())
 		a, _, err = s.getApplicationEnforceRBACInformer(ctx, action, q.GetProject(), q.GetAppNamespace(), q.GetName())
 	}
@@ -2986,7 +2986,7 @@ func (s *Server) ServerSideDiff(ctx context.Context, q *application.ApplicationS
 		return nil, fmt.Errorf("error getting application: %w", err)
 	}
 
-	argoSettings, err := s.settingsMgr.GetSettings()
+	cdSettings, err := s.settingsMgr.GetSettings()
 	if err != nil {
 		return nil, fmt.Errorf("error getting Hanzo CD settings: %w", err)
 	}
@@ -3034,15 +3034,15 @@ func (s *Server) ServerSideDiff(ctx context.Context, q *application.ApplicationS
 
 	// Build diff config like the CLI does, but with server-side diff enabled
 	ignoreAggregatedRoles := false
-	diffConfig, err := argodiff.NewDiffConfigBuilder().
+	diffConfig, err := cddiff.NewDiffConfigBuilder().
 		WithDiffSettings(a.Spec.IgnoreDifferences, overrides, ignoreAggregatedRoles, normalizers.IgnoreNormalizerOpts{}).
-		WithTracking(appLabelKey, argoSettings.TrackingMethod).
+		WithTracking(appLabelKey, cdSettings.TrackingMethod).
 		WithNoCache().
-		WithManager(argocommon.SSAManager).
+		WithManager(cdcommon.SSAManager).
 		WithServerSideDiff(true).
 		WithServerSideDryRunner(dryRunner).
 		WithGVKParser(gvkParser).
-		WithIgnoreMutationWebhook(!resourceutil.HasAnnotationOption(a, argocommon.AnnotationCompareOptions, "IncludeMutationWebhook=true")).
+		WithIgnoreMutationWebhook(!resourceutil.HasAnnotationOption(a, cdcommon.AnnotationCompareOptions, "IncludeMutationWebhook=true")).
 		Build()
 	if err != nil {
 		return nil, fmt.Errorf("error building diff config: %w", err)
@@ -3104,7 +3104,7 @@ func (s *Server) ServerSideDiff(ctx context.Context, q *application.ApplicationS
 		targetObjs = append(targetObjs, obj)
 	}
 
-	diffResults, err := argodiff.StateDiffs(ctx, liveObjs, targetObjs, diffConfig)
+	diffResults, err := cddiff.StateDiffs(ctx, liveObjs, targetObjs, diffConfig)
 	if err != nil {
 		return nil, fmt.Errorf("error performing state diffs: %w", err)
 	}

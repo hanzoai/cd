@@ -65,7 +65,7 @@ message Help {
     string chatUrl = 1;
     // the text for getting chat help, defaults to "Chat now!"
     string chatText = 2;
-    // the URLs for downloading argocd binaries
+    // the URLs for downloading cd binaries
     map<string, string> binaryUrls = 3;
 }
 

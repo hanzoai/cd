@@ -11,7 +11,7 @@ import (
 	"k8s.io/client-go/kubernetes/fake"
 
 	"github.com/hanzoai/cd/common"
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/test"
 	"github.com/hanzoai/cd/util/rbac"
 	settings_util "github.com/hanzoai/cd/util/settings"
@@ -21,17 +21,17 @@ func init() {
 	settings_util.ConfigureGoClientFeatures()
 }
 
-func newFakeProj() *argoappv1.AppProject {
-	jwtTokenByRole := make(map[string]argoappv1.JWTTokens)
-	jwtTokenByRole["my-role"] = argoappv1.JWTTokens{Items: []argoappv1.JWTToken{{IssuedAt: 1234}}}
+func newFakeProj() *appv1.AppProject {
+	jwtTokenByRole := make(map[string]appv1.JWTTokens)
+	jwtTokenByRole["my-role"] = appv1.JWTTokens{Items: []appv1.JWTToken{{IssuedAt: 1234}}}
 
-	return &argoappv1.AppProject{
+	return &appv1.AppProject{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "my-proj",
 			Namespace: test.FakeArgoCDNamespace,
 		},
-		Spec: argoappv1.AppProjectSpec{
-			Roles: []argoappv1.ProjectRole{
+		Spec: appv1.AppProjectSpec{
+			Roles: []appv1.ProjectRole{
 				{
 					Name: "my-role",
 					Policies: []string{
@@ -42,7 +42,7 @@ func newFakeProj() *argoappv1.AppProject {
 					Groups: []string{
 						"my-org:my-team",
 					},
-					JWTTokens: []argoappv1.JWTToken{
+					JWTTokens: []appv1.JWTToken{
 						{
 							IssuedAt: 1234,
 						},
@@ -50,7 +50,7 @@ func newFakeProj() *argoappv1.AppProject {
 				},
 			},
 		},
-		Status: argoappv1.AppProjectStatus{JWTTokensByRole: jwtTokenByRole},
+		Status: appv1.AppProjectStatus{JWTTokensByRole: jwtTokenByRole},
 	}
 }
 

@@ -407,7 +407,7 @@ func TestCreateAppSetTemplatedProject(t *testing.T) {
 		Applicationset: testAppSet,
 	}
 	_, err := appServer.Create(t.Context(), &createReq)
-	assert.EqualError(t, err, "error validating ApplicationSets: the Argo CD API does not currently support creating ApplicationSets with templated `project` fields")
+	assert.EqualError(t, err, "error validating ApplicationSets: the Hanzo CD API does not currently support creating ApplicationSets with templated `project` fields")
 }
 
 func TestCreateAppSetWrongNamespace(t *testing.T) {

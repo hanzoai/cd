@@ -62,7 +62,7 @@ var (
 		},
 		[]string{"status"},
 	)
-	argoVersion = prometheus.NewGaugeVec(
+	versionGauge = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "cd_info",
 			Help: "Hanzo CD version information",
@@ -79,7 +79,7 @@ func NewMetricsServer(host string, port int) *MetricsServer {
 		registry,
 		prometheus.DefaultGatherer,
 	}, promhttp.HandlerOpts{}))
-	argoVersion.WithLabelValues(common.GetVersion().Version).Set(1)
+	versionGauge.WithLabelValues(common.GetVersion().Version).Set(1)
 
 	profile.RegisterProfiler(mux)
 
@@ -88,7 +88,7 @@ func NewMetricsServer(host string, port int) *MetricsServer {
 	registry.MustRegister(extensionRequestCounter)
 	registry.MustRegister(extensionRequestDuration)
 	registry.MustRegister(loginRequestCounter)
-	registry.MustRegister(argoVersion)
+	registry.MustRegister(versionGauge)
 
 	kubectl.RegisterWithClientGo()
 	kubectl.RegisterWithPrometheus(registry)
