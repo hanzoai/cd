@@ -235,7 +235,7 @@ func Test_SignedTag(t *testing.T) {
 	require.NoError(t, repo.cmd("commit", "--allow-empty", "--message=signed", "--gpg-sign="+commitKeyId))
 
 	// Tags are made by different user and key
-	repo.setUser("Tagging user", "tagger@argo.io")
+	repo.setUser("Tagging user", "tagger@example.com")
 	require.NoError(t, repo.cmd("tag", "--message=signed tag", "--local-user="+tagKeyId, "1.0", "HEAD~1"))
 	require.NoError(t, repo.cmd("tag", "--message=signed tag", "--local-user="+tagKeyId, "2.0", "HEAD"))
 	require.NoError(t, repo.cmd("tag", "--message=unsigned tag", "dev", "HEAD"))
@@ -246,7 +246,7 @@ func Test_SignedTag(t *testing.T) {
 	assert.Equal(t, "1.0", info[0].Revision)
 	assert.Equal(t, GPGVerificationResultGood, info[0].VerificationResult)
 	assert.Equal(t, tagKeyId, info[0].SignatureKeyID)
-	assert.Equal(t, `Tagging user "<tagger@argo.io>"`, info[0].AuthorIdentity)
+	assert.Equal(t, `Tagging user "<tagger@example.com>"`, info[0].AuthorIdentity)
 	assert.Contains(t, legacy, `gpg: Signature made`)
 	assert.Contains(t, legacy, tagKeyId)
 	assert.Contains(t, legacy, `gpg: Good signature from "tag gpg User <tag gpg@example.com>" [ultimate]`)
@@ -257,7 +257,7 @@ func Test_SignedTag(t *testing.T) {
 	assert.Equal(t, "2.0", info[0].Revision)
 	assert.Equal(t, GPGVerificationResultGood, info[0].VerificationResult)
 	assert.Equal(t, tagKeyId, info[0].SignatureKeyID)
-	assert.Equal(t, `Tagging user "<tagger@argo.io>"`, info[0].AuthorIdentity)
+	assert.Equal(t, `Tagging user "<tagger@example.com>"`, info[0].AuthorIdentity)
 	assert.Contains(t, legacy, `gpg: Signature made`)
 	assert.Contains(t, legacy, tagKeyId)
 	assert.Contains(t, legacy, `gpg: Good signature from "tag gpg User <tag gpg@example.com>" [ultimate]`)
@@ -268,7 +268,7 @@ func Test_SignedTag(t *testing.T) {
 	assert.Equal(t, "dev", info[0].Revision)
 	assert.Equal(t, GPGVerificationResultUnsigned, info[0].VerificationResult)
 	assert.Empty(t, info[0].SignatureKeyID)
-	assert.Equal(t, `Tagging user "<tagger@argo.io>"`, info[0].AuthorIdentity)
+	assert.Equal(t, `Tagging user "<tagger@example.com>"`, info[0].AuthorIdentity)
 	assert.Empty(t, legacy)
 }
 
@@ -305,12 +305,12 @@ func Test_parseGpgSignStatus(t *testing.T) {
 		},
 		{
 			nil,
-			`[GNUPG:] NEWSIG user17@argo.io
+			`[GNUPG:] NEWSIG user17@example.com
 [GNUPG:] KEY_CONSIDERED D7E87AF6B99E64079FFECC029515ACB41E14E7F9 0
 [GNUPG:] SIG_ID ES7wSYaAnVXVsRjW15LzE4TMp+U 2025-11-19 3671527729
-[GNUPG:] GOODSIG 9515ACB41E14E7F9 User N17 <user17@argo.io>
+[GNUPG:] GOODSIG 9515ACB41E14E7F9 User N17 <user17@example.com>
 [GNUPG:] VALIDSIG D7E87AF6B99E64079FFECC029515ACB41E14E7F9 2025-11-19 3671527729 0 4 0 1 10 00 D7E87AF6B99E64079FFECC029515ACB41E14E7F9
-[GNUPG:] TRUST_ULTIMATE 0 pgp user17@argo.io`,
+[GNUPG:] TRUST_ULTIMATE 0 pgp user17@example.com`,
 			"", GPGVerificationResultGood, "9515ACB41E14E7F9",
 		},
 	}
