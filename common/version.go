@@ -19,7 +19,7 @@ var (
 	extraBuildInfo = ""                     // extra build information for vendors to populate during build
 )
 
-// Version contains Argo version information
+// Version contains version information
 type Version struct {
 	Version        string
 	BuildDate      string
