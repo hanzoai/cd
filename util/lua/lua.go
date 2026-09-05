@@ -26,7 +26,7 @@ import (
 	applicationpkg "github.com/hanzoai/cd/pkg/apiclient/application"
 	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/resource_customizations"
-	argoglob "github.com/hanzoai/cd/util/glob"
+	cdglob "github.com/hanzoai/cd/util/glob"
 )
 
 const (
@@ -569,7 +569,7 @@ func getWildcardHealthOverrideLua(overrides map[string]appv1.ResourceOverride, g
 	gvkKeyToMatch := GetConfigMapKey(gvk)
 
 	for key, override := range overrides {
-		if argoglob.Match(key, gvkKeyToMatch) && override.HealthLua != "" {
+		if cdglob.Match(key, gvkKeyToMatch) && override.HealthLua != "" {
 			return override.HealthLua, override.UseOpenLibs
 		}
 	}
