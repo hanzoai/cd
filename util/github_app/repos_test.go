@@ -13,11 +13,11 @@ import (
 	"github.com/hanzoai/cd/util/db/mocks"
 )
 
-type ArgocdRepositoryMock struct {
+type RepositoryMock struct {
 	mock *mock.Mock
 }
 
-func (a ArgocdRepositoryMock) GetRepoCredsBySecretName(ctx context.Context, secretName string) (*v1alpha1.RepoCreds, error) {
+func (a RepositoryMock) GetRepoCredsBySecretName(ctx context.Context, secretName string) (*v1alpha1.RepoCreds, error) {
 	args := a.mock.Called(ctx, secretName)
 
 	return args.Get(0).(*v1alpha1.RepoCreds), args.Error(1)
