@@ -12,9 +12,9 @@ import (
 	mock "github.com/stretchr/testify/mock"
 )
 
-// NewArgoDB creates a new instance of DB. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
+// NewDB creates a new instance of DB. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
-func NewArgoDB(t interface {
+func NewDB(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *DB {
@@ -31,12 +31,12 @@ type DB struct {
 	mock.Mock
 }
 
-type ArgoDB_Expecter struct {
+type DB_Expecter struct {
 	mock *mock.Mock
 }
 
-func (_m *DB) EXPECT() *ArgoDB_Expecter {
-	return &ArgoDB_Expecter{mock: &_m.Mock}
+func (_m *DB) EXPECT() *DB_Expecter {
+	return &DB_Expecter{mock: &_m.Mock}
 }
 
 // AddGPGPublicKey provides a mock function for the type DB
@@ -75,19 +75,19 @@ func (_mock *DB) AddGPGPublicKey(ctx context.Context, keyData string) (map[strin
 	return r0, r1, r2
 }
 
-// ArgoDB_AddGPGPublicKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'AddGPGPublicKey'
-type ArgoDB_AddGPGPublicKey_Call struct {
+// DB_AddGPGPublicKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'AddGPGPublicKey'
+type DB_AddGPGPublicKey_Call struct {
 	*mock.Call
 }
 
 // AddGPGPublicKey is a helper method to define mock.On call
 //   - ctx context.Context
 //   - keyData string
-func (_e *ArgoDB_Expecter) AddGPGPublicKey(ctx any, keyData any) *ArgoDB_AddGPGPublicKey_Call {
-	return &ArgoDB_AddGPGPublicKey_Call{Call: _e.mock.On("AddGPGPublicKey", ctx, keyData)}
+func (_e *DB_Expecter) AddGPGPublicKey(ctx any, keyData any) *DB_AddGPGPublicKey_Call {
+	return &DB_AddGPGPublicKey_Call{Call: _e.mock.On("AddGPGPublicKey", ctx, keyData)}
 }
 
-func (_c *ArgoDB_AddGPGPublicKey_Call) Run(run func(ctx context.Context, keyData string)) *ArgoDB_AddGPGPublicKey_Call {
+func (_c *DB_AddGPGPublicKey_Call) Run(run func(ctx context.Context, keyData string)) *DB_AddGPGPublicKey_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -105,12 +105,12 @@ func (_c *ArgoDB_AddGPGPublicKey_Call) Run(run func(ctx context.Context, keyData
 	return _c
 }
 
-func (_c *ArgoDB_AddGPGPublicKey_Call) Return(stringToGnuPGPublicKey map[string]*v1alpha1.GnuPGPublicKey, strings []string, err error) *ArgoDB_AddGPGPublicKey_Call {
+func (_c *DB_AddGPGPublicKey_Call) Return(stringToGnuPGPublicKey map[string]*v1alpha1.GnuPGPublicKey, strings []string, err error) *DB_AddGPGPublicKey_Call {
 	_c.Call.Return(stringToGnuPGPublicKey, strings, err)
 	return _c
 }
 
-func (_c *ArgoDB_AddGPGPublicKey_Call) RunAndReturn(run func(ctx context.Context, keyData string) (map[string]*v1alpha1.GnuPGPublicKey, []string, error)) *ArgoDB_AddGPGPublicKey_Call {
+func (_c *DB_AddGPGPublicKey_Call) RunAndReturn(run func(ctx context.Context, keyData string) (map[string]*v1alpha1.GnuPGPublicKey, []string, error)) *DB_AddGPGPublicKey_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -143,19 +143,19 @@ func (_mock *DB) CreateCluster(ctx context.Context, c *v1alpha1.Cluster) (*v1alp
 	return r0, r1
 }
 
-// ArgoDB_CreateCluster_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateCluster'
-type ArgoDB_CreateCluster_Call struct {
+// DB_CreateCluster_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateCluster'
+type DB_CreateCluster_Call struct {
 	*mock.Call
 }
 
 // CreateCluster is a helper method to define mock.On call
 //   - ctx context.Context
 //   - c *v1alpha1.Cluster
-func (_e *ArgoDB_Expecter) CreateCluster(ctx any, c any) *ArgoDB_CreateCluster_Call {
-	return &ArgoDB_CreateCluster_Call{Call: _e.mock.On("CreateCluster", ctx, c)}
+func (_e *DB_Expecter) CreateCluster(ctx any, c any) *DB_CreateCluster_Call {
+	return &DB_CreateCluster_Call{Call: _e.mock.On("CreateCluster", ctx, c)}
 }
 
-func (_c *ArgoDB_CreateCluster_Call) Run(run func(ctx context.Context, c *v1alpha1.Cluster)) *ArgoDB_CreateCluster_Call {
+func (_c *DB_CreateCluster_Call) Run(run func(ctx context.Context, c *v1alpha1.Cluster)) *DB_CreateCluster_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -173,12 +173,12 @@ func (_c *ArgoDB_CreateCluster_Call) Run(run func(ctx context.Context, c *v1alph
 	return _c
 }
 
-func (_c *ArgoDB_CreateCluster_Call) Return(cluster *v1alpha1.Cluster, err error) *ArgoDB_CreateCluster_Call {
+func (_c *DB_CreateCluster_Call) Return(cluster *v1alpha1.Cluster, err error) *DB_CreateCluster_Call {
 	_c.Call.Return(cluster, err)
 	return _c
 }
 
-func (_c *ArgoDB_CreateCluster_Call) RunAndReturn(run func(ctx context.Context, c *v1alpha1.Cluster) (*v1alpha1.Cluster, error)) *ArgoDB_CreateCluster_Call {
+func (_c *DB_CreateCluster_Call) RunAndReturn(run func(ctx context.Context, c *v1alpha1.Cluster) (*v1alpha1.Cluster, error)) *DB_CreateCluster_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -211,8 +211,8 @@ func (_mock *DB) CreateRepoCertificate(ctx context.Context, certificate *v1alpha
 	return r0, r1
 }
 
-// ArgoDB_CreateRepoCertificate_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateRepoCertificate'
-type ArgoDB_CreateRepoCertificate_Call struct {
+// DB_CreateRepoCertificate_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateRepoCertificate'
+type DB_CreateRepoCertificate_Call struct {
 	*mock.Call
 }
 
@@ -220,11 +220,11 @@ type ArgoDB_CreateRepoCertificate_Call struct {
 //   - ctx context.Context
 //   - certificate *v1alpha1.RepositoryCertificateList
 //   - upsert bool
-func (_e *ArgoDB_Expecter) CreateRepoCertificate(ctx any, certificate any, upsert any) *ArgoDB_CreateRepoCertificate_Call {
-	return &ArgoDB_CreateRepoCertificate_Call{Call: _e.mock.On("CreateRepoCertificate", ctx, certificate, upsert)}
+func (_e *DB_Expecter) CreateRepoCertificate(ctx any, certificate any, upsert any) *DB_CreateRepoCertificate_Call {
+	return &DB_CreateRepoCertificate_Call{Call: _e.mock.On("CreateRepoCertificate", ctx, certificate, upsert)}
 }
 
-func (_c *ArgoDB_CreateRepoCertificate_Call) Run(run func(ctx context.Context, certificate *v1alpha1.RepositoryCertificateList, upsert bool)) *ArgoDB_CreateRepoCertificate_Call {
+func (_c *DB_CreateRepoCertificate_Call) Run(run func(ctx context.Context, certificate *v1alpha1.RepositoryCertificateList, upsert bool)) *DB_CreateRepoCertificate_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -247,12 +247,12 @@ func (_c *ArgoDB_CreateRepoCertificate_Call) Run(run func(ctx context.Context, c
 	return _c
 }
 
-func (_c *ArgoDB_CreateRepoCertificate_Call) Return(repositoryCertificateList *v1alpha1.RepositoryCertificateList, err error) *ArgoDB_CreateRepoCertificate_Call {
+func (_c *DB_CreateRepoCertificate_Call) Return(repositoryCertificateList *v1alpha1.RepositoryCertificateList, err error) *DB_CreateRepoCertificate_Call {
 	_c.Call.Return(repositoryCertificateList, err)
 	return _c
 }
 
-func (_c *ArgoDB_CreateRepoCertificate_Call) RunAndReturn(run func(ctx context.Context, certificate *v1alpha1.RepositoryCertificateList, upsert bool) (*v1alpha1.RepositoryCertificateList, error)) *ArgoDB_CreateRepoCertificate_Call {
+func (_c *DB_CreateRepoCertificate_Call) RunAndReturn(run func(ctx context.Context, certificate *v1alpha1.RepositoryCertificateList, upsert bool) (*v1alpha1.RepositoryCertificateList, error)) *DB_CreateRepoCertificate_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -285,19 +285,19 @@ func (_mock *DB) CreateRepository(ctx context.Context, r *v1alpha1.Repository) (
 	return r0, r1
 }
 
-// ArgoDB_CreateRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateRepository'
-type ArgoDB_CreateRepository_Call struct {
+// DB_CreateRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateRepository'
+type DB_CreateRepository_Call struct {
 	*mock.Call
 }
 
 // CreateRepository is a helper method to define mock.On call
 //   - ctx context.Context
 //   - r *v1alpha1.Repository
-func (_e *ArgoDB_Expecter) CreateRepository(ctx any, r any) *ArgoDB_CreateRepository_Call {
-	return &ArgoDB_CreateRepository_Call{Call: _e.mock.On("CreateRepository", ctx, r)}
+func (_e *DB_Expecter) CreateRepository(ctx any, r any) *DB_CreateRepository_Call {
+	return &DB_CreateRepository_Call{Call: _e.mock.On("CreateRepository", ctx, r)}
 }
 
-func (_c *ArgoDB_CreateRepository_Call) Run(run func(ctx context.Context, r *v1alpha1.Repository)) *ArgoDB_CreateRepository_Call {
+func (_c *DB_CreateRepository_Call) Run(run func(ctx context.Context, r *v1alpha1.Repository)) *DB_CreateRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -315,12 +315,12 @@ func (_c *ArgoDB_CreateRepository_Call) Run(run func(ctx context.Context, r *v1a
 	return _c
 }
 
-func (_c *ArgoDB_CreateRepository_Call) Return(repository *v1alpha1.Repository, err error) *ArgoDB_CreateRepository_Call {
+func (_c *DB_CreateRepository_Call) Return(repository *v1alpha1.Repository, err error) *DB_CreateRepository_Call {
 	_c.Call.Return(repository, err)
 	return _c
 }
 
-func (_c *ArgoDB_CreateRepository_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.Repository) (*v1alpha1.Repository, error)) *ArgoDB_CreateRepository_Call {
+func (_c *DB_CreateRepository_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.Repository) (*v1alpha1.Repository, error)) *DB_CreateRepository_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -353,19 +353,19 @@ func (_mock *DB) CreateRepositoryCredentials(ctx context.Context, r *v1alpha1.Re
 	return r0, r1
 }
 
-// ArgoDB_CreateRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateRepositoryCredentials'
-type ArgoDB_CreateRepositoryCredentials_Call struct {
+// DB_CreateRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateRepositoryCredentials'
+type DB_CreateRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // CreateRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
 //   - r *v1alpha1.RepoCreds
-func (_e *ArgoDB_Expecter) CreateRepositoryCredentials(ctx any, r any) *ArgoDB_CreateRepositoryCredentials_Call {
-	return &ArgoDB_CreateRepositoryCredentials_Call{Call: _e.mock.On("CreateRepositoryCredentials", ctx, r)}
+func (_e *DB_Expecter) CreateRepositoryCredentials(ctx any, r any) *DB_CreateRepositoryCredentials_Call {
+	return &DB_CreateRepositoryCredentials_Call{Call: _e.mock.On("CreateRepositoryCredentials", ctx, r)}
 }
 
-func (_c *ArgoDB_CreateRepositoryCredentials_Call) Run(run func(ctx context.Context, r *v1alpha1.RepoCreds)) *ArgoDB_CreateRepositoryCredentials_Call {
+func (_c *DB_CreateRepositoryCredentials_Call) Run(run func(ctx context.Context, r *v1alpha1.RepoCreds)) *DB_CreateRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -383,12 +383,12 @@ func (_c *ArgoDB_CreateRepositoryCredentials_Call) Run(run func(ctx context.Cont
 	return _c
 }
 
-func (_c *ArgoDB_CreateRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *ArgoDB_CreateRepositoryCredentials_Call {
+func (_c *DB_CreateRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *DB_CreateRepositoryCredentials_Call {
 	_c.Call.Return(repoCreds, err)
 	return _c
 }
 
-func (_c *ArgoDB_CreateRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.RepoCreds) (*v1alpha1.RepoCreds, error)) *ArgoDB_CreateRepositoryCredentials_Call {
+func (_c *DB_CreateRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.RepoCreds) (*v1alpha1.RepoCreds, error)) *DB_CreateRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -421,19 +421,19 @@ func (_mock *DB) CreateWriteRepository(ctx context.Context, r *v1alpha1.Reposito
 	return r0, r1
 }
 
-// ArgoDB_CreateWriteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateWriteRepository'
-type ArgoDB_CreateWriteRepository_Call struct {
+// DB_CreateWriteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateWriteRepository'
+type DB_CreateWriteRepository_Call struct {
 	*mock.Call
 }
 
 // CreateWriteRepository is a helper method to define mock.On call
 //   - ctx context.Context
 //   - r *v1alpha1.Repository
-func (_e *ArgoDB_Expecter) CreateWriteRepository(ctx any, r any) *ArgoDB_CreateWriteRepository_Call {
-	return &ArgoDB_CreateWriteRepository_Call{Call: _e.mock.On("CreateWriteRepository", ctx, r)}
+func (_e *DB_Expecter) CreateWriteRepository(ctx any, r any) *DB_CreateWriteRepository_Call {
+	return &DB_CreateWriteRepository_Call{Call: _e.mock.On("CreateWriteRepository", ctx, r)}
 }
 
-func (_c *ArgoDB_CreateWriteRepository_Call) Run(run func(ctx context.Context, r *v1alpha1.Repository)) *ArgoDB_CreateWriteRepository_Call {
+func (_c *DB_CreateWriteRepository_Call) Run(run func(ctx context.Context, r *v1alpha1.Repository)) *DB_CreateWriteRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -451,12 +451,12 @@ func (_c *ArgoDB_CreateWriteRepository_Call) Run(run func(ctx context.Context, r
 	return _c
 }
 
-func (_c *ArgoDB_CreateWriteRepository_Call) Return(repository *v1alpha1.Repository, err error) *ArgoDB_CreateWriteRepository_Call {
+func (_c *DB_CreateWriteRepository_Call) Return(repository *v1alpha1.Repository, err error) *DB_CreateWriteRepository_Call {
 	_c.Call.Return(repository, err)
 	return _c
 }
 
-func (_c *ArgoDB_CreateWriteRepository_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.Repository) (*v1alpha1.Repository, error)) *ArgoDB_CreateWriteRepository_Call {
+func (_c *DB_CreateWriteRepository_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.Repository) (*v1alpha1.Repository, error)) *DB_CreateWriteRepository_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -489,19 +489,19 @@ func (_mock *DB) CreateWriteRepositoryCredentials(ctx context.Context, r *v1alph
 	return r0, r1
 }
 
-// ArgoDB_CreateWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateWriteRepositoryCredentials'
-type ArgoDB_CreateWriteRepositoryCredentials_Call struct {
+// DB_CreateWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateWriteRepositoryCredentials'
+type DB_CreateWriteRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // CreateWriteRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
 //   - r *v1alpha1.RepoCreds
-func (_e *ArgoDB_Expecter) CreateWriteRepositoryCredentials(ctx any, r any) *ArgoDB_CreateWriteRepositoryCredentials_Call {
-	return &ArgoDB_CreateWriteRepositoryCredentials_Call{Call: _e.mock.On("CreateWriteRepositoryCredentials", ctx, r)}
+func (_e *DB_Expecter) CreateWriteRepositoryCredentials(ctx any, r any) *DB_CreateWriteRepositoryCredentials_Call {
+	return &DB_CreateWriteRepositoryCredentials_Call{Call: _e.mock.On("CreateWriteRepositoryCredentials", ctx, r)}
 }
 
-func (_c *ArgoDB_CreateWriteRepositoryCredentials_Call) Run(run func(ctx context.Context, r *v1alpha1.RepoCreds)) *ArgoDB_CreateWriteRepositoryCredentials_Call {
+func (_c *DB_CreateWriteRepositoryCredentials_Call) Run(run func(ctx context.Context, r *v1alpha1.RepoCreds)) *DB_CreateWriteRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -519,12 +519,12 @@ func (_c *ArgoDB_CreateWriteRepositoryCredentials_Call) Run(run func(ctx context
 	return _c
 }
 
-func (_c *ArgoDB_CreateWriteRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *ArgoDB_CreateWriteRepositoryCredentials_Call {
+func (_c *DB_CreateWriteRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *DB_CreateWriteRepositoryCredentials_Call {
 	_c.Call.Return(repoCreds, err)
 	return _c
 }
 
-func (_c *ArgoDB_CreateWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.RepoCreds) (*v1alpha1.RepoCreds, error)) *ArgoDB_CreateWriteRepositoryCredentials_Call {
+func (_c *DB_CreateWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.RepoCreds) (*v1alpha1.RepoCreds, error)) *DB_CreateWriteRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -546,19 +546,19 @@ func (_mock *DB) DeleteCluster(ctx context.Context, server string) error {
 	return r0
 }
 
-// ArgoDB_DeleteCluster_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteCluster'
-type ArgoDB_DeleteCluster_Call struct {
+// DB_DeleteCluster_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteCluster'
+type DB_DeleteCluster_Call struct {
 	*mock.Call
 }
 
 // DeleteCluster is a helper method to define mock.On call
 //   - ctx context.Context
 //   - server string
-func (_e *ArgoDB_Expecter) DeleteCluster(ctx any, server any) *ArgoDB_DeleteCluster_Call {
-	return &ArgoDB_DeleteCluster_Call{Call: _e.mock.On("DeleteCluster", ctx, server)}
+func (_e *DB_Expecter) DeleteCluster(ctx any, server any) *DB_DeleteCluster_Call {
+	return &DB_DeleteCluster_Call{Call: _e.mock.On("DeleteCluster", ctx, server)}
 }
 
-func (_c *ArgoDB_DeleteCluster_Call) Run(run func(ctx context.Context, server string)) *ArgoDB_DeleteCluster_Call {
+func (_c *DB_DeleteCluster_Call) Run(run func(ctx context.Context, server string)) *DB_DeleteCluster_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -576,12 +576,12 @@ func (_c *ArgoDB_DeleteCluster_Call) Run(run func(ctx context.Context, server st
 	return _c
 }
 
-func (_c *ArgoDB_DeleteCluster_Call) Return(err error) *ArgoDB_DeleteCluster_Call {
+func (_c *DB_DeleteCluster_Call) Return(err error) *DB_DeleteCluster_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *ArgoDB_DeleteCluster_Call) RunAndReturn(run func(ctx context.Context, server string) error) *ArgoDB_DeleteCluster_Call {
+func (_c *DB_DeleteCluster_Call) RunAndReturn(run func(ctx context.Context, server string) error) *DB_DeleteCluster_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -603,19 +603,19 @@ func (_mock *DB) DeleteGPGPublicKey(ctx context.Context, keyID string) error {
 	return r0
 }
 
-// ArgoDB_DeleteGPGPublicKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteGPGPublicKey'
-type ArgoDB_DeleteGPGPublicKey_Call struct {
+// DB_DeleteGPGPublicKey_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteGPGPublicKey'
+type DB_DeleteGPGPublicKey_Call struct {
 	*mock.Call
 }
 
 // DeleteGPGPublicKey is a helper method to define mock.On call
 //   - ctx context.Context
 //   - keyID string
-func (_e *ArgoDB_Expecter) DeleteGPGPublicKey(ctx any, keyID any) *ArgoDB_DeleteGPGPublicKey_Call {
-	return &ArgoDB_DeleteGPGPublicKey_Call{Call: _e.mock.On("DeleteGPGPublicKey", ctx, keyID)}
+func (_e *DB_Expecter) DeleteGPGPublicKey(ctx any, keyID any) *DB_DeleteGPGPublicKey_Call {
+	return &DB_DeleteGPGPublicKey_Call{Call: _e.mock.On("DeleteGPGPublicKey", ctx, keyID)}
 }
 
-func (_c *ArgoDB_DeleteGPGPublicKey_Call) Run(run func(ctx context.Context, keyID string)) *ArgoDB_DeleteGPGPublicKey_Call {
+func (_c *DB_DeleteGPGPublicKey_Call) Run(run func(ctx context.Context, keyID string)) *DB_DeleteGPGPublicKey_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -633,12 +633,12 @@ func (_c *ArgoDB_DeleteGPGPublicKey_Call) Run(run func(ctx context.Context, keyI
 	return _c
 }
 
-func (_c *ArgoDB_DeleteGPGPublicKey_Call) Return(err error) *ArgoDB_DeleteGPGPublicKey_Call {
+func (_c *DB_DeleteGPGPublicKey_Call) Return(err error) *DB_DeleteGPGPublicKey_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *ArgoDB_DeleteGPGPublicKey_Call) RunAndReturn(run func(ctx context.Context, keyID string) error) *ArgoDB_DeleteGPGPublicKey_Call {
+func (_c *DB_DeleteGPGPublicKey_Call) RunAndReturn(run func(ctx context.Context, keyID string) error) *DB_DeleteGPGPublicKey_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -660,8 +660,8 @@ func (_mock *DB) DeleteRepository(ctx context.Context, name string, project stri
 	return r0
 }
 
-// ArgoDB_DeleteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteRepository'
-type ArgoDB_DeleteRepository_Call struct {
+// DB_DeleteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteRepository'
+type DB_DeleteRepository_Call struct {
 	*mock.Call
 }
 
@@ -669,11 +669,11 @@ type ArgoDB_DeleteRepository_Call struct {
 //   - ctx context.Context
 //   - name string
 //   - project string
-func (_e *ArgoDB_Expecter) DeleteRepository(ctx any, name any, project any) *ArgoDB_DeleteRepository_Call {
-	return &ArgoDB_DeleteRepository_Call{Call: _e.mock.On("DeleteRepository", ctx, name, project)}
+func (_e *DB_Expecter) DeleteRepository(ctx any, name any, project any) *DB_DeleteRepository_Call {
+	return &DB_DeleteRepository_Call{Call: _e.mock.On("DeleteRepository", ctx, name, project)}
 }
 
-func (_c *ArgoDB_DeleteRepository_Call) Run(run func(ctx context.Context, name string, project string)) *ArgoDB_DeleteRepository_Call {
+func (_c *DB_DeleteRepository_Call) Run(run func(ctx context.Context, name string, project string)) *DB_DeleteRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -696,12 +696,12 @@ func (_c *ArgoDB_DeleteRepository_Call) Run(run func(ctx context.Context, name s
 	return _c
 }
 
-func (_c *ArgoDB_DeleteRepository_Call) Return(err error) *ArgoDB_DeleteRepository_Call {
+func (_c *DB_DeleteRepository_Call) Return(err error) *DB_DeleteRepository_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *ArgoDB_DeleteRepository_Call) RunAndReturn(run func(ctx context.Context, name string, project string) error) *ArgoDB_DeleteRepository_Call {
+func (_c *DB_DeleteRepository_Call) RunAndReturn(run func(ctx context.Context, name string, project string) error) *DB_DeleteRepository_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -723,19 +723,19 @@ func (_mock *DB) DeleteRepositoryCredentials(ctx context.Context, name string) e
 	return r0
 }
 
-// ArgoDB_DeleteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteRepositoryCredentials'
-type ArgoDB_DeleteRepositoryCredentials_Call struct {
+// DB_DeleteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteRepositoryCredentials'
+type DB_DeleteRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // DeleteRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-func (_e *ArgoDB_Expecter) DeleteRepositoryCredentials(ctx any, name any) *ArgoDB_DeleteRepositoryCredentials_Call {
-	return &ArgoDB_DeleteRepositoryCredentials_Call{Call: _e.mock.On("DeleteRepositoryCredentials", ctx, name)}
+func (_e *DB_Expecter) DeleteRepositoryCredentials(ctx any, name any) *DB_DeleteRepositoryCredentials_Call {
+	return &DB_DeleteRepositoryCredentials_Call{Call: _e.mock.On("DeleteRepositoryCredentials", ctx, name)}
 }
 
-func (_c *ArgoDB_DeleteRepositoryCredentials_Call) Run(run func(ctx context.Context, name string)) *ArgoDB_DeleteRepositoryCredentials_Call {
+func (_c *DB_DeleteRepositoryCredentials_Call) Run(run func(ctx context.Context, name string)) *DB_DeleteRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -753,12 +753,12 @@ func (_c *ArgoDB_DeleteRepositoryCredentials_Call) Run(run func(ctx context.Cont
 	return _c
 }
 
-func (_c *ArgoDB_DeleteRepositoryCredentials_Call) Return(err error) *ArgoDB_DeleteRepositoryCredentials_Call {
+func (_c *DB_DeleteRepositoryCredentials_Call) Return(err error) *DB_DeleteRepositoryCredentials_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *ArgoDB_DeleteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, name string) error) *ArgoDB_DeleteRepositoryCredentials_Call {
+func (_c *DB_DeleteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, name string) error) *DB_DeleteRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -780,8 +780,8 @@ func (_mock *DB) DeleteWriteRepository(ctx context.Context, name string, project
 	return r0
 }
 
-// ArgoDB_DeleteWriteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteWriteRepository'
-type ArgoDB_DeleteWriteRepository_Call struct {
+// DB_DeleteWriteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteWriteRepository'
+type DB_DeleteWriteRepository_Call struct {
 	*mock.Call
 }
 
@@ -789,11 +789,11 @@ type ArgoDB_DeleteWriteRepository_Call struct {
 //   - ctx context.Context
 //   - name string
 //   - project string
-func (_e *ArgoDB_Expecter) DeleteWriteRepository(ctx any, name any, project any) *ArgoDB_DeleteWriteRepository_Call {
-	return &ArgoDB_DeleteWriteRepository_Call{Call: _e.mock.On("DeleteWriteRepository", ctx, name, project)}
+func (_e *DB_Expecter) DeleteWriteRepository(ctx any, name any, project any) *DB_DeleteWriteRepository_Call {
+	return &DB_DeleteWriteRepository_Call{Call: _e.mock.On("DeleteWriteRepository", ctx, name, project)}
 }
 
-func (_c *ArgoDB_DeleteWriteRepository_Call) Run(run func(ctx context.Context, name string, project string)) *ArgoDB_DeleteWriteRepository_Call {
+func (_c *DB_DeleteWriteRepository_Call) Run(run func(ctx context.Context, name string, project string)) *DB_DeleteWriteRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -816,12 +816,12 @@ func (_c *ArgoDB_DeleteWriteRepository_Call) Run(run func(ctx context.Context, n
 	return _c
 }
 
-func (_c *ArgoDB_DeleteWriteRepository_Call) Return(err error) *ArgoDB_DeleteWriteRepository_Call {
+func (_c *DB_DeleteWriteRepository_Call) Return(err error) *DB_DeleteWriteRepository_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *ArgoDB_DeleteWriteRepository_Call) RunAndReturn(run func(ctx context.Context, name string, project string) error) *ArgoDB_DeleteWriteRepository_Call {
+func (_c *DB_DeleteWriteRepository_Call) RunAndReturn(run func(ctx context.Context, name string, project string) error) *DB_DeleteWriteRepository_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -843,19 +843,19 @@ func (_mock *DB) DeleteWriteRepositoryCredentials(ctx context.Context, name stri
 	return r0
 }
 
-// ArgoDB_DeleteWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteWriteRepositoryCredentials'
-type ArgoDB_DeleteWriteRepositoryCredentials_Call struct {
+// DB_DeleteWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteWriteRepositoryCredentials'
+type DB_DeleteWriteRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // DeleteWriteRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-func (_e *ArgoDB_Expecter) DeleteWriteRepositoryCredentials(ctx any, name any) *ArgoDB_DeleteWriteRepositoryCredentials_Call {
-	return &ArgoDB_DeleteWriteRepositoryCredentials_Call{Call: _e.mock.On("DeleteWriteRepositoryCredentials", ctx, name)}
+func (_e *DB_Expecter) DeleteWriteRepositoryCredentials(ctx any, name any) *DB_DeleteWriteRepositoryCredentials_Call {
+	return &DB_DeleteWriteRepositoryCredentials_Call{Call: _e.mock.On("DeleteWriteRepositoryCredentials", ctx, name)}
 }
 
-func (_c *ArgoDB_DeleteWriteRepositoryCredentials_Call) Run(run func(ctx context.Context, name string)) *ArgoDB_DeleteWriteRepositoryCredentials_Call {
+func (_c *DB_DeleteWriteRepositoryCredentials_Call) Run(run func(ctx context.Context, name string)) *DB_DeleteWriteRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -873,12 +873,12 @@ func (_c *ArgoDB_DeleteWriteRepositoryCredentials_Call) Run(run func(ctx context
 	return _c
 }
 
-func (_c *ArgoDB_DeleteWriteRepositoryCredentials_Call) Return(err error) *ArgoDB_DeleteWriteRepositoryCredentials_Call {
+func (_c *DB_DeleteWriteRepositoryCredentials_Call) Return(err error) *DB_DeleteWriteRepositoryCredentials_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *ArgoDB_DeleteWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, name string) error) *ArgoDB_DeleteWriteRepositoryCredentials_Call {
+func (_c *DB_DeleteWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, name string) error) *DB_DeleteWriteRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -911,18 +911,18 @@ func (_mock *DB) GetAllHelmRepositoryCredentials(ctx context.Context) ([]*v1alph
 	return r0, r1
 }
 
-// ArgoDB_GetAllHelmRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAllHelmRepositoryCredentials'
-type ArgoDB_GetAllHelmRepositoryCredentials_Call struct {
+// DB_GetAllHelmRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAllHelmRepositoryCredentials'
+type DB_GetAllHelmRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // GetAllHelmRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) GetAllHelmRepositoryCredentials(ctx any) *ArgoDB_GetAllHelmRepositoryCredentials_Call {
-	return &ArgoDB_GetAllHelmRepositoryCredentials_Call{Call: _e.mock.On("GetAllHelmRepositoryCredentials", ctx)}
+func (_e *DB_Expecter) GetAllHelmRepositoryCredentials(ctx any) *DB_GetAllHelmRepositoryCredentials_Call {
+	return &DB_GetAllHelmRepositoryCredentials_Call{Call: _e.mock.On("GetAllHelmRepositoryCredentials", ctx)}
 }
 
-func (_c *ArgoDB_GetAllHelmRepositoryCredentials_Call) Run(run func(ctx context.Context)) *ArgoDB_GetAllHelmRepositoryCredentials_Call {
+func (_c *DB_GetAllHelmRepositoryCredentials_Call) Run(run func(ctx context.Context)) *DB_GetAllHelmRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -935,12 +935,12 @@ func (_c *ArgoDB_GetAllHelmRepositoryCredentials_Call) Run(run func(ctx context.
 	return _c
 }
 
-func (_c *ArgoDB_GetAllHelmRepositoryCredentials_Call) Return(repoCredss []*v1alpha1.RepoCreds, err error) *ArgoDB_GetAllHelmRepositoryCredentials_Call {
+func (_c *DB_GetAllHelmRepositoryCredentials_Call) Return(repoCredss []*v1alpha1.RepoCreds, err error) *DB_GetAllHelmRepositoryCredentials_Call {
 	_c.Call.Return(repoCredss, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetAllHelmRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.RepoCreds, error)) *ArgoDB_GetAllHelmRepositoryCredentials_Call {
+func (_c *DB_GetAllHelmRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.RepoCreds, error)) *DB_GetAllHelmRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -973,18 +973,18 @@ func (_mock *DB) GetAllOCIRepositoryCredentials(ctx context.Context) ([]*v1alpha
 	return r0, r1
 }
 
-// ArgoDB_GetAllOCIRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAllOCIRepositoryCredentials'
-type ArgoDB_GetAllOCIRepositoryCredentials_Call struct {
+// DB_GetAllOCIRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAllOCIRepositoryCredentials'
+type DB_GetAllOCIRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // GetAllOCIRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) GetAllOCIRepositoryCredentials(ctx any) *ArgoDB_GetAllOCIRepositoryCredentials_Call {
-	return &ArgoDB_GetAllOCIRepositoryCredentials_Call{Call: _e.mock.On("GetAllOCIRepositoryCredentials", ctx)}
+func (_e *DB_Expecter) GetAllOCIRepositoryCredentials(ctx any) *DB_GetAllOCIRepositoryCredentials_Call {
+	return &DB_GetAllOCIRepositoryCredentials_Call{Call: _e.mock.On("GetAllOCIRepositoryCredentials", ctx)}
 }
 
-func (_c *ArgoDB_GetAllOCIRepositoryCredentials_Call) Run(run func(ctx context.Context)) *ArgoDB_GetAllOCIRepositoryCredentials_Call {
+func (_c *DB_GetAllOCIRepositoryCredentials_Call) Run(run func(ctx context.Context)) *DB_GetAllOCIRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -997,12 +997,12 @@ func (_c *ArgoDB_GetAllOCIRepositoryCredentials_Call) Run(run func(ctx context.C
 	return _c
 }
 
-func (_c *ArgoDB_GetAllOCIRepositoryCredentials_Call) Return(repoCredss []*v1alpha1.RepoCreds, err error) *ArgoDB_GetAllOCIRepositoryCredentials_Call {
+func (_c *DB_GetAllOCIRepositoryCredentials_Call) Return(repoCredss []*v1alpha1.RepoCreds, err error) *DB_GetAllOCIRepositoryCredentials_Call {
 	_c.Call.Return(repoCredss, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetAllOCIRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.RepoCreds, error)) *ArgoDB_GetAllOCIRepositoryCredentials_Call {
+func (_c *DB_GetAllOCIRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.RepoCreds, error)) *DB_GetAllOCIRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1024,29 +1024,29 @@ func (_mock *DB) GetApplicationControllerReplicas() int {
 	return r0
 }
 
-// ArgoDB_GetApplicationControllerReplicas_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetApplicationControllerReplicas'
-type ArgoDB_GetApplicationControllerReplicas_Call struct {
+// DB_GetApplicationControllerReplicas_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetApplicationControllerReplicas'
+type DB_GetApplicationControllerReplicas_Call struct {
 	*mock.Call
 }
 
 // GetApplicationControllerReplicas is a helper method to define mock.On call
-func (_e *ArgoDB_Expecter) GetApplicationControllerReplicas() *ArgoDB_GetApplicationControllerReplicas_Call {
-	return &ArgoDB_GetApplicationControllerReplicas_Call{Call: _e.mock.On("GetApplicationControllerReplicas")}
+func (_e *DB_Expecter) GetApplicationControllerReplicas() *DB_GetApplicationControllerReplicas_Call {
+	return &DB_GetApplicationControllerReplicas_Call{Call: _e.mock.On("GetApplicationControllerReplicas")}
 }
 
-func (_c *ArgoDB_GetApplicationControllerReplicas_Call) Run(run func()) *ArgoDB_GetApplicationControllerReplicas_Call {
+func (_c *DB_GetApplicationControllerReplicas_Call) Run(run func()) *DB_GetApplicationControllerReplicas_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		run()
 	})
 	return _c
 }
 
-func (_c *ArgoDB_GetApplicationControllerReplicas_Call) Return(n int) *ArgoDB_GetApplicationControllerReplicas_Call {
+func (_c *DB_GetApplicationControllerReplicas_Call) Return(n int) *DB_GetApplicationControllerReplicas_Call {
 	_c.Call.Return(n)
 	return _c
 }
 
-func (_c *ArgoDB_GetApplicationControllerReplicas_Call) RunAndReturn(run func() int) *ArgoDB_GetApplicationControllerReplicas_Call {
+func (_c *DB_GetApplicationControllerReplicas_Call) RunAndReturn(run func() int) *DB_GetApplicationControllerReplicas_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1079,19 +1079,19 @@ func (_mock *DB) GetCluster(ctx context.Context, server string) (*v1alpha1.Clust
 	return r0, r1
 }
 
-// ArgoDB_GetCluster_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetCluster'
-type ArgoDB_GetCluster_Call struct {
+// DB_GetCluster_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetCluster'
+type DB_GetCluster_Call struct {
 	*mock.Call
 }
 
 // GetCluster is a helper method to define mock.On call
 //   - ctx context.Context
 //   - server string
-func (_e *ArgoDB_Expecter) GetCluster(ctx any, server any) *ArgoDB_GetCluster_Call {
-	return &ArgoDB_GetCluster_Call{Call: _e.mock.On("GetCluster", ctx, server)}
+func (_e *DB_Expecter) GetCluster(ctx any, server any) *DB_GetCluster_Call {
+	return &DB_GetCluster_Call{Call: _e.mock.On("GetCluster", ctx, server)}
 }
 
-func (_c *ArgoDB_GetCluster_Call) Run(run func(ctx context.Context, server string)) *ArgoDB_GetCluster_Call {
+func (_c *DB_GetCluster_Call) Run(run func(ctx context.Context, server string)) *DB_GetCluster_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1109,12 +1109,12 @@ func (_c *ArgoDB_GetCluster_Call) Run(run func(ctx context.Context, server strin
 	return _c
 }
 
-func (_c *ArgoDB_GetCluster_Call) Return(cluster *v1alpha1.Cluster, err error) *ArgoDB_GetCluster_Call {
+func (_c *DB_GetCluster_Call) Return(cluster *v1alpha1.Cluster, err error) *DB_GetCluster_Call {
 	_c.Call.Return(cluster, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetCluster_Call) RunAndReturn(run func(ctx context.Context, server string) (*v1alpha1.Cluster, error)) *ArgoDB_GetCluster_Call {
+func (_c *DB_GetCluster_Call) RunAndReturn(run func(ctx context.Context, server string) (*v1alpha1.Cluster, error)) *DB_GetCluster_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1147,19 +1147,19 @@ func (_mock *DB) GetClusterServersByName(ctx context.Context, name string) ([]st
 	return r0, r1
 }
 
-// ArgoDB_GetClusterServersByName_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetClusterServersByName'
-type ArgoDB_GetClusterServersByName_Call struct {
+// DB_GetClusterServersByName_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetClusterServersByName'
+type DB_GetClusterServersByName_Call struct {
 	*mock.Call
 }
 
 // GetClusterServersByName is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-func (_e *ArgoDB_Expecter) GetClusterServersByName(ctx any, name any) *ArgoDB_GetClusterServersByName_Call {
-	return &ArgoDB_GetClusterServersByName_Call{Call: _e.mock.On("GetClusterServersByName", ctx, name)}
+func (_e *DB_Expecter) GetClusterServersByName(ctx any, name any) *DB_GetClusterServersByName_Call {
+	return &DB_GetClusterServersByName_Call{Call: _e.mock.On("GetClusterServersByName", ctx, name)}
 }
 
-func (_c *ArgoDB_GetClusterServersByName_Call) Run(run func(ctx context.Context, name string)) *ArgoDB_GetClusterServersByName_Call {
+func (_c *DB_GetClusterServersByName_Call) Run(run func(ctx context.Context, name string)) *DB_GetClusterServersByName_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1177,12 +1177,12 @@ func (_c *ArgoDB_GetClusterServersByName_Call) Run(run func(ctx context.Context,
 	return _c
 }
 
-func (_c *ArgoDB_GetClusterServersByName_Call) Return(strings []string, err error) *ArgoDB_GetClusterServersByName_Call {
+func (_c *DB_GetClusterServersByName_Call) Return(strings []string, err error) *DB_GetClusterServersByName_Call {
 	_c.Call.Return(strings, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetClusterServersByName_Call) RunAndReturn(run func(ctx context.Context, name string) ([]string, error)) *ArgoDB_GetClusterServersByName_Call {
+func (_c *DB_GetClusterServersByName_Call) RunAndReturn(run func(ctx context.Context, name string) ([]string, error)) *DB_GetClusterServersByName_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1215,19 +1215,19 @@ func (_mock *DB) GetProjectClusters(ctx context.Context, project string) ([]*v1a
 	return r0, r1
 }
 
-// ArgoDB_GetProjectClusters_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetProjectClusters'
-type ArgoDB_GetProjectClusters_Call struct {
+// DB_GetProjectClusters_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetProjectClusters'
+type DB_GetProjectClusters_Call struct {
 	*mock.Call
 }
 
 // GetProjectClusters is a helper method to define mock.On call
 //   - ctx context.Context
 //   - project string
-func (_e *ArgoDB_Expecter) GetProjectClusters(ctx any, project any) *ArgoDB_GetProjectClusters_Call {
-	return &ArgoDB_GetProjectClusters_Call{Call: _e.mock.On("GetProjectClusters", ctx, project)}
+func (_e *DB_Expecter) GetProjectClusters(ctx any, project any) *DB_GetProjectClusters_Call {
+	return &DB_GetProjectClusters_Call{Call: _e.mock.On("GetProjectClusters", ctx, project)}
 }
 
-func (_c *ArgoDB_GetProjectClusters_Call) Run(run func(ctx context.Context, project string)) *ArgoDB_GetProjectClusters_Call {
+func (_c *DB_GetProjectClusters_Call) Run(run func(ctx context.Context, project string)) *DB_GetProjectClusters_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1245,12 +1245,12 @@ func (_c *ArgoDB_GetProjectClusters_Call) Run(run func(ctx context.Context, proj
 	return _c
 }
 
-func (_c *ArgoDB_GetProjectClusters_Call) Return(clusters []*v1alpha1.Cluster, err error) *ArgoDB_GetProjectClusters_Call {
+func (_c *DB_GetProjectClusters_Call) Return(clusters []*v1alpha1.Cluster, err error) *DB_GetProjectClusters_Call {
 	_c.Call.Return(clusters, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetProjectClusters_Call) RunAndReturn(run func(ctx context.Context, project string) ([]*v1alpha1.Cluster, error)) *ArgoDB_GetProjectClusters_Call {
+func (_c *DB_GetProjectClusters_Call) RunAndReturn(run func(ctx context.Context, project string) ([]*v1alpha1.Cluster, error)) *DB_GetProjectClusters_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1283,18 +1283,18 @@ func (_mock *DB) GetProjectRepositories(project string) ([]*v1alpha1.Repository,
 	return r0, r1
 }
 
-// ArgoDB_GetProjectRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetProjectRepositories'
-type ArgoDB_GetProjectRepositories_Call struct {
+// DB_GetProjectRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetProjectRepositories'
+type DB_GetProjectRepositories_Call struct {
 	*mock.Call
 }
 
 // GetProjectRepositories is a helper method to define mock.On call
 //   - project string
-func (_e *ArgoDB_Expecter) GetProjectRepositories(project any) *ArgoDB_GetProjectRepositories_Call {
-	return &ArgoDB_GetProjectRepositories_Call{Call: _e.mock.On("GetProjectRepositories", project)}
+func (_e *DB_Expecter) GetProjectRepositories(project any) *DB_GetProjectRepositories_Call {
+	return &DB_GetProjectRepositories_Call{Call: _e.mock.On("GetProjectRepositories", project)}
 }
 
-func (_c *ArgoDB_GetProjectRepositories_Call) Run(run func(project string)) *ArgoDB_GetProjectRepositories_Call {
+func (_c *DB_GetProjectRepositories_Call) Run(run func(project string)) *DB_GetProjectRepositories_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 string
 		if args[0] != nil {
@@ -1307,12 +1307,12 @@ func (_c *ArgoDB_GetProjectRepositories_Call) Run(run func(project string)) *Arg
 	return _c
 }
 
-func (_c *ArgoDB_GetProjectRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *ArgoDB_GetProjectRepositories_Call {
+func (_c *DB_GetProjectRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *DB_GetProjectRepositories_Call {
 	_c.Call.Return(repositorys, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetProjectRepositories_Call) RunAndReturn(run func(project string) ([]*v1alpha1.Repository, error)) *ArgoDB_GetProjectRepositories_Call {
+func (_c *DB_GetProjectRepositories_Call) RunAndReturn(run func(project string) ([]*v1alpha1.Repository, error)) *DB_GetProjectRepositories_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1345,18 +1345,18 @@ func (_mock *DB) GetProjectWriteRepositories(project string) ([]*v1alpha1.Reposi
 	return r0, r1
 }
 
-// ArgoDB_GetProjectWriteRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetProjectWriteRepositories'
-type ArgoDB_GetProjectWriteRepositories_Call struct {
+// DB_GetProjectWriteRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetProjectWriteRepositories'
+type DB_GetProjectWriteRepositories_Call struct {
 	*mock.Call
 }
 
 // GetProjectWriteRepositories is a helper method to define mock.On call
 //   - project string
-func (_e *ArgoDB_Expecter) GetProjectWriteRepositories(project any) *ArgoDB_GetProjectWriteRepositories_Call {
-	return &ArgoDB_GetProjectWriteRepositories_Call{Call: _e.mock.On("GetProjectWriteRepositories", project)}
+func (_e *DB_Expecter) GetProjectWriteRepositories(project any) *DB_GetProjectWriteRepositories_Call {
+	return &DB_GetProjectWriteRepositories_Call{Call: _e.mock.On("GetProjectWriteRepositories", project)}
 }
 
-func (_c *ArgoDB_GetProjectWriteRepositories_Call) Run(run func(project string)) *ArgoDB_GetProjectWriteRepositories_Call {
+func (_c *DB_GetProjectWriteRepositories_Call) Run(run func(project string)) *DB_GetProjectWriteRepositories_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 string
 		if args[0] != nil {
@@ -1369,12 +1369,12 @@ func (_c *ArgoDB_GetProjectWriteRepositories_Call) Run(run func(project string))
 	return _c
 }
 
-func (_c *ArgoDB_GetProjectWriteRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *ArgoDB_GetProjectWriteRepositories_Call {
+func (_c *DB_GetProjectWriteRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *DB_GetProjectWriteRepositories_Call {
 	_c.Call.Return(repositorys, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetProjectWriteRepositories_Call) RunAndReturn(run func(project string) ([]*v1alpha1.Repository, error)) *ArgoDB_GetProjectWriteRepositories_Call {
+func (_c *DB_GetProjectWriteRepositories_Call) RunAndReturn(run func(project string) ([]*v1alpha1.Repository, error)) *DB_GetProjectWriteRepositories_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1407,8 +1407,8 @@ func (_mock *DB) GetRepository(ctx context.Context, url string, project string) 
 	return r0, r1
 }
 
-// ArgoDB_GetRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetRepository'
-type ArgoDB_GetRepository_Call struct {
+// DB_GetRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetRepository'
+type DB_GetRepository_Call struct {
 	*mock.Call
 }
 
@@ -1416,11 +1416,11 @@ type ArgoDB_GetRepository_Call struct {
 //   - ctx context.Context
 //   - url string
 //   - project string
-func (_e *ArgoDB_Expecter) GetRepository(ctx any, url any, project any) *ArgoDB_GetRepository_Call {
-	return &ArgoDB_GetRepository_Call{Call: _e.mock.On("GetRepository", ctx, url, project)}
+func (_e *DB_Expecter) GetRepository(ctx any, url any, project any) *DB_GetRepository_Call {
+	return &DB_GetRepository_Call{Call: _e.mock.On("GetRepository", ctx, url, project)}
 }
 
-func (_c *ArgoDB_GetRepository_Call) Run(run func(ctx context.Context, url string, project string)) *ArgoDB_GetRepository_Call {
+func (_c *DB_GetRepository_Call) Run(run func(ctx context.Context, url string, project string)) *DB_GetRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1443,12 +1443,12 @@ func (_c *ArgoDB_GetRepository_Call) Run(run func(ctx context.Context, url strin
 	return _c
 }
 
-func (_c *ArgoDB_GetRepository_Call) Return(repository *v1alpha1.Repository, err error) *ArgoDB_GetRepository_Call {
+func (_c *DB_GetRepository_Call) Return(repository *v1alpha1.Repository, err error) *DB_GetRepository_Call {
 	_c.Call.Return(repository, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetRepository_Call) RunAndReturn(run func(ctx context.Context, url string, project string) (*v1alpha1.Repository, error)) *ArgoDB_GetRepository_Call {
+func (_c *DB_GetRepository_Call) RunAndReturn(run func(ctx context.Context, url string, project string) (*v1alpha1.Repository, error)) *DB_GetRepository_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1481,19 +1481,19 @@ func (_mock *DB) GetRepositoryCredentials(ctx context.Context, name string) (*v1
 	return r0, r1
 }
 
-// ArgoDB_GetRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetRepositoryCredentials'
-type ArgoDB_GetRepositoryCredentials_Call struct {
+// DB_GetRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetRepositoryCredentials'
+type DB_GetRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // GetRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-func (_e *ArgoDB_Expecter) GetRepositoryCredentials(ctx any, name any) *ArgoDB_GetRepositoryCredentials_Call {
-	return &ArgoDB_GetRepositoryCredentials_Call{Call: _e.mock.On("GetRepositoryCredentials", ctx, name)}
+func (_e *DB_Expecter) GetRepositoryCredentials(ctx any, name any) *DB_GetRepositoryCredentials_Call {
+	return &DB_GetRepositoryCredentials_Call{Call: _e.mock.On("GetRepositoryCredentials", ctx, name)}
 }
 
-func (_c *ArgoDB_GetRepositoryCredentials_Call) Run(run func(ctx context.Context, name string)) *ArgoDB_GetRepositoryCredentials_Call {
+func (_c *DB_GetRepositoryCredentials_Call) Run(run func(ctx context.Context, name string)) *DB_GetRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1511,12 +1511,12 @@ func (_c *ArgoDB_GetRepositoryCredentials_Call) Run(run func(ctx context.Context
 	return _c
 }
 
-func (_c *ArgoDB_GetRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *ArgoDB_GetRepositoryCredentials_Call {
+func (_c *DB_GetRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *DB_GetRepositoryCredentials_Call {
 	_c.Call.Return(repoCreds, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, name string) (*v1alpha1.RepoCreds, error)) *ArgoDB_GetRepositoryCredentials_Call {
+func (_c *DB_GetRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, name string) (*v1alpha1.RepoCreds, error)) *DB_GetRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1549,8 +1549,8 @@ func (_mock *DB) GetWriteRepository(ctx context.Context, url string, project str
 	return r0, r1
 }
 
-// ArgoDB_GetWriteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetWriteRepository'
-type ArgoDB_GetWriteRepository_Call struct {
+// DB_GetWriteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetWriteRepository'
+type DB_GetWriteRepository_Call struct {
 	*mock.Call
 }
 
@@ -1558,11 +1558,11 @@ type ArgoDB_GetWriteRepository_Call struct {
 //   - ctx context.Context
 //   - url string
 //   - project string
-func (_e *ArgoDB_Expecter) GetWriteRepository(ctx any, url any, project any) *ArgoDB_GetWriteRepository_Call {
-	return &ArgoDB_GetWriteRepository_Call{Call: _e.mock.On("GetWriteRepository", ctx, url, project)}
+func (_e *DB_Expecter) GetWriteRepository(ctx any, url any, project any) *DB_GetWriteRepository_Call {
+	return &DB_GetWriteRepository_Call{Call: _e.mock.On("GetWriteRepository", ctx, url, project)}
 }
 
-func (_c *ArgoDB_GetWriteRepository_Call) Run(run func(ctx context.Context, url string, project string)) *ArgoDB_GetWriteRepository_Call {
+func (_c *DB_GetWriteRepository_Call) Run(run func(ctx context.Context, url string, project string)) *DB_GetWriteRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1585,12 +1585,12 @@ func (_c *ArgoDB_GetWriteRepository_Call) Run(run func(ctx context.Context, url 
 	return _c
 }
 
-func (_c *ArgoDB_GetWriteRepository_Call) Return(repository *v1alpha1.Repository, err error) *ArgoDB_GetWriteRepository_Call {
+func (_c *DB_GetWriteRepository_Call) Return(repository *v1alpha1.Repository, err error) *DB_GetWriteRepository_Call {
 	_c.Call.Return(repository, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetWriteRepository_Call) RunAndReturn(run func(ctx context.Context, url string, project string) (*v1alpha1.Repository, error)) *ArgoDB_GetWriteRepository_Call {
+func (_c *DB_GetWriteRepository_Call) RunAndReturn(run func(ctx context.Context, url string, project string) (*v1alpha1.Repository, error)) *DB_GetWriteRepository_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1623,19 +1623,19 @@ func (_mock *DB) GetWriteRepositoryCredentials(ctx context.Context, name string)
 	return r0, r1
 }
 
-// ArgoDB_GetWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetWriteRepositoryCredentials'
-type ArgoDB_GetWriteRepositoryCredentials_Call struct {
+// DB_GetWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetWriteRepositoryCredentials'
+type DB_GetWriteRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // GetWriteRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
 //   - name string
-func (_e *ArgoDB_Expecter) GetWriteRepositoryCredentials(ctx any, name any) *ArgoDB_GetWriteRepositoryCredentials_Call {
-	return &ArgoDB_GetWriteRepositoryCredentials_Call{Call: _e.mock.On("GetWriteRepositoryCredentials", ctx, name)}
+func (_e *DB_Expecter) GetWriteRepositoryCredentials(ctx any, name any) *DB_GetWriteRepositoryCredentials_Call {
+	return &DB_GetWriteRepositoryCredentials_Call{Call: _e.mock.On("GetWriteRepositoryCredentials", ctx, name)}
 }
 
-func (_c *ArgoDB_GetWriteRepositoryCredentials_Call) Run(run func(ctx context.Context, name string)) *ArgoDB_GetWriteRepositoryCredentials_Call {
+func (_c *DB_GetWriteRepositoryCredentials_Call) Run(run func(ctx context.Context, name string)) *DB_GetWriteRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1653,12 +1653,12 @@ func (_c *ArgoDB_GetWriteRepositoryCredentials_Call) Run(run func(ctx context.Co
 	return _c
 }
 
-func (_c *ArgoDB_GetWriteRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *ArgoDB_GetWriteRepositoryCredentials_Call {
+func (_c *DB_GetWriteRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *DB_GetWriteRepositoryCredentials_Call {
 	_c.Call.Return(repoCreds, err)
 	return _c
 }
 
-func (_c *ArgoDB_GetWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, name string) (*v1alpha1.RepoCreds, error)) *ArgoDB_GetWriteRepositoryCredentials_Call {
+func (_c *DB_GetWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, name string) (*v1alpha1.RepoCreds, error)) *DB_GetWriteRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1691,18 +1691,18 @@ func (_mock *DB) ListClusters(ctx context.Context) (*v1alpha1.ClusterList, error
 	return r0, r1
 }
 
-// ArgoDB_ListClusters_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListClusters'
-type ArgoDB_ListClusters_Call struct {
+// DB_ListClusters_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListClusters'
+type DB_ListClusters_Call struct {
 	*mock.Call
 }
 
 // ListClusters is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) ListClusters(ctx any) *ArgoDB_ListClusters_Call {
-	return &ArgoDB_ListClusters_Call{Call: _e.mock.On("ListClusters", ctx)}
+func (_e *DB_Expecter) ListClusters(ctx any) *DB_ListClusters_Call {
+	return &DB_ListClusters_Call{Call: _e.mock.On("ListClusters", ctx)}
 }
 
-func (_c *ArgoDB_ListClusters_Call) Run(run func(ctx context.Context)) *ArgoDB_ListClusters_Call {
+func (_c *DB_ListClusters_Call) Run(run func(ctx context.Context)) *DB_ListClusters_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1715,12 +1715,12 @@ func (_c *ArgoDB_ListClusters_Call) Run(run func(ctx context.Context)) *ArgoDB_L
 	return _c
 }
 
-func (_c *ArgoDB_ListClusters_Call) Return(clusterList *v1alpha1.ClusterList, err error) *ArgoDB_ListClusters_Call {
+func (_c *DB_ListClusters_Call) Return(clusterList *v1alpha1.ClusterList, err error) *DB_ListClusters_Call {
 	_c.Call.Return(clusterList, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListClusters_Call) RunAndReturn(run func(ctx context.Context) (*v1alpha1.ClusterList, error)) *ArgoDB_ListClusters_Call {
+func (_c *DB_ListClusters_Call) RunAndReturn(run func(ctx context.Context) (*v1alpha1.ClusterList, error)) *DB_ListClusters_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1753,18 +1753,18 @@ func (_mock *DB) ListConfiguredGPGPublicKeys(ctx context.Context) (map[string]*v
 	return r0, r1
 }
 
-// ArgoDB_ListConfiguredGPGPublicKeys_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListConfiguredGPGPublicKeys'
-type ArgoDB_ListConfiguredGPGPublicKeys_Call struct {
+// DB_ListConfiguredGPGPublicKeys_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListConfiguredGPGPublicKeys'
+type DB_ListConfiguredGPGPublicKeys_Call struct {
 	*mock.Call
 }
 
 // ListConfiguredGPGPublicKeys is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) ListConfiguredGPGPublicKeys(ctx any) *ArgoDB_ListConfiguredGPGPublicKeys_Call {
-	return &ArgoDB_ListConfiguredGPGPublicKeys_Call{Call: _e.mock.On("ListConfiguredGPGPublicKeys", ctx)}
+func (_e *DB_Expecter) ListConfiguredGPGPublicKeys(ctx any) *DB_ListConfiguredGPGPublicKeys_Call {
+	return &DB_ListConfiguredGPGPublicKeys_Call{Call: _e.mock.On("ListConfiguredGPGPublicKeys", ctx)}
 }
 
-func (_c *ArgoDB_ListConfiguredGPGPublicKeys_Call) Run(run func(ctx context.Context)) *ArgoDB_ListConfiguredGPGPublicKeys_Call {
+func (_c *DB_ListConfiguredGPGPublicKeys_Call) Run(run func(ctx context.Context)) *DB_ListConfiguredGPGPublicKeys_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1777,12 +1777,12 @@ func (_c *ArgoDB_ListConfiguredGPGPublicKeys_Call) Run(run func(ctx context.Cont
 	return _c
 }
 
-func (_c *ArgoDB_ListConfiguredGPGPublicKeys_Call) Return(stringToGnuPGPublicKey map[string]*v1alpha1.GnuPGPublicKey, err error) *ArgoDB_ListConfiguredGPGPublicKeys_Call {
+func (_c *DB_ListConfiguredGPGPublicKeys_Call) Return(stringToGnuPGPublicKey map[string]*v1alpha1.GnuPGPublicKey, err error) *DB_ListConfiguredGPGPublicKeys_Call {
 	_c.Call.Return(stringToGnuPGPublicKey, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListConfiguredGPGPublicKeys_Call) RunAndReturn(run func(ctx context.Context) (map[string]*v1alpha1.GnuPGPublicKey, error)) *ArgoDB_ListConfiguredGPGPublicKeys_Call {
+func (_c *DB_ListConfiguredGPGPublicKeys_Call) RunAndReturn(run func(ctx context.Context) (map[string]*v1alpha1.GnuPGPublicKey, error)) *DB_ListConfiguredGPGPublicKeys_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1815,18 +1815,18 @@ func (_mock *DB) ListHelmRepositories(ctx context.Context) ([]*v1alpha1.Reposito
 	return r0, r1
 }
 
-// ArgoDB_ListHelmRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListHelmRepositories'
-type ArgoDB_ListHelmRepositories_Call struct {
+// DB_ListHelmRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListHelmRepositories'
+type DB_ListHelmRepositories_Call struct {
 	*mock.Call
 }
 
 // ListHelmRepositories is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) ListHelmRepositories(ctx any) *ArgoDB_ListHelmRepositories_Call {
-	return &ArgoDB_ListHelmRepositories_Call{Call: _e.mock.On("ListHelmRepositories", ctx)}
+func (_e *DB_Expecter) ListHelmRepositories(ctx any) *DB_ListHelmRepositories_Call {
+	return &DB_ListHelmRepositories_Call{Call: _e.mock.On("ListHelmRepositories", ctx)}
 }
 
-func (_c *ArgoDB_ListHelmRepositories_Call) Run(run func(ctx context.Context)) *ArgoDB_ListHelmRepositories_Call {
+func (_c *DB_ListHelmRepositories_Call) Run(run func(ctx context.Context)) *DB_ListHelmRepositories_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1839,12 +1839,12 @@ func (_c *ArgoDB_ListHelmRepositories_Call) Run(run func(ctx context.Context)) *
 	return _c
 }
 
-func (_c *ArgoDB_ListHelmRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *ArgoDB_ListHelmRepositories_Call {
+func (_c *DB_ListHelmRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *DB_ListHelmRepositories_Call {
 	_c.Call.Return(repositorys, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListHelmRepositories_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.Repository, error)) *ArgoDB_ListHelmRepositories_Call {
+func (_c *DB_ListHelmRepositories_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.Repository, error)) *DB_ListHelmRepositories_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1877,18 +1877,18 @@ func (_mock *DB) ListOCIRepositories(ctx context.Context) ([]*v1alpha1.Repositor
 	return r0, r1
 }
 
-// ArgoDB_ListOCIRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListOCIRepositories'
-type ArgoDB_ListOCIRepositories_Call struct {
+// DB_ListOCIRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListOCIRepositories'
+type DB_ListOCIRepositories_Call struct {
 	*mock.Call
 }
 
 // ListOCIRepositories is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) ListOCIRepositories(ctx any) *ArgoDB_ListOCIRepositories_Call {
-	return &ArgoDB_ListOCIRepositories_Call{Call: _e.mock.On("ListOCIRepositories", ctx)}
+func (_e *DB_Expecter) ListOCIRepositories(ctx any) *DB_ListOCIRepositories_Call {
+	return &DB_ListOCIRepositories_Call{Call: _e.mock.On("ListOCIRepositories", ctx)}
 }
 
-func (_c *ArgoDB_ListOCIRepositories_Call) Run(run func(ctx context.Context)) *ArgoDB_ListOCIRepositories_Call {
+func (_c *DB_ListOCIRepositories_Call) Run(run func(ctx context.Context)) *DB_ListOCIRepositories_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1901,12 +1901,12 @@ func (_c *ArgoDB_ListOCIRepositories_Call) Run(run func(ctx context.Context)) *A
 	return _c
 }
 
-func (_c *ArgoDB_ListOCIRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *ArgoDB_ListOCIRepositories_Call {
+func (_c *DB_ListOCIRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *DB_ListOCIRepositories_Call {
 	_c.Call.Return(repositorys, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListOCIRepositories_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.Repository, error)) *ArgoDB_ListOCIRepositories_Call {
+func (_c *DB_ListOCIRepositories_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.Repository, error)) *DB_ListOCIRepositories_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1939,19 +1939,19 @@ func (_mock *DB) ListRepoCertificates(ctx context.Context, selector *db.Certific
 	return r0, r1
 }
 
-// ArgoDB_ListRepoCertificates_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListRepoCertificates'
-type ArgoDB_ListRepoCertificates_Call struct {
+// DB_ListRepoCertificates_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListRepoCertificates'
+type DB_ListRepoCertificates_Call struct {
 	*mock.Call
 }
 
 // ListRepoCertificates is a helper method to define mock.On call
 //   - ctx context.Context
 //   - selector *db.CertificateListSelector
-func (_e *ArgoDB_Expecter) ListRepoCertificates(ctx any, selector any) *ArgoDB_ListRepoCertificates_Call {
-	return &ArgoDB_ListRepoCertificates_Call{Call: _e.mock.On("ListRepoCertificates", ctx, selector)}
+func (_e *DB_Expecter) ListRepoCertificates(ctx any, selector any) *DB_ListRepoCertificates_Call {
+	return &DB_ListRepoCertificates_Call{Call: _e.mock.On("ListRepoCertificates", ctx, selector)}
 }
 
-func (_c *ArgoDB_ListRepoCertificates_Call) Run(run func(ctx context.Context, selector *db.CertificateListSelector)) *ArgoDB_ListRepoCertificates_Call {
+func (_c *DB_ListRepoCertificates_Call) Run(run func(ctx context.Context, selector *db.CertificateListSelector)) *DB_ListRepoCertificates_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -1969,12 +1969,12 @@ func (_c *ArgoDB_ListRepoCertificates_Call) Run(run func(ctx context.Context, se
 	return _c
 }
 
-func (_c *ArgoDB_ListRepoCertificates_Call) Return(repositoryCertificateList *v1alpha1.RepositoryCertificateList, err error) *ArgoDB_ListRepoCertificates_Call {
+func (_c *DB_ListRepoCertificates_Call) Return(repositoryCertificateList *v1alpha1.RepositoryCertificateList, err error) *DB_ListRepoCertificates_Call {
 	_c.Call.Return(repositoryCertificateList, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListRepoCertificates_Call) RunAndReturn(run func(ctx context.Context, selector *db.CertificateListSelector) (*v1alpha1.RepositoryCertificateList, error)) *ArgoDB_ListRepoCertificates_Call {
+func (_c *DB_ListRepoCertificates_Call) RunAndReturn(run func(ctx context.Context, selector *db.CertificateListSelector) (*v1alpha1.RepositoryCertificateList, error)) *DB_ListRepoCertificates_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2007,18 +2007,18 @@ func (_mock *DB) ListRepositories(ctx context.Context) ([]*v1alpha1.Repository, 
 	return r0, r1
 }
 
-// ArgoDB_ListRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListRepositories'
-type ArgoDB_ListRepositories_Call struct {
+// DB_ListRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListRepositories'
+type DB_ListRepositories_Call struct {
 	*mock.Call
 }
 
 // ListRepositories is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) ListRepositories(ctx any) *ArgoDB_ListRepositories_Call {
-	return &ArgoDB_ListRepositories_Call{Call: _e.mock.On("ListRepositories", ctx)}
+func (_e *DB_Expecter) ListRepositories(ctx any) *DB_ListRepositories_Call {
+	return &DB_ListRepositories_Call{Call: _e.mock.On("ListRepositories", ctx)}
 }
 
-func (_c *ArgoDB_ListRepositories_Call) Run(run func(ctx context.Context)) *ArgoDB_ListRepositories_Call {
+func (_c *DB_ListRepositories_Call) Run(run func(ctx context.Context)) *DB_ListRepositories_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2031,12 +2031,12 @@ func (_c *ArgoDB_ListRepositories_Call) Run(run func(ctx context.Context)) *Argo
 	return _c
 }
 
-func (_c *ArgoDB_ListRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *ArgoDB_ListRepositories_Call {
+func (_c *DB_ListRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *DB_ListRepositories_Call {
 	_c.Call.Return(repositorys, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListRepositories_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.Repository, error)) *ArgoDB_ListRepositories_Call {
+func (_c *DB_ListRepositories_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.Repository, error)) *DB_ListRepositories_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2069,18 +2069,18 @@ func (_mock *DB) ListRepositoryCredentials(ctx context.Context) ([]string, error
 	return r0, r1
 }
 
-// ArgoDB_ListRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListRepositoryCredentials'
-type ArgoDB_ListRepositoryCredentials_Call struct {
+// DB_ListRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListRepositoryCredentials'
+type DB_ListRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // ListRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) ListRepositoryCredentials(ctx any) *ArgoDB_ListRepositoryCredentials_Call {
-	return &ArgoDB_ListRepositoryCredentials_Call{Call: _e.mock.On("ListRepositoryCredentials", ctx)}
+func (_e *DB_Expecter) ListRepositoryCredentials(ctx any) *DB_ListRepositoryCredentials_Call {
+	return &DB_ListRepositoryCredentials_Call{Call: _e.mock.On("ListRepositoryCredentials", ctx)}
 }
 
-func (_c *ArgoDB_ListRepositoryCredentials_Call) Run(run func(ctx context.Context)) *ArgoDB_ListRepositoryCredentials_Call {
+func (_c *DB_ListRepositoryCredentials_Call) Run(run func(ctx context.Context)) *DB_ListRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2093,12 +2093,12 @@ func (_c *ArgoDB_ListRepositoryCredentials_Call) Run(run func(ctx context.Contex
 	return _c
 }
 
-func (_c *ArgoDB_ListRepositoryCredentials_Call) Return(strings []string, err error) *ArgoDB_ListRepositoryCredentials_Call {
+func (_c *DB_ListRepositoryCredentials_Call) Return(strings []string, err error) *DB_ListRepositoryCredentials_Call {
 	_c.Call.Return(strings, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context) ([]string, error)) *ArgoDB_ListRepositoryCredentials_Call {
+func (_c *DB_ListRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context) ([]string, error)) *DB_ListRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2131,18 +2131,18 @@ func (_mock *DB) ListWriteRepositories(ctx context.Context) ([]*v1alpha1.Reposit
 	return r0, r1
 }
 
-// ArgoDB_ListWriteRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListWriteRepositories'
-type ArgoDB_ListWriteRepositories_Call struct {
+// DB_ListWriteRepositories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListWriteRepositories'
+type DB_ListWriteRepositories_Call struct {
 	*mock.Call
 }
 
 // ListWriteRepositories is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) ListWriteRepositories(ctx any) *ArgoDB_ListWriteRepositories_Call {
-	return &ArgoDB_ListWriteRepositories_Call{Call: _e.mock.On("ListWriteRepositories", ctx)}
+func (_e *DB_Expecter) ListWriteRepositories(ctx any) *DB_ListWriteRepositories_Call {
+	return &DB_ListWriteRepositories_Call{Call: _e.mock.On("ListWriteRepositories", ctx)}
 }
 
-func (_c *ArgoDB_ListWriteRepositories_Call) Run(run func(ctx context.Context)) *ArgoDB_ListWriteRepositories_Call {
+func (_c *DB_ListWriteRepositories_Call) Run(run func(ctx context.Context)) *DB_ListWriteRepositories_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2155,12 +2155,12 @@ func (_c *ArgoDB_ListWriteRepositories_Call) Run(run func(ctx context.Context)) 
 	return _c
 }
 
-func (_c *ArgoDB_ListWriteRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *ArgoDB_ListWriteRepositories_Call {
+func (_c *DB_ListWriteRepositories_Call) Return(repositorys []*v1alpha1.Repository, err error) *DB_ListWriteRepositories_Call {
 	_c.Call.Return(repositorys, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListWriteRepositories_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.Repository, error)) *ArgoDB_ListWriteRepositories_Call {
+func (_c *DB_ListWriteRepositories_Call) RunAndReturn(run func(ctx context.Context) ([]*v1alpha1.Repository, error)) *DB_ListWriteRepositories_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2193,18 +2193,18 @@ func (_mock *DB) ListWriteRepositoryCredentials(ctx context.Context) ([]string, 
 	return r0, r1
 }
 
-// ArgoDB_ListWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListWriteRepositoryCredentials'
-type ArgoDB_ListWriteRepositoryCredentials_Call struct {
+// DB_ListWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListWriteRepositoryCredentials'
+type DB_ListWriteRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // ListWriteRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ArgoDB_Expecter) ListWriteRepositoryCredentials(ctx any) *ArgoDB_ListWriteRepositoryCredentials_Call {
-	return &ArgoDB_ListWriteRepositoryCredentials_Call{Call: _e.mock.On("ListWriteRepositoryCredentials", ctx)}
+func (_e *DB_Expecter) ListWriteRepositoryCredentials(ctx any) *DB_ListWriteRepositoryCredentials_Call {
+	return &DB_ListWriteRepositoryCredentials_Call{Call: _e.mock.On("ListWriteRepositoryCredentials", ctx)}
 }
 
-func (_c *ArgoDB_ListWriteRepositoryCredentials_Call) Run(run func(ctx context.Context)) *ArgoDB_ListWriteRepositoryCredentials_Call {
+func (_c *DB_ListWriteRepositoryCredentials_Call) Run(run func(ctx context.Context)) *DB_ListWriteRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2217,12 +2217,12 @@ func (_c *ArgoDB_ListWriteRepositoryCredentials_Call) Run(run func(ctx context.C
 	return _c
 }
 
-func (_c *ArgoDB_ListWriteRepositoryCredentials_Call) Return(strings []string, err error) *ArgoDB_ListWriteRepositoryCredentials_Call {
+func (_c *DB_ListWriteRepositoryCredentials_Call) Return(strings []string, err error) *DB_ListWriteRepositoryCredentials_Call {
 	_c.Call.Return(strings, err)
 	return _c
 }
 
-func (_c *ArgoDB_ListWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context) ([]string, error)) *ArgoDB_ListWriteRepositoryCredentials_Call {
+func (_c *DB_ListWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context) ([]string, error)) *DB_ListWriteRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2255,19 +2255,19 @@ func (_mock *DB) RemoveRepoCertificates(ctx context.Context, selector *db.Certif
 	return r0, r1
 }
 
-// ArgoDB_RemoveRepoCertificates_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveRepoCertificates'
-type ArgoDB_RemoveRepoCertificates_Call struct {
+// DB_RemoveRepoCertificates_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveRepoCertificates'
+type DB_RemoveRepoCertificates_Call struct {
 	*mock.Call
 }
 
 // RemoveRepoCertificates is a helper method to define mock.On call
 //   - ctx context.Context
 //   - selector *db.CertificateListSelector
-func (_e *ArgoDB_Expecter) RemoveRepoCertificates(ctx any, selector any) *ArgoDB_RemoveRepoCertificates_Call {
-	return &ArgoDB_RemoveRepoCertificates_Call{Call: _e.mock.On("RemoveRepoCertificates", ctx, selector)}
+func (_e *DB_Expecter) RemoveRepoCertificates(ctx any, selector any) *DB_RemoveRepoCertificates_Call {
+	return &DB_RemoveRepoCertificates_Call{Call: _e.mock.On("RemoveRepoCertificates", ctx, selector)}
 }
 
-func (_c *ArgoDB_RemoveRepoCertificates_Call) Run(run func(ctx context.Context, selector *db.CertificateListSelector)) *ArgoDB_RemoveRepoCertificates_Call {
+func (_c *DB_RemoveRepoCertificates_Call) Run(run func(ctx context.Context, selector *db.CertificateListSelector)) *DB_RemoveRepoCertificates_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2285,12 +2285,12 @@ func (_c *ArgoDB_RemoveRepoCertificates_Call) Run(run func(ctx context.Context, 
 	return _c
 }
 
-func (_c *ArgoDB_RemoveRepoCertificates_Call) Return(repositoryCertificateList *v1alpha1.RepositoryCertificateList, err error) *ArgoDB_RemoveRepoCertificates_Call {
+func (_c *DB_RemoveRepoCertificates_Call) Return(repositoryCertificateList *v1alpha1.RepositoryCertificateList, err error) *DB_RemoveRepoCertificates_Call {
 	_c.Call.Return(repositoryCertificateList, err)
 	return _c
 }
 
-func (_c *ArgoDB_RemoveRepoCertificates_Call) RunAndReturn(run func(ctx context.Context, selector *db.CertificateListSelector) (*v1alpha1.RepositoryCertificateList, error)) *ArgoDB_RemoveRepoCertificates_Call {
+func (_c *DB_RemoveRepoCertificates_Call) RunAndReturn(run func(ctx context.Context, selector *db.CertificateListSelector) (*v1alpha1.RepositoryCertificateList, error)) *DB_RemoveRepoCertificates_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2321,8 +2321,8 @@ func (_mock *DB) RepositoryExists(ctx context.Context, repoURL string, project s
 	return r0, r1
 }
 
-// ArgoDB_RepositoryExists_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RepositoryExists'
-type ArgoDB_RepositoryExists_Call struct {
+// DB_RepositoryExists_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RepositoryExists'
+type DB_RepositoryExists_Call struct {
 	*mock.Call
 }
 
@@ -2330,11 +2330,11 @@ type ArgoDB_RepositoryExists_Call struct {
 //   - ctx context.Context
 //   - repoURL string
 //   - project string
-func (_e *ArgoDB_Expecter) RepositoryExists(ctx any, repoURL any, project any) *ArgoDB_RepositoryExists_Call {
-	return &ArgoDB_RepositoryExists_Call{Call: _e.mock.On("RepositoryExists", ctx, repoURL, project)}
+func (_e *DB_Expecter) RepositoryExists(ctx any, repoURL any, project any) *DB_RepositoryExists_Call {
+	return &DB_RepositoryExists_Call{Call: _e.mock.On("RepositoryExists", ctx, repoURL, project)}
 }
 
-func (_c *ArgoDB_RepositoryExists_Call) Run(run func(ctx context.Context, repoURL string, project string)) *ArgoDB_RepositoryExists_Call {
+func (_c *DB_RepositoryExists_Call) Run(run func(ctx context.Context, repoURL string, project string)) *DB_RepositoryExists_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2357,12 +2357,12 @@ func (_c *ArgoDB_RepositoryExists_Call) Run(run func(ctx context.Context, repoUR
 	return _c
 }
 
-func (_c *ArgoDB_RepositoryExists_Call) Return(b bool, err error) *ArgoDB_RepositoryExists_Call {
+func (_c *DB_RepositoryExists_Call) Return(b bool, err error) *DB_RepositoryExists_Call {
 	_c.Call.Return(b, err)
 	return _c
 }
 
-func (_c *ArgoDB_RepositoryExists_Call) RunAndReturn(run func(ctx context.Context, repoURL string, project string) (bool, error)) *ArgoDB_RepositoryExists_Call {
+func (_c *DB_RepositoryExists_Call) RunAndReturn(run func(ctx context.Context, repoURL string, project string) (bool, error)) *DB_RepositoryExists_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2395,19 +2395,19 @@ func (_mock *DB) UpdateCluster(ctx context.Context, c *v1alpha1.Cluster) (*v1alp
 	return r0, r1
 }
 
-// ArgoDB_UpdateCluster_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateCluster'
-type ArgoDB_UpdateCluster_Call struct {
+// DB_UpdateCluster_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateCluster'
+type DB_UpdateCluster_Call struct {
 	*mock.Call
 }
 
 // UpdateCluster is a helper method to define mock.On call
 //   - ctx context.Context
 //   - c *v1alpha1.Cluster
-func (_e *ArgoDB_Expecter) UpdateCluster(ctx any, c any) *ArgoDB_UpdateCluster_Call {
-	return &ArgoDB_UpdateCluster_Call{Call: _e.mock.On("UpdateCluster", ctx, c)}
+func (_e *DB_Expecter) UpdateCluster(ctx any, c any) *DB_UpdateCluster_Call {
+	return &DB_UpdateCluster_Call{Call: _e.mock.On("UpdateCluster", ctx, c)}
 }
 
-func (_c *ArgoDB_UpdateCluster_Call) Run(run func(ctx context.Context, c *v1alpha1.Cluster)) *ArgoDB_UpdateCluster_Call {
+func (_c *DB_UpdateCluster_Call) Run(run func(ctx context.Context, c *v1alpha1.Cluster)) *DB_UpdateCluster_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2425,12 +2425,12 @@ func (_c *ArgoDB_UpdateCluster_Call) Run(run func(ctx context.Context, c *v1alph
 	return _c
 }
 
-func (_c *ArgoDB_UpdateCluster_Call) Return(cluster *v1alpha1.Cluster, err error) *ArgoDB_UpdateCluster_Call {
+func (_c *DB_UpdateCluster_Call) Return(cluster *v1alpha1.Cluster, err error) *DB_UpdateCluster_Call {
 	_c.Call.Return(cluster, err)
 	return _c
 }
 
-func (_c *ArgoDB_UpdateCluster_Call) RunAndReturn(run func(ctx context.Context, c *v1alpha1.Cluster) (*v1alpha1.Cluster, error)) *ArgoDB_UpdateCluster_Call {
+func (_c *DB_UpdateCluster_Call) RunAndReturn(run func(ctx context.Context, c *v1alpha1.Cluster) (*v1alpha1.Cluster, error)) *DB_UpdateCluster_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2463,19 +2463,19 @@ func (_mock *DB) UpdateRepository(ctx context.Context, r *v1alpha1.Repository) (
 	return r0, r1
 }
 
-// ArgoDB_UpdateRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateRepository'
-type ArgoDB_UpdateRepository_Call struct {
+// DB_UpdateRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateRepository'
+type DB_UpdateRepository_Call struct {
 	*mock.Call
 }
 
 // UpdateRepository is a helper method to define mock.On call
 //   - ctx context.Context
 //   - r *v1alpha1.Repository
-func (_e *ArgoDB_Expecter) UpdateRepository(ctx any, r any) *ArgoDB_UpdateRepository_Call {
-	return &ArgoDB_UpdateRepository_Call{Call: _e.mock.On("UpdateRepository", ctx, r)}
+func (_e *DB_Expecter) UpdateRepository(ctx any, r any) *DB_UpdateRepository_Call {
+	return &DB_UpdateRepository_Call{Call: _e.mock.On("UpdateRepository", ctx, r)}
 }
 
-func (_c *ArgoDB_UpdateRepository_Call) Run(run func(ctx context.Context, r *v1alpha1.Repository)) *ArgoDB_UpdateRepository_Call {
+func (_c *DB_UpdateRepository_Call) Run(run func(ctx context.Context, r *v1alpha1.Repository)) *DB_UpdateRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2493,12 +2493,12 @@ func (_c *ArgoDB_UpdateRepository_Call) Run(run func(ctx context.Context, r *v1a
 	return _c
 }
 
-func (_c *ArgoDB_UpdateRepository_Call) Return(repository *v1alpha1.Repository, err error) *ArgoDB_UpdateRepository_Call {
+func (_c *DB_UpdateRepository_Call) Return(repository *v1alpha1.Repository, err error) *DB_UpdateRepository_Call {
 	_c.Call.Return(repository, err)
 	return _c
 }
 
-func (_c *ArgoDB_UpdateRepository_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.Repository) (*v1alpha1.Repository, error)) *ArgoDB_UpdateRepository_Call {
+func (_c *DB_UpdateRepository_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.Repository) (*v1alpha1.Repository, error)) *DB_UpdateRepository_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2531,19 +2531,19 @@ func (_mock *DB) UpdateRepositoryCredentials(ctx context.Context, r *v1alpha1.Re
 	return r0, r1
 }
 
-// ArgoDB_UpdateRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateRepositoryCredentials'
-type ArgoDB_UpdateRepositoryCredentials_Call struct {
+// DB_UpdateRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateRepositoryCredentials'
+type DB_UpdateRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // UpdateRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
 //   - r *v1alpha1.RepoCreds
-func (_e *ArgoDB_Expecter) UpdateRepositoryCredentials(ctx any, r any) *ArgoDB_UpdateRepositoryCredentials_Call {
-	return &ArgoDB_UpdateRepositoryCredentials_Call{Call: _e.mock.On("UpdateRepositoryCredentials", ctx, r)}
+func (_e *DB_Expecter) UpdateRepositoryCredentials(ctx any, r any) *DB_UpdateRepositoryCredentials_Call {
+	return &DB_UpdateRepositoryCredentials_Call{Call: _e.mock.On("UpdateRepositoryCredentials", ctx, r)}
 }
 
-func (_c *ArgoDB_UpdateRepositoryCredentials_Call) Run(run func(ctx context.Context, r *v1alpha1.RepoCreds)) *ArgoDB_UpdateRepositoryCredentials_Call {
+func (_c *DB_UpdateRepositoryCredentials_Call) Run(run func(ctx context.Context, r *v1alpha1.RepoCreds)) *DB_UpdateRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2561,12 +2561,12 @@ func (_c *ArgoDB_UpdateRepositoryCredentials_Call) Run(run func(ctx context.Cont
 	return _c
 }
 
-func (_c *ArgoDB_UpdateRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *ArgoDB_UpdateRepositoryCredentials_Call {
+func (_c *DB_UpdateRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *DB_UpdateRepositoryCredentials_Call {
 	_c.Call.Return(repoCreds, err)
 	return _c
 }
 
-func (_c *ArgoDB_UpdateRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.RepoCreds) (*v1alpha1.RepoCreds, error)) *ArgoDB_UpdateRepositoryCredentials_Call {
+func (_c *DB_UpdateRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.RepoCreds) (*v1alpha1.RepoCreds, error)) *DB_UpdateRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2599,19 +2599,19 @@ func (_mock *DB) UpdateWriteRepository(ctx context.Context, r *v1alpha1.Reposito
 	return r0, r1
 }
 
-// ArgoDB_UpdateWriteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateWriteRepository'
-type ArgoDB_UpdateWriteRepository_Call struct {
+// DB_UpdateWriteRepository_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateWriteRepository'
+type DB_UpdateWriteRepository_Call struct {
 	*mock.Call
 }
 
 // UpdateWriteRepository is a helper method to define mock.On call
 //   - ctx context.Context
 //   - r *v1alpha1.Repository
-func (_e *ArgoDB_Expecter) UpdateWriteRepository(ctx any, r any) *ArgoDB_UpdateWriteRepository_Call {
-	return &ArgoDB_UpdateWriteRepository_Call{Call: _e.mock.On("UpdateWriteRepository", ctx, r)}
+func (_e *DB_Expecter) UpdateWriteRepository(ctx any, r any) *DB_UpdateWriteRepository_Call {
+	return &DB_UpdateWriteRepository_Call{Call: _e.mock.On("UpdateWriteRepository", ctx, r)}
 }
 
-func (_c *ArgoDB_UpdateWriteRepository_Call) Run(run func(ctx context.Context, r *v1alpha1.Repository)) *ArgoDB_UpdateWriteRepository_Call {
+func (_c *DB_UpdateWriteRepository_Call) Run(run func(ctx context.Context, r *v1alpha1.Repository)) *DB_UpdateWriteRepository_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2629,12 +2629,12 @@ func (_c *ArgoDB_UpdateWriteRepository_Call) Run(run func(ctx context.Context, r
 	return _c
 }
 
-func (_c *ArgoDB_UpdateWriteRepository_Call) Return(repository *v1alpha1.Repository, err error) *ArgoDB_UpdateWriteRepository_Call {
+func (_c *DB_UpdateWriteRepository_Call) Return(repository *v1alpha1.Repository, err error) *DB_UpdateWriteRepository_Call {
 	_c.Call.Return(repository, err)
 	return _c
 }
 
-func (_c *ArgoDB_UpdateWriteRepository_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.Repository) (*v1alpha1.Repository, error)) *ArgoDB_UpdateWriteRepository_Call {
+func (_c *DB_UpdateWriteRepository_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.Repository) (*v1alpha1.Repository, error)) *DB_UpdateWriteRepository_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2667,19 +2667,19 @@ func (_mock *DB) UpdateWriteRepositoryCredentials(ctx context.Context, r *v1alph
 	return r0, r1
 }
 
-// ArgoDB_UpdateWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateWriteRepositoryCredentials'
-type ArgoDB_UpdateWriteRepositoryCredentials_Call struct {
+// DB_UpdateWriteRepositoryCredentials_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateWriteRepositoryCredentials'
+type DB_UpdateWriteRepositoryCredentials_Call struct {
 	*mock.Call
 }
 
 // UpdateWriteRepositoryCredentials is a helper method to define mock.On call
 //   - ctx context.Context
 //   - r *v1alpha1.RepoCreds
-func (_e *ArgoDB_Expecter) UpdateWriteRepositoryCredentials(ctx any, r any) *ArgoDB_UpdateWriteRepositoryCredentials_Call {
-	return &ArgoDB_UpdateWriteRepositoryCredentials_Call{Call: _e.mock.On("UpdateWriteRepositoryCredentials", ctx, r)}
+func (_e *DB_Expecter) UpdateWriteRepositoryCredentials(ctx any, r any) *DB_UpdateWriteRepositoryCredentials_Call {
+	return &DB_UpdateWriteRepositoryCredentials_Call{Call: _e.mock.On("UpdateWriteRepositoryCredentials", ctx, r)}
 }
 
-func (_c *ArgoDB_UpdateWriteRepositoryCredentials_Call) Run(run func(ctx context.Context, r *v1alpha1.RepoCreds)) *ArgoDB_UpdateWriteRepositoryCredentials_Call {
+func (_c *DB_UpdateWriteRepositoryCredentials_Call) Run(run func(ctx context.Context, r *v1alpha1.RepoCreds)) *DB_UpdateWriteRepositoryCredentials_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2697,12 +2697,12 @@ func (_c *ArgoDB_UpdateWriteRepositoryCredentials_Call) Run(run func(ctx context
 	return _c
 }
 
-func (_c *ArgoDB_UpdateWriteRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *ArgoDB_UpdateWriteRepositoryCredentials_Call {
+func (_c *DB_UpdateWriteRepositoryCredentials_Call) Return(repoCreds *v1alpha1.RepoCreds, err error) *DB_UpdateWriteRepositoryCredentials_Call {
 	_c.Call.Return(repoCreds, err)
 	return _c
 }
 
-func (_c *ArgoDB_UpdateWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.RepoCreds) (*v1alpha1.RepoCreds, error)) *ArgoDB_UpdateWriteRepositoryCredentials_Call {
+func (_c *DB_UpdateWriteRepositoryCredentials_Call) RunAndReturn(run func(ctx context.Context, r *v1alpha1.RepoCreds) (*v1alpha1.RepoCreds, error)) *DB_UpdateWriteRepositoryCredentials_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2724,8 +2724,8 @@ func (_mock *DB) WatchClusters(ctx context.Context, handleAddEvent func(cluster 
 	return r0
 }
 
-// ArgoDB_WatchClusters_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'WatchClusters'
-type ArgoDB_WatchClusters_Call struct {
+// DB_WatchClusters_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'WatchClusters'
+type DB_WatchClusters_Call struct {
 	*mock.Call
 }
 
@@ -2734,11 +2734,11 @@ type ArgoDB_WatchClusters_Call struct {
 //   - handleAddEvent func(cluster *v1alpha1.Cluster)
 //   - handleModEvent func(oldCluster *v1alpha1.Cluster, newCluster *v1alpha1.Cluster)
 //   - handleDeleteEvent func(clusterServer string)
-func (_e *ArgoDB_Expecter) WatchClusters(ctx any, handleAddEvent any, handleModEvent any, handleDeleteEvent any) *ArgoDB_WatchClusters_Call {
-	return &ArgoDB_WatchClusters_Call{Call: _e.mock.On("WatchClusters", ctx, handleAddEvent, handleModEvent, handleDeleteEvent)}
+func (_e *DB_Expecter) WatchClusters(ctx any, handleAddEvent any, handleModEvent any, handleDeleteEvent any) *DB_WatchClusters_Call {
+	return &DB_WatchClusters_Call{Call: _e.mock.On("WatchClusters", ctx, handleAddEvent, handleModEvent, handleDeleteEvent)}
 }
 
-func (_c *ArgoDB_WatchClusters_Call) Run(run func(ctx context.Context, handleAddEvent func(cluster *v1alpha1.Cluster), handleModEvent func(oldCluster *v1alpha1.Cluster, newCluster *v1alpha1.Cluster), handleDeleteEvent func(clusterServer string))) *ArgoDB_WatchClusters_Call {
+func (_c *DB_WatchClusters_Call) Run(run func(ctx context.Context, handleAddEvent func(cluster *v1alpha1.Cluster), handleModEvent func(oldCluster *v1alpha1.Cluster, newCluster *v1alpha1.Cluster), handleDeleteEvent func(clusterServer string))) *DB_WatchClusters_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2766,12 +2766,12 @@ func (_c *ArgoDB_WatchClusters_Call) Run(run func(ctx context.Context, handleAdd
 	return _c
 }
 
-func (_c *ArgoDB_WatchClusters_Call) Return(err error) *ArgoDB_WatchClusters_Call {
+func (_c *DB_WatchClusters_Call) Return(err error) *DB_WatchClusters_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *ArgoDB_WatchClusters_Call) RunAndReturn(run func(ctx context.Context, handleAddEvent func(cluster *v1alpha1.Cluster), handleModEvent func(oldCluster *v1alpha1.Cluster, newCluster *v1alpha1.Cluster), handleDeleteEvent func(clusterServer string)) error) *ArgoDB_WatchClusters_Call {
+func (_c *DB_WatchClusters_Call) RunAndReturn(run func(ctx context.Context, handleAddEvent func(cluster *v1alpha1.Cluster), handleModEvent func(oldCluster *v1alpha1.Cluster, newCluster *v1alpha1.Cluster), handleDeleteEvent func(clusterServer string)) error) *DB_WatchClusters_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -2802,8 +2802,8 @@ func (_mock *DB) WriteRepositoryExists(ctx context.Context, repoURL string, proj
 	return r0, r1
 }
 
-// ArgoDB_WriteRepositoryExists_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'WriteRepositoryExists'
-type ArgoDB_WriteRepositoryExists_Call struct {
+// DB_WriteRepositoryExists_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'WriteRepositoryExists'
+type DB_WriteRepositoryExists_Call struct {
 	*mock.Call
 }
 
@@ -2811,11 +2811,11 @@ type ArgoDB_WriteRepositoryExists_Call struct {
 //   - ctx context.Context
 //   - repoURL string
 //   - project string
-func (_e *ArgoDB_Expecter) WriteRepositoryExists(ctx any, repoURL any, project any) *ArgoDB_WriteRepositoryExists_Call {
-	return &ArgoDB_WriteRepositoryExists_Call{Call: _e.mock.On("WriteRepositoryExists", ctx, repoURL, project)}
+func (_e *DB_Expecter) WriteRepositoryExists(ctx any, repoURL any, project any) *DB_WriteRepositoryExists_Call {
+	return &DB_WriteRepositoryExists_Call{Call: _e.mock.On("WriteRepositoryExists", ctx, repoURL, project)}
 }
 
-func (_c *ArgoDB_WriteRepositoryExists_Call) Run(run func(ctx context.Context, repoURL string, project string)) *ArgoDB_WriteRepositoryExists_Call {
+func (_c *DB_WriteRepositoryExists_Call) Run(run func(ctx context.Context, repoURL string, project string)) *DB_WriteRepositoryExists_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -2838,12 +2838,12 @@ func (_c *ArgoDB_WriteRepositoryExists_Call) Run(run func(ctx context.Context, r
 	return _c
 }
 
-func (_c *ArgoDB_WriteRepositoryExists_Call) Return(b bool, err error) *ArgoDB_WriteRepositoryExists_Call {
+func (_c *DB_WriteRepositoryExists_Call) Return(b bool, err error) *DB_WriteRepositoryExists_Call {
 	_c.Call.Return(b, err)
 	return _c
 }
 
-func (_c *ArgoDB_WriteRepositoryExists_Call) RunAndReturn(run func(ctx context.Context, repoURL string, project string) (bool, error)) *ArgoDB_WriteRepositoryExists_Call {
+func (_c *DB_WriteRepositoryExists_Call) RunAndReturn(run func(ctx context.Context, repoURL string, project string) (bool, error)) *DB_WriteRepositoryExists_Call {
 	_c.Call.Return(run)
 	return _c
 }

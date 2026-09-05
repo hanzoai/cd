@@ -212,7 +212,7 @@ func TestSyncWithValidSAButDisallowedDestination(t *testing.T) {
 			// Patch destination to disallow target destination namespace
 			patch := fmt.Appendf(nil, `{"spec": {"destinations": [{"namespace": %q}]}}`, "!"+appCtx.DeploymentNamespace())
 
-			_, err := fixture.AppClientset.ArgoprojV1alpha1().AppProjects(fixture.TestNamespace()).Patch(t.Context(), projectCtx.GetName(), types.MergePatchType, patch, metav1.PatchOptions{})
+			_, err := fixture.AppClientset.AppsV1alpha1().AppProjects(fixture.TestNamespace()).Patch(t.Context(), projectCtx.GetName(), types.MergePatchType, patch, metav1.PatchOptions{})
 			require.NoError(t, err)
 		}).
 		Refresh(v1alpha1.RefreshTypeNormal).

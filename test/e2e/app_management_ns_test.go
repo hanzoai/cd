@@ -188,7 +188,7 @@ func TestNamespacedAppCreation(t *testing.T) {
 		When().
 		// ensure that update replaces spec and merge labels and annotations
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.MergePatchType, []byte(`{"metadata": {"labels": { "test": "label" }, "annotations": { "test": "annotation" }}}`), metav1.PatchOptions{}))
 		}).
 		CreateApp("--upsert").
@@ -418,7 +418,7 @@ func TestNamespacedAppRollbackSuccessful(t *testing.T) {
 			}}
 			patch, _, err := diff.CreateTwoWayMergePatch(app, appWithHistory, &Application{})
 			require.NoError(t, err)
-			app, err = fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+			app, err = fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 			require.NoError(t, err)
 
 			// sync app and make sure it reaches InSync state
@@ -1620,7 +1620,7 @@ func TestNamespacedCreateAppWithNoNameSpaceForGlobalResource(t *testing.T) {
 		CreateWithNoNameSpace().
 		Then().
 		And(func(app *Application) {
-			app, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			app, err := fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 			assert.Empty(t, app.Status.Conditions)
 		})
@@ -1642,7 +1642,7 @@ func TestNamespacedCreateAppWithNoNameSpaceWhenRequired(t *testing.T) {
 		Refresh(RefreshTypeNormal).
 		Then().
 		And(func(app *Application) {
-			updatedApp, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			updatedApp, err := fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 
 			assert.Len(t, updatedApp.Status.Conditions, 2)
@@ -1668,7 +1668,7 @@ func TestNamespacedCreateAppWithNoNameSpaceWhenRequired2(t *testing.T) {
 		Refresh(RefreshTypeNormal).
 		Then().
 		And(func(app *Application) {
-			updatedApp, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			updatedApp, err := fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 
 			assert.Len(t, updatedApp.Status.Conditions, 2)
@@ -1841,7 +1841,7 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		Expect(ResourceSyncStatusWithNamespaceIs("Deployment", "guestbook-ui", updatedNamespace, SyncStatusCodeSynced)).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "replace", "path": "/spec/syncPolicy/managedNamespaceMetadata/labels", "value": {"new":"label"} }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -1860,7 +1860,7 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "replace", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations", "value": {"new":"custom-annotation"} }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -2012,7 +2012,7 @@ metadata:
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "add", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations/something", "value": "hmm" }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -2032,7 +2032,7 @@ metadata:
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "remove", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations/something" }]`), metav1.PatchOptions{}))
 		}).
 		Sync().

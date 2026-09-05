@@ -7,9 +7,9 @@ package mocks
 import (
 	"context"
 
+	cache0 "github.com/hanzoai/cd/controller/cache"
 	"github.com/hanzoai/cd/gitops-engine/pkg/cache"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
-	cache0 "github.com/hanzoai/cd/controller/cache"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	mock "github.com/stretchr/testify/mock"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"

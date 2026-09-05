@@ -224,7 +224,7 @@ func newTestAppServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforcer),
 
 	fakeAppsClientset := apps.NewSimpleClientset(objects...)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, appinformer.WithNamespace(""), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
-	fakeProjLister := factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
+	fakeProjLister := factory.Apps().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
 
 	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	f(enforcer)
@@ -233,7 +233,7 @@ func newTestAppServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforcer),
 	settingsMgr := settings.NewSettingsManager(ctx, kubeclientset, testNamespace)
 
 	// populate the app informer with the fake objects
-	appInformer := factory.Argoproj().V1alpha1().Applications().Informer()
+	appInformer := factory.Apps().V1alpha1().Applications().Informer()
 	// TODO(jessesuen): probably should return cancel function so tests can stop background informer
 	// ctx, cancel := context.WithCancel(t.Context())
 	go appInformer.Run(ctx.Done())
@@ -241,7 +241,7 @@ func newTestAppServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforcer),
 		panic("Timed out waiting for caches to sync")
 	}
 
-	projInformer := factory.Argoproj().V1alpha1().AppProjects().Informer()
+	projInformer := factory.Apps().V1alpha1().AppProjects().Informer()
 	go projInformer.Run(ctx.Done())
 	if !k8scache.WaitForCacheSync(ctx.Done(), projInformer.HasSynced) {
 		panic("Timed out waiting for caches to sync")
@@ -297,7 +297,7 @@ func newTestAppServerWithEnforcerConfigure(t *testing.T, f func(*rbac.Enforcer),
 		testNamespace,
 		kubeclientset,
 		fakeAppsClientset,
-		factory.Argoproj().V1alpha1().Applications().Lister(),
+		factory.Apps().V1alpha1().Applications().Lister(),
 		appInformer,
 		broadcaster,
 		mockRepoClient,
@@ -409,7 +409,7 @@ func newTestAppServerWithEnforcerConfigureWithBenchmark(b *testing.B, f func(*rb
 
 	fakeAppsClientset := apps.NewSimpleClientset(objects...)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, appinformer.WithNamespace(""), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
-	fakeProjLister := factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
+	fakeProjLister := factory.Apps().V1alpha1().AppProjects().Lister().AppProjects(testNamespace)
 
 	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	f(enforcer)
@@ -418,14 +418,14 @@ func newTestAppServerWithEnforcerConfigureWithBenchmark(b *testing.B, f func(*rb
 	settingsMgr := settings.NewSettingsManager(ctx, kubeclientset, testNamespace)
 
 	// populate the app informer with the fake objects
-	appInformer := factory.Argoproj().V1alpha1().Applications().Informer()
+	appInformer := factory.Apps().V1alpha1().Applications().Informer()
 
 	go appInformer.Run(ctx.Done())
 	if !k8scache.WaitForCacheSync(ctx.Done(), appInformer.HasSynced) {
 		panic("Timed out waiting for caches to sync")
 	}
 
-	projInformer := factory.Argoproj().V1alpha1().AppProjects().Informer()
+	projInformer := factory.Apps().V1alpha1().AppProjects().Informer()
 	go projInformer.Run(ctx.Done())
 	if !k8scache.WaitForCacheSync(ctx.Done(), projInformer.HasSynced) {
 		panic("Timed out waiting for caches to sync")
@@ -481,7 +481,7 @@ func newTestAppServerWithEnforcerConfigureWithBenchmark(b *testing.B, f func(*rb
 		testNamespace,
 		kubeclientset,
 		fakeAppsClientset,
-		factory.Argoproj().V1alpha1().Applications().Lister(),
+		factory.Apps().V1alpha1().Applications().Lister(),
 		appInformer,
 		broadcaster,
 		mockRepoClient,
@@ -1136,7 +1136,7 @@ func TestNoAppEnumeration(t *testing.T) {
 // setSyncRunningOperationState simulates starting a sync operation on the given app.
 func setSyncRunningOperationState(t *testing.T, appServer *Server) {
 	t.Helper()
-	appIf := appServer.appclientset.ArgoprojV1alpha1().Applications("default")
+	appIf := appServer.appclientset.AppsV1alpha1().Applications("default")
 	app, err := appIf.Get(t.Context(), "test", metav1.GetOptions{})
 	require.NoError(t, err)
 	// This sets the status that would be set by the controller usually.
@@ -1148,7 +1148,7 @@ func setSyncRunningOperationState(t *testing.T, appServer *Server) {
 // unsetSyncRunningOperationState simulates finishing a sync operation on the given app.
 func unsetSyncRunningOperationState(t *testing.T, appServer *Server) {
 	t.Helper()
-	appIf := appServer.appclientset.ArgoprojV1alpha1().Applications("default")
+	appIf := appServer.appclientset.AppsV1alpha1().Applications("default")
 	app, err := appIf.Get(t.Context(), "test", metav1.GetOptions{})
 	require.NoError(t, err)
 	app.Operation = nil
@@ -2675,7 +2675,7 @@ func TestSyncAndTerminate(t *testing.T) {
 		Phase:     synccommon.OperationRunning,
 		StartedAt: metav1.NewTime(time.Now()),
 	}
-	_, err = appServer.appclientset.ArgoprojV1alpha1().Applications(appServer.ns).Update(t.Context(), app, metav1.UpdateOptions{})
+	_, err = appServer.appclientset.AppsV1alpha1().Applications(appServer.ns).Update(t.Context(), app, metav1.UpdateOptions{})
 	require.NoError(t, err)
 
 	resp, err := appServer.TerminateOperation(ctx, &application.OperationTerminateRequest{Name: &app.Name})
@@ -3274,7 +3274,7 @@ func refreshAnnotationRemover(t *testing.T, ctx context.Context, patched *int32,
 		if a.GetAnnotations() != nil && a.GetAnnotations()[v1alpha1.AnnotationKeyRefresh] != "" {
 			a.SetAnnotations(map[string]string{})
 			a.SetResourceVersion("999")
-			_, err = appServer.appclientset.ArgoprojV1alpha1().Applications(a.Namespace).Update(
+			_, err = appServer.appclientset.AppsV1alpha1().Applications(a.Namespace).Update(
 				t.Context(), a, metav1.UpdateOptions{})
 			require.NoError(t, err)
 			atomic.AddInt32(patched, 1)
@@ -4470,7 +4470,7 @@ func Test_DeepCopyInformers(t *testing.T) {
 
 	s := newTestAppServer(t, ro...)
 
-	appList, err := s.appclientset.ArgoprojV1alpha1().Applications(namespace).List(t.Context(), metav1.ListOptions{})
+	appList, err := s.appclientset.AppsV1alpha1().Applications(namespace).List(t.Context(), metav1.ListOptions{})
 	require.NoError(t, err)
 	assert.ElementsMatch(t, appls, appList.Items)
 	sAppList := appList.Items
@@ -4484,12 +4484,12 @@ func Test_DeepCopyInformers(t *testing.T) {
 	for i := range appls {
 		assert.NotSame(t, &appls[i], &sAppList[i])
 		assert.NotSame(t, &appls[i].Spec, &sAppList[i].Spec)
-		a, err := s.appclientset.ArgoprojV1alpha1().Applications(namespace).Get(t.Context(), sAppList[i].Name, metav1.GetOptions{})
+		a, err := s.appclientset.AppsV1alpha1().Applications(namespace).Get(t.Context(), sAppList[i].Name, metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotSame(t, a, &sAppList[i])
 	}
 
-	appSetList, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).List(t.Context(), metav1.ListOptions{})
+	appSetList, err := s.appclientset.AppsV1alpha1().ApplicationSets(namespace).List(t.Context(), metav1.ListOptions{})
 	require.NoError(t, err)
 	assert.ElementsMatch(t, appSets, appSetList.Items)
 	sAppSetList := appSetList.Items
@@ -4502,13 +4502,13 @@ func Test_DeepCopyInformers(t *testing.T) {
 	for i := range appSets {
 		assert.NotSame(t, &appSets[i], &sAppSetList[i])
 		assert.NotSame(t, &appSets[i].Spec, &sAppSetList[i].Spec)
-		a, err := s.appclientset.ArgoprojV1alpha1().ApplicationSets(namespace).Get(t.Context(),
+		a, err := s.appclientset.AppsV1alpha1().ApplicationSets(namespace).Get(t.Context(),
 			sAppSetList[i].Name, metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotSame(t, a, &sAppSetList[i])
 	}
 
-	projList, err := s.appclientset.ArgoprojV1alpha1().AppProjects("deep-copy-ns").List(t.Context(), metav1.ListOptions{})
+	projList, err := s.appclientset.AppsV1alpha1().AppProjects("deep-copy-ns").List(t.Context(), metav1.ListOptions{})
 	require.NoError(t, err)
 	assert.ElementsMatch(t, appProjects, projList.Items)
 	spList := projList.Items
@@ -4521,7 +4521,7 @@ func Test_DeepCopyInformers(t *testing.T) {
 	for i := range appProjects {
 		assert.NotSame(t, &appProjects[i], &spList[i])
 		assert.NotSame(t, &appProjects[i].Spec, &spList[i].Spec)
-		p, err := s.appclientset.ArgoprojV1alpha1().AppProjects("deep-copy-ns").Get(t.Context(),
+		p, err := s.appclientset.AppsV1alpha1().AppProjects("deep-copy-ns").Get(t.Context(),
 			spList[i].Name, metav1.GetOptions{})
 		require.NoError(t, err)
 		assert.NotSame(t, p, &spList[i])

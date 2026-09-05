@@ -123,25 +123,25 @@ func setupAppProjects(projects ...string) clientset.AppProjectInterface {
 	for i := range appProjects {
 		ro[i] = &appProjects[i]
 	}
-	return fake.NewSimpleClientset(ro...).ArgoprojV1alpha1().AppProjects("deep-copy-ns")
+	return fake.NewSimpleClientset(ro...).AppsV1alpha1().AppProjects("deep-copy-ns")
 }
 
 func Test_deepCopyTypedClient_RESTClient(t *testing.T) {
-	fclientset := fake.NewSimpleClientset().ArgoprojV1alpha1()
+	fclientset := fake.NewSimpleClientset().AppsV1alpha1()
 	type fields struct {
-		ArgoprojV1alpha1Interface clientset.ArgoprojV1alpha1Interface
+		AppsV1alpha1Interface clientset.AppsV1alpha1Interface
 	}
 	tests := []struct {
 		name   string
 		fields fields
 		want   rest.Interface
 	}{
-		{name: "RestClientGetter", fields: fields{ArgoprojV1alpha1Interface: fclientset}, want: fclientset.RESTClient()},
+		{name: "RestClientGetter", fields: fields{AppsV1alpha1Interface: fclientset}, want: fclientset.RESTClient()},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			d := &deepCopyTypedClient{
-				ArgoprojV1alpha1Interface: tt.fields.ArgoprojV1alpha1Interface,
+				AppsV1alpha1Interface: tt.fields.AppsV1alpha1Interface,
 			}
 			assert.Equalf(t, tt.want, d.RESTClient(), "RESTClient()")
 		})

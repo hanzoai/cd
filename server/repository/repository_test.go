@@ -233,8 +233,8 @@ var (
 func newAppAndProjLister(objects ...runtime.Object) (applisters.ApplicationLister, k8scache.SharedIndexInformer) {
 	fakeAppsClientset := fakeapps.NewSimpleClientset(objects...)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, appinformer.WithNamespace(""), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
-	projInformer := factory.Argoproj().V1alpha1().AppProjects()
-	appsInformer := factory.Argoproj().V1alpha1().Applications()
+	projInformer := factory.Apps().V1alpha1().AppProjects()
+	appsInformer := factory.Apps().V1alpha1().Applications()
 	for _, obj := range objects {
 		switch obj.(type) {
 		case *appsv1.AppProject:

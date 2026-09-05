@@ -137,7 +137,7 @@ func (f *fakeAppsLister) Applications(namespace string) applisters.ApplicationNa
 }
 
 func (f *fakeAppsLister) List(selector labels.Selector) ([]*v1alpha1.Application, error) {
-	res, err := f.clientset.ArgoprojV1alpha1().Applications(f.namespace).List(context.Background(), metav1.ListOptions{
+	res, err := f.clientset.AppsV1alpha1().Applications(f.namespace).List(context.Background(), metav1.ListOptions{
 		LabelSelector: selector.String(),
 	})
 	if err != nil {

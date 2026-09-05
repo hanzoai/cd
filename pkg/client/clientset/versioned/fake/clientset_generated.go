@@ -4,8 +4,8 @@ package fake
 
 import (
 	clientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
-	argoprojv1alpha1 "github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1"
-	fakeargoprojv1alpha1 "github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1/fake"
+	appsv1alpha1 "github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1"
+	fakeappsv1alpha1 "github.com/hanzoai/cd/pkg/client/clientset/versioned/typed/application/v1alpha1/fake"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
@@ -79,7 +79,7 @@ var (
 	_ testing.FakeClient  = &Clientset{}
 )
 
-// ArgoprojV1alpha1 retrieves the ArgoprojV1alpha1Client
-func (c *Clientset) ArgoprojV1alpha1() argoprojv1alpha1.ArgoprojV1alpha1Interface {
-	return &fakeargoprojv1alpha1.FakeArgoprojV1alpha1{Fake: &c.Fake}
+// AppsV1alpha1 retrieves the AppsV1alpha1Client
+func (c *Clientset) AppsV1alpha1() appsv1alpha1.AppsV1alpha1Interface {
+	return &fakeappsv1alpha1.FakeAppsV1alpha1{Fake: &c.Fake}
 }

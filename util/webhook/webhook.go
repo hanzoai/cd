@@ -215,7 +215,7 @@ func (a *Handler) startRefreshWorkers(count int) {
 
 // processAppRefresh processes a single app refresh request
 func (a *Handler) processAppRefresh(req *appRefreshRequest) {
-	namespacedAppInterface := a.appClientset.ArgoprojV1alpha1().Applications(req.appNamespace)
+	namespacedAppInterface := a.appClientset.AppsV1alpha1().Applications(req.appNamespace)
 	_, err := cd.RefreshApp(namespacedAppInterface, req.appName, v1alpha1.RefreshTypeNormal, req.hydrateType)
 	if err != nil {
 		if req.hydrateType != nil {

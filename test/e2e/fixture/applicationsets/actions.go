@@ -599,7 +599,7 @@ func (a *Actions) RemoveFinalizerFromApps(appNames []string, finalizer string) *
 	}
 	for _, appName := range appNames {
 		err := retry.RetryOnConflict(retry.DefaultRetry, func() error {
-			app, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(namespace).Get(
+			app, err := fixtureClient.AppClientset.AppsV1alpha1().Applications(namespace).Get(
 				a.context.T().Context(), appName, metav1.GetOptions{})
 			if err != nil {
 				return err
@@ -616,7 +616,7 @@ func (a *Actions) RemoveFinalizerFromApps(appNames []string, finalizer string) *
 					"finalizers": finalizers,
 				},
 			})
-			_, err = fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(namespace).Patch(
+			_, err = fixtureClient.AppClientset.AppsV1alpha1().Applications(namespace).Patch(
 				a.context.T().Context(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 			if err != nil {
 				return err

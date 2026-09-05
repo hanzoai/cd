@@ -116,7 +116,7 @@ func TestProjectServer(t *testing.T) {
 	ctx := t.Context()
 	fakeAppsClientset := apps.NewSimpleClientset()
 	factory := informer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, informer.WithNamespace(""), informer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
-	projInformer := factory.Argoproj().V1alpha1().AppProjects().Informer()
+	projInformer := factory.Apps().V1alpha1().AppProjects().Informer()
 	go projInformer.Run(ctx.Done())
 	if !k8scache.WaitForCacheSync(ctx.Done(), projInformer.HasSynced) {
 		panic("Timed out waiting forfff caches to sync")
@@ -133,7 +133,7 @@ func TestProjectServer(t *testing.T) {
 		err := projectServer.NormalizeProjs()
 		require.NoError(t, err)
 
-		appList, err := projectServer.appclientset.ArgoprojV1alpha1().AppProjects(projectWithRole.Namespace).List(t.Context(), metav1.ListOptions{})
+		appList, err := projectServer.appclientset.AppsV1alpha1().AppProjects(projectWithRole.Namespace).List(t.Context(), metav1.ListOptions{})
 		require.NoError(t, err)
 		assert.Equal(t, int64(1), appList.Items[0].Status.JWTTokensByRole[roleName].Items[0].IssuedAt)
 		assert.ElementsMatch(t, appList.Items[0].Status.JWTTokensByRole[roleName].Items, appList.Items[0].Spec.Roles[0].JWTTokens)
@@ -398,7 +398,7 @@ func TestProjectServer(t *testing.T) {
 		projectWithRole.Spec.Roles = []v1alpha1.ProjectRole{{Name: tokenName}}
 		clientset := apps.NewSimpleClientset(projectWithRole)
 
-		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjListerFromInterface(clientset.ArgoprojV1alpha1().AppProjects("default")), "", nil, session.NewUserStateStorage(nil))
+		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjListerFromInterface(clientset.AppsV1alpha1().AppProjects("default")), "", nil, session.NewUserStateStorage(nil))
 		cdDB := db.NewDB("default", settingsMgr, kubeclientset)
 		projectServer := NewServer("default", fake.NewSimpleClientset(), clientset, enforcer, sync.NewKeyLock(), sessionMgr, policyEnf, projInformer, settingsMgr, cdDB, testEnableEventList)
 		tokenResponse, err := projectServer.CreateToken(t.Context(), &project.ProjectTokenCreateRequest{Project: projectWithRole.Name, Role: tokenName, ExpiresIn: 100})
@@ -419,7 +419,7 @@ func TestProjectServer(t *testing.T) {
 		projectWithRole.Spec.Roles = []v1alpha1.ProjectRole{{Name: tokenName}}
 		clientset := apps.NewSimpleClientset(projectWithRole)
 
-		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjListerFromInterface(clientset.ArgoprojV1alpha1().AppProjects("default")), "", nil, session.NewUserStateStorage(nil))
+		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjListerFromInterface(clientset.AppsV1alpha1().AppProjects("default")), "", nil, session.NewUserStateStorage(nil))
 		cdDB := db.NewDB("default", settingsMgr, kubeclientset)
 		projectServer := NewServer("default", fake.NewSimpleClientset(), clientset, enforcer, sync.NewKeyLock(), sessionMgr, policyEnf, projInformer, settingsMgr, cdDB, testEnableEventList)
 		tokenResponse, err := projectServer.CreateToken(t.Context(), &project.ProjectTokenCreateRequest{Project: projectWithRole.Name, Role: tokenName, ExpiresIn: 1, Id: id})
@@ -440,7 +440,7 @@ func TestProjectServer(t *testing.T) {
 		projectWithRole.Spec.Roles = []v1alpha1.ProjectRole{{Name: tokenName}}
 		clientset := apps.NewSimpleClientset(projectWithRole)
 
-		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjListerFromInterface(clientset.ArgoprojV1alpha1().AppProjects("default")), "", nil, session.NewUserStateStorage(nil))
+		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjListerFromInterface(clientset.AppsV1alpha1().AppProjects("default")), "", nil, session.NewUserStateStorage(nil))
 		cdDB := db.NewDB("default", settingsMgr, kubeclientset)
 		projectServer := NewServer("default", fake.NewSimpleClientset(), clientset, enforcer, sync.NewKeyLock(), sessionMgr, policyEnf, projInformer, settingsMgr, cdDB, testEnableEventList)
 		tokenResponse, err := projectServer.CreateToken(t.Context(), &project.ProjectTokenCreateRequest{Project: projectWithRole.Name, Role: tokenName, ExpiresIn: 1, Id: id})
@@ -815,7 +815,7 @@ func TestListEvents(t *testing.T) {
 		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjLister(), "", nil, session.NewUserStateStorage(nil))
 		cdDB := db.NewDB(testNamespace, settingsMgr, kubeclientset)
 
-		projInformer := informer.NewSharedInformerFactory(apps.NewSimpleClientset(existingProj), 0).Argoproj().V1alpha1().AppProjects().Informer()
+		projInformer := informer.NewSharedInformerFactory(apps.NewSimpleClientset(existingProj), 0).Apps().V1alpha1().AppProjects().Informer()
 		go projInformer.Run(t.Context().Done())
 		k8scache.WaitForCacheSync(t.Context().Done(), projInformer.HasSynced)
 
@@ -875,7 +875,7 @@ func TestListEvents(t *testing.T) {
 		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjLister(), "", nil, session.NewUserStateStorage(nil))
 		cdDB := db.NewDB(testNamespace, settingsMgr, kubeclientset)
 
-		projInformer := informer.NewSharedInformerFactory(apps.NewSimpleClientset(existingProj), 0).Argoproj().V1alpha1().AppProjects().Informer()
+		projInformer := informer.NewSharedInformerFactory(apps.NewSimpleClientset(existingProj), 0).Apps().V1alpha1().AppProjects().Informer()
 		go projInformer.Run(t.Context().Done())
 		k8scache.WaitForCacheSync(t.Context().Done(), projInformer.HasSynced)
 
@@ -913,7 +913,7 @@ func TestListEvents(t *testing.T) {
 		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjLister(), "", nil, session.NewUserStateStorage(nil))
 		cdDB := db.NewDB(testNamespace, settingsMgr, kubeclientset)
 
-		projInformer := informer.NewSharedInformerFactory(apps.NewSimpleClientset(existingProj), 0).Argoproj().V1alpha1().AppProjects().Informer()
+		projInformer := informer.NewSharedInformerFactory(apps.NewSimpleClientset(existingProj), 0).Apps().V1alpha1().AppProjects().Informer()
 		go projInformer.Run(t.Context().Done())
 		k8scache.WaitForCacheSync(t.Context().Done(), projInformer.HasSynced)
 
@@ -943,7 +943,7 @@ func TestListEvents(t *testing.T) {
 		sessionMgr := session.NewSessionManager(settingsMgr, test.NewFakeProjLister(), "", nil, session.NewUserStateStorage(nil))
 		cdDB := db.NewDB(testNamespace, settingsMgr, kubeclientset)
 
-		projInformer := informer.NewSharedInformerFactory(apps.NewSimpleClientset(existingProj), 0).Argoproj().V1alpha1().AppProjects().Informer()
+		projInformer := informer.NewSharedInformerFactory(apps.NewSimpleClientset(existingProj), 0).Apps().V1alpha1().AppProjects().Informer()
 		go projInformer.Run(t.Context().Done())
 		k8scache.WaitForCacheSync(t.Context().Done(), projInformer.HasSynced)
 

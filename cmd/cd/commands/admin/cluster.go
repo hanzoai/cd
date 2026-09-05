@@ -86,7 +86,7 @@ func loadClusters(ctx context.Context, kubeClient kubernetes.Interface, appClien
 	if err != nil {
 		return nil, err
 	}
-	appItems, err := appClient.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{})
+	appItems, err := appClient.AppsV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -268,7 +268,7 @@ func runClusterNamespacesCommand(ctx context.Context, clientConfig clientcmd.Cli
 	if err != nil {
 		return fmt.Errorf("error listing clusters: %w", err)
 	}
-	appItems, err := appClient.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{})
+	appItems, err := appClient.AppsV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return fmt.Errorf("error listing application: %w", err)
 	}

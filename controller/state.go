@@ -1294,7 +1294,7 @@ func (m *appStateManager) persistRevisionHistory(
 	if err != nil {
 		return fmt.Errorf("error marshaling revision history patch: %w", err)
 	}
-	_, err = m.appclientset.ArgoprojV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+	_, err = m.appclientset.AppsV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 	return err
 }
 

@@ -575,12 +575,12 @@ func SetResourceFilter(filters settings.ResourcesFilter) error {
 }
 
 func SetProjectSpec(project string, spec v1alpha1.AppProjectSpec) error {
-	proj, err := AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Get(context.Background(), project, metav1.GetOptions{})
+	proj, err := AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).Get(context.Background(), project, metav1.GetOptions{})
 	if err != nil {
 		return err
 	}
 	proj.Spec = spec
-	_, err = AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Update(context.Background(), proj, metav1.UpdateOptions{})
+	_, err = AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).Update(context.Background(), proj, metav1.UpdateOptions{})
 	return err
 }
 
@@ -678,21 +678,21 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 	RunFunctionsInParallelAndCheckErrors(t, []func() error{
 		func() error {
 			// kubectl delete apps ...
-			return AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).DeleteCollection(
+			return AppClientset.AppsV1alpha1().Applications(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{})
 		},
 		func() error {
 			// kubectl delete apps ...
-			return AppClientset.ArgoprojV1alpha1().Applications(AppNamespace()).DeleteCollection(
+			return AppClientset.AppsV1alpha1().Applications(AppNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{})
 		},
 		func() error {
 			// kubectl delete appprojects --field-selector metadata.name!=default
-			return AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).DeleteCollection(
+			return AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{FieldSelector: "metadata.name!=default"})
@@ -867,7 +867,7 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 			}
 
 			// Create separate project for testing gpg signature verification
-			_, err = AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Create(
+			_, err = AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).Create(
 				t.Context(),
 				&v1alpha1.AppProject{
 					ObjectMeta: metav1.ObjectMeta{

@@ -31,7 +31,7 @@ func TestManagedByURLWithAnnotation(t *testing.T) {
 		And(func() {
 			// Add managed-by-url annotation to the application with retry logic
 			for i := range 3 {
-				appObj, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.E2ENamespace).Get(t.Context(), ctx.GetName(), metav1.GetOptions{})
+				appObj, err := fixture.AppClientset.AppsV1alpha1().Applications(fixture.E2ENamespace).Get(t.Context(), ctx.GetName(), metav1.GetOptions{})
 				require.NoError(t, err)
 
 				if appObj.Annotations == nil {
@@ -39,7 +39,7 @@ func TestManagedByURLWithAnnotation(t *testing.T) {
 				}
 				appObj.Annotations[AnnotationKeyManagedByURL] = managedByURL
 
-				_, err = fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.E2ENamespace).Update(t.Context(), appObj, metav1.UpdateOptions{})
+				_, err = fixture.AppClientset.AppsV1alpha1().Applications(fixture.E2ENamespace).Update(t.Context(), appObj, metav1.UpdateOptions{})
 				if err == nil {
 					break
 				}
