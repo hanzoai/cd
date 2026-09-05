@@ -13,7 +13,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 const (
@@ -80,14 +80,14 @@ func TestLogAppProjEvent(t *testing.T) {
 	logger := NewAuditLogger(fakeClient, _cdNs, _somecomponent, testEnableEventLog)
 	assert.NotNil(t, logger)
 
-	proj := argoappv1.AppProject{
+	proj := appv1.AppProject{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            "default",
 			Namespace:       _cdNs,
 			ResourceVersion: "1",
 			UID:             "a-b-c-d-e",
 		},
-		Spec: argoappv1.AppProjectSpec{
+		Spec: appv1.AppProjectSpec{
 			Description: "Test project",
 		},
 	}
@@ -121,15 +121,15 @@ func TestLogAppEvent(t *testing.T) {
 	logger := NewAuditLogger(fakeClient, _cdNs, _somecomponent, testEnableEventLog)
 	assert.NotNil(t, logger)
 
-	app := argoappv1.Application{
+	app := appv1.Application{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            "testapp",
 			Namespace:       _cdNs,
 			ResourceVersion: "1",
 			UID:             "a-b-c-d-e",
 		},
-		Spec: argoappv1.ApplicationSpec{
-			Destination: argoappv1.ApplicationDestination{
+		Spec: appv1.ApplicationSpec{
+			Destination: appv1.ApplicationDestination{
 				Server:    "https://127.0.0.1:6443",
 				Namespace: "testns",
 			},
@@ -174,8 +174,8 @@ func TestLogResourceEvent(t *testing.T) {
 	logger := NewAuditLogger(fake.NewClientset(), _cdNs, _somecomponent, testEnableEventLog)
 	assert.NotNil(t, logger)
 
-	res := argoappv1.ResourceNode{
-		ResourceRef: argoappv1.ResourceRef{
+	res := appv1.ResourceNode{
+		ResourceRef: appv1.ResourceRef{
 			Group:     "cd.hanzo.ai",
 			Version:   "v1alpha1",
 			Kind:      "SignatureKey",
@@ -215,8 +215,8 @@ func TestLogResourceEvent_MultiCluster_CreatesEventInArgocdNamespace(t *testing.
 	fakeClient := fake.NewClientset()
 	logger := NewAuditLogger(fakeClient, _cdNs, _somecomponent, []string{EventReasonResourceActionRan})
 
-	res := argoappv1.ResourceNode{
-		ResourceRef: argoappv1.ResourceRef{
+	res := appv1.ResourceNode{
+		ResourceRef: appv1.ResourceRef{
 			Group:     "apps",
 			Version:   "v1",
 			Kind:      "Deployment",
@@ -240,12 +240,12 @@ func TestLogResourceEvent_MultiCluster_CreatesEventInArgocdNamespace(t *testing.
 
 	events, err = fakeClient.CoreV1().Events(_cdNs).List(t.Context(), metav1.ListOptions{})
 	require.NoError(t, err)
-	require.Len(t, events.Items, 1, "Event should be created in ArgoCD namespace")
+	require.Len(t, events.Items, 1, "Event should be created in the Hanzo CD namespace")
 
 	event := events.Items[0]
 	assert.Equal(t, "my-deployment", event.InvolvedObject.Name)
 	assert.Equal(t, _targetNs, event.InvolvedObject.Namespace, "InvolvedObject should preserve original namespace")
-	assert.Equal(t, _cdNs, event.Namespace, "Event itself should be in ArgoCD namespace")
+	assert.Equal(t, _cdNs, event.Namespace, "Event itself should be in the Hanzo CD namespace")
 	assert.Equal(t, "Resource action executed", event.Message)
 
 	assert.Equal(t, _targetNs, event.Annotations["resource-namespace"])
@@ -256,7 +256,7 @@ func TestLogAppSetEvent_CreatesEventInAppSetNamespace(t *testing.T) {
 	fakeClient := fake.NewClientset()
 	logger := NewAuditLogger(fakeClient, _cdNs, _somecomponent, testEnableEventLog)
 
-	appset := argoappv1.ApplicationSet{
+	appset := appv1.ApplicationSet{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            "my-appset",
 			Namespace:       _cdNs,
@@ -325,8 +325,8 @@ func TestLogResourceEvent_DifferentKinds_AllInArgocdNamespace(t *testing.T) {
 			fakeClient := fake.NewClientset()
 			logger := NewAuditLogger(fakeClient, _cdNs, _somecomponent, []string{EventReasonResourceActionRan})
 
-			res := argoappv1.ResourceNode{
-				ResourceRef: argoappv1.ResourceRef{
+			res := appv1.ResourceNode{
+				ResourceRef: appv1.ResourceRef{
 					Group:     tc.resourceGroup,
 					Version:   "v1",
 					Kind:      tc.resourceKind,
@@ -349,7 +349,7 @@ func TestLogResourceEvent_DifferentKinds_AllInArgocdNamespace(t *testing.T) {
 			require.Len(t, events.Items, 1)
 
 			event := events.Items[0]
-			assert.Equal(t, _cdNs, event.Namespace, "Event should be in ArgoCD namespace for %s", tc.resourceKind)
+			assert.Equal(t, _cdNs, event.Namespace, "Event should be in the Hanzo CD namespace for %s", tc.resourceKind)
 			assert.Equal(t, tc.resourceNs, event.InvolvedObject.Namespace, "InvolvedObject should preserve original namespace")
 			assert.Equal(t, tc.resourceNs, event.Annotations["resource-namespace"])
 		})
@@ -362,8 +362,8 @@ func TestLogResourceEvent_EmptyNamespace(t *testing.T) {
 	logger := NewAuditLogger(fakeClient, _cdNs, _somecomponent, []string{EventReasonResourceActionRan})
 
 	// Cluster-scoped resource (no namespace)
-	res := argoappv1.ResourceNode{
-		ResourceRef: argoappv1.ResourceRef{
+	res := appv1.ResourceNode{
+		ResourceRef: appv1.ResourceRef{
 			Group:     "rbac.authorization.k8s.io",
 			Version:   "v1",
 			Kind:      "ClusterRole",

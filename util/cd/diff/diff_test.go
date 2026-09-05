@@ -12,7 +12,7 @@ import (
 
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	testutil "github.com/hanzoai/cd/test"
-	argo "github.com/hanzoai/cd/util/cd/diff"
+	diff "github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/cd/testdata"
 	cacheutil "github.com/hanzoai/cd/util/cache"
@@ -37,9 +37,9 @@ func TestStateDiff(t *testing.T) {
 			ignoreRoles:    true,
 		}
 	}
-	diffConfig := func(t *testing.T, params *diffConfigParams) argo.DiffConfig {
+	diffConfig := func(t *testing.T, params *diffConfigParams) diff.DiffConfig {
 		t.Helper()
-		diffConfig, err := argo.NewDiffConfigBuilder().
+		diffConfig, err := diff.NewDiffConfigBuilder().
 			WithDiffSettings(params.ignores, params.overrides, params.ignoreRoles, normalizers.IgnoreNormalizerOpts{}).
 			WithTracking(params.label, params.trackingMethod).
 			WithNoCache().
@@ -136,7 +136,7 @@ func TestStateDiff(t *testing.T) {
 			dc := diffConfig(t, tc.params())
 
 			// when
-			result, err := argo.StateDiff(t.Context(), tc.liveState, tc.desiredState, dc)
+			result, err := diff.StateDiff(t.Context(), tc.liveState, tc.desiredState, dc)
 
 			// then
 			require.NoError(t, err)
@@ -184,7 +184,7 @@ func TestDiffConfigBuilder(t *testing.T) {
 		f := setup()
 
 		// when
-		diffConfig, err := argo.NewDiffConfigBuilder().
+		diffConfig, err := diff.NewDiffConfigBuilder().
 			WithDiffSettings(f.ignores, f.overrides, f.ignoreRoles, normalizers.IgnoreNormalizerOpts{}).
 			WithTracking(f.label, f.trackingMethod).
 			WithNoCache().
@@ -209,7 +209,7 @@ func TestDiffConfigBuilder(t *testing.T) {
 		f := setup()
 
 		// when
-		diffConfig, err := argo.NewDiffConfigBuilder().
+		diffConfig, err := diff.NewDiffConfigBuilder().
 			WithDiffSettings(nil, nil, f.ignoreRoles, normalizers.IgnoreNormalizerOpts{}).
 			WithTracking(f.label, f.trackingMethod).
 			WithNoCache().
@@ -232,7 +232,7 @@ func TestDiffConfigBuilder(t *testing.T) {
 		f := setup()
 
 		// when
-		diffConfig, err := argo.NewDiffConfigBuilder().
+		diffConfig, err := diff.NewDiffConfigBuilder().
 			WithDiffSettings(f.ignores, f.overrides, f.ignoreRoles, normalizers.IgnoreNormalizerOpts{}).
 			WithTracking(f.label, f.trackingMethod).
 			WithCache(&appstatecache.Cache{}, "").
@@ -248,7 +248,7 @@ func TestDiffConfigBuilder(t *testing.T) {
 		f := setup()
 
 		// when
-		diffConfig, err := argo.NewDiffConfigBuilder().
+		diffConfig, err := diff.NewDiffConfigBuilder().
 			WithDiffSettings(f.ignores, f.overrides, f.ignoreRoles, normalizers.IgnoreNormalizerOpts{}).
 			WithTracking(f.label, f.trackingMethod).
 			WithCache(nil, f.appName).
@@ -269,7 +269,7 @@ func TestDiffFromCache(t *testing.T) {
 		// Real in-memory cache with no data stored → triggers ErrCacheMiss
 		cache := appstatecache.NewCache(cacheutil.NewCache(cacheutil.NewInMemoryCache(0)), 0)
 
-		diffConfig, err := argo.NewDiffConfigBuilder().
+		diffConfig, err := diff.NewDiffConfigBuilder().
 			WithDiffSettings([]v1alpha1.ResourceIgnoreDifferences{}, map[string]v1alpha1.ResourceOverride{}, false, normalizers.IgnoreNormalizerOpts{}).
 			WithTracking("", "").
 			WithCache(cache, "application-name").
@@ -301,7 +301,7 @@ func TestDiffFromCache(t *testing.T) {
 		}
 		cache := appstatecache.NewCache(cacheutil.NewCache(failClient), 0)
 
-		diffConfig, err := argo.NewDiffConfigBuilder().
+		diffConfig, err := diff.NewDiffConfigBuilder().
 			WithDiffSettings([]v1alpha1.ResourceIgnoreDifferences{}, map[string]v1alpha1.ResourceOverride{}, false, normalizers.IgnoreNormalizerOpts{}).
 			WithTracking("", "").
 			WithCache(cache, "application-name").
