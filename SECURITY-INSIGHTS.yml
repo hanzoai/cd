@@ -24,7 +24,6 @@ contribution-policy:
       action: allowed
       path:
         - /
-    - automated-tool: snyk-report
       action: allowed
       path:
         - docs/snyk
