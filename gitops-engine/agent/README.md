@@ -20,7 +20,7 @@ The agent supports two modes:
 Install the agent with the default settings using the command below. Done!
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/argoproj/gitops-engine/master/agent/manifests/install-namespaced.yaml 
+kubectl apply -f https://raw.githubusercontent.com/hanzoai/cd/main/gitops-engine/agent/manifests/install-namespaced.yaml
 kubectl rollout status deploy/gitops-agent
 ```
 
@@ -47,7 +47,7 @@ The cluster mode grants full cluster access to the GitOps Agent. Use the followi
 
 ```bash
 kubectl create ns gitops-agent
-kubectl apply -f https://raw.githubusercontent.com/argoproj/gitops-engine/master/agent/manifests/install.yaml -n gitops-agent
+kubectl apply -f https://raw.githubusercontent.com/hanzoai/cd/main/gitops-engine/agent/manifests/install.yaml -n gitops-agent
 ```
 
 ### Customize Git Repository
