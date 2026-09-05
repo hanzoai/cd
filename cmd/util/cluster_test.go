@@ -140,7 +140,7 @@ func TestGetKubePublicEndpoint(t *testing.T) {
 					Name:      "cluster-info",
 				},
 				Data: map[string]string{
-					"argo": "the project, not the movie",
+					"foo": "some unrelated key",
 				},
 			},
 			expectError: true,
