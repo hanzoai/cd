@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   embed:
-    runs-on: hanzo-build-linux-amd64
+    runs-on: linux-amd64
     permissions:
       contents: read
       packages: write
