@@ -490,7 +490,7 @@ p, alice, clusters, get, "https://github.com/*/*.git", allow
 	_ = enf.SetUserPolicy(policy)
 
 	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/hanzoai/cd.git"))
-	assert.False(t, enf.Enforce("alice", "clusters", "get", "https://github.com/argo-cd.git"))
+	assert.False(t, enf.Enforce("alice", "clusters", "get", "https://github.com/cd.git"))
 }
 
 func TestRegexMatchMode(t *testing.T) {
@@ -500,12 +500,12 @@ func TestRegexMatchMode(t *testing.T) {
 	enf := NewEnforcer(kubeclientset, fakeNamespace, fakeConfigMapName, nil)
 	require.NoError(t, enf.syncUpdate(cm, noOpUpdate))
 	policy := `
-p, alice, clusters, get, "https://github.com/argo[a-z]{4}/argo-[a-z]+.git", allow
+p, alice, clusters, get, "https://github.com/hanzo[a-z]{2}/[a-z]+.git", allow
 `
 	_ = enf.SetUserPolicy(policy)
 
 	assert.True(t, enf.Enforce("alice", "clusters", "get", "https://github.com/hanzoai/cd.git"))
-	assert.False(t, enf.Enforce("alice", "clusters", "get", "https://github.com/argoproj/1argo-cd.git"))
+	assert.False(t, enf.Enforce("alice", "clusters", "get", "https://github.com/acme/1acme-cd.git"))
 }
 
 func TestGlobMatchFunc(t *testing.T) {

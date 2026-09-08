@@ -30,13 +30,13 @@ import (
 
 	gocache "github.com/patrickmn/go-cache"
 
-	argoio "github.com/hanzoai/cd/gitops-engine/pkg/utils/io"
+	engineio "github.com/hanzoai/cd/gitops-engine/pkg/utils/io"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/hanzoai/cd/common"
-	argoutils "github.com/hanzoai/cd/util"
+	cdutil "github.com/hanzoai/cd/util"
 	certutil "github.com/hanzoai/cd/util/cert"
 	utilio "github.com/hanzoai/cd/util/io"
 	"github.com/hanzoai/cd/util/workloadidentity"
@@ -229,12 +229,12 @@ func (creds HTTPSCreds) Environ() (io.Closer, []string, error) {
 		// We need to actually create two temp files, one for storing cert data and
 		// another for storing the key. If we fail to create second fail, the first
 		// must be removed.
-		certFile, err := os.CreateTemp(argoio.TempDir, "")
+		certFile, err := os.CreateTemp(engineio.TempDir, "")
 		if err != nil {
 			return NopCloser{}, nil, err
 		}
 		defer certFile.Close()
-		keyFile, err = os.CreateTemp(argoio.TempDir, "")
+		keyFile, err = os.CreateTemp(engineio.TempDir, "")
 		if err != nil {
 			removeErr := os.Remove(certFile.Name())
 			if removeErr != nil {
@@ -337,7 +337,7 @@ func (f authFilePaths) Close() error {
 
 func (c SSHCreds) Environ() (io.Closer, []string, error) {
 	// use the SHM temp dir from util, more secure
-	file, err := os.CreateTemp(argoio.TempDir, "")
+	file, err := os.CreateTemp(engineio.TempDir, "")
 	if err != nil {
 		return nil, nil, err
 	}
@@ -441,12 +441,12 @@ func (g GitHubAppCreds) Environ() (io.Closer, []string, error) {
 		// We need to actually create two temp files, one for storing cert data and
 		// another for storing the key. If we fail to create second fail, the first
 		// must be removed.
-		certFile, err := os.CreateTemp(argoio.TempDir, "")
+		certFile, err := os.CreateTemp(engineio.TempDir, "")
 		if err != nil {
 			return NopCloser{}, nil, err
 		}
 		defer certFile.Close()
-		keyFile, err = os.CreateTemp(argoio.TempDir, "")
+		keyFile, err = os.CreateTemp(engineio.TempDir, "")
 		if err != nil {
 			removeErr := os.Remove(certFile.Name())
 			if removeErr != nil {
@@ -973,7 +973,7 @@ func (creds AzureWorkloadIdentityCreds) Environ() (io.Closer, []string, error) {
 
 func (creds AzureWorkloadIdentityCreds) getAccessToken(scope string) (string, error) {
 	// Compute hash of creds for lookup in cache
-	key, err := argoutils.GenerateCacheKey("%s", scope)
+	key, err := cdutil.GenerateCacheKey("%s", scope)
 	if err != nil {
 		return "", fmt.Errorf("failed to get SHA256 hash for Azure credentials: %w", err)
 	}
@@ -1083,7 +1083,7 @@ func (a AzureServicePrincipalCreds) getAccessToken() (string, error) {
 	}
 
 	// Generate cache key for creds
-	key, err := argoutils.GenerateCacheKey("%s %s %s %s", a.tenantID, a.clientID, a.clientSecret, activeDirectoryEndpoint)
+	key, err := cdutil.GenerateCacheKey("%s %s %s %s", a.tenantID, a.clientID, a.clientSecret, activeDirectoryEndpoint)
 	if err != nil {
 		return "", fmt.Errorf("failed to get get SHA256 hash for Azure Service Principal credentials: %w", err)
 	}

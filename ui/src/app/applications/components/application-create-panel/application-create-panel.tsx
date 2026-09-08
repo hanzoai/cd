@@ -1,8 +1,8 @@
 /* eslint-disable no-prototype-builtins */
-import {AutocompleteField, Checkbox, DataLoader, DropDownMenu, FormField, HelpIcon, Select} from 'argo-ui';
+import {AutocompleteField, Checkbox, DataLoader, DropDownMenu, FormField, HelpIcon, Select} from '../../../../kit/src';
 import * as deepMerge from 'deepmerge';
 import * as React from 'react';
-import {FieldApi, Form, FormApi, FormFieldHOC as ReactFormField, Text} from 'argo-ui';
+import {FieldApi, Form, FormApi, FormFieldHOC as ReactFormField, Text} from '../../../../kit/src';
 import {cloneDeep, debounce} from 'lodash-es';
 import {YamlEditor} from '../../../shared/components';
 import * as models from '../../../shared/models';
@@ -311,21 +311,19 @@ export const ApplicationCreatePanel = (props: {
                                                     will activate yaml mode whenever enter is pressed while in the panel.
                                                     This causes problems with some entry fields that require enter to be
                                                     pressed for the value to be accepted.
-
-                                                    See https://github.com/argoproj/argo-cd/issues/4576
                                                 */}
                                             {!yamlMode && (
                                                 <button
                                                     type='button'
-                                                    className='argo-button argo-button--base application-create-panel__yaml-button'
+                                                    className='kit-button kit-button--base application-create-panel__yaml-button'
                                                     onClick={() => setYamlMode(true)}>
                                                     Edit as YAML
                                                 </button>
                                             )}
-                                            <div className='argo-form-row'>
+                                            <div className='kit-form-row'>
                                                 <FormField formApi={api} label='Application Name' qeId='application-create-field-app-name' field='metadata.name' component={Text} />
                                             </div>
-                                            <div className='argo-form-row'>
+                                            <div className='kit-form-row'>
                                                 <FormField
                                                     formApi={api}
                                                     label='Project Name'
@@ -338,7 +336,7 @@ export const ApplicationCreatePanel = (props: {
                                                     }}
                                                 />
                                             </div>
-                                            <div className='argo-form-row'>
+                                            <div className='kit-form-row'>
                                                 <FormField
                                                     formApi={api}
                                                     field='spec.syncPolicy.automated'
@@ -346,10 +344,10 @@ export const ApplicationCreatePanel = (props: {
                                                     component={AutoSyncFormField}
                                                 />
                                             </div>
-                                            <div className='argo-form-row'>
+                                            <div className='kit-form-row'>
                                                 <FormField formApi={api} field='metadata.finalizers' component={SetFinalizerOnApplication} />
                                             </div>
-                                            <div className='argo-form-row'>
+                                            <div className='kit-form-row'>
                                                 <label>Sync Options</label>
                                                 <FormField formApi={api} field='spec.syncPolicy.syncOptions' component={ApplicationSyncOptionsField} />
                                                 <ApplicationRetryOptions
@@ -382,7 +380,7 @@ export const ApplicationCreatePanel = (props: {
                                                         />
                                                     ))}
                                                     <div className='application-create-panel__add-source'>
-                                                        <button type='button' className='argo-button argo-button--base' onClick={() => handleAddSource(api)}>
+                                                        <button type='button' className='kit-button kit-button--base' onClick={() => handleAddSource(api)}>
                                                             <i className='fa fa-plus' style={{marginLeft: '-5px', marginRight: '5px'}} />
                                                             Add Source
                                                         </button>
@@ -395,7 +393,7 @@ export const ApplicationCreatePanel = (props: {
                                             <div className='white-box'>
                                                 <p>SOURCE</p>
                                                 {authSettingsCtx?.hydratorEnabled && (
-                                                    <div className='row argo-form-row'>
+                                                    <div className='row kit-form-row'>
                                                         <div className='columns small-12'>
                                                             <div className='checkbox-container'>
                                                                 <Checkbox
@@ -442,7 +440,7 @@ export const ApplicationCreatePanel = (props: {
                                                             lastOciUrl={lastOciUrl}
                                                         />
                                                         <div className='application-create-panel__add-source'>
-                                                            <button type='button' className='argo-button argo-button--base' onClick={() => handleAddSource(api)}>
+                                                            <button type='button' className='kit-button kit-button--base' onClick={() => handleAddSource(api)}>
                                                                 <i className='fa fa-plus' style={{marginLeft: '-5px', marginRight: '5px'}} />
                                                                 Add Source
                                                             </button>
@@ -455,7 +453,7 @@ export const ApplicationCreatePanel = (props: {
                                     const destinationPanel = () => (
                                         <div className='white-box'>
                                             <p>DESTINATION</p>
-                                            <div className='row argo-form-row'>
+                                            <div className='row kit-form-row'>
                                                 {(destinationComboValue.toUpperCase() === 'URL' && (
                                                     <div className='columns small-10'>
                                                         <FormField
@@ -508,7 +506,7 @@ export const ApplicationCreatePanel = (props: {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className='argo-form-row'>
+                                            <div className='kit-form-row'>
                                                 <FormField
                                                     qeId='application-create-field-namespace'
                                                     formApi={api}

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/alicebob/miniredis/v2"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	"github.com/stretchr/testify/mock"
 
 	cacheutil "github.com/hanzoai/cd/util/cache"
@@ -55,13 +55,13 @@ func (mockCache *MockRepoCache) ConfigureDefaultCallbacks() {
 	mockCache.RedisClient.On("Rename", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 }
 
-func NewInMemoryRedis() (*redis.Client, func()) {
+func NewInMemoryRedis() (*kv.Client, func()) {
 	cacheutil.NewInMemoryCache(5 * time.Second)
 	mr, err := miniredis.Run()
 	if err != nil {
 		panic(err)
 	}
-	return redis.NewClient(&redis.Options{Addr: mr.Addr()}), mr.Close
+	return kv.NewClient(&kv.Options{Addr: mr.Addr()}), mr.Close
 }
 
 func NewMockRepoCache(cacheOpts *MockCacheOptions) *MockRepoCache {

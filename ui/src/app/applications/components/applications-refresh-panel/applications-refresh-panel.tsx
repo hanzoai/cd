@@ -1,6 +1,6 @@
-import {ErrorNotification, NotificationType, SlidingPanel} from 'argo-ui';
+import {ErrorNotification, NotificationType, SlidingPanel} from '../../../../kit/src';
 import * as React from 'react';
-import {Form, FormApi} from 'argo-ui';
+import {Form, FormApi} from '../../../../kit/src';
 import {ProgressPopup} from '../../../shared/components';
 import {Consumer} from '../../../shared/context';
 import * as models from '../../../shared/models';
@@ -29,10 +29,10 @@ export const ApplicationsRefreshPanel = ({show, apps, hide}: {show: boolean; app
                     onClose={() => hide()}
                     header={
                         <div>
-                            <button className='argo-button argo-button--base' onClick={() => form.submitForm(null)}>
+                            <button className='kit-button kit-button--base' onClick={() => form.submitForm(null)}>
                                 Refresh
                             </button>{' '}
-                            <button onClick={() => hide()} className='argo-button argo-button--base-o'>
+                            <button onClick={() => hide()} className='kit-button kit-button--base-o'>
                                 Cancel
                             </button>
                         </div>
@@ -76,7 +76,7 @@ export const ApplicationsRefreshPanel = ({show, apps, hide}: {show: boolean; app
                         }}
                         getApi={setForm}>
                         {formApi => (
-                            <div className='argo-form-row' style={{marginTop: 0}}>
+                            <div className='kit-form-row' style={{marginTop: 0}}>
                                 <h4>Refresh app(s)</h4>
                                 {progress !== null && <ProgressPopup onClose={() => setProgress(null)} percentage={progress.percentage} title={progress.title} />}
                                 <div style={{marginBottom: '1em'}}>

@@ -11,7 +11,7 @@ So you can just use them instead of reinventing new ones.
 * Install Triggers and Templates from the catalog
 
     ```bash
-    kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml
+    kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/main/notifications_catalog/install.yaml
     ```
 
 * Add email username and password token to the `cd-notifications-secret` secret
@@ -112,7 +112,7 @@ data:
   pagerduty-key-my-service: <pd-integration-key>
 ```
 
-When an Hanzo CD application has the following subscriptions, user receives application sync failure message from pager duty.
+When a Hanzo CD application has the following subscriptions, user receives application sync failure message from pager duty.
 ```yaml
 apiVersion: apps.hanzo.ai/v1alpha1
 kind: Application

@@ -19,7 +19,7 @@ import (
 	"github.com/hanzoai/cd/applicationset/generators"
 	"github.com/hanzoai/cd/common"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
-	argosettings "github.com/hanzoai/cd/util/settings"
+	"github.com/hanzoai/cd/util/settings"
 	"github.com/hanzoai/cd/util/webhook"
 
 	"github.com/go-playground/webhooks/v6/azuredevops"
@@ -72,7 +72,7 @@ type prGeneratorGitlabInfo struct {
 	APIHostname string
 }
 
-func NewWebhookHandler(webhookParallelism int, cdSettingsMgr *argosettings.SettingsManager, client client.Client, generators map[string]generators.Generator) (*WebhookHandler, error) {
+func NewWebhookHandler(webhookParallelism int, cdSettingsMgr *settings.SettingsManager, client client.Client, generators map[string]generators.Generator) (*WebhookHandler, error) {
 	// register the webhook secrets stored under "cd-secret" for verifying incoming payloads
 	cdSettings, err := cdSettingsMgr.GetSettings()
 	if err != nil {

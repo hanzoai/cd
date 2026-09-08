@@ -27,7 +27,7 @@ import (
 	"github.com/hanzoai/cd/applicationset/services/scm_provider"
 	"github.com/hanzoai/cd/common"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
-	argosettings "github.com/hanzoai/cd/util/settings"
+	"github.com/hanzoai/cd/util/settings"
 )
 
 type generatorMock struct {
@@ -231,7 +231,7 @@ func TestWebhookHandler(t *testing.T) {
 				fakeAppWithMergeAndPullRequestGenerator("merge-pull-request-github", namespace, "Codertocat", "Hello-World"),
 				fakeAppWithMergeAndNestedGitGenerator("merge-nested-git-github", namespace, "https://github.com/org/repo"),
 			).Build()
-			set := argosettings.NewSettingsManager(t.Context(), fakeClient, namespace)
+			set := settings.NewSettingsManager(t.Context(), fakeClient, namespace)
 			h, err := NewWebhookHandler(webhookParallelism, set, fc, mockGenerators())
 			require.NoError(t, err)
 
@@ -795,7 +795,7 @@ func newFakeClient(ns string) *kubefake.Clientset {
 		"app.kubernetes.io/part-of": "cd",
 	}}}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: ns,
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",

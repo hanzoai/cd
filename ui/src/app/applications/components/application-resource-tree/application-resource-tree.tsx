@@ -1,4 +1,4 @@
-import {DropDown, Tooltip} from 'argo-ui';
+import {DropDown, Tooltip} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as dagre from 'dagre';
 import * as React from 'react';
@@ -105,8 +105,12 @@ const NODE_TYPES = {
     groupedNodes: 'grouped_nodes',
     podGroup: 'pod_group'
 };
-// generate lots of colors with different darkness
-const TRAFFIC_COLORS = [0, 0.25, 0.4, 0.6].map(darken => BASE_COLORS.map(item => color(item).darken(darken).hex())).reduce((first, second) => first.concat(second), []);
+// generate lots of colors with different darkness. Computed lazily: this module
+// and ../utils import each other, so reading the imported BASE_COLORS at module
+// init would hit its temporal dead zone once webpack concatenates the cycle.
+let trafficColorsCache: string[];
+const trafficColors = () =>
+    (trafficColorsCache ??= [0, 0.25, 0.4, 0.6].map(darken => BASE_COLORS.map(item => color(item).darken(darken).hex())).reduce((first, second) => first.concat(second), []));
 
 function getGraphSize(nodes: dagre.Node[]): {width: number; height: number} {
     let width = 0;
@@ -619,7 +623,7 @@ function renderPodGroup(
                             key={node.uid}
                             isMenu={true}
                             anchor={() => (
-                                <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
+                                <button className='kit-button kit-button--light kit-button--lg kit-button--short'>
                                     <i className='fa fa-ellipsis-v' />
                                 </button>
                             )}>
@@ -972,7 +976,7 @@ function renderResourceNode(props: ApplicationResourceTreeProps, node: ResourceT
                     <DropDown
                         isMenu={true}
                         anchor={() => (
-                            <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
+                            <button className='kit-button kit-button--light kit-button--lg kit-button--short'>
                                 <i className='fa fa-ellipsis-v' />
                             </button>
                         )}>
@@ -1212,14 +1216,14 @@ export const ApplicationResourceTree = (props: ApplicationResourceTreeProps) => 
             )
         );
         // assign unique color to each traffic source
-        sources.forEach((key, i) => colorsBySource.set(key, TRAFFIC_COLORS[i % TRAFFIC_COLORS.length]));
+        sources.forEach((key, i) => colorsBySource.set(key, trafficColors()[i % trafficColors().length]));
 
         if (externalRoots.length > 0) {
             graph.setNode(EXTERNAL_TRAFFIC_NODE, {height: NODE_HEIGHT, width: 30, type: NODE_TYPES.externalTraffic});
             externalRoots.sort(compareNodes).forEach(root => {
                 const loadBalancers = root.networkingInfo.ingress.map(ingress => ingress.hostname || ingress.ip);
                 const colorByService = new Map<string, string>();
-                (childrenByParentKey.get(treeNodeKey(root)) || []).forEach((child, i) => colorByService.set(treeNodeKey(child), TRAFFIC_COLORS[i % TRAFFIC_COLORS.length]));
+                (childrenByParentKey.get(treeNodeKey(root)) || []).forEach((child, i) => colorByService.set(treeNodeKey(child), trafficColors()[i % trafficColors().length]));
                 (childrenByParentKey.get(treeNodeKey(root)) || []).sort(compareNodes).forEach(child => {
                     processNode(child, root, [colorByService.get(treeNodeKey(child))]);
                 });

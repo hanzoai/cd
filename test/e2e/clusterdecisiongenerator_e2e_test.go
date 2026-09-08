@@ -15,7 +15,7 @@ import (
 )
 
 func TestSimpleClusterDecisionResourceGeneratorExternalNamespace(t *testing.T) {
-	externalNamespace := string(utils.ArgoCDExternalNamespace)
+	externalNamespace := string(utils.CDExternalNamespace)
 
 	expectedApp := v1alpha1.Application{
 		TypeMeta: metav1.TypeMeta{
@@ -30,7 +30,7 @@ func TestSimpleClusterDecisionResourceGeneratorExternalNamespace(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -47,7 +47,7 @@ func TestSimpleClusterDecisionResourceGeneratorExternalNamespace(t *testing.T) {
 	clusterList := []any{
 		map[string]any{
 			"clusterName": "cluster1",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 	}
 
@@ -59,7 +59,7 @@ func TestSimpleClusterDecisionResourceGeneratorExternalNamespace(t *testing.T) {
 		CreatePlacementDecisionConfigMap("my-configmap").
 		CreatePlacementDecision("my-placementdecision").
 		StatusUpdatePlacementDecision("my-placementdecision", clusterList).
-		SwitchToExternalNamespace(utils.ArgoCDExternalNamespace).
+		SwitchToExternalNamespace(utils.CDExternalNamespace).
 		Create(v1alpha1.ApplicationSet{
 			Spec: v1alpha1.ApplicationSetSpec{
 				Template: v1alpha1.ApplicationSetTemplate{
@@ -67,7 +67,7 @@ func TestSimpleClusterDecisionResourceGeneratorExternalNamespace(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -134,7 +134,7 @@ func TestSimpleClusterDecisionResourceGenerator(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -151,7 +151,7 @@ func TestSimpleClusterDecisionResourceGenerator(t *testing.T) {
 	clusterList := []any{
 		map[string]any{
 			"clusterName": "cluster1",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 	}
 
@@ -170,7 +170,7 @@ func TestSimpleClusterDecisionResourceGenerator(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -233,7 +233,7 @@ func TestSimpleClusterDecisionResourceGeneratorAddingCluster(t *testing.T) {
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -255,11 +255,11 @@ func TestSimpleClusterDecisionResourceGeneratorAddingCluster(t *testing.T) {
 	clusterList := []any{
 		map[string]any{
 			"clusterName": "cluster1",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 		map[string]any{
 			"clusterName": "cluster2",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 	}
 
@@ -278,7 +278,7 @@ func TestSimpleClusterDecisionResourceGeneratorAddingCluster(t *testing.T) {
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -325,7 +325,7 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterSecret(t *testing.
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -347,11 +347,11 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterSecret(t *testing.
 	clusterList := []any{
 		map[string]any{
 			"clusterName": "cluster1",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 		map[string]any{
 			"clusterName": "cluster2",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 	}
 
@@ -371,7 +371,7 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterSecret(t *testing.
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},
@@ -419,7 +419,7 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterFromResource(t *te
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Source: &v1alpha1.ApplicationSource{
-				RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+				RepoURL:        "https://github.com/hanzocd/example-apps.git",
 				TargetRevision: "HEAD",
 				Path:           "guestbook",
 			},
@@ -441,18 +441,18 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterFromResource(t *te
 	clusterList := []any{
 		map[string]any{
 			"clusterName": "cluster1",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 		map[string]any{
 			"clusterName": "cluster2",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 	}
 
 	clusterListSmall := []any{
 		map[string]any{
 			"clusterName": "cluster1",
-			"reason":      "argotest",
+			"reason":      "test-reason",
 		},
 	}
 
@@ -472,7 +472,7 @@ func TestSimpleClusterDecisionResourceGeneratorDeletingClusterFromResource(t *te
 					Spec: v1alpha1.ApplicationSpec{
 						Project: "default",
 						Source: &v1alpha1.ApplicationSource{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "HEAD",
 							Path:           "guestbook",
 						},

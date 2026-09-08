@@ -1,4 +1,4 @@
-import {MockupList, Tab, Tabs} from 'argo-ui';
+import {MockupList, Tab, Tabs} from '../../../../kit/src';
 import * as React from 'react';
 import {DataLoader, EventsList, Expandable, YamlEditor} from '../../../shared/components';
 import {Timestamp} from '../../../shared/components/timestamp';

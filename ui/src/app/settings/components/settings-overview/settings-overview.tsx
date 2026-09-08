@@ -53,7 +53,7 @@ export const SettingsOverview: React.FC = () => {
     return (
         <Page title='Settings' toolbar={{breadcrumbs: [{title: 'Settings'}]}}>
             <div className='settings-overview'>
-                <div className='argo-container'>
+                <div className='kit-container'>
                     {settings.map(item => (
                         <div key={item.path} className='settings-overview__redirect-panel' onClick={() => context.navigation.goto(item.path)}>
                             <div className='settings-overview__redirect-panel__content'>

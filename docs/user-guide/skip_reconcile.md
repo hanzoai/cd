@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Alpha Feature (Since v2.7.0)**
 >
-> This is an experimental, [alpha-quality](https://github.com/argoproj/argoproj/blob/main/community/feature-status.md#alpha) feature.
+> This is an experimental, alpha-quality feature.
 > The primary use case is to provide integration with third party projects.
 > This feature may be removed in future releases or modified in backwards-incompatible ways.
 
@@ -43,7 +43,7 @@ spec:
   project: default
   source:
     path: guestbook
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
 ```
 

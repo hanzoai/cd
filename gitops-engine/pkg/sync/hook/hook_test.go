@@ -97,7 +97,7 @@ func TestGarbageHelmHook(t *testing.T) {
 	assert.Nil(t, Types(obj))
 }
 
-// we should ignore Helm hooks if we have an Argo CD hook
+// we should ignore Helm hooks if we have our own hook
 func TestBothHooks(t *testing.T) {
 	t.Parallel()
 	obj := testingutils.Annotate(example("Sync"), "helm.sh/hook", "pre-install")

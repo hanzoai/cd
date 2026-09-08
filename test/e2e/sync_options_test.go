@@ -96,7 +96,7 @@ func TestSyncOptionsValidateFalse(t *testing.T) {
 		Then().
 		Expect(OperationPhaseIs(OperationSucceeded))
 	// NOTE: it is a bug that we do not detect this as OutOfSync. This is because we
-	// are dropping fields as part of remarshalling. See: https://github.com/argoproj/argo-cd/issues/1787
+	// are dropping fields as part of remarshalling.
 	// Expect(SyncStatusIs(SyncStatusCodeOutOfSync))
 }
 
@@ -171,7 +171,7 @@ func TestSyncWithApplyOutOfSyncOnly(t *testing.T) {
 		Then().
 		// Only one resource should be in sync result
 		Expect(ResourceResultNumbering(1)).
-		Expect(ResourceResultIs(ResourceResult{Group: "apps", Version: "v1", Kind: "Deployment", Namespace: ns, Name: "guestbook-ui", Message: "deployment.apps/guestbook-ui configured", SyncPhase: SyncPhaseSync, HookPhase: OperationRunning, Status: ResultCodeSynced, Images: []string{"quay.io/argoprojlabs/cd-e2e-container:0.2"}}))
+		Expect(ResourceResultIs(ResourceResult{Group: "apps", Version: "v1", Kind: "Deployment", Namespace: ns, Name: "guestbook-ui", Message: "deployment.apps/guestbook-ui configured", SyncPhase: SyncPhaseSync, HookPhase: OperationRunning, Status: ResultCodeSynced, Images: []string{"ghcr.io/hanzoai/cd-e2e-container:0.2"}}))
 }
 
 func TestSyncWithSkipHook(t *testing.T) {

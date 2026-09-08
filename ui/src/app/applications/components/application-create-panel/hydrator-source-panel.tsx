@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {FormApi, Text} from 'argo-ui';
-import {AutocompleteField, FormField} from 'argo-ui';
+import {FormApi, Text} from '../../../../kit/src';
+import {AutocompleteField, FormField} from '../../../../kit/src';
 
 import * as models from '../../../shared/models';
 import {RevisionFormField} from '../revision-form-field/revision-form-field';

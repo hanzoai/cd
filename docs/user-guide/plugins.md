@@ -13,7 +13,7 @@ It covers how the plugin mechanism works, its benefits, motivations, and the goa
 ## Prerequisites
 
 You need to have a working `cd` binary installed locally. You can follow
-the [cli installation documentation](https://argo-cd.readthedocs.io/en/stable/cli_installation/) to install the binary.
+the [cli installation documentation](../cli_installation.md) to install the binary.
 
 ## Create `cd` plugins
 
@@ -53,7 +53,7 @@ Any binary that you would want to execute as an `cd` plugin need to satisfy the 
 
 ### Naming a plugin
 
-An Hanzo CD plugin’s filename must start with `cd-`. The subcommands implemented
+A Hanzo CD plugin’s filename must start with `cd-`. The subcommands implemented
 by the plugin are determined by the portion of the filename after the `cd-` prefix.
 Anything after `cd-` will become a subcommand for `cd`.
 
@@ -175,7 +175,7 @@ cd-server: v2.13.0-rc2+0f083c9
 
 ## Distributing `cd` plugins
 
-If you’ve developed an Hanzo CD plugin for others to use,
+If you’ve developed a Hanzo CD plugin for others to use,
 you should carefully consider how to package, distribute, and
 deliver updates to ensure a smooth installation and upgrade process
 for your users.

@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	ArgoCDNamespace  = "cd"
+	DefaultNamespace = "cd"
 	repoSecretPrefix = "repo"
 )
 
@@ -168,27 +168,27 @@ func NewGenRepoSpecCommand() *cobra.Command {
 			err = cmdutil.ValidateBearerTokenForGitOnly(repoOpts.Repo.BearerToken, repoOpts.Repo.Type)
 			errors.CheckError(err)
 
-			argoCDCM := &corev1.ConfigMap{
+			cdCM := &corev1.ConfigMap{
 				TypeMeta: metav1.TypeMeta{
 					Kind:       "ConfigMap",
 					APIVersion: "v1",
 				},
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ArgoCDConfigMapName,
-					Namespace: ArgoCDNamespace,
+					Name:      common.ConfigMapName,
+					Namespace: DefaultNamespace,
 					Labels: map[string]string{
 						"app.kubernetes.io/part-of": "hanzocd",
 					},
 				},
 			}
-			kubeClientset := fake.NewClientset(argoCDCM)
-			settingsMgr := settings.NewSettingsManager(ctx, kubeClientset, ArgoCDNamespace)
-			argoDB := db.NewDB(ArgoCDNamespace, settingsMgr, kubeClientset)
+			kubeClientset := fake.NewClientset(cdCM)
+			settingsMgr := settings.NewSettingsManager(ctx, kubeClientset, DefaultNamespace)
+			appDB := db.NewDB(DefaultNamespace, settingsMgr, kubeClientset)
 
-			_, err = argoDB.CreateRepository(ctx, &repoOpts.Repo)
+			_, err = appDB.CreateRepository(ctx, &repoOpts.Repo)
 			errors.CheckError(err)
 
-			secret, err := kubeClientset.CoreV1().Secrets(ArgoCDNamespace).Get(ctx, db.RepoURLToSecretName(repoSecretPrefix, repoOpts.Repo.Repo, repoOpts.Repo.Project), metav1.GetOptions{})
+			secret, err := kubeClientset.CoreV1().Secrets(DefaultNamespace).Get(ctx, db.RepoURLToSecretName(repoSecretPrefix, repoOpts.Repo.Repo, repoOpts.Repo.Project), metav1.GetOptions{})
 			errors.CheckError(err)
 
 			errors.CheckError(PrintResources(outputFormat, os.Stdout, secret))

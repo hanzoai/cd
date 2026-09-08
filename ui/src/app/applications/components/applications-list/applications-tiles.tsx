@@ -1,6 +1,6 @@
-import {DataLoader} from 'argo-ui';
+import {DataLoader} from '../../../../kit/src';
 import * as React from 'react';
-import {Key, KeybindingContext, NumKey, NumKeyToNumber, NumPadKey, useNav} from 'argo-ui/v2';
+import {Key, KeybindingContext, NumKey, NumKeyToNumber, NumPadKey, useNav} from '../../../../kit/v2';
 import {Consumer, Context} from '../../../shared/context';
 import * as models from '../../../shared/models';
 import * as AppUtils from '../utils';
@@ -102,7 +102,7 @@ export const ApplicationTiles = ({applications, syncApplication, refreshApplicat
             {ctx => (
                 <DataLoader load={() => services.viewPreferences.getPreferences()}>
                     {pref => (
-                        <div className='applications-tiles argo-table-list argo-table-list--clickable' ref={appContainerRef}>
+                        <div className='applications-tiles kit-table-list kit-table-list--clickable' ref={appContainerRef}>
                             {applications.map((app, i) =>
                                 isApp(app) ? (
                                     <ApplicationTile

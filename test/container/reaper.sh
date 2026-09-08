@@ -3,7 +3,7 @@
 # Simple helper script to kill all running processes in the container that
 # belong to the root user.
 
-# DO NOT RUN OUTSIDE THE DOCKER CONTAINER EXECUTING ARGO CD TESTS.
+# DO NOT RUN OUTSIDE THE DOCKER CONTAINER EXECUTING HANZO CD TESTS.
 # YOU HAVE BEEN WARNED.
 
 cleanup() {
@@ -12,7 +12,7 @@ cleanup() {
 }
 
 echo "Running as $0 ($PWD)"
-if test "${PWD}" != "/go/src/github.com/argoproj/argo-cd"; then
+if test "${PWD}" != "/go/src/github.com/hanzoai/cd"; then
 	echo "ERROR: We don't seem to be in Docker container. Exit." >&2
 	exit 1
 fi

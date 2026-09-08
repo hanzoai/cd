@@ -36,7 +36,6 @@ spec: {}`,
 spec: {}`,
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/issues/9101#issuecomment-1191138278
 			name: "ignore target revision with jq",
 			ignoreDifferences: v1alpha1.ApplicationSetIgnoreDifferences{
 				{JQPathExpressions: []string{".spec.source.targetRevision"}},
@@ -55,7 +54,6 @@ spec:
     targetRevision: foo`,
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/issues/9101#issuecomment-1103593714
 			name: "ignore helm parameter with jq",
 			ignoreDifferences: v1alpha1.ApplicationSetIgnoreDifferences{
 				{JQPathExpressions: []string{`.spec.source.helm.parameters | select(.name == "image.tag")`}},
@@ -89,7 +87,6 @@ spec:
         value: value`,
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/issues/9101#issuecomment-1191138278
 			name: "ignore auto-sync in appset when it's not in the cluster with jq",
 			ignoreDifferences: v1alpha1.ApplicationSetIgnoreDifferences{
 				{JQPathExpressions: []string{".spec.syncPolicy.automated"}},
@@ -138,7 +135,6 @@ spec:
       limit: 5`,
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/issues/9101#issuecomment-1420656537
 			name: "ignore a one-off annotation with jq",
 			ignoreDifferences: v1alpha1.ApplicationSetIgnoreDifferences{
 				{JQPathExpressions: []string{`.metadata.annotations | select(.["foo.bar"] == "baz")`}},
@@ -159,7 +155,6 @@ metadata:
     some.other: annotation`,
 		},
 		{
-			// For this use case: https://github.com/argoproj/argo-cd/issues/9101#issuecomment-1515672638
 			name: "ignore the source.plugin field with a json pointer",
 			ignoreDifferences: v1alpha1.ApplicationSetIgnoreDifferences{
 				{JSONPointers: []string{"/spec/source/plugin"}},

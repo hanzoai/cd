@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 
@@ -28,8 +28,8 @@ import (
 	reposervercache "github.com/hanzoai/cd/reposerver/cache"
 	"github.com/hanzoai/cd/server"
 	servercache "github.com/hanzoai/cd/server/cache"
-	"github.com/hanzoai/cd/util/cd"
 	cacheutil "github.com/hanzoai/cd/util/cache"
+	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/dex"
 	"github.com/hanzoai/cd/util/env"
@@ -55,7 +55,7 @@ var (
 // NewCommand returns a new instance of an cd command
 func NewCommand() *cobra.Command {
 	var (
-		redisClient              *redis.Client
+		redisClient              *kv.Client
 		insecure                 bool
 		listenHost               string
 		listenPort               int
@@ -225,7 +225,7 @@ func NewCommand() *cobra.Command {
 				contentTypesList = strings.Split(contentTypes, ";")
 			}
 
-			argoCDOpts := server.ArgoCDServerOpts{
+			serverOpts := server.ServerOpts{
 				Insecure:                insecure,
 				ListenPort:              listenPort,
 				ListenHost:              listenHost,
@@ -272,7 +272,7 @@ func NewCommand() *cobra.Command {
 			stats.RegisterStackDumper()
 			stats.StartStatsTicker(10 * time.Minute)
 			stats.RegisterHeapDumper("memprofile")
-			cd := server.NewServer(ctx, argoCDOpts, appsetOpts)
+			cd := server.NewServer(ctx, serverOpts, appsetOpts)
 			cd.Init(ctx)
 			for {
 				var closer func()
@@ -321,7 +321,7 @@ func NewCommand() *cobra.Command {
 	command.Flags().StringVar(&listenHost, "address", env.StringFromEnv("CD_SERVER_LISTEN_ADDRESS", common.DefaultAddressAPIServer), "Listen on given address")
 	command.Flags().IntVar(&listenPort, "port", common.DefaultPortAPIServer, "Listen on given port")
 	command.Flags().StringVar(&metricsHost, env.StringFromEnv("CD_SERVER_METRICS_LISTEN_ADDRESS", "metrics-address"), common.DefaultAddressAPIServerMetrics, "Listen for metrics on given address")
-	command.Flags().IntVar(&metricsPort, "metrics-port", common.DefaultPortArgoCDAPIServerMetrics, "Start metrics on given port")
+	command.Flags().IntVar(&metricsPort, "metrics-port", common.DefaultPortAPIServerMetrics, "Start metrics on given port")
 	command.Flags().StringVar(&otlpAddress, "otlp-address", env.StringFromEnv("CD_SERVER_OTLP_ADDRESS", ""), "OpenTelemetry collector address to send traces to")
 	command.Flags().BoolVar(&otlpInsecure, "otlp-insecure", env.ParseBoolFromEnv("CD_SERVER_OTLP_INSECURE", true), "OpenTelemetry collector insecure mode")
 	command.Flags().StringToStringVar(&otlpHeaders, "otlp-headers", env.ParseStringToStringFromEnv("CD_SERVER_OTLP_HEADERS", map[string]string{}, ","), "List of OpenTelemetry collector extra headers sent with traces, headers are comma-separated key-value pairs(e.g. key1=value1,key2=value2)")
@@ -354,7 +354,7 @@ func NewCommand() *cobra.Command {
 	repoServerClientTLSConfigSrc = tls.AddClientTLSFlagsToCmdWithPrefix(command, "SERVER")
 	tlsConfigCustomizerSrc = tls.AddTLSFlagsToCmd(command)
 	cacheSrc = servercache.AddCacheFlagsToCmd(command, cacheutil.Options{
-		OnClientCreated: func(client *redis.Client) {
+		OnClientCreated: func(client *kv.Client) {
 			redisClient = client
 		},
 	})

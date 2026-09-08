@@ -9,69 +9,10 @@ This guide assumes you are familiar with Hanzo CD and its basic concepts. See th
 
 ## Installation
 
-There are a few options for installing the ApplicationSet controller.
-
-
-### A) Install ApplicationSet as part of Hanzo CD
-
-Starting with Hanzo CD v2.3, the ApplicationSet controller is bundled with Hanzo CD. It is no longer necessary to install the ApplicationSet controller separately from Hanzo CD.
+The ApplicationSet controller is bundled with Hanzo CD; it is not installed separately.
 
 Follow the [Hanzo CD Getting Started](../../getting_started.md) instructions for more information.
 
-
-
-### B) Install ApplicationSet into an existing Hanzo CD install (pre-Hanzo CD v2.3)
-
-**Note**: These instructions only apply to versions of Hanzo CD before v2.3.0.
-
-The ApplicationSet controller *must* be installed into the same namespace as the Hanzo CD it is targeting.
-
-Presuming that Hanzo CD is installed into the `cd` namespace, run the following command:
-
-```bash
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
-```
-
-Once installed, the ApplicationSet controller requires no additional setup.
-
-The `manifests/install.yaml` file contains the Kubernetes manifests required to install the ApplicationSet controller:
-
-- CustomResourceDefinition for `ApplicationSet` resource
-- Deployment for `cd-applicationset-controller`
-- ServiceAccount for use by ApplicationSet controller, to access Hanzo CD resources
-- Role granting RBAC access to needed resources, for ServiceAccount
-- RoleBinding to bind the ServiceAccount and Role
-
-
-<!-- ### C) Install development builds of ApplicationSet controller for access to the latest features
-
-Development builds of the ApplicationSet controller can be installed by running the following command:
-```bash
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/master/manifests/install.yaml
-```
-
-With this option you will need to ensure that Hanzo CD is already installed into the `cd` namespace.
-
-How it works:
-
-- After each successful commit to *argoproj/applicationset* `master` branch, a GitHub action will run that performs a container build/push to [`argoproj/cd-applicationset:latest`](https://quay.io/repository/argoproj/cd-applicationset?tab=tags )
-- [Documentation for the `master`-branch-based developer builds](https://cd-applicationset.readthedocs.io/en/master/)  is available from Read the Docs.
-
-> [!WARNING]
-> Development builds contain newer features and bug fixes, but are more likely to be unstable, as compared to release builds.
-
-See the `master` branch [Read the Docs](https://cd-applicationset.readthedocs.io/en/master/) page for documentation on post-release features. -->
-
-
-<!-- ## Upgrading to a Newer Release
-
-To upgrade from an older release (eg 0.1.0, 0.2.0) to a newer release (eg 0.3.0), you only need to `kubectl apply` the `install.yaml` for the new release, as described under *Installation* above.
-
-There are no manual upgrade steps required between any release of ApplicationSet controller, (including 0.1.0, 0.2.0, and 0.3.0) as of this writing, however, see the behaviour changes in ApplicationSet controller v0.3.0, below.
-
-### Behaviour changes in ApplicationSet controller v0.3.0
-
-There are no breaking changes, however, a couple of behaviours have changed from v0.2.0 to v0.3.0. See the [v0.3.0 upgrade page](upgrading/v0.2.0-to-v0.3.0.md) for details. -->
 ## Enabling high availability mode
 
 To enable high availability, you have to set the command ``` --enable-leader-election=true  ``` in cd-applicationset-controller container and increase the replicas. 

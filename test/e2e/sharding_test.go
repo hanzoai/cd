@@ -153,7 +153,7 @@ func createClusterSecretWithShard(ctx *Context, shard int, ns string) string {
 	jsonStringBytes, err := json.Marshal(clusterSecretConfigJSON)
 	require.NoError(ctx.T(), err)
 
-	secret := buildArgoCDClusterSecret(clusterName, ArgoCDNamespace, clusterName, apiURL+queryParam,
+	secret := buildArgoCDClusterSecret(clusterName, E2ENamespace, clusterName, apiURL+queryParam,
 		string(jsonStringBytes), "", "")
 	secret.Data["shard"] = []byte(strconv.Itoa(shard))
 

@@ -123,7 +123,7 @@ If output is not deterministic, then a preview generated today might not be vali
 
 * The `sourceHydrator` field is mutually exclusive with the `source` and the `sources` field. Should we throw an error if they're both configured, or should we just pick one and ignore the others?
 * How will/should this feature relate to the image updater? Is there an opportunity to share code, since both tools involve pushing to git?
-* Should we enforce a naming convention for hydrated manifest branches, e.g. `argo/...`? This would make it easier to recommend branch protection rules, for example, only allow pushes to `argo/*` from the argo bot.
+* Should we enforce a naming convention for hydrated manifest branches, e.g. `cd/...`? This would make it easier to recommend branch protection rules, for example, only allow pushes to `cd/*` from the cd bot.
 * Should we enforce setting a `sourceHydrator.syncSource.path` to something besides `.`? Setting a path makes it easier to add/remove other apps later if desired.
 
 ## Proposal
@@ -146,7 +146,7 @@ spec:
   # should either throw an error or ignore the other two.
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       targetRevision: main
       # This assumes the Application's environments are modeled as directories.
       path: environments/e2e
@@ -203,7 +203,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       targetRevision: main
       path: environments/dev/west
     syncSource:
@@ -217,7 +217,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       targetRevision: main
       path: environments/dev/east
     syncSource:
@@ -232,7 +232,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       targetRevision: main
       path: environments/test/west
     syncSource:
@@ -246,7 +246,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       targetRevision: main
       path: environments/test/east
     syncSource:
@@ -261,7 +261,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       targetRevision: main
       path: environments/prod/west
     syncSource:
@@ -275,7 +275,7 @@ metadata:
 spec:
   sourceHydrator:
     drySource:
-      repoURL: https://github.com/argoproj/argocd-example-apps
+      repoURL: https://github.com/hanzocd/example-apps
       targetRevision: main
       path: environments/prod/east
     syncSource:
@@ -306,7 +306,7 @@ The hydrator will not inject `metadata.namespace` into the hydrated manifests pu
 
 ### Build Environment Support
 
-For sources specified in `spec.source` or `spec.sources`, Hanzo CD [sets certain environment variables](https://argo-cd.readthedocs.io/en/stable/user-guide/build-environment/) before running the manifest hydration tool.
+For sources specified in `spec.source` or `spec.sources`, Hanzo CD [sets certain environment variables](../user-guide/build-environment.md) before running the manifest hydration tool.
 
 Some of these environment variables may change independently of the dry source and therefore break the reproducibility of manifest hydration (see the [Opinions](#opinions) section). Therefore, only some environment variables will be populated for the `spec.sourceHydrator` source.
 
@@ -442,7 +442,7 @@ These are the details of the most recent change;
 To reproduce the manifest hydration, do the following:
 
 ```
-git clone https://github.com/argoproj/argocd-example-apps
+git clone https://github.com/hanzocd/example-apps
 cd cd-example-apps
 git checkout ab2382f
 kustomize edit set image my-app:v0.0.2
@@ -458,7 +458,7 @@ The hydrator will also write a `hydrator.metadata` file containing a JSON repres
   "drySHA": "ab2382f",
   "commitAuthor": "Michael Crenshaw <michael@example.com>",
   "commitMessage": "chore: bump Helm dependency chart to 32.1.12",
-  "repoURL": "https://github.com/argoproj/argocd-example-apps"
+  "repoURL": "https://github.com/hanzocd/example-apps"
 }
 ```
 
@@ -514,7 +514,7 @@ metadata:
   labels:
     cd.hanzo.ai/secret-type: repository-write
 stringData:
-  url: 'https://github.com/argoproj/argocd-example-apps'
+  url: 'https://github.com/hanzocd/example-apps'
   githubAppID: '123456'
   githubInstallationID: '123456'
   githubAppPrivateKey: |

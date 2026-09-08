@@ -7,7 +7,7 @@ import (
 	"github.com/alicebob/miniredis/v2"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 )
 
 func Test_ReconnectCallbackHookCalled(t *testing.T) {
@@ -18,11 +18,11 @@ func Test_ReconnectCallbackHookCalled(t *testing.T) {
 	defer mr.Close()
 
 	called := false
-	hook := NewArgoRedisHook(func() {
+	hook := NewRedisReconnectHook(func() {
 		called = true
 	})
 
-	faultyDNSRedisClient := redis.NewClient(&redis.Options{Addr: "invalidredishost.invalid:12345"})
+	faultyDNSRedisClient := kv.NewClient(&kv.Options{Addr: "invalidredishost.invalid:12345"})
 	faultyDNSRedisClient.AddHook(hook)
 
 	faultyDNSClient := NewRedisCache(faultyDNSRedisClient, 60*time.Second, RedisCompressionNone)
@@ -39,11 +39,11 @@ func Test_ReconnectCallbackHookNotCalled(t *testing.T) {
 	defer mr.Close()
 
 	called := false
-	hook := NewArgoRedisHook(func() {
+	hook := NewRedisReconnectHook(func() {
 		called = true
 	})
 
-	redisClient := redis.NewClient(&redis.Options{Addr: mr.Addr()})
+	redisClient := kv.NewClient(&kv.Options{Addr: mr.Addr()})
 	redisClient.AddHook(hook)
 	client := NewRedisCache(redisClient, 60*time.Second, RedisCompressionNone)
 

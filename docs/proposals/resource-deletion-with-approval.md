@@ -28,9 +28,8 @@ application.
 ## Motivation
 
 We’ve seen cases where Hanzo CD deleted Kubernetes resources due to a bug or misconfiguration.​ Examples include [corrupted
-data](https://github.com/argoproj/argo-cd/issues/4423) in Redis, user errors
-([1](https://github.com/argoproj/argo-cd/issues/9093), [2](https://github.com/argoproj/argo-cd/issues/4844))
-and [bug](https://github.com/argoproj/argo-cd/issues/3473) in the automation on top of Hanzo CD. These examples don’t
+data in Redis, user errors
+and bugs in the automation on top of Hanzo CD. These examples don’t
 mean Hanzo CD is not reliable; however, there are cases where misbehavior is catastrophic, and erroneous deletion is not
 acceptable. Examples include the app-of-apps pattern where Hanzo CD is used to manage itself, or namespaces in production
 clusters.
@@ -111,11 +110,11 @@ The Hanzo CD UI, CLI should visualize the `requiresDeletionApproval` field so th
 
 #### Approve deletion resource action
 
-The Hanzo CD UI, CLI should bundle the `Approve Deletion` [resource action](https://argo-cd.readthedocs.io/en/stable/operator-manual/resource_actions/)
+The Hanzo CD UI, CLI should bundle the `Approve Deletion` [resource action](../operator-manual/resource_actions.md)
 that would allow the user to approve the deletion. The action should patch the resource with the `cd.hanzo.ai/deletion-approved: true` annotation.
 Once annotation is applied the Hanzo CD should proceed with the deletion.
 
-The main reason to use the action is that we can reuse existing [RBAC](https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/) to control who can approve the deletion.
+The main reason to use the action is that we can reuse existing [RBAC](../operator-manual/rbac.md) to control who can approve the deletion.
 
 #### UI/CLI Convenience to approve all resources
 

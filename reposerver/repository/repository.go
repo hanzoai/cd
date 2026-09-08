@@ -540,7 +540,6 @@ func (s *Service) runRepoOperation(
 		}
 
 		// Computed and passed to preserve API backwards compatibility only. Decisions are made based on SourceIntegrityResult.
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 		if gitClient.IsAnnotatedTag(ctx, revision) {
 			rev = unresolvedRevision
 		} else {
@@ -1022,7 +1021,6 @@ func (s *Service) runManifestGenAsync(ctx context.Context, repoRoot, commitSHA, 
 	}
 	manifestGenResult.Revision = commitSHA
 	manifestGenResult.SourceIntegrityResult = opContext.sourceIntegrityResult
-	// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 	manifestGenResult.VerifyResult = opContext.verificationResult // nolint:staticcheck
 	err = s.cache.SetManifests(manifestKey, &manifestGenCacheEntry)
 	if err != nil {
@@ -2735,7 +2733,6 @@ func (s *Service) GetRevisionMetadata(ctx context.Context, q *apiclient.RepoServ
 		// The SourceIntegrity criteria could have changed since this was cached - it could have been added, removed, or changed.
 		// If present in request or the cached version, treat this as a cache miss.
 		sourceIntegrity := q.SourceIntegrity != nil || metadata.SourceIntegrityResult != nil
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 		signatureChecking := q.CheckSignature || metadata.SignatureInfo != "" // nolint:staticcheck
 		if !sourceIntegrity && !signatureChecking {
 			log.Infof("revision metadata cache hit: %s/%s", q.Repo.Repo, q.Revision)
@@ -2801,7 +2798,6 @@ func (s *Service) GetRevisionMetadata(ctx context.Context, q *apiclient.RepoServ
 		Message:               m.Message,
 		References:            relatedRevisions,
 		SourceIntegrityResult: sourceIntegrityResult,
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 		SignatureInfo: legacySignatureInfo, // nolint:staticcheck
 	}
 	_ = s.cache.SetRevisionMetadata(q.Repo.Repo, q.Revision, metadata)

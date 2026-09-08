@@ -70,7 +70,7 @@ It is proposed that a git repository be used to contain the javascript code, as 
 
 ### Hanzo CDExtension CRD
 
-In the most simplest form, an Hanzo CD extension could simply be a pointer to a git repository at a revision:
+In the most simplest form, a Hanzo CD extension could simply be a pointer to a git repository at a revision:
 
 ```yaml
 kind: Hanzo CDExtension
@@ -128,7 +128,7 @@ In the UI, a new tab in the Resource View will be made available. The contents o
 
 ## Implementation Details
 
-At a high level an Hanzo CD extension is simply a React component, which is dynamically loaded at runtime by the Hanzo CD API server.
+At a high level a Hanzo CD extension is simply a React component, which is dynamically loaded at runtime by the Hanzo CD API server.
 
 In order for the component to render some visualization about a resource, it needs to be supplied at least two key pieces of information:
 1. The full resource object itself

@@ -21,7 +21,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 	validRequest := &apiclient.CommitHydratedManifestsRequest{
 		Repo: &v1alpha1.Repository{
-			Repo: "https://github.com/argoproj/argocd-example-apps.git",
+			Repo: "https://github.com/hanzocd/example-apps.git",
 		},
 		TargetBranch:  "main",
 		SyncBranch:    "env/test",
@@ -56,7 +56,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		service, _ := newServiceWithMocks(t)
 		request := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://github.com/hanzocd/example-apps.git",
 			},
 		}
 		_, err := service.CommitHydratedManifests(t.Context(), request)
@@ -70,7 +70,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		service, _ := newServiceWithMocks(t)
 		request := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://github.com/hanzocd/example-apps.git",
 			},
 			TargetBranch: "main",
 		}
@@ -131,8 +131,8 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		// When only email is provided, name defaults to "Argo CD"
-		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "custom@example.com").Return("", nil).Once()
+		// When only email is provided, name defaults to "Hanzo CD"
+		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Hanzo CD", "custom@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().GetCommitNote(mock.Anything, mock.Anything, mock.Anything).Return("", fmt.Errorf("test %w", git.ErrNoNoteFound)).Once()
@@ -164,7 +164,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "argo-cd@example.com").Return("", nil).Once()
+		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Hanzo CD", "cd@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().GetCommitNote(mock.Anything, mock.Anything, mock.Anything).Return("", fmt.Errorf("test %w", git.ErrNoNoteFound)).Once()
@@ -185,7 +185,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "argo-cd@example.com").Return("", nil).Once()
+		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Hanzo CD", "cd@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().GetCommitNote(mock.Anything, mock.Anything, mock.Anything).Return("", fmt.Errorf("test %w", git.ErrNoNoteFound)).Once()
@@ -197,7 +197,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithRootAndBlank := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://github.com/hanzocd/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",
@@ -234,7 +234,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "argo-cd@example.com").Return("", nil).Once()
+		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Hanzo CD", "cd@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().GetCommitNote(mock.Anything, mock.Anything, mock.Anything).Return("", fmt.Errorf("test %w", git.ErrNoNoteFound)).Once()
@@ -246,7 +246,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithSubdirPath := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://github.com/hanzocd/example-apps.git",
 			},
 			TargetBranch: "main",
 			SyncBranch:   "env/test",
@@ -277,7 +277,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "argo-cd@example.com").Return("", nil).Once()
+		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Hanzo CD", "cd@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().GetCommitNote(mock.Anything, mock.Anything, mock.Anything).Return("", fmt.Errorf("test %w", git.ErrNoNoteFound)).Once()
@@ -289,7 +289,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithMixedPaths := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://github.com/hanzocd/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",
@@ -335,7 +335,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "argo-cd@example.com").Return("", nil).Once()
+		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Hanzo CD", "cd@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().GetCommitNote(mock.Anything, mock.Anything, mock.Anything).Return("", fmt.Errorf("test %w", git.ErrNoNoteFound)).Once()
@@ -345,7 +345,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithEmptyPaths := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://github.com/hanzocd/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",
@@ -367,7 +367,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "argo-cd@example.com").Return("", nil).Once()
+		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Hanzo CD", "cd@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().GetCommitNote(mock.Anything, mock.Anything, mock.Anything).Return(strnote, nil).Once()
@@ -376,7 +376,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		request := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://github.com/hanzocd/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",
@@ -407,7 +407,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 		mockGitClient := gitmocks.NewClient(t)
 		mockGitClient.EXPECT().Init().Return(nil).Once()
 		mockGitClient.EXPECT().Fetch(mock.Anything, mock.Anything, mock.Anything).Return(nil).Once()
-		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Argo CD", "argo-cd@example.com").Return("", nil).Once()
+		mockGitClient.EXPECT().SetAuthor(mock.Anything, "Hanzo CD", "cd@example.com").Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrOrphan(mock.Anything, "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().CheckoutOrNew(mock.Anything, "main", "env/test", false).Return("", nil).Once()
 		mockGitClient.EXPECT().GetCommitNote(mock.Anything, mock.Anything, mock.Anything).Return("", fmt.Errorf("test %w", git.ErrNoNoteFound)).Once()
@@ -418,7 +418,7 @@ func Test_CommitHydratedManifests(t *testing.T) {
 
 		requestWithRootAndBlank := &apiclient.CommitHydratedManifestsRequest{
 			Repo: &v1alpha1.Repository{
-				Repo: "https://github.com/argoproj/argocd-example-apps.git",
+				Repo: "https://github.com/hanzocd/example-apps.git",
 			},
 			TargetBranch:  "main",
 			SyncBranch:    "env/test",

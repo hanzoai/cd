@@ -5,27 +5,27 @@ import (
 	"errors"
 	"net"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	log "github.com/sirupsen/logrus"
 )
 
-type argoRedisHooks struct {
+type redisReconnectHook struct {
 	reconnectCallback func()
 }
 
-func NewArgoRedisHook(reconnectCallback func()) *argoRedisHooks {
-	return &argoRedisHooks{reconnectCallback: reconnectCallback}
+func NewRedisReconnectHook(reconnectCallback func()) *redisReconnectHook {
+	return &redisReconnectHook{reconnectCallback: reconnectCallback}
 }
 
-func (hook *argoRedisHooks) DialHook(next redis.DialHook) redis.DialHook {
+func (hook *redisReconnectHook) DialHook(next kv.DialHook) kv.DialHook {
 	return func(ctx context.Context, network, addr string) (net.Conn, error) {
 		conn, err := next(ctx, network, addr)
 		return conn, err
 	}
 }
 
-func (hook *argoRedisHooks) ProcessHook(next redis.ProcessHook) redis.ProcessHook {
-	return func(ctx context.Context, cmd redis.Cmder) error {
+func (hook *redisReconnectHook) ProcessHook(next kv.ProcessHook) kv.ProcessHook {
+	return func(ctx context.Context, cmd kv.Cmder) error {
 		var dnsError *net.DNSError
 		err := next(ctx, cmd)
 		if err != nil && errors.As(err, &dnsError) {
@@ -36,6 +36,6 @@ func (hook *argoRedisHooks) ProcessHook(next redis.ProcessHook) redis.ProcessHoo
 	}
 }
 
-func (hook *argoRedisHooks) ProcessPipelineHook(_ redis.ProcessPipelineHook) redis.ProcessPipelineHook {
+func (hook *redisReconnectHook) ProcessPipelineHook(_ kv.ProcessPipelineHook) kv.ProcessPipelineHook {
 	return nil
 }

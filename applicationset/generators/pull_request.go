@@ -15,7 +15,7 @@ import (
 	"github.com/hanzoai/cd/applicationset/services"
 	pullrequest "github.com/hanzoai/cd/applicationset/services/pull_request"
 	"github.com/hanzoai/cd/applicationset/utils"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
 
 const (
@@ -24,7 +24,7 @@ const (
 
 type PullRequestGenerator struct {
 	client                    client.Client
-	selectServiceProviderFunc func(context.Context, *argoprojiov1alpha1.PullRequestGenerator, *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error)
+	selectServiceProviderFunc func(context.Context, *v1alpha1.PullRequestGenerator, *v1alpha1.ApplicationSet) (pullrequest.PullRequestService, error)
 	SCMConfig
 }
 
@@ -37,7 +37,7 @@ func NewPullRequestGenerator(client client.Client, scmConfig SCMConfig) Generato
 	return g
 }
 
-func (g *PullRequestGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) time.Duration {
+func (g *PullRequestGenerator) GetRequeueAfter(appSetGenerator *v1alpha1.ApplicationSetGenerator) time.Duration {
 	// Return a requeue default of 30 minutes, if no default is specified.
 
 	if appSetGenerator.PullRequest.RequeueAfterSeconds != nil {
@@ -47,15 +47,15 @@ func (g *PullRequestGenerator) GetRequeueAfter(appSetGenerator *argoprojiov1alph
 	return DefaultPullRequestRequeueAfter
 }
 
-func (g *PullRequestGenerator) GetContinueOnRepoNotFoundError(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) bool {
+func (g *PullRequestGenerator) GetContinueOnRepoNotFoundError(appSetGenerator *v1alpha1.ApplicationSetGenerator) bool {
 	return appSetGenerator.PullRequest.ContinueOnRepoNotFoundError
 }
 
-func (g *PullRequestGenerator) GetTemplate(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator) *argoprojiov1alpha1.ApplicationSetTemplate {
+func (g *PullRequestGenerator) GetTemplate(appSetGenerator *v1alpha1.ApplicationSetGenerator) *v1alpha1.ApplicationSetTemplate {
 	return &appSetGenerator.PullRequest.Template
 }
 
-func (g *PullRequestGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha1.ApplicationSetGenerator, applicationSetInfo *argoprojiov1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
+func (g *PullRequestGenerator) GenerateParams(appSetGenerator *v1alpha1.ApplicationSetGenerator, applicationSetInfo *v1alpha1.ApplicationSet, _ client.Client) ([]map[string]any, error) {
 	if appSetGenerator == nil {
 		return nil, ErrEmptyAppSetGenerator
 	}
@@ -127,7 +127,7 @@ func (g *PullRequestGenerator) GenerateParams(appSetGenerator *argoprojiov1alpha
 }
 
 // selectServiceProvider selects the provider to get pull requests from the configuration
-func (g *PullRequestGenerator) selectServiceProvider(ctx context.Context, generatorConfig *argoprojiov1alpha1.PullRequestGenerator, applicationSetInfo *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+func (g *PullRequestGenerator) selectServiceProvider(ctx context.Context, generatorConfig *v1alpha1.PullRequestGenerator, applicationSetInfo *v1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 	if !g.enableSCMProviders {
 		return nil, ErrSCMProvidersDisabled
 	}
@@ -216,7 +216,7 @@ func (g *PullRequestGenerator) selectServiceProvider(ctx context.Context, genera
 	return nil, errors.New("no Pull Request provider implementation configured")
 }
 
-func (g *PullRequestGenerator) github(ctx context.Context, cfg *argoprojiov1alpha1.PullRequestGeneratorGithub, applicationSetInfo *argoprojiov1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
+func (g *PullRequestGenerator) github(ctx context.Context, cfg *v1alpha1.PullRequestGeneratorGithub, applicationSetInfo *v1alpha1.ApplicationSet) (pullrequest.PullRequestService, error) {
 	httpClient := g.newSCMHTTPClient()
 	if g.enableGitHubAPIMetrics {
 		metricsCtx := &services.MetricsContext{

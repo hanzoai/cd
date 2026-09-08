@@ -33,19 +33,19 @@ import (
 type ExternalNamespace string
 
 const (
-	// ArgoCDNamespace is the namespace into which Argo CD and ApplicationSet controller are deployed,
+	// E2ENamespace is the namespace into which Hanzo CD and ApplicationSet controller are deployed,
 	// and in which Application resources should be created.
-	ArgoCDNamespace = "cd-e2e"
+	E2ENamespace = "cd-e2e"
 
-	// ArgoCDExternalNamespace is an external namespace to test additional namespaces
-	ArgoCDExternalNamespace ExternalNamespace = "cd-e2e-external"
+	// CDExternalNamespace is an external namespace to test additional namespaces
+	CDExternalNamespace ExternalNamespace = "cd-e2e-external"
 
-	// ArgoCDExternalNamespace2 is an external namespace to test additional namespaces
-	ArgoCDExternalNamespace2 ExternalNamespace = "cd-e2e-external-2"
+	// CDExternalNamespace2 is an external namespace to test additional namespaces
+	CDExternalNamespace2 ExternalNamespace = "cd-e2e-external-2"
 
 	// ApplicationsResourcesNamespace is the namespace into which temporary resources (such as Deployments/Pods/etc)
 	// can be deployed, such as using it as the target namespace in an Application resource.
-	// Note: this is NOT the namespace the ApplicationSet controller is deployed to; see ArgoCDNamespace.
+	// Note: this is NOT the namespace the ApplicationSet controller is deployed to; see E2ENamespace.
 	ApplicationsResourcesNamespace = "applicationset-e2e"
 
 	TestingLabel = "e2e.apps.hanzo.ai"
@@ -76,10 +76,10 @@ func GetEnvWithDefault(envName, defaultValue string) string {
 	return r
 }
 
-// TestNamespace returns the namespace where Argo CD E2E test instance will be
+// TestNamespace returns the namespace where Hanzo CD E2E test instance will be
 // running in.
 func TestNamespace() string {
-	return GetEnvWithDefault("CD_E2E_NAMESPACE", ArgoCDNamespace)
+	return GetEnvWithDefault("CD_E2E_NAMESPACE", E2ENamespace)
 }
 
 // GetE2EFixtureK8sClient initializes the Kubernetes clients (if needed), and returns the most recently initialized value.
@@ -99,8 +99,8 @@ func GetE2EFixtureK8sClient(t *testing.T) *E2EFixtureK8sClient {
 
 		internalClientVars.AppSetClientset = internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(TestNamespace())
 		internalClientVars.ExternalAppSetClientsets = map[ExternalNamespace]dynamic.ResourceInterface{
-			ArgoCDExternalNamespace:  internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(string(ArgoCDExternalNamespace)),
-			ArgoCDExternalNamespace2: internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(string(ArgoCDExternalNamespace2)),
+			CDExternalNamespace:  internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(string(CDExternalNamespace)),
+			CDExternalNamespace2: internalClientVars.DynamicClientset.Resource(v1alpha1.SchemeGroupVersion.WithResource("applicationsets")).Namespace(string(CDExternalNamespace2)),
 		}
 	})
 	return internalClientVars
@@ -140,19 +140,19 @@ func EnsureCleanState(t *testing.T) {
 		},
 		func() error {
 			// Clean up ApplicationSets in cd-e2e-external namespace (don't delete the namespace itself as it's shared)
-			return fixtureClient.ExternalAppSetClientsets[ArgoCDExternalNamespace].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.ExternalAppSetClientsets[CDExternalNamespace].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// Clean up ApplicationSets in cd-e2e-external-2 namespace (don't delete the namespace itself as it's shared)
-			return fixtureClient.ExternalAppSetClientsets[ArgoCDExternalNamespace2].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.ExternalAppSetClientsets[CDExternalNamespace2].DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// Clean up Applications in cd-e2e-external namespace
-			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(ArgoCDExternalNamespace)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.AppClientset.AppsV1alpha1().Applications(string(CDExternalNamespace)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// Clean up Applications in cd-e2e-external-2 namespace
-			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(string(ArgoCDExternalNamespace2)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.AppClientset.AppsV1alpha1().Applications(string(CDExternalNamespace2)).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		// delete resources
 		func() error {
@@ -161,7 +161,7 @@ func EnsureCleanState(t *testing.T) {
 		},
 		func() error {
 			// kubectl delete apps --all
-			return fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
+			return fixtureClient.AppClientset.AppsV1alpha1().Applications(TestNamespace()).DeleteCollection(t.Context(), metav1.DeleteOptions{PropagationPolicy: &policy}, metav1.ListOptions{})
 		},
 		func() error {
 			// kubectl delete secrets -l e2e.apps.hanzo.ai=true
@@ -173,7 +173,7 @@ func EnsureCleanState(t *testing.T) {
 	})
 
 	// First we wait up to 30 seconds for all the ApplicationSets to delete, but we don't fail if they don't.
-	// Why? We want to give Argo CD time to delete the Application's child resources, before we remove the finalizers below.
+	// Why? We want to give Hanzo CD time to delete the Application's child resources, before we remove the finalizers below.
 	_ = waitForSuccess(func() error {
 		list, err := fixtureClient.AppSetClientset.List(t.Context(), metav1.ListOptions{})
 		if err != nil {
@@ -187,16 +187,16 @@ func EnsureCleanState(t *testing.T) {
 		return nil // Pass
 	}, time.Now().Add(30*time.Second))
 
-	// Remove finalizers from Argo CD Application resources in the namespace
+	// Remove finalizers from Hanzo CD Application resources in the namespace
 	err := waitForSuccess(func() error {
-		appList, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
+		appList, err := fixtureClient.AppClientset.AppsV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
 		if err != nil {
 			return err
 		}
 		for _, app := range appList.Items {
 			t.Log("Removing finalizer for: ", app.Name)
 			app.Finalizers = []string{}
-			_, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).Update(t.Context(), &app, metav1.UpdateOptions{})
+			_, err := fixtureClient.AppClientset.AppsV1alpha1().Applications(TestNamespace()).Update(t.Context(), &app, metav1.UpdateOptions{})
 			if err != nil {
 				return err
 			}
@@ -222,7 +222,7 @@ func waitForExpectedClusterState(t *testing.T) error {
 		SourceRepos:              []string{"*"},
 		Destinations:             []v1alpha1.ApplicationDestination{{Namespace: "*", Server: "*"}},
 		ClusterResourceWhitelist: []v1alpha1.ClusterResourceRestrictionItem{{Group: "*", Kind: "*"}},
-		SourceNamespaces:         []string{string(ArgoCDExternalNamespace), string(ArgoCDExternalNamespace2)},
+		SourceNamespaces:         []string{string(CDExternalNamespace), string(CDExternalNamespace2)},
 	})
 
 	// Wait up to 60 seconds for all the ApplicationSets to delete
@@ -243,7 +243,7 @@ func waitForExpectedClusterState(t *testing.T) error {
 
 	// Wait up to 60 seconds for all the Applications to delete
 	if err := waitForSuccess(func() error {
-		appList, err := fixtureClient.AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
+		appList, err := fixtureClient.AppClientset.AppsV1alpha1().Applications(TestNamespace()).List(t.Context(), metav1.ListOptions{})
 		if err != nil {
 			return err
 		}
@@ -273,10 +273,10 @@ func waitForExpectedClusterState(t *testing.T) error {
 
 func SetProjectSpec(t *testing.T, fixtureClient *E2EFixtureK8sClient, project string, spec v1alpha1.AppProjectSpec) {
 	t.Helper()
-	proj, err := fixtureClient.AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Get(t.Context(), project, metav1.GetOptions{})
+	proj, err := fixtureClient.AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).Get(t.Context(), project, metav1.GetOptions{})
 	require.NoError(t, err)
 	proj.Spec = spec
-	_, err = fixtureClient.AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Update(t.Context(), proj, metav1.UpdateOptions{})
+	_, err = fixtureClient.AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).Update(t.Context(), proj, metav1.UpdateOptions{})
 	require.NoError(t, err)
 }
 

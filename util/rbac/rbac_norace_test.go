@@ -17,10 +17,10 @@ import (
 func TestPolicyInformer(t *testing.T) {
 	// !race:
 	// A BUNCH of data race warnings thrown by running this test and the next... it's tough to guess to what degree this
-	// is primarily a casbin issue or a Argo CD RBAC issue... A least one data race is an `rbac.go` with
+	// is primarily a casbin issue or a Hanzo CD RBAC issue... A least one data race is an `rbac.go` with
 	// itself, a bunch are in casbin. You can see the full list by doing a `go test -race github.com/hanzoai/cd/util/rbac`
 	//
-	// It couldn't hurt to take a look at this code to decide if Argo CD is properly handling concurrent data
+	// It couldn't hurt to take a look at this code to decide if Hanzo CD is properly handling concurrent data
 	// access here, but in the mean time I have disabled data race testing of this test.
 
 	cm := fakeConfigMap()

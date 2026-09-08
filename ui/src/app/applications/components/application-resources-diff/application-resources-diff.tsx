@@ -1,4 +1,4 @@
-import {Checkbox, DataLoader} from 'argo-ui';
+import {Checkbox, DataLoader} from '../../../../kit/src';
 import * as jsYaml from 'js-yaml';
 import * as React from 'react';
 import {parseDiff} from 'react-diff-view';

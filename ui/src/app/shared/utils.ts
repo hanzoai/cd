@@ -53,7 +53,7 @@ export function isValidManagedByURL(url: string): boolean {
 export const MANAGED_BY_URL_INVALID_TEXT = 'managed-by-url: invalid url provided';
 export const MANAGED_BY_URL_INVALID_TOOLTIP = 'managed-by-url must be a valid http(s) URL for the managing Hanzo CD instance. The external link is disabled until this is fixed.';
 
-export const MANAGED_BY_URL_INVALID_COLOR = '#f4c030';
+export const MANAGED_BY_URL_INVALID_COLOR = '#eab308';
 
 export const managedByURLInvalidLabelStyle: CSSProperties = {
     color: MANAGED_BY_URL_INVALID_COLOR,
@@ -149,7 +149,7 @@ export const formatClusterQueryParam = (cluster: Cluster) => {
  * @returns true if SSO should be used, otherwise false
  */
 export function isSSOConfigured(userInfo: UserInfo | null | undefined, authSettings: AuthSettings): boolean {
-    const isExternalIssuer = userInfo?.iss && userInfo.iss !== 'argocd';
+    const isExternalIssuer = userInfo?.iss && userInfo.iss !== 'hanzocd';
     const hasDexConnectors = (authSettings.dexConfig?.connectors?.length ?? 0) > 0;
     const hasOidcConfig = !!authSettings.oidcConfig;
     return isExternalIssuer && (hasDexConnectors || hasOidcConfig);

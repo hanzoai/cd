@@ -1,6 +1,6 @@
-import {Checkbox} from 'argo-ui';
+import {Checkbox} from '../../../../kit/src';
 import * as React from 'react';
-import {ReactForm} from 'argo-ui';
+import {ReactForm} from '../../../../kit/src';
 
 export const CheckboxField = ReactForm.FormField((props: {fieldApi: ReactForm.FieldApi; id: string; className: string; checked: boolean}) => {
     const {

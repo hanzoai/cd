@@ -7,7 +7,7 @@ Once SSO or local users are configured, additional RBAC roles can be defined, an
 
 There are two main components where RBAC configuration can be defined:
 
-- The global RBAC config map (see [argo-rbac-cm.yaml](cd-rbac-cm-yaml.md))
+- The global RBAC config map (see [cd-rbac-cm.yaml](cd-rbac-cm-yaml.md))
 - The [AppProject's roles](../user-guide/projects.md#project-roles)
 
 ## Basic Built-in Roles
@@ -17,7 +17,7 @@ Hanzo CD has two pre-defined roles but RBAC configuration allows defining roles 
 - `role:readonly`: read-only access to all resources
 - `role:admin`: unrestricted access to all resources
 
-These default built-in role definitions can be seen in [builtin-policy.csv](https://github.com/hanzoai/cd/blob/master/assets/builtin-policy.csv)
+These default built-in role definitions can be seen in [builtin-policy.csv](https://github.com/hanzoai/cd/blob/main/assets/builtin-policy.csv)
 
 ## Default Policy for Authenticated Users
 
@@ -186,7 +186,7 @@ p, example-user, applications, update/*, default/prod-app, deny
 #### The `action` action
 
 The `action` action corresponds to either built-in resource customizations defined
-[in the Hanzo CD repository](https://github.com/hanzoai/cd/tree/master/resource_customizations),
+[in the Hanzo CD repository](https://github.com/hanzoai/cd/tree/main/resource_customizations),
 or to [custom resource actions](resource_actions.md#custom-resource-actions) defined by you.
 
 See the [resource actions documentation](resource_actions.md#built-in-actions) for a list of built-in actions.

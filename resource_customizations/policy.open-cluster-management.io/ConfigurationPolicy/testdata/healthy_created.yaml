@@ -11,14 +11,14 @@ spec:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: argo-example
+          name: cd-example
       recreateOption: None
     - complianceType: musthave
       objectDefinition:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: argo-example-2
+          name: cd-example-2
       recreateOption: None
   pruneObjectBehavior: None
   remediationAction: enforce
@@ -29,7 +29,7 @@ status:
       Validity: {}
       conditions:
         - lastTransitionTime: '2024-07-29T16:58:50Z'
-          message: 'namespaces [argo-example] was created successfully'
+          message: 'namespaces [cd-example] was created successfully'
           reason: K8s creation success
           status: 'True'
           type: notification
@@ -37,7 +37,7 @@ status:
       Validity: {}
       conditions:
         - lastTransitionTime: '2024-07-29T16:58:50Z'
-          message: 'namespaces [argo-example-2] was created successfully'
+          message: 'namespaces [cd-example-2] was created successfully'
           reason: K8s creation success
           status: 'True'
           type: notification
@@ -50,7 +50,7 @@ status:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: argo-example
+          name: cd-example
       properties:
         createdByPolicy: true
         uid: 782f50ee-4fa9-41d6-900e-66d9eaf8b111
@@ -60,7 +60,7 @@ status:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: argo-example-2
+          name: cd-example-2
       properties:
         createdByPolicy: true
         uid: ce34051f-a0dc-4db2-9f8f-64cc9223d4d7

@@ -1,0 +1,236 @@
+{{- if .Values.dex.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: dex-server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-dex-server
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: dex-server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-dex-server
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: dex-server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-dex-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hanzocd-dex-server
+subjects:
+- kind: ServiceAccount
+  name: hanzocd-dex-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: dex-server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-dex-server
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-dex-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hanzocd-dex-server
+    spec:
+      serviceAccountName: hanzocd-dex-server
+      initContainers:
+      - name: copyutil
+        image: {{ include "cd.image" . }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: [/bin/cp, -n, /usr/local/bin/cd, /shared/hanzocd-dex]
+        volumeMounts:
+        - mountPath: /shared
+          name: static-files
+        - mountPath: /tmp
+          name: dexconfig
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+      containers:
+      - name: dex
+        # renovate: datasource=github-releases depName=dexidp/dex
+        image: ghcr.io/dexidp/dex:v2.45.0
+        imagePullPolicy: Always
+        command: [/shared/hanzocd-dex, rundex]
+        env:
+          - name: CD_DEX_SERVER_LOGFORMAT
+            valueFrom:
+              configMapKeyRef:
+                key: dexserver.log.format
+                name: hanzocd-cmd-params-cm
+                optional: true
+          - name: CD_DEX_SERVER_LOGLEVEL
+            valueFrom:
+              configMapKeyRef:
+                key: dexserver.log.level
+                name: hanzocd-cmd-params-cm
+                optional: true
+          - name: CD_LOG_FORMAT_TIMESTAMP
+            valueFrom:
+              configMapKeyRef:
+                name: hanzocd-cmd-params-cm
+                key: log.format.timestamp
+                optional: true
+          - name: CD_DEX_SERVER_DISABLE_TLS
+            valueFrom:
+              configMapKeyRef:
+                name: hanzocd-cmd-params-cm
+                key: dexserver.disable.tls
+                optional: true
+          - name: DEX_CONTINUE_ON_CONNECTOR_FAILURE
+            valueFrom:
+              configMapKeyRef:
+                name: hanzocd-cmd-params-cm
+                key: dexserver.connector.failure.continue
+                optional: true
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          seccompProfile:
+            type: RuntimeDefault
+        ports:
+        - containerPort: 5556
+        - containerPort: 5557
+        - containerPort: 5558
+        {{- with .Values.dex.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+        - mountPath: /shared
+          name: static-files
+        - mountPath: /tmp
+          name: dexconfig
+        - mountPath: /tls
+          name: hanzocd-dex-server-tls
+      volumes:
+      - emptyDir: {}
+        name: static-files
+      - emptyDir: {}
+        name: dexconfig
+      - name: hanzocd-dex-server-tls
+        secret:
+          secretName: hanzocd-dex-server-tls
+          optional: true
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+          - key: ca.crt
+            path: ca.crt
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 5
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/part-of: hanzocd
+              topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: dex-server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-dex-server
+spec:
+  ports:
+  - name: http
+    appProtocol: TCP
+    protocol: TCP
+    port: 5556
+    targetPort: 5556
+  - name: grpc
+    protocol: TCP
+    port: 5557
+    targetPort: 5557
+  - name: metrics
+    port: 5558
+    protocol: TCP
+    targetPort: 5558
+  selector:
+    app.kubernetes.io/name: hanzocd-dex-server
+{{- if $.Values.networkPolicy.create }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/name: hanzocd-dex-server
+    app.kubernetes.io/part-of: hanzocd
+    app.kubernetes.io/component: dex-server
+    {{- include "cd.labels" . | nindent 4 }}
+  name: hanzocd-dex-server-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: hanzocd-dex-server
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: hanzocd-server
+      ports:
+        - protocol: TCP
+          port: 5556
+        - protocol: TCP
+          port: 5557
+    - from:
+        - namespaceSelector: { }
+      ports:
+        - port: 5558
+          protocol: TCP
+{{- end }}
+{{- end }}

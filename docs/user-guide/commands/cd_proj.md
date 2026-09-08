@@ -74,7 +74,7 @@ cd proj [flags]
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd proj add-destination](cd_proj_add-destination.md)	 - Add project destination
 * [cd proj add-destination-service-account](cd_proj_add-destination-service-account.md)	 - Add project destination's default service account
 * [cd proj add-orphaned-ignore](cd_proj_add-orphaned-ignore.md)	 - Add a resource to orphaned ignore list

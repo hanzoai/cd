@@ -1,4 +1,4 @@
-import {DataLoader, Tooltip} from 'argo-ui';
+import {DataLoader, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import {Timestamp} from '../../../shared/components/timestamp';
 import {services} from '../../../shared/services';

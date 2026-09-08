@@ -5,7 +5,7 @@ The Plugin generator is a generator type which allows you to provide your own cu
 - You can write in any language
 - Simple: a plugin just responds to RPC HTTP requests.
 - You can use it in a sidecar, or standalone deployment.
-- You can get your plugin running today, no need to wait 3-5 months for review, approval, merge and an Argo software
+- You can get your plugin running today, no need to wait 3-5 months for review, approval, merge and a Hanzo CD
   release.
 - You can combine it with [Matrix generator](Generators-Matrix.md) or [Merge generator](Generators-Merge.md)
 
@@ -148,7 +148,7 @@ data:
 
 You can deploy it either as a sidecar or as a standalone deployment (the latter is recommended).
 
-In the example, the token is stored in a file at this location : `/var/run/argo/token`
+In the example, the token is stored in a file at this location : `/var/run/cd/token`
 
 ```
 strong-password
@@ -158,7 +158,7 @@ strong-password
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-with open("/var/run/argo/token") as f:
+with open("/var/run/cd/token") as f:
     plugin_token = f.read().strip()
 
 
@@ -226,7 +226,7 @@ curl http://localhost:4355/api/v1/getparams.execute -H "Authorization: Bearer st
 Some things to note here:
 
 - You only need to implement the calls `/api/v1/getparams.execute`
-- You should check that the `Authorization` header contains the same bearer value as `/var/run/argo/token`. Return 403 if not
+- You should check that the `Authorization` header contains the same bearer value as `/var/run/cd/token`. Return 403 if not
 - The input parameters are included in the request body and can be accessed using the `input.parameters` variable.
 - The output must always be a list of object maps nested under the `output.parameters` key in a map.
 - `generator.input.parameters` and `values` are reserved keys. If present in the plugin output, these keys will be overwritten by the

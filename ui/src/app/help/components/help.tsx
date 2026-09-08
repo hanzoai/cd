@@ -37,7 +37,7 @@ export const Help = () => {
                                     <div className='columns large-4 small-6'>
                                         <div className='help-box'>
                                             <p>New to Hanzo CD?</p>
-                                            <a className='user-info-panel-buttons argo-button argo-button--base' href='https://docs.hanzo.ai'>
+                                            <a className='user-info-panel-buttons kit-button kit-button--base' href='https://docs.hanzo.ai'>
                                                 Read the docs
                                             </a>
                                         </div>
@@ -45,11 +45,11 @@ export const Help = () => {
                                     <div className='columns large-4 small-6'>
                                         <div className='help-box'>
                                             <p>Want to download the CLI tool?</p>
-                                            {/* Arch-agnostic link: targets the suffix-less /argocd-linux route, which every
+                                            {/* Arch-agnostic link: targets the suffix-less /cd-linux route, which every
                                                 server serves from its own embedded binary regardless of the server's architecture.
                                                 This keeps the UI bundle architecture-independent (no arch baked in) and avoids
                                                 404s on mixed-arch clusters. The arch label is informational only, shown when known. */}
-                                            <a href='download/argocd-linux' className='user-info-panel-buttons argo-button argo-button--base'>
+                                            <a href='download/cd-linux' className='user-info-panel-buttons kit-button kit-button--base'>
                                                 <i className='fab fa-linux' /> Linux{hostArch && ` (${hostArch})`}
                                             </a>
                                             &nbsp;
@@ -60,7 +60,7 @@ export const Help = () => {
                                                 return (
                                                     <>
                                                         &nbsp;
-                                                        <a key={binaryName} href={url} className='user-info-panel-buttons argo-button argo-button--base'>
+                                                        <a key={binaryName} href={url} className='user-info-panel-buttons kit-button kit-button--base'>
                                                             <i
                                                                 className={classNames('fab', {
                                                                     'fa-windows': platform === 'windows',
@@ -78,7 +78,7 @@ export const Help = () => {
                                     <div className='columns large-4 small-6'>
                                         <div className='help-box'>
                                             <p>You want to develop against Hanzo CD's API?</p>
-                                            <a className='user-info-panel-buttons argo-button argo-button--base' href='swagger-ui'>
+                                            <a className='user-info-panel-buttons kit-button kit-button--base' href='swagger-ui'>
                                                 Open the API docs
                                             </a>
                                         </div>

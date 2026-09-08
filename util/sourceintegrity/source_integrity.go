@@ -59,7 +59,7 @@ func lookupGit(si *v1alpha1.SourceIntegrity, repoURL string) gitFunc {
 	}
 	if nPolicies > 1 {
 		// Multiple matching policies is an error. BUT, it has to return a check that fails for every repo.
-		// This is to make sure that a mistake in argo cd configuration does not disable verification until fixed.
+		// This is to make sure that a configuration mistake does not disable verification until fixed.
 		msg := fmt.Sprintf("multiple (%d) git source integrity policies found for repo URL: %s", nPolicies, repoURL)
 		log.Warn(msg)
 		return func(_ context.Context, _ git.Client, _ string) (*v1alpha1.SourceIntegrityCheckResult, string, error) {
@@ -137,7 +137,6 @@ func verify(ctx context.Context, g *v1alpha1.SourceIntegrityGitPolicyGPG, gitCli
 		return nil, "", fmt.Errorf("unknown GPG mode %q configured for GIT source integrity", g.Mode)
 	}
 
-	// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 	signatures, legacyVerification, err := gitClient.LsSignatures(ctx, verifiedRevision, deep)
 	if err != nil {
 		return nil, "", err
@@ -169,7 +168,6 @@ func verify(ctx context.Context, g *v1alpha1.SourceIntegrityGitPolicyGPG, gitCli
 func describeProblems(g *v1alpha1.SourceIntegrityGitPolicyGPG, signatureInfos []git.RevisionSignatureInfo) (problems []string, legacyDescription string) {
 	reportedKeys := make(map[string]any)
 	for _, signatureInfo := range signatureInfos {
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 		if legacyDescription == "" {
 			if signatureInfo.VerificationResult == git.GPGVerificationResultUnsigned {
 				legacyDescription = "Revision is not signed."

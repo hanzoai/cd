@@ -90,7 +90,7 @@ func addSecretMetadata(secret *corev1.Secret, secretType string) {
 	if secret.Annotations == nil {
 		secret.Annotations = map[string]string{}
 	}
-	secret.Annotations[common.AnnotationKeyManagedBy] = common.AnnotationValueManagedByArgoCD
+	secret.Annotations[common.AnnotationKeyManagedBy] = common.AnnotationValueManagedByCD
 
 	if secret.Labels == nil {
 		secret.Labels = map[string]string{}
@@ -101,7 +101,7 @@ func addSecretMetadata(secret *corev1.Secret, secretType string) {
 func (db *db) deleteSecret(ctx context.Context, secret *corev1.Secret) error {
 	var err error
 
-	canDelete := secret.Annotations != nil && secret.Annotations[common.AnnotationKeyManagedBy] == common.AnnotationValueManagedByArgoCD
+	canDelete := secret.Annotations != nil && secret.Annotations[common.AnnotationKeyManagedBy] == common.AnnotationValueManagedByCD
 	if canDelete {
 		err = db.kubeclientset.CoreV1().Secrets(db.ns).Delete(ctx, secret.Name, metav1.DeleteOptions{})
 	} else {

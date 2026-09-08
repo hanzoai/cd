@@ -1,0 +1,351 @@
+@import '../config';
+@import '../theme';
+
+.kit-form-row {
+    position: relative;
+    max-width: 100%;
+    margin: 32px 0;
+    padding: 12px 0 0;
+
+    label {
+        font-size: .9em;
+        @include themify($themes) {                  
+            color: themed('light-kit-gray-6');
+        }
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        &:not(.kit-label-placeholder) {
+            font-size: 13px;
+            text-transform: uppercase;
+
+            & + .kit-field,
+            & + .kit-textarea {
+                margin-top: 8px;
+            }
+        }
+    }
+
+    &__error-msg {
+        padding: 3px 0;
+        color: $kit-failed-color;
+        font-size: 14px;
+
+        i {
+            float: right;
+            margin-top: 6px;
+            font-size: 12px;
+        }
+    }
+
+    &__info {
+        padding: 3px 0;
+        font-size: 14px;
+    }
+
+    &__right {
+        float: right;
+    }
+
+    &__left {
+        float: left;
+    }
+
+    &__half {
+        vertical-align: top;
+        width: 49%;
+        padding: 0;
+        display: inline-block;
+    }
+
+    &__tightened {
+        margin: 15px 0;
+    }
+}
+
+.kit-field,
+.kit-textarea {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 0;
+    font-size: 15px;
+    background-color: transparent;
+    @include themify($themes) {                  
+        color: themed('text-2');
+        border-bottom: 2px solid themed('border');;
+    }
+    border: 0;
+    transition: border .2s;
+
+    .error & {
+        border-color: $kit-failed-color;
+    }
+
+    &:focus {
+        outline: 0;
+        border-color: $kit-color-teal-6;
+    }
+}
+
+.kit-field-container {
+    position: relative;
+    display: grid;
+    padding-top: 12px;
+}
+
+.kit-field-container > .kit-field,
+.kit-field-container > .kit-textarea {
+    grid-area: 1 / 1;
+}
+
+.kit-field-container > label.kit-label-placeholder {
+    grid-area: 1 / 1;
+    align-self: center;
+    justify-self: start;
+    line-height: 1;
+    cursor: text;
+    font-size: 15px;
+    transform: translateY(6px);
+    transition: transform .2s, font .2s, color .2s;
+    pointer-events: none;
+}
+
+.kit-field-container > .kit-field:focus + label.kit-label-placeholder,
+.kit-field-container > .kit-textarea:focus + label.kit-label-placeholder,
+.kit-field-container > .kit-field.kit-focus-out + label.kit-label-placeholder,
+.kit-field-container > .kit-textarea.kit-focus-out + label.kit-label-placeholder {
+    transition: transform .2s, font .2s, color .2s;
+}
+
+.kit-field-container > .kit-field.kit-has-value + label.kit-label-placeholder,
+.kit-field-container > .kit-textarea.kit-has-value + label.kit-label-placeholder,
+.kit-field-container > .kit-field:focus + label.kit-label-placeholder,
+.kit-field-container > .kit-textarea:focus + label.kit-label-placeholder {
+    transform: translateY(-25px);
+    font-size: 12px;
+}
+
+.kit-field-container > .kit-field:focus + label.kit-label-placeholder,
+.kit-field-container > .kit-textarea:focus + label.kit-label-placeholder {
+    color: $kit-color-teal-6;
+}
+
+// Checkbox: render label inline beside the checkbox instead of using the
+// floating-label grid, which would otherwise overlap the checkbox.
+.kit-field-container:has(> .kit-checkbox) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    > label.kit-label-placeholder {
+        transform: none;
+        cursor: pointer;
+        pointer-events: auto;
+    }
+}
+
+.kit-field {
+    // Hide autofill background
+    &:-webkit-autofill {
+        &,
+        &:hover,
+        &:focus,
+        &:active {
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    }
+
+    &__with-action-btn {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px 40px 10px 10px;
+        font-size: 16px;
+        background-color: white;
+        border: 1px solid $kit-color-teal-5;
+        transition: border .2s;
+
+        &:focus {
+            border-color: $kit-color-teal-5;
+        }
+    }
+}
+
+.kit-checkbox {
+    position: relative;
+    display: inline-block;
+
+    & + label {
+        cursor: pointer;
+    }
+
+    input {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        top: 50%;
+        transform: translateY(-50%);
+
+        & + span {
+            display: inline-block;
+            vertical-align: middle;
+            width: 20px;
+            height: 20px;
+            padding-top: 4px;
+            text-align: center;
+            border-radius: 3px;
+            border: 2px solid $kit-color-gray-6;
+            transition: background-color .2s;
+
+            i {
+                display: none;
+                font-size: 12px;
+            }
+        }
+
+        &:checked + span {
+            color: #fff;
+            background-color: $kit-color-teal-6;
+            border: 0;
+
+            i {
+                display: block;
+            }
+        }
+
+        &:focus {
+            outline: 2px solid $kit-color-teal-5 !important;
+        } 
+
+        &:disabled + span {
+            background-color: $kit-color-gray-1;
+            border: 2px solid $kit-color-gray-4;
+        }
+    }
+
+    &:not(:last-child) {
+        input + span {
+            margin-right: 6px;
+        }
+    }
+}
+
+.kit-radio {
+    position: relative;
+    display: inline-block;
+
+    & + label {
+        cursor: pointer;
+    }
+
+    input {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        opacity: 0;
+        cursor: pointer;
+
+        & + span {
+            display: inline-block;
+            vertical-align: middle;
+            width: 20px;
+            height: 20px;
+            margin-right: 6px;
+            padding-top: 4px;
+            border-radius: 50%;
+            border: 2px solid #777;
+            transition: background-color .2s, border-color .2s;
+        }
+
+        &:checked + span {
+            background-color: $kit-color-teal-5;
+            border-color: $kit-color-teal-5;
+            box-shadow: inset 0 0 0 3px $kit-color-gray-1;
+        }
+    }
+}
+
+.kit-checkbox-slide {
+    position: relative;
+    display: inline-block;
+
+    & + label {
+        cursor: pointer;
+    }
+
+    input {
+        position: absolute;
+        width: 30px;
+        height: 20px;
+        z-index: 1;
+        opacity: 0;
+        cursor: pointer;
+        top: 50%;
+        transform: translateY(-50%);
+
+        & + span {
+            position: relative;
+            top: 3px;
+            display: inline-block;
+            width: 30px;
+            height: 14px;
+            margin-right: 6px;
+            background-color: #e3e3e3;
+            border-radius: 7px;
+            box-shadow: inset 1px 1px 2px #aaa;
+
+            &::before {
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                display: inline-block;
+                vertical-align: middle;
+                width: 18px;
+                height: 18px;
+                background-color: #fff;
+                border-radius: 50%;
+                box-shadow: 0 1px 2px #999;
+                transition: left .2s;
+                content: '';
+            }
+        }
+
+        &:checked + span {
+            background-color: lighten($kit-color-teal-5, 30);
+
+            &::before {
+                left: 16px;
+                background-color: $kit-color-teal-5;
+                box-shadow: 0 1px 2px #fff;
+            }
+        }
+    }
+}
+
+.kit-select {
+    height: 40px;
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 0;
+    font-size: 16px;
+    margin-top: 8px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+    box-shadow: none !important;
+    background-color: inherit;
+    -webkit-appearance: none;
+
+    &:focus {
+        border: none;
+        box-shadow: none;
+    }
+
+    & > option {
+        border-radius: 0;
+    }
+
+
+}

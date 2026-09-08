@@ -14,7 +14,7 @@ import (
 // Add a custom CA certificate to the test and also create the certificate file
 // on the file system, so cd-server and cd-repo-server can use it.
 // TODO: Should be moved to the EnsureCleanState since this acts on the controller
-// globally https://github.com/argoproj/argo-cd/issues/24307
+// globally
 func AddCustomCACert(t *testing.T) {
 	t.Helper()
 	caCertPath, err := filepath.Abs("../fixture/certs/cd-test-ca.crt")
@@ -41,7 +41,7 @@ func AddCustomCACert(t *testing.T) {
 	}
 }
 
-// AddCustomSSHKnownHostsKeys adds SSH known hosts data to the Argo CD server
+// AddCustomSSHKnownHostsKeys adds SSH known hosts data to the Hanzo CD server
 // being tested against. The env CD_E2E_SSH_KNOWN_HOSTS lets you specify
 // an optional path to the known hosts file, instead of using the default one.
 func AddCustomSSHKnownHostsKeys(t *testing.T) {

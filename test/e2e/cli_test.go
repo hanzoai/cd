@@ -15,7 +15,7 @@ import (
 	. "github.com/hanzoai/cd/test/e2e/fixture/app"
 )
 
-// createTestPlugin creates a temporary Argo CD CLI plugin script for testing purposes.
+// createTestPlugin creates a temporary Hanzo CD CLI plugin script for testing purposes.
 // The script is written to a temporary directory with executable permissions.
 func createTestPlugin(t *testing.T, name, content string) string {
 	t.Helper()
@@ -33,7 +33,7 @@ func createTestPlugin(t *testing.T, name, content string) string {
 	return pluginPath
 }
 
-// TestCliAppCommand verifies the basic Argo CD CLI commands for app synchronization and listing.
+// TestCliAppCommand verifies the basic Hanzo CD CLI commands for app synchronization and listing.
 func TestCliAppCommand(t *testing.T) {
 	ctx := Given(t)
 	ctx.Path("hook").
@@ -60,11 +60,11 @@ func TestCliAppCommand(t *testing.T) {
 		})
 }
 
-// TestNormalArgoCDCommandsExecuteOverPluginsWithSameName verifies that normal Argo CD CLI commands
+// TestNormalCDCommandsExecuteOverPluginsWithSameName verifies that normal Hanzo CD CLI commands
 // take precedence over plugins with the same name when both exist in the path.
-func TestNormalArgoCDCommandsExecuteOverPluginsWithSameName(t *testing.T) {
+func TestNormalCDCommandsExecuteOverPluginsWithSameName(t *testing.T) {
 	pluginScript := `#!/bin/bash
-	echo "I am a plugin, not Argo CD!"
+	echo "I am a plugin, not Hanzo CD!"
 	exit 0`
 
 	pluginPath := createTestPlugin(t, "app", pluginScript)
@@ -84,7 +84,7 @@ func TestNormalArgoCDCommandsExecuteOverPluginsWithSameName(t *testing.T) {
 			output, err := RunCli("app", "sync", ctx.AppName(), "--timeout", "90")
 			require.NoError(t, err)
 
-			assert.NotContains(t, NormalizeOutput(output), "I am a plugin, not Argo CD!")
+			assert.NotContains(t, NormalizeOutput(output), "I am a plugin, not Hanzo CD!")
 
 			vars := map[string]any{"Name": ctx.AppName(), "Namespace": ctx.DeploymentNamespace()}
 			assert.Contains(t, NormalizeOutput(output), Tmpl(t, `Pod {{.Namespace}} pod Synced Progressing pod/pod created`, vars))
@@ -97,7 +97,7 @@ func TestNormalArgoCDCommandsExecuteOverPluginsWithSameName(t *testing.T) {
 			output, err := RunCli("app", "list")
 			require.NoError(t, err)
 
-			assert.NotContains(t, NormalizeOutput(output), "I am a plugin, not Argo CD!")
+			assert.NotContains(t, NormalizeOutput(output), "I am a plugin, not Hanzo CD!")
 
 			expected := Tmpl(
 				t,
@@ -107,7 +107,7 @@ func TestNormalArgoCDCommandsExecuteOverPluginsWithSameName(t *testing.T) {
 		})
 }
 
-// TestCliPluginExecution tests the execution of a valid Argo CD CLI plugin.
+// TestCliPluginExecution tests the execution of a valid Hanzo CD CLI plugin.
 func TestCliPluginExecution(t *testing.T) {
 	pluginScript := `#!/bin/bash
 	echo "Hello from myplugin"
@@ -243,8 +243,8 @@ func TestCliPluginStdinHandling(t *testing.T) {
 	}{
 		{
 			"Single line input",
-			"Hello, ArgoCD!",
-			"Received: Hello, ArgoCD!",
+			"Hello, Hanzo CD!",
+			"Received: Hello, Hanzo CD!",
 		},
 		{
 			"Multiline input",

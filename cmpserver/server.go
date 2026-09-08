@@ -29,8 +29,8 @@ import (
 	grpc_util "github.com/hanzoai/cd/util/grpc"
 )
 
-// ArgoCDCMPServer is the config management plugin server implementation
-type ArgoCDCMPServer struct {
+// CMPServer is the config management plugin server implementation
+type CMPServer struct {
 	opts          []grpc.ServerOption
 	initConstants plugin.CMPServerInitConstants
 	stopCh        chan os.Signal
@@ -39,7 +39,7 @@ type ArgoCDCMPServer struct {
 }
 
 // NewServer returns a new instance of the Hanzo CD config management plugin server
-func NewServer(initConstants plugin.CMPServerInitConstants) (*ArgoCDCMPServer, error) {
+func NewServer(initConstants plugin.CMPServerInitConstants) (*CMPServer, error) {
 	var serverMetricsOptions []grpc_prometheus.ServerMetricsOption
 	if os.Getenv(common.EnvEnableGRPCTimeHistogramEnv) == "true" {
 		serverMetricsOptions = append(serverMetricsOptions, grpc_prometheus.WithServerHandlingTimeHistogram())
@@ -73,7 +73,7 @@ func NewServer(initConstants plugin.CMPServerInitConstants) (*ArgoCDCMPServer, e
 		grpc.StatsHandler(otelgrpc.NewServerHandler()),
 	}
 
-	return &ArgoCDCMPServer{
+	return &CMPServer{
 		opts:          serverOpts,
 		stopCh:        make(chan os.Signal),
 		doneCh:        make(chan any),
@@ -81,7 +81,7 @@ func NewServer(initConstants plugin.CMPServerInitConstants) (*ArgoCDCMPServer, e
 	}, nil
 }
 
-func (a *ArgoCDCMPServer) Run() {
+func (a *CMPServer) Run() {
 	config := a.initConstants.PluginConfig
 
 	// Listen on the socket address
@@ -105,7 +105,7 @@ func (a *ArgoCDCMPServer) Run() {
 }
 
 // CreateGRPC creates new configured grpc server
-func (a *ArgoCDCMPServer) CreateGRPC() (*grpc.Server, error) {
+func (a *CMPServer) CreateGRPC() (*grpc.Server, error) {
 	server := grpc.NewServer(a.opts...)
 	versionpkg.RegisterVersionServiceServer(server, version.NewServer(nil, func() (bool, error) {
 		return true, nil
@@ -126,7 +126,7 @@ func (a *ArgoCDCMPServer) CreateGRPC() (*grpc.Server, error) {
 	return server, nil
 }
 
-func (a *ArgoCDCMPServer) Shutdown(address string) {
+func (a *CMPServer) Shutdown(address string) {
 	defer signal.Stop(a.stopCh)
 	a.sig = <-a.stopCh
 	_ = os.Remove(address)

@@ -58,10 +58,10 @@ import (
 
 const (
 	MetaDataTokenKey = "token"
-	// EnvArgoCDServer is the environment variable to look for an Hanzo CD server address
-	EnvArgoCDServer = "CD_SERVER"
-	// EnvArgoCDAuthToken is the environment variable to look for an Hanzo CD auth token
-	EnvArgoCDAuthToken = "CD_AUTH_TOKEN"
+	// EnvServer is the environment variable to look for an Hanzo CD server address
+	EnvServer = "CD_SERVER"
+	// EnvAuthToken is the environment variable to look for an Hanzo CD auth token
+	EnvAuthToken = "CD_AUTH_TOKEN"
 )
 
 // MaxGRPCMessageSize contains max grpc message size
@@ -202,10 +202,10 @@ func NewClient(opts *ClientOptions) (Client, error) {
 	if opts.UserAgent != "" {
 		c.UserAgent = opts.UserAgent
 	} else {
-		c.UserAgent = fmt.Sprintf("%s/%s", common.ArgoCDUserAgentName, common.GetVersion().Version)
+		c.UserAgent = fmt.Sprintf("%s/%s", common.UserAgentName, common.GetVersion().Version)
 	}
 	// Override server address if specified in env or CLI flag
-	c.ServerAddr = env.StringFromEnv(EnvArgoCDServer, c.ServerAddr)
+	c.ServerAddr = env.StringFromEnv(EnvServer, c.ServerAddr)
 	if opts.PortForward || opts.PortForwardNamespace != "" {
 		if opts.KubeOverrides == nil {
 			opts.KubeOverrides = &clientcmd.ConfigOverrides{}
@@ -227,7 +227,7 @@ func NewClient(opts *ClientOptions) (Client, error) {
 		return nil, errors.New("Hanzo CD server address unspecified")
 	}
 	// Override auth-token if specified in env variable or CLI flag
-	c.AuthToken = env.StringFromEnv(EnvArgoCDAuthToken, c.AuthToken)
+	c.AuthToken = env.StringFromEnv(EnvAuthToken, c.AuthToken)
 	if opts.AuthToken != "" {
 		c.AuthToken = strings.TrimSpace(opts.AuthToken)
 	}
@@ -332,7 +332,7 @@ func (c *client) OIDCConfig(ctx context.Context, set *settingspkg.Settings) (*oa
 		issuerURL = set.OIDCConfig.Issuer
 		scopes = oidcutil.GetScopesOrDefault(set.OIDCConfig.Scopes)
 	case set.DexConfig != nil && len(set.DexConfig.Connectors) > 0:
-		clientID = common.ArgoCDCLIClientAppID
+		clientID = common.CLIClientAppID
 		scopes = append(oidcutil.GetScopesOrDefault(nil), common.DexFederatedScope)
 		issuerURL = fmt.Sprintf("%s%s", set.URL, common.DexAPIEndpoint)
 	default:

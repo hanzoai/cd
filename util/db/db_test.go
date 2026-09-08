@@ -52,17 +52,17 @@ func TestCreateRepository(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	repo, err := db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://github.com/hanzocd/example-apps",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
+	assert.Equal(t, "https://github.com/hanzocd/example-apps", repo.Repo)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(repoSecretPrefix, repo.Repo, ""), metav1.GetOptions{})
 	require.NoError(t, err)
 
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "test-username", string(secret.Data[username]))
 	assert.Equal(t, "test-password", string(secret.Data[password]))
 	assert.Empty(t, secret.Data[sshPrivateKey])
@@ -73,7 +73,7 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	repo, err := db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://github.com/hanzocd/example-apps",
 		Username: "test-username",
 		Password: "test-password",
 		Project:  "test-project",
@@ -81,7 +81,7 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 	require.NoError(t, err)
 
 	otherRepo, err := db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://github.com/hanzocd/example-apps",
 		Username: "other-username",
 		Password: "other-password",
 		Project:  "other-project",
@@ -89,18 +89,18 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://github.com/hanzocd/example-apps",
 		Username: "wrong-username",
 		Password: "wrong-password",
 	})
 	require.NoError(t, err)
 
-	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
+	assert.Equal(t, "https://github.com/hanzocd/example-apps", repo.Repo)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(repoSecretPrefix, repo.Repo, "test-project"), metav1.GetOptions{})
 	require.NoError(t, err)
 
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "test-username", string(secret.Data[username]))
 	assert.Equal(t, "test-password", string(secret.Data[password]))
 	assert.Equal(t, "test-project", string(secret.Data[project]))
@@ -108,7 +108,7 @@ func TestCreateProjectScopedRepository(t *testing.T) {
 
 	secret, err = clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(repoSecretPrefix, otherRepo.Repo, "other-project"), metav1.GetOptions{})
 	require.NoError(t, err)
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "other-username", string(secret.Data[username]))
 	assert.Equal(t, "other-password", string(secret.Data[password]))
 	assert.Equal(t, "other-project", string(secret.Data[project]))
@@ -120,17 +120,17 @@ func TestCreateRepoCredentials(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	creds, err := db.CreateRepositoryCredentials(t.Context(), &v1alpha1.RepoCreds{
-		URL:      "https://github.com/argoproj/",
+		URL:      "https://github.com/hanzocd/",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/", creds.URL)
+	assert.Equal(t, "https://github.com/hanzocd/", creds.URL)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(credSecretPrefix, creds.URL, ""), metav1.GetOptions{})
 	require.NoError(t, err)
 
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "test-username", string(secret.Data[username]))
 	assert.Equal(t, "test-password", string(secret.Data[password]))
 	assert.Empty(t, secret.Data[sshPrivateKey])
@@ -156,17 +156,17 @@ func TestCreateWriteRepoCredentials(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	creds, err := db.CreateWriteRepositoryCredentials(t.Context(), &v1alpha1.RepoCreds{
-		URL:      "https://github.com/argoproj/",
+		URL:      "https://github.com/hanzocd/",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/", creds.URL)
+	assert.Equal(t, "https://github.com/hanzocd/", creds.URL)
 
 	secret, err := clientset.CoreV1().Secrets(testNamespace).Get(t.Context(), RepoURLToSecretName(credWriteSecretPrefix, creds.URL, ""), metav1.GetOptions{})
 	require.NoError(t, err)
 
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 	assert.Equal(t, "test-username", string(secret.Data[username]))
 	assert.Equal(t, "test-password", string(secret.Data[password]))
 	assert.Empty(t, secret.Data[sshPrivateKey])
@@ -280,14 +280,14 @@ func TestCreateExistingRepository(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	_, err := db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://github.com/hanzocd/example-apps",
 		Username: "test-username",
 		Password: "test-password",
 	})
 	require.NoError(t, err)
 
 	_, err = db.CreateRepository(t.Context(), &v1alpha1.Repository{
-		Repo:     "https://github.com/argoproj/argocd-example-apps",
+		Repo:     "https://github.com/hanzocd/example-apps",
 		Username: "test-username",
 		Password: "test-password",
 	})
@@ -301,7 +301,7 @@ func TestGetRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "known-repo-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepository,
@@ -315,7 +315,7 @@ func TestGetRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "secured-repo-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepository,
@@ -329,7 +329,7 @@ func TestGetRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "secured-repo-creds-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepoCreds,
@@ -379,7 +379,7 @@ func TestGetWriteRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "known-repo-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepositoryWrite,
@@ -393,7 +393,7 @@ func TestGetWriteRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "secured-repo-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepositoryWrite,
@@ -407,7 +407,7 @@ func TestGetWriteRepository(t *testing.T) {
 			Namespace: testNamespace,
 			Name:      "secured-repo-creds-secret",
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Labels: map[string]string{
 				common.LabelKeySecretType: common.LabelValueSecretTypeRepoCredsWrite,
@@ -465,7 +465,7 @@ func TestCreateClusterSuccessful(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, server, string(secret.Data["server"]))
-	assert.Equal(t, common.AnnotationValueManagedByArgoCD, secret.Annotations[common.AnnotationKeyManagedBy])
+	assert.Equal(t, common.AnnotationValueManagedByCD, secret.Annotations[common.AnnotationKeyManagedBy])
 }
 
 func TestDeleteClusterWithManagedSecret(t *testing.T) {
@@ -480,7 +480,7 @@ func TestDeleteClusterWithManagedSecret(t *testing.T) {
 				common.LabelKeySecretType: common.LabelValueSecretTypeCluster,
 			},
 			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByArgoCD,
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 		},
 		Data: map[string][]byte{
@@ -533,26 +533,26 @@ func TestFuzzyEquivalence(t *testing.T) {
 	db := NewDB(testNamespace, settings.NewSettingsManager(t.Context(), clientset, testNamespace), clientset)
 
 	repo, err := db.CreateRepository(ctx, &v1alpha1.Repository{
-		Repo: "https://github.com/argoproj/argocd-example-apps",
+		Repo: "https://github.com/hanzocd/example-apps",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
+	assert.Equal(t, "https://github.com/hanzocd/example-apps", repo.Repo)
 
 	repo, err = db.CreateRepository(ctx, &v1alpha1.Repository{
-		Repo: "https://github.com/argoproj/argocd-example-apps.git",
+		Repo: "https://github.com/hanzocd/example-apps.git",
 	})
 	require.ErrorContains(t, err, "already exists")
 	assert.Nil(t, repo)
 
 	repo, err = db.CreateRepository(ctx, &v1alpha1.Repository{
-		Repo: "https://github.com/argoproj/cd-example-APPS",
+		Repo: "https://github.com/HanzoCD/Example-Apps",
 	})
 	require.ErrorContains(t, err, "already exists")
 	assert.Nil(t, repo)
 
-	repo, err = db.GetRepository(ctx, "https://github.com/argoproj/cd-example-APPS", "")
+	repo, err = db.GetRepository(ctx, "https://github.com/HanzoCD/Example-Apps", "")
 	require.NoError(t, err)
-	assert.Equal(t, "https://github.com/argoproj/argocd-example-apps", repo.Repo)
+	assert.Equal(t, "https://github.com/hanzocd/example-apps", repo.Repo)
 }
 
 func TestGetApplicationControllerReplicas(t *testing.T) {

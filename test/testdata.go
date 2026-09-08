@@ -5,7 +5,7 @@ import (
 
 	"github.com/alicebob/miniredis/v2"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/testing"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -108,10 +108,10 @@ func NewFakeConfigMap() *corev1.ConfigMap {
 			APIVersion: "v1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: make(map[string]string),
@@ -126,10 +126,10 @@ func NewFakeSecret() *corev1.Secret {
 			APIVersion: "v1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: FakeArgoCDNamespace,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: map[string][]byte{
@@ -167,16 +167,16 @@ func NewFakeProjListerFromInterface(appProjects appclient.AppProjectInterface) a
 func NewFakeProjLister(objects ...runtime.Object) applister.AppProjectNamespaceLister {
 	fakeAppClientset := apps.NewSimpleClientset(objects...)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppClientset, 0, appinformer.WithNamespace(""), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
-	projInformer := factory.Argoproj().V1alpha1().AppProjects().Informer()
+	projInformer := factory.Apps().V1alpha1().AppProjects().Informer()
 	cancel := StartInformer(projInformer)
 	defer cancel()
-	return factory.Argoproj().V1alpha1().AppProjects().Lister().AppProjects(FakeArgoCDNamespace)
+	return factory.Apps().V1alpha1().AppProjects().Lister().AppProjects(FakeArgoCDNamespace)
 }
 
-func NewInMemoryRedis() (*redis.Client, func()) {
+func NewInMemoryRedis() (*kv.Client, func()) {
 	mr, err := miniredis.Run()
 	if err != nil {
 		panic(err)
 	}
-	return redis.NewClient(&redis.Options{Addr: mr.Addr()}), mr.Close
+	return kv.NewClient(&kv.Options{Addr: mr.Addr()}), mr.Close
 }

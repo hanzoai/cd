@@ -6,7 +6,7 @@ spec:
   generators:
   - scmProvider:
       github:
-        organization: argoproj
+        organization: hanzocd
       cloneProtocol: https
       filters:
       - repositoryMatch: example-apps

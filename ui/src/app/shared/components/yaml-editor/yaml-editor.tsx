@@ -1,4 +1,4 @@
-import {ErrorNotification, NotificationType} from 'argo-ui';
+import {ErrorNotification, NotificationType} from '../../../../kit/src';
 import * as jsYaml from 'js-yaml';
 import * as monacoEditor from 'monaco-editor';
 import * as React from 'react';
@@ -67,15 +67,15 @@ export function YamlEditor<T>(props: YamlEditorProps<T>) {
                 <div className='yaml-editor__buttons'>
                     {editing ? (
                         <>
-                            <button onClick={handleSave} className='argo-button argo-button--base'>
+                            <button onClick={handleSave} className='kit-button kit-button--base'>
                                 Save
                             </button>{' '}
-                            <button onClick={handleCancel} className='argo-button argo-button--base-o'>
+                            <button onClick={handleCancel} className='kit-button kit-button--base-o'>
                                 Cancel
                             </button>
                         </>
                     ) : (
-                        <button onClick={() => setEditing(true)} className='argo-button argo-button--base'>
+                        <button onClick={() => setEditing(true)} className='kit-button kit-button--base'>
                             Edit
                         </button>
                     )}

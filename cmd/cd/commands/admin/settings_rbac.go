@@ -295,7 +295,7 @@ cd admin settings rbac validate --namespace cd
 	}
 	clientConfig = cli.AddKubectlFlagsToCmd(command)
 	command.Flags().StringVar(&policyFile, "policy-file", "", "path to the policy file to use")
-	command.Flags().StringVar(&namespace, "namespace", "", "namespace to get argo rbac configmap from")
+	command.Flags().StringVar(&namespace, "namespace", "", "namespace to get the rbac configmap from")
 
 	return command
 }
@@ -362,7 +362,7 @@ func getPolicyFromConfigMap(cm *corev1.ConfigMap) (string, string, string) {
 
 // getPolicyConfigMap fetches the RBAC config map from K8s cluster
 func getPolicyConfigMap(ctx context.Context, client kubernetes.Interface, namespace string) (*corev1.ConfigMap, error) {
-	cm, err := client.CoreV1().ConfigMaps(namespace).Get(ctx, common.ArgoCDRBACConfigMapName, metav1.GetOptions{})
+	cm, err := client.CoreV1().ConfigMaps(namespace).Get(ctx, common.RBACConfigMapName, metav1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}

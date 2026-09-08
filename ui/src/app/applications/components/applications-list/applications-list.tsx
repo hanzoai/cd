@@ -1,7 +1,7 @@
-import {ErrorNotification, MockupList, NotificationType, SlidingPanel, Tooltip} from 'argo-ui';
+import {ErrorNotification, MockupList, NotificationType, SlidingPanel, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {KeybindingProvider} from 'argo-ui/v2';
+import {KeybindingProvider} from '../../../../kit/v2';
 import {RouteComponentProps} from 'react-router';
 import {combineLatest, from, merge, Observable} from 'rxjs';
 import {bufferTime, delay, filter, map, mergeMap, repeat, retryWhen} from 'rxjs/operators';
@@ -246,7 +246,7 @@ const ApplicationsListSearchBar = (props: {content: string; ctx: ContextApis; ap
                 },
                 renderItem: item => (
                     <React.Fragment>
-                        <i className='icon argo-icon-application' /> {item.label}
+                        <i className='icon kit-icon-application' /> {item.label}
                     </React.Fragment>
                 )
             }}
@@ -269,7 +269,7 @@ const ApplicationsToolbar: React.FC<ApplicationsToolbarProps> = ({applications, 
             <ApplicationsListSearchBar content={query.get('search')} apps={applications} ctx={ctx} />
             <Tooltip content='Toggle Health Status Bar'>
                 <button
-                    className={`applications-list__accordion argo-button argo-button--base${healthBarPrefs.showHealthStatusBar ? '-o' : ''}`}
+                    className={`applications-list__accordion kit-button kit-button--base${healthBarPrefs.showHealthStatusBar ? '-o' : ''}`}
                     style={{border: 'none'}}
                     onClick={() => {
                         const showHealthStatusBar = !healthBarPrefs.showHealthStatusBar;
@@ -377,7 +377,7 @@ export const ApplicationsList = (props: RouteComponentProps<any>) => {
                                         ref={loaderRef}
                                         load={() => AppUtils.handlePageVisibility(() => loadApplications(pref.projectsFilter, query.get('appNamespace')))}
                                         loadingRenderer={() => (
-                                            <div className='argo-container'>
+                                            <div className='kit-container'>
                                                 <MockupList height={100} marginTop={30} />
                                             </div>
                                         )}>
@@ -431,12 +431,12 @@ export const ApplicationsList = (props: RouteComponentProps<any>) => {
                                                     />
                                                     <div className='applications-list'>
                                                         {apps.length === 0 && pref.projectsFilter?.length === 0 && (pref.labelsFilter || []).length === 0 ? (
-                                                            <EmptyState icon='argo-icon-application'>
+                                                            <EmptyState icon='kit-icon-application'>
                                                                 <h4>No applications available to you just yet</h4>
                                                                 <h5>Create new application to start managing resources in your cluster</h5>
                                                                 <button
                                                                     qe-id='applications-list-button-create-application'
-                                                                    className='argo-button argo-button--base'
+                                                                    className='kit-button kit-button--base'
                                                                     onClick={() => ctx.navigation.goto('.', {new: JSON.stringify({})}, {replace: true})}>
                                                                     Create application
                                                                 </button>
@@ -563,7 +563,7 @@ export const ApplicationsList = (props: RouteComponentProps<any>) => {
                                                             <div>
                                                                 <button
                                                                     qe-id='applications-list-button-create'
-                                                                    className='argo-button argo-button--base'
+                                                                    className='kit-button kit-button--base'
                                                                     disabled={isAppCreatePending}
                                                                     onClick={() => createApi && createApi.submitForm(null)}>
                                                                     <Spinner show={isAppCreatePending} style={{marginRight: '5px'}} />
@@ -572,7 +572,7 @@ export const ApplicationsList = (props: RouteComponentProps<any>) => {
                                                                 <button
                                                                     qe-id='applications-list-button-cancel'
                                                                     onClick={() => ctx.navigation.goto('.', {new: null}, {replace: true})}
-                                                                    className='argo-button argo-button--base-o'>
+                                                                    className='kit-button kit-button--base-o'>
                                                                     Cancel
                                                                 </button>
                                                             </div>

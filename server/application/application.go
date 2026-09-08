@@ -17,6 +17,7 @@ import (
 	cacheutil "github.com/hanzoai/cd/util/cache"
 	"github.com/hanzoai/cd/util/sourceintegrity"
 
+	jsonpatch "github.com/evanphx/json-patch"
 	kubecache "github.com/hanzoai/cd/gitops-engine/pkg/cache"
 	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"github.com/hanzoai/cd/gitops-engine/pkg/health"
@@ -24,7 +25,6 @@ import (
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	"github.com/hanzoai/cd/util/vendored/sync"
-	jsonpatch "github.com/evanphx/json-patch"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -41,7 +41,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 
-	argocommon "github.com/hanzoai/cd/common"
+	cdcommon "github.com/hanzoai/cd/common"
 	"github.com/hanzoai/cd/pkg/apiclient/application"
 	eventspb "github.com/hanzoai/cd/pkg/apiclient/events"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
@@ -70,7 +70,7 @@ import (
 	resourceutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
 
 	applicationType "github.com/hanzoai/cd/pkg/apis/application"
-	argodiff "github.com/hanzoai/cd/util/cd/diff"
+	cddiff "github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
 	kubeutil "github.com/hanzoai/cd/util/kube"
 )
@@ -84,7 +84,7 @@ const (
 
 var (
 	ErrCacheMiss       = cacheutil.ErrCacheMiss
-	watchAPIBufferSize = env.ParseNumFromEnv(argocommon.EnvWatchAPIBufferSize, 1000, 0, math.MaxInt32)
+	watchAPIBufferSize = env.ParseNumFromEnv(cdcommon.EnvWatchAPIBufferSize, 1000, 0, math.MaxInt32)
 )
 
 // Server provides an Application service
@@ -190,13 +190,13 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 		if err := s.enf.EnforceErr(ctx.Value("claims"), rbac.ResourceApplications, action, givenRBACName); err != nil {
 			logCtx.WithFields(map[string]any{
 				"project":                project,
-				argocommon.SecurityField: argocommon.SecurityMedium,
+				cdcommon.SecurityField: cdcommon.SecurityMedium,
 			}).Warnf("user tried to %s application which they do not have access to: %s", action, err)
 			// Do a GET on the app. This ensures that the timing of a "no access" response is the same as a "yes access,
 			// but the app is in a different project" response. We don't want the user inferring the existence of the
 			// app from response time.
 			_, _ = getApp()
-			return nil, nil, argocommon.PermissionDeniedAPIError
+			return nil, nil, cdcommon.PermissionDeniedAPIError
 		}
 	}
 	a, err := getApp()
@@ -209,10 +209,10 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 			// We don't know if the user was allowed to get the Application, and we don't want to leak information about
 			// the Application's existence. Return 403.
 			logCtx.Warn("application does not exist")
-			return nil, nil, argocommon.PermissionDeniedAPIError
+			return nil, nil, cdcommon.PermissionDeniedAPIError
 		}
 		logCtx.Errorf("failed to get application: %s", err)
-		return nil, nil, argocommon.PermissionDeniedAPIError
+		return nil, nil, cdcommon.PermissionDeniedAPIError
 	}
 	// Even if we performed an initial RBAC check (because the request was fully parameterized), we still need to
 	// perform a second RBAC check to ensure that the user has access to the actual Application's project (not just the
@@ -220,7 +220,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 	if err := s.enf.EnforceErr(ctx.Value("claims"), rbac.ResourceApplications, action, a.RBACName(s.ns)); err != nil {
 		logCtx.WithFields(map[string]any{
 			"project":                a.Spec.Project,
-			argocommon.SecurityField: argocommon.SecurityMedium,
+			cdcommon.SecurityField: cdcommon.SecurityMedium,
 		}).Warnf("user tried to %s application which they do not have access to: %s", action, err)
 		if project != "" {
 			// The user specified a project. We would have returned a 404 if the user had access to the app, but the app
@@ -230,7 +230,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 		}
 		// The user didn't specify a project. We always return permission denied for both lack of access and lack of
 		// existence.
-		return nil, nil, argocommon.PermissionDeniedAPIError
+		return nil, nil, cdcommon.PermissionDeniedAPIError
 	}
 	effectiveProject := "default"
 	if a.Spec.Project != "" {
@@ -239,7 +239,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 	if project != "" && effectiveProject != project {
 		logCtx.WithFields(map[string]any{
 			"project":                a.Spec.Project,
-			argocommon.SecurityField: argocommon.SecurityMedium,
+			cdcommon.SecurityField: cdcommon.SecurityMedium,
 		}).Warnf("user tried to %s application in project %s, but the application is in project %s", action, project, effectiveProject)
 		// The user has access to the app, but the app is in a different project. Return 404, meaning "app doesn't
 		// exist in that project".
@@ -275,7 +275,7 @@ func (s *Server) getApplicationEnforceRBACClient(ctx context.Context, action, pr
 		if !s.isNamespaceEnabled(namespaceOrDefault) {
 			return nil, security.NamespaceNotPermittedError(namespaceOrDefault)
 		}
-		app, err := s.appclientset.ArgoprojV1alpha1().Applications(namespaceOrDefault).Get(ctx, name, metav1.GetOptions{
+		app, err := s.appclientset.AppsV1alpha1().Applications(namespaceOrDefault).Get(ctx, name, metav1.GetOptions{
 			ResourceVersion: resourceVersion,
 		})
 		if err != nil {
@@ -384,12 +384,12 @@ func (s *Server) Create(ctx context.Context, q *application.ApplicationCreateReq
 	if a.Operation != nil {
 		log.WithFields(applog.GetAppLogFields(a)).
 			WithFields(log.Fields{
-				argocommon.SecurityField: argocommon.SecurityLow,
+				cdcommon.SecurityField: cdcommon.SecurityLow,
 			}).Warn("User attempted to set operation on application creation. This could have allowed them to bypass branch protection rules by setting manifests directly. Ignoring the set operation.")
 		a.Operation = nil
 	}
 
-	created, err := s.appclientset.ArgoprojV1alpha1().Applications(appNs).Create(ctx, a, metav1.CreateOptions{})
+	created, err := s.appclientset.AppsV1alpha1().Applications(appNs).Create(ctx, a, metav1.CreateOptions{})
 	if err == nil {
 		s.logAppEvent(ctx, created, cd.EventReasonResourceCreated, "created application")
 		s.waitSync(created)
@@ -807,7 +807,7 @@ func (s *Server) Get(ctx context.Context, q *application.ApplicationQuery) (*v1a
 	if *q.Refresh == string(v1alpha1.RefreshTypeHard) {
 		refreshType = v1alpha1.RefreshTypeHard
 	}
-	appIf := s.appclientset.ArgoprojV1alpha1().Applications(appNs)
+	appIf := s.appclientset.AppsV1alpha1().Applications(appNs)
 
 	// subscribe early with buffered channel to ensure we don't miss events
 	events := make(chan *v1alpha1.ApplicationWatchEvent, watchAPIBufferSize)
@@ -1029,7 +1029,7 @@ func (s *Server) updateApp(ctx context.Context, app *v1alpha1.Application, newAp
 
 		app.Finalizers = newApp.Finalizers
 
-		res, err := s.appclientset.ArgoprojV1alpha1().Applications(app.Namespace).Update(ctx, app, metav1.UpdateOptions{})
+		res, err := s.appclientset.AppsV1alpha1().Applications(app.Namespace).Update(ctx, app, metav1.UpdateOptions{})
 		if err == nil {
 			s.logAppEvent(ctx, app, cd.EventReasonResourceUpdated, "updated application spec")
 			s.waitSync(res)
@@ -1039,7 +1039,7 @@ func (s *Server) updateApp(ctx context.Context, app *v1alpha1.Application, newAp
 			return nil, err
 		}
 
-		app, err = s.appclientset.ArgoprojV1alpha1().Applications(app.Namespace).Get(ctx, newApp.Name, metav1.GetOptions{})
+		app, err = s.appclientset.AppsV1alpha1().Applications(app.Namespace).Get(ctx, newApp.Name, metav1.GetOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("error getting application: %w", err)
 		}
@@ -1154,7 +1154,7 @@ func (s *Server) getAppProject(ctx context.Context, a *v1alpha1.Application, log
 	// Unknown error, log it but return the vague error to the user
 	logCtx.WithFields(map[string]any{
 		"project":                a.Spec.Project,
-		argocommon.SecurityField: argocommon.SecurityMedium,
+		cdcommon.SecurityField: cdcommon.SecurityMedium,
 	}).Warnf("error getting app project: %s", err)
 	return nil, vagueError
 }
@@ -1210,13 +1210,13 @@ func (s *Server) Delete(ctx context.Context, q *application.ApplicationDeleteReq
 		if err != nil {
 			return nil, fmt.Errorf("error marshaling finalizers: %w", err)
 		}
-		_, err = s.appclientset.ArgoprojV1alpha1().Applications(a.Namespace).Patch(ctx, a.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+		_, err = s.appclientset.AppsV1alpha1().Applications(a.Namespace).Patch(ctx, a.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("error patching application with finalizers: %w", err)
 		}
 	}
 
-	err = s.appclientset.ArgoprojV1alpha1().Applications(appNs).Delete(ctx, appName, metav1.DeleteOptions{})
+	err = s.appclientset.AppsV1alpha1().Applications(appNs).Delete(ctx, appName, metav1.DeleteOptions{})
 	if err != nil {
 		return nil, fmt.Errorf("error deleting application: %w", err)
 	}
@@ -1336,7 +1336,7 @@ func (s *Server) validateAndNormalizeApp(ctx context.Context, app *v1alpha1.Appl
 	}
 
 	appNs := s.appNamespaceOrDefault(app.Namespace)
-	currApp, err := s.appclientset.ArgoprojV1alpha1().Applications(appNs).Get(ctx, app.Name, metav1.GetOptions{})
+	currApp, err := s.appclientset.AppsV1alpha1().Applications(appNs).Get(ctx, app.Name, metav1.GetOptions{})
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			return fmt.Errorf("error getting application by name: %w", err)
@@ -1493,7 +1493,7 @@ func (s *Server) getAppLiveResource(ctx context.Context, action string, q *appli
 		action = fmt.Sprintf("%s/%s/%s/%s/%s", action, q.GetGroup(), q.GetKind(), q.GetNamespace(), q.GetResourceName())
 	}
 	a, p, err := s.getApplicationEnforceRBACInformer(ctx, action, q.GetProject(), q.GetAppNamespace(), q.GetName())
-	if !fineGrainedInheritanceDisabled && err != nil && errors.Is(err, argocommon.PermissionDeniedAPIError) && (action == rbac.ActionDelete || action == rbac.ActionUpdate) {
+	if !fineGrainedInheritanceDisabled && err != nil && errors.Is(err, cdcommon.PermissionDeniedAPIError) && (action == rbac.ActionDelete || action == rbac.ActionUpdate) {
 		action = fmt.Sprintf("%s/%s/%s/%s/%s", action, q.GetGroup(), q.GetKind(), q.GetNamespace(), q.GetResourceName())
 		a, _, err = s.getApplicationEnforceRBACInformer(ctx, action, q.GetProject(), q.GetAppNamespace(), q.GetName())
 	}
@@ -1688,7 +1688,6 @@ func (s *Server) RevisionMetadata(ctx context.Context, q *application.RevisionMe
 		Repo:            repo,
 		Revision:        q.GetRevision(),
 		SourceIntegrity: sourceIntegrity,
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 		CheckSignature: sourceIntegrity != nil, // nolint:staticcheck
 	})
 }
@@ -2176,7 +2175,7 @@ func (s *Server) Sync(ctx context.Context, syncReq *application.ApplicationSyncR
 
 	appName := syncReq.GetName()
 	appNs := s.appNamespaceOrDefault(syncReq.GetAppNamespace())
-	appIf := s.appclientset.ArgoprojV1alpha1().Applications(appNs)
+	appIf := s.appclientset.AppsV1alpha1().Applications(appNs)
 	a, err = cd.SetAppOperation(appIf, appName, &op)
 	if err != nil {
 		return nil, fmt.Errorf("error setting app operation: %w", err)
@@ -2316,7 +2315,7 @@ func (s *Server) Rollback(ctx context.Context, rollbackReq *application.Applicat
 	}
 	appName := rollbackReq.GetName()
 	appNs := s.appNamespaceOrDefault(rollbackReq.GetAppNamespace())
-	appIf := s.appclientset.ArgoprojV1alpha1().Applications(appNs)
+	appIf := s.appclientset.AppsV1alpha1().Applications(appNs)
 	a, err = cd.SetAppOperation(appIf, appName, &op)
 	if err != nil {
 		return nil, fmt.Errorf("error setting app operation: %w", err)
@@ -2519,7 +2518,7 @@ func (s *Server) TerminateOperation(ctx context.Context, termOpReq *application.
 			return nil, status.Errorf(codes.InvalidArgument, "Unable to terminate operation. No operation is in progress")
 		}
 		a.Status.OperationState.Phase = common.OperationTerminating
-		updated, err := s.appclientset.ArgoprojV1alpha1().Applications(appNs).Update(ctx, a, metav1.UpdateOptions{})
+		updated, err := s.appclientset.AppsV1alpha1().Applications(appNs).Update(ctx, a, metav1.UpdateOptions{})
 		if err == nil {
 			s.waitSync(updated)
 			s.logAppEvent(ctx, a, cd.EventReasonResourceUpdated, "terminated running operation")
@@ -2530,7 +2529,7 @@ func (s *Server) TerminateOperation(ctx context.Context, termOpReq *application.
 		}
 		log.Warnf("failed to set operation for app %q due to update conflict. retrying again...", *termOpReq.Name)
 		time.Sleep(100 * time.Millisecond)
-		a, err = s.appclientset.ArgoprojV1alpha1().Applications(appNs).Get(ctx, appName, metav1.GetOptions{})
+		a, err = s.appclientset.AppsV1alpha1().Applications(appNs).Get(ctx, appName, metav1.GetOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("error getting application by name: %w", err)
 		}
@@ -2986,7 +2985,7 @@ func (s *Server) ServerSideDiff(ctx context.Context, q *application.ApplicationS
 		return nil, fmt.Errorf("error getting application: %w", err)
 	}
 
-	argoSettings, err := s.settingsMgr.GetSettings()
+	cdSettings, err := s.settingsMgr.GetSettings()
 	if err != nil {
 		return nil, fmt.Errorf("error getting Hanzo CD settings: %w", err)
 	}
@@ -3034,15 +3033,15 @@ func (s *Server) ServerSideDiff(ctx context.Context, q *application.ApplicationS
 
 	// Build diff config like the CLI does, but with server-side diff enabled
 	ignoreAggregatedRoles := false
-	diffConfig, err := argodiff.NewDiffConfigBuilder().
+	diffConfig, err := cddiff.NewDiffConfigBuilder().
 		WithDiffSettings(a.Spec.IgnoreDifferences, overrides, ignoreAggregatedRoles, normalizers.IgnoreNormalizerOpts{}).
-		WithTracking(appLabelKey, argoSettings.TrackingMethod).
+		WithTracking(appLabelKey, cdSettings.TrackingMethod).
 		WithNoCache().
-		WithManager(argocommon.ArgoCDSSAManager).
+		WithManager(cdcommon.SSAManager).
 		WithServerSideDiff(true).
 		WithServerSideDryRunner(dryRunner).
 		WithGVKParser(gvkParser).
-		WithIgnoreMutationWebhook(!resourceutil.HasAnnotationOption(a, argocommon.AnnotationCompareOptions, "IncludeMutationWebhook=true")).
+		WithIgnoreMutationWebhook(!resourceutil.HasAnnotationOption(a, cdcommon.AnnotationCompareOptions, "IncludeMutationWebhook=true")).
 		Build()
 	if err != nil {
 		return nil, fmt.Errorf("error building diff config: %w", err)
@@ -3104,7 +3103,7 @@ func (s *Server) ServerSideDiff(ctx context.Context, q *application.ApplicationS
 		targetObjs = append(targetObjs, obj)
 	}
 
-	diffResults, err := argodiff.StateDiffs(ctx, liveObjs, targetObjs, diffConfig)
+	diffResults, err := cddiff.StateDiffs(ctx, liveObjs, targetObjs, diffConfig)
 	if err != nil {
 		return nil, fmt.Errorf("error performing state diffs: %w", err)
 	}

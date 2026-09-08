@@ -69,14 +69,14 @@ func (s *Server) Create(_ context.Context, q *session.SessionCreateRequest) (*se
 		s.mgr.IncLoginRequestCounter(failure)
 		return nil, err
 	}
-	argoCDSettings, err := s.settingsMgr.GetSettings()
+	cdSettings, err := s.settingsMgr.GetSettings()
 	if err != nil {
 		s.mgr.IncLoginRequestCounter(failure)
 		return nil, err
 	}
 	jwtToken, err := s.mgr.Create(
 		fmt.Sprintf("%s:%s", q.Username, settings.AccountCapabilityLogin),
-		int64(argoCDSettings.UserSessionDuration.Seconds()),
+		int64(cdSettings.UserSessionDuration.Seconds()),
 		uniqueId.String())
 	if err != nil {
 		s.mgr.IncLoginRequestCounter(failure)
@@ -92,7 +92,7 @@ func (s *Server) Delete(_ context.Context, _ *session.SessionDeleteRequest) (*se
 }
 
 // AuthFuncOverride overrides the authentication function and let us not require auth to receive auth.
-// Without this function here, ArgoCDServer.authenticate would be invoked and credentials checked.
+// Without this function here, Server.authenticate would be invoked and credentials checked.
 // Since this service is generally invoked when the user has _no_ credentials, that would create a
 // chicken-and-egg situation if we didn't place this here to allow traffic to pass through.
 func (s *Server) AuthFuncOverride(ctx context.Context, _ string) (context.Context, error) {

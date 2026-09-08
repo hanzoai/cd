@@ -120,17 +120,17 @@ func TestDeploymentWithoutTrackingMode(t *testing.T) {
 		})
 }
 
-// This test verifies that Argo CD can:
+// This test verifies that Hanzo CD can:
 // A) Deploy to a cluster where the URL of the cluster contains a query parameter: e.g. https://(kubernetes-url):443/?context=some-val
 // and
-// B) Multiple users can deploy to the same K8s cluster, using above mechanism (but with different Argo CD Cluster Secrets, and different ServiceAccounts)
+// B) Multiple users can deploy to the same K8s cluster, using above mechanism (but with different Hanzo CD Cluster Secrets, and different ServiceAccounts)
 func TestDeployToKubernetesAPIURLWithQueryParameter(t *testing.T) {
-	// We test with both a cluster-scoped, and a non-cluster scoped, Argo CD Cluster Secret.
+	// We test with both a cluster-scoped, and a non-cluster scoped, Hanzo CD Cluster Secret.
 	clusterScopedParam := []bool{false, true}
 	for _, clusterScoped := range clusterScopedParam {
 		ctx := Given(t)
 
-		// Simulate two users, each with their own Argo CD cluster secret that can only deploy to their Namespace
+		// Simulate two users, each with their own Hanzo CD cluster secret that can only deploy to their Namespace
 		users := []string{"user1", "user2"}
 
 		for _, username := range users {
@@ -151,18 +151,18 @@ func TestDeployToKubernetesAPIURLWithQueryParameter(t *testing.T) {
 	}
 }
 
-// This test verifies that Argo CD can:
-// When multiple Argo CD cluster secrets used to deploy to the same cluster (using query parameters), that the ServiceAccount RBAC
+// This test verifies that Hanzo CD can:
+// When multiple Hanzo CD cluster secrets used to deploy to the same cluster (using query parameters), that the ServiceAccount RBAC
 // fully enforces user boundary.
 // Our simulated user's ServiceAccounts should not be able to deploy into a namespace that is outside that SA's RBAC.
 func TestArgoCDSupportsMultipleServiceAccountsWithDifferingRBACOnSameCluster(t *testing.T) {
-	// We test with both a cluster-scoped, and a non-cluster scoped, Argo CD Cluster Secret.
+	// We test with both a cluster-scoped, and a non-cluster scoped, Hanzo CD Cluster Secret.
 	clusterScopedParam := []bool{ /*false,*/ true}
 
 	for _, clusterScoped := range clusterScopedParam {
 		ctx := Given(t)
 
-		// Simulate two users, each with their own Argo CD cluster secret that can only deploy to their Namespace
+		// Simulate two users, each with their own Hanzo CD cluster secret that can only deploy to their Namespace
 		users := []string{"user1", "user2"}
 		nsInfo := make(map[string]struct {
 			namespace      string
@@ -193,7 +193,7 @@ func TestArgoCDSupportsMultipleServiceAccountsWithDifferingRBACOnSameCluster(t *
 				CreateWithNoNameSpace("--dest-namespace", nsInfo[username].namespace).IgnoreErrors().
 				Sync().Then()
 
-			// The error message differs based on whether the Argo CD Cluster Secret is namespace-scoped or cluster-scoped, but the idea is the same:
+			// The error message differs based on whether the Hanzo CD Cluster Secret is namespace-scoped or cluster-scoped, but the idea is the same:
 			// - Even when deploying to the same cluster using 2 separate ServiceAccounts, the RBAC of those ServiceAccounts should continue to fully enforce RBAC boundaries.
 
 			if !clusterScoped {
@@ -206,7 +206,7 @@ func TestArgoCDSupportsMultipleServiceAccountsWithDifferingRBACOnSameCluster(t *
 }
 
 // generateReadOnlyClusterRoleandBindingForServiceAccount creates a ClusterRole/Binding that allows a ServiceAccount in a given namespace to read all resources on a cluster.
-// - This allows the ServiceAccount to be used within a cluster-scoped Argo CD Cluster Secret
+// - This allows the ServiceAccount to be used within a cluster-scoped Hanzo CD Cluster Secret
 func generateReadOnlyClusterRoleandBindingForServiceAccount(c *Context, username, serviceAccountName, namespace string) (rbacv1.ClusterRole, rbacv1.ClusterRoleBinding) {
 	clusterRole := rbacv1.ClusterRole{
 		ObjectMeta: metav1.ObjectMeta{
@@ -244,7 +244,7 @@ func generateReadOnlyClusterRoleandBindingForServiceAccount(c *Context, username
 	return clusterRole, clusterRoleBinding
 }
 
-// buildArgoCDClusterSecret build (but does not create) an Argo CD Cluster Secret object with the given values
+// buildArgoCDClusterSecret build (but does not create) an Hanzo CD Cluster Secret object with the given values
 func buildArgoCDClusterSecret(secretName, secretNamespace, clusterName, clusterServer, clusterConfigJSON, clusterResources, clusterNamespaces string) corev1.Secret {
 	res := corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
@@ -289,7 +289,7 @@ func createNamespaceScopedUser(c *Context, username string, clusterScopedSecrets
 	_, err := KubeClientset.CoreV1().Namespaces().Create(c.T().Context(), &ns, metav1.CreateOptions{})
 	require.NoError(c.T(), err)
 
-	// Create a ServiceAccount in that Namespace, which will be used for the Argo CD Cluster SEcret
+	// Create a ServiceAccount in that Namespace, which will be used for the Hanzo CD Cluster SEcret
 	serviceAccountName := DnsFriendly(username, "-sa-"+c.ShortID())
 	err = clusterauth.CreateServiceAccount(KubeClientset, serviceAccountName, ns.Name)
 	require.NoError(c.T(), err)
@@ -343,7 +343,7 @@ func createNamespaceScopedUser(c *Context, username string, clusterScopedSecrets
 	require.NoError(c.T(), waitErr)
 	require.NotEmpty(c.T(), token)
 
-	// In order to test a cluster-scoped Argo CD Cluster Secret, we may optionally grant the ServiceAccount read-all permissions at cluster scope.
+	// In order to test a cluster-scoped Hanzo CD Cluster Secret, we may optionally grant the ServiceAccount read-all permissions at cluster scope.
 	if clusterScopedSecrets {
 		clusterRole, clusterRoleBinding := generateReadOnlyClusterRoleandBindingForServiceAccount(c, username, serviceAccountName, ns.Name)
 
@@ -354,7 +354,7 @@ func createNamespaceScopedUser(c *Context, username string, clusterScopedSecrets
 		require.NoError(c.T(), err)
 	}
 
-	// Build the Argo CD Cluster Secret by using the service account token, and extracting needed values from kube config
+	// Build the Hanzo CD Cluster Secret by using the service account token, and extracting needed values from kube config
 	clusterSecretConfigJSON := ClusterConfig{
 		BearerToken: token,
 		TLSClientConfig: TLSClientConfig{
@@ -376,13 +376,13 @@ func createNamespaceScopedUser(c *Context, username string, clusterScopedSecrets
 		namespacesField = ns.Name
 	}
 
-	// We create an Argo CD cluster Secret declaratively, using the K8s client, rather than via CLI, as the CLI doesn't currently
+	// We create an Hanzo CD cluster Secret declaratively, using the K8s client, rather than via CLI, as the CLI doesn't currently
 	// support Kubernetes API server URLs with query parameters.
 	clusterName := DnsFriendly("test-"+username, "-"+c.ShortID())
-	secret := buildArgoCDClusterSecret(clusterName, ArgoCDNamespace, clusterName, apiURL+"?user="+username,
+	secret := buildArgoCDClusterSecret(clusterName, E2ENamespace, clusterName, apiURL+"?user="+username,
 		string(jsonStringBytes), clusterResourcesField, namespacesField)
 
-	// Finally, create the Cluster secret in the Argo CD E2E namespace
+	// Finally, create the Cluster secret in the Hanzo CD E2E namespace
 	_, err = KubeClientset.CoreV1().Secrets(secret.Namespace).Create(c.T().Context(), &secret, metav1.CreateOptions{})
 	require.NoError(c.T(), err)
 	return ns.Name, serviceAccountName, clusterName

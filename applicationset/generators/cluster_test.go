@@ -11,7 +11,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
 	"github.com/hanzoai/cd/applicationset/utils"
-	argoprojiov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -41,8 +41,8 @@ func TestGenerateParams(t *testing.T) {
 				Namespace: "namespace",
 				Labels: map[string]string{
 					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "staging",
-					"org":                            "foo",
+					"environment":             "staging",
+					"org":                     "foo",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "staging",
@@ -65,8 +65,8 @@ func TestGenerateParams(t *testing.T) {
 				Namespace: "namespace",
 				Labels: map[string]string{
 					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"environment":             "production",
+					"org":                     "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -306,15 +306,15 @@ func TestGenerateParams(t *testing.T) {
 
 			clusterGenerator := NewClusterGenerator(cl, "namespace")
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{},
+				Spec: v1alpha1.ApplicationSetSpec{},
 			}
 
-			got, err := clusterGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-				Clusters: &argoprojiov1alpha1.ClusterGenerator{
+			got, err := clusterGenerator.GenerateParams(&v1alpha1.ApplicationSetGenerator{
+				Clusters: &v1alpha1.ClusterGenerator{
 					Selector: testCase.selector,
 					Values:   testCase.values,
 					FlatList: testCase.isFlatMode,
@@ -356,8 +356,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 				Namespace: "namespace",
 				Labels: map[string]string{
 					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "staging",
-					"org":                            "foo",
+					"environment":             "staging",
+					"org":                     "foo",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "staging",
@@ -380,8 +380,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 				Namespace: "namespace",
 				Labels: map[string]string{
 					"cd.hanzo.ai/secret-type": "cluster",
-					"environment":                    "production",
-					"org":                            "bar",
+					"environment":             "production",
+					"org":                     "bar",
 				},
 				Annotations: map[string]string{
 					"foo.example.com": "production",
@@ -426,8 +426,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"environment":             "production",
+							"org":                     "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -452,8 +452,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"environment":             "staging",
+							"org":                     "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -507,8 +507,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"environment":             "production",
+							"org":                     "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -523,8 +523,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"environment":             "staging",
+							"org":                     "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -554,8 +554,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"environment":             "production",
+							"org":                     "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -595,8 +595,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "production",
-							"org":                            "bar",
+							"environment":             "production",
+							"org":                     "bar",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "production",
@@ -614,8 +614,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"environment":             "staging",
+							"org":                     "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -658,8 +658,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 					"metadata": map[string]any{
 						"labels": map[string]string{
 							"cd.hanzo.ai/secret-type": "cluster",
-							"environment":                    "staging",
-							"org":                            "foo",
+							"environment":             "staging",
+							"org":                     "foo",
 						},
 						"annotations": map[string]string{
 							"foo.example.com": "staging",
@@ -722,8 +722,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 							"metadata": map[string]any{
 								"labels": map[string]string{
 									"cd.hanzo.ai/secret-type": "cluster",
-									"environment":                    "production",
-									"org":                            "bar",
+									"environment":             "production",
+									"org":                     "bar",
 								},
 								"annotations": map[string]string{
 									"foo.example.com": "production",
@@ -748,8 +748,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 							"metadata": map[string]any{
 								"labels": map[string]string{
 									"cd.hanzo.ai/secret-type": "cluster",
-									"environment":                    "staging",
-									"org":                            "foo",
+									"environment":             "staging",
+									"org":                     "foo",
 								},
 								"annotations": map[string]string{
 									"foo.example.com": "staging",
@@ -801,8 +801,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 							"metadata": map[string]any{
 								"labels": map[string]string{
 									"cd.hanzo.ai/secret-type": "cluster",
-									"environment":                    "production",
-									"org":                            "bar",
+									"environment":             "production",
+									"org":                     "bar",
 								},
 								"annotations": map[string]string{
 									"foo.example.com": "production",
@@ -820,8 +820,8 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 							"metadata": map[string]any{
 								"labels": map[string]string{
 									"cd.hanzo.ai/secret-type": "cluster",
-									"environment":                    "staging",
-									"org":                            "foo",
+									"environment":             "staging",
+									"org":                     "foo",
 								},
 								"annotations": map[string]string{
 									"foo.example.com": "staging",
@@ -849,17 +849,17 @@ func TestGenerateParamsGoTemplate(t *testing.T) {
 
 			clusterGenerator := NewClusterGenerator(cl, "namespace")
 
-			applicationSetInfo := argoprojiov1alpha1.ApplicationSet{
+			applicationSetInfo := v1alpha1.ApplicationSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "set",
 				},
-				Spec: argoprojiov1alpha1.ApplicationSetSpec{
+				Spec: v1alpha1.ApplicationSetSpec{
 					GoTemplate: true,
 				},
 			}
 
-			got, err := clusterGenerator.GenerateParams(&argoprojiov1alpha1.ApplicationSetGenerator{
-				Clusters: &argoprojiov1alpha1.ClusterGenerator{
+			got, err := clusterGenerator.GenerateParams(&v1alpha1.ApplicationSetGenerator{
+				Clusters: &v1alpha1.ClusterGenerator{
 					Selector: testCase.selector,
 					Values:   testCase.values,
 					FlatList: testCase.isFlatMode,

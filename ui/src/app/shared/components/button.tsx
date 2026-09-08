@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {CSSProperties, MouseEventHandler, ReactNode} from 'react';
 import {Icon} from './icon';
-import {Tooltip} from 'argo-ui';
+import {Tooltip} from '../../../kit/src';
 
 export const Button = ({
     onClick,
@@ -28,7 +28,7 @@ export const Button = ({
 }) => (
     <Tooltip content={title}>
         <button
-            className={'argo-button ' + (!outline ? 'argo-button--base' : 'argo-button--base-o') + ' ' + (disabled ? 'disabled' : '') + ' ' + (className || '')}
+            className={'kit-button ' + (!outline ? 'kit-button--base' : 'kit-button--base-o') + ' ' + (disabled ? 'disabled' : '') + ' ' + (className || '')}
             style={style}
             onClick={onClick}>
             {icon && <i className={'fa fa-' + icon + ' ' + (beat ? 'fa-beat' : '') + (rotate ? 'fa-rotate-180' : '')} />} {children}

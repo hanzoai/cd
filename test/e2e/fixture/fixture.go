@@ -50,22 +50,22 @@ const (
 	defaultAdminUsername    = "admin"
 	DefaultTestUserPassword = "password"
 	TestingLabel            = "e2e.apps.hanzo.ai"
-	ArgoCDNamespace         = "cd-e2e"
-	ArgoCDAppNamespace      = "cd-e2e-external"
+	E2ENamespace            = "cd-e2e"
+	E2EAppNamespace         = "cd-e2e-external"
 
 	// notifications controller, metrics server port
 	defaultNotificationServer = "localhost:9001"
 
 	// ensure all repos are in one directory tree, so we can easily clean them up
 	// TmpDir can be overridden via CD_E2E_DIR environment variable
-	defaultTmpDir      = "/tmp/argo-e2e"
+	defaultTmpDir      = "/tmp/cd-e2e"
 	repoDir            = "testdata.git"
 	submoduleDir       = "submodule.git"
 	submoduleParentDir = "submoduleParent.git"
 
 	GuestbookPath = "guestbook"
 
-	ProjectName = "argo-project"
+	ProjectName = "cd-project"
 
 	// cmp plugin sock file path
 	PluginSockFilePath = "/app/config/plugin"
@@ -79,33 +79,33 @@ const (
 )
 
 const (
-	EnvAdminUsername           = "CD_E2E_ADMIN_USERNAME"
-	EnvAdminPassword           = "CD_E2E_ADMIN_PASSWORD"
-	EnvArgoCDServerName        = "CD_E2E_SERVER_NAME"
-	EnvArgoCDRedisHAProxyName  = "CD_E2E_KV_HAPROXY_NAME"
-	EnvArgoCDRedisName         = "CD_E2E_KV_NAME"
-	EnvArgoCDRepoServerName    = "CD_E2E_REPO_SERVER_NAME"
-	EnvArgoCDAppControllerName = "CD_E2E_APPLICATION_CONTROLLER_NAME"
+	EnvAdminUsername     = "CD_E2E_ADMIN_USERNAME"
+	EnvAdminPassword     = "CD_E2E_ADMIN_PASSWORD"
+	EnvServerName        = "CD_E2E_SERVER_NAME"
+	EnvRedisHAProxyName  = "CD_E2E_KV_HAPROXY_NAME"
+	EnvRedisName         = "CD_E2E_KV_NAME"
+	EnvRepoServerName    = "CD_E2E_REPO_SERVER_NAME"
+	EnvAppControllerName = "CD_E2E_APPLICATION_CONTROLLER_NAME"
 )
 
 var (
-	KubeClientset           kubernetes.Interface
-	KubeConfig              *rest.Config
-	DynamicClientset        dynamic.Interface
-	AppClientset            appclientset.Interface
-	ArgoCDClientset         apiclient.Client
-	Mapper                  meta.RESTMapper
-	adminUsername           string
-	AdminPassword           string
-	apiServerAddress        string
-	token                   string
-	plainText               bool
-	testsRun                map[string]bool
-	argoCDServerName        string
-	argoCDRedisHAProxyName  string
-	argoCDRedisName         string
-	argoCDRepoServerName    string
-	argoCDAppControllerName string
+	KubeClientset       kubernetes.Interface
+	KubeConfig          *rest.Config
+	DynamicClientset    dynamic.Interface
+	AppClientset        appclientset.Interface
+	CDClientset         apiclient.Client
+	Mapper              meta.RESTMapper
+	adminUsername       string
+	AdminPassword       string
+	apiServerAddress    string
+	token               string
+	plainText           bool
+	testsRun            map[string]bool
+	cdServerName        string
+	cdRedisHAProxyName  string
+	cdRedisName         string
+	cdRepoServerName    string
+	cdAppControllerName string
 )
 
 type RepoURLType string
@@ -143,14 +143,14 @@ const (
 	AuthenticatedOCIHostURL         = "oci://localhost:5001"
 )
 
-// TestNamespace returns the namespace where Argo CD E2E test instance will be
+// TestNamespace returns the namespace where Hanzo CD E2E test instance will be
 // running in.
 func TestNamespace() string {
-	return GetEnvWithDefault("CD_E2E_NAMESPACE", ArgoCDNamespace)
+	return GetEnvWithDefault("CD_E2E_NAMESPACE", E2ENamespace)
 }
 
 func AppNamespace() string {
-	return GetEnvWithDefault("CD_E2E_APP_NAMESPACE", ArgoCDAppNamespace)
+	return GetEnvWithDefault("CD_E2E_APP_NAMESPACE", E2EAppNamespace)
 }
 
 // TmpDir returns the base directory for e2e test data.
@@ -202,29 +202,29 @@ func init() {
 	Mapper = restmapper.NewDeferredDiscoveryRESTMapper(memory.NewMemCacheClient(KubeClientset.Discovery()))
 	KubeConfig = config
 
-	apiServerAddress = GetEnvWithDefault(apiclient.EnvArgoCDServer, defaultAPIServer)
+	apiServerAddress = GetEnvWithDefault(apiclient.EnvServer, defaultAPIServer)
 	adminUsername = GetEnvWithDefault(EnvAdminUsername, defaultAdminUsername)
 	AdminPassword = GetEnvWithDefault(EnvAdminPassword, defaultAdminPassword)
 
-	argoCDServerName = GetEnvWithDefault(EnvArgoCDServerName, common.DefaultServerName)
-	argoCDRedisHAProxyName = GetEnvWithDefault(EnvArgoCDRedisHAProxyName, common.DefaultRedisHaProxyName)
-	argoCDRedisName = GetEnvWithDefault(EnvArgoCDRedisName, common.DefaultRedisName)
-	argoCDRepoServerName = GetEnvWithDefault(EnvArgoCDRepoServerName, common.DefaultRepoServerName)
-	argoCDAppControllerName = GetEnvWithDefault(EnvArgoCDAppControllerName, common.DefaultApplicationControllerName)
+	cdServerName = GetEnvWithDefault(EnvServerName, common.DefaultServerName)
+	cdRedisHAProxyName = GetEnvWithDefault(EnvRedisHAProxyName, common.DefaultRedisHaProxyName)
+	cdRedisName = GetEnvWithDefault(EnvRedisName, common.DefaultRedisName)
+	cdRepoServerName = GetEnvWithDefault(EnvRepoServerName, common.DefaultRepoServerName)
+	cdAppControllerName = GetEnvWithDefault(EnvAppControllerName, common.DefaultApplicationControllerName)
 
 	dialTime := 30 * time.Second
 	tlsTestResult, err := grpcutil.TestTLS(apiServerAddress, dialTime)
 	errors.CheckError(err)
 
-	ArgoCDClientset, err = apiclient.NewClient(&apiclient.ClientOptions{
+	CDClientset, err = apiclient.NewClient(&apiclient.ClientOptions{
 		Insecure:          true,
 		ServerAddr:        apiServerAddress,
 		PlainText:         !tlsTestResult.TLS,
-		ServerName:        argoCDServerName,
-		RedisHaProxyName:  argoCDRedisHAProxyName,
-		RedisName:         argoCDRedisName,
-		RepoServerName:    argoCDRepoServerName,
-		AppControllerName: argoCDAppControllerName,
+		ServerName:        cdServerName,
+		RedisHaProxyName:  cdRedisHAProxyName,
+		RedisName:         cdRedisName,
+		RepoServerName:    cdRepoServerName,
+		AppControllerName: cdAppControllerName,
 	})
 	errors.CheckError(err)
 
@@ -260,7 +260,7 @@ func init() {
 }
 
 func loginAs(username, password string) error {
-	closer, client, err := ArgoCDClientset.NewSessionClient()
+	closer, client, err := CDClientset.NewSessionClient()
 	if err != nil {
 		return err
 	}
@@ -280,16 +280,16 @@ func loginAs(username, password string) error {
 	}
 	token = sessionResponse.Token
 
-	ArgoCDClientset, err = apiclient.NewClient(&apiclient.ClientOptions{
+	CDClientset, err = apiclient.NewClient(&apiclient.ClientOptions{
 		Insecure:          true,
 		ServerAddr:        apiServerAddress,
 		AuthToken:         token,
 		PlainText:         plainText,
-		ServerName:        argoCDServerName,
-		RedisHaProxyName:  argoCDRedisHAProxyName,
-		RedisName:         argoCDRedisName,
-		RepoServerName:    argoCDRepoServerName,
-		AppControllerName: argoCDAppControllerName,
+		ServerName:        cdServerName,
+		RedisHaProxyName:  cdRedisHAProxyName,
+		RedisName:         cdRedisName,
+		RepoServerName:    cdRepoServerName,
+		AppControllerName: cdAppControllerName,
 	})
 	return err
 }
@@ -329,7 +329,7 @@ const (
 
 func RepoURL(urlType RepoURLType) string {
 	// SSH URLs use the container path (defaultTmpDir) because sshd runs inside Docker
-	// where $CD_E2E_DIR is mounted to /tmp/argo-e2e
+	// where $CD_E2E_DIR is mounted to /tmp/cd-e2e
 	switch urlType {
 	// Git server via SSH
 	case RepoURLTypeSSH:
@@ -342,24 +342,24 @@ func RepoURL(urlType RepoURLType) string {
 		return GetEnvWithDefault(EnvRepoURLTypeSSHSubmoduleParent, "ssh://root@localhost:2222"+defaultTmpDir+"/submoduleParent.git")
 	// Git server via HTTPS
 	case RepoURLTypeHTTPS:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPS, "https://localhost:9443/argo-e2e/testdata.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPS, "https://localhost:9443/cd-e2e/testdata.git")
 	// Git "organisation" via HTTPS
 	case RepoURLTypeHTTPSOrg:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPSOrg, "https://localhost:9443/argo-e2e")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSOrg, "https://localhost:9443/cd-e2e")
 	// Git server via HTTPS - Client Cert protected
 	case RepoURLTypeHTTPSClientCert:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPSClientCert, "https://localhost:9444/argo-e2e/testdata.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSClientCert, "https://localhost:9444/cd-e2e/testdata.git")
 	case RepoURLTypeHTTPSSubmodule:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmodule, "https://localhost:9443/argo-e2e/submodule.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmodule, "https://localhost:9443/cd-e2e/submodule.git")
 		// Git submodule parent repo
 	case RepoURLTypeHTTPSSubmoduleParent:
-		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmoduleParent, "https://localhost:9443/argo-e2e/submoduleParent.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmoduleParent, "https://localhost:9443/cd-e2e/submoduleParent.git")
 	// Default - file based Git repository
 	case RepoURLTypeHelm:
-		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/argo-e2e/testdata.git/helm-repo/local")
+		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/cd-e2e/testdata.git/helm-repo/local")
 	// When Helm Repo has sub repos, this is the parent repo URL
 	case RepoURLTypeHelmParent:
-		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/argo-e2e/testdata.git/helm-repo")
+		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/cd-e2e/testdata.git/helm-repo")
 	case RepoURLTypeOCI:
 		return OCIRegistryURL
 	case RepoURLTypeHelmOCI:
@@ -379,17 +379,17 @@ func RepoBaseURL(urlType RepoURLType) string {
 
 // Convenience wrapper for updating cd-cm
 func updateSettingConfigMap(updater func(cm *corev1.ConfigMap) error) error {
-	return updateGenericConfigMap(common.ArgoCDConfigMapName, updater)
+	return updateGenericConfigMap(common.ConfigMapName, updater)
 }
 
 // Convenience wrapper for updating cd-notifications-cm
 func updateNotificationsConfigMap(updater func(cm *corev1.ConfigMap) error) error {
-	return updateGenericConfigMap(common.ArgoCDNotificationsConfigMapName, updater)
+	return updateGenericConfigMap(common.NotificationsConfigMapName, updater)
 }
 
 // Convenience wrapper for updating cd-cm-rbac
 func updateRBACConfigMap(updater func(cm *corev1.ConfigMap) error) error {
-	return updateGenericConfigMap(common.ArgoCDRBACConfigMapName, updater)
+	return updateGenericConfigMap(common.RBACConfigMapName, updater)
 }
 
 func configMapsEquivalent(a *corev1.ConfigMap, b *corev1.ConfigMap) bool {
@@ -575,12 +575,12 @@ func SetResourceFilter(filters settings.ResourcesFilter) error {
 }
 
 func SetProjectSpec(project string, spec v1alpha1.AppProjectSpec) error {
-	proj, err := AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Get(context.Background(), project, metav1.GetOptions{})
+	proj, err := AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).Get(context.Background(), project, metav1.GetOptions{})
 	if err != nil {
 		return err
 	}
 	proj.Spec = spec
-	_, err = AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Update(context.Background(), proj, metav1.UpdateOptions{})
+	_, err = AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).Update(context.Background(), proj, metav1.UpdateOptions{})
 	return err
 }
 
@@ -678,21 +678,21 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 	RunFunctionsInParallelAndCheckErrors(t, []func() error{
 		func() error {
 			// kubectl delete apps ...
-			return AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).DeleteCollection(
+			return AppClientset.AppsV1alpha1().Applications(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{})
 		},
 		func() error {
 			// kubectl delete apps ...
-			return AppClientset.ArgoprojV1alpha1().Applications(AppNamespace()).DeleteCollection(
+			return AppClientset.AppsV1alpha1().Applications(AppNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{})
 		},
 		func() error {
 			// kubectl delete appprojects --field-selector metadata.name!=default
-			return AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).DeleteCollection(
+			return AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).DeleteCollection(
 				t.Context(),
 				metav1.DeleteOptions{PropagationPolicy: &policy},
 				metav1.ListOptions{FieldSelector: "metadata.name!=default"})
@@ -827,7 +827,7 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 			if err != nil {
 				return err
 			}
-			return updateGenericConfigMap(common.ArgoCDGPGKeysConfigMapName, func(cm *corev1.ConfigMap) error {
+			return updateGenericConfigMap(common.GPGKeysConfigMapName, func(cm *corev1.ConfigMap) error {
 				cm.Data = map[string]string{}
 				return nil
 			})
@@ -867,7 +867,7 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 			}
 
 			// Create separate project for testing gpg signature verification
-			_, err = AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Create(
+			_, err = AppClientset.AppsV1alpha1().AppProjects(TestNamespace()).Create(
 				t.Context(),
 				&v1alpha1.AppProject{
 					ObjectMeta: metav1.ObjectMeta{
@@ -1014,7 +1014,7 @@ func EnsureCleanState(t *testing.T, opts ...TestOption) *TestState {
 	return state
 }
 
-// RunCliWithRetry executes an Argo CD CLI command with retry logic.
+// RunCliWithRetry executes an Hanzo CD CLI command with retry logic.
 func RunCliWithRetry(maxRetries int, args ...string) (string, error) {
 	var out string
 	var err error
@@ -1028,12 +1028,12 @@ func RunCliWithRetry(maxRetries int, args ...string) (string, error) {
 	return out, err
 }
 
-// RunCli executes an Argo CD CLI command with no stdin input and default server authentication.
+// RunCli executes an Hanzo CD CLI command with no stdin input and default server authentication.
 func RunCli(args ...string) (string, error) {
 	return RunCliWithStdin("", false, args...)
 }
 
-// RunCliWithStdin executes an Argo CD CLI command with optional stdin input and authentication.
+// RunCliWithStdin executes an Hanzo CD CLI command with optional stdin input and authentication.
 func RunCliWithStdin(stdin string, isKubeConextOnlyCli bool, args ...string) (string, error) {
 	if plainText {
 		args = append(args, "--plaintext")
@@ -1060,7 +1060,7 @@ func RunCliWithStdin(stdin string, isKubeConextOnlyCli bool, args ...string) (st
 	return RunWithStdinWithRedactor(stdin, "", "../../dist/cd", redactor, args...)
 }
 
-// RunCliWithToken executes an Argo CD CLI command using a specific auth token
+// RunCliWithToken executes an Hanzo CD CLI command using a specific auth token
 // instead of the global test token. This is useful for session/logout tests
 // that need to verify behavior with multiple or revoked tokens.
 func RunCliWithToken(authToken string, args ...string) (string, error) {
@@ -1081,7 +1081,7 @@ func RunCliWithToken(authToken string, args ...string) (string, error) {
 	return RunWithStdinWithRedactor("", "", "../../dist/cd", redactor, args...)
 }
 
-// RunCliWithConfigFile executes an Argo CD CLI command using a custom config file
+// RunCliWithConfigFile executes an Hanzo CD CLI command using a custom config file
 // instead of the global test config. This is used by session/logout tests to
 // isolate per-token state across login/logout cycles.
 func RunCliWithConfigFile(configPath string, args ...string) (string, error) {
@@ -1098,7 +1098,7 @@ func RunCliWithConfigFile(configPath string, args ...string) (string, error) {
 	return RunWithStdinWithRedactor("", "", "../../dist/cd", redactor, args...)
 }
 
-// RunPluginCli executes an Argo CD CLI plugin with optional stdin input.
+// RunPluginCli executes an Hanzo CD CLI plugin with optional stdin input.
 func RunPluginCli(stdin string, args ...string) (string, error) {
 	return RunWithStdin(stdin, "", "../../dist/cd", args...)
 }

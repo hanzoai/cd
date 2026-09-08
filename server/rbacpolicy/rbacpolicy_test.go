@@ -11,7 +11,7 @@ import (
 	"k8s.io/client-go/kubernetes/fake"
 
 	"github.com/hanzoai/cd/common"
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/test"
 	"github.com/hanzoai/cd/util/rbac"
 	settings_util "github.com/hanzoai/cd/util/settings"
@@ -21,17 +21,17 @@ func init() {
 	settings_util.ConfigureGoClientFeatures()
 }
 
-func newFakeProj() *argoappv1.AppProject {
-	jwtTokenByRole := make(map[string]argoappv1.JWTTokens)
-	jwtTokenByRole["my-role"] = argoappv1.JWTTokens{Items: []argoappv1.JWTToken{{IssuedAt: 1234}}}
+func newFakeProj() *appv1.AppProject {
+	jwtTokenByRole := make(map[string]appv1.JWTTokens)
+	jwtTokenByRole["my-role"] = appv1.JWTTokens{Items: []appv1.JWTToken{{IssuedAt: 1234}}}
 
-	return &argoappv1.AppProject{
+	return &appv1.AppProject{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "my-proj",
 			Namespace: test.FakeArgoCDNamespace,
 		},
-		Spec: argoappv1.AppProjectSpec{
-			Roles: []argoappv1.ProjectRole{
+		Spec: appv1.AppProjectSpec{
+			Roles: []appv1.ProjectRole{
 				{
 					Name: "my-role",
 					Policies: []string{
@@ -42,7 +42,7 @@ func newFakeProj() *argoappv1.AppProject {
 					Groups: []string{
 						"my-org:my-team",
 					},
-					JWTTokens: []argoappv1.JWTToken{
+					JWTTokens: []appv1.JWTToken{
 						{
 							IssuedAt: 1234,
 						},
@@ -50,7 +50,7 @@ func newFakeProj() *argoappv1.AppProject {
 				},
 			},
 		},
-		Status: argoappv1.AppProjectStatus{JWTTokensByRole: jwtTokenByRole},
+		Status: appv1.AppProjectStatus{JWTTokensByRole: jwtTokenByRole},
 	}
 }
 
@@ -58,7 +58,7 @@ func TestEnforceAllPolicies(t *testing.T) {
 	t.Parallel()
 	kubeclientset := fake.NewClientset(test.NewFakeConfigMap())
 	projLister := test.NewFakeProjLister(newFakeProj())
-	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
+	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ConfigMapName, nil)
 	enf.EnableLog(true)
 	_ = enf.SetBuiltinPolicy(`p, alice, applications, create, my-proj/*, allow` + "\n" + `p, alice, logs, get, my-proj/*, allow` + "\n" + `p, alice, exec, create, my-proj/*, allow`)
 	_ = enf.SetUserPolicy(`p, bob, applications, create, my-proj/*, allow` + "\n" + `p, bob, logs, get, my-proj/*, allow` + "\n" + `p, bob, exec, create, my-proj/*, allow`)
@@ -105,7 +105,7 @@ func TestEnforceActionActions(t *testing.T) {
 	t.Parallel()
 	kubeclientset := fake.NewClientset(test.NewFakeConfigMap())
 	projLister := test.NewFakeProjLister(newFakeProj())
-	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
+	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ConfigMapName, nil)
 	enf.EnableLog(true)
 	_ = enf.SetBuiltinPolicy(fmt.Sprintf(`p, alice, applications, %s/*, my-proj/*, allow
 p, bob, applications, %s/apps.hanzo.ai/Rollout/*, my-proj/*, allow
@@ -139,7 +139,7 @@ func TestInvalidatedCache(t *testing.T) {
 	t.Parallel()
 	kubeclientset := fake.NewClientset(test.NewFakeConfigMap())
 	projLister := test.NewFakeProjLister(newFakeProj())
-	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ArgoCDConfigMapName, nil)
+	enf := rbac.NewEnforcer(kubeclientset, test.FakeArgoCDNamespace, common.ConfigMapName, nil)
 	enf.EnableLog(true)
 	_ = enf.SetBuiltinPolicy(`p, alice, applications, create, my-proj/*, allow` + "\n" + `p, alice, logs, get, my-proj/*, allow` + "\n" + `p, alice, exec, create, my-proj/*, allow`)
 	_ = enf.SetUserPolicy(`p, bob, applications, create, my-proj/*, allow` + "\n" + `p, bob, logs, get, my-proj/*, allow` + "\n" + `p, bob, exec, create, my-proj/*, allow`)
@@ -208,25 +208,25 @@ func Test_getProjectFromRequest(t *testing.T) {
 			name:     "valid project/repo string",
 			resource: "repositories",
 			action:   "create",
-			arg:      newFakeProj().Name + "/https://github.com/argoproj/argocd-example-apps",
+			arg:      newFakeProj().Name + "/https://github.com/hanzocd/example-apps",
 		},
 		{
 			name:     "applicationsets with project/repo string",
 			resource: "applicationsets",
 			action:   "create",
-			arg:      newFakeProj().Name + "/https://github.com/argoproj/argocd-example-apps",
+			arg:      newFakeProj().Name + "/https://github.com/hanzocd/example-apps",
 		},
 		{
 			name:     "applicationsets with project/repo string",
 			resource: "applicationsets",
 			action:   "*",
-			arg:      newFakeProj().Name + "/https://github.com/argoproj/argocd-example-apps",
+			arg:      newFakeProj().Name + "/https://github.com/hanzocd/example-apps",
 		},
 		{
 			name:     "applicationsets with project/repo string",
 			resource: "applicationsets",
 			action:   "get",
-			arg:      newFakeProj().Name + "/https://github.com/argoproj/argocd-example-apps",
+			arg:      newFakeProj().Name + "/https://github.com/hanzocd/example-apps",
 		},
 	}
 

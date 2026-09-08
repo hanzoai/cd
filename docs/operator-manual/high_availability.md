@@ -257,7 +257,7 @@ spec:
   replica.
 * The `CD_GRPC_MAX_SIZE_MB` environment variable allows specifying the max size of the server response message in
   megabytes.
-  The default value is 200. You might need to increase this for an Hanzo CD instance that manages 3000+ applications.
+  The default value is 200. You might need to increase this for a Hanzo CD instance that manages 3000+ applications.
 
 * The `server.glob.cache.size` config key in `cd-cmd-params-cm` (or the `--glob-cache-size` server flag) controls
   the maximum number of compiled glob patterns cached for RBAC policy evaluation. Glob pattern compilation is expensive,
@@ -319,7 +319,7 @@ management tool and application settings.
 If the manifest generation has no side effects then requests are processed in parallel without a performance penalty.
 The following are known cases that might cause slowness and their workarounds:
 
-* **Multiple Helm based applications pointing to the same directory in one Git repository:** for historical reasons Argo
+* **Multiple Helm based applications pointing to the same directory in one Git repository:** for historical reasons Hanzo
   CD used to generate Helm manifests sequentially. Starting v3.0, Hanzo CD performs a parallel generation of Helm
   manifests by default.
 
@@ -381,7 +381,7 @@ metadata:
     cd.hanzo.ai/manifest-generate-paths: .
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
 # ...
@@ -399,7 +399,7 @@ metadata:
     cd.hanzo.ai/manifest-generate-paths: /guestbook
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
 # ...
@@ -418,7 +418,7 @@ metadata:
     cd.hanzo.ai/manifest-generate-paths: .;../shared
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: my-application
 # ...
@@ -438,7 +438,7 @@ metadata:
     cd.hanzo.ai/manifest-generate-paths: "/shared/*-secret.yaml"
 spec:
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/hanzocd/example-apps.git
     targetRevision: HEAD
     path: guestbook
 # ...
@@ -715,7 +715,7 @@ apiVersion: v1
 stringData:
   depth: "1"
   type: "git"
-  url: "https://github.com/argoproj/argocd-example-apps.git"
+  url: "https://github.com/hanzocd/example-apps.git"
 kind: Secret
 metadata:
   annotations:

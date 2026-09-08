@@ -1,4 +1,4 @@
-import {Tooltip} from 'argo-ui';
+import {Tooltip} from '../../kit/src';
 import * as React from 'react';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -32,11 +32,11 @@ const CustomBanner = (props: {
             </div>
             {!props.permanent ? (
                 <>
-                    <button className='ui-banner-button argo-button argo-button--base' style={{marginRight: '5px'}} onClick={() => props.setVisible(false)}>
+                    <button className='ui-banner-button kit-button kit-button--base' style={{marginRight: '5px'}} onClick={() => props.setVisible(false)}>
                         Dismiss for now
                     </button>
                     <button
-                        className='ui-banner-button argo-button argo-button--base'
+                        className='ui-banner-button kit-button kit-button--base'
                         onClick={() => services.viewPreferences.updatePreferences({...props.prefs, hideBannerContent: props.content})}>
                         Don't show again
                     </button>
@@ -149,12 +149,12 @@ export const Banner = (props: React.PropsWithChildren<{}>) => {
                             <div style={{position: 'fixed', right: 10, bottom: chatBottomPosition}}>
                                 {chatUrl === 'invalid-url' ? (
                                     <Tooltip content='Invalid URL provided'>
-                                        <a className='argo-button disabled argo-button--special'>
+                                        <a className='kit-button disabled kit-button--special'>
                                             <i className='fas fa-comment-alt' /> {chatText}
                                         </a>
                                     </Tooltip>
                                 ) : (
-                                    <a href={chatUrl} className='argo-button argo-button--special'>
+                                    <a href={chatUrl} className='kit-button kit-button--special'>
                                         <i className='fas fa-comment-alt' /> {chatText}
                                     </a>
                                 )}

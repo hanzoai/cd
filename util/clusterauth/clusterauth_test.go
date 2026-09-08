@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	testToken              = "eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhcmdvY2QtbWFuYWdlci10b2tlbi10ajc5ciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJhcmdvY2QtbWFuYWdlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjkxZGQzN2NmLThkOTItMTFlOS1hMDkxLWQ2NWYyYWU3ZmE4ZCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTphcmdvY2QtbWFuYWdlciJ9.ytZjt2pDV8-A7DBMR06zQ3wt9cuVEfq262TQw7sdra-KRpDpMPnziMhc8bkwvgW-LGhTWUh5iu1y-1QhEx6mtbCt7vQArlBRxfvM5ys6ClFkplzq5c2TtZ7EzGSD0Up7tdxuG9dvR6TGXYdfFcG779yCdZo2H48sz5OSJfdEriduMEY1iL5suZd3ebOoVi1fGflmqFEkZX6SvxkoArl5mtNP6TvZ1eTcn64xh4ws152hxio42E-eSnl_CET4tpB5vgP5BVlSKW2xB7w2GJxqdETA5LJRI_OilY77dTOp8cMr_Ck3EOeda3zHfh4Okflg8rZFEeAuJYahQNeAILLkcA"
+	testToken              = "eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJjZC1tYW5hZ2VyLXRva2VuLXRqNzlyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImNkLW1hbmFnZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI5MWRkMzdjZi04ZDkyLTExZTktYTA5MS1kNjVmMmFlN2ZhOGQiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06Y2QtbWFuYWdlciJ9.ytZjt2pDV8-A7DBMR06zQ3wt9cuVEfq262TQw7sdra-KRpDpMPnziMhc8bkwvgW-LGhTWUh5iu1y-1QhEx6mtbCt7vQArlBRxfvM5ys6ClFkplzq5c2TtZ7EzGSD0Up7tdxuG9dvR6TGXYdfFcG779yCdZo2H48sz5OSJfdEriduMEY1iL5suZd3ebOoVi1fGflmqFEkZX6SvxkoArl5mtNP6TvZ1eTcn64xh4ws152hxio42E-eSnl_CET4tpB5vgP5BVlSKW2xB7w2GJxqdETA5LJRI_OilY77dTOp8cMr_Ck3EOeda3zHfh4Okflg8rZFEeAuJYahQNeAILLkcA"
 	testBearerTokenTimeout = 5 * time.Second
 )
 
@@ -153,7 +153,7 @@ func TestInstallClusterManagerRBAC(t *testing.T) {
 	}
 	sa := &corev1.ServiceAccount{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      ArgoCDManagerServiceAccount,
+			Name:      ManagerServiceAccount,
 			Namespace: "test",
 		},
 		Secrets: []corev1.ObjectReference{
@@ -311,13 +311,13 @@ func Test_getOrCreateServiceAccountTokenSecret_NoSecretForSA(t *testing.T) {
 	}
 	sa := &corev1.ServiceAccount{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      ArgoCDManagerServiceAccount,
+			Name:      ManagerServiceAccount,
 			Namespace: ns.Name,
 		},
 	}
 	manualSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      ArgoCDManagerServiceAccount + SATokenSecretSuffix,
+			Name:      ManagerServiceAccount + SATokenSecretSuffix,
 			Namespace: ns.Name,
 			Annotations: map[string]string{
 				corev1.ServiceAccountNameKey: sa.Name,
@@ -328,9 +328,9 @@ func Test_getOrCreateServiceAccountTokenSecret_NoSecretForSA(t *testing.T) {
 
 	assertOnlyOneTokenExists := func(t *testing.T, cs *fake.Clientset) {
 		t.Helper()
-		got, err := getOrCreateServiceAccountTokenSecret(cs, ArgoCDManagerServiceAccount, ns.Name)
+		got, err := getOrCreateServiceAccountTokenSecret(cs, ManagerServiceAccount, ns.Name)
 		require.NoError(t, err)
-		assert.Equal(t, ArgoCDManagerServiceAccount+SATokenSecretSuffix, got)
+		assert.Equal(t, ManagerServiceAccount+SATokenSecretSuffix, got)
 
 		list, err := cs.Tracker().List(schema.GroupVersionResource{Version: "v1", Resource: "secrets"},
 			schema.GroupVersionKind{Version: "v1", Kind: "Secret"}, ns.Name, metav1.ListOptions{})
@@ -339,8 +339,8 @@ func Test_getOrCreateServiceAccountTokenSecret_NoSecretForSA(t *testing.T) {
 		require.True(t, ok)
 		assert.Len(t, secretList.Items, 1)
 		obj, err := cs.Tracker().Get(schema.GroupVersionResource{Version: "v1", Resource: "serviceaccounts"},
-			ns.Name, ArgoCDManagerServiceAccount)
-		require.NoError(t, err, "ServiceAccount %s not found but was expected to be found", ArgoCDManagerServiceAccount)
+			ns.Name, ManagerServiceAccount)
+		require.NoError(t, err, "ServiceAccount %s not found but was expected to be found", ManagerServiceAccount)
 
 		assert.Empty(t, obj.(*corev1.ServiceAccount).Secrets, 0)
 	}
@@ -359,7 +359,7 @@ func Test_getOrCreateServiceAccountTokenSecret_NoSecretForSA(t *testing.T) {
 		cs.PrependReactor("create", "secrets", func(kubetesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, &corev1.Secret{}, errors.New("testing error case")
 		})
-		got, err := getOrCreateServiceAccountTokenSecret(cs, ArgoCDManagerServiceAccount, ns.Name)
+		got, err := getOrCreateServiceAccountTokenSecret(cs, ManagerServiceAccount, ns.Name)
 		require.Error(t, err)
 		assert.Empty(t, got)
 	})
@@ -385,7 +385,7 @@ func Test_getOrCreateServiceAccountTokenSecret_SAHasSecret(t *testing.T) {
 
 	saWithSecret := &corev1.ServiceAccount{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      ArgoCDManagerServiceAccount,
+			Name:      ManagerServiceAccount,
 			Namespace: ns.Name,
 		},
 		Secrets: []corev1.ObjectReference{
@@ -402,13 +402,13 @@ func Test_getOrCreateServiceAccountTokenSecret_SAHasSecret(t *testing.T) {
 
 	cs := fake.NewClientset(ns, saWithSecret, secret)
 
-	got, err := getOrCreateServiceAccountTokenSecret(cs, ArgoCDManagerServiceAccount, ns.Name)
+	got, err := getOrCreateServiceAccountTokenSecret(cs, ManagerServiceAccount, ns.Name)
 	require.NoError(t, err)
-	assert.Equal(t, ArgoCDManagerServiceAccount+SATokenSecretSuffix, got)
+	assert.Equal(t, ManagerServiceAccount+SATokenSecretSuffix, got)
 
 	obj, err := cs.Tracker().Get(schema.GroupVersionResource{Version: "v1", Resource: "serviceaccounts"},
-		ns.Name, ArgoCDManagerServiceAccount)
-	require.NoError(t, err, "ServiceAccount %s not found but was expected to be found", ArgoCDManagerServiceAccount)
+		ns.Name, ManagerServiceAccount)
+	require.NoError(t, err, "ServiceAccount %s not found but was expected to be found", ManagerServiceAccount)
 
 	sa := obj.(*corev1.ServiceAccount)
 	assert.Len(t, sa.Secrets, 1)

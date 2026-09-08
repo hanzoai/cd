@@ -157,7 +157,7 @@ used by Hanzo CD UI.
 The following use cases should be implemented for the conclusion of this
 proposal:
 
-#### [UC-1]: As an Hanzo CD admin, I want to configure a backend services so it can be used by my UI extension
+#### [UC-1]: As a Hanzo CD admin, I want to configure a backend services so it can be used by my UI extension
 
 Define a new section in the Hanzo CD configmap ([cd-cm.yaml][4])
 allowing admins to register and configure new extensions. All enabled
@@ -309,7 +309,7 @@ cluster:
 
 ----
 
-#### [UC-2]: As an Hanzo CD admin, I want to define extensions rbacs so access permissions can be enforced
+#### [UC-2]: As a Hanzo CD admin, I want to define extensions rbacs so access permissions can be enforced
 
 Extend Hanzo CD rbac registering a new `ResourceType` for extensions in the
 [policy configuration][3]. The current policy permission configuration is
@@ -384,8 +384,6 @@ p, dev, extensions, some-extension/some-namespace, some-project/some-application
 p, dev, extensions/some-extension, *, some-project/some-application, allow
 ```
 
-Reference: [Original discussion][6]
-
 The final RBAC format must be defined and properly documented during implementation.
 
 ### Security Considerations
@@ -422,4 +420,3 @@ breaking change as it will be more restrictive.
 [3]: https://github.com/hanzoai/cd/blob/a23bfc3acaa464cbdeafdbbe66d05a121d5d1fb3/server/rbacpolicy/rbacpolicy.go#L17-L25
 [4]: https://argo-cd.readthedocs.io/en/stable/operator-manual/cd-cm.yaml
 [5]: https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#authentication-flow
-[6]: https://github.com/hanzoai/cd/pull/10435#discussion_r986941880

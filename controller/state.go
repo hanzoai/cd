@@ -42,10 +42,10 @@ import (
 	"github.com/hanzoai/cd/reposerver/apiclient"
 	applog "github.com/hanzoai/cd/util/app/log"
 	"github.com/hanzoai/cd/util/app/path"
-	"github.com/hanzoai/cd/util/cd"
-	argodiff "github.com/hanzoai/cd/util/cd/diff"
-	"github.com/hanzoai/cd/util/cd/normalizers"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
+	appdiff "github.com/hanzoai/cd/util/cd/diff"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/db"
 	"github.com/hanzoai/cd/util/git"
 	utilio "github.com/hanzoai/cd/util/io"
@@ -107,7 +107,7 @@ type comparisonResult struct {
 	resources            []v1alpha1.ResourceStatus
 	managedResources     []managedResource
 	reconciliationResult sync.ReconciliationResult
-	diffConfig           argodiff.DiffConfig
+	diffConfig           appdiff.DiffConfig
 	appSourceType        v1alpha1.ApplicationSourceType
 	// appSourceTypes stores the SourceType for each application source under sources field
 	appSourceTypes []v1alpha1.ApplicationSourceType
@@ -922,7 +922,7 @@ func (m *appStateManager) CompareAppState(ctx context.Context, app *v1alpha1.App
 
 	useDiffCache := useDiffCache(noCache, manifestInfos, sources, app, manifestRevisions, m.statusRefreshTimeout, serverSideDiff, logCtx)
 
-	diffConfigBuilder := argodiff.NewDiffConfigBuilder().
+	diffConfigBuilder := appdiff.NewDiffConfigBuilder().
 		WithDiffSettings(app.Spec.IgnoreDifferences, resourceOverrides, compareOptions.IgnoreAggregatedRoles, m.ignoreNormalizerOpts).
 		WithTracking(appLabelKey, string(trackingMethod))
 
@@ -941,7 +941,7 @@ func (m *appStateManager) CompareAppState(ctx context.Context, app *v1alpha1.App
 		conditions = append(conditions, v1alpha1.ApplicationCondition{Type: v1alpha1.ApplicationConditionUnknownError, Message: err.Error(), LastTransitionTime: &now})
 	}
 	diffConfigBuilder.WithGVKParser(gvkParser)
-	diffConfigBuilder.WithManager(common.ArgoCDSSAManager)
+	diffConfigBuilder.WithManager(common.SSAManager)
 
 	diffConfigBuilder.WithServerSideDiff(serverSideDiff)
 
@@ -971,7 +971,7 @@ func (m *appStateManager) CompareAppState(ctx context.Context, app *v1alpha1.App
 	err = func() (retErr error) {
 		_, diffSpan := tracer.Start(ctx, "controller.diff")
 		defer func() { traceutil.EndSpan(diffSpan, retErr) }()
-		diffResults, retErr = argodiff.StateDiffs(ctx, reconciliation.Live, reconciliation.Target, diffConfig)
+		diffResults, retErr = appdiff.StateDiffs(ctx, reconciliation.Live, reconciliation.Target, diffConfig)
 		return retErr
 	}()
 	if err != nil {
@@ -1294,7 +1294,7 @@ func (m *appStateManager) persistRevisionHistory(
 	if err != nil {
 		return fmt.Errorf("error marshaling revision history patch: %w", err)
 	}
-	_, err = m.appclientset.ArgoprojV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+	_, err = m.appclientset.AppsV1alpha1().Applications(app.Namespace).Patch(context.Background(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 	return err
 }
 

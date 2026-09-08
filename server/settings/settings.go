@@ -52,7 +52,7 @@ func (s *Server) Get(ctx context.Context, _ *settingspkg.SettingsQuery) (*settin
 	if err != nil {
 		return nil, err
 	}
-	argoCDSettings, err := s.mgr.GetSettings()
+	cdSettings, err := s.mgr.GetSettings()
 	if err != nil {
 		return nil, err
 	}
@@ -96,13 +96,13 @@ func (s *Server) Get(ctx context.Context, _ *settingspkg.SettingsQuery) (*settin
 	}
 
 	set := settingspkg.Settings{
-		URL:                argoCDSettings.URL,
-		AdditionalURLs:     argoCDSettings.AdditionalURLs,
+		URL:                cdSettings.URL,
+		AdditionalURLs:     cdSettings.AdditionalURLs,
 		AppLabelKey:        appInstanceLabelKey,
-		StatusBadgeEnabled: argoCDSettings.StatusBadgeEnabled,
-		StatusBadgeRootUrl: argoCDSettings.StatusBadgeRootUrl,
+		StatusBadgeEnabled: cdSettings.StatusBadgeEnabled,
+		StatusBadgeRootUrl: cdSettings.StatusBadgeRootUrl,
 		KustomizeOptions: &v1alpha1.KustomizeOptions{
-			BuildOptions: argoCDSettings.KustomizeBuildOptions,
+			BuildOptions: cdSettings.KustomizeBuildOptions,
 		},
 		GoogleAnalytics: &settingspkg.GoogleAnalyticsConfig{
 			TrackingID:     gaSettings.TrackingID,
@@ -115,36 +115,36 @@ func (s *Server) Get(ctx context.Context, _ *settingspkg.SettingsQuery) (*settin
 		},
 		UserLoginsDisabled:        userLoginsDisabled,
 		KustomizeVersions:         kustomizeVersions,
-		UiCssURL:                  argoCDSettings.UiCssURL,
-		UiLoginButtonText:         argoCDSettings.UiLoginButtonText,
+		UiCssURL:                  cdSettings.UiCssURL,
+		UiLoginButtonText:         cdSettings.UiLoginButtonText,
 		TrackingMethod:            trackingMethod,
 		InstallationID:            installationID,
-		ExecEnabled:               argoCDSettings.ExecEnabled,
+		ExecEnabled:               cdSettings.ExecEnabled,
 		AppsInAnyNamespaceEnabled: s.appsInAnyNamespaceEnabled,
-		ImpersonationEnabled:      argoCDSettings.ImpersonationEnabled,
+		ImpersonationEnabled:      cdSettings.ImpersonationEnabled,
 		HydratorEnabled:           s.hydratorEnabled,
 		SyncWithReplaceAllowed:    s.syncWithReplaceAllowed,
 	}
 
 	if sessionmgr.LoggedIn(ctx) || s.disableAuth {
-		set.UiBannerContent = argoCDSettings.UiBannerContent
-		set.UiBannerURL = argoCDSettings.UiBannerURL
-		set.UiBannerPermanent = argoCDSettings.UiBannerPermanent
-		set.UiBannerPosition = argoCDSettings.UiBannerPosition
+		set.UiBannerContent = cdSettings.UiBannerContent
+		set.UiBannerURL = cdSettings.UiBannerURL
+		set.UiBannerPermanent = cdSettings.UiBannerPermanent
+		set.UiBannerPosition = cdSettings.UiBannerPosition
 		set.ControllerNamespace = s.mgr.GetNamespace()
 		set.ResourceOverrides = overrides
 	}
 	if sessionmgr.LoggedIn(ctx) {
-		set.PasswordPattern = argoCDSettings.PasswordPattern
+		set.PasswordPattern = cdSettings.PasswordPattern
 	}
-	if argoCDSettings.DexConfig != "" {
+	if cdSettings.DexConfig != "" {
 		var cfg settingspkg.DexConfig
-		err = yaml.Unmarshal([]byte(argoCDSettings.DexConfig), &cfg)
+		err = yaml.Unmarshal([]byte(cdSettings.DexConfig), &cfg)
 		if err == nil {
 			set.DexConfig = &cfg
 		}
 	}
-	if oidcConfig := argoCDSettings.OIDCConfig(); oidcConfig != nil {
+	if oidcConfig := cdSettings.OIDCConfig(); oidcConfig != nil {
 		set.OIDCConfig = &settingspkg.OIDCConfig{
 			Name:                     oidcConfig.Name,
 			Issuer:                   oidcConfig.Issuer,
@@ -153,8 +153,8 @@ func (s *Server) Get(ctx context.Context, _ *settingspkg.SettingsQuery) (*settin
 			Scopes:                   oidcConfig.RequestedScopes,
 			EnablePKCEAuthentication: oidcConfig.EnablePKCEAuthentication,
 		}
-		if len(argoCDSettings.OIDCConfig().RequestedIDTokenClaims) > 0 {
-			set.OIDCConfig.IDTokenClaims = argoCDSettings.OIDCConfig().RequestedIDTokenClaims
+		if len(cdSettings.OIDCConfig().RequestedIDTokenClaims) > 0 {
+			set.OIDCConfig.IDTokenClaims = cdSettings.OIDCConfig().RequestedIDTokenClaims
 		}
 	}
 	return &set, nil

@@ -1,6 +1,6 @@
-import {DataLoader} from 'argo-ui';
+import {DataLoader} from '../../../../kit/src';
 import * as React from 'react';
-import {Key, KeybindingContext, useNav} from 'argo-ui/v2';
+import {Key, KeybindingContext, useNav} from '../../../../kit/v2';
 import {Consumer, Context} from '../../../shared/context';
 import * as models from '../../../shared/models';
 import * as AppUtils from '../utils';
@@ -47,7 +47,7 @@ export const ApplicationsTable = (props: {
             {ctx => (
                 <DataLoader load={() => services.viewPreferences.getPreferences()}>
                     {pref => (
-                        <div className='applications-table argo-table-list argo-table-list--clickable'>
+                        <div className='applications-table kit-table-list kit-table-list--clickable'>
                             {props.applications.map((app, i) =>
                                 isApp(app) ? (
                                     <ApplicationTableRow

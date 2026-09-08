@@ -312,7 +312,7 @@ func TestManagedByURLAnnotation(t *testing.T) {
 				Name: "test-app",
 				Annotations: map[string]string{
 					v1alpha1.AnnotationKeyManagedByURL: managedByURL,
-					"cd.hanzo.ai/deep-link-1":   "https://grafana.example.com/d/argo/argo-cd-application-dashboard",
+					"cd.hanzo.ai/deep-link-1":   "https://grafana.example.com/d/cd/cd-application-dashboard",
 					"cd.hanzo.ai/deep-link-2":   "https://kibana.example.com/app/kibana#/discover",
 				},
 			},

@@ -1,4 +1,4 @@
-import {Autocomplete} from 'argo-ui';
+import {Autocomplete} from '../../../../kit/src';
 import * as React from 'react';
 import {DataLoader} from '../../../shared/components';
 import * as models from '../../../shared/models';
@@ -135,19 +135,19 @@ export interface EditNotificationSubscriptionsProps extends ReturnType<typeof us
 
 export const EditNotificationSubscriptions = ({subscriptions, onAddNewSubscription, onEditSubscription, onRemoveSubscription}: EditNotificationSubscriptionsProps) => {
     return (
-        <div className='edit-notification-subscriptions argo-field'>
+        <div className='edit-notification-subscriptions kit-field'>
             {subscriptions.map((subscription, idx) => (
                 <div className='edit-notification-subscriptions__subscription' key={idx}>
-                    <input className='argo-field edit-notification-subscriptions__input-prefix' disabled={true} value={NOTIFICATION_SUBSCRIPTION_ANNOTATION_PREFIX} />
+                    <input className='kit-field edit-notification-subscriptions__input-prefix' disabled={true} value={NOTIFICATION_SUBSCRIPTION_ANNOTATION_PREFIX} />
                     <b>&nbsp;.&nbsp;</b>
                     <DataLoader load={() => services.notification.listTriggers().then(triggers => triggers.map(trigger => trigger.name))}>
                         {triggersList => (
                             <Autocomplete
                                 wrapperProps={{
-                                    className: 'argo-field edit-notification-subscriptions__autocomplete-wrapper'
+                                    className: 'kit-field edit-notification-subscriptions__autocomplete-wrapper'
                                 }}
                                 inputProps={{
-                                    className: 'argo-field',
+                                    className: 'kit-field',
                                     placeholder: 'on-sync-running',
                                     title: 'Trigger'
                                 }}
@@ -170,10 +170,10 @@ export const EditNotificationSubscriptions = ({subscriptions, onAddNewSubscripti
                         {serviceList => (
                             <Autocomplete
                                 wrapperProps={{
-                                    className: 'argo-field edit-notification-subscriptions__autocomplete-wrapper'
+                                    className: 'kit-field edit-notification-subscriptions__autocomplete-wrapper'
                                 }}
                                 inputProps={{
-                                    className: 'argo-field',
+                                    className: 'kit-field',
                                     placeholder: 'slack',
                                     title: 'Service'
                                 }}
@@ -194,7 +194,7 @@ export const EditNotificationSubscriptions = ({subscriptions, onAddNewSubscripti
                     &nbsp;=&nbsp;
                     <input
                         autoComplete='fake'
-                        className='argo-field'
+                        className='kit-field'
                         placeholder='my-channel1; my-channel2'
                         title='Value'
                         value={subscription.value}
@@ -213,7 +213,7 @@ export const EditNotificationSubscriptions = ({subscriptions, onAddNewSubscripti
             ))}
             {subscriptions.length === 0 && <label>No items</label>}
             <div>
-                <button className='argo-button argo-button--base argo-button--short' onClick={() => onAddNewSubscription()}>
+                <button className='kit-button kit-button--base kit-button--short' onClick={() => onAddNewSubscription()}>
                     <i className='fa fa-plus' style={{cursor: 'pointer'}} />
                 </button>
             </div>

@@ -13,18 +13,18 @@ import (
 	"github.com/hanzoai/cd/util/git"
 )
 
-// ArgoCDCommitServer is the server that handles commit requests.
-type ArgoCDCommitServer struct {
+// Server is the server that handles commit requests.
+type Server struct {
 	commitService *commit.Service
 }
 
 // NewServer returns a new instance of the commit server.
-func NewServer(gitCredsStore git.CredsStore, metricsServer *metrics.Server) *ArgoCDCommitServer {
-	return &ArgoCDCommitServer{commitService: commit.NewService(gitCredsStore, metricsServer)}
+func NewServer(gitCredsStore git.CredsStore, metricsServer *metrics.Server) *Server {
+	return &Server{commitService: commit.NewService(gitCredsStore, metricsServer)}
 }
 
 // CreateGRPC creates a new gRPC server.
-func (a *ArgoCDCommitServer) CreateGRPC() *grpc.Server {
+func (a *Server) CreateGRPC() *grpc.Server {
 	server := grpc.NewServer(grpc.MaxRecvMsgSize(apiclient.MaxGRPCMessageSize))
 	versionpkg.RegisterVersionServiceServer(server, version.NewServer(nil, func() (bool, error) {
 		return true, nil

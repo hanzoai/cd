@@ -18,10 +18,10 @@ cd app set APPNAME [flags]
   cd app set my-app --parameter key1=value1 --parameter key2=value2 --validate
   
   # Set and override application parameters for a source at position 1 under spec.sources of app my-app. source-position starts at 1.
-  cd app set my-app --source-position 1 --repo https://github.com/argoproj/argocd-example-apps.git
+  cd app set my-app --source-position 1 --repo https://github.com/hanzocd/example-apps.git
   
   # Set and override application parameters for a source named "test" under spec.sources of app my-app.
-  cd app set my-app --source-name test --repo https://github.com/argoproj/argocd-example-apps.git
+  cd app set my-app --source-name test --repo https://github.com/hanzocd/example-apps.git
   
   # Set application parameters and specify the namespace
   cd app set my-app --parameter key1=value1 --parameter key2=value2 --namespace my-namespace

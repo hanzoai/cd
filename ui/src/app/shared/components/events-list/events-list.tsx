@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import * as React from 'react';
-import {ago} from 'argo-ui/v2';
+import {ago} from '../../../../kit/v2';
 
 import * as models from '../../models';
 
@@ -34,8 +34,8 @@ export const EventsList = (props: {events: models.Event[]}) => {
     return (
         <div className='events-list'>
             {(events.length === 0 && <p>No events available</p>) || (
-                <div className='argo-table-list'>
-                    <div className='argo-table-list__head'>
+                <div className='kit-table-list'>
+                    <div className='kit-table-list__head'>
                         <div className='row'>
                             <div className='columns small-2 xxlarge-2'>REASON</div>
                             <div className='columns small-4 xxlarge-5'>MESSAGE</div>
@@ -45,7 +45,7 @@ export const EventsList = (props: {events: models.Event[]}) => {
                         </div>
                     </div>
                     {events.map(event => (
-                        <div className={`argo-table-list__row events-list__event events-list__event--${event.type}`} key={event.metadata.uid}>
+                        <div className={`kit-table-list__row events-list__event events-list__event--${event.type}`} key={event.metadata.uid}>
                             <div className='row'>
                                 <div className='columns small-2 xxlarge-2'>{event.reason}</div>
                                 <div className='columns small-4 xxlarge-5' style={{whiteSpace: 'normal', lineHeight: 'normal'}}>

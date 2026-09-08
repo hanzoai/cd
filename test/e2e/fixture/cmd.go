@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	argoexec "github.com/hanzoai/cd/util/exec"
+	cdexec "github.com/hanzoai/cd/util/exec"
 )
 
 func Run(workDir, name string, args ...string) (string, error) {
@@ -21,7 +21,7 @@ func RunWithStdin(stdin, workDir, name string, args ...string) (string, error) {
 	cmd.Env = os.Environ()
 	cmd.Dir = workDir
 
-	return argoexec.RunCommandExt(cmd, argoexec.CmdOpts{})
+	return cdexec.RunCommandExt(cmd, cdexec.CmdOpts{})
 }
 
 func RunWithStdinWithRedactor(stdin, workDir, name string, redactor func(string) string, args ...string) (string, error) {
@@ -32,5 +32,5 @@ func RunWithStdinWithRedactor(stdin, workDir, name string, redactor func(string)
 	cmd.Env = os.Environ()
 	cmd.Dir = workDir
 
-	return argoexec.RunCommandExt(cmd, argoexec.CmdOpts{Redactor: redactor})
+	return cdexec.RunCommandExt(cmd, cdexec.CmdOpts{Redactor: redactor})
 }

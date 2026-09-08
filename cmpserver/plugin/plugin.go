@@ -21,7 +21,7 @@ import (
 	repoclient "github.com/hanzoai/cd/reposerver/apiclient"
 	"github.com/hanzoai/cd/util/buffered_context"
 	"github.com/hanzoai/cd/util/cmp"
-	argoexec "github.com/hanzoai/cd/util/exec"
+	executil "github.com/hanzoai/cd/util/exec"
 	"github.com/hanzoai/cd/util/io/files"
 
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
@@ -87,7 +87,7 @@ func runCommand(ctx context.Context, command Command, path string, env []string)
 	}
 	logCtx := log.WithFields(log.Fields{"execID": execId})
 
-	argsToLog := argoexec.GetCommandArgsToLog(cmd)
+	argsToLog := executil.GetCommandArgsToLog(cmd)
 	logCtx.WithFields(log.Fields{"dir": cmd.Dir}).Info(argsToLog)
 
 	var stdout bytes.Buffer

@@ -26,9 +26,9 @@ with at least one value for `hostname` or `IP`.
 ### PersistentVolumeClaim
 * The `status.phase` is `Bound`
 
-### Argocd App
+### Application
 
-The health assessment of `apps.hanzo.ai/Application` CRD has been removed in cd 1.8 (see [#3781](https://github.com/argoproj/argo-cd/issues/3781) for more information).
+The health assessment of `apps.hanzo.ai/Application` CRD has been removed in cd 1.8.
 You might need to restore it if you are using app-of-apps pattern and orchestrating synchronization using sync waves. Add the following resource customization in
 `cd-cm` ConfigMap:
 
@@ -81,7 +81,7 @@ If the CRD status is in [kstatus](https://github.com/kubernetes-sigs/cli-utils/b
 
 #### Using K8s observedGeneration field
 If the CRD uses the [observedGeneration](https://alenkacz.medium.com/kubernetes-operator-best-practices-implementing-observedgeneration-250728868792) field correctly and it is present in the `status` sub-resource, please use this field in the health check. Using this field in calculating the CRD health is important for preventing situations in which the health status in Hanzo CD may flap if Hanzo CD is evaluating the health status before the CRD controller finished reconciling the changed CR.   
-This is an [example](https://github.com/hanzoai/cd/blob/stable/resource_customizations/apps.hanzo.ai/Rollout/health.lua) of using this field in a health check.  
+This is an [example](https://github.com/hanzoai/cd/blob/stable/resource_customizations/apps.kruise.io/CloneSet/health.lua) of using this field in a health check.  
 
 ### Configuring Custom Health Checks
 
@@ -172,7 +172,7 @@ By default, health typically returns a `Progressing` status.
 A health check can be bundled into Hanzo CD. Custom health check scripts are located in the `resource_customizations` directory of [https://github.com/hanzoai/cd](https://github.com/hanzoai/cd). This must have the following directory structure:
 
 ```
-argo-cd
+cd
 |-- resource_customizations
 |    |-- your.crd.group.io               # CRD group
 |    |    |-- MyKind                     # Resource kind
@@ -199,7 +199,7 @@ For the cases when the `status` sub-resource is complex and you had to consult t
 
 To test the implemented custom health checks, run `go test -v ./util/lua/`.
 
-The [PR#1139](https://github.com/hanzoai/cd/pull/1139) is an example of Cert Manager CRDs custom health check.
+The `resource_customizations/cert-manager.io` directory is an example of Cert Manager CRDs custom health checks.
 
 #### Wildcard Support for Built-in Health Checks
 
@@ -208,7 +208,7 @@ You can use a single health check for multiple resources by using a wildcard in 
 The `_` character behaves like a `*` wildcard. For example, consider the following directory structure:
 
 ```
-argo-cd
+cd
 |-- resource_customizations
 |    |-- _.group.io               # CRD group
 |    |    |-- _                   # Resource kind
@@ -232,11 +232,11 @@ only treat a path as a wildcard if it contains a `_` character, but this may cha
 
 ## Overriding Go-Based Health Checks
 
-Health checks for some resources were [hardcoded as Go code](https://github.com/hanzoai/cd/tree/master/gitops-engine/pkg/health) 
+Health checks for some resources were [hardcoded as Go code](https://github.com/hanzoai/cd/tree/main/gitops-engine/pkg/health) 
 because Lua support was introduced later. Also, the logic of health checks for some resources were too complex, so it 
 was easier to implement it in Go.
 
-It is possible to override health checks for built-in resource. Argo will prefer the configured health check over the
+It is possible to override health checks for built-in resource. Hanzo CD will prefer the configured health check over the
 Go-based built-in check.
 
 The following resources have Go-based health checks:

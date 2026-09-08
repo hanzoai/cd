@@ -87,14 +87,14 @@ minikube start --driver=podman
 1. Fork the Hanzo CD repository to your personal GitHub Account
 2. Clone the forked repository:
 ```shell
-git clone https://github.com/YOUR-USERNAME/argo-cd.git
+git clone https://github.com/YOUR-USERNAME/cd.git
 ```
    Please note that the local build process uses GOPATH and that path should not be used, unless the Hanzo CD repository was directly cloned in it.
 
 3. While everyone has their own Git workflow, the author of this document recommends to create a remote called `upstream` in your local copy pointing to the original Hanzo CD repository. This way, you can easily keep your local branches up-to-date by merging in latest changes from the Hanzo CD repository, i.e. by doing a `git pull upstream master` in your locally checked out branch.
    To create the remote, run:
    ```shell
-   cd argo-cd
+   cd cd
    git remote add upstream https://github.com/hanzoai/cd.git
    ```
 
@@ -109,7 +109,7 @@ make install-codegen-tools-local
 
 ```shell
 kubectl create namespace cd &&
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml
 ```
 
 Set kubectl config to avoid specifying the namespace in every kubectl command.  

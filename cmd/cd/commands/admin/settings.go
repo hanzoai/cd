@@ -35,8 +35,8 @@ import (
 )
 
 type settingsOpts struct {
-	cdCMPath        string
-	cdSecretPath    string
+	cdCMPath            string
+	cdSecretPath        string
 	loadClusterSettings bool
 	clientConfig        clientcmd.ClientConfig
 }
@@ -60,7 +60,7 @@ func setSettingsMeta(obj metav1.Object) {
 	if labels == nil {
 		labels = make(map[string]string)
 	}
-	labels["app.kubernetes.io/part-of"] = "cd"
+	labels["app.kubernetes.io/part-of"] = "hanzocd"
 	obj.SetLabels(labels)
 }
 
@@ -75,7 +75,7 @@ func (opts *settingsOpts) createSettingsManager(ctx context.Context) (*settings.
 			return nil, err
 		}
 
-		cdCM, err = realClientset.CoreV1().ConfigMaps(ns).Get(ctx, common.ArgoCDConfigMapName, metav1.GetOptions{})
+		cdCM, err = realClientset.CoreV1().ConfigMaps(ns).Get(ctx, common.ConfigMapName, metav1.GetOptions{})
 		if err != nil {
 			return nil, err
 		}
@@ -108,14 +108,14 @@ func (opts *settingsOpts) createSettingsManager(ctx context.Context) (*settings.
 		if err != nil {
 			return nil, err
 		}
-		cdSecret, err = realClientset.CoreV1().Secrets(ns).Get(ctx, common.ArgoCDSecretName, metav1.GetOptions{})
+		cdSecret, err = realClientset.CoreV1().Secrets(ns).Get(ctx, common.SecretName, metav1.GetOptions{})
 		if err != nil {
 			return nil, err
 		}
 	default:
 		cdSecret = &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name: common.ArgoCDSecretName,
+				Name: common.SecretName,
 			},
 			Data: map[string][]byte{
 				"admin.password":   []byte("test"),

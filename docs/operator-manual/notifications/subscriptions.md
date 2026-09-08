@@ -15,7 +15,7 @@ The annotation key consists of following parts:
 * `slack` - notification service name
 * `my-channel1;my-channel2` - a semicolon separated list of recipients
 
-You can create subscriptions for all applications of an Hanzo CD project by adding the same annotation to the AppProject resource:
+You can create subscriptions for all applications of a Hanzo CD project by adding the same annotation to the AppProject resource:
 
 ```yaml
 apiVersion: apps.hanzo.ai/v1alpha1

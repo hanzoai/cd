@@ -20,7 +20,7 @@ spec:
     - cd.apps.apps.hanzo.ai
   issuerRef:
     kind: Issuer
-    name: argo-cd-issuer
+    name: cd-issuer
   secretName: test-secret
 status:
   acme:

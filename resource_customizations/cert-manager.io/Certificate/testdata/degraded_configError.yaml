@@ -3,7 +3,7 @@ kind: Certificate
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"cert-manager.io/v1alpha2","kind":"Certificate","metadata":{"annotations":{},"name":"test-cert","namespace":"cd"},"spec":{"acme":{"config":[{"domains":["cd.apps.apps.hanzo.ai"],"http01":{"ingress":"http01"}}]},"commonName":"cd.apps.apps.hanzo.ai","dnsNames":["cd.apps.apps.hanzo.ai"],"issuerRef":{"kind":"Issuer","name":"argo-cd-issuer"}}}
+      {"apiVersion":"cert-manager.io/v1alpha2","kind":"Certificate","metadata":{"annotations":{},"name":"test-cert","namespace":"cd"},"spec":{"acme":{"config":[{"domains":["cd.apps.apps.hanzo.ai"],"http01":{"ingress":"http01"}}]},"commonName":"cd.apps.apps.hanzo.ai","dnsNames":["cd.apps.apps.hanzo.ai"],"issuerRef":{"kind":"Issuer","name":"cd-issuer"}}}
   creationTimestamp: "2019-02-15T18:17:06Z"
   generation: 1
   name: test-cert
@@ -23,7 +23,7 @@ spec:
   - cd.apps.apps.hanzo.ai
   issuerRef:
     kind: Issuer
-    name: argo-cd-issuer
+    name: cd-issuer
   secretName: test-secret
 status:
   conditions:

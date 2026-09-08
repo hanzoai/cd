@@ -271,7 +271,7 @@ func TestGetUserGroupsFromAzureOverageClaim(t *testing.T) {
 
 			signature, err := util.MakeSignature(32)
 			require.NoError(t, err)
-			cdSettings := &settings.ArgoCDSettings{
+			cdSettings := &settings.Settings{
 				ServerSignature: signature,
 				OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 			}
@@ -279,7 +279,7 @@ func TestGetUserGroupsFromAzureOverageClaim(t *testing.T) {
 			require.NoError(t, err)
 
 			testCache := cache.NewInMemoryCache(24 * time.Hour)
-			a, err := NewClientApp(cdSettings, "", nil, "/argo-cd", testCache)
+			a, err := NewClientApp(cdSettings, "", nil, "/cd", testCache)
 			require.NoError(t, err)
 
 			for key, value := range tt.cacheItems {
@@ -323,7 +323,7 @@ func TestCacheAzureGroupsOverageResponse(t *testing.T) {
 	t.Run("successful cache write is readable", func(t *testing.T) {
 		signature, err := util.MakeSignature(32)
 		require.NoError(t, err)
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			ServerSignature: signature,
 			OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 		}
@@ -331,7 +331,7 @@ func TestCacheAzureGroupsOverageResponse(t *testing.T) {
 		require.NoError(t, err)
 
 		testCache := cache.NewInMemoryCache(24 * time.Hour)
-		a, err := NewClientApp(cdSettings, "", nil, "/argo-cd", testCache)
+		a, err := NewClientApp(cdSettings, "", nil, "/cd", testCache)
 		require.NoError(t, err)
 
 		groups := []string{"group-1", "group-2"}
@@ -354,13 +354,13 @@ func TestCacheAzureGroupsOverageResponse(t *testing.T) {
 	t.Run("cache uses token expiry when no custom setting", func(t *testing.T) {
 		signature, err := util.MakeSignature(32)
 		require.NoError(t, err)
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			ServerSignature: signature,
 			OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 		}
 
 		testCache := cache.NewInMemoryCache(24 * time.Hour)
-		a, err := NewClientApp(cdSettings, "", nil, "/argo-cd", testCache)
+		a, err := NewClientApp(cdSettings, "", nil, "/cd", testCache)
 		require.NoError(t, err)
 
 		groups := []string{"group-a"}
@@ -378,13 +378,13 @@ func TestCacheAzureGroupsOverageResponse(t *testing.T) {
 		signature, err := util.MakeSignature(32)
 		require.NoError(t, err)
 		// Set a custom expiry of 1 minute, shorter than the 5-minute token expiry.
-		cdSettings := &settings.ArgoCDSettings{
+		cdSettings := &settings.Settings{
 			ServerSignature: signature,
 			OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true, "userGroupOverageClaimCacheExpiration": "1m"}}`,
 		}
 
 		testCache := cache.NewInMemoryCache(24 * time.Hour)
-		a, err := NewClientApp(cdSettings, "", nil, "/argo-cd", testCache)
+		a, err := NewClientApp(cdSettings, "", nil, "/cd", testCache)
 		require.NoError(t, err)
 
 		groups := []string{"group-b"}
@@ -425,7 +425,7 @@ func TestGetUserGroupsFromAzureOverageClaim_CacheHitAfterFetch(t *testing.T) {
 
 	signature, err := util.MakeSignature(32)
 	require.NoError(t, err)
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		ServerSignature: signature,
 		OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 	}
@@ -433,7 +433,7 @@ func TestGetUserGroupsFromAzureOverageClaim_CacheHitAfterFetch(t *testing.T) {
 	require.NoError(t, err)
 
 	testCache := cache.NewInMemoryCache(24 * time.Hour)
-	a, err := NewClientApp(cdSettings, "", nil, "/argo-cd", testCache)
+	a, err := NewClientApp(cdSettings, "", nil, "/cd", testCache)
 	require.NoError(t, err)
 
 	accessToken := createTestJWT(t, jwt.MapClaims{"scp": "User.Read profile email"})
@@ -482,7 +482,7 @@ func TestGetUserGroupsFromAzureOverageClaim_CorruptCacheCallsAPI(t *testing.T) {
 
 	signature, err := util.MakeSignature(32)
 	require.NoError(t, err)
-	cdSettings := &settings.ArgoCDSettings{
+	cdSettings := &settings.Settings{
 		ServerSignature: signature,
 		OIDCConfigRAW:   `{"azure": {"enableUserGroupOverageClaim": true}}`,
 	}
@@ -490,7 +490,7 @@ func TestGetUserGroupsFromAzureOverageClaim_CorruptCacheCallsAPI(t *testing.T) {
 	require.NoError(t, err)
 
 	testCache := cache.NewInMemoryCache(24 * time.Hour)
-	a, err := NewClientApp(cdSettings, "", nil, "/argo-cd", testCache)
+	a, err := NewClientApp(cdSettings, "", nil, "/cd", testCache)
 	require.NoError(t, err)
 
 	// Populate cache with corrupt (non-JSON) data that is still validly encrypted.

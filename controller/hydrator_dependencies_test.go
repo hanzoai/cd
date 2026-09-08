@@ -45,7 +45,7 @@ func TestGetRepoObjs(t *testing.T) {
 
 	ctrl := newFakeControllerWithResync(t.Context(), &data, time.Minute, nil, errors.New("this should not be called"))
 	source := app.Spec.GetSource()
-	source.RepoURL = "oci://example.com/argo/argo-cd"
+	source.RepoURL = "oci://example.com/hanzoai/cd"
 
 	objs, resp, err := ctrl.GetRepoObjs(t.Context(), app, source, "abc123", &v1alpha1.AppProject{
 		ObjectMeta: metav1.ObjectMeta{
@@ -69,7 +69,7 @@ func TestGetRepoObjs(t *testing.T) {
 
 	annotations := objs[0].GetAnnotations()
 
-	// only the tracking annotations set by Argo CD should be removed
+	// only the tracking annotations set by Hanzo CD should be removed
 	// and not the custom annotations set by user
 	require.NotNil(t, annotations)
 	assert.Equal(t, "custom-value", annotations["custom-annotation"])

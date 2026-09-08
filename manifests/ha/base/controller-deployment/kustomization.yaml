@@ -8,8 +8,8 @@ patches:
 - path: cd-cmd-params-cm.yaml
 
 images:
-- name: quay.io/argoproj/cd
-  newName: quay.io/argoproj/cd
+- name: ghcr.io/hanzoai/cd
+  newName: ghcr.io/hanzoai/cd
   newTag: latest
 resources:
 - ../../../base/application-controller-deployment

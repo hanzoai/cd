@@ -1,0 +1,124 @@
+# Default values for the cd chart. Override with -f or --set.
+
+image:
+  repository: ghcr.io/hanzoai/cd
+  tag: ""
+  pullPolicy: Always
+
+# clusterScope controls whether the ClusterRole/ClusterRoleBinding pair for
+# application-controller, applicationset-controller and server gets created.
+# Set to false for a namespace-scoped install (each component still gets its
+# namespace Role/RoleBinding either way), matching manifests/namespace-install.yaml.
+# The CRDs in crds/ are a separate concern: they install once and Helm never
+# upgrades or deletes them; skip them with the native `helm install --skip-crds`
+# when CRDs are managed by another process.
+global:
+  clusterScope: true
+
+# config, rbac and params merge into hanzocd-cm, hanzocd-rbac-cm and
+# hanzocd-cmd-params-cm respectively, on top of the built-in defaults --
+# e.g. params: {"server.insecure": "true"} for a TLS-terminating ingress,
+# or config: {"dex.config": "..."} for SSO.
+config: {}
+rbac: {}
+params: {}
+
+networkPolicy:
+  create: true
+
+# ha turns on the multi-replica topology: redis-ha (sentinel + haproxy)
+# replaces the single redis deployment, and server/repo-server gain the
+# zone-spread anti-affinity manifests/ha applies. Matches manifests/ha/install.yaml.
+ha:
+  enabled: false
+
+# hydrator adds the commit-server component, matching
+# manifests/install-with-hydrator.yaml.
+hydrator:
+  enabled: false
+
+dex:
+  enabled: true
+  resources: {}
+
+notifications:
+  enabled: true
+  resources: {}
+
+controller:
+  replicaCount: 1
+  resources: {}
+
+server:
+  # defaults to 2 when ha.enabled is true, 1 otherwise; set explicitly to override.
+  replicaCount:
+  resources: {}
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: cd.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
+
+repoServer:
+  # defaults to 2 when ha.enabled is true, 1 otherwise; set explicitly to override.
+  replicaCount:
+  resources: {}
+
+applicationSet:
+  resources: {}
+
+redis:
+  resources: {}
+
+commitServer:
+  resources: {}
+
+# Values for the upstream redis-ha dependency (github.com/DandyDeveloper/charts),
+# used only when ha.enabled is true. fullnameOverride keeps its object names
+# stable across releases; existingSecret matches the hanzocd-redis secret every
+# other component already authenticates with.
+redis-ha:
+  fullnameOverride: hanzocd-redis-ha
+  auth: true
+  authKey: auth
+  existingSecret: hanzocd-redis
+  persistentVolume:
+    enabled: false
+  redis:
+    masterGroupName: cd
+    config:
+      save: '""'
+      bind: "0.0.0.0"
+  haproxy:
+    enabled: true
+    IPv6:
+      enabled: false
+    image:
+      tag: 3.0.8-alpine
+    timeout:
+      server: 6m
+      client: 6m
+    checkInterval: 3s
+    metrics:
+      enabled: true
+    extraConfig: |
+      global
+        maxconn 4096
+    serviceAccount:
+      automountToken: true
+  image:
+    tag: 8.6.4-alpine
+  sentinel:
+    bind: "0.0.0.0"
+    lifecycle:
+      postStart:
+        exec:
+          command:
+            - /bin/sh
+            - -c
+            - "sleep 30; redis-cli -p 26379 sentinel reset cd"

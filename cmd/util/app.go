@@ -21,7 +21,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/hanzoai/cd/pkg/apis/application"
-	argoappv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/config"
 	"github.com/hanzoai/cd/util/errors"
@@ -115,7 +115,7 @@ func AddAppFlags(command *cobra.Command, opts *AppOptions) {
 	command.Flags().StringVar(&opts.syncSourceBranch, "sync-source-branch", "", "The branch from which the app will sync")
 	command.Flags().StringVar(&opts.syncSourcePath, "sync-source-path", "", "The path in the repository from which the app will sync")
 	command.Flags().StringVar(&opts.hydrateToBranch, "hydrate-to-branch", "", "The branch to hydrate the app to")
-	command.Flags().IntVar(&opts.revisionHistoryLimit, "revision-history-limit", argoappv1.RevisionHistoryLimit, "How many items to keep in revision history")
+	command.Flags().IntVar(&opts.revisionHistoryLimit, "revision-history-limit", appv1.RevisionHistoryLimit, "How many items to keep in revision history")
 	command.Flags().StringVar(&opts.destServer, "dest-server", "", "K8s cluster URL (e.g. https://kubernetes.default.svc)")
 	command.Flags().StringVar(&opts.destName, "dest-name", "", "K8s cluster Name (e.g. minikube)")
 	command.Flags().StringVar(&opts.destNamespace, "dest-namespace", "", "K8s target namespace")
@@ -168,27 +168,27 @@ func AddAppFlags(command *cobra.Command, opts *AppOptions) {
 	command.Flags().StringVar(&opts.directoryExclude, "directory-exclude", "", "Set glob expression used to exclude files from application source path")
 	command.Flags().StringVar(&opts.directoryInclude, "directory-include", "", "Set glob expression used to include files from application source path")
 	command.Flags().Int64Var(&opts.retryLimit, "sync-retry-limit", 0, "Max number of allowed sync retries")
-	command.Flags().DurationVar(&opts.retryBackoffDuration, "sync-retry-backoff-duration", argoappv1.DefaultSyncRetryDuration, "Sync retry backoff base duration. Input needs to be a duration (e.g. 2m, 1h)")
-	command.Flags().DurationVar(&opts.retryBackoffMaxDuration, "sync-retry-backoff-max-duration", argoappv1.DefaultSyncRetryMaxDuration, "Max sync retry backoff duration. Input needs to be a duration (e.g. 2m, 1h)")
-	command.Flags().Int64Var(&opts.retryBackoffFactor, "sync-retry-backoff-factor", argoappv1.DefaultSyncRetryFactor, "Factor multiplies the base duration after each failed sync retry")
+	command.Flags().DurationVar(&opts.retryBackoffDuration, "sync-retry-backoff-duration", appv1.DefaultSyncRetryDuration, "Sync retry backoff base duration. Input needs to be a duration (e.g. 2m, 1h)")
+	command.Flags().DurationVar(&opts.retryBackoffMaxDuration, "sync-retry-backoff-max-duration", appv1.DefaultSyncRetryMaxDuration, "Max sync retry backoff duration. Input needs to be a duration (e.g. 2m, 1h)")
+	command.Flags().Int64Var(&opts.retryBackoffFactor, "sync-retry-backoff-factor", appv1.DefaultSyncRetryFactor, "Factor multiplies the base duration after each failed sync retry")
 	command.Flags().BoolVar(&opts.retryRefresh, "sync-retry-refresh", false, "Indicates if the latest revision should be used on retry instead of the initial one")
 	command.Flags().StringVar(&opts.ref, "ref", "", "Ref is reference to another source within sources field")
 	command.Flags().StringVar(&opts.SourceName, "source-name", "", "Name of the source from the list of sources of the app.")
 }
 
-func SetAppSpecOptions(flags *pflag.FlagSet, spec *argoappv1.ApplicationSpec, appOpts *AppOptions, sourcePosition int) int {
+func SetAppSpecOptions(flags *pflag.FlagSet, spec *appv1.ApplicationSpec, appOpts *AppOptions, sourcePosition int) int {
 	visited := 0
 	if flags == nil {
 		return visited
 	}
-	var h *argoappv1.SourceHydrator
+	var h *appv1.SourceHydrator
 	h, hasHydratorFlag := constructSourceHydrator(spec.SourceHydrator, *appOpts, flags)
 	if hasHydratorFlag {
 		spec.SourceHydrator = h
 	} else {
 		source := spec.GetSourcePtrByPosition(sourcePosition)
 		if source == nil {
-			source = &argoappv1.ApplicationSource{}
+			source = &appv1.ApplicationSource{}
 		}
 		source, visited = ConstructSource(source, *appOpts, flags)
 		if spec.HasMultipleSources() {
@@ -230,15 +230,15 @@ func SetAppSpecOptions(flags *pflag.FlagSet, spec *argoappv1.ApplicationSpec, ap
 				}
 			case "automated", "automatic", "auto":
 				if spec.SyncPolicy == nil {
-					spec.SyncPolicy = &argoappv1.SyncPolicy{}
+					spec.SyncPolicy = &appv1.SyncPolicy{}
 				}
-				spec.SyncPolicy.Automated = &argoappv1.SyncPolicyAutomated{}
+				spec.SyncPolicy.Automated = &appv1.SyncPolicyAutomated{}
 			default:
 				log.Fatalf("Invalid sync-policy: %s", appOpts.syncPolicy)
 			}
 		case "sync-option":
 			if spec.SyncPolicy == nil {
-				spec.SyncPolicy = &argoappv1.SyncPolicy{}
+				spec.SyncPolicy = &appv1.SyncPolicy{}
 			}
 			for _, option := range appOpts.syncOptions {
 				// `!` means remove the option
@@ -256,11 +256,11 @@ func SetAppSpecOptions(flags *pflag.FlagSet, spec *argoappv1.ApplicationSpec, ap
 			switch {
 			case appOpts.retryLimit > 0:
 				if spec.SyncPolicy == nil {
-					spec.SyncPolicy = &argoappv1.SyncPolicy{}
+					spec.SyncPolicy = &appv1.SyncPolicy{}
 				}
-				spec.SyncPolicy.Retry = &argoappv1.RetryStrategy{
+				spec.SyncPolicy.Retry = &appv1.RetryStrategy{
 					Limit: appOpts.retryLimit,
-					Backoff: &argoappv1.Backoff{
+					Backoff: &appv1.Backoff{
 						Duration:    appOpts.retryBackoffDuration.String(),
 						MaxDuration: appOpts.retryBackoffMaxDuration.String(),
 						Factor:      new(appOpts.retryBackoffFactor),
@@ -278,10 +278,10 @@ func SetAppSpecOptions(flags *pflag.FlagSet, spec *argoappv1.ApplicationSpec, ap
 			}
 		case "sync-retry-refresh":
 			if spec.SyncPolicy == nil {
-				spec.SyncPolicy = &argoappv1.SyncPolicy{}
+				spec.SyncPolicy = &appv1.SyncPolicy{}
 			}
 			if spec.SyncPolicy.Retry == nil {
-				spec.SyncPolicy.Retry = &argoappv1.RetryStrategy{}
+				spec.SyncPolicy.Retry = &appv1.RetryStrategy{}
 			}
 			spec.SyncPolicy.Retry.Refresh = appOpts.retryRefresh
 		}
@@ -289,11 +289,11 @@ func SetAppSpecOptions(flags *pflag.FlagSet, spec *argoappv1.ApplicationSpec, ap
 
 	if flags.Changed("auto-prune") || flags.Changed("self-heal") || flags.Changed("allow-empty") {
 		if spec.SyncPolicy == nil {
-			spec.SyncPolicy = &argoappv1.SyncPolicy{}
+			spec.SyncPolicy = &appv1.SyncPolicy{}
 		}
 		if spec.SyncPolicy.Automated == nil {
 			disabled := false
-			spec.SyncPolicy.Automated = &argoappv1.SyncPolicyAutomated{Enabled: &disabled}
+			spec.SyncPolicy.Automated = &appv1.SyncPolicyAutomated{Enabled: &disabled}
 		}
 
 		if flags.Changed("auto-prune") {
@@ -327,9 +327,9 @@ type kustomizeOpts struct {
 	ignoreMissingComponents bool
 }
 
-func setKustomizeOpt(src *argoappv1.ApplicationSource, opts kustomizeOpts) {
+func setKustomizeOpt(src *appv1.ApplicationSource, opts kustomizeOpts) {
 	if src.Kustomize == nil {
-		src.Kustomize = &argoappv1.ApplicationSourceKustomize{}
+		src.Kustomize = &appv1.ApplicationSourceKustomize{}
 	}
 	if opts.version != "" {
 		src.Kustomize.Version = opts.version
@@ -371,10 +371,10 @@ func setKustomizeOpt(src *argoappv1.ApplicationSource, opts kustomizeOpts) {
 		src.Kustomize.IgnoreMissingComponents = opts.ignoreMissingComponents
 	}
 	for _, image := range opts.images {
-		src.Kustomize.MergeImage(argoappv1.KustomizeImage(image))
+		src.Kustomize.MergeImage(appv1.KustomizeImage(image))
 	}
 	for _, replica := range opts.replicas {
-		r, err := argoappv1.NewKustomizeReplica(replica)
+		r, err := appv1.NewKustomizeReplica(replica)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -386,13 +386,13 @@ func setKustomizeOpt(src *argoappv1.ApplicationSource, opts kustomizeOpts) {
 	}
 }
 
-func setPluginOptEnvs(src *argoappv1.ApplicationSource, envs []string) {
+func setPluginOptEnvs(src *appv1.ApplicationSource, envs []string) {
 	if src.Plugin == nil {
-		src.Plugin = &argoappv1.ApplicationSourcePlugin{}
+		src.Plugin = &appv1.ApplicationSourcePlugin{}
 	}
 
 	for _, text := range envs {
-		e, err := argoappv1.NewEnvEntry(text)
+		e, err := appv1.NewEnvEntry(text)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -418,9 +418,9 @@ type helmOpts struct {
 	apiVersions             []string
 }
 
-func setHelmOpt(src *argoappv1.ApplicationSource, opts helmOpts) {
+func setHelmOpt(src *appv1.ApplicationSource, opts helmOpts) {
 	if src.Helm == nil {
-		src.Helm = &argoappv1.ApplicationSourceHelm{}
+		src.Helm = &appv1.ApplicationSourceHelm{}
 	}
 	if len(opts.valueFiles) > 0 {
 		src.Helm.ValueFiles = opts.valueFiles
@@ -462,21 +462,21 @@ func setHelmOpt(src *argoappv1.ApplicationSource, opts helmOpts) {
 		src.Helm.APIVersions = opts.apiVersions
 	}
 	for _, text := range opts.helmSets {
-		p, err := argoappv1.NewHelmParameter(text, false)
+		p, err := appv1.NewHelmParameter(text, false)
 		if err != nil {
 			log.Fatal(err)
 		}
 		src.Helm.AddParameter(*p)
 	}
 	for _, text := range opts.helmSetStrings {
-		p, err := argoappv1.NewHelmParameter(text, true)
+		p, err := appv1.NewHelmParameter(text, true)
 		if err != nil {
 			log.Fatal(err)
 		}
 		src.Helm.AddParameter(*p)
 	}
 	for _, text := range opts.helmSetFiles {
-		p, err := argoappv1.NewHelmFileParameter(text)
+		p, err := appv1.NewHelmFileParameter(text)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -487,27 +487,27 @@ func setHelmOpt(src *argoappv1.ApplicationSource, opts helmOpts) {
 	}
 }
 
-func setJsonnetOpt(src *argoappv1.ApplicationSource, tlaParameters []string, code bool) {
+func setJsonnetOpt(src *appv1.ApplicationSource, tlaParameters []string, code bool) {
 	if src.Directory == nil {
-		src.Directory = &argoappv1.ApplicationSourceDirectory{}
+		src.Directory = &appv1.ApplicationSourceDirectory{}
 	}
 	for _, j := range tlaParameters {
-		src.Directory.Jsonnet.TLAs = append(src.Directory.Jsonnet.TLAs, argoappv1.NewJsonnetVar(j, code))
+		src.Directory.Jsonnet.TLAs = append(src.Directory.Jsonnet.TLAs, appv1.NewJsonnetVar(j, code))
 	}
 }
 
-func setJsonnetOptExtVar(src *argoappv1.ApplicationSource, jsonnetExtVar []string, code bool) {
+func setJsonnetOptExtVar(src *appv1.ApplicationSource, jsonnetExtVar []string, code bool) {
 	if src.Directory == nil {
-		src.Directory = &argoappv1.ApplicationSourceDirectory{}
+		src.Directory = &appv1.ApplicationSourceDirectory{}
 	}
 	for _, j := range jsonnetExtVar {
-		src.Directory.Jsonnet.ExtVars = append(src.Directory.Jsonnet.ExtVars, argoappv1.NewJsonnetVar(j, code))
+		src.Directory.Jsonnet.ExtVars = append(src.Directory.Jsonnet.ExtVars, appv1.NewJsonnetVar(j, code))
 	}
 }
 
-func setJsonnetOptLibs(src *argoappv1.ApplicationSource, libs []string) {
+func setJsonnetOptLibs(src *appv1.ApplicationSource, libs []string) {
 	if src.Directory == nil {
-		src.Directory = &argoappv1.ApplicationSourceDirectory{}
+		src.Directory = &appv1.ApplicationSourceDirectory{}
 	}
 	src.Directory.Jsonnet.Libs = append(src.Directory.Jsonnet.Libs, libs...)
 }
@@ -515,27 +515,27 @@ func setJsonnetOptLibs(src *argoappv1.ApplicationSource, libs []string) {
 // SetParameterOverrides updates an existing or appends a new parameter override in the application
 // The app is assumed to be a helm app and is expected to be in the form:
 // param=value
-func SetParameterOverrides(app *argoappv1.Application, parameters []string, index int) {
+func SetParameterOverrides(app *appv1.Application, parameters []string, index int) {
 	if len(parameters) == 0 {
 		return
 	}
 	source := app.Spec.GetSourcePtrByIndex(index)
-	var sourceType argoappv1.ApplicationSourceType
+	var sourceType appv1.ApplicationSourceType
 	if st, _ := source.ExplicitType(); st != nil {
 		sourceType = *st
 	} else if app.Status.SourceType != "" {
 		sourceType = app.Status.SourceType
 	} else if len(strings.SplitN(parameters[0], "=", 2)) == 2 {
-		sourceType = argoappv1.ApplicationSourceTypeHelm
+		sourceType = appv1.ApplicationSourceTypeHelm
 	}
 
 	switch sourceType {
-	case argoappv1.ApplicationSourceTypeHelm:
+	case appv1.ApplicationSourceTypeHelm:
 		if source.Helm == nil {
-			source.Helm = &argoappv1.ApplicationSourceHelm{}
+			source.Helm = &appv1.ApplicationSourceHelm{}
 		}
 		for _, p := range parameters {
-			newParam, err := argoappv1.NewHelmParameter(p, false)
+			newParam, err := appv1.NewHelmParameter(p, false)
 			if err != nil {
 				log.Error(err)
 				continue
@@ -547,13 +547,13 @@ func SetParameterOverrides(app *argoappv1.Application, parameters []string, inde
 	}
 }
 
-func readApps(yml []byte, apps *[]*argoappv1.Application) error {
+func readApps(yml []byte, apps *[]*appv1.Application) error {
 	yamls, _ := kube.SplitYAMLToString(yml)
 
 	var err error
 
 	for _, yml := range yamls {
-		var app argoappv1.Application
+		var app appv1.Application
 		err = config.Unmarshal([]byte(yml), &app)
 		*apps = append(*apps, &app)
 		if err != nil {
@@ -564,7 +564,7 @@ func readApps(yml []byte, apps *[]*argoappv1.Application) error {
 	return err
 }
 
-func readAppsFromStdin(apps *[]*argoappv1.Application) error {
+func readAppsFromStdin(apps *[]*appv1.Application) error {
 	reader := bufio.NewReader(os.Stdin)
 	data, err := io.ReadAll(reader)
 	if err != nil {
@@ -577,7 +577,7 @@ func readAppsFromStdin(apps *[]*argoappv1.Application) error {
 	return nil
 }
 
-func readAppsFromURI(fileURL string, apps *[]*argoappv1.Application) error {
+func readAppsFromURI(fileURL string, apps *[]*appv1.Application) error {
 	readFilePayload := func() ([]byte, error) {
 		parsedURL, err := url.ParseRequestURI(fileURL)
 		if err != nil || (parsedURL.Scheme != "http" && parsedURL.Scheme != "https") {
@@ -594,8 +594,8 @@ func readAppsFromURI(fileURL string, apps *[]*argoappv1.Application) error {
 	return readApps(yml, apps)
 }
 
-func constructAppsFromStdin() ([]*argoappv1.Application, error) {
-	apps := make([]*argoappv1.Application, 0)
+func constructAppsFromStdin() ([]*appv1.Application, error) {
+	apps := make([]*appv1.Application, 0)
 	// read stdin
 	err := readAppsFromStdin(&apps)
 	if err != nil {
@@ -604,8 +604,8 @@ func constructAppsFromStdin() ([]*argoappv1.Application, error) {
 	return apps, nil
 }
 
-func constructAppsBaseOnName(appName string, labels, annotations, args []string, appOpts AppOptions, flags *pflag.FlagSet) ([]*argoappv1.Application, error) {
-	var app *argoappv1.Application
+func constructAppsBaseOnName(appName string, labels, annotations, args []string, appOpts AppOptions, flags *pflag.FlagSet) ([]*appv1.Application, error) {
+	var app *appv1.Application
 
 	// read arguments
 	if len(args) == 1 {
@@ -615,7 +615,7 @@ func constructAppsBaseOnName(appName string, labels, annotations, args []string,
 		appName = args[0]
 	}
 	appName, appNs := cd.ParseFromQualifiedName(appName, "")
-	app = &argoappv1.Application{
+	app = &appv1.Application{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       application.ApplicationKind,
 			APIVersion: application.Group + "/v1alpha1",
@@ -624,19 +624,19 @@ func constructAppsBaseOnName(appName string, labels, annotations, args []string,
 			Name:      appName,
 			Namespace: appNs,
 		},
-		Spec: argoappv1.ApplicationSpec{},
+		Spec: appv1.ApplicationSpec{},
 	}
 	SetAppSpecOptions(flags, &app.Spec, &appOpts, 0)
 	SetParameterOverrides(app, appOpts.Parameters, 0)
 	mergeLabels(app, labels)
 	setAnnotations(app, annotations)
-	return []*argoappv1.Application{
+	return []*appv1.Application{
 		app,
 	}, nil
 }
 
-func constructAppsFromFileURL(fileURL, appName string, labels, annotations, args []string, appOpts AppOptions, flags *pflag.FlagSet) ([]*argoappv1.Application, error) {
-	apps := make([]*argoappv1.Application, 0)
+func constructAppsFromFileURL(fileURL, appName string, labels, annotations, args []string, appOpts AppOptions, flags *pflag.FlagSet) ([]*appv1.Application, error) {
+	apps := make([]*appv1.Application, 0)
 	// read uri
 	err := readAppsFromURI(fileURL, &apps)
 	if err != nil {
@@ -665,7 +665,7 @@ func constructAppsFromFileURL(fileURL, appName string, labels, annotations, args
 	return apps, nil
 }
 
-func ConstructApps(fileURL, appName string, labels, annotations, args []string, appOpts AppOptions, flags *pflag.FlagSet) ([]*argoappv1.Application, error) {
+func ConstructApps(fileURL, appName string, labels, annotations, args []string, appOpts AppOptions, flags *pflag.FlagSet) ([]*appv1.Application, error) {
 	if fileURL == "-" {
 		return constructAppsFromStdin()
 	} else if fileURL != "" {
@@ -675,7 +675,7 @@ func ConstructApps(fileURL, appName string, labels, annotations, args []string, 
 	return constructAppsBaseOnName(appName, labels, annotations, args, appOpts, flags)
 }
 
-func ConstructSource(source *argoappv1.ApplicationSource, appOpts AppOptions, flags *pflag.FlagSet) (*argoappv1.ApplicationSource, int) {
+func ConstructSource(source *appv1.ApplicationSource, appOpts AppOptions, flags *pflag.FlagSet) (*appv1.ApplicationSource, int) {
 	visited := 0
 	flags.Visit(func(f *pflag.Flag) {
 		visited++
@@ -733,22 +733,22 @@ func ConstructSource(source *argoappv1.ApplicationSource, appOpts AppOptions, fl
 			if source.Directory != nil {
 				source.Directory.Recurse = appOpts.directoryRecurse
 			} else {
-				source.Directory = &argoappv1.ApplicationSourceDirectory{Recurse: appOpts.directoryRecurse}
+				source.Directory = &appv1.ApplicationSourceDirectory{Recurse: appOpts.directoryRecurse}
 			}
 		case "directory-exclude":
 			if source.Directory != nil {
 				source.Directory.Exclude = appOpts.directoryExclude
 			} else {
-				source.Directory = &argoappv1.ApplicationSourceDirectory{Exclude: appOpts.directoryExclude}
+				source.Directory = &appv1.ApplicationSourceDirectory{Exclude: appOpts.directoryExclude}
 			}
 		case "directory-include":
 			if source.Directory != nil {
 				source.Directory.Include = appOpts.directoryInclude
 			} else {
-				source.Directory = &argoappv1.ApplicationSourceDirectory{Include: appOpts.directoryInclude}
+				source.Directory = &appv1.ApplicationSourceDirectory{Include: appOpts.directoryInclude}
 			}
 		case "config-management-plugin":
-			source.Plugin = &argoappv1.ApplicationSourcePlugin{Name: appOpts.configManagementPlugin}
+			source.Plugin = &appv1.ApplicationSourcePlugin{Name: appOpts.configManagementPlugin}
 		case "nameprefix":
 			setKustomizeOpt(source, kustomizeOpts{namePrefix: appOpts.namePrefix})
 		case "namesuffix":
@@ -808,12 +808,12 @@ func ConstructSource(source *argoappv1.ApplicationSource, appOpts AppOptions, fl
 // hydrator and a boolean indicating if any hydrator flags were set. We return instead of just modifying the source
 // hydrator in place because the given hydrator `h` might be nil. In that case, we need to create a new source hydrator
 // and return it.
-func constructSourceHydrator(h *argoappv1.SourceHydrator, appOpts AppOptions, flags *pflag.FlagSet) (*argoappv1.SourceHydrator, bool) {
+func constructSourceHydrator(h *appv1.SourceHydrator, appOpts AppOptions, flags *pflag.FlagSet) (*appv1.SourceHydrator, bool) {
 	hasHydratorFlag := false
 	ensureNotNil := func(notEmpty bool) {
 		hasHydratorFlag = true
 		if notEmpty && h == nil {
-			h = &argoappv1.SourceHydrator{}
+			h = &appv1.SourceHydrator{}
 		}
 	}
 	flags.Visit(func(f *pflag.Flag) {
@@ -838,14 +838,14 @@ func constructSourceHydrator(h *argoappv1.SourceHydrator, appOpts AppOptions, fl
 			if appOpts.hydrateToBranch == "" {
 				h.HydrateTo = nil
 			} else {
-				h.HydrateTo = &argoappv1.HydrateTo{TargetBranch: appOpts.hydrateToBranch}
+				h.HydrateTo = &appv1.HydrateTo{TargetBranch: appOpts.hydrateToBranch}
 			}
 		}
 	})
 	return h, hasHydratorFlag
 }
 
-func mergeLabels(app *argoappv1.Application, labels []string) {
+func mergeLabels(app *appv1.Application, labels []string) {
 	mapLabels, err := label.Parse(labels)
 	errors.CheckError(err)
 
@@ -858,7 +858,7 @@ func mergeLabels(app *argoappv1.Application, labels []string) {
 	app.SetLabels(mergedLabels)
 }
 
-func setAnnotations(app *argoappv1.Application, annotations []string) {
+func setAnnotations(app *appv1.Application, annotations []string) {
 	if len(annotations) > 0 && app.Annotations == nil {
 		app.Annotations = map[string]string{}
 	}
@@ -873,7 +873,7 @@ func setAnnotations(app *argoappv1.Application, annotations []string) {
 }
 
 // LiveObjects deserializes the list of live states into unstructured objects
-func LiveObjects(resources []*argoappv1.ResourceDiff) ([]*unstructured.Unstructured, error) {
+func LiveObjects(resources []*appv1.ResourceDiff) ([]*unstructured.Unstructured, error) {
 	objs := make([]*unstructured.Unstructured, len(resources))
 	for i, resState := range resources {
 		obj, err := resState.LiveObject()
@@ -885,7 +885,7 @@ func LiveObjects(resources []*argoappv1.ResourceDiff) ([]*unstructured.Unstructu
 	return objs, nil
 }
 
-func FilterResources(groupChanged bool, resources []*argoappv1.ResourceDiff, group, kind, namespace, resourceName string, all bool) ([]*unstructured.Unstructured, error) {
+func FilterResources(groupChanged bool, resources []*appv1.ResourceDiff, group, kind, namespace, resourceName string, all bool) ([]*unstructured.Unstructured, error) {
 	liveObjs, err := LiveObjects(resources)
 	errors.CheckError(err)
 	filteredObjects := make([]*unstructured.Unstructured, 0)

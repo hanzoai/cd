@@ -1,6 +1,6 @@
-import {Tooltip} from 'argo-ui';
+import {Tooltip} from '../../kit/src';
 import {Boundary, Placement} from 'popper.js';
-import {useData} from 'argo-ui/v2';
+import {useData} from '../../kit/v2';
 import * as React from 'react';
 import {Context} from '../shared/context';
 import {services, ViewPreferences} from '../shared/services';

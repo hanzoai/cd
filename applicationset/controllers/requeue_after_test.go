@@ -18,7 +18,7 @@ import (
 	"github.com/hanzoai/cd/applicationset/generators"
 	appsetmetrics "github.com/hanzoai/cd/applicationset/metrics"
 	"github.com/hanzoai/cd/applicationset/services/mocks"
-	argov1alpha1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/util/settings"
 )
 
@@ -26,7 +26,7 @@ func TestRequeueAfter(t *testing.T) {
 	mockServer := &mocks.Repos{}
 	ctx := t.Context()
 	scheme := runtime.NewScheme()
-	err := argov1alpha1.AddToScheme(scheme)
+	err := v1alpha1.AddToScheme(scheme)
 	require.NoError(t, err)
 	gvrToListKind := map[schema.GroupVersionResource]string{{
 		Group:    "mallard.io",
@@ -105,7 +105,7 @@ func TestRequeueAfter(t *testing.T) {
 	}
 
 	type args struct {
-		appset               *argov1alpha1.ApplicationSet
+		appset               *v1alpha1.ApplicationSet
 		requeueAfterOverride string
 	}
 	tests := []struct {
@@ -115,90 +115,90 @@ func TestRequeueAfter(t *testing.T) {
 		wantErr assert.ErrorAssertionFunc
 	}{
 		{name: "Cluster", args: args{
-			appset: &argov1alpha1.ApplicationSet{
-				Spec: argov1alpha1.ApplicationSetSpec{
-					Generators: []argov1alpha1.ApplicationSetGenerator{{Clusters: &argov1alpha1.ClusterGenerator{}}},
+			appset: &v1alpha1.ApplicationSet{
+				Spec: v1alpha1.ApplicationSetSpec{
+					Generators: []v1alpha1.ApplicationSetGenerator{{Clusters: &v1alpha1.ClusterGenerator{}}},
 				},
 			}, requeueAfterOverride: "",
 		}, want: generators.NoRequeueAfter, wantErr: assert.NoError},
-		{name: "ClusterMergeNested", args: args{&argov1alpha1.ApplicationSet{
-			Spec: argov1alpha1.ApplicationSetSpec{
-				Generators: []argov1alpha1.ApplicationSetGenerator{
-					{Clusters: &argov1alpha1.ClusterGenerator{}},
-					{Merge: &argov1alpha1.MergeGenerator{
-						Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+		{name: "ClusterMergeNested", args: args{&v1alpha1.ApplicationSet{
+			Spec: v1alpha1.ApplicationSetSpec{
+				Generators: []v1alpha1.ApplicationSetGenerator{
+					{Clusters: &v1alpha1.ClusterGenerator{}},
+					{Merge: &v1alpha1.MergeGenerator{
+						Generators: []v1alpha1.ApplicationSetNestedGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
-								Git:      &argov1alpha1.GitGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
+								Git:      &v1alpha1.GitGenerator{},
 							},
 						},
 					}},
 				},
 			},
 		}, ""}, want: generators.DefaultRequeueAfter, wantErr: assert.NoError},
-		{name: "ClusterMatrixNested", args: args{&argov1alpha1.ApplicationSet{
-			Spec: argov1alpha1.ApplicationSetSpec{
-				Generators: []argov1alpha1.ApplicationSetGenerator{
-					{Clusters: &argov1alpha1.ClusterGenerator{}},
-					{Matrix: &argov1alpha1.MatrixGenerator{
-						Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+		{name: "ClusterMatrixNested", args: args{&v1alpha1.ApplicationSet{
+			Spec: v1alpha1.ApplicationSetSpec{
+				Generators: []v1alpha1.ApplicationSetGenerator{
+					{Clusters: &v1alpha1.ClusterGenerator{}},
+					{Matrix: &v1alpha1.MatrixGenerator{
+						Generators: []v1alpha1.ApplicationSetNestedGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
-								Git:      &argov1alpha1.GitGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
+								Git:      &v1alpha1.GitGenerator{},
 							},
 						},
 					}},
 				},
 			},
 		}, ""}, want: generators.DefaultRequeueAfter, wantErr: assert.NoError},
-		{name: "ListGenerator", args: args{appset: &argov1alpha1.ApplicationSet{
-			Spec: argov1alpha1.ApplicationSetSpec{
-				Generators: []argov1alpha1.ApplicationSetGenerator{{List: &argov1alpha1.ListGenerator{}}},
+		{name: "ListGenerator", args: args{appset: &v1alpha1.ApplicationSet{
+			Spec: v1alpha1.ApplicationSetSpec{
+				Generators: []v1alpha1.ApplicationSetGenerator{{List: &v1alpha1.ListGenerator{}}},
 			},
 		}}, want: generators.NoRequeueAfter, wantErr: assert.NoError},
-		{name: "DuckGenerator", args: args{appset: &argov1alpha1.ApplicationSet{
-			Spec: argov1alpha1.ApplicationSetSpec{
-				Generators: []argov1alpha1.ApplicationSetGenerator{{ClusterDecisionResource: &argov1alpha1.DuckTypeGenerator{}}},
+		{name: "DuckGenerator", args: args{appset: &v1alpha1.ApplicationSet{
+			Spec: v1alpha1.ApplicationSetSpec{
+				Generators: []v1alpha1.ApplicationSetGenerator{{ClusterDecisionResource: &v1alpha1.DuckTypeGenerator{}}},
 			},
 		}}, want: generators.DefaultRequeueAfter, wantErr: assert.NoError},
 		{name: "OverrideRequeueDuck", args: args{
-			appset: &argov1alpha1.ApplicationSet{
-				Spec: argov1alpha1.ApplicationSetSpec{
-					Generators: []argov1alpha1.ApplicationSetGenerator{{ClusterDecisionResource: &argov1alpha1.DuckTypeGenerator{}}},
+			appset: &v1alpha1.ApplicationSet{
+				Spec: v1alpha1.ApplicationSetSpec{
+					Generators: []v1alpha1.ApplicationSetGenerator{{ClusterDecisionResource: &v1alpha1.DuckTypeGenerator{}}},
 				},
 			}, requeueAfterOverride: "1h",
 		}, want: 1 * time.Hour, wantErr: assert.NoError},
-		{name: "OverrideRequeueGit", args: args{&argov1alpha1.ApplicationSet{
-			Spec: argov1alpha1.ApplicationSetSpec{
-				Generators: []argov1alpha1.ApplicationSetGenerator{
-					{Git: &argov1alpha1.GitGenerator{}},
+		{name: "OverrideRequeueGit", args: args{&v1alpha1.ApplicationSet{
+			Spec: v1alpha1.ApplicationSetSpec{
+				Generators: []v1alpha1.ApplicationSetGenerator{
+					{Git: &v1alpha1.GitGenerator{}},
 				},
 			},
 		}, "1h"}, want: 1 * time.Hour, wantErr: assert.NoError},
-		{name: "OverrideRequeueMatrix", args: args{&argov1alpha1.ApplicationSet{
-			Spec: argov1alpha1.ApplicationSetSpec{
-				Generators: []argov1alpha1.ApplicationSetGenerator{
-					{Clusters: &argov1alpha1.ClusterGenerator{}},
-					{Merge: &argov1alpha1.MergeGenerator{
-						Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+		{name: "OverrideRequeueMatrix", args: args{&v1alpha1.ApplicationSet{
+			Spec: v1alpha1.ApplicationSetSpec{
+				Generators: []v1alpha1.ApplicationSetGenerator{
+					{Clusters: &v1alpha1.ClusterGenerator{}},
+					{Merge: &v1alpha1.MergeGenerator{
+						Generators: []v1alpha1.ApplicationSetNestedGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
-								Git:      &argov1alpha1.GitGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
+								Git:      &v1alpha1.GitGenerator{},
 							},
 						},
 					}},
 				},
 			},
 		}, "5m"}, want: 5 * time.Minute, wantErr: assert.NoError},
-		{name: "OverrideRequeueMerge", args: args{&argov1alpha1.ApplicationSet{
-			Spec: argov1alpha1.ApplicationSetSpec{
-				Generators: []argov1alpha1.ApplicationSetGenerator{
-					{Clusters: &argov1alpha1.ClusterGenerator{}},
-					{Merge: &argov1alpha1.MergeGenerator{
-						Generators: []argov1alpha1.ApplicationSetNestedGenerator{
+		{name: "OverrideRequeueMerge", args: args{&v1alpha1.ApplicationSet{
+			Spec: v1alpha1.ApplicationSetSpec{
+				Generators: []v1alpha1.ApplicationSetGenerator{
+					{Clusters: &v1alpha1.ClusterGenerator{}},
+					{Merge: &v1alpha1.MergeGenerator{
+						Generators: []v1alpha1.ApplicationSetNestedGenerator{
 							{
-								Clusters: &argov1alpha1.ClusterGenerator{},
-								Git:      &argov1alpha1.GitGenerator{},
+								Clusters: &v1alpha1.ClusterGenerator{},
+								Git:      &v1alpha1.GitGenerator{},
 							},
 						},
 					}},

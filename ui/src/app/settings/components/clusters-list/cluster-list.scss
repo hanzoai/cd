@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 @import '../../../shared/config.scss';
 
 .clusters-list {
@@ -23,7 +23,7 @@
         }
 
         a {
-            color: #0dadea;
+            color: #2f81f7;
         }
     }
 

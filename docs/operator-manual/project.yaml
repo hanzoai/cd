@@ -81,7 +81,7 @@ spec:
     jwtTokens:
     - iat: 1535390316
 
-  # Sync windows restrict when Applications may be synced. https://argo-cd.readthedocs.io/en/stable/user-guide/sync_windows/
+  # Sync windows restrict when Applications may be synced. See user-guide/sync_windows.md
   syncWindows:
   - kind: allow
     schedule: '10 1 * * *'
@@ -114,12 +114,12 @@ spec:
   permitOnlyProjectScopedClusters: false
 
   # When using Applications-in-any-namespace, this field determines which namespaces this AppProject permits
-  # Applications to reside in. Details: https://argo-cd.readthedocs.io/en/stable/operator-manual/app-any-namespace/
+  # Applications to reside in. Details: operator-manual/app-any-namespace.md
   sourceNamespaces:
   - "cd-apps-*"
 
   # Source Integrity declares criteria for application source repositories, such as cryptographic signing, etc.
-  # https://argo-cd.readthedocs.io/en/latest/user-guide/source-integrity/
+  # See user-guide/source-integrity.md
   sourceIntegrity:
     git:
       policies:

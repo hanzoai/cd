@@ -40,11 +40,14 @@ const tsxRule = reactCompiler
               configFile: false,
               // Strip types and transform JSX only; leave ES modules intact so
               // webpack resolves imports (preset-env's module transform changed
-              // resolution and surfaced spurious missing-dep errors in argo-ui).
+              // resolution and surfaced spurious missing-dep errors in the kit).
               // esbuild's existing /\.js$/ rule handles final JS lowering.
               presets: [
                   ['@babel/preset-react', {runtime: 'automatic'}],
-                  ['@babel/preset-typescript', {isTSX: true, allExtensions: true}]
+                  // Babel 8's preset-typescript detects JSX from the .tsx
+                  // extension (babel-loader passes the filename), so the
+                  // Babel-7-only isTSX/allExtensions options are gone.
+                  '@babel/preset-typescript'
               ],
               plugins: [['babel-plugin-react-compiler', {target: '19', ...(reactCompilerLog ? {logger: {logEvent: (filename, event) => console.log(`[react-compiler] ${event.kind} ${filename ?? ''}`)}} : {})}]]
           }
@@ -57,7 +60,7 @@ const tsxRule = reactCompiler
 const proxyConf = {
     target: process.env.CD_API_URL || 'http://localhost:8080',
     secure: false,
-    // Rewrite Host header when proxying to a remote API server (e.g. a hosted Argo CD instance).
+    // Rewrite Host header when proxying to a remote API server (e.g. a hosted CD instance).
     changeOrigin: !!process.env.CD_API_URL
 };
 
@@ -74,13 +77,10 @@ const config = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
         alias: {
-            'react-form': require.resolve('argo-ui/src/components/form/compat.tsx'),
+            'react-form': require.resolve('../kit/src/components/form/compat.tsx'),
         },
         fallback: { fs: false }
     },
-    ignoreWarnings: [{
-        module: new RegExp('/node_modules/argo-ui/.*')
-    }],
     module: {
         rules: [
             tsxRule,
@@ -108,7 +108,12 @@ const config = {
                         loader: 'sass-loader',
                         options: {
                             sassOptions: {
-                                includePaths: ['node_modules'],
+                                // The SCSS imports the kit as 'src/kit/...'
+                                // (a path relative to the ui root), so the ui root must
+                                // be a load path; keep node_modules for bare imports.
+                                // sass-loader's modern API reads loadPaths, not the
+                                // legacy includePaths, so this key must be loadPaths.
+                                loadPaths: [__dirname + '/../..', 'node_modules'],
                                 quietDeps: true,
                                 silenceDeprecations: ['import', 'legacy-js-api', 'global-builtin', 'color-functions']
                             }
@@ -134,7 +139,7 @@ const config = {
             'process.env.NODE_ONLINE_ENV': JSON.stringify(process.env.NODE_ONLINE_ENV || 'offline'),
             'process.platform': JSON.stringify('browser'),
             'SYSTEM_INFO': JSON.stringify({
-                version: process.env.ARGO_VERSION || 'latest'
+                version: process.env.CD_VERSION || 'latest'
             })
         }),
         new HtmlWebpackPlugin({ template: 'src/app/index.html' }),
@@ -144,7 +149,7 @@ const config = {
                     to: 'assets'
                 },
                 {
-                    from: 'node_modules/argo-ui/src/assets',
+                    from: 'src/kit/src/assets',
                     to: 'assets'
                 },
                 {
@@ -156,7 +161,9 @@ const config = {
                     to: 'assets/scripts/redoc.standalone.js'
                 },
                 {
-                    from: 'node_modules/monaco-editor/min/vs/base/browser/ui/codicons/codicon',
+                    // monaco 0.56 bundles its min/ build and no longer ships a
+                    // loose codicon dir there; the font now lives under esm/.
+                    from: 'node_modules/monaco-editor/esm/vs/base/browser/ui/codicons/codicon',
                     to: 'assets/fonts'
                 }
             ]
@@ -167,7 +174,7 @@ const config = {
         }),
         codecovWebpackPlugin({
             enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-            bundleName: "argo-cd-ui",
+            bundleName: "hanzo-cd-ui",
             uploadToken: process.env.CODECOV_TOKEN,
         }),
     ],

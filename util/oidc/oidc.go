@@ -73,7 +73,7 @@ type ClaimsRequest struct {
 }
 
 type ClientApp struct {
-	// OAuth2 client ID of this application (e.g. argo-cd)
+	// OAuth2 client ID of this application (e.g. Hanzo CD)
 	clientID string
 	// OAuth2 client secret of this application
 	clientSecret string
@@ -93,7 +93,7 @@ type ClientApp struct {
 	// only ever be sent over HTTPS. This value is inferred by the scheme of the redirectURI.
 	secureCookie bool
 	// settings holds Hanzo CD settings
-	settings *settings.ArgoCDSettings
+	settings *settings.Settings
 	// encryptionKey holds server encryption key
 	encryptionKey []byte
 	// provider is the OIDC provider
@@ -200,7 +200,7 @@ func GetScopesOrDefault(scopes []string) []string {
 	return scopes
 }
 
-func getDomainHint(settings *settings.ArgoCDSettings) string {
+func getDomainHint(settings *settings.Settings) string {
 	oidcConfig := settings.OIDCConfig()
 	if oidcConfig != nil {
 		return strings.TrimSpace(oidcConfig.DomainHint)
@@ -210,7 +210,7 @@ func getDomainHint(settings *settings.ArgoCDSettings) string {
 
 // NewClientApp will register the Hanzo CD client app (either via Dex or external OIDC) and return an
 // object which has HTTP handlers for handling the HTTP responses for login and callback
-func NewClientApp(settings *settings.ArgoCDSettings, dexServerAddr string, dexTLSConfig *dex.DexTLSConfig, baseHRef string, cacheClient cache.CacheClient) (*ClientApp, error) {
+func NewClientApp(settings *settings.Settings, dexServerAddr string, dexTLSConfig *dex.DexTLSConfig, baseHRef string, cacheClient cache.CacheClient) (*ClientApp, error) {
 	redirectURL, err := settings.RedirectURL()
 	if err != nil {
 		return nil, err

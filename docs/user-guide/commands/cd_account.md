@@ -74,7 +74,7 @@ cd account [flags]
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd account bcrypt](cd_account_bcrypt.md)	 - Generate bcrypt hash for any password
 * [cd account can-i](cd_account_can-i.md)	 - Can I
 * [cd account delete-token](cd_account_delete-token.md)	 - Deletes account token

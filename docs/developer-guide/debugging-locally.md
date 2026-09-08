@@ -18,7 +18,7 @@ For the next steps, we will use Hanzo CD `api-server` as an example of running a
 ## Configure your IDE
 
 ### Locate your component configuration in `Procfile`
-The `Procfile` is used by Goreman when running Hanzo CD locally with the local toolchain. The [latest Procfile](https://github.com/hanzoai/cd/blob/master/Procfile) is located in the top-level directory in your cloned Hanzo CD repo folder. It contains all the needed component run configuration, and you will need to copy parts of this configuration to your IDE. 
+The `Procfile` is used by Goreman when running Hanzo CD locally with the local toolchain. The [latest Procfile](https://github.com/hanzoai/cd/blob/main/Procfile) is located in the top-level directory in your cloned Hanzo CD repo folder. It contains all the needed component run configuration, and you will need to copy parts of this configuration to your IDE. 
 
 Example for `api-server` configuration in `Procfile`:
 ``` text
@@ -30,7 +30,7 @@ This configuration example will be used as the basis for the next steps.
 > The Procfile for a component may change with time. Please go through the Procfile and make sure you use the latest configuration for debugging.
 
 ### Configure component env variables
-The component that you will run in your IDE for debugging (`api-server` in our case) will need env variables. Copy the env variables from `Procfile`, located in the `argo-cd` root folder of your development branch. The env variables are located before the `$COMMAND` section in the `sh -c` section of the component run command.
+The component that you will run in your IDE for debugging (`api-server` in our case) will need env variables. Copy the env variables from `Procfile`, located in the `cd` root folder of your development branch. The env variables are located before the `$COMMAND` section in the `sh -c` section of the component run command.
 You can keep them in `.env` file and then have the IDE launch configuration point to that file. Obviously, you can adjust the env variables to your needs when debugging a specific configuration.
 
 Example for an `api-server.env` file:
@@ -58,7 +58,7 @@ Using the market place / plugin manager of your IDE. The below example configura
 
 ### Configure component IDE launch configuration
 #### VSCode example
-Next, you will need to create a launch configuration, with the relevant args. Copy the args from `Procfile`, located in the `argo-cd` root folder of your development branch. The args are located after the `$COMMAND` section in the `sh -c` section of the component run command.
+Next, you will need to create a launch configuration, with the relevant args. Copy the args from `Procfile`, located in the `cd` root folder of your development branch. The args are located after the `$COMMAND` section in the `sh -c` section of the component run command.
 Example for an `api-server` launch configuration, based on our above example for `api-server` configuration in `Procfile`: 
 ``` json
     {
@@ -66,7 +66,7 @@ Example for an `api-server` launch configuration, based on our above example for
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "YOUR_CLONED_ARGO_CD_REPO_PATH/argo-cd/cmd",
+      "program": "YOUR_CLONED_CD_REPO_PATH/cd/cmd",
       "args": [
         "--loglevel",
         "debug",
@@ -85,12 +85,12 @@ Example for an `api-server` launch configuration, based on our above example for
 ```
 
 #### Goland example
-Next, you will need to create a launch configuration, with the relevant parameters. Copy the parameters from `Procfile`, located in the `argo-cd` root folder of your development branch. The parameters are located after the `$COMMAND` section in the `sh -c` section of the component run command.
+Next, you will need to create a launch configuration, with the relevant parameters. Copy the parameters from `Procfile`, located in the `cd` root folder of your development branch. The parameters are located after the `$COMMAND` section in the `sh -c` section of the component run command.
 Example for an `api-server` launch configuration snippet, based on our above example for `api-server` configuration in `Procfile`: 
 ``` xml 
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="api-server" type="GoApplicationRunConfiguration" factoryName="Go Application">
-    <module name="argo-cd" />
+    <module name="cd" />
     <working_directory value="$PROJECT_DIR$" />
     <parameters value="--loglevel debug --redis localhost:6379 --insecure --dex-server http://localhost:5556 --repo-server localhost:8081 --port 8080" />
     <EXTENSION ID="net.ashald.envfile"> <!-- Assuming you installed the EnvFile plugin-->
@@ -128,7 +128,7 @@ So for the case of debugging the `api-server`, run:
 `make start-local CD_START="notification applicationset-controller repo-server redis dex controller ui"` 
 
 > [!NOTE]
-> By default, the api-server in this configuration runs with auth disabled. If you need to test argo cd auth-related functionality, run `export CD_E2E_DISABLE_AUTH='false' && make start-local`
+> By default, the api-server in this configuration runs with auth disabled. If you need to test Hanzo CD auth-related functionality, run `export CD_E2E_DISABLE_AUTH='false' && make start-local`
 #### Run with "make run"
 `make run` runs all the components by default, but it is also possible to run it with a blacklist of components, enabling the separation we need.
 

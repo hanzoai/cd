@@ -39,7 +39,7 @@ registerResourceExtension(component: ExtensionComponent, group: string, kind: st
   - resource: State - the Kubernetes resource object;
   - tree: ApplicationTree - includes list of all resources that comprise the application;
 
-  See properties interfaces in [models.ts](https://github.com/hanzoai/cd/blob/master/ui/src/app/shared/models.ts)
+  See properties interfaces in [models.ts](https://github.com/hanzoai/cd/blob/main/ui/src/app/shared/models.ts)
 
 - `group: string` - the glob expression that matches the group of the resource; note: use globstar (`**`) to match all groups including empty string;
 - `kind: string` - the glob expression that matches the kind of the resource;

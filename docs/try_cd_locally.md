@@ -6,7 +6,7 @@
 
 Follow these steps to install `Kind` for local development and set it up with Hanzo CD.
 
-To run an Hanzo CD development environment review the [developer guide for running locally](./developer-guide/running-locally.md).
+To run a Hanzo CD development environment review the [developer guide for running locally](./developer-guide/running-locally.md).
 
 ## Install Kind
 
@@ -30,7 +30,7 @@ This command verifies that `kubectl` is pointed to the right cluster.
 You can now install Hanzo CD on your `kind` cluster. First, apply the Hanzo CD manifest to create the necessary resources:
 ```bash
 kubectl create namespace cd
-kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n cd --server-side --force-conflicts -f https://raw.githubusercontent.com/hanzoai/cd/main/manifests/install.yaml
 ```
 
 > [!NOTE]

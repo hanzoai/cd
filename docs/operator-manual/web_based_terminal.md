@@ -30,7 +30,7 @@ Kubernetes), then the user effectively has the same privileges as that ServiceAc
 ### Permissions for Kubernetes <1.31
 Starting in Kubernetes 1.31, the `get` privilege is enough to exec into a container, so no additional permissions are required. Enabling web terminal before Kubernetes 1.31 requires adding additional RBAC permissions.
 
-1. Patch the `cd-server` Role (if using namespaced Argo) or ClusterRole (if using clustered Argo) to allow `cd-server`
+1. Patch the `cd-server` Role (if using a namespaced Hanzo CD installation) or ClusterRole (if using a clustered Hanzo CD installation) to allow `cd-server`
 to `exec` into pods
 
         - apiGroups:
@@ -41,11 +41,11 @@ to `exec` into pods
           - create
    If you'd like to perform the patch imperatively, you can use the following command:
         
-    - For namespaced Argo
+    - For a namespaced Hanzo CD installation
          ```
          kubectl patch role <cd-server-role-name> -n cd --type='json' -p='[{"op": "add", "path": "/rules/-", "value": {"apiGroups": ["*"], "resources": ["pods/exec"], "verbs": ["create"]}}]'
          ```
-    - For clustered Argo
+    - For a clustered Hanzo CD installation
          ```
          kubectl patch clusterrole <cd-server-clusterrole-name> --type='json' -p='[{"op": "add", "path": "/rules/-", "value": {"apiGroups": ["*"], "resources": ["pods/exec"], "verbs": ["create"]}}]'
          ```

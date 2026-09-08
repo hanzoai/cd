@@ -38,3 +38,10 @@ cmd/argocd-server/argocd-server
 # ignore generated `.argocd-helm-dep-up` marker file; this should not be committed to git
 reposerver/repository/testdata/**/.argocd-helm-dep-up
 .claude
+
+# Scratch trees the reposerver tests generate per run
+reposerver/repository/testdata/app-parameters[0-9]*/
+
+# Helm dependency archives fetched by `helm dependency update`; Chart.lock
+# pins the version, this tarball just gets re-downloaded from it.
+charts/*/charts/*.tgz

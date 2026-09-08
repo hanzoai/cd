@@ -11,7 +11,7 @@ import (
 	"github.com/alicebob/miniredis/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	promcm "github.com/prometheus/client_model/go"
-	"github.com/redis/go-redis/v9"
+	"github.com/hanzokv/go/v9"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -64,28 +64,28 @@ func TestRedisSetCache(t *testing.T) {
 	assert.NotNil(t, mr)
 
 	t.Run("Successful set", func(t *testing.T) {
-		client := NewRedisCache(redis.NewClient(&redis.Options{Addr: mr.Addr()}), 60*time.Second, RedisCompressionNone)
+		client := NewRedisCache(kv.NewClient(&kv.Options{Addr: mr.Addr()}), 60*time.Second, RedisCompressionNone)
 		err = client.Set(&Item{Key: "foo", Object: "bar"})
 		require.NoError(t, err)
 	})
 
 	t.Run("Successful get", func(t *testing.T) {
 		var res string
-		client := NewRedisCache(redis.NewClient(&redis.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
+		client := NewRedisCache(kv.NewClient(&kv.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
 		err = client.Get("foo", &res)
 		require.NoError(t, err)
 		assert.Equal(t, "bar", res)
 	})
 
 	t.Run("Successful delete", func(t *testing.T) {
-		client := NewRedisCache(redis.NewClient(&redis.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
+		client := NewRedisCache(kv.NewClient(&kv.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
 		err = client.Delete("foo")
 		require.NoError(t, err)
 	})
 
 	t.Run("Cache miss", func(t *testing.T) {
 		var res string
-		client := NewRedisCache(redis.NewClient(&redis.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
+		client := NewRedisCache(kv.NewClient(&kv.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
 		err = client.Get("foo", &res)
 		assert.ErrorContains(t, err, "cache: key is missing")
 	})
@@ -102,7 +102,7 @@ func TestRedisSetCacheWithPrefix(t *testing.T) {
 	assert.NotNil(t, mr)
 
 	t.Run("Successful set", func(t *testing.T) {
-		client := NewRedisCache(redis.NewClient(&redis.Options{Addr: mr.Addr()}), 60*time.Second, RedisCompressionNone)
+		client := NewRedisCache(kv.NewClient(&kv.Options{Addr: mr.Addr()}), 60*time.Second, RedisCompressionNone)
 		err = client.Set(&Item{Key: "foo", Object: "bar"})
 		require.NoError(t, err)
 		keys := mr.Keys()
@@ -112,21 +112,21 @@ func TestRedisSetCacheWithPrefix(t *testing.T) {
 
 	t.Run("Successful get", func(t *testing.T) {
 		var res string
-		client := NewRedisCache(redis.NewClient(&redis.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
+		client := NewRedisCache(kv.NewClient(&kv.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
 		err = client.Get("foo", &res)
 		require.NoError(t, err)
 		assert.Equal(t, "bar", res)
 	})
 
 	t.Run("Successful delete", func(t *testing.T) {
-		client := NewRedisCache(redis.NewClient(&redis.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
+		client := NewRedisCache(kv.NewClient(&kv.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
 		err = client.Delete("foo")
 		require.NoError(t, err)
 	})
 
 	t.Run("Cache miss", func(t *testing.T) {
 		var res string
-		client := NewRedisCache(redis.NewClient(&redis.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
+		client := NewRedisCache(kv.NewClient(&kv.Options{Addr: mr.Addr()}), 10*time.Second, RedisCompressionNone)
 		err = client.Get("foo", &res)
 		assert.ErrorContains(t, err, "cache: key is missing")
 	})
@@ -140,7 +140,7 @@ func TestRedisSetCacheCompressed(t *testing.T) {
 	defer mr.Close()
 	assert.NotNil(t, mr)
 
-	redisClient := redis.NewClient(&redis.Options{Addr: mr.Addr()})
+	redisClient := kv.NewClient(&kv.Options{Addr: mr.Addr()})
 
 	client := NewRedisCache(redisClient, 10*time.Second, RedisCompressionGZip)
 	testValue := "my-value"
@@ -172,8 +172,8 @@ func TestRedisMetrics(t *testing.T) {
 
 	metric := &promcm.Metric{}
 	ms := NewMockMetricsServer()
-	redisClient := redis.NewClient(&redis.Options{Addr: mr.Addr()})
-	faultyRedisClient := redis.NewClient(&redis.Options{Addr: "invalidredishost.invalid:12345"})
+	redisClient := kv.NewClient(&kv.Options{Addr: mr.Addr()})
+	faultyRedisClient := kv.NewClient(&kv.Options{Addr: "invalidredishost.invalid:12345"})
 
 	CollectMetrics(redisClient, ms, nil)
 	CollectMetrics(faultyRedisClient, ms, nil)

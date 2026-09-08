@@ -50,16 +50,16 @@ func newSettingsManager(ctx context.Context, data map[string]string) *settings.S
 	clientset := fake.NewClientset(&corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "default",
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
+				"app.kubernetes.io/part-of": "hanzocd",
 			},
 		},
 		Data: data,
 	}, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "default",
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 		},
 		Data: map[string][]byte{
 			"admin.password":   []byte("test"),
@@ -105,10 +105,10 @@ data:
 
 	require.NoError(t, err)
 
-	argoCDSettings, err := settingsManager.GetSettings()
+	cdSettings, err := settingsManager.GetSettings()
 	require.NoError(t, err)
 
-	assert.Equal(t, "https://mycd.com", argoCDSettings.URL)
+	assert.Equal(t, "https://mycd.com", cdSettings.URL)
 }
 
 func TestValidator(t *testing.T) {

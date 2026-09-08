@@ -186,7 +186,6 @@ func SetProjSpecOptions(flags *pflag.FlagSet, spec *v1alpha1.AppProjectSpec, pro
 			spec.Destinations = projOpts.GetDestinations()
 		case "src":
 			spec.SourceRepos = projOpts.Sources
-		// TODO: Remove deprecated https://github.com/argoproj/argo-cd/issues/27695
 		case "signature-keys":
 			spec.SignatureKeys = projOpts.GetSignatureKeys() // nolint:staticcheck
 		case "allow-cluster-resource":

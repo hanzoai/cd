@@ -2,7 +2,7 @@
 
 ## Developing And Testing
 
-The [documentation website](https://argo-cd.readthedocs.io/) is built using `mkdocs` and `mkdocs-material`.
+The documentation website is built using `mkdocs` and `mkdocs-material`.
 
 To test:
 

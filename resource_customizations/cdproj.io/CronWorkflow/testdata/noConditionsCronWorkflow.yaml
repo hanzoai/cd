@@ -1,7 +1,0 @@
-apiVersion: apps.hanzo.ai/v1alpha1
-kind: CronWorkflow
-metadata:
-  name: test-cron-wf
-  namespace: cd
-spec:
-  entrypoint: sampleEntryPoint

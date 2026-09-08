@@ -909,7 +909,7 @@ func (c *clusterCache) watchEvents(ctx context.Context, api kube.APIResourceInfo
 					// When an aggregated API's extension apiserver becomes available, the
 					// kube-apiserver starts serving new group/kinds that were not present
 					// during the initial discovery (e.g. the extension apiserver was down
-					// when Argo CD started). Re-run discovery so those resources get
+					// when Hanzo CD started). Re-run discovery so those resources get
 					// watched, mirroring how CRD events are handled above. Otherwise the
 					// new kinds remain invisible until the next manual cache invalidation
 					// or full resync.

@@ -12,7 +12,7 @@ jest.mock('../../../../applications/components/utils', () => ({
 
 import {EditablePanel, EditablePanelItem} from '../editable-panel';
 import {Context} from '../../../context';
-import {FormApi} from 'argo-ui';
+import {FormApi} from '../../../../../kit/src';
 
 // ---------------------------------------------------------------------------
 // Context mock — EditablePanel uses ctx.notifications.show() on save failure

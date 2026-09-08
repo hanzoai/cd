@@ -1,4 +1,4 @@
-import {NotificationType, Tooltip} from 'argo-ui';
+import {NotificationType, Tooltip} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as React from 'react';
 import {Cluster} from '../../../shared/components';
@@ -72,7 +72,7 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
     return (
         <div
             ref={tileRef}
-            className={`argo-table-list__row applications-list__entry applications-list__entry--health-${healthStatus} ${selected ? 'applications-tiles__selected' : ''}`}>
+            className={`kit-table-list__row applications-list__entry applications-list__entry--health-${healthStatus} ${selected ? 'applications-tiles__selected' : ''}`}>
             <a
                 className='row applications-tiles__wrapper'
                 href={appLink.href}
@@ -83,7 +83,7 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
                     {/* Header row with icon, title, and action buttons */}
                     <div className='row'>
                         <div className={(app.status.summary?.externalURLs?.length > 0 ? 'columns small-10' : 'columns small-11') + ' applications-tiles__title-col'}>
-                            <i className={'icon argo-icon-' + (source?.chart != null ? 'helm' : isOci ? 'oci applications-tiles__item__small' : 'git')} />
+                            <i className={'icon kit-icon-' + (source?.chart != null ? 'helm' : isOci ? 'oci applications-tiles__item__small' : 'git')} />
                             <Tooltip content={AppUtils.appInstanceName(app)}>
                                 <span className='applications-list__title'>{AppUtils.appQualifiedName(app, useAuthSettingsCtx?.appsInAnyNamespaceEnabled)}</span>
                             </Tooltip>
@@ -261,7 +261,7 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
             <div className='applications-tiles__actions'>
                 <button
                     type='button'
-                    className='argo-button argo-button--base'
+                    className='kit-button kit-button--base'
                     qe-id='applications-tiles-button-sync'
                     onClick={() => syncApplication(app.metadata.name, app.metadata.namespace)}>
                     <i className='fa fa-sync' /> Sync
@@ -274,7 +274,7 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
                         because this used to be an <a>, where `disabled` is meaningless. */}
                     <button
                         type='button'
-                        className='argo-button argo-button--base'
+                        className='kit-button kit-button--base'
                         qe-id='applications-tiles-button-refresh'
                         onClick={() => refreshApplication(app.metadata.name, app.metadata.namespace)}>
                         <i className={classNames('fa fa-redo', {'status-icon--spin': AppUtils.isAppRefreshing(app)})} /> <span className='show-for-xxlarge'>Refresh</span>
@@ -284,7 +284,7 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
                 <Tooltip className='custom-tooltip' content={'Delete'}>
                     <button
                         type='button'
-                        className='argo-button argo-button--base'
+                        className='kit-button kit-button--base'
                         qe-id='applications-tiles-button-delete'
                         onClick={() => deleteApplication(app.metadata.name, app.metadata.namespace)}>
                         <i className='fa fa-times-circle' /> <span className='show-for-xxlarge'>Delete</span>

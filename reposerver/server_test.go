@@ -148,7 +148,7 @@ func TestNewServer_MTLS_InvalidCACertContent(t *testing.T) {
 	assert.ErrorContains(t, err, "invalid cert data")
 }
 
-func newTestServer(t *testing.T, clientCAPath string, disableTLS bool) (*reposerver.ArgoCDRepoServer, error) {
+func newTestServer(t *testing.T, clientCAPath string, disableTLS bool) (*reposerver.Server, error) {
 	t.Helper()
 
 	metricsServer := metrics.NewMetricsServer()
@@ -178,7 +178,7 @@ func writeTempCACert(t *testing.T) string {
 
 	cert, err := utilstls.GenerateX509KeyPair(utilstls.CertOptions{
 		Hosts:        []string{"localhost"},
-		Organization: "Argo CD Test CA",
+		Organization: "Hanzo CD Test CA",
 		IsCA:         true,
 		ECDSACurve:   "P256",
 	})

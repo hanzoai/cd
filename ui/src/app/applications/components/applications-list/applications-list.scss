@@ -1,6 +1,6 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 @import 'node_modules/foundation-sites/scss/util/util';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/theme';
 
 .applications-list {
     padding: 1em;
@@ -34,35 +34,35 @@
 
     &__entry {
         padding-left: 1em;
-        border-left: 5px solid $argo-color-gray-4;
+        border-left: 5px solid $kit-color-gray-4;
         padding-right: 1em;
-        color: $argo-color-gray-7;
+        color: $kit-color-gray-7;
 
         // healthy statuses
         &--health-Healthy {
-            border-left-color: $argo-success-color;
+            border-left-color: $kit-success-color;
         }
 
         // intermediate statuses
         &--health-Progressing {
-            border-left-color: $argo-running-color;
+            border-left-color: $kit-running-color;
         }
 
         &--health-Suspended {
-            border-left-color: $argo-suspended-color;
+            border-left-color: $kit-suspended-color;
         }
 
         // failed statuses
         &--health-Degraded {
-            border-left-color: $argo-failed-color;
+            border-left-color: $kit-failed-color;
         }
 
         &--health-Unknown {
-            border-left-color: $argo-color-gray-4;
+            border-left-color: $kit-color-gray-4;
         }
 
         &--health-Missing {
-            border-left-color: $argo-status-warning-color;
+            border-left-color: $kit-status-warning-color;
         }
 
         &--actions {
@@ -83,7 +83,7 @@
         white-space: nowrap;
         i {
             cursor: pointer;
-            color: $argo-color-gray-4;
+            color: $kit-color-gray-4;
             margin-right: 1em;
             &::before {
                 font-size: 1.5em;
@@ -91,7 +91,7 @@
         }
         i.selected {
             cursor: default;
-            color: $argo-color-teal-5;
+            color: $kit-color-teal-5;
         }
     }
 
@@ -160,7 +160,7 @@ i.menu_icon {
     vertical-align: middle;
 }
 
-.argo-button {
+.kit-button {
     i {
         @media screen and (max-width: map-get($breakpoints, large)) {
             margin: 0 auto !important;

@@ -2,7 +2,7 @@ PWD=$(shell pwd)
 TEST_ROOT=$(shell realpath $(PWD)/../..)
 
 IMAGE_NAMESPACE?=
-IMAGE_NAME?=argocd-e2e-cluster
+IMAGE_NAME?=cd-e2e-cluster
 IMAGE_TAG?=latest
 ifneq (${IMAGE_NAMESPACE},)
 IMAGE_PREFIX=$(IMAGE_NAMESPACE)/
@@ -21,5 +21,5 @@ image-push: image
 .PHONY: manifests
 manifests:
 	@cd manifests && \
-		kustomize edit set image argocd-e2e-cluster=$(IMAGE_PREFIX)$(IMAGE_NAME):$(IMAGE_TAG) && \
+		kustomize edit set image cd-e2e-cluster=$(IMAGE_PREFIX)$(IMAGE_NAME):$(IMAGE_TAG) && \
 		kustomize build .

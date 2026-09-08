@@ -94,12 +94,12 @@ These evaluations vary from dependency to dependencies.
 
 Dependencies are also scheduled for removal if the project has been deprecated or if the project is no longer maintained.
 
-CVEs in dependencies will be patched for all supported versions if the CVE is applicable and is assessed by Snyk to be
-of high or critical severity. Automation generates a [new Snyk scan weekly](../snyk/index.md).
+CVEs in dependencies will be patched for all supported versions if the CVE is applicable and is assessed to be
+of high or critical severity.
 
 ### Upgrading Helm, Kustomize, git-lfs, and git
 
-Production runtime binaries (Helm, Kustomize, git-lfs) are pinned in [`hack/tool-versions.sh`](https://github.com/hanzoai/cd/blob/master/hack/tool-versions.sh). The git package is pinned in Dockerfiles via apt. Renovate opens PRs labeled `production-binary` when newer versions are available; checksum files for downloaded binaries are refreshed automatically in those PRs.
+Production runtime binaries (Helm, Kustomize, git-lfs) are pinned in [`hack/tool-versions.sh`](https://github.com/hanzoai/cd/blob/main/hack/tool-versions.sh). The git package is pinned in Dockerfiles via apt. Renovate opens PRs labeled `production-binary` when newer versions are available; checksum files for downloaded binaries are refreshed automatically in those PRs.
 
 Before each minor release, review and merge any open Renovate PRs for these dependencies. Please note that sometimes an upgrade results in breaking changes that need to be addressed on the Hanzo CD side and documented in the [Hanzo CD version upgrade instructions](../operator-manual/upgrading/overview.md).
 
@@ -107,10 +107,10 @@ Before each minor release, review and merge any open Renovate PRs for these depe
 
 When starting to work on a new Hanzo CD minor release, the Go version needs to be upgraded to the latest available version, in the following places:   
 
-- [Dockerfile](https://github.com/hanzoai/cd/tree/master/Dockerfile)   
-- [test/remote/Dockerfile](https://github.com/hanzoai/cd/tree/master/test/remote/Dockerfile)   
-- [test/container/Dockerfile](https://github.com/hanzoai/cd/tree/master/test/container/Dockerfile)   
-- [Dockerfile.tilt](https://github.com/hanzoai/cd/tree/master/Dockerfile.tilt)   
+- [Dockerfile](https://github.com/hanzoai/cd/tree/main/Dockerfile)   
+- [test/remote/Dockerfile](https://github.com/hanzoai/cd/tree/main/test/remote/Dockerfile)   
+- [test/container/Dockerfile](https://github.com/hanzoai/cd/tree/main/test/container/Dockerfile)   
+- [Dockerfile.tilt](https://github.com/hanzoai/cd/tree/main/Dockerfile.tilt)   
 - CI - all GitHub workflows that have `GOLANG_VERSION` or `go-version` set   
 
 All the above affect the Go version that Hanzo CD is built with and that is shipped in the Hanzo CD image. Also, those are the relevant places to change when we need to cherry-pick bumps of Go version to the previous Hanzo CD releases, for security reasons.

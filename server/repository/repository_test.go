@@ -93,7 +93,7 @@ var (
 		Repo:           "https://test",
 		Type:           "test",
 		Name:           "test",
-		Username:       "argo",
+		Username:       "test",
 		Insecure:       false,
 		EnableLFS:      false,
 		EnableOCI:      false,
@@ -200,7 +200,7 @@ var (
 			Project: "default",
 			Sources: []appsv1.ApplicationSource{
 				{
-					RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+					RepoURL:        "https://github.com/hanzocd/example-apps.git",
 					Path:           "sock-shop",
 					TargetRevision: "HEAD",
 				},
@@ -220,7 +220,7 @@ var (
 					Revision: "HEAD",
 					Sources: []appsv1.ApplicationSource{
 						{
-							RepoURL:        "https://github.com/argoproj/argocd-example-apps.git",
+							RepoURL:        "https://github.com/hanzocd/example-apps.git",
 							TargetRevision: "1.0.0",
 						},
 					},
@@ -233,8 +233,8 @@ var (
 func newAppAndProjLister(objects ...runtime.Object) (applisters.ApplicationLister, k8scache.SharedIndexInformer) {
 	fakeAppsClientset := fakeapps.NewSimpleClientset(objects...)
 	factory := appinformer.NewSharedInformerFactoryWithOptions(fakeAppsClientset, 0, appinformer.WithNamespace(""), appinformer.WithTweakListOptions(func(_ *metav1.ListOptions) {}))
-	projInformer := factory.Argoproj().V1alpha1().AppProjects()
-	appsInformer := factory.Argoproj().V1alpha1().Applications()
+	projInformer := factory.Apps().V1alpha1().AppProjects()
+	appsInformer := factory.Apps().V1alpha1().Applications()
 	for _, obj := range objects {
 		switch obj.(type) {
 		case *appsv1.AppProject:
@@ -259,13 +259,13 @@ func TestRepositoryServer(t *testing.T) {
 	settingsMgr := settings.NewSettingsManager(t.Context(), kubeclientset, testNamespace)
 	enforcer := newEnforcer(kubeclientset)
 	appLister, projInformer := newAppAndProjLister(defaultProj)
-	argoDB := db.NewDB("default", settingsMgr, kubeclientset)
+	cdDB := db.NewDB("default", settingsMgr, kubeclientset)
 
 	t.Run("Test_getRepo", func(t *testing.T) {
 		repoServerClient := mocks.RepoServerServiceClient{}
 		repoServerClientset := mocks.Clientset{RepoServerServiceClient: &repoServerClient}
 
-		s := NewServer(&repoServerClientset, argoDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, false)
+		s := NewServer(&repoServerClientset, cdDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, false)
 		url := "https://test"
 		repo, _ := s.getRepo(t.Context(), url, "")
 		assert.Equal(t, repo.Repo, url)
@@ -276,7 +276,7 @@ func TestRepositoryServer(t *testing.T) {
 		repoServerClient.EXPECT().TestRepository(mock.Anything, mock.Anything).Return(&apiclient.TestRepositoryResponse{}, nil)
 		repoServerClientset := mocks.Clientset{RepoServerServiceClient: repoServerClient}
 
-		s := NewServer(&repoServerClientset, argoDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, false)
+		s := NewServer(&repoServerClientset, cdDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, false)
 		url := "https://test"
 		_, err := s.ValidateAccess(t.Context(), &repository.RepoAccessQuery{
 			Repo: url,
@@ -289,7 +289,7 @@ func TestRepositoryServer(t *testing.T) {
 		repoServerClient.EXPECT().TestRepository(mock.Anything, mock.Anything).Return(&apiclient.TestRepositoryResponse{}, nil)
 		repoServerClientset := mocks.Clientset{RepoServerServiceClient: repoServerClient}
 
-		s := NewServer(&repoServerClientset, argoDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, true)
+		s := NewServer(&repoServerClientset, cdDB, enforcer, nil, appLister, projInformer, testNamespace, settingsMgr, true)
 		url := "https://test"
 		_, err := s.ValidateWriteAccess(t.Context(), &repository.RepoAccessQuery{
 			Repo: url,
@@ -792,7 +792,7 @@ func TestRepositoryServerGetAppDetails(t *testing.T) {
 		repoServerClientset := mocks.Clientset{RepoServerServiceClient: repoServerClient}
 		enforcer := newEnforcer(kubeclientset)
 
-		url0 := "https://github.com/argoproj/argocd-example-apps.git"
+		url0 := "https://github.com/hanzocd/example-apps.git"
 		url1 := "https://helm.elastic.co"
 		helmRepos := []*appsv1.Repository{{Repo: url0}, {Repo: url1}}
 		db := &dbmocks.DB{}
@@ -972,7 +972,7 @@ func newFixtures() *fixtures {
 }
 
 func newEnforcer(kubeclientset *fake.Clientset) *rbac.Enforcer {
-	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.ArgoCDRBACConfigMapName, nil)
+	enforcer := rbac.NewEnforcer(kubeclientset, testNamespace, common.RBACConfigMapName, nil)
 	_ = enforcer.SetBuiltinPolicy(assets.BuiltinPolicyCSV)
 	enforcer.SetDefaultRole("role:admin")
 	enforcer.SetClaimsEnforcerFunc(func(_ jwt.Claims, _ ...any) bool {

@@ -1,0 +1,30 @@
+@import '../../styles/config';
+@import '../../styles/theme';
+
+.layout {
+    overflow: hidden;
+    @include themify($themes) {
+        background-color: themed('background-1');
+    }
+    &__loader {
+        @include themify($themes) {
+            background-color: themed('layout-loader-bg');
+        }
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 999999;
+
+        .loader-inner {
+            left: 50%;
+            position: absolute;
+            bottom: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            & > div {
+                background: #F07A51;
+            }
+        }
+    }
+}

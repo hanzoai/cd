@@ -1,7 +1,7 @@
-@import 'node_modules/argo-ui/src/styles/config';
+@import 'src/kit/src/styles/config';
 
 .certs-list {
-    textarea.argo-field {
+    textarea.kit-field {
         height: 25em;
         width: 100%;
         white-space: pre;
@@ -9,7 +9,7 @@
         overflow-x: auto;
     }
 
-    .argo-field-container > textarea.argo-field + label.argo-label-placeholder {
+    .kit-field-container > textarea.kit-field + label.kit-label-placeholder {
         align-self: start;
     }
 }

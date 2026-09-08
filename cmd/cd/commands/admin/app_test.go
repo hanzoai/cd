@@ -57,18 +57,18 @@ func TestGetReconcileResults(t *testing.T) {
 func TestGetReconcileResults_Refresh(t *testing.T) {
 	ctx := t.Context()
 
-	argoCM := &corev1.ConfigMap{
+	cdCM := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDConfigMapName,
+			Name:      common.ConfigMapName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
 			},
 		},
 	}
-	argoCDSecret := &corev1.Secret{
+	cdSecret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ArgoCDSecretName,
+			Name:      common.SecretName,
 			Namespace: "default",
 			Labels: map[string]string{
 				"app.kubernetes.io/part-of": "cd",
@@ -104,7 +104,7 @@ func TestGetReconcileResults_Refresh(t *testing.T) {
 
 	appClientset := appfake.NewSimpleClientset(app, proj)
 	deployment := test.NewDeployment()
-	kubeClientset := kubefake.NewClientset(deployment, argoCM, argoCDSecret)
+	kubeClientset := kubefake.NewClientset(deployment, cdCM, cdSecret)
 	clusterCache := &clustermocks.ClusterCache{}
 	clusterCache.EXPECT().IsNamespaced(mock.Anything).Return(true, nil)
 	clusterCache.EXPECT().GetGVKParser().Return(nil)

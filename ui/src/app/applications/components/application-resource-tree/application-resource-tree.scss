@@ -1,5 +1,5 @@
-@import 'node_modules/argo-ui/src/styles/config';
-@import 'node_modules/argo-ui/src/styles/theme';
+@import 'src/kit/src/styles/config';
+@import 'src/kit/src/styles/theme';
 
 .application-resource-tree {
     position: relative;
@@ -9,7 +9,7 @@
         position: absolute;
         z-index: -1;
         transition: all 0.2s linear;
-        border-top: 1px dashed $argo-color-gray-5;
+        border-top: 1px dashed $kit-color-gray-5;
     }
 
     &__edge {
@@ -29,7 +29,7 @@
 
     &--network {
         .application-resource-tree__line {
-            background-image: linear-gradient(90deg, $argo-color-teal-5 50%, transparent 50%);
+            background-image: linear-gradient(90deg, $kit-color-teal-5 50%, transparent 50%);
             background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
             background-size: 20px 3px, 0px 0px, 0px 0px, 0px 0px;
             background-position: left top, right bottom, left bottom, right top;
@@ -71,7 +71,7 @@
         padding-left: 3.5em;
         padding-right: 1em;
         margin: 10px;
-        box-shadow: 1px 1px 1px $argo-color-gray-4;
+        box-shadow: 1px 1px 1px $kit-color-gray-4;
         @include themify($themes) {
             background-color: themed('background-2');
             color: themed('text-2');
@@ -81,7 +81,7 @@
         cursor: pointer;
 
         .theme-dark & {
-            box-shadow: 1px 1px 1px $argo-color-gray-7;
+            box-shadow: 1px 1px 1px $kit-color-gray-7;
         }
 
         .icon:not(.resource-icon__font-icon) {
@@ -90,7 +90,7 @@
 
         .icon-background
         {
-            color: $argo-color-gray-4;
+            color: $kit-color-gray-4;
         }
 
         .fa-filter {
@@ -99,12 +99,12 @@
         }
 
         &.active {
-            border-color: $argo-color-teal-6;
+            border-color: $kit-color-teal-6;
         }
 
         &--orphaned {
             @include themify($themes) {
-                background-color: themed('light-argo-gray-2') !important;
+                background-color: themed('light-kit-gray-2') !important;
             }
         }
 
@@ -118,7 +118,7 @@
 
         &--load-balancer {
             cursor: default;
-            background-color: $argo-color-teal-2;
+            background-color: $kit-color-teal-2;
         }
 
         &--expansion {
@@ -127,7 +127,7 @@
             z-index: 10;
             font-size: 0.5em;
             padding: 2px;
-            box-shadow: 1px 1px 1px $argo-color-gray-4;
+            box-shadow: 1px 1px 1px $kit-color-gray-4;
             @include themify($themes) {
                 background-color: themed('background-2');
             }
@@ -135,7 +135,7 @@
             margin-left: 215px;
 
             .theme-dark & {
-                box-shadow: 1px 1px 1px $argo-color-gray-7;
+                box-shadow: 1px 1px 1px $kit-color-gray-7;
             }
         }
 
@@ -145,7 +145,7 @@
             z-index: 10;
             font-size: 0.5em;
             padding: 2px;
-            box-shadow: 1px 1px 1px $argo-color-gray-4;
+            box-shadow: 1px 1px 1px $kit-color-gray-4;
             background-color: white;
             margin-left: 215px;
             @include themify($themes) {
@@ -153,7 +153,7 @@
             }
 
             .theme-dark & {
-                box-shadow: 1px 1px 1px $argo-color-gray-7;
+                box-shadow: 1px 1px 1px $kit-color-gray-7;
             }
         }
 
@@ -164,10 +164,10 @@
         }
 
         &--applicationset {
-            border: 1.5px dashed $argo-color-teal-6 !important;
+            border: 1.5px dashed $kit-color-teal-6 !important;
             opacity: 0.65;
             @include themify($themes) {
-                background-color: themed('light-argo-teal-1');
+                background-color: themed('light-kit-teal-1');
             }
         }
 
@@ -203,7 +203,7 @@
                         display: flex;
                         flex-wrap: wrap;
                         width: 100%;
-                        background-color: $argo-color-gray-3;
+                        background-color: $kit-color-gray-3;
                         border-radius: 3px;
                         align-items: center;
                         padding: $gutter * 2;
@@ -221,45 +221,45 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background-color: $argo-color-gray-5;
+                    background-color: $kit-color-gray-5;
                     transition: all 0.2s ease-in-out;
                     i.fa {
                         color: white !important;
                     }
                     &--succeeded,
                     &--healthy {
-                        background-color: $argo-success-color;
+                        background-color: $kit-success-color;
                         &:hover {
-                            background-color: $argo-success-color-dark;
+                            background-color: $kit-success-color-dark;
                         }
                     }
                     &--pending,
                     &--suspended {
-                        background-color: $argo-status-warning-color;
+                        background-color: $kit-status-warning-color;
                         &:hover {
-                            background-color: darken($argo-status-warning-color, 10%);
+                            background-color: darken($kit-status-warning-color, 10%);
                         }
                     }
                     &--running,
                     &--progressing {
-                        background-color: $argo-running-color;
+                        background-color: $kit-running-color;
                         &:hover {
-                            background-color: $argo-running-color-dark;
+                            background-color: $kit-running-color-dark;
                         }
                     }
                     &--failed,
                     &--degraded {
-                        background-color: $argo-failed-color;
+                        background-color: $kit-failed-color;
                         border: 2px solid rgba(0, 0, 0, 0.3);
                         &:hover {
-                            background-color: $argo-failed-color-dark;
+                            background-color: $kit-failed-color-dark;
                         }
                     }
                     &--unknown,
                     &--missing {
-                        background-color: $argo-color-gray-5;
+                        background-color: $kit-color-gray-5;
                         &:hover {
-                            background-color: $argo-color-gray-6;
+                            background-color: $kit-color-gray-6;
                         }
                     }
                     &__star-icon {
@@ -283,16 +283,16 @@
                     }
 
                     &__stat-icon-app {
-                        background-color: $argo-color-teal-7;
+                        background-color: $kit-color-teal-7;
                     }
 
                     &__stat-icon-neighbors {
-                        background-color: $argo-color-gray-6;
+                        background-color: $kit-color-gray-6;
                     }
 
                     &__stat {
                         &__bar {
-                            background-color: $argo-color-gray-4;
+                            background-color: $kit-color-gray-4;
                             height: $max-rows * $pod-size;
                             width: $stat-width;
                             position: relative;
@@ -303,21 +303,21 @@
 
                             &--fill {
                                 position: absolute;
-                                background-color: $argo-color-teal-7;
+                                background-color: $kit-color-teal-7;
                                 width: 100%;
                                 bottom: 0;
                             }
 
                             &--neighbors {
-                                background-color: $argo-color-gray-6;
+                                background-color: $kit-color-gray-6;
                             }
 
                             &:hover > &--fill {
-                                background-color: $argo-color-teal-8;
+                                background-color: $kit-color-teal-8;
                             }
 
                             &:hover &--neighbors {
-                                background-color: $argo-color-gray-7;
+                                background-color: $kit-color-gray-7;
                             }
                         }
                     }
@@ -367,13 +367,13 @@
         top: 8px;
         width: 60px;
         line-height: 1;
-        color: $argo-color-gray-7;
+        color: $kit-color-gray-7;
 
         &--big {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: $argo-color-gray-5;
+            background: $kit-color-gray-5;
             position: absolute;
             width: 65px;
             height: 65px;
@@ -403,9 +403,9 @@
     }
 
     &__node-label {
-        background-color: $argo-color-gray-4;
-        color: $argo-color-gray-7;
-        border: 1px solid $argo-color-gray-5;
+        background-color: $kit-color-gray-4;
+        color: $kit-color-gray-7;
+        border: 1px solid $kit-color-gray-5;
         border-radius: 5px;
         padding: 0 5px;
         font-size: 0.6em;
@@ -413,14 +413,14 @@
         margin-right: 1px;
 
         &--appset {
-            background-color: $argo-color-teal-2;
-            color: $argo-color-teal-7;
-            border-color: $argo-color-teal-5;
+            background-color: $kit-color-teal-2;
+            color: $kit-color-teal-7;
+            border-color: $kit-color-teal-5;
             cursor: pointer;
             text-transform: none;
 
             &:hover {
-                background-color: $argo-color-teal-3;
+                background-color: $kit-color-teal-3;
             }
         }
     }
@@ -428,7 +428,7 @@
 
     &__node-kind {
         font-size: 0.7em;
-        color: $argo-color-gray-6;
+        color: $kit-color-gray-6;
     }
 
     &__node-content {

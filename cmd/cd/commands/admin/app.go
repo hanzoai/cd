@@ -35,10 +35,10 @@ import (
 	appclientset "github.com/hanzoai/cd/pkg/client/clientset/versioned"
 	appinformers "github.com/hanzoai/cd/pkg/client/informers/externalversions"
 	reposerverclient "github.com/hanzoai/cd/reposerver/apiclient"
-	"github.com/hanzoai/cd/util/cd"
-	"github.com/hanzoai/cd/util/cd/normalizers"
 	cacheutil "github.com/hanzoai/cd/util/cache"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
+	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/cli"
 	"github.com/hanzoai/cd/util/config"
 	"github.com/hanzoai/cd/util/db"
@@ -90,22 +90,22 @@ func NewGenAppSpecCommand() *cobra.Command {
 		Short: "Generate declarative config for an application",
 		Example: `
 	# Generate declarative config for a directory app
-	cd admin app generate-spec guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
+	cd admin app generate-spec guestbook --repo https://github.com/hanzocd/example-apps.git --path guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --directory-recurse
 
 	# Generate declarative config for a Jsonnet app
-	cd admin app generate-spec jsonnet-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path jsonnet-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --jsonnet-ext-str replicas=2
+	cd admin app generate-spec jsonnet-guestbook --repo https://github.com/hanzocd/example-apps.git --path jsonnet-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --jsonnet-ext-str replicas=2
 
 	# Generate declarative config for a Helm app
-	cd admin app generate-spec helm-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path helm-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set replicaCount=2
+	cd admin app generate-spec helm-guestbook --repo https://github.com/hanzocd/example-apps.git --path helm-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set replicaCount=2
 
 	# Generate declarative config for a Helm app from a Helm repo
 	cd admin app generate-spec nginx-ingress --repo https://charts.helm.sh/stable --helm-chart nginx-ingress --revision 1.24.3 --dest-namespace default --dest-server https://kubernetes.default.svc
 
 	# Generate declarative config for a Kustomize app
-	cd admin app generate-spec kustomize-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image quay.io/argoprojlabs/cd-e2e-container:0.1
+	cd admin app generate-spec kustomize-guestbook --repo https://github.com/hanzocd/example-apps.git --path kustomize-guestbook --dest-namespace default --dest-server https://kubernetes.default.svc --kustomize-image ghcr.io/hanzoai/cd-e2e-container:0.1
 
 	# Generate declarative config for a app using a custom tool:
-	cd admin app generate-spec kasane --repo https://github.com/argoproj/argocd-example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane
+	cd admin app generate-spec kasane --repo https://github.com/hanzocd/example-apps.git --path plugins/kasane --dest-namespace default --dest-server https://kubernetes.default.svc --config-management-plugin kasane
 `,
 		Run: func(c *cobra.Command, args []string) {
 			apps, err := cmdutil.ConstructApps(fileURL, appName, labels, annotations, args, appOpts, c.Flags())
@@ -341,7 +341,7 @@ func saveToFile(err error, outputFormat string, result reconcileResults, outputP
 }
 
 func getReconcileResults(ctx context.Context, appClientset appclientset.Interface, namespace string, selector string) ([]appReconcileResult, error) {
-	appsList, err := appClientset.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
+	appsList, err := appClientset.AppsV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
 	if err != nil {
 		return nil, fmt.Errorf("error listing namespaced apps: %w", err)
 	}
@@ -365,12 +365,12 @@ func reconcileApplications(
 	namespace string,
 	repoServerClient reposerverclient.Clientset,
 	selector string,
-	createLiveStateCache func(argoDB db.DB, appInformer kubecache.SharedIndexInformer, settingsMgr *settings.SettingsManager, server *metrics.MetricsServer) cache.LiveStateCache,
+	createLiveStateCache func(appDB db.DB, appInformer kubecache.SharedIndexInformer, settingsMgr *settings.SettingsManager, server *metrics.MetricsServer) cache.LiveStateCache,
 	serverSideDiff bool,
 	ignoreNormalizerOpts normalizers.IgnoreNormalizerOpts,
 ) ([]appReconcileResult, error) {
 	settingsMgr := settings.NewSettingsManager(ctx, kubeClientset, namespace)
-	argoDB := db.NewDB(namespace, settingsMgr, kubeClientset)
+	appDB := db.NewDB(namespace, settingsMgr, kubeClientset)
 	appInformerFactory := appinformers.NewSharedInformerFactoryWithOptions(
 		appClientset,
 		1*time.Hour,
@@ -378,25 +378,25 @@ func reconcileApplications(
 		appinformers.WithTweakListOptions(func(_ *metav1.ListOptions) {}),
 	)
 
-	appInformer := appInformerFactory.Argoproj().V1alpha1().Applications().Informer()
-	projInformer := appInformerFactory.Argoproj().V1alpha1().AppProjects().Informer()
+	appInformer := appInformerFactory.Apps().V1alpha1().Applications().Informer()
+	projInformer := appInformerFactory.Apps().V1alpha1().AppProjects().Informer()
 	go appInformer.Run(ctx.Done())
 	go projInformer.Run(ctx.Done())
 	if !kubecache.WaitForCacheSync(ctx.Done(), appInformer.HasSynced, projInformer.HasSynced) {
 		return nil, stderrors.New("failed to sync cache")
 	}
 
-	appLister := appInformerFactory.Argoproj().V1alpha1().Applications().Lister()
-	projLister := appInformerFactory.Argoproj().V1alpha1().AppProjects().Lister()
+	appLister := appInformerFactory.Apps().V1alpha1().Applications().Lister()
+	projLister := appInformerFactory.Apps().V1alpha1().AppProjects().Lister()
 	server, err := metrics.NewMetricsServer("", appLister, func(_ any) bool {
 		return true
 	}, func(_ *http.Request) error {
 		return nil
-	}, []string{}, []string{}, argoDB)
+	}, []string{}, []string{}, appDB)
 	if err != nil {
 		return nil, fmt.Errorf("error starting new metrics server: %w", err)
 	}
-	stateCache := createLiveStateCache(argoDB, appInformer, settingsMgr, server)
+	stateCache := createLiveStateCache(appDB, appInformer, settingsMgr, server)
 	if err := stateCache.Init(); err != nil {
 		return nil, fmt.Errorf("error initializing state cache: %w", err)
 	}
@@ -407,7 +407,7 @@ func reconcileApplications(
 	)
 
 	appStateManager := controller.NewAppStateManager(
-		argoDB,
+		appDB,
 		appClientset,
 		repoServerClient,
 		namespace,
@@ -427,7 +427,7 @@ func reconcileApplications(
 		ignoreNormalizerOpts,
 	)
 
-	appsList, err := appClientset.ArgoprojV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
+	appsList, err := appClientset.AppsV1alpha1().Applications(namespace).List(ctx, metav1.ListOptions{LabelSelector: selector})
 	if err != nil {
 		return nil, fmt.Errorf("error listing namespaced apps: %w", err)
 	}
@@ -439,7 +439,7 @@ func reconcileApplications(
 	var items []appReconcileResult
 	prevServer := ""
 	for _, app := range appsList.Items {
-		destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, argoDB)
+		destCluster, err := cd.GetDestinationCluster(ctx, app.Spec.Destination, appDB)
 		if err != nil {
 			return nil, fmt.Errorf("error getting destination cluster: %w", err)
 		}
@@ -479,6 +479,6 @@ func reconcileApplications(
 	return items, nil
 }
 
-func newLiveStateCache(argoDB db.DB, appInformer kubecache.SharedIndexInformer, settingsMgr *settings.SettingsManager, server *metrics.MetricsServer) cache.LiveStateCache {
-	return cache.NewLiveStateCache(argoDB, appInformer, settingsMgr, server, func(_ map[string]bool, _ corev1.ObjectReference) {}, &sharding.ClusterSharding{}, cd.NewResourceTracking())
+func newLiveStateCache(appDB db.DB, appInformer kubecache.SharedIndexInformer, settingsMgr *settings.SettingsManager, server *metrics.MetricsServer) cache.LiveStateCache {
+	return cache.NewLiveStateCache(appDB, appInformer, settingsMgr, server, func(_ map[string]bool, _ corev1.ObjectReference) {}, &sharding.ClusterSharding{}, cd.NewResourceTracking())
 }

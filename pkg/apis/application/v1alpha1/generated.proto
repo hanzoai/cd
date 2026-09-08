@@ -3,7 +3,7 @@
 
 syntax = "proto2";
 
-package github.com.argoproj.argo_cd.v3.pkg.apis.application.v1alpha1;
+package github.com.hanzoai.cd.pkg.apis.application.v1alpha1;
 
 import "k8s.io/api/core/v1/generated.proto";
 import "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1/generated.proto";
@@ -412,7 +412,7 @@ message ApplicationSetSyncPolicy {
   optional string applicationsSync = 2;
 }
 
-// ApplicationSetTemplate represents argocd ApplicationSpec
+// ApplicationSetTemplate represents cd ApplicationSpec
 message ApplicationSetTemplate {
   optional ApplicationSetTemplateMeta metadata = 1;
 
@@ -2688,7 +2688,7 @@ message SourceIntegrityGitPolicy {
 // SourceIntegrityGitPolicyGPG verifies that the commit(s) are both correctly signed by a key in the repo-server keyring,
 // and that they are signed by one of the key listed in Keys.
 //
-// This policy can be deactivated through the ARGOCD_GPG_ENABLED environment variable.
+// This policy can be deactivated through the CD_GPG_ENABLED environment variable.
 //
 // Note the listing of problematic commits/signatures reported when "strict" mode validation fails may not be complete.
 // This means that a user that has addressed all problems reported by source integrity check can run into

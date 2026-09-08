@@ -67,7 +67,7 @@ resources:
 - github.com/hanzoai/cd//manifests/cluster-install
 ```
 
-The above kustomization has a remote base to the HEAD revision of the argo-cd repo. Since this
+The above kustomization has a remote base to the HEAD revision of the Hanzo CD repo. Since this
 is not a stable target, the manifests for this kustomize application can suddenly change meaning, even without
 any changes to your own Git repository.
 

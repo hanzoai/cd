@@ -9,17 +9,17 @@ import (
 )
 
 /**
-The upstream Kubernetes NewGVKParser method causes problems for Argo CD.
+The upstream Kubernetes NewGVKParser method causes problems for Hanzo CD.
 https://github.com/kubernetes/apimachinery/blob/eb26334eeb0f769be8f0c5665ff34713cfdec83e/pkg/util/managedfields/gvkparser.go#L73
 
-The function fails in instances where it is probably more desirable for Argo CD to simply ignore the error and move on.
+The function fails in instances where it is probably more desirable for Hanzo CD to simply ignore the error and move on.
 But since the upstream implementation doesn't offer the option to ignore the error, we have to mutate the input to the
 function to completely avoid the case that can produce the error.
 
 When encountering the error from NewGVKParser, we used to just set the internal GVKParser instance to nil, log the
 error as info, and move on.
 
-But Argo CD increasingly relies on the GVKParser to produce reliable diffs, especially with server-side diffing. And
+But Hanzo CD increasingly relies on the GVKParser to produce reliable diffs, especially with server-side diffing. And
 we're better off with an incorrectly-initialized GVKParser than no GVKParser at all.
 
 To understand why NewGVKParser fails, we need to understand how Kubernetes constructs its OpenAPI models.
@@ -46,7 +46,7 @@ This behavior is fine from the perspective of a typical Kubernetes API user. The
 see that there are two different "opinions" about the structure of a struct, and they can choose which one they want to
 rely on.
 
-But Argo CD has to be generic. We need to take the provided OpenAPI document and use it to construct a GVKParser. And
+But Hanzo CD has to be generic. We need to take the provided OpenAPI document and use it to construct a GVKParser. And
 the GVKParser (reasonably) rejects the OpenAPI document if it contains two definitions for the same struct.
 
 So we have to do some work to make the OpenAPI document palatable to the GVKParser. We have to remove the duplicate

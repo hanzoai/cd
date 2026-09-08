@@ -17,8 +17,8 @@ func TestWithRootPathEmptyRootPath(t *testing.T) {
 	})
 
 	// Create a server with empty RootPath
-	server := &ArgoCDServer{
-		ArgoCDServerOpts: ArgoCDServerOpts{
+	server := &Server{
+		ServerOpts: ServerOpts{
 			RootPath: "",
 		},
 	}
@@ -41,8 +41,8 @@ func TestWithRootPathNonEmptyRootPath(t *testing.T) {
 	})
 
 	// Create a server with non-empty RootPath
-	server := &ArgoCDServer{
-		ArgoCDServerOpts: ArgoCDServerOpts{
+	server := &Server{
+		ServerOpts: ServerOpts{
 			RootPath: "/cd",
 		},
 	}

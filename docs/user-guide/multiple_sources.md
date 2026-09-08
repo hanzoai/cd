@@ -1,6 +1,6 @@
 # Multiple Sources for an Application
 
-By default an Hanzo CD application is a link between a single source and a cluster. Sometimes however, you want to combine
+By default a Hanzo CD application is a link between a single source and a cluster. Sometimes however, you want to combine
 files from multiple locations to form a single Application.
 
 Hanzo CD has the ability to specify multiple sources for a single Application. Hanzo CD compiles all the sources
@@ -73,7 +73,7 @@ spec:
 ```
 
 In the above example, the `prometheus` chart will use the value file from `git.example.com/org/value-files.git`. 
-For Argo to reference the external Git repository containing the value files, you must set the `ref` parameter on
+For Hanzo CD to reference the external Git repository containing the value files, you must set the `ref` parameter on
 the repository. In the above example, the parameter `ref: values` maps to the variable `$values`, which resolves
 to the root of the `value-files` repository. 
 Note that the `$values` variable can only be used at the beginning of the value file path and that its path is always relative to the root of the referenced source.

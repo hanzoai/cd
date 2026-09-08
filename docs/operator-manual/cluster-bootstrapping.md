@@ -134,7 +134,7 @@ spec:
   project: default
   source:
     path: guestbook
-    repoURL: https://github.com/argoproj/argocd-example-apps
+    repoURL: https://github.com/hanzocd/example-apps
     targetRevision: HEAD
   syncPolicy:
     automated:
@@ -161,7 +161,7 @@ Next, you need to create and sync your parent app, e.g. via the CLI:
 cd app create apps \
     --dest-namespace cd \
     --dest-server https://kubernetes.default.svc \
-    --repo https://github.com/argoproj/argocd-example-apps.git \
+    --repo https://github.com/hanzocd/example-apps.git \
     --path apps  
 cd app sync apps  
 ```
@@ -171,7 +171,7 @@ The parent app will appear as in-sync but the child apps will be out of sync:
 ![New App Of Apps](../assets/new-app-of-apps.png)
 
 > [!NOTE]
-> You may want to modify this behavior to bootstrap your cluster in waves; see [the health assessment of Applications](./health.md#cd-app) for information on changing this.
+> You may want to modify this behavior to bootstrap your cluster in waves; see [the health assessment of Applications](./health.md#application) for information on changing this.
 
 You can either sync via the UI, firstly filter by the correct label:
 
@@ -187,7 +187,7 @@ Or, via the CLI:
 cd app sync -l app.kubernetes.io/instance=apps
 ```
 
-View [the example on GitHub](https://github.com/argoproj/argocd-example-apps/tree/master/apps).
+View [the example on GitHub](https://github.com/hanzocd/example-apps/tree/master/apps).
 
 
 

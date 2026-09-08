@@ -8,7 +8,7 @@ import (
 	"github.com/hanzoai/cd/util/glob"
 )
 
-// IgnoreDiffConfig holds the ignore difference configurations defined in argo-cm
+// IgnoreDiffConfig holds the ignore difference configurations defined in hanzocd-cm
 // as well as in the Application resource.
 type IgnoreDiffConfig struct {
 	ignores   []v1alpha1.ResourceIgnoreDifferences

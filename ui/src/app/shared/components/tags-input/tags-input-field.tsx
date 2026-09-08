@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ReactForm} from 'argo-ui';
+import {ReactForm} from '../../../../kit/src';
 import {TagsInput} from './tags-input';
 
 export const TagsInputField = ReactForm.FormField((props: {options: string[]; noTagsLabel?: string; fieldApi: ReactForm.FieldApi; className: string}) => {
@@ -9,7 +9,7 @@ export const TagsInputField = ReactForm.FormField((props: {options: string[]; no
     const tags = (getValue() || []) as Array<string>;
 
     return (
-        <div className='argo-has-value argo-field' style={{border: 'none'}}>
+        <div className='kit-has-value kit-field' style={{border: 'none'}}>
             <TagsInput tags={tags} autocomplete={props.options || []} onChange={vals => setValue(vals)} />
         </div>
     );

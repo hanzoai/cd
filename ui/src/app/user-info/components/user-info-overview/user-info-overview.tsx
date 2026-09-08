@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {useCallback, useContext, useRef, useState} from 'react';
 
-import {FormField, NotificationType, SlidingPanel} from 'argo-ui';
-import {Form, FormApi, FormValue, Nested, Text} from 'argo-ui';
+import {FormField, NotificationType, SlidingPanel} from '../../../../kit/src';
+import {Form, FormApi, FormValue, Nested, Text} from '../../../../kit/src';
 import {AuthOption, DataLoader, ErrorNotification, Page, Spinner} from '../../../shared/components';
 import {Context} from '../../../shared/context';
 import {services} from '../../../shared/services';
@@ -12,7 +12,7 @@ import {UserInfo} from '../../../shared/models';
 
 // Constants
 const CHANGE_PASSWORD_PARAM = 'changePassword';
-const CD_ISSUER = 'argocd';
+const CD_ISSUER = 'hanzocd';
 
 // Types
 interface PasswordFormData {
@@ -100,7 +100,7 @@ export const UserInfoComponent = ({userInfo}: {userInfo: UserInfo}) => {
             }}>
             <div>
                 <div className='user-info'>
-                    <div className='argo-container'>
+                    <div className='kit-container'>
                         <div className='user-info-overview__panel white-box'>
                             {userInfo.loggedIn ? (
                                 <>
@@ -129,11 +129,11 @@ export const UserInfoComponent = ({userInfo}: {userInfo: UserInfo}) => {
                         onClose={() => updateShowChangePassword(false)}
                         header={
                             <div>
-                                <button className='argo-button argo-button--base' onClick={handleFormSubmit} disabled={isConnecting}>
+                                <button className='kit-button kit-button--base' onClick={handleFormSubmit} disabled={isConnecting}>
                                     <Spinner show={isConnecting} style={{marginRight: '5px'}} />
                                     Save New Password
                                 </button>{' '}
-                                <button onClick={() => updateShowChangePassword(false)} className='argo-button argo-button--base-o' disabled={isConnecting}>
+                                <button onClick={() => updateShowChangePassword(false)} className='kit-button kit-button--base-o' disabled={isConnecting}>
                                     Cancel
                                 </button>
                             </div>
@@ -145,7 +145,7 @@ export const UserInfoComponent = ({userInfo}: {userInfo: UserInfo}) => {
                             validateError={validatePasswordForm}>
                             {formApi => (
                                 <form onSubmit={formApi.submitForm} role='form' className='change-password width-control'>
-                                    <div className='argo-form-row'>
+                                    <div className='kit-form-row'>
                                         <FormField
                                             formApi={formApi}
                                             label='Current Password'
@@ -158,7 +158,7 @@ export const UserInfoComponent = ({userInfo}: {userInfo: UserInfo}) => {
                                             }}
                                         />
                                     </div>
-                                    <div className='argo-form-row'>
+                                    <div className='kit-form-row'>
                                         <FormField
                                             formApi={formApi}
                                             label='New Password'
@@ -171,7 +171,7 @@ export const UserInfoComponent = ({userInfo}: {userInfo: UserInfo}) => {
                                             }}
                                         />
                                     </div>
-                                    <div className='argo-form-row'>
+                                    <div className='kit-form-row'>
                                         <FormField
                                             formApi={formApi}
                                             label='Confirm New Password'

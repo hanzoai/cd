@@ -1,4 +1,4 @@
-import {Checkbox, DataLoader, Tab, Tabs} from 'argo-ui';
+import {Checkbox, DataLoader, Tab, Tabs} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as deepMerge from 'deepmerge';
 import * as React from 'react';

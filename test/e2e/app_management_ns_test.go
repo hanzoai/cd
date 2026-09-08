@@ -76,7 +76,7 @@ func TestNamespacedGetLogsDeny(t *testing.T) {
 		}, "app-creator")
 
 	ctx := GivenWithSameState(accountCtx)
-	ctx.SetAppNamespace(fixture.ArgoCDAppNamespace)
+	ctx.SetAppNamespace(fixture.E2EAppNamespace)
 	ctx.
 		Path("guestbook-logs").
 		SetTrackingMethod("annotation").
@@ -188,7 +188,7 @@ func TestNamespacedAppCreation(t *testing.T) {
 		When().
 		// ensure that update replaces spec and merge labels and annotations
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.MergePatchType, []byte(`{"metadata": {"labels": { "test": "label" }, "annotations": { "test": "annotation" }}}`), metav1.PatchOptions{}))
 		}).
 		CreateApp("--upsert").
@@ -418,7 +418,7 @@ func TestNamespacedAppRollbackSuccessful(t *testing.T) {
 			}}
 			patch, _, err := diff.CreateTwoWayMergePatch(app, appWithHistory, &Application{})
 			require.NoError(t, err)
-			app, err = fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+			app, err = fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(), app.Name, types.MergePatchType, patch, metav1.PatchOptions{})
 			require.NoError(t, err)
 
 			// sync app and make sure it reaches InSync state
@@ -490,7 +490,7 @@ func TestNamespacedManipulateApplicationResources(t *testing.T) {
 
 			deployment := resources[index]
 
-			closer, client, err := fixture.ArgoCDClientset.NewApplicationClient()
+			closer, client, err := fixture.CDClientset.NewApplicationClient()
 			require.NoError(t, err)
 			defer utilio.Close(closer)
 
@@ -552,7 +552,7 @@ func TestAppInNamespaceCommands(t *testing.T) {
 }
 
 func TestNamespacedAppWithSecrets(t *testing.T) {
-	closer, client, err := fixture.ArgoCDClientset.NewApplicationClient()
+	closer, client, err := fixture.CDClientset.NewApplicationClient()
 	require.NoError(t, err)
 	defer utilio.Close(closer)
 
@@ -850,7 +850,7 @@ func TestNamespacedResourceAction(t *testing.T) {
 		Sync().
 		Then().
 		And(func(app *Application) {
-			closer, client, err := fixture.ArgoCDClientset.NewApplicationClient()
+			closer, client, err := fixture.CDClientset.NewApplicationClient()
 			require.NoError(t, err)
 			defer utilio.Close(closer)
 
@@ -918,7 +918,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/cd-e2e-container:0.2")
 		}).
 		Given().
 		LocalPath(guestbookPathLocal).
@@ -929,7 +929,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 81")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.3")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/cd-e2e-container:0.3")
 		}).
 		Given().
 		LocalPath("").
@@ -940,7 +940,7 @@ func TestNamespacedLocalManifestSync(t *testing.T) {
 		And(func(_ *Application) {
 			res, _ := fixture.RunCli("app", "manifests", ctx.AppQualifiedName())
 			assert.Contains(t, res, "containerPort: 80")
-			assert.Contains(t, res, "image: quay.io/argoprojlabs/cd-e2e-container:0.2")
+			assert.Contains(t, res, "image: ghcr.io/hanzoai/cd-e2e-container:0.2")
 		})
 }
 
@@ -1024,7 +1024,7 @@ func assertNSResourceActions(t *testing.T, appName string, deploymentNamespace s
 		}
 	}
 
-	closer, cdClient := fixture.ArgoCDClientset.NewApplicationClientOrDie()
+	closer, cdClient := fixture.CDClientset.NewApplicationClientOrDie()
 	defer utilio.Close(closer)
 
 	deploymentResource, err := fixture.KubeClientset.AppsV1().Deployments(deploymentNamespace).Get(t.Context(), "guestbook-ui", metav1.GetOptions{})
@@ -1143,7 +1143,7 @@ func TestNamespacedPermissions(t *testing.T) {
 		Expect(Condition(ApplicationConditionInvalidSpecError, destinationError)).
 		Expect(Condition(ApplicationConditionInvalidSpecError, sourceError)).
 		And(func(app *Application) {
-			closer, cdClient := fixture.ArgoCDClientset.NewApplicationClientOrDie()
+			closer, cdClient := fixture.CDClientset.NewApplicationClientOrDie()
 			defer utilio.Close(closer)
 			tree, err := cdClient.ResourceTree(t.Context(), &applicationpkg.ResourcesQuery{ApplicationName: &app.Name, AppNamespace: &app.Namespace})
 			require.NoError(t, err)
@@ -1334,7 +1334,7 @@ func TestNamespacedSelfManagedApps(t *testing.T) {
 
 			reconciledCount := 0
 			var lastReconciledAt *metav1.Time
-			for event := range fixture.ArgoCDClientset.WatchApplicationWithRetry(ctx, a.QualifiedName(), a.ResourceVersion) {
+			for event := range fixture.CDClientset.WatchApplicationWithRetry(ctx, a.QualifiedName(), a.ResourceVersion) {
 				reconciledAt := event.Application.Status.ReconciledAt
 				if reconciledAt == nil {
 					reconciledAt = &metav1.Time{}
@@ -1620,7 +1620,7 @@ func TestNamespacedCreateAppWithNoNameSpaceForGlobalResource(t *testing.T) {
 		CreateWithNoNameSpace().
 		Then().
 		And(func(app *Application) {
-			app, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			app, err := fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 			assert.Empty(t, app.Status.Conditions)
 		})
@@ -1642,7 +1642,7 @@ func TestNamespacedCreateAppWithNoNameSpaceWhenRequired(t *testing.T) {
 		Refresh(RefreshTypeNormal).
 		Then().
 		And(func(app *Application) {
-			updatedApp, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			updatedApp, err := fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 
 			assert.Len(t, updatedApp.Status.Conditions, 2)
@@ -1668,7 +1668,7 @@ func TestNamespacedCreateAppWithNoNameSpaceWhenRequired2(t *testing.T) {
 		Refresh(RefreshTypeNormal).
 		Then().
 		And(func(app *Application) {
-			updatedApp, err := fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
+			updatedApp, err := fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Get(t.Context(), app.Name, metav1.GetOptions{})
 			require.NoError(t, err)
 
 			assert.Len(t, updatedApp.Status.Conditions, 2)
@@ -1841,7 +1841,7 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		Expect(ResourceSyncStatusWithNamespaceIs("Deployment", "guestbook-ui", updatedNamespace, SyncStatusCodeSynced)).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "replace", "path": "/spec/syncPolicy/managedNamespaceMetadata/labels", "value": {"new":"label"} }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -1860,7 +1860,7 @@ func TestNamespacedNamespaceAutoCreationWithMetadata(t *testing.T) {
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "replace", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations", "value": {"new":"custom-annotation"} }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -2012,7 +2012,7 @@ metadata:
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "add", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations/something", "value": "hmm" }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -2032,7 +2032,7 @@ metadata:
 		})).
 		When().
 		And(func() {
-			errors.NewHandler(t).FailOnErr(fixture.AppClientset.ArgoprojV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
+			errors.NewHandler(t).FailOnErr(fixture.AppClientset.AppsV1alpha1().Applications(fixture.AppNamespace()).Patch(t.Context(),
 				ctx.GetName(), types.JSONPatchType, []byte(`[{ "op": "remove", "path": "/spec/syncPolicy/managedNamespaceMetadata/annotations/something" }]`), metav1.PatchOptions{}))
 		}).
 		Sync().
@@ -2213,7 +2213,7 @@ definitions:
 }
 
 func TestNamespacedAppLogs(t *testing.T) {
-	t.SkipNow() // Too flaky. https://github.com/argoproj/argo-cd/issues/13834
+	t.SkipNow() // Too flaky.
 	fixture.SkipOnEnv(t, "OPENSHIFT")
 	Given(t).
 		SetAppNamespace(fixture.AppNamespace()).

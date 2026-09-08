@@ -71,7 +71,7 @@ cd app [flags]
 
 ### SEE ALSO
 
-* [cd](cd.md)	 - cd controls an Hanzo CD server
+* [cd](cd.md)	 - cd controls a Hanzo CD server
 * [cd app actions](cd_app_actions.md)	 - Manage Resource actions
 * [cd app add-source](cd_app_add-source.md)	 - Adds a source to the list of sources in the application
 * [cd app confirm-deletion](cd_app_confirm-deletion.md)	 - Confirms deletion/pruning of an application resources

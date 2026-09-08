@@ -6,8 +6,8 @@ metadata:
   labels:
     job-name: fail
   name: fail
-  namespace: argoci-workflows
-  selfLink: /apis/batch/v1/namespaces/argoci-workflows/jobs/fail
+  namespace: ci-workflows
+  selfLink: /apis/batch/v1/namespaces/ci-workflows/jobs/fail
 spec:
   backoffLimit: 0
   completions: 1
