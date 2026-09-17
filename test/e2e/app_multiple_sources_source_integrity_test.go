@@ -5,7 +5,6 @@ import (
 
 	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
-	"k8s.io/utils/ptr"
 
 	. "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	. "github.com/hanzoai/cd/test/e2e/fixture"
@@ -14,7 +13,7 @@ import (
 
 var oneShotSync = func(app *Application) {
 	app.Spec.SyncPolicy = &SyncPolicy{
-		Automated: &SyncPolicyAutomated{SelfHeal: ptr.To(true)},
+		Automated: &SyncPolicyAutomated{SelfHeal: new(true)},
 		Retry:     &RetryStrategy{Limit: 0},
 	}
 }

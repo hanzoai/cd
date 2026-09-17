@@ -18,8 +18,8 @@ import (
 	"github.com/hanzoai/cd/controller/metrics"
 	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/pkg/client/listers/application/v1alpha1"
-	"github.com/hanzoai/cd/util/cd"
 	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
+	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/db"
 )
 

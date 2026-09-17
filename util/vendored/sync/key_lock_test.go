@@ -15,12 +15,10 @@ func TestLockLock(t *testing.T) {
 	unlocked := false
 
 	wg := sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
+	wg.Go(func() {
 		l.Lock("my-key")
 		unlocked = true
-		wg.Done()
-	}()
+	})
 
 	assert.False(t, unlocked)
 
@@ -41,12 +39,10 @@ func TestLockRLock(t *testing.T) {
 	unlocked := false
 
 	wg := sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
+	wg.Go(func() {
 		l.RLock("my-key")
 		unlocked = true
-		wg.Done()
-	}()
+	})
 
 	assert.False(t, unlocked)
 
@@ -67,12 +63,10 @@ func TestRLockLock(t *testing.T) {
 	unlocked := false
 
 	wg := sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
+	wg.Go(func() {
 		l.Lock("my-key")
 		unlocked = true
-		wg.Done()
-	}()
+	})
 
 	assert.False(t, unlocked)
 
@@ -93,12 +87,10 @@ func TestRLockRLock(t *testing.T) {
 	unlocked := false
 
 	wg := sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
+	wg.Go(func() {
 		l.RLock("my-key")
 		unlocked = true
-		wg.Done()
-	}()
+	})
 
 	wg.Wait()
 

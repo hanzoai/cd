@@ -15,9 +15,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	glob "github.com/bmatcuk/doublestar/v4"
 	"github.com/golang/groupcache/lru"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	lua "github.com/yuin/gopher-lua"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -179,8 +179,7 @@ func (vm VM) runLuaWithResourceActionParameters(obj *unstructured.Unstructured, 
 
 	// Remove the default lua stack trace from execution errors since these
 	// errors will make it back to the user
-	var apiErr *lua.ApiError
-	if errors.As(err, &apiErr) {
+	if apiErr, ok := errors.AsType[*lua.ApiError](err); ok {
 		if apiErr.Type == lua.ApiErrorRun {
 			apiErr.StackTrace = ""
 			err = apiErr

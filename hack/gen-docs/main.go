@@ -9,12 +9,10 @@ import (
 
 	"gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-
 )
 
 func main() {
 }
-
 
 func updateMkDocsNav(parent string, child string, subchild string, files []string) error {
 	trimPrefixes(files, "docs/")

@@ -14,8 +14,8 @@ import (
 
 	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	"github.com/hanzoai/cd/pkg/client/clientset/versioned"
-	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/assets"
+	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/security"
 	"github.com/hanzoai/cd/util/settings"
 )

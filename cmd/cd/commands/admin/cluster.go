@@ -607,23 +607,19 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			errors.CheckError(err)
 			// Seed a minimal in-memory Hanzo CD environment so settings retrieval succeeds
 			cdCM := &corev1.ConfigMap{
-				TypeMeta: metav1.TypeMeta{Kind: "ConfigMap", APIVersion: "v1"},
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ConfigMapName,
-					Namespace: DefaultNamespace,
-					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "hanzocd",
-					},
+				Kind: "ConfigMap", APIVersion: "v1",
+				Name:      common.ConfigMapName,
+				Namespace: DefaultNamespace,
+				Labels: map[string]string{
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			}
 			cdSecret := &corev1.Secret{
-				TypeMeta: metav1.TypeMeta{Kind: "Secret", APIVersion: "v1"},
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.SecretName,
-					Namespace: DefaultNamespace,
-					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "hanzocd",
-					},
+				Kind: "Secret", APIVersion: "v1",
+				Name:      common.SecretName,
+				Namespace: DefaultNamespace,
+				Labels: map[string]string{
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 				Data: map[string][]byte{
 					"server.secretkey": []byte("test"),

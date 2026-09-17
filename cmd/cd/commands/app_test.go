@@ -15,10 +15,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/oauth2"
@@ -616,10 +616,8 @@ func TestPrintApplicationHistoryTableWithMultipleSources(t *testing.T) {
 func TestPrintAppSummaryTable(t *testing.T) {
 	output, _ := captureOutput(func() error {
 		app := &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "test",
-				Namespace: "cd",
-			},
+			Name:      "test",
+			Namespace: "cd",
 			Spec: v1alpha1.ApplicationSpec{
 				SyncPolicy: &v1alpha1.SyncPolicy{
 					Automated: &v1alpha1.SyncPolicyAutomated{
@@ -704,10 +702,8 @@ Health Status:      Progressing
 func TestPrintAppSummaryTable_MultipleSources(t *testing.T) {
 	output, _ := captureOutput(func() error {
 		app := &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "test",
-				Namespace: "cd",
-			},
+			Name:      "test",
+			Namespace: "cd",
 			Spec: v1alpha1.ApplicationSpec{
 				SyncPolicy: &v1alpha1.SyncPolicy{
 					Automated: &v1alpha1.SyncPolicyAutomated{
@@ -986,9 +982,7 @@ func TestCheckForDeleteEvent(t *testing.T) {
 func TestPrintApplicationNames(t *testing.T) {
 	output, _ := captureOutput(func() error {
 		app := &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: "test",
-			},
+			Name: "test",
 		}
 		printApplicationNames([]v1alpha1.Application{*app, *app})
 		return nil
@@ -1527,9 +1521,7 @@ func TestParseSelectedResourcesEmptyList(t *testing.T) {
 func TestPrintApplicationTableNotWide(t *testing.T) {
 	output, err := captureOutput(func() error {
 		app := &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: "app-name",
-			},
+			Name: "app-name",
 			Spec: v1alpha1.ApplicationSpec{
 				Destination: v1alpha1.ApplicationDestination{
 					Server:    "http://localhost:8080",
@@ -1558,9 +1550,7 @@ func TestPrintApplicationTableNotWide(t *testing.T) {
 func TestPrintApplicationTableWide(t *testing.T) {
 	output, err := captureOutput(func() error {
 		app := &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: "app-name",
-			},
+			Name: "app-name",
 			Spec: v1alpha1.ApplicationSpec{
 				Destination: v1alpha1.ApplicationDestination{
 					Server:    "http://localhost:8080",
@@ -1833,12 +1823,10 @@ func Test_hasAppChanged(t *testing.T) {
 
 func testApp(name, project string, labels map[string]string, annotations map[string]string, finalizers []string) *v1alpha1.Application {
 	return &v1alpha1.Application{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:        name,
-			Labels:      labels,
-			Annotations: annotations,
-			Finalizers:  finalizers,
-		},
+		Name:        name,
+		Labels:      labels,
+		Annotations: annotations,
+		Finalizers:  finalizers,
 		Spec: v1alpha1.ApplicationSpec{
 			Source: &v1alpha1.ApplicationSource{
 				RepoURL: "https://github.com/hanzocd/example-apps.git",
@@ -2288,10 +2276,8 @@ type readyFakeAppServiceClient struct {
 
 func (c *readyFakeAppServiceClient) Get(_ context.Context, _ *applicationpkg.ApplicationQuery, _ ...grpc.CallOption) (*v1alpha1.Application, error) {
 	return &v1alpha1.Application{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test",
-			Namespace: "cd",
-		},
+		Name:      "test",
+		Namespace: "cd",
 		Spec: v1alpha1.ApplicationSpec{
 			Project:     "default",
 			Destination: v1alpha1.ApplicationDestination{Server: "local", Namespace: "cd"},
@@ -2364,10 +2350,8 @@ type fakeAppServiceClient struct{}
 func (c *fakeAppServiceClient) Get(_ context.Context, _ *applicationpkg.ApplicationQuery, _ ...grpc.CallOption) (*v1alpha1.Application, error) {
 	time := metav1.Date(2020, time.November, 10, 23, 0, 0, 0, time.UTC)
 	return &v1alpha1.Application{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test",
-			Namespace: "cd",
-		},
+		Name:      "test",
+		Namespace: "cd",
 		Spec: v1alpha1.ApplicationSpec{
 			SyncPolicy: &v1alpha1.SyncPolicy{
 				Automated: &v1alpha1.SyncPolicyAutomated{

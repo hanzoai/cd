@@ -88,8 +88,10 @@ func Workspace(ctx context.Context, git Git, root string, e Entry) (string, erro
 // you" — so a caller that only checks err != nil cannot tell an answer from a
 // failure. Read through wrapping, since RealGit annotates with %w.
 func exitCode(err error) int {
-	var ec interface{ ExitCode() int }
-	if errors.As(err, &ec) {
+	if ec, ok := errors.AsType[interface {
+		error
+		ExitCode() int
+	}](err); ok {
 		return ec.ExitCode()
 	}
 	return -1
@@ -209,8 +211,8 @@ func short(s string) string {
 }
 
 func firstLine(s string) string {
-	if i := strings.IndexByte(s, '\n'); i >= 0 {
-		return s[:i]
+	if before, _, ok := strings.Cut(s, "\n"); ok {
+		return before
 	}
 	return s
 }

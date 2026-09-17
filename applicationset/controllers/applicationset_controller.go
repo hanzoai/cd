@@ -91,12 +91,12 @@ type ApplicationSetReconciler struct {
 	Scheme               *runtime.Scheme
 	Recorder             record.EventRecorder
 	Generators           map[string]generators.Generator
-	DB               db.DB
+	DB                   db.DB
 	KubeClientset        kubernetes.Interface
 	Policy               v1alpha1.ApplicationsSyncPolicy
 	EnablePolicyOverride bool
 	utils.Renderer
-	ControllerNamespace              string
+	ControllerNamespace          string
 	ApplicationSetNamespaces     []string
 	EnableProgressiveSyncs       bool
 	SCMRootCAPath                string
@@ -709,14 +709,10 @@ func (r *ApplicationSetReconciler) createOrUpdateInCluster(ctx context.Context, 
 			appLog := logCtx.WithFields(applog.GetAppLogFields(&generatedApp))
 
 			found := &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      generatedApp.Name,
-					Namespace: generatedApp.Namespace,
-				},
-				TypeMeta: metav1.TypeMeta{
-					Kind:       application.ApplicationKind,
-					APIVersion: "apps.hanzo.ai/v1alpha1",
-				},
+				Name:       generatedApp.Name,
+				Namespace:  generatedApp.Namespace,
+				Kind:       application.ApplicationKind,
+				APIVersion: "apps.hanzo.ai/v1alpha1",
 			}
 
 			action, err := utils.CreateOrUpdate(ctx, appLog, r.Client, diffConfig, found, func() error {

@@ -169,16 +169,12 @@ func NewGenRepoSpecCommand() *cobra.Command {
 			errors.CheckError(err)
 
 			cdCM := &corev1.ConfigMap{
-				TypeMeta: metav1.TypeMeta{
-					Kind:       "ConfigMap",
-					APIVersion: "v1",
-				},
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      common.ConfigMapName,
-					Namespace: DefaultNamespace,
-					Labels: map[string]string{
-						"app.kubernetes.io/part-of": "hanzocd",
-					},
+				Kind:       "ConfigMap",
+				APIVersion: "v1",
+				Name:       common.ConfigMapName,
+				Namespace:  DefaultNamespace,
+				Labels: map[string]string{
+					"app.kubernetes.io/part-of": "hanzocd",
 				},
 			}
 			kubeClientset := fake.NewClientset(cdCM)

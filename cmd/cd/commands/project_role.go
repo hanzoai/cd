@@ -7,8 +7,8 @@ import (
 	"text/tabwriter"
 	"time"
 
-	timeutil "github.com/hanzoai/cd/util/vendored/time"
 	jwtgo "github.com/golang-jwt/jwt/v5"
+	timeutil "github.com/hanzoai/cd/util/vendored/time"
 	"github.com/spf13/cobra"
 
 	"github.com/hanzoai/cd/cmd/cd/commands/headless"

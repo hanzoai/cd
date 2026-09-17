@@ -28,15 +28,15 @@ import (
 
 	"github.com/hanzoai/cd/util/oci"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
-	textutils "github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
-	"github.com/hanzoai/cd/util/vendored/sync"
 	jsonpatch "github.com/evanphx/json-patch"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/google/go-jsonnet"
 	"github.com/google/uuid"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	textutils "github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
+	"github.com/hanzoai/cd/util/vendored/sync"
 	log "github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -591,7 +591,7 @@ func resolveReferencedSources(hasMultipleSources bool, source *v1alpha1.Applicat
 		if !strings.HasPrefix(valueFile, "$") {
 			continue
 		}
-		refVar := strings.Split(valueFile, "/")[0]
+		refVar, _, _ := strings.Cut(valueFile, "/")
 
 		refSourceMapping, ok := refSources[refVar]
 		if !ok {
@@ -724,8 +724,7 @@ func (s *Service) GenerateManifest(ctx context.Context, q *apiclient.ManifestReq
 
 	// Convert typed errors to gRPC status codes so callers can use status.Code()
 	// rather than string matching.
-	var globNoMatch *GlobNoMatchError
-	if errors.As(err, &globNoMatch) {
+	if _, ok := errors.AsType[*GlobNoMatchError](err); ok {
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
 	return res, err
@@ -875,7 +874,7 @@ func (s *Service) runManifestGenAsync(ctx context.Context, repoRoot, commitSHA, 
 					if !strings.HasPrefix(valueFile, "$") {
 						continue
 					}
-					refVar := strings.Split(valueFile, "/")[0]
+					refVar, _, _ := strings.Cut(valueFile, "/")
 
 					refSourceMapping, ok := q.RefSources[refVar]
 					if !ok {
@@ -2798,7 +2797,7 @@ func (s *Service) GetRevisionMetadata(ctx context.Context, q *apiclient.RepoServ
 		Message:               m.Message,
 		References:            relatedRevisions,
 		SourceIntegrityResult: sourceIntegrityResult,
-		SignatureInfo: legacySignatureInfo, // nolint:staticcheck
+		SignatureInfo:         legacySignatureInfo, // nolint:staticcheck
 	}
 	_ = s.cache.SetRevisionMetadata(q.Repo.Repo, q.Revision, metadata)
 	return metadata, nil
@@ -3519,7 +3518,7 @@ func (s *Service) UpdateRevisionForPaths(ctx context.Context, request *apiclient
 		if !strings.HasPrefix(valueFile, "$") {
 			continue
 		}
-		refName := strings.Split(valueFile, "/")[0]
+		refName, _, _ := strings.Cut(valueFile, "/")
 		if _, ok := refsToCompare[refName]; ok {
 			continue
 		}

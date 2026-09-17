@@ -24,8 +24,8 @@ import (
 	executil "github.com/hanzoai/cd/util/exec"
 	"github.com/hanzoai/cd/util/io/files"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	securejoin "github.com/cyphar/filepath-securejoin"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/mattn/go-zglob"
 	log "github.com/sirupsen/logrus"
 )

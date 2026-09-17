@@ -61,13 +61,13 @@ func TestIsSSHURL(t *testing.T) {
 	data := map[string]bool{
 		"git://github.com/hanzoai/test.git":     false,
 		"git@GITHUB.com:hanzoai/test.git":       true,
-		"git@github.com:test":                    true,
-		"git@github.com:test.git":                true,
+		"git@github.com:test":                   true,
+		"git@github.com:test.git":               true,
 		"https://github.com/hanzoai/test":       false,
 		"https://github.com/hanzoai/test.git":   false,
 		"ssh://git@GITHUB.com:hanzoai/test":     true,
 		"ssh://git@GITHUB.com:hanzoai/test.git": true,
-		"ssh://git@github.com:test.git":          true,
+		"ssh://git@github.com:test.git":         true,
 	}
 	for k, v := range data {
 		isSSH, _ := IsSSHURL(k)
@@ -108,9 +108,9 @@ func TestSSHHostWithPort(t *testing.T) {
 		"git@github.com:hanzoai/test.git":            "github.com:22",
 		"ssh://git@github.com/hanzoai/test.git":      "github.com:22",
 		"ssh://git@github.com:2222/hanzoai/test.git": "github.com:2222",
-		"ssh://john@john-server.org:29418/project":    "john-server.org:29418",
+		"ssh://john@john-server.org:29418/project":   "john-server.org:29418",
 		"https://github.com/hanzoai/test":            "",
-		"":                                            "",
+		"":                                           "",
 	}
 	for repoURL, want := range data {
 		assert.Equal(t, want, SSHHostWithPort(repoURL), "input: %q", repoURL)
@@ -120,23 +120,23 @@ func TestSSHHostWithPort(t *testing.T) {
 func TestSameURL(t *testing.T) {
 	t.Parallel()
 	data := map[string]string{
-		"git@GITHUB.com:hanzoai/test":                     "git@github.com:hanzoai/test.git",
-		"git@GITHUB.com:hanzoai/test.git":                 "git@github.com:hanzoai/test.git",
+		"git@GITHUB.com:hanzoai/test":                      "git@github.com:hanzoai/test.git",
+		"git@GITHUB.com:hanzoai/test.git":                  "git@github.com:hanzoai/test.git",
 		"git@GITHUB.com:test":                              "git@github.com:test.git",
 		"git@GITHUB.com:test.git":                          "git@github.com:test.git",
-		"https://GITHUB.com/hanzoai/test":                 "https://github.com/hanzoai/test.git",
-		"https://GITHUB.com/hanzoai/test.git":             "https://github.com/hanzoai/test.git",
+		"https://GITHUB.com/hanzoai/test":                  "https://github.com/hanzoai/test.git",
+		"https://GITHUB.com/hanzoai/test.git":              "https://github.com/hanzoai/test.git",
 		"https://github.com/FOO":                           "https://github.com/foo",
 		"https://github.com/TEST":                          "https://github.com/TEST.git",
 		"https://github.com/TEST.git":                      "https://github.com/TEST.git",
 		"https://github.com:4443/TEST":                     "https://github.com:4443/TEST.git",
 		"https://github.com:4443/TEST.git":                 "https://github.com:4443/TEST",
-		"ssh://git@GITHUB.com/hanzoai/test":               "git@github.com:hanzoai/test.git",
-		"ssh://git@GITHUB.com/hanzoai/test.git":           "git@github.com:hanzoai/test.git",
+		"ssh://git@GITHUB.com/hanzoai/test":                "git@github.com:hanzoai/test.git",
+		"ssh://git@GITHUB.com/hanzoai/test.git":            "git@github.com:hanzoai/test.git",
 		"ssh://git@GITHUB.com/test.git":                    "git@github.com:test.git",
 		"ssh://git@github.com/test":                        "git@github.com:test.git",
-		" https://github.com/hanzoai/test ":               "https://github.com/hanzoai/test.git", //nolint:gocritic // This includes whitespaces for testing
-		"\thttps://github.com/hanzoai/test\n":             "https://github.com/hanzoai/test.git",
+		" https://github.com/hanzoai/test ":                "https://github.com/hanzoai/test.git", //nolint:gocritic // This includes whitespaces for testing
+		"\thttps://github.com/hanzoai/test\n":              "https://github.com/hanzoai/test.git",
 		"https://1234.visualstudio.com/myproj/_git/myrepo": "https://1234.visualstudio.com/myproj/_git/myrepo",
 		"https://dev.azure.com/1234/myproj/_git/myrepo":    "https://dev.azure.com/1234/myproj/_git/myrepo",
 	}

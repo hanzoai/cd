@@ -11,9 +11,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
+	"github.com/cespare/xxhash/v2"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
-	"github.com/cespare/xxhash/v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	resourcehelper "k8s.io/component-helpers/resource"

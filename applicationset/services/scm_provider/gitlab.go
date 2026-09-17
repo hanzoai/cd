@@ -88,9 +88,7 @@ func (g *GitlabProvider) GetBranches(ctx context.Context, repo *Repository) ([]*
 
 func (g *GitlabProvider) ListRepos(_ context.Context, cloneProtocol string) ([]*Repository, error) {
 	snippetsListOptions := gitlab.ExploreSnippetsOptions{
-		ListOptions: gitlab.ListOptions{
-			PerPage: 100,
-		},
+		PerPage: 100,
 	}
 	opt := &gitlab.ListGroupProjectsOptions{
 		ListOptions:      snippetsListOptions.ListOptions,
@@ -101,7 +99,7 @@ func (g *GitlabProvider) ListRepos(_ context.Context, cloneProtocol string) ([]*
 
 	// gitlab does not include Archived repos by default
 	if g.includeArchivedRepos {
-		opt.Archived = gitlab.Ptr(true)
+		opt.Archived = new(true)
 	}
 
 	repos := []*Repository{}
@@ -195,9 +193,7 @@ func (g *GitlabProvider) listBranches(_ context.Context, repo *Repository) ([]gi
 	}
 	// Otherwise, scrape the ListBranches API.
 	snippetsListOptions := gitlab.ExploreSnippetsOptions{
-		ListOptions: gitlab.ListOptions{
-			PerPage: 100,
-		},
+		PerPage: 100,
 	}
 	opt := &gitlab.ListBranchesOptions{
 		ListOptions: snippetsListOptions.ListOptions,

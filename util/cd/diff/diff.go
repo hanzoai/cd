@@ -11,10 +11,10 @@ import (
 	k8smanagedfields "k8s.io/apimachinery/pkg/util/managedfields"
 
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
+	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 	"github.com/hanzoai/cd/util/cd"
 	"github.com/hanzoai/cd/util/cd/managedfields"
 	"github.com/hanzoai/cd/util/cd/normalizers"
-	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 
 	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"

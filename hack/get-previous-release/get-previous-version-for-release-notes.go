@@ -107,7 +107,7 @@ func findPreviousTag(proposedTag string, tags []string) (string, error) {
 
 	previousTag := getMostRecentTag(tags)
 	if previousTag == "" {
-		return "", fmt.Errorf("no matching tag found for tags: " + strings.Join(tags, ", "))
+		return "", fmt.Errorf("no matching tag found for tags: %s", strings.Join(tags, ", "))
 	}
 	return previousTag, nil
 }

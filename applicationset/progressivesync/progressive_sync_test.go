@@ -131,11 +131,9 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-dev",
-						Labels: map[string]string{
-							"env": "dev",
-						},
+					Name: "app-dev",
+					Labels: map[string]string{
+						"env": "dev",
 					},
 				},
 			},
@@ -199,19 +197,15 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa",
-						Labels: map[string]string{
-							"env": "qa",
-						},
+					Name: "app-qa",
+					Labels: map[string]string{
+						"env": "qa",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-prod",
-						Labels: map[string]string{
-							"env": "prod",
-						},
+					Name: "app-prod",
+					Labels: map[string]string{
+						"env": "prod",
 					},
 				},
 			},
@@ -265,20 +259,16 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa1",
-						Labels: map[string]string{
-							"env": "qa",
-						},
+					Name: "app-qa1",
+					Labels: map[string]string{
+						"env": "qa",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa2",
-						Labels: map[string]string{
-							"env":    "qa",
-							"region": "us-east-2",
-						},
+					Name: "app-qa2",
+					Labels: map[string]string{
+						"env":    "qa",
+						"region": "us-east-2",
 					},
 				},
 			},
@@ -322,28 +312,22 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-dev",
-						Labels: map[string]string{
-							"env": "dev",
-						},
+					Name: "app-dev",
+					Labels: map[string]string{
+						"env": "dev",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa",
-						Labels: map[string]string{
-							"env": "qa",
-						},
+					Name: "app-qa",
+					Labels: map[string]string{
+						"env": "qa",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-prod",
-						Labels: map[string]string{
-							"env":    "prod",
-							"region": "us-east-2",
-						},
+					Name: "app-prod",
+					Labels: map[string]string{
+						"env":    "prod",
+						"region": "us-east-2",
 					},
 				},
 			},
@@ -423,11 +407,9 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-dev",
-						Labels: map[string]string{
-							"env": "dev",
-						},
+					Name: "app-dev",
+					Labels: map[string]string{
+						"env": "dev",
 					},
 				},
 			},
@@ -469,19 +451,15 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa",
-						Labels: map[string]string{
-							"env": "qa",
-						},
+					Name: "app-qa",
+					Labels: map[string]string{
+						"env": "qa",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-prod",
-						Labels: map[string]string{
-							"env": "prod",
-						},
+					Name: "app-prod",
+					Labels: map[string]string{
+						"env": "prod",
 					},
 				},
 			},
@@ -528,20 +506,16 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa1",
-						Labels: map[string]string{
-							"env": "qa",
-						},
+					Name: "app-qa1",
+					Labels: map[string]string{
+						"env": "qa",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa2",
-						Labels: map[string]string{
-							"env":    "qa",
-							"region": "us-east-2",
-						},
+					Name: "app-qa2",
+					Labels: map[string]string{
+						"env":    "qa",
+						"region": "us-east-2",
 					},
 				},
 			},
@@ -590,39 +564,31 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa1",
-						Labels: map[string]string{
-							"env":    "qa",
-							"region": "us-east-1",
-						},
+					Name: "app-qa1",
+					Labels: map[string]string{
+						"env":    "qa",
+						"region": "us-east-1",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa2",
-						Labels: map[string]string{
-							"env":    "qa",
-							"region": "us-east-2",
-						},
+					Name: "app-qa2",
+					Labels: map[string]string{
+						"env":    "qa",
+						"region": "us-east-2",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-prod1",
-						Labels: map[string]string{
-							"env":    "prod",
-							"region": "us-east-1",
-						},
+					Name: "app-prod1",
+					Labels: map[string]string{
+						"env":    "prod",
+						"region": "us-east-1",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-prod2",
-						Labels: map[string]string{
-							"env":    "prod",
-							"region": "us-east-2",
-						},
+					Name: "app-prod2",
+					Labels: map[string]string{
+						"env":    "prod",
+						"region": "us-east-2",
 					},
 				},
 			},
@@ -665,28 +631,22 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-dev",
-						Labels: map[string]string{
-							"env": "dev",
-						},
+					Name: "app-dev",
+					Labels: map[string]string{
+						"env": "dev",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa",
-						Labels: map[string]string{
-							"env": "qa",
-						},
+					Name: "app-qa",
+					Labels: map[string]string{
+						"env": "qa",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-prod",
-						Labels: map[string]string{
-							"env":    "prod",
-							"region": "us-east-2",
-						},
+					Name: "app-prod",
+					Labels: map[string]string{
+						"env":    "prod",
+						"region": "us-east-2",
 					},
 				},
 			},
@@ -736,29 +696,23 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-dev",
-						Labels: map[string]string{
-							"env": "dev",
-						},
+					Name: "app-dev",
+					Labels: map[string]string{
+						"env": "dev",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa1",
-						Labels: map[string]string{
-							"env":    "qa",
-							"region": "us-west-2",
-						},
+					Name: "app-qa1",
+					Labels: map[string]string{
+						"env":    "qa",
+						"region": "us-west-2",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa2",
-						Labels: map[string]string{
-							"env":    "qa",
-							"region": "us-east-2",
-						},
+					Name: "app-qa2",
+					Labels: map[string]string{
+						"env":    "qa",
+						"region": "us-east-2",
 					},
 				},
 			},
@@ -811,20 +765,16 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-dev",
-						Labels: map[string]string{
-							"env":    "dev",
-							"region": "us-west-2",
-						},
+					Name: "app-dev",
+					Labels: map[string]string{
+						"env":    "dev",
+						"region": "us-west-2",
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-qa",
-						Labels: map[string]string{
-							"region": "us-west-2",
-						},
+					Name: "app-qa",
+					Labels: map[string]string{
+						"region": "us-west-2",
 					},
 				},
 			},
@@ -883,11 +833,9 @@ func TestBuildAppDependencyList(t *testing.T) {
 			},
 			apps: []v1alpha1.Application{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "app-dev",
-						Labels: map[string]string{
-							"env": "dev",
-						},
+					Name: "app-dev",
+					Labels: map[string]string{
+						"env": "dev",
 					},
 				},
 			},
@@ -994,7 +942,7 @@ func TestGetAppsToSync(t *testing.T) {
 				},
 			},
 			currentApps: []v1alpha1.Application{
-				{ObjectMeta: metav1.ObjectMeta{Name: "app2"}},
+				{Name: "app2"},
 			},
 			appDependencyList: [][]string{
 				{"app1"},
@@ -1028,8 +976,8 @@ func TestGetAppsToSync(t *testing.T) {
 				},
 			},
 			currentApps: []v1alpha1.Application{
-				{ObjectMeta: metav1.ObjectMeta{Name: "app1"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app2"}},
+				{Name: "app1"},
+				{Name: "app2"},
 			},
 			appDependencyList: [][]string{
 				{"app1"},
@@ -1063,8 +1011,8 @@ func TestGetAppsToSync(t *testing.T) {
 				},
 			},
 			currentApps: []v1alpha1.Application{
-				{ObjectMeta: metav1.ObjectMeta{Name: "app1"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app2"}},
+				{Name: "app1"},
+				{Name: "app2"},
 			},
 			appDependencyList: [][]string{
 				{},
@@ -1119,10 +1067,10 @@ func TestGetAppsToSync(t *testing.T) {
 				},
 			},
 			currentApps: []v1alpha1.Application{
-				{ObjectMeta: metav1.ObjectMeta{Name: "app1"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app2"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app3"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app4"}},
+				{Name: "app1"},
+				{Name: "app2"},
+				{Name: "app3"},
+				{Name: "app4"},
 			},
 			appDependencyList: [][]string{
 				{"app1", "app2"},
@@ -1171,8 +1119,8 @@ func TestGetAppsToSync(t *testing.T) {
 				},
 			},
 			currentApps: []v1alpha1.Application{
-				{ObjectMeta: metav1.ObjectMeta{Name: "app1"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app2"}},
+				{Name: "app1"},
+				{Name: "app2"},
 			},
 			appDependencyList: [][]string{
 				{"app1"},
@@ -1218,8 +1166,8 @@ func TestGetAppsToSync(t *testing.T) {
 				},
 			},
 			currentApps: []v1alpha1.Application{
-				{ObjectMeta: metav1.ObjectMeta{Name: "app1"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app2"}},
+				{Name: "app1"},
+				{Name: "app2"},
 			},
 			appDependencyList: [][]string{
 				{"app1"},
@@ -1265,8 +1213,8 @@ func TestGetAppsToSync(t *testing.T) {
 				},
 			},
 			currentApps: []v1alpha1.Application{
-				{ObjectMeta: metav1.ObjectMeta{Name: "app1"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app2"}},
+				{Name: "app1"},
+				{Name: "app2"},
 			},
 			appDependencyList: [][]string{
 				{"app1"},
@@ -1316,9 +1264,9 @@ func TestGetAppsToSync(t *testing.T) {
 				},
 			},
 			currentApps: []v1alpha1.Application{
-				{ObjectMeta: metav1.ObjectMeta{Name: "old_app"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app1"}},
-				{ObjectMeta: metav1.ObjectMeta{Name: "app2"}},
+				{Name: "old_app"},
+				{Name: "app1"},
+				{Name: "app2"},
 			},
 			appDependencyList: [][]string{
 				{"app1"},
@@ -1618,7 +1566,7 @@ func TestPerformReverseDeletionStaleCache(t *testing.T) {
 	require.NoError(t, v1alpha1.AddToScheme(scheme))
 
 	appSet := v1alpha1.ApplicationSet{
-		ObjectMeta: metav1.ObjectMeta{Name: "appset", Namespace: "cd"},
+		Name: "appset", Namespace: "cd",
 		Spec: v1alpha1.ApplicationSetSpec{
 			Strategy: &v1alpha1.ApplicationSetStrategy{
 				Type:          "RollingSync",
@@ -1635,7 +1583,7 @@ func TestPerformReverseDeletionStaleCache(t *testing.T) {
 
 	newApp := func(name, stage string) v1alpha1.Application {
 		return v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "cd", Labels: map[string]string{"stage": stage}},
+			Name: name, Namespace: "cd", Labels: map[string]string{"stage": stage},
 		}
 	}
 	// currentApps mirrors what getCurrentApplications() returns from the stale cache: both apps

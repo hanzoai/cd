@@ -34,7 +34,7 @@ var testVal = testStruct{
 }
 
 func TestMarshalerIncludeFields(t *testing.T) {
-	m := messageMarshaler{fields: map[string]interface{}{
+	m := messageMarshaler{fields: map[string]any{
 		"metadata.name": true,
 		"spec.source":   true,
 	}, exclude: false}
@@ -46,7 +46,7 @@ func TestMarshalerIncludeFields(t *testing.T) {
 }
 
 func TestMarshalerExcludeFields(t *testing.T) {
-	m := messageMarshaler{fields: map[string]interface{}{
+	m := messageMarshaler{fields: map[string]any{
 		"metadata.name": true,
 	}, exclude: true}
 

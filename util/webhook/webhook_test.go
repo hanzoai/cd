@@ -217,10 +217,8 @@ func TestGitHubCommitEvent_AppsInOtherNamespaces(t *testing.T) {
 
 	h := NewMockHandler(&reactorDef{"patch", "applications", reaction}, []string{"end-to-end-tests", "app-team-*"},
 		&v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "app-to-refresh-in-default-namespace",
-				Namespace: "cd",
-			},
+			Name:      "app-to-refresh-in-default-namespace",
+			Namespace: "cd",
 			Spec: v1alpha1.ApplicationSpec{
 				Sources: v1alpha1.ApplicationSources{
 					{
@@ -230,10 +228,8 @@ func TestGitHubCommitEvent_AppsInOtherNamespaces(t *testing.T) {
 				},
 			},
 		}, &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "app-to-ignore",
-				Namespace: "kube-system",
-			},
+			Name:      "app-to-ignore",
+			Namespace: "kube-system",
 			Spec: v1alpha1.ApplicationSpec{
 				Sources: v1alpha1.ApplicationSources{
 					{
@@ -243,10 +239,8 @@ func TestGitHubCommitEvent_AppsInOtherNamespaces(t *testing.T) {
 				},
 			},
 		}, &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "app-to-refresh-in-exact-match-namespace",
-				Namespace: "end-to-end-tests",
-			},
+			Name:      "app-to-refresh-in-exact-match-namespace",
+			Namespace: "end-to-end-tests",
 			Spec: v1alpha1.ApplicationSpec{
 				Sources: v1alpha1.ApplicationSources{
 					{
@@ -256,10 +250,8 @@ func TestGitHubCommitEvent_AppsInOtherNamespaces(t *testing.T) {
 				},
 			},
 		}, &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "app-to-refresh-in-globbed-namespace",
-				Namespace: "app-team-two",
-			},
+			Name:      "app-to-refresh-in-globbed-namespace",
+			Namespace: "app-team-two",
 			Spec: v1alpha1.ApplicationSpec{
 				Sources: v1alpha1.ApplicationSources{
 					{
@@ -778,10 +770,8 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "single source without annotation - always refreshes",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-				},
+				Name:      "test-app",
+				Namespace: "cd",
 				Spec: v1alpha1.ApplicationSpec{
 					Sources: v1alpha1.ApplicationSources{
 						{
@@ -800,12 +790,10 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "single source with annotation - matching file triggers refresh",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-					Annotations: map[string]string{
-						"cd.hanzo.ai/manifest-generate-paths": "deploy",
-					},
+				Name:      "test-app",
+				Namespace: "cd",
+				Annotations: map[string]string{
+					"cd.hanzo.ai/manifest-generate-paths": "deploy",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					Sources: v1alpha1.ApplicationSources{
@@ -825,12 +813,10 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "single source with annotation - non-matching file updates cache",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-					Annotations: map[string]string{
-						"cd.hanzo.ai/manifest-generate-paths": "manifests",
-					},
+				Name:      "test-app",
+				Namespace: "cd",
+				Annotations: map[string]string{
+					"cd.hanzo.ai/manifest-generate-paths": "manifests",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					Sources: v1alpha1.ApplicationSources{
@@ -850,12 +836,10 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "single source with multiple paths annotation - matching subpath triggers refresh",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-					Annotations: map[string]string{
-						"cd.hanzo.ai/manifest-generate-paths": "manifests;dev/deploy;other/path",
-					},
+				Name:      "test-app",
+				Namespace: "cd",
+				Annotations: map[string]string{
+					"cd.hanzo.ai/manifest-generate-paths": "manifests;dev/deploy;other/path",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					Sources: v1alpha1.ApplicationSources{
@@ -875,10 +859,8 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "multi-source without annotation - always refreshes",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-				},
+				Name:      "test-app",
+				Namespace: "cd",
 				Spec: v1alpha1.ApplicationSpec{
 					Sources: v1alpha1.ApplicationSources{
 						{
@@ -902,12 +884,10 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "multi-source with annotation - matching file triggers refresh",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-					Annotations: map[string]string{
-						"cd.hanzo.ai/manifest-generate-paths": "components",
-					},
+				Name:      "test-app",
+				Namespace: "cd",
+				Annotations: map[string]string{
+					"cd.hanzo.ai/manifest-generate-paths": "components",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					Sources: v1alpha1.ApplicationSources{
@@ -932,10 +912,8 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "source hydrator sync source without annotation - refreshes when sync path matches",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-				},
+				Name:      "test-app",
+				Namespace: "cd",
 				Spec: v1alpha1.ApplicationSpec{
 					SourceHydrator: &v1alpha1.SourceHydrator{
 						DrySource: v1alpha1.DrySource{
@@ -958,10 +936,8 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "source hydrator dry source without annotation - always refreshes and hydrates",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-				},
+				Name:      "test-app",
+				Namespace: "cd",
 				Spec: v1alpha1.ApplicationSpec{
 					SourceHydrator: &v1alpha1.SourceHydrator{
 						DrySource: v1alpha1.DrySource{
@@ -984,12 +960,10 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "source hydrator sync source with annotation - refresh only",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-					Annotations: map[string]string{
-						"cd.hanzo.ai/manifest-generate-paths": "deploy",
-					},
+				Name:      "test-app",
+				Namespace: "cd",
+				Annotations: map[string]string{
+					"cd.hanzo.ai/manifest-generate-paths": "deploy",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					SourceHydrator: &v1alpha1.SourceHydrator{
@@ -1013,12 +987,10 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "source hydrator dry source with annotation - refresh and hydrate",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-					Annotations: map[string]string{
-						"cd.hanzo.ai/manifest-generate-paths": "deploy",
-					},
+				Name:      "test-app",
+				Namespace: "cd",
+				Annotations: map[string]string{
+					"cd.hanzo.ai/manifest-generate-paths": "deploy",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					SourceHydrator: &v1alpha1.SourceHydrator{
@@ -1042,12 +1014,10 @@ func TestHandleEvent(t *testing.T) {
 		{
 			name: "source hydrator dry source with annotation - non-matching file updates cache",
 			app: &v1alpha1.Application{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "test-app",
-					Namespace: "cd",
-					Annotations: map[string]string{
-						"cd.hanzo.ai/manifest-generate-paths": "deploy",
-					},
+				Name:      "test-app",
+				Namespace: "cd",
+				Annotations: map[string]string{
+					"cd.hanzo.ai/manifest-generate-paths": "deploy",
 				},
 				Spec: v1alpha1.ApplicationSpec{
 					SourceHydrator: &v1alpha1.SourceHydrator{
@@ -1726,10 +1696,8 @@ func setupTestCache(t *testing.T, repoCache *cache.Cache, appName string, source
 
 func TestWebhookRefreshWithJitter(t *testing.T) {
 	app := v1alpha1.Application{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test-app",
-			Namespace: "cd",
-		},
+		Name:      "test-app",
+		Namespace: "cd",
 		Spec: v1alpha1.ApplicationSpec{
 			Source: &v1alpha1.ApplicationSource{
 				RepoURL:        "https://github.com/test/repo",
@@ -1830,10 +1798,8 @@ func TestWebhookRefreshWithJitter(t *testing.T) {
 
 func TestProcessAppRefresh(t *testing.T) {
 	app := v1alpha1.Application{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test-app",
-			Namespace: "cd",
-		},
+		Name:      "test-app",
+		Namespace: "cd",
 		Spec: v1alpha1.ApplicationSpec{
 			Source: &v1alpha1.ApplicationSource{
 				RepoURL:        "https://github.com/test/repo",

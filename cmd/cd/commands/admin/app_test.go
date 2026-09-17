@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	kubefake "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/tools/cache"
@@ -33,10 +32,8 @@ func TestGetReconcileResults(t *testing.T) {
 	ctx := t.Context()
 
 	appClientset := appfake.NewSimpleClientset(&v1alpha1.Application{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test",
-			Namespace: "default",
-		},
+		Name:      "test",
+		Namespace: "default",
 		Status: v1alpha1.ApplicationStatus{
 			Health: v1alpha1.AppHealthStatus{Status: health.HealthStatusHealthy},
 			Sync:   v1alpha1.SyncStatus{Status: v1alpha1.SyncStatusCodeOutOfSync},
@@ -58,21 +55,17 @@ func TestGetReconcileResults_Refresh(t *testing.T) {
 	ctx := t.Context()
 
 	cdCM := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: "default",
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.ConfigMapName,
+		Namespace: "default",
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 	}
 	cdSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: "default",
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.SecretName,
+		Namespace: "default",
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string][]byte{
 			"admin.password":   nil,
@@ -80,18 +73,14 @@ func TestGetReconcileResults_Refresh(t *testing.T) {
 		},
 	}
 	proj := &v1alpha1.AppProject{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "default",
-			Namespace: "default",
-		},
-		Spec: v1alpha1.AppProjectSpec{Destinations: []v1alpha1.ApplicationDestination{{Namespace: "*", Server: "*"}}},
+		Name:      "default",
+		Namespace: "default",
+		Spec:      v1alpha1.AppProjectSpec{Destinations: []v1alpha1.ApplicationDestination{{Namespace: "*", Server: "*"}}},
 	}
 
 	app := &v1alpha1.Application{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test",
-			Namespace: "default",
-		},
+		Name:      "test",
+		Namespace: "default",
 		Spec: v1alpha1.ApplicationSpec{
 			Source:  &v1alpha1.ApplicationSource{},
 			Project: "default",

@@ -7,7 +7,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	pullrequest "github.com/hanzoai/cd/applicationset/services/pull_request"
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
@@ -401,9 +400,7 @@ func TestAllowedSCMProviderPullRequest(t *testing.T) {
 			}, true, true, nil, true))
 
 			applicationSetInfo := v1alpha1.ApplicationSet{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "set",
-				},
+				Name: "set",
 				Spec: v1alpha1.ApplicationSetSpec{
 					Generators: []v1alpha1.ApplicationSetGenerator{{
 						PullRequest: testCaseCopy.providerConfig,
@@ -424,9 +421,7 @@ func TestSCMProviderDisabled_PRGenerator(t *testing.T) {
 	generator := NewPullRequestGenerator(nil, NewSCMConfig("", []string{}, false, true, nil, true))
 
 	applicationSetInfo := v1alpha1.ApplicationSet{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "set",
-		},
+		Name: "set",
 		Spec: v1alpha1.ApplicationSetSpec{
 			Generators: []v1alpha1.ApplicationSetGenerator{{
 				PullRequest: &v1alpha1.PullRequestGenerator{

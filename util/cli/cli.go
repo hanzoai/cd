@@ -16,8 +16,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	"github.com/google/shlex"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"

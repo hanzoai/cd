@@ -18,7 +18,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/hanzoai/cd/pkg/apis/application"
 	appv1 "github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
@@ -616,15 +615,11 @@ func constructAppsBaseOnName(appName string, labels, annotations, args []string,
 	}
 	appName, appNs := cd.ParseFromQualifiedName(appName, "")
 	app = &appv1.Application{
-		TypeMeta: metav1.TypeMeta{
-			Kind:       application.ApplicationKind,
-			APIVersion: application.Group + "/v1alpha1",
-		},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      appName,
-			Namespace: appNs,
-		},
-		Spec: appv1.ApplicationSpec{},
+		Kind:       application.ApplicationKind,
+		APIVersion: application.Group + "/v1alpha1",
+		Name:       appName,
+		Namespace:  appNs,
+		Spec:       appv1.ApplicationSpec{},
 	}
 	SetAppSpecOptions(flags, &app.Spec, &appOpts, 0)
 	SetParameterOverrides(app, appOpts.Parameters, 0)

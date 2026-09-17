@@ -30,9 +30,9 @@ import (
 
 	gocache "github.com/patrickmn/go-cache"
 
+	"github.com/bradleyfalzon/ghinstallation/v2"
 	engineio "github.com/hanzoai/cd/gitops-engine/pkg/utils/io"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
-	"github.com/bradleyfalzon/ghinstallation/v2"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/hanzoai/cd/common"
@@ -731,8 +731,8 @@ func domainFromBaseURL(baseURL string) (string, error) {
 	// --- 1. SSH-style Git URL: git@github.com:org/repo.git ---
 	if strings.Contains(baseURL, "@") && strings.Contains(baseURL, ":") && !strings.Contains(baseURL, "://") {
 		parts := strings.SplitN(baseURL, "@", 2)
-		right := parts[len(parts)-1]             // github.com:org/repo
-		host := strings.SplitN(right, ":", 2)[0] // github.com
+		right := parts[len(parts)-1]          // github.com:org/repo
+		host, _, _ := strings.Cut(right, ":") // github.com
 		if host != "" {
 			return host, nil
 		}

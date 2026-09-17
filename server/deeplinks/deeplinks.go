@@ -6,8 +6,8 @@ import (
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
-	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"github.com/expr-lang/expr"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	"github.com/hanzoai/cd/pkg/apiclient/application"

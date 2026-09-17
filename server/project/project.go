@@ -6,10 +6,10 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
-	"github.com/hanzoai/cd/util/vendored/sync"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
+	"github.com/hanzoai/cd/util/vendored/sync"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

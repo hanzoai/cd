@@ -30,10 +30,8 @@ func (f fakeWrapper) RoundTrip(r *http.Request) (*http.Response, error) {
 
 func NewConfig(url string) *rest.Config {
 	return &rest.Config{
-		Host: url,
-		ContentConfig: rest.ContentConfig{
-			ContentType: "application/json",
-		},
+		Host:        url,
+		ContentType: "application/json",
 	}
 }
 
@@ -352,10 +350,8 @@ func TestCreateRequest(t *testing.T) {
 	})
 	client := kubernetes.NewForConfigOrDie(newConfig)
 	rs := &appsv1.ReplicaSet{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test",
-			Namespace: metav1.NamespaceDefault,
-		},
+		Name:      "test",
+		Namespace: metav1.NamespaceDefault,
 	}
 	_, _ = client.AppsV1().ReplicaSets(metav1.NamespaceDefault).Create(context.Background(), rs, metav1.CreateOptions{})
 	assert.True(t, executed)
@@ -424,9 +420,7 @@ func TestUpdateRequest(t *testing.T) {
 	})
 	client := kubernetes.NewForConfigOrDie(newConfig)
 	rs := &appsv1.ReplicaSet{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "test",
-		},
+		Name: "test",
 	}
 	_, _ = client.AppsV1().ReplicaSets(metav1.NamespaceDefault).Update(context.Background(), rs, metav1.UpdateOptions{})
 	assert.True(t, executed)

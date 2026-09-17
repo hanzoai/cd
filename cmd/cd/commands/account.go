@@ -10,8 +10,8 @@ import (
 	"text/tabwriter"
 	"time"
 
-	timeutil "github.com/hanzoai/cd/util/vendored/time"
 	"github.com/golang-jwt/jwt/v5"
+	timeutil "github.com/hanzoai/cd/util/vendored/time"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"

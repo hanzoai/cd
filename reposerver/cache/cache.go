@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/hanzoai/cd/gitops-engine/pkg/utils/text"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 

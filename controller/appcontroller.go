@@ -17,13 +17,13 @@ import (
 	"sync"
 	"time"
 
+	jsonpatch "github.com/evanphx/json-patch"
 	clustercache "github.com/hanzoai/cd/gitops-engine/pkg/cache"
 	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"github.com/hanzoai/cd/gitops-engine/pkg/health"
 	synccommon "github.com/hanzoai/cd/gitops-engine/pkg/sync/common"
 	resourceutil "github.com/hanzoai/cd/gitops-engine/pkg/sync/resource"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube"
-	jsonpatch "github.com/evanphx/json-patch"
 	log "github.com/sirupsen/logrus"
 	otel_codes "go.opentelemetry.io/otel/codes"
 	"golang.org/x/sync/semaphore"
@@ -596,13 +596,11 @@ func (ctrl *ApplicationController) getResourceTree(destCluster *appv1.Cluster, a
 				return nil, fmt.Errorf("failed to unmarshal target state of managed resources: %w", err)
 			}
 			nodes = append(nodes, appv1.ResourceNode{
-				ResourceRef: appv1.ResourceRef{
-					Version:   target.GroupVersionKind().Version,
-					Name:      managedResource.Name,
-					Kind:      managedResource.Kind,
-					Group:     managedResource.Group,
-					Namespace: managedResource.Namespace,
-				},
+				Version:   target.GroupVersionKind().Version,
+				Name:      managedResource.Name,
+				Kind:      managedResource.Kind,
+				Group:     managedResource.Group,
+				Namespace: managedResource.Namespace,
 				Health: &appv1.HealthStatus{
 					Status: health.HealthStatusMissing,
 				},
@@ -2259,8 +2257,8 @@ func (ctrl *ApplicationController) persistAppStatus(ctx context.Context, orig *a
 		}
 	}
 	patch, modified, err := createMergePatch(
-		&appv1.Application{ObjectMeta: metav1.ObjectMeta{Annotations: orig.GetAnnotations()}, Status: orig.Status},
-		&appv1.Application{ObjectMeta: metav1.ObjectMeta{Annotations: newAnnotations}, Status: *newStatus})
+		&appv1.Application{Annotations: orig.GetAnnotations(), Status: orig.Status},
+		&appv1.Application{Annotations: newAnnotations, Status: *newStatus})
 	if err != nil {
 		spanErr = err
 		logCtx.WithError(err).Error("Error constructing app status patch")
@@ -2293,16 +2291,12 @@ func (ctrl *ApplicationController) persistAppStatus(ctx context.Context, orig *a
 
 			fallbackPatch, modified, mpErr := createMergePatch(
 				&appv1.Application{
-					ObjectMeta: metav1.ObjectMeta{
-						Annotations: orig.GetAnnotations(),
-					},
-					Status: orig.Status,
+					Annotations: orig.GetAnnotations(),
+					Status:      orig.Status,
 				},
 				&appv1.Application{
-					ObjectMeta: metav1.ObjectMeta{
-						Annotations: newAnnotations,
-					},
-					Status: *fallbackStatus,
+					Annotations: newAnnotations,
+					Status:      *fallbackStatus,
 				},
 			)
 			if mpErr != nil {

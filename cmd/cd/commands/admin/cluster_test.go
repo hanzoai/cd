@@ -12,35 +12,28 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 )
 
 func Test_loadClusters(t *testing.T) {
 	cdCM := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "cd-cm",
-			Namespace: "cd",
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      "cd-cm",
+		Namespace: "cd",
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string]string{},
 	}
 	cdSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "cd-secret",
-			Namespace: "cd",
-		},
+		Name:      "cd-secret",
+		Namespace: "cd",
 		Data: map[string][]byte{
 			"server.secretkey": []byte("test"),
 		},
 	}
 	app := &v1alpha1.Application{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test",
-			Namespace: "cd",
-		},
+		Name:      "test",
+		Namespace: "cd",
 		Spec: v1alpha1.ApplicationSpec{
 			Project: "default",
 			Destination: v1alpha1.ApplicationDestination{

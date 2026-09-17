@@ -108,7 +108,7 @@ func handleCreate(r *http.Request) ResourceInfo {
 		log.WithField("Kind", kind).Warnf("Unable to Process Create request: %v", err)
 		return ResourceInfo{}
 	}
-	var obj map[string]interface{}
+	var obj map[string]any
 	err = json.Unmarshal(body, &obj)
 	if err != nil {
 		log.WithField("Kind", kind).Warnf("Unable to Process Create request: %v", err)
@@ -148,8 +148,8 @@ func parseRequest(r *http.Request) ResourceInfo {
 		if verb == Watch {
 			if watchQueryParamValues, ok := r.URL.Query()["fieldSelector"]; ok {
 				for _, v := range watchQueryParamValues {
-					if strings.HasPrefix(v, "metadata.name=") {
-						info.Name = strings.TrimPrefix(v, "metadata.name=")
+					if after, ok0 := strings.CutPrefix(v, "metadata.name="); ok0 {
+						info.Name = after
 						break
 					}
 				}

@@ -52,7 +52,7 @@ func (f *fakeGit) run(_ context.Context, dir string, args ...string) (string, er
 }
 
 func planned() Planned {
-	p := Planned{Entry: Entry{Org: "hanzoai", Name: "cloud", Direction: Native}}
+	p := Planned{Org: "hanzoai", Name: "cloud", Direction: Native}
 	p.GitHub = &Repo{FullName: "hanzoai/cloud", Default: "main"}
 	return p
 }

@@ -713,9 +713,7 @@ func (mgr *SettingsManager) updateSecret(callback func(*corev1.Secret) error) er
 			return err
 		}
 		secret = &corev1.Secret{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: common.SecretName,
-			},
+			Name: common.SecretName,
 			Data: make(map[string][]byte),
 		}
 		createSecret = true
@@ -751,9 +749,7 @@ func (mgr *SettingsManager) updateConfigMap(callback func(*corev1.ConfigMap) err
 			return err
 		}
 		cm = &corev1.ConfigMap{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: common.ConfigMapName,
-			},
+			Name: common.ConfigMapName,
 			Data: make(map[string]string),
 		}
 		createCM = true

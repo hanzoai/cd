@@ -14,7 +14,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 )
 
@@ -48,19 +47,15 @@ func captureStdout(callback func()) (string, error) {
 
 func newSettingsManager(ctx context.Context, data map[string]string) *settings.SettingsManager {
 	clientset := fake.NewClientset(&corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: "default",
-			Name:      common.ConfigMapName,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "hanzocd",
-			},
+		Namespace: "default",
+		Name:      common.ConfigMapName,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 		Data: data,
 	}, &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: "default",
-			Name:      common.SecretName,
-		},
+		Namespace: "default",
+		Name:      common.SecretName,
 		Data: map[string][]byte{
 			"admin.password":   []byte("test"),
 			"server.secretkey": []byte("test"),

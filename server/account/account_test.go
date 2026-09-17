@@ -11,7 +11,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 
 	"github.com/hanzoai/cd/common"
@@ -42,20 +41,16 @@ func newTestAccountServerExt(t *testing.T, ctx context.Context, enforceFn rbac.C
 	bcrypt, err := password.HashPassword("oldpassword")
 	require.NoError(t, err)
 	cm := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "cd-cm",
-			Namespace: testNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      "cd-cm",
+		Namespace: testNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string]string{},
 	}
 	secret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "cd-secret",
-			Namespace: testNamespace,
-		},
+		Name:      "cd-secret",
+		Namespace: testNamespace,
 		Data: map[string][]byte{
 			"admin.password":   []byte(bcrypt),
 			"server.secretkey": []byte("test"),

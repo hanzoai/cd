@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 )
@@ -30,9 +29,7 @@ func TestGenerateListParams(t *testing.T) {
 		listGenerator := NewListGenerator()
 
 		applicationSetInfo := v1alpha1.ApplicationSet{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: "set",
-			},
+			Name: "set",
 			Spec: v1alpha1.ApplicationSetSpec{},
 		}
 
@@ -66,9 +63,7 @@ func TestGenerateListParamsGoTemplate(t *testing.T) {
 		listGenerator := NewListGenerator()
 
 		applicationSetInfo := v1alpha1.ApplicationSet{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: "set",
-			},
+			Name: "set",
 			Spec: v1alpha1.ApplicationSetSpec{
 				GoTemplate: true,
 			},

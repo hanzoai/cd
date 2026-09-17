@@ -18,9 +18,7 @@ func TestWithRootPathEmptyRootPath(t *testing.T) {
 
 	// Create a server with empty RootPath
 	server := &Server{
-		ServerOpts: ServerOpts{
-			RootPath: "",
-		},
+		RootPath: "",
 	}
 
 	// Call withRootPath
@@ -42,9 +40,7 @@ func TestWithRootPathNonEmptyRootPath(t *testing.T) {
 
 	// Create a server with non-empty RootPath
 	server := &Server{
-		ServerOpts: ServerOpts{
-			RootPath: "/cd",
-		},
+		RootPath: "/cd",
 	}
 
 	// Call withRootPath

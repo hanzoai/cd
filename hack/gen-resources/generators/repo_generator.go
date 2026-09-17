@@ -89,16 +89,14 @@ func (rg *RepoGenerator) Generate(opts *util.GenerateOpts) error {
 	rg.bar.NewOption(0, int64(len(repos)))
 	for _, repo := range repos {
 		_, err = secrets.Create(context.TODO(), &corev1.Secret{
-			ObjectMeta: metav1.ObjectMeta{
-				GenerateName: "repo-",
-				Namespace:    opts.Namespace,
-				Labels: map[string]string{
-					"app.kubernetes.io/generated-by": "cd-generator",
-					"cd.hanzo.ai/secret-type": "repository",
-				},
-				Annotations: map[string]string{
-					"managed-by": "cd.hanzo.ai",
-				},
+			GenerateName: "repo-",
+			Namespace:    opts.Namespace,
+			Labels: map[string]string{
+				"app.kubernetes.io/generated-by": "cd-generator",
+				"cd.hanzo.ai/secret-type":        "repository",
+			},
+			Annotations: map[string]string{
+				"managed-by": "cd.hanzo.ai",
 			},
 			Data: map[string][]byte{
 				"type":    []byte("git"),

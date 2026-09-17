@@ -189,7 +189,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 		givenRBACName := security.RBACName(s.ns, project, namespace, name)
 		if err := s.enf.EnforceErr(ctx.Value("claims"), rbac.ResourceApplications, action, givenRBACName); err != nil {
 			logCtx.WithFields(map[string]any{
-				"project":                project,
+				"project":              project,
 				cdcommon.SecurityField: cdcommon.SecurityMedium,
 			}).Warnf("user tried to %s application which they do not have access to: %s", action, err)
 			// Do a GET on the app. This ensures that the timing of a "no access" response is the same as a "yes access,
@@ -219,7 +219,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 	// project they specified in the request).
 	if err := s.enf.EnforceErr(ctx.Value("claims"), rbac.ResourceApplications, action, a.RBACName(s.ns)); err != nil {
 		logCtx.WithFields(map[string]any{
-			"project":                a.Spec.Project,
+			"project":              a.Spec.Project,
 			cdcommon.SecurityField: cdcommon.SecurityMedium,
 		}).Warnf("user tried to %s application which they do not have access to: %s", action, err)
 		if project != "" {
@@ -238,7 +238,7 @@ func (s *Server) getAppEnforceRBAC(ctx context.Context, action, project, namespa
 	}
 	if project != "" && effectiveProject != project {
 		logCtx.WithFields(map[string]any{
-			"project":                a.Spec.Project,
+			"project":              a.Spec.Project,
 			cdcommon.SecurityField: cdcommon.SecurityMedium,
 		}).Warnf("user tried to %s application in project %s, but the application is in project %s", action, project, effectiveProject)
 		// The user has access to the app, but the app is in a different project. Return 404, meaning "app doesn't
@@ -337,10 +337,8 @@ func (s *Server) List(ctx context.Context, q *application.ApplicationQuery) (*v1
 	})
 
 	appList := v1alpha1.ApplicationList{
-		ListMeta: metav1.ListMeta{
-			ResourceVersion: s.appInformer.LastSyncResourceVersion(),
-		},
-		Items: newItems,
+		ResourceVersion: s.appInformer.LastSyncResourceVersion(),
+		Items:           newItems,
 	}
 	return &appList, nil
 }
@@ -1146,14 +1144,13 @@ func (s *Server) getAppProject(ctx context.Context, a *v1alpha1.Application, log
 		return nil, vagueError
 	}
 
-	var applicationNotAllowedToUseProjectErr *cd.ErrApplicationNotAllowedToUseProject
-	if errors.As(err, &applicationNotAllowedToUseProjectErr) {
+	if _, ok := errors.AsType[*cd.ErrApplicationNotAllowedToUseProject](err); ok {
 		return nil, vagueError
 	}
 
 	// Unknown error, log it but return the vague error to the user
 	logCtx.WithFields(map[string]any{
-		"project":                a.Spec.Project,
+		"project":              a.Spec.Project,
 		cdcommon.SecurityField: cdcommon.SecurityMedium,
 	}).Warnf("error getting app project: %s", err)
 	return nil, vagueError
@@ -1688,7 +1685,7 @@ func (s *Server) RevisionMetadata(ctx context.Context, q *application.RevisionMe
 		Repo:            repo,
 		Revision:        q.GetRevision(),
 		SourceIntegrity: sourceIntegrity,
-		CheckSignature: sourceIntegrity != nil, // nolint:staticcheck
+		CheckSignature:  sourceIntegrity != nil, // nolint:staticcheck
 	})
 }
 

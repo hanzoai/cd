@@ -1,6 +1,7 @@
 package http
 
 import (
+	context0 "context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -18,13 +19,13 @@ import (
 )
 
 type messageMarshaler struct {
-	fields         map[string]interface{}
+	fields         map[string]any
 	exclude        bool
 	isSSE          bool
 	fieldProcessor FieldProcessor
 }
 
-func (m *messageMarshaler) Unmarshal(data []byte, v interface{}) error {
+func (m *messageMarshaler) Unmarshal(data []byte, v any) error {
 	return nil
 }
 
@@ -45,9 +46,9 @@ func (m *messageMarshaler) ContentType() string {
 }
 
 // FieldProcessor is a function that handles included/excluded fields
-type FieldProcessor func(val interface{}, fields map[string]interface{}, exclude bool) (interface{}, error)
+type FieldProcessor func(val any, fields map[string]any, exclude bool) (any, error)
 
-func (m *messageMarshaler) Marshal(v interface{}) ([]byte, error) {
+func (m *messageMarshaler) Marshal(v any) ([]byte, error) {
 	var dataBytes []byte
 	var err error
 
@@ -70,8 +71,8 @@ func (m *messageMarshaler) Marshal(v interface{}) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		if _, ok := v.([]interface{}); ok {
-			data := make([]interface{}, 0)
+		if _, ok := v.([]any); ok {
+			data := make([]any, 0)
 			err = json.Unmarshal(dataBytes, &data)
 			if err != nil {
 				return nil, err
@@ -84,7 +85,7 @@ func (m *messageMarshaler) Marshal(v interface{}) ([]byte, error) {
 				return nil, err
 			}
 		} else {
-			data := make(map[string]interface{})
+			data := make(map[string]any)
 			err = json.Unmarshal(dataBytes, &data)
 			if err != nil {
 				return nil, err
@@ -102,8 +103,8 @@ func (m *messageMarshaler) Marshal(v interface{}) ([]byte, error) {
 	return dataBytes, nil
 }
 
-func (m *messageMarshaler) processItem(path []string, item interface{}) {
-	if mapItem, ok := item.(map[string]interface{}); ok {
+func (m *messageMarshaler) processItem(path []string, item any) {
+	if mapItem, ok := item.(map[string]any); ok {
 		for k, v := range mapItem {
 			fieldPath := strings.Join(append(path, k), ".")
 			_, pathIn := m.fields[fieldPath]
@@ -126,7 +127,7 @@ func (m *messageMarshaler) processItem(path []string, item interface{}) {
 				delete(mapItem, k)
 			}
 		}
-	} else if arrayItem, ok := item.([]interface{}); ok {
+	} else if arrayItem, ok := item.([]any); ok {
 		for i := range arrayItem {
 			m.processItem(path, arrayItem[i])
 		}
@@ -135,14 +136,14 @@ func (m *messageMarshaler) processItem(path []string, item interface{}) {
 
 func newMarshaler(req *http.Request, isSSE bool) *messageMarshaler {
 	fieldsQuery := req.URL.Query().Get("fields")
-	fields := make(map[string]interface{})
+	fields := make(map[string]any)
 	exclude := false
 	if fieldsQuery != "" {
 		if strings.HasPrefix(fieldsQuery, "-") {
 			fieldsQuery = fieldsQuery[1:]
 			exclude = true
 		}
-		for _, field := range strings.Split(fieldsQuery, ",") {
+		for field := range strings.SplitSeq(fieldsQuery, ",") {
 			fields[field] = true
 		}
 	}
@@ -150,13 +151,13 @@ func newMarshaler(req *http.Request, isSSE bool) *messageMarshaler {
 }
 
 type StreamForwarderFunc func(
-	ctx context.Context,
+	ctx context0.Context,
 	mux *runtime.ServeMux,
 	marshaler runtime.Marshaler,
 	w http.ResponseWriter,
 	req *http.Request,
 	recv func() (proto.Message, error),
-	opts ...func(context.Context, http.ResponseWriter, proto.Message) error,
+	opts ...func(context0.Context, http.ResponseWriter, proto.Message) error,
 )
 
 func flush(flusher http.Flusher) {
@@ -183,7 +184,7 @@ func writeKeepalive(w http.ResponseWriter, mut *sync.Mutex) {
 	}
 }
 
-func keepalive(ctx context.Context, w http.ResponseWriter, mut *sync.Mutex) {
+func keepalive(ctx context0.Context, w http.ResponseWriter, mut *sync.Mutex) {
 	keepaliveInterval := time.Duration(time.Second * 15)
 	keepaliveTicker := time.NewTicker(keepaliveInterval)
 
@@ -199,7 +200,7 @@ func keepalive(ctx context.Context, w http.ResponseWriter, mut *sync.Mutex) {
 	}
 }
 
-func withKeepalive(ctx context.Context, w http.ResponseWriter) http.ResponseWriter {
+func withKeepalive(ctx context0.Context, w http.ResponseWriter) http.ResponseWriter {
 	mut := sync.Mutex{}
 
 	go keepalive(ctx, w, &mut)
@@ -217,13 +218,13 @@ func withKeepalive(ctx context.Context, w http.ResponseWriter) http.ResponseWrit
 
 func NewStreamForwarder(messageKey func(proto.Message) (string, error)) StreamForwarderFunc {
 	return func(
-		ctx context.Context,
+		ctx context0.Context,
 		mux *runtime.ServeMux,
 		marshaler runtime.Marshaler,
 		w http.ResponseWriter,
 		req *http.Request,
 		recv func() (proto.Message, error),
-		opts ...func(context.Context, http.ResponseWriter, proto.Message) error,
+		opts ...func(context0.Context, http.ResponseWriter, proto.Message) error,
 	) {
 		isSSE := req.Header.Get("Accept") == "text/event-stream"
 		processCtx, cancel := context.WithCancel(ctx)
@@ -268,15 +269,15 @@ func NewStreamForwarder(messageKey func(proto.Message) (string, error)) StreamFo
 	}
 }
 func UnaryForwarderWithFieldProcessor(fieldProcessor FieldProcessor) func(
-	ctx context.Context,
+	ctx context0.Context,
 	mux *runtime.ServeMux,
 	marshaler runtime.Marshaler,
 	w http.ResponseWriter,
 	req *http.Request,
 	resp proto.Message,
-	opts ...func(context.Context, http.ResponseWriter, proto.Message) error,
+	opts ...func(context0.Context, http.ResponseWriter, proto.Message) error,
 ) {
-	return func(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, req *http.Request, resp proto.Message, opts ...func(context.Context, http.ResponseWriter, proto.Message) error) {
+	return func(ctx context0.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, req *http.Request, resp proto.Message, opts ...func(context0.Context, http.ResponseWriter, proto.Message) error) {
 		m := newMarshaler(req, false)
 		m.fieldProcessor = fieldProcessor
 		runtime.ForwardResponseMessage(ctx, mux, m, w, req, resp, opts...)
@@ -289,13 +290,13 @@ var (
 	// fields=items.metadata.name,items.spec - response should include only items.metadata.name and items.spec fields
 	// fields=-items.metadata.name - response should include all fields except items.metadata.name
 	UnaryForwarder = func(
-		ctx context.Context,
+		ctx context0.Context,
 		mux *runtime.ServeMux,
 		marshaler runtime.Marshaler,
 		w http.ResponseWriter,
 		req *http.Request,
 		resp proto.Message,
-		opts ...func(context.Context, http.ResponseWriter, proto.Message) error,
+		opts ...func(context0.Context, http.ResponseWriter, proto.Message) error,
 	) {
 		runtime.ForwardResponseMessage(ctx, mux, newMarshaler(req, false), w, req, resp, opts...)
 	}

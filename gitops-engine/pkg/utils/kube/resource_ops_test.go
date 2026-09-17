@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/go-logr/logr"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/kube/mocks"
 	testingutils "github.com/hanzoai/cd/gitops-engine/pkg/utils/testing"
 	"github.com/hanzoai/cd/gitops-engine/pkg/utils/tracing"
-	"github.com/go-logr/logr"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"

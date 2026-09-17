@@ -35,13 +35,11 @@ func TestMetricClusterConnectivity(t *testing.T) {
 			skip:          false,
 			metricLabels:  []string{"non-existing"},
 			clusterLabels: []string{"env"},
-			testCombination: testCombination{
-				applications: []string{fakeApp},
-				responseContains: `
+			applications:  []string{fakeApp},
+			responseContains: `
 # TYPE cd_cluster_connection_status gauge
 cd_cluster_connection_status{k8s_version="1.21",server="server1"} 1
 `,
-			},
 			clustersInfo: []gitopsCache.ClusterInfo{
 				{
 					Server:     "server1",
@@ -55,13 +53,11 @@ cd_cluster_connection_status{k8s_version="1.21",server="server1"} 1
 			skip:          false,
 			metricLabels:  []string{"non-existing"},
 			clusterLabels: []string{"env"},
-			testCombination: testCombination{
-				applications: []string{fakeApp},
-				responseContains: `
+			applications:  []string{fakeApp},
+			responseContains: `
 # TYPE cd_cluster_connection_status gauge
 cd_cluster_connection_status{k8s_version="1.21",server="server1"} 0
 `,
-			},
 			clustersInfo: []gitopsCache.ClusterInfo{
 				{
 					Server:     "server1",
@@ -75,9 +71,8 @@ cd_cluster_connection_status{k8s_version="1.21",server="server1"} 0
 			skip:          false,
 			metricLabels:  []string{"non-existing"},
 			clusterLabels: []string{"env", "team"},
-			testCombination: testCombination{
-				applications: []string{fakeApp},
-				responseContains: `
+			applications:  []string{fakeApp},
+			responseContains: `
 # TYPE cd_cluster_connection_status gauge
 cd_cluster_connection_status{k8s_version="1.21",server="server1"} 1
 cd_cluster_connection_status{k8s_version="1.21",server="server2"} 1
@@ -93,7 +88,6 @@ cd_cluster_labels{label_env="dev",label_team="team1",name="cluster1",server="ser
 cd_cluster_labels{label_env="staging",label_team="team2",name="cluster2",server="server2"} 1
 cd_cluster_labels{label_env="production",label_team="team3",name="cluster3",server="server3"} 1
 `,
-			},
 			clustersInfo: []gitopsCache.ClusterInfo{
 				{
 					Server:     "server1",

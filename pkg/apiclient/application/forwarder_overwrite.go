@@ -9,8 +9,8 @@ import (
 
 	"github.com/hanzoai/cd/util/kube"
 
-	"github.com/hanzoai/cd/util/vendored/grpc-http"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/hanzoai/cd/util/vendored/grpc-http"
 
 	//nolint:staticcheck
 	"github.com/golang/protobuf/proto"

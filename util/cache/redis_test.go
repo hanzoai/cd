@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/alicebob/miniredis/v2"
+	"github.com/hanzokv/go/v9"
 	"github.com/prometheus/client_golang/prometheus"
 	promcm "github.com/prometheus/client_model/go"
-	"github.com/hanzokv/go/v9"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

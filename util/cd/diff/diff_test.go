@@ -12,11 +12,11 @@ import (
 
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
 	testutil "github.com/hanzoai/cd/test"
+	cacheutil "github.com/hanzoai/cd/util/cache"
+	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 	diff "github.com/hanzoai/cd/util/cd/diff"
 	"github.com/hanzoai/cd/util/cd/normalizers"
 	"github.com/hanzoai/cd/util/cd/testdata"
-	cacheutil "github.com/hanzoai/cd/util/cache"
-	appstatecache "github.com/hanzoai/cd/util/cache/appstate"
 )
 
 func TestStateDiff(t *testing.T) {

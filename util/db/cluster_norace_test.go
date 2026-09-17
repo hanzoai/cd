@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/hanzoai/cd/common"
 
@@ -22,22 +21,18 @@ func TestWatchClusters_CreateRemoveCluster(t *testing.T) {
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
 	// https://github.com/argoproj/argo-cd/issues/4755
 	emptyConfigMap := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.ConfigMapName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string]string{},
 	}
 	cdSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.SecretName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string][]byte{
 			"admin.password":   nil,
@@ -78,22 +73,18 @@ func TestWatchClusters_LocalClusterModifications(t *testing.T) {
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
 	// https://github.com/argoproj/argo-cd/issues/4755
 	emptyConfigMap := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.ConfigMapName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string]string{},
 	}
 	cdSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.SecretName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string][]byte{
 			"admin.password":   nil,
@@ -134,22 +125,18 @@ func TestWatchClusters_MissingServerSecretKey(t *testing.T) {
 	// Intermittent failure when running with -race, likely due to race condition
 	// https://github.com/argoproj/argo-cd/issues/4755
 	emptyConfigMap := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.ConfigMapName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string]string{},
 	}
 	secretWithoutSecretKey := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.SecretName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string][]byte{
 			"admin.password": nil,
@@ -172,22 +159,18 @@ func TestWatchClusters_LocalClusterModificationsWhenDisabled(t *testing.T) {
 	// Intermittent failure when running TestWatchClusters_LocalClusterModifications with -race, likely due to race condition
 	// https://github.com/argoproj/argo-cd/issues/4755
 	configMapWithInClusterServerAddressDisabled := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.ConfigMapName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string]string{"cluster.inClusterEnabled": "false"},
 	}
 	cdSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.SecretName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string][]byte{
 			"admin.password":   nil,

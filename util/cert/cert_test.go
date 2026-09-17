@@ -397,21 +397,21 @@ func TestServerNameWithoutPort(t *testing.T) {
 func TestValidHostnames(t *testing.T) {
 	t.Parallel()
 	hostNames := map[string]bool{
-		"localhost":                          true,
-		"localhost.localdomain":              true,
-		"foo.example.com":                    true,
+		"localhost":                      true,
+		"localhost.localdomain":          true,
+		"foo.example.com":                true,
 		"cd-server.svc.kubernetes.local": true,
-		"localhost.":                         true,
-		"github.com.":                        true,
-		"foo_bar.example.com":                true,
-		"_svc.example.com":                   true,
-		"_svc.example_.com":                  false,
-		"_.example.com":                      false,
-		"localhost..":                        false,
-		"localhost..localdomain":             false,
-		".localhost":                         false,
-		"local_host":                         true,
-		"localhost.local_domain":             true,
+		"localhost.":                     true,
+		"github.com.":                    true,
+		"foo_bar.example.com":            true,
+		"_svc.example.com":               true,
+		"_svc.example_.com":              false,
+		"_.example.com":                  false,
+		"localhost..":                    false,
+		"localhost..localdomain":         false,
+		".localhost":                     false,
+		"local_host":                     true,
+		"localhost.local_domain":         true,
 	}
 
 	for hostName, valid := range hostNames {
@@ -425,19 +425,19 @@ func TestValidHostnames(t *testing.T) {
 func TestValidFQDNs(t *testing.T) {
 	t.Parallel()
 	hostNames := map[string]bool{
-		"localhost":                          false,
-		"localhost.localdomain":              false,
-		"foo.example.com.":                   true,
+		"localhost":                      false,
+		"localhost.localdomain":          false,
+		"foo.example.com.":               true,
 		"cd-server.svc.kubernetes.local": false,
-		"localhost.":                         true,
-		"github.com.":                        true,
-		"localhost..":                        false,
-		"localhost..localdomain":             false,
-		"localhost..localdomain.":            false,
-		".localhost":                         false,
-		"local_host":                         false,
-		"localhost.local_domain":             false,
-		"localhost.local_domain.":            false,
+		"localhost.":                     true,
+		"github.com.":                    true,
+		"localhost..":                    false,
+		"localhost..localdomain":         false,
+		"localhost..localdomain.":        false,
+		".localhost":                     false,
+		"local_host":                     false,
+		"localhost.local_domain":         false,
+		"localhost.local_domain.":        false,
 	}
 
 	for hostName, valid := range hostNames {

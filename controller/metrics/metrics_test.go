@@ -386,28 +386,24 @@ func TestMetricLabels(t *testing.T) {
 		{
 			description:  "will return the labels metrics successfully",
 			metricLabels: []string{"team-name", "team-bu", "apps.hanzo.ai/cluster"},
-			testCombination: testCombination{
-				applications: []string{fakeApp, fakeApp2, fakeApp3},
-				responseContains: `
+			applications: []string{fakeApp, fakeApp2, fakeApp3},
+			responseContains: `
 # TYPE cd_app_labels gauge
 cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app",namespace="cd",project="important-project"} 1
 cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-2",namespace="cd",project="important-project"} 1
 cd_app_labels{label_argoproj_io_cluster="test-cluster",label_team_bu="bu-id",label_team_name="my-team",name="my-app-3",namespace="cd",project="important-project"} 1
 `,
-			},
 		},
 		{
 			description:  "metric will have empty label value if not present in the application",
 			metricLabels: []string{"non-existing"},
-			testCombination: testCombination{
-				applications: []string{fakeApp, fakeApp2, fakeApp3},
-				responseContains: `
+			applications: []string{fakeApp, fakeApp2, fakeApp3},
+			responseContains: `
 # TYPE cd_app_labels gauge
 cd_app_labels{label_non_existing="",name="my-app",namespace="cd",project="important-project"} 1
 cd_app_labels{label_non_existing="",name="my-app-2",namespace="cd",project="important-project"} 1
 cd_app_labels{label_non_existing="",name="my-app-3",namespace="cd",project="important-project"} 1
 `,
-			},
 		},
 	}
 
@@ -428,39 +424,33 @@ func TestMetricConditions(t *testing.T) {
 		{
 			description:      "metric will only output OrphanedResourceWarning",
 			metricConditions: []string{"OrphanedResourceWarning"},
-			testCombination: testCombination{
-				applications: []string{fakeApp4},
-				responseContains: `
+			applications:     []string{fakeApp4},
+			responseContains: `
 # HELP cd_app_condition Report application conditions.
 # TYPE cd_app_condition gauge
 cd_app_condition{condition="OrphanedResourceWarning",name="my-app-4",namespace="cd",project="important-project"} 1
 `,
-			},
 		},
 		{
 			description:      "metric will only output ExcludedResourceWarning",
 			metricConditions: []string{"ExcludedResourceWarning"},
-			testCombination: testCombination{
-				applications: []string{fakeApp4},
-				responseContains: `
+			applications:     []string{fakeApp4},
+			responseContains: `
 # HELP cd_app_condition Report application conditions.
 # TYPE cd_app_condition gauge
 cd_app_condition{condition="ExcludedResourceWarning",name="my-app-4",namespace="cd",project="important-project"} 2
 `,
-			},
 		},
 		{
 			description:      "metric will only output both OrphanedResourceWarning and ExcludedResourceWarning",
 			metricConditions: []string{"ExcludedResourceWarning", "OrphanedResourceWarning"},
-			testCombination: testCombination{
-				applications: []string{fakeApp4},
-				responseContains: `
+			applications:     []string{fakeApp4},
+			responseContains: `
 # HELP cd_app_condition Report application conditions.
 # TYPE cd_app_condition gauge
 cd_app_condition{condition="OrphanedResourceWarning",name="my-app-4",namespace="cd",project="important-project"} 1
 cd_app_condition{condition="ExcludedResourceWarning",name="my-app-4",namespace="cd",project="important-project"} 2
 `,
-			},
 		},
 	}
 

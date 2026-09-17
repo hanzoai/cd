@@ -5,7 +5,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/cache"
 
 	"github.com/hanzoai/cd/pkg/apis/application/v1alpha1"
@@ -15,10 +14,10 @@ func Test_newNamespaceFilterTransform(t *testing.T) {
 	const serverNS = "cd"
 
 	app := func(ns string) *v1alpha1.Application {
-		return &v1alpha1.Application{ObjectMeta: metav1.ObjectMeta{Name: "app", Namespace: ns}}
+		return &v1alpha1.Application{Name: "app", Namespace: ns}
 	}
 	appSet := func(ns string) *v1alpha1.ApplicationSet {
-		return &v1alpha1.ApplicationSet{ObjectMeta: metav1.ObjectMeta{Name: "appset", Namespace: ns}}
+		return &v1alpha1.ApplicationSet{Name: "appset", Namespace: ns}
 	}
 
 	tests := []struct {

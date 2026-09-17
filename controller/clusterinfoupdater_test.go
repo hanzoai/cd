@@ -45,22 +45,18 @@ func TestClusterSecretUpdater(t *testing.T) {
 	}
 
 	emptyConfigMap := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.ConfigMapName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string]string{},
 	}
 	cdSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: fakeNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "cd",
-			},
+		Name:      common.SecretName,
+		Namespace: fakeNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "cd",
 		},
 		Data: map[string][]byte{
 			"admin.password":   nil,
@@ -107,29 +103,23 @@ func TestGetUpdatedClusterInfo_AppCount(t *testing.T) {
 	const clusterName = "prod"
 
 	emptyConfigMap := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
-		},
-		Data: map[string]string{},
+		Name:      common.ConfigMapName,
+		Namespace: fakeNamespace,
+		Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
+		Data:      map[string]string{},
 	}
 	cdSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
-		},
-		Data: map[string][]byte{"admin.password": nil, "server.secretkey": nil},
+		Name:      common.SecretName,
+		Namespace: fakeNamespace,
+		Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
+		Data:      map[string][]byte{"admin.password": nil, "server.secretkey": nil},
 	}
 	clusterSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "prod-cluster",
-			Namespace: fakeNamespace,
-			Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
-			Annotations: map[string]string{
-				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
-			},
+		Name:      "prod-cluster",
+		Namespace: fakeNamespace,
+		Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
+		Annotations: map[string]string{
+			common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 		},
 		Data: map[string][]byte{
 			"name":   []byte(clusterName),
@@ -162,30 +152,24 @@ func TestGetUpdatedClusterInfo_AmbiguousName(t *testing.T) {
 	const clusterName = "prod"
 
 	emptyConfigMap := &corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
-		},
-		Data: map[string]string{},
+		Name:      common.ConfigMapName,
+		Namespace: fakeNamespace,
+		Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
+		Data:      map[string]string{},
 	}
 	cdSecret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: fakeNamespace,
-			Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
-		},
-		Data: map[string][]byte{"admin.password": nil, "server.secretkey": nil},
+		Name:      common.SecretName,
+		Namespace: fakeNamespace,
+		Labels:    map[string]string{"app.kubernetes.io/part-of": "cd"},
+		Data:      map[string][]byte{"admin.password": nil, "server.secretkey": nil},
 	}
 	makeClusterSecret := func(secretName, server string) *corev1.Secret {
 		return &corev1.Secret{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      secretName,
-				Namespace: fakeNamespace,
-				Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
-				Annotations: map[string]string{
-					common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
-				},
+			Name:      secretName,
+			Namespace: fakeNamespace,
+			Labels:    map[string]string{common.LabelKeySecretType: common.LabelValueSecretTypeCluster},
+			Annotations: map[string]string{
+				common.AnnotationKeyManagedBy: common.AnnotationValueManagedByCD,
 			},
 			Data: map[string][]byte{
 				"name":   []byte(clusterName),

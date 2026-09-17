@@ -30,6 +30,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -174,11 +175,11 @@ func format(counts map[mirror.Outcome]int) string {
 		keys = append(keys, string(k))
 	}
 	sort.Strings(keys)
-	out := ""
+	var out strings.Builder
 	for _, k := range keys {
-		out += fmt.Sprintf("%s=%d  ", k, counts[mirror.Outcome(k)])
+		out.WriteString(fmt.Sprintf("%s=%d  ", k, counts[mirror.Outcome(k)]))
 	}
-	return out
+	return out.String()
 }
 
 func short(s string) string {

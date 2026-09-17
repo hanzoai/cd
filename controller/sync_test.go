@@ -60,10 +60,8 @@ func TestPersistRevisionHistory(t *testing.T) {
 	app.Status.History = nil
 
 	defaultProject := &v1alpha1.AppProject{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: test.FakeArgoCDNamespace,
-			Name:      "default",
-		},
+		Namespace: test.FakeArgoCDNamespace,
+		Name:      "default",
 	}
 	data := fakeData{
 		apps: []runtime.Object{app, defaultProject},
@@ -106,10 +104,8 @@ func TestPersistManagedNamespaceMetadataState(t *testing.T) {
 	}
 
 	defaultProject := &v1alpha1.AppProject{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: test.FakeArgoCDNamespace,
-			Name:      "default",
-		},
+		Namespace: test.FakeArgoCDNamespace,
+		Name:      "default",
 	}
 	data := fakeData{
 		apps: []runtime.Object{app, defaultProject},
@@ -137,10 +133,8 @@ func TestPersistRevisionHistoryRollback(t *testing.T) {
 	app.Status.OperationState = nil
 	app.Status.History = nil
 	defaultProject := &v1alpha1.AppProject{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: test.FakeArgoCDNamespace,
-			Name:      "default",
-		},
+		Namespace: test.FakeArgoCDNamespace,
+		Name:      "default",
 	}
 	data := fakeData{
 		apps: []runtime.Object{app, defaultProject},
@@ -187,10 +181,8 @@ func TestSyncComparisonError(t *testing.T) {
 	app.Status.History = nil
 
 	defaultProject := &v1alpha1.AppProject{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: test.FakeArgoCDNamespace,
-			Name:      "default",
-		},
+		Namespace: test.FakeArgoCDNamespace,
+		Name:      "default",
 		Spec: v1alpha1.AppProjectSpec{
 			SignatureKeys: []v1alpha1.SignatureKey{{KeyID: "test"}}, // nolint:staticcheck
 		},
@@ -242,10 +234,8 @@ func TestAppStateManager_SyncAppState(t *testing.T) {
 		}
 
 		project := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: test.FakeArgoCDNamespace,
-				Name:      "default",
-			},
+			Namespace: test.FakeArgoCDNamespace,
+			Name:      "default",
 			Spec: v1alpha1.AppProjectSpec{
 				SignatureKeys: []v1alpha1.SignatureKey{{KeyID: "test"}}, // nolint:staticcheck
 				Destinations: []v1alpha1.ApplicationDestination{
@@ -280,16 +270,12 @@ func TestAppStateManager_SyncAppState(t *testing.T) {
 		t.Parallel()
 
 		sharedObject := kube.MustToUnstructured(&corev1.ConfigMap{
-			TypeMeta: metav1.TypeMeta{
-				APIVersion: "v1",
-				Kind:       "ConfigMap",
-			},
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "configmap1",
-				Namespace: "default",
-				Annotations: map[string]string{
-					common.AnnotationKeyAppInstance: "guestbook:/ConfigMap:default/configmap1",
-				},
+			APIVersion: "v1",
+			Kind:       "ConfigMap",
+			Name:       "configmap1",
+			Namespace:  "default",
+			Annotations: map[string]string{
+				common.AnnotationKeyAppInstance: "guestbook:/ConfigMap:default/configmap1",
 			},
 		})
 		liveObjects := make(map[kube.ResourceKey]*unstructured.Unstructured)
@@ -328,10 +314,8 @@ func TestSyncWindowDeniesSync(t *testing.T) {
 		app.Status.History = nil
 
 		project := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: test.FakeArgoCDNamespace,
-				Name:      "default",
-			},
+			Namespace: test.FakeArgoCDNamespace,
+			Name:      "default",
 			Spec: v1alpha1.AppProjectSpec{
 				SyncWindows: v1alpha1.SyncWindows{{
 					Kind:         "deny",
@@ -1132,19 +1116,15 @@ func TestDeriveServiceAccountMatchingNamespaces(t *testing.T) {
 
 	setup := func(destinationServiceAccounts []v1alpha1.ApplicationDestinationServiceAccount, destinationNamespace, destinationServerURL, applicationNamespace string) *fixture {
 		project := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: "cd-ns",
-				Name:      "testProj",
-			},
+			Namespace: "cd-ns",
+			Name:      "testProj",
 			Spec: v1alpha1.AppProjectSpec{
 				DestinationServiceAccounts: destinationServiceAccounts,
 			},
 		}
 		app := &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: applicationNamespace,
-				Name:      "testApp",
-			},
+			Namespace: applicationNamespace,
+			Name:      "testApp",
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "testProj",
 				Destination: v1alpha1.ApplicationDestination{
@@ -1509,19 +1489,15 @@ func TestDeriveServiceAccountMatchingServers(t *testing.T) {
 
 	setup := func(destinationServiceAccounts []v1alpha1.ApplicationDestinationServiceAccount, destinationNamespace, destinationServerURL, applicationNamespace string) *fixture {
 		project := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: "cd-ns",
-				Name:      "testProj",
-			},
+			Namespace: "cd-ns",
+			Name:      "testProj",
 			Spec: v1alpha1.AppProjectSpec{
 				DestinationServiceAccounts: destinationServiceAccounts,
 			},
 		}
 		app := &v1alpha1.Application{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: applicationNamespace,
-				Name:      "testApp",
-			},
+			Namespace: applicationNamespace,
+			Name:      "testApp",
 			Spec: v1alpha1.ApplicationSpec{
 				Project: "testProj",
 				Destination: v1alpha1.ApplicationDestination{
@@ -1820,10 +1796,8 @@ func TestSyncWithImpersonate(t *testing.T) {
 		app.Status.OperationState = nil
 		app.Status.History = nil
 		project := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: test.FakeArgoCDNamespace,
-				Name:      "default",
-			},
+			Namespace: test.FakeArgoCDNamespace,
+			Name:      "default",
 			Spec: v1alpha1.AppProjectSpec{
 				DestinationServiceAccounts: []v1alpha1.ApplicationDestinationServiceAccount{
 					{
@@ -1837,10 +1811,8 @@ func TestSyncWithImpersonate(t *testing.T) {
 		additionalObjs := []runtime.Object{}
 		if serviceAccountName != "" {
 			syncServiceAccount := &corev1.ServiceAccount{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      serviceAccountName,
-					Namespace: test.FakeDestNamespace,
-				},
+				Name:      serviceAccountName,
+				Namespace: test.FakeDestNamespace,
 			}
 			additionalObjs = append(additionalObjs, syncServiceAccount)
 		}
@@ -1956,10 +1928,8 @@ func TestSyncWithImpersonate(t *testing.T) {
 		app.Status.OperationState = nil
 		app.Status.History = nil
 		project := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: test.FakeArgoCDNamespace,
-				Name:      "default",
-			},
+			Namespace: test.FakeArgoCDNamespace,
+			Name:      "default",
 			Spec: v1alpha1.AppProjectSpec{
 				DestinationServiceAccounts: []v1alpha1.ApplicationDestinationServiceAccount{
 					{
@@ -2010,10 +1980,8 @@ func TestSyncWithImpersonate(t *testing.T) {
 		app.Status.OperationState = nil
 		app.Status.History = nil
 		project := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: test.FakeArgoCDNamespace,
-				Name:      "default",
-			},
+			Namespace: test.FakeArgoCDNamespace,
+			Name:      "default",
 			Spec: v1alpha1.AppProjectSpec{
 				DestinationServiceAccounts: []v1alpha1.ApplicationDestinationServiceAccount{
 					{
@@ -2025,10 +1993,8 @@ func TestSyncWithImpersonate(t *testing.T) {
 			},
 		}
 		syncServiceAccount := &corev1.ServiceAccount{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "test-sa",
-				Namespace: test.FakeDestNamespace,
-			},
+			Name:      "test-sa",
+			Namespace: test.FakeDestNamespace,
 		}
 		data := fakeData{
 			apps: []runtime.Object{app, project},
@@ -2117,10 +2083,8 @@ func TestClientSideApplyMigration(t *testing.T) {
 		}
 
 		project := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: test.FakeArgoCDNamespace,
-				Name:      "default",
-			},
+			Namespace: test.FakeArgoCDNamespace,
+			Name:      "default",
 		}
 		data := fakeData{
 			apps: []runtime.Object{app, project},
@@ -2225,10 +2189,8 @@ func TestValidateSyncPermissions(t *testing.T) {
 	}
 
 	project := &v1alpha1.AppProject{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test-project",
-			Namespace: "cd",
-		},
+		Name:      "test-project",
+		Namespace: "cd",
 		Spec: v1alpha1.AppProjectSpec{
 			Destinations: []v1alpha1.ApplicationDestination{
 				{Namespace: "default", Server: "*"},
@@ -2268,10 +2230,8 @@ func TestValidateSyncPermissions(t *testing.T) {
 	t.Run("group kind not permitted returns error", func(t *testing.T) {
 		t.Parallel()
 		projectWithDenyList := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "restricted-project",
-				Namespace: "cd",
-			},
+			Name:      "restricted-project",
+			Namespace: "cd",
 			Spec: v1alpha1.AppProjectSpec{
 				Destinations: []v1alpha1.ApplicationDestination{
 					{Namespace: "*", Server: "*"},
@@ -2304,10 +2264,8 @@ func TestValidateSyncPermissions(t *testing.T) {
 	t.Run("cluster-scoped resource skips namespace check", func(t *testing.T) {
 		t.Parallel()
 		projectWithClusterResources := &v1alpha1.AppProject{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "test-project",
-				Namespace: "cd",
-			},
+			Name:      "test-project",
+			Namespace: "cd",
 			Spec: v1alpha1.AppProjectSpec{
 				Destinations: []v1alpha1.ApplicationDestination{
 					{Namespace: "default", Server: "*"},

@@ -103,16 +103,12 @@ func NewConfigMap() *unstructured.Unstructured {
 
 func NewFakeConfigMap() *corev1.ConfigMap {
 	cm := corev1.ConfigMap{
-		TypeMeta: metav1.TypeMeta{
-			Kind:       "ConfigMap",
-			APIVersion: "v1",
-		},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.ConfigMapName,
-			Namespace: FakeArgoCDNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "hanzocd",
-			},
+		Kind:       "ConfigMap",
+		APIVersion: "v1",
+		Name:       common.ConfigMapName,
+		Namespace:  FakeArgoCDNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 		Data: make(map[string]string),
 	}
@@ -121,16 +117,12 @@ func NewFakeConfigMap() *corev1.ConfigMap {
 
 func NewFakeSecret() *corev1.Secret {
 	secret := corev1.Secret{
-		TypeMeta: metav1.TypeMeta{
-			Kind:       "Secret",
-			APIVersion: "v1",
-		},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      common.SecretName,
-			Namespace: FakeArgoCDNamespace,
-			Labels: map[string]string{
-				"app.kubernetes.io/part-of": "hanzocd",
-			},
+		Kind:       "Secret",
+		APIVersion: "v1",
+		Name:       common.SecretName,
+		Namespace:  FakeArgoCDNamespace,
+		Labels: map[string]string{
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 		Data: map[string][]byte{
 			"admin.password":   []byte("test"),

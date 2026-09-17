@@ -7,7 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -140,10 +139,8 @@ func Test_PolicyFromK8s(t *testing.T) {
 
 	require.NoError(t, err)
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "cd-rbac-cm",
-			Namespace: "cd",
-		},
+		Name:      "cd-rbac-cm",
+		Namespace: "cd",
 		Data: map[string]string{
 			"policy.csv":     string(data),
 			"policy.default": "role:unknown",
@@ -231,10 +228,8 @@ p, role:user, exec, create, .*/.*, allow
 `
 
 	kubeclientset := fake.NewClientset(&corev1.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "cd-rbac-cm",
-			Namespace: "cd",
-		},
+		Name:      "cd-rbac-cm",
+		Namespace: "cd",
 		Data: map[string]string{
 			"policy.csv":       policy,
 			"policy.default":   "role:unknown",

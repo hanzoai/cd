@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	jsonpatch "github.com/evanphx/json-patch"
+	"github.com/hanzoai/cd/gitops-engine/pkg/diff"
 	"github.com/itchyny/gojq"
 	log "github.com/sirupsen/logrus"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -150,12 +150,10 @@ func NewIgnoreNormalizer(ignore []v1alpha1.ResourceIgnoreDifferences, overrides 
 				return nil, err
 			}
 			patches = append(patches, &jsonPatchNormalizerPatch{
-				baseNormalizerPatch: baseNormalizerPatch{
-					groupKind: schema.GroupKind{Group: ignore[i].Group, Kind: ignore[i].Kind},
-					name:      ignore[i].Name,
-					namespace: ignore[i].Namespace,
-				},
-				patch: &patch,
+				groupKind: schema.GroupKind{Group: ignore[i].Group, Kind: ignore[i].Kind},
+				name:      ignore[i].Name,
+				namespace: ignore[i].Namespace,
+				patch:     &patch,
 			})
 		}
 		for _, pathExpression := range ignore[i].JQPathExpressions {
@@ -168,11 +166,9 @@ func NewIgnoreNormalizer(ignore []v1alpha1.ResourceIgnoreDifferences, overrides 
 				return nil, err
 			}
 			patches = append(patches, &jqNormalizerPatch{
-				baseNormalizerPatch: baseNormalizerPatch{
-					groupKind: schema.GroupKind{Group: ignore[i].Group, Kind: ignore[i].Kind},
-					name:      ignore[i].Name,
-					namespace: ignore[i].Namespace,
-				},
+				groupKind:          schema.GroupKind{Group: ignore[i].Group, Kind: ignore[i].Kind},
+				name:               ignore[i].Name,
+				namespace:          ignore[i].Namespace,
 				code:               jqDeletionCode,
 				jqExecutionTimeout: opts.getJQExecutionTimeout(),
 			})
