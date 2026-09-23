@@ -141,7 +141,7 @@ func (m *appStateManager) SyncAppState(ctx context.Context, app *v1alpha1.Applic
 		state.SyncResult = newSyncOperationResult(app, syncOp)
 	}
 
-	if isBlocked, err := syncWindowPreventsSync(app, project); isBlocked {
+	if isBlocked, err := syncWindowPreventsSync(app, project, state); isBlocked {
 		// If the operation is currently running, simply let the user know the sync is blocked by a current sync window
 		if state.Phase == common.OperationRunning {
 			state.Message = "Sync operation blocked by sync window"
@@ -677,16 +677,15 @@ func delayBetweenSyncWaves(_ common.SyncPhase, _ int, finalWave bool) error {
 	return nil
 }
 
-func syncWindowPreventsSync(app *v1alpha1.Application, proj *v1alpha1.AppProject) (bool, error) {
+// syncWindowPreventsSync judges the operation being run, not app.Status.OperationState:
+// when a new operation starts, the app still holds the previous one.
+func syncWindowPreventsSync(app *v1alpha1.Application, proj *v1alpha1.AppProject, state *v1alpha1.OperationState) (bool, error) {
 	window := proj.Spec.SyncWindows.Matches(app)
-	isManual := false
+	isManual := !state.Operation.InitiatedBy.Automated
 	var operationStartTime *time.Time
-	if app.Status.OperationState != nil {
-		isManual = !app.Status.OperationState.Operation.InitiatedBy.Automated
-		if !app.Status.OperationState.StartedAt.IsZero() {
-			t := app.Status.OperationState.StartedAt.Time
-			operationStartTime = &t
-		}
+	if !state.StartedAt.IsZero() {
+		t := state.StartedAt.Time
+		operationStartTime = &t
 	}
 	canSync, err := window.CanSync(isManual, operationStartTime)
 	if err != nil {

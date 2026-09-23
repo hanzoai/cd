@@ -367,6 +367,31 @@ func TestSyncWindowDeniesSync(t *testing.T) {
 		assert.Equal(t, synccommon.OperationRunning, opState.Phase)
 		assert.Contains(t, opState.Message, opMessage)
 	})
+
+	t.Run("judges the operation being run, not the one before it", func(t *testing.T) {
+		// given a window that lets manual syncs through, an app still holding a
+		// manual operation, and a new automated one
+		t.Parallel()
+		f := setup()
+		f.project.Spec.SyncWindows[0].ManualSync = true
+		f.application.Status.OperationState = &v1alpha1.OperationState{
+			Operation: v1alpha1.Operation{InitiatedBy: v1alpha1.OperationInitiator{Username: "z"}},
+			Phase:     synccommon.OperationSucceeded,
+		}
+		opState := &v1alpha1.OperationState{
+			Operation: v1alpha1.Operation{
+				Sync:        &v1alpha1.SyncOperation{Source: &v1alpha1.ApplicationSource{}},
+				InitiatedBy: v1alpha1.OperationInitiator{Automated: true},
+			},
+			Phase: synccommon.OperationRunning,
+		}
+		// when
+		f.controller.appStateManager.SyncAppState(t.Context(), f.application, f.project, opState)
+
+		// then
+		assert.Equal(t, synccommon.OperationRunning, opState.Phase)
+		assert.Contains(t, opState.Message, "Sync operation blocked by sync window")
+	})
 }
 
 func TestNormalizeTargetResources(t *testing.T) {
