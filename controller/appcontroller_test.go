@@ -195,7 +195,7 @@ func newFakeControllerWithResync(ctx context.Context, data *fakeData, appResyncP
 	mockCommitClientset := &mockcommitclient.Clientset{}
 
 	secret := corev1.Secret{
-		Name:      "cd-secret",
+		Name:      common.SecretName,
 		Namespace: test.FakeArgoCDNamespace,
 		Data: map[string][]byte{
 			"admin.password":   []byte("test"),
@@ -203,10 +203,10 @@ func newFakeControllerWithResync(ctx context.Context, data *fakeData, appResyncP
 		},
 	}
 	cm := corev1.ConfigMap{
-		Name:      "cd-cm",
+		Name:      common.ConfigMapName,
 		Namespace: test.FakeArgoCDNamespace,
 		Labels: map[string]string{
-			"app.kubernetes.io/part-of": "cd",
+			"app.kubernetes.io/part-of": "hanzocd",
 		},
 		Data: data.configMapData,
 	}
@@ -308,7 +308,7 @@ data:
 kind: Secret
 metadata:
   labels:
-    cd.hanzo.ai/secret-type: cluster
+    apps.hanzo.ai/secret-type: cluster
   name: some-secret
   namespace: ` + test.FakeArgoCDNamespace + `
 type: Opaque
