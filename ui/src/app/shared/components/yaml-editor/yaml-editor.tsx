@@ -1,6 +1,6 @@
 import {ErrorNotification, NotificationType} from '../../../../kit/src';
 import * as jsYaml from 'js-yaml';
-import * as monacoEditor from 'monaco-editor';
+import type * as monacoEditor from 'monaco-editor';
 import * as React from 'react';
 import {useContext, useState, useRef} from 'react';
 

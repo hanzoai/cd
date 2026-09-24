@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import * as monacoEditor from 'monaco-editor';
+import type * as monacoEditor from 'monaco-editor';
 import {services} from '../services';
 import {getTheme, createSystemThemeListener} from '../utils';
 
@@ -26,7 +26,7 @@ function IsEqualInput(first?: EditorInput, second?: EditorInput) {
 const DEFAULT_LINE_HEIGHT = 18;
 
 const MonacoEditorLazy = React.lazy(() =>
-    import('monaco-editor').then(monaco => {
+    import('monaco-editor/editor/editor.api').then(monaco => {
         const Component = (props: MonacoProps) => {
             const [height, setHeight] = React.useState(0);
             const [theme, setTheme] = React.useState('dark');

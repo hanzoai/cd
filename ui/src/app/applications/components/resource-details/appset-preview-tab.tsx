@@ -1,5 +1,5 @@
 import * as jsYaml from 'js-yaml';
-import * as monacoEditor from 'monaco-editor';
+import type * as monacoEditor from 'monaco-editor';
 import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
 
