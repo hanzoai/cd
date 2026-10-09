@@ -72,23 +72,26 @@ test('the application sets list renders', async ({page}) => {
     await expect(page.getByText('fleet', {exact: true}).first()).toBeVisible();
 });
 
-test('settings pages render their lists', async ({page}) => {
-    await page.goto('/settings');
-    await expect(page.getByText('Repositories', {exact: true}).first()).toBeVisible();
-    await page.goto('/settings/repos');
-    await expect(page.getByText('https://github.com/hanzoai/universe').first()).toBeVisible();
-    await page.goto('/settings/certs');
-    await expect(page.getByText('github.com', {exact: true}).first()).toBeVisible();
-    await page.goto('/settings/gpgkeys');
-    await expect(page.getByText('4AEE18F83AFDEB23').first()).toBeVisible();
-    await page.goto('/settings/clusters');
-    await expect(page.getByText('in-cluster').first()).toBeVisible();
-    await page.goto('/settings/projects');
-    await expect(page.getByText('default', {exact: true}).first()).toBeVisible();
-    await page.goto('/settings/projects/default');
-    await expect(page.getByText('GENERAL', {exact: true}).first()).toBeVisible();
-    await page.goto(`/settings/clusters/${encodeURIComponent('https://kubernetes.default.svc')}`);
-    await expect(page.getByText('in-cluster').first()).toBeVisible();
+// One test a page: a page is a full load of the bundle, and a runner under load
+// takes seconds for each, so all of them in one test ran out its minute.
+const settings: [string, string, boolean][] = [
+    ['/settings', 'Repositories', true],
+    ['/settings/repos', 'https://github.com/hanzoai/universe', false],
+    ['/settings/certs', 'github.com', true],
+    ['/settings/gpgkeys', '4AEE18F83AFDEB23', false],
+    ['/settings/clusters', 'in-cluster', false],
+    ['/settings/projects', 'default', true],
+    ['/settings/projects/default', 'GENERAL', true],
+    [`/settings/clusters/${encodeURIComponent('https://kubernetes.default.svc')}`, 'in-cluster', false]
+];
+for (const [path, text, exact] of settings) {
+    test(`settings page ${path} renders`, async ({page}) => {
+        await page.goto(path);
+        await expect(page.getByText(text, {exact}).first()).toBeVisible();
+    });
+}
+
+test('an unknown settings page returns to settings', async ({page}) => {
     await page.goto('/settings/nowhere');
     await expect(page).toHaveURL(/\/settings(\?|$)/);
 });
