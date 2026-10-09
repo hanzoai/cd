@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import * as moment from 'moment';
 import * as React from 'react';
 import {FieldApi, FormFieldHOC as ReactFormField, Text} from '../../../../kit/src';
-import {RouteComponentProps, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {RouteComponentProps} from '../../../shared/components/router-compat';
 import {from, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 

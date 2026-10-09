@@ -1,7 +1,7 @@
 import {AutocompleteField, DropDownMenu, FormField, FormSelect, HelpIcon, NotificationType, SlidingPanel, Tooltip} from '../../../../kit/src';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps} from '../../../shared/components/router-compat';
 import {Form, FormValues, FormApi, Text, TextArea, FormErrors} from '../../../../kit/src';
 import {Context} from '../../../shared/context';
 import {
@@ -1383,5 +1383,3 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
         </Page>
     );
 };
-
-export default withRouter(ReposList);

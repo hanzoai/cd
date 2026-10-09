@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Helmet from 'react-helmet';
-import {RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps} from '../../../shared/components/router-compat';
 import {PodsLogsViewer} from '../pod-logs-viewer/pod-logs-viewer';
 import {useQuery} from '../../../shared/hooks/query';
 import './application-fullscreen-logs.scss';

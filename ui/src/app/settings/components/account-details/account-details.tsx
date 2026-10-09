@@ -1,7 +1,7 @@
 import {ErrorNotification, FormField, NotificationType} from '../../../../kit/src';
 import * as React from 'react';
 import {Form, Text} from '../../../../kit/src';
-import {RouteComponentProps} from 'react-router';
+import {RouteComponentProps} from '../../../shared/components/router-compat';
 
 import {DataLoader, Page, Timestamp} from '../../../shared/components';
 import {Context} from '../../../shared/context';

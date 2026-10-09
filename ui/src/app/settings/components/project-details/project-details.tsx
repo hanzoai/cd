@@ -2,7 +2,7 @@ import {AutocompleteField, FormField, HelpIcon, NotificationsApi, NotificationTy
 import classNames from 'classnames';
 import * as React from 'react';
 import {FormApi, Text} from '../../../../kit/src';
-import {RouteComponentProps} from 'react-router';
+import {RouteComponentProps} from '../../../shared/components/router-compat';
 import {Link} from 'react-router-dom';
 
 import {BadgePanel, CheckboxField, DataLoader, EditablePanel, ErrorNotification, MapInputField, Page, Query} from '../../../shared/components';

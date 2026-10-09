@@ -2,7 +2,7 @@ import {ErrorNotification, MockupList, NotificationType, SlidingPanel, Tooltip} 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {KeybindingProvider} from '../../../../kit/v2';
-import {RouteComponentProps} from 'react-router';
+import {RouteComponentProps} from '../../../shared/components/router-compat';
 import {combineLatest, from, merge, Observable} from 'rxjs';
 import {bufferTime, delay, filter, map, mergeMap, repeat, retryWhen} from 'rxjs/operators';
 import {ClusterCtx, DataLoader, EmptyState, Page, Paginate, SearchBar, Spinner} from '../../../shared/components';

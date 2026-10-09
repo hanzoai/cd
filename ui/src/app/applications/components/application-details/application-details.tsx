@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React, {useState, useEffect, useCallback, useRef, useContext, FC} from 'react';
 import * as ReactDOM from 'react-dom';
 import * as models from '../../../shared/models';
-import {RouteComponentProps} from 'react-router';
+import {RouteComponentProps} from '../../../shared/components/router-compat';
 import {BehaviorSubject, combineLatest, from, merge, Observable} from 'rxjs';
 import {delay, filter, map, mergeMap, repeat, retryWhen} from 'rxjs/operators';
 

@@ -2,7 +2,7 @@ import {FormField, NotificationType, SlidingPanel} from '../../../../kit/src';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Form, FormApi, TextArea} from '../../../../kit/src';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps} from '../../../shared/components/router-compat';
 
 import {ActionMenu, DataLoader, EmptyState, ErrorNotification, Page, Paginate, SearchBar} from '../../../shared/components';
 import {Context} from '../../../shared/context';
@@ -281,5 +281,3 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
         </Page>
     );
 };
-
-export default withRouter(GpgKeysList);

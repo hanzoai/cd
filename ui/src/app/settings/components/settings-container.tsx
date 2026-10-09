@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {Redirect, Route, RouteComponentProps, Switch} from 'react-router';
+import {Navigate, Route, Routes} from 'react-router';
 import {KeybindingProvider} from '../../../kit/v2';
+import {RouteChild} from '../../shared/components/router-compat';
 
 import {AccountDetails} from './account-details/account-details';
 import {AccountsList} from './accounts-list/accounts-list';
@@ -15,22 +16,22 @@ import {ReposList} from './repos-list/repos-list';
 import {SettingsOverview} from './settings-overview/settings-overview';
 import {AppearanceList} from './appearance-list/appearance-list';
 
-export const SettingsContainer = (props: RouteComponentProps<any>) => (
+export const SettingsContainer = () => (
     <KeybindingProvider>
-        <Switch>
-            <Route exact={true} path={`${props.match.path}`} component={SettingsOverview} />
-            <Route exact={true} path={`${props.match.path}/repos`} component={ReposList} />
-            <Route exact={true} path={`${props.match.path}/certs`} component={CertsList} />
-            <Route exact={true} path={`${props.match.path}/gpgkeys`} component={GpgKeysList} />
-            <Route exact={true} path={`${props.match.path}/clusters`} component={ClustersList} />
-            <Route exact={true} path={`${props.match.path}/clusters/:server`} component={ClusterDetails} />
-            <Route exact={true} path={`${props.match.path}/projects`} component={ProjectsList} />
-            <Route exact={true} path={`${props.match.path}/projects/:name`} component={ProjectDetails} />
-            <Route exact={true} path={`${props.match.path}/accounts`} component={AccountsList} />
-            <Route exact={true} path={`${props.match.path}/accounts/:name`} component={AccountDetails} />
-            <Route exact={true} path={`${props.match.path}/appearance`} component={AppearanceList} />
-            <Route exact={true} path={`${props.match.path}/advanced`} component={AdvancedSettings} />
-            <Redirect path='*' to={`${props.match.path}`} />
-        </Switch>
+        <Routes>
+            <Route index={true} element={<SettingsOverview />} />
+            <Route path='repos' element={<RouteChild render={props => <ReposList {...props} />} />} />
+            <Route path='certs' element={<RouteChild render={props => <CertsList {...props} />} />} />
+            <Route path='gpgkeys' element={<RouteChild render={props => <GpgKeysList {...props} />} />} />
+            <Route path='clusters' element={<ClustersList />} />
+            <Route path='clusters/:server' element={<RouteChild render={props => <ClusterDetails {...(props as any)} />} />} />
+            <Route path='projects' element={<ProjectsList />} />
+            <Route path='projects/:name' element={<RouteChild render={props => <ProjectDetails {...(props as any)} />} />} />
+            <Route path='accounts' element={<AccountsList />} />
+            <Route path='accounts/:name' element={<RouteChild render={props => <AccountDetails {...(props as any)} />} />} />
+            <Route path='appearance' element={<AppearanceList />} />
+            <Route path='advanced' element={<AdvancedSettings />} />
+            <Route path='*' element={<Navigate to='/settings' replace={true} />} />
+        </Routes>
     </KeybindingProvider>
 );

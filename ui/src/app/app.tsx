@@ -1,10 +1,10 @@
 import {AppContext, AppContextReact, DataLoader, NavigationManager, Notifications, NotificationsManager, PageContext, Popup, PopupManager, PopupProps} from '../kit/src';
 import * as React from 'react';
 import {Helmet} from 'react-helmet';
-import {Route, Routes} from 'react-router';
+import {Navigate, Route, Routes, unstable_HistoryRouter as HistoryRouter} from 'react-router';
 import {Subscription} from 'rxjs';
 import {history, base} from './shared/history';
-import {RouteComponentProps} from './shared/components/router-compat';
+import {RouteChild, RouteComponentProps} from './shared/components/router-compat';
 import applications from './applications';
 import help from './help';
 import login from './login';
@@ -261,7 +261,7 @@ export class App extends React.Component<
 
         const contextApis = {history, popup: this.popupManager, notifications: this.notificationsManager, navigation: this.navigationManager, baseHref: base};
 
-        // The kit's AppContext requires a `router`, but this provider sits above <Router> so there is no
+        // The kit's AppContext requires a `router`, but this provider sits above <HistoryRouter> so there is no
         // route match yet — supply the current location with an empty match. The only fields the kit actually
         // reads off this context are `apis` (DataLoader) and `router` (NavBar, unused in Hanzo CD).
         const appContext: AppContext = {
@@ -289,37 +289,41 @@ export class App extends React.Component<
                                 {pref => <ThemeWrapper theme={pref.theme}>{this.state.popupProps && <Popup {...this.state.popupProps} />}</ThemeWrapper>}
                             </DataLoader>
                             <AuthSettingsCtx.Provider value={this.state.authSettings}>
-                                <Router history={history}>
-                                    <Switch>
-                                        <Redirect exact={true} path='/' to='/applications' />
+                                <HistoryRouter history={history}>
+                                    <Routes>
+                                        <Route path='/' element={<Navigate to='/applications' replace={true} />} />
                                         {Object.keys(this.routes).map(path => {
                                             const route = this.routes[path];
                                             return (
                                                 <Route
                                                     key={path}
-                                                    path={path}
-                                                    render={routeProps =>
-                                                        route.noLayout ? (
-                                                            <div>
-                                                                <route.component {...routeProps} />
-                                                            </div>
-                                                        ) : (
-                                                            <DataLoader load={() => services.viewPreferences.getPreferences()}>
-                                                                {pref => (
-                                                                    <Layout onVersionClick={() => this.setState({showVersionPanel: true})} navItems={this.navItems} pref={pref}>
-                                                                        <Banner>
-                                                                            <route.component {...routeProps} />
-                                                                        </Banner>
-                                                                    </Layout>
-                                                                )}
-                                                            </DataLoader>
-                                                        )
+                                                    path={`${path}/*`}
+                                                    element={
+                                                        <RouteChild
+                                                            render={routeProps =>
+                                                                route.noLayout ? (
+                                                                    <div>
+                                                                        <route.component {...routeProps} />
+                                                                    </div>
+                                                                ) : (
+                                                                    <DataLoader load={() => services.viewPreferences.getPreferences()}>
+                                                                        {pref => (
+                                                                            <Layout onVersionClick={() => this.setState({showVersionPanel: true})} navItems={this.navItems} pref={pref}>
+                                                                                <Banner>
+                                                                                    <route.component {...routeProps} />
+                                                                                </Banner>
+                                                                            </Layout>
+                                                                        )}
+                                                                    </DataLoader>
+                                                                )
+                                                            }
+                                                        />
                                                     }
                                                 />
                                             );
                                         })}
-                                    </Switch>
-                                </Router>
+                                    </Routes>
+                                </HistoryRouter>
                             </AuthSettingsCtx.Provider>
                         </AppContextReact.Provider>
                     </Provider>

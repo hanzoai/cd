@@ -1,5 +1,5 @@
 import {useData, Checkbox} from '../../../../kit/v2';
-import * as minimatch from 'minimatch';
+import {minimatch} from 'minimatch';
 import * as React from 'react';
 import {
     Application,

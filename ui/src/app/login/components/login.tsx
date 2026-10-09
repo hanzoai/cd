@@ -2,7 +2,7 @@ import {FormField} from '../../../kit/src';
 import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
 import {Form, Text} from '../../../kit/src';
-import {RouteComponentProps} from 'react-router';
+import {RouteComponentProps} from '../../shared/components/router-compat';
 import {AuthSettings} from '../../shared/models';
 import {services} from '../../shared/services';
 import {Context} from '../../shared/context';
