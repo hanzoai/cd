@@ -11,7 +11,11 @@ const test = base.extend<{signedIn: boolean}>({
         }
         const errors: string[] = [];
         page.on('pageerror', e => errors.push(`pageerror: ${e.message}`));
-        page.on('console', m => m.type() === 'error' && errors.push(`console.error: ${m.text()}`));
+        // React 19 warns once per render that a dependency (argo-ui's dropdowns and
+        // tooltips) reads element.ref. It breaks nothing; every other console error
+        // still fails the page.
+        const ref = /^Accessing element\.ref was removed in React 19/;
+        page.on('console', m => m.type() === 'error' && !ref.test(m.text()) && errors.push(`console.error: ${m.text()}`));
         await use(page);
         expect(errors).toEqual([]);
     }
