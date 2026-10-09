@@ -25,6 +25,21 @@ images:
 test:
   - name: go-build
     run: CGO_ENABLED=0 go build ./...
+  # The built UI in a browser against ui/smoke/stub.mjs: every page the smoke
+  # visits must render with no page error, console error or failed API call.
+  # v3.7.3 shipped a bundle that threw at load (withRouter, gone in
+  # react-router v7) and served a blank cd.hanzo.ai; this gate fails on it.
+  - name: ui-smoke
+    run: |
+      cd ui
+      corepack enable
+      pnpm install --frozen-lockfile
+      NODE_OPTIONS=--max_old_space_size=8192 pnpm build
+      # The runner image bakes browsers under /opt/playwright as root, so the
+      # job's own copy goes where the job may write.
+      export PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright"
+      pnpm exec playwright install chromium
+      pnpm smoke
 
 # BUILD-ONLY, deliberately: no `deploy:` block. The live `hanzo-cd` namespace
 # reconciles the whole Hanzo fleet — Hanzo CD IS the delivery mechanism for

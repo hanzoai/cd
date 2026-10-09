@@ -263,6 +263,18 @@ go test ./mirror/
 make codegen            # REQUIRED if any API struct changed, or manifests drift
 ```
 
+**UI** (`ui/`, pnpm): `pnpm build` writes `ui/dist/app` (and deletes the tracked
+`ui/dist/app/gitkeep`; `git checkout` it back), `pnpm smoke` drives that bundle
+in Chromium against `ui/smoke/stub.mjs`, a fixture API, and fails on any page
+error, console error or unanswered `/v1` call. hanzo.yml's `ui-smoke` gate runs
+both. The build does not type-check, and webpack only *warns* when an import
+names an export that does not exist, so a removed API ships as `undefined` and
+throws at load: v3.7.3 called react-router v5's `withRouter` under v7 and served
+a blank page. Routing is v7 (`HistoryRouter` over `shared/history`, nested
+`<Routes>`); `shared/components/router-compat.tsx`'s `RouteChild` hands routed
+components the v5 `{history, location, match}` props they still read. `import *
+as x` of an ESM-only package (minimatch 10) is a namespace, not a function.
+
 A wrong **internal** import does not read as a typo — it reads as a missing
 dependency (`cannot find module providing package … -mod=readonly`) and sends you
 hunting a `require` line that was never the problem. That is what a stale
