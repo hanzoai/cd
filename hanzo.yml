@@ -19,6 +19,14 @@ images:
     context: .
     dockerfile: Dockerfile
     repo: ghcr.io/hanzoai/cd
+    # The binary reports what it is (GET /v1/version, the sidebar). The build
+    # context has no usable git, so CI tells it: the version this build is
+    # published as, and the commit it was built from.
+    args:
+      GIT_TAG: ${VERSION}
+      GIT_COMMIT: ${SHA}
+      GIT_TREE_STATE: clean
+      BUILD_DATE: ${BUILD_TIME}
 
 # Light gate: the multi-stage Dockerfile build is slow (UI + full Go build),
 # so `go-build` fails a broken PR fast, before waiting on the full image.
