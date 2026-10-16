@@ -96,12 +96,12 @@ export const AdvancedSettings = () => {
         return (
             <div className='kit-container'>
                 <div className='advanced-settings__panels'>
-                    {renderPanel('GENERAL', settings, generalItems)}
-                    {renderPanel('FEATURES', settings, featuresItems)}
-                    {renderPanel('INSTANCE', settings, instanceItems)}
-                    {renderPanel('AUTHENTICATION', settings, authenticationItems)}
-                    {renderPanel('HELP & ANALYTICS', settings, helpAnalyticsItems)}
-                    {renderPanel('KUSTOMIZE', settings, kustomizeItems)}
+                    {renderPanel('General', settings, generalItems)}
+                    {renderPanel('Features', settings, featuresItems)}
+                    {renderPanel('Instance', settings, instanceItems)}
+                    {renderPanel('Authentication', settings, authenticationItems)}
+                    {renderPanel('Help and analytics', settings, helpAnalyticsItems)}
+                    {renderPanel('Kustomize', settings, kustomizeItems)}
                 </div>
             </div>
         );

@@ -1,54 +1,85 @@
 @import 'node_modules/foundation-sites/scss/util/util';
 @import '../../../shared/config.scss';
 
-.flex-top-bar {
+// The bar is also a .top-bar; doubling the class lets these win over the kit's
+// rules whichever stylesheet is injected last.
+.top-bar.flex-top-bar {
     position: fixed;
     right: 0;
     z-index: 5;
-    padding: 0 15px;
+    padding: 0 16px;
     left: $sidebar-width;
     align-items: center;
     flex-wrap: wrap;
+    gap: 8px 12px;
+    line-height: normal;
+
+    // Below the large breakpoint the bar wraps to as many rows as its content
+    // needs, so it scrolls with the page instead of floating over a guessed
+    // height.
+    @include breakpoint(medium down) {
+        position: static;
+        padding: 10px 12px;
+    }
+}
+
+.flex-top-bar {
     &__actions {
         display: flex;
         align-items: center;
-        height: 50px;
-        @include breakpoint(medium down) {
-            flex-basis: 100%;
-            justify-content: center;
-        }
-        button {
-            display: block;
-        }
+        gap: 6px;
+        height: 56px;
     }
+
     &__tools {
         display: flex;
         flex-grow: 1;
         align-items: center;
-        @include breakpoint(medium down) {
-            flex-wrap: wrap;
-        }
+        gap: 8px;
+        min-width: 0;
     }
-    
+
     &__tools-left {
         display: flex;
         align-items: center;
+        gap: 8px;
         flex-grow: 1;
-        @include breakpoint(medium down) {
-            flex-wrap: wrap;
-        }
+        min-width: 0;
     }
-    
+
     &__tools-right {
         display: flex;
         align-items: center;
+        gap: 12px;
         margin-left: auto;
     }
 
     &__padder {
-        height: 50px;
-        @include breakpoint(medium down) {
-            height: 150px;
+        height: 56px;
+    }
+
+    @include breakpoint(medium down) {
+        &__actions {
+            height: auto;
+        }
+
+        &__tools {
+            flex-basis: 100%;
+            flex-wrap: wrap;
+        }
+
+        &__tools-left {
+            flex-basis: 100%;
+        }
+
+        &__tools-right {
+            margin-left: 0;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        &__padder {
+            display: none;
         }
     }
 }

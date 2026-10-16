@@ -55,8 +55,8 @@ export const ProjectRoleJWTTokens = (props: ProjectRoleJWTTokensProps) => {
                             <div className='kit-table-list__head'>
                                 <div className='row'>
                                     <div className='columns small-3'>ID</div>
-                                    <div className='columns small-4'>ISSUED AT</div>
-                                    <div className='columns small-4'>EXPIRES AT</div>
+                                    <div className='columns small-4'>Issued at</div>
+                                    <div className='columns small-4'>Expires at</div>
                                 </div>
                             </div>
                             {props.tokens.map(jwToken => renderJWTRow(props, ctx, jwToken))}
@@ -91,7 +91,7 @@ export const ProjectRoleJWTTokens = (props: ProjectRoleJWTTokensProps) => {
                                     <div className='kit-table-list'>
                                         <div className='kit-table-list__head'>
                                             <div className='row'>
-                                                <div className='columns small-3'>NEW TOKEN</div>
+                                                <div className='columns small-3'>New token</div>
                                             </div>
                                         </div>
                                         <div className='kit-table-list__row'>

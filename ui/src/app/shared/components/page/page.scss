@@ -49,21 +49,25 @@
 }
 
 .login-logout-button {
-    border-radius: 3px;
-    @include themify($themes) {
-        color: themed('light-kit-teal-7');
-    }
-    padding: 3px;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--hz-dim);
+    white-space: nowrap;
     cursor: pointer;
 
+    &:hover,
     &:focus {
-        color: $kit-color-teal-5;
-        box-shadow: 0 0 0 0.1em $kit-color-teal-5;
+        color: var(--hz-ink);
+        background: var(--hz-tint);
     }
-    &:hover {
-        @include themify($themes) {
-            color: themed('light-kit-teal-5');
-        }
+
+    &:focus-visible {
+        outline: 2px solid var(--hz-ring);
+        outline-offset: 1px;
     }
 }
 
@@ -74,24 +78,39 @@
     }
 }
 
+@mixin rail-offsets {
+    padding-left: $collapsed-sidebar-width;
+    // Doubled to match the specificity flex-top-bar.scss gives the bar.
+    .top-bar.flex-top-bar {
+        left: $collapsed-sidebar-width;
+    }
+
+    .clusters-list__info-banner {
+        left: $collapsed-sidebar-width;
+    }
+
+    .page {
+        &__top-bar {
+            left: $collapsed-sidebar-width !important;
+        }
+    }
+
+    .application-details__status-panel {
+        left: $collapsed-sidebar-width;
+    }
+}
+
 .sb-page-wrapper {
     padding-left: $sidebar-width;
 
     &__sidebar-collapsed {
-        padding-left: $collapsed-sidebar-width;
-        .flex-top-bar {
-            left: $collapsed-sidebar-width;
-        }
+        @include rail-offsets;
+    }
 
-        .page {
-            &__top-bar {
-                left: $collapsed-sidebar-width !important;
-            }
-        }
-
-        .application-details__status-panel {
-            left: $collapsed-sidebar-width;
-        }
+    // A phone always lays the page out beside the rail; the open sidebar
+    // covers the page instead of moving it.
+    @media (max-width: $phone-max) {
+        @include rail-offsets;
     }
 }
 

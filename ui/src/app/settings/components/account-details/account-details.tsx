@@ -30,15 +30,15 @@ export const AccountDetails = (props: RouteComponentProps<{name: string}>) => {
                             <div className='white-box'>
                                 <div className='white-box__details'>
                                     <div className='row white-box__details-row'>
-                                        <div className='columns small-3'>NAME</div>
+                                        <div className='columns small-3'>Name</div>
                                         <div className='columns small-9'>{account.name}</div>
                                     </div>
                                     <div className='row white-box__details-row'>
-                                        <div className='columns small-3'>ENABLED</div>
+                                        <div className='columns small-3'>Enabled</div>
                                         <div className='columns small-9'>{(account.enabled && 'true') || 'false'}</div>
                                     </div>
                                     <div className='row white-box__details-row'>
-                                        <div className='columns small-3'>CAPABILITIES</div>
+                                        <div className='columns small-3'>Capabilities</div>
                                         <div className='columns small-9'>{(account.capabilities || []).join(', ')}</div>
                                     </div>
                                 </div>
@@ -102,8 +102,8 @@ export const AccountDetails = (props: RouteComponentProps<{name: string}>) => {
                                             <div className='kit-table-list__head'>
                                                 <div className='row'>
                                                     <div className='columns small-4'>ID</div>
-                                                    <div className='columns small-4'>ISSUED AT</div>
-                                                    <div className='columns small-4'>EXPIRES AT</div>
+                                                    <div className='columns small-4'>Issued at</div>
+                                                    <div className='columns small-4'>Expires at</div>
                                                 </div>
                                             </div>
                                             {tokens.map(token => (

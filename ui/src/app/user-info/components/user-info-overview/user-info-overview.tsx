@@ -82,9 +82,9 @@ export const UserInfoComponent = ({userInfo}: {userInfo: UserInfo}) => {
 
     return (
         <Page
-            title='User Info'
+            title='User info'
             toolbar={{
-                breadcrumbs: [{title: 'User Info'}],
+                breadcrumbs: [{title: 'User info'}],
                 tools: <AuthOption />,
                 actionMenu: isPasswordChangeAvailable
                     ? {

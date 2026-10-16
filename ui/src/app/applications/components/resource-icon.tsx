@@ -65,7 +65,7 @@ export const ResourceIcon = ({group, kind, customStyle}: {group: string; kind: s
                     width: '32px',
                     height: '32px',
                     borderRadius: '50%',
-                    backgroundColor: '#8FA4B1',
+                    backgroundColor: '#737373',
                     padding: `${n <= 2 ? 2 : 0}px 4px`
                 }}>
                 <span style={{color: 'white', fontSize: `${n <= 2 ? 1 : 0.6}em`, lineHeight: 1}}>{initials}</span>

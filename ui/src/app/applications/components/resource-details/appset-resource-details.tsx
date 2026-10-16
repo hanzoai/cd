@@ -28,20 +28,20 @@ export const AppSetResourceDetails = (props: AppSetResourceDetailsProps) => {
     const getTabs = (): Tab[] => {
         const tabs: Tab[] = [
             {
-                title: 'SUMMARY',
+                title: 'Summary',
                 key: 'summary',
                 content: (
                     <div className='applicationset-summary'>
                         <div className='white-box'>
                             <div className='white-box__details'>
                                 <p>{appSet.metadata.name.toLocaleUpperCase()}</p>
-                                <SummaryItem title='NAMESPACE'>{appSet.metadata.namespace}</SummaryItem>
-                                <SummaryItem title='CREATED AT'>{appSet.metadata.creationTimestamp && <Timestamp date={appSet.metadata.creationTimestamp} />}</SummaryItem>
-                                <SummaryItem title='HEALTH'>
+                                <SummaryItem title='Namespace'>{appSet.metadata.namespace}</SummaryItem>
+                                <SummaryItem title='Created at'>{appSet.metadata.creationTimestamp && <Timestamp date={appSet.metadata.creationTimestamp} />}</SummaryItem>
+                                <SummaryItem title='Health'>
                                     <HealthStatusIcon state={{status: healthStatus, message: ''}} /> {healthStatus}
                                 </SummaryItem>
                                 {conditions.length > 0 && (
-                                    <SummaryItem title='CONDITIONS'>
+                                    <SummaryItem title='Conditions'>
                                         <a onClick={() => appContext.navigation.goto('.', {conditions: 'true'}, {replace: true})}>
                                             {conditionCounts.error > 0 && (
                                                 <span>
@@ -63,14 +63,14 @@ export const AppSetResourceDetails = (props: AppSetResourceDetailsProps) => {
                                         </a>
                                     </SummaryItem>
                                 )}
-                                <SummaryItem title='LABELS'>
+                                <SummaryItem title='Labels'>
                                     {Object.keys(appSet.metadata.labels || {}).length > 0
                                         ? Object.entries(appSet.metadata.labels)
                                               .map(([k, v]) => `${k}=${v}`)
                                               .join(' ')
                                         : ''}
                                 </SummaryItem>
-                                <SummaryItem title='ANNOTATIONS'>
+                                <SummaryItem title='Annotations'>
                                     {Object.keys(appSet.metadata.annotations || {}).length > 0 ? (
                                         <Expandable height={48}>
                                             {Object.entries(appSet.metadata.annotations || {})
@@ -87,9 +87,9 @@ export const AppSetResourceDetails = (props: AppSetResourceDetailsProps) => {
                         {spec?.syncPolicy && (
                             <div className='white-box'>
                                 <div className='white-box__details'>
-                                    <p>SYNC POLICY</p>
-                                    <SummaryItem title='APPLICATIONS SYNC'>{spec.syncPolicy.applicationsSync || 'sync (default)'}</SummaryItem>
-                                    <SummaryItem title='PRESERVE RESOURCES ON DELETION'>{spec.syncPolicy.preserveResourcesOnDeletion ? 'true' : 'false'}</SummaryItem>
+                                    <p>Sync policy</p>
+                                    <SummaryItem title='Applications sync'>{spec.syncPolicy.applicationsSync || 'sync (default)'}</SummaryItem>
+                                    <SummaryItem title='Preserve resources on deletion'>{spec.syncPolicy.preserveResourcesOnDeletion ? 'true' : 'false'}</SummaryItem>
                                 </div>
                             </div>
                         )}
@@ -97,12 +97,12 @@ export const AppSetResourceDetails = (props: AppSetResourceDetailsProps) => {
                 )
             },
             {
-                title: 'MANIFEST',
+                title: 'Manifest',
                 key: 'manifest',
                 content: <YamlEditor minHeight={800} input={appSet.spec} hideModeButtons={true} />
             },
             {
-                title: 'EVENTS',
+                title: 'Events',
                 key: 'event',
                 content: (
                     <div className='application-resource-events'>
@@ -115,7 +115,7 @@ export const AppSetResourceDetails = (props: AppSetResourceDetailsProps) => {
                 )
             },
             {
-                title: 'PREVIEW',
+                title: 'Preview',
                 key: 'preview',
                 content: <AppSetPreviewTab appSet={appSet} />
             }

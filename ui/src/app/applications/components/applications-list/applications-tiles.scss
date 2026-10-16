@@ -2,8 +2,8 @@
 
 .applications-tiles {
     display: grid;
-    gap: 24px;
-    grid-template-columns: repeat(auto-fill,minmax(370px,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+    gap: 16px;
     padding: 0;
 
     &__wrapper {
@@ -76,9 +76,21 @@
         }
     }
 
+    // A tile is a card: the surface, a hairline, and the status edge drawn by
+    // .applications-list__entry.
     .kit-table-list__row {
         padding-top: 0;
         padding-bottom: 0;
+        margin: 0;
+        border-radius: 12px;
+        border: 1px solid var(--hz-line);
+        background: var(--hz-surface);
+        line-height: 1.6;
+        font-size: 13px;
+
+        &:hover {
+            border-color: var(--hz-faint);
+        }
 
         .columns.applications-tiles__field-label {
             overflow: visible;
@@ -93,7 +105,8 @@
         }
     }
     &__selected {
-        box-shadow: 0 0 0 1px $kit-color-teal-5;
+        outline: 2px solid var(--hz-ring);
+        outline-offset: 2px;
     }
 
     .applications-list__title {
@@ -135,6 +148,7 @@
     }
 
     .applications-tiles__field-label {
+        color: var(--hz-faint);
         width: auto;
         max-width: none;
         float: none;
@@ -146,6 +160,7 @@
     }
 
     .applications-tiles__field-value {
+        color: var(--hz-ink-2);
         width: auto;
         max-width: none;
         float: none;
@@ -173,8 +188,10 @@
             align-items: center;
             justify-content: center;
 
+            color: var(--hz-faint);
+
             &:hover {
-                color: $kit-color-teal-5;
+                color: var(--hz-ink);
             }
 
             &.managed-by-url-invalid {

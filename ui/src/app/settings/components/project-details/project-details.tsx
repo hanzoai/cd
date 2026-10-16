@@ -193,8 +193,8 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                     <div className='kit-table-list kit-table-list--clickable'>
                         <div className='kit-table-list__head'>
                             <div className='row'>
-                                <div className='columns small-3'>NAME</div>
-                                <div className='columns small-6'>DESCRIPTION</div>
+                                <div className='columns small-3'>Name</div>
+                                <div className='columns small-6'>Description</div>
                             </div>
                         </div>
                         {(proj.spec.roles || []).map(role => (
@@ -230,7 +230,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                 <div className='kit-table-list__head'>
                                     <div className='row'>
                                         <div className='columns small-8-elements'>
-                                            STATUS
+                                            Status
                                             {helpTip(
                                                 'If a window is active or inactive and what the current ' +
                                                     'effect would be if it was assigned to an application, namespace or cluster. ' +
@@ -240,37 +240,37 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                             )}
                                         </div>
                                         <div className='columns small-8-elements'>
-                                            WINDOW
+                                            Window
                                             {helpTip('The kind, start time and duration of the window')}
                                         </div>
                                         <div className='columns small-8-elements'>
-                                            APPLICATIONS
+                                            Applications
                                             {helpTip('The applications assigned to the window, wildcards are supported')}
                                         </div>
                                         <div className='columns small-8-elements'>
-                                            NAMESPACES
+                                            Namespaces
                                             {helpTip('The namespaces assigned to the window, wildcards are supported')}
                                         </div>
                                         <div className='columns small-8-elements'>
-                                            CLUSTERS
+                                            Clusters
                                             {helpTip('The clusters assigned to the window, wildcards are supported')}
                                         </div>
                                         <div className='columns small-8-elements'>
-                                            MANUALSYNC
+                                            Manual sync
                                             {helpTip('If the window allows manual syncs')}
                                         </div>
                                         <div className='columns small-8-elements'>
-                                            SYNC OVERRUN
+                                            Sync overrun
                                             {helpTip(
                                                 'Allows syncs to continue: for deny windows, syncs that started before the window; for allow windows, syncs that started during the window'
                                             )}
                                         </div>
                                         <div className='columns small-8-elements'>
-                                            USE AND OPERATOR
+                                            Use AND operator
                                             {helpTip('Use AND operator while selecting the apps that match the configured selectors')}
                                         </div>
                                         <div className='columns small-8-elements'>
-                                            DESCRIPTION
+                                            Description
                                             {helpTip('Add a description to your sync window (eg "Ticket 12345")')}
                                         </div>
                                     </div>
@@ -334,27 +334,27 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                         'metadata.name': !input.metadata.name && 'Project name is required'
                     })}
                     values={proj}
-                    title='GENERAL'
+                    title='General'
                     items={[
                         {
-                            title: 'NAME',
+                            title: 'Name',
                             view: proj.metadata.name,
                             edit: () => proj.metadata.name
                         },
                         {
-                            title: 'DESCRIPTION',
+                            title: 'Description',
                             view: proj.spec.description,
                             edit: (formApi: FormApi) => <FormField formApi={formApi} field='spec.description' component={Text} />
                         },
                         {
-                            title: 'LABELS',
+                            title: 'Labels',
                             view: Object.keys(proj.metadata.labels || {})
                                 .map(label => `${label}=${proj.metadata.labels[label]}`)
                                 .join(' '),
                             edit: (formApi: FormApi) => <FormField formApi={formApi} field='metadata.labels' component={MapInputField} />
                         },
                         {
-                            title: 'LINKS',
+                            title: 'Links',
                             view: (
                                 <div style={{margin: '8px 0'}}>
                                     <DataLoader load={() => services.projects.getLinks(proj.metadata.name)}>{links => <DeepLinks links={links.items} />}</DataLoader>
@@ -362,7 +362,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                             )
                         },
                         {
-                            title: 'APPLICATIONS',
+                            title: 'Applications',
                             view: (
                                 <div>
                                     <DataLoader load={() => services.applications.list([proj.metadata.name], objectListKind)}>
@@ -377,7 +377,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                 <EditablePanel
                     save={item => saveProject(item)}
                     values={proj}
-                    title={<React.Fragment>SOURCE REPOSITORIES {helpTip('Git repositories where application manifests are permitted to be retrieved from')}</React.Fragment>}
+                    title={<React.Fragment>Source repositories {helpTip('Git repositories where application manifests are permitted to be retrieved from')}</React.Fragment>}
                     view={
                         <React.Fragment>
                             {proj.spec.sourceRepos
@@ -409,7 +409,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                     <button
                                         className='kit-button kit-button--short'
                                         onClick={() => formApi.setValue('spec.sourceRepos', (formApi.values.spec.sourceRepos || []).concat('*'))}>
-                                        ADD SOURCE
+                                        Add source
                                     </button>
                                 </React.Fragment>
                             )}
@@ -420,7 +420,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
 
                 <EditablePanel
                     values={scopedProj}
-                    title={<React.Fragment>SCOPED REPOSITORIES{helpTip('Git repositories where application manifests are permitted to be retrieved from')}</React.Fragment>}
+                    title={<React.Fragment>Scoped repositories {helpTip('Git repositories where application manifests are permitted to be retrieved from')}</React.Fragment>}
                     view={
                         <React.Fragment>
                             {scopedProj.repositories && scopedProj.repositories.length
@@ -441,7 +441,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                 save={item => saveProject(item)}
                                 values={proj}
                                 title={
-                                    <React.Fragment>SOURCE NAMESPACES {helpTip('Kubernetes namespaces where application resources are allowed to be created in')}</React.Fragment>
+                                    <React.Fragment>Source namespaces {helpTip('Kubernetes namespaces where application resources are allowed to be created in')}</React.Fragment>
                                 }
                                 view={
                                     <React.Fragment>
@@ -470,7 +470,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                         <button
                                             className='kit-button kit-button--short'
                                             onClick={() => formApi.setValue('spec.sourceNamespaces', (formApi.values.spec.sourceNamespaces || []).concat('*'))}>
-                                            ADD SOURCE
+                                            Add source
                                         </button>
                                     </React.Fragment>
                                 )}
@@ -482,7 +482,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                 <EditablePanel
                     save={item => saveProject(item)}
                     values={proj}
-                    title={<React.Fragment>DESTINATIONS {helpTip('Cluster and namespaces where applications are permitted to be deployed to')}</React.Fragment>}
+                    title={<React.Fragment>Destinations {helpTip('Cluster and namespaces where applications are permitted to be deployed to')}</React.Fragment>}
                     view={
                         <React.Fragment>
                             {proj.spec.destinations ? (
@@ -550,7 +550,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                                 })
                                             )
                                         }>
-                                        ADD DESTINATION
+                                        Add destination
                                     </button>
                                 </React.Fragment>
                             )}
@@ -561,7 +561,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
 
                 <EditablePanel
                     values={scopedProj}
-                    title={<React.Fragment>SCOPED CLUSTERS{helpTip('Cluster and namespaces where applications are permitted to be deployed to')}</React.Fragment>}
+                    title={<React.Fragment>Scoped clusters {helpTip('Cluster and namespaces where applications are permitted to be deployed to')}</React.Fragment>}
                     view={
                         <React.Fragment>
                             {scopedProj.clusters && scopedProj.clusters.length
@@ -581,7 +581,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                     values={proj}
                     title={
                         <React.Fragment>
-                            DESTINATION SERVICE ACCOUNTS{' '}
+                            Destination service accounts{' '}
                             {helpTip(
                                 'Destination Service Accounts holds information about the service accounts to be impersonated for the application sync operation for each destination.'
                             )}
@@ -658,7 +658,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                                 })
                                             )
                                         }>
-                                        ADD DESTINATION SERVICE ACCOUNTS
+                                        Add destination service accounts
                                     </button>
                                 </React.Fragment>
                             )}
@@ -670,7 +670,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                 <ResourceListsPanel proj={proj} saveProject={item => saveProject(item)} />
                 {globalProj.count > 0 && (
                     <ResourceListsPanel
-                        title={<p>INHERITED FROM GLOBAL PROJECTS {helpTip('Global projects provide configurations that other projects can inherit from.')}</p>}
+                        title={<p>Inherited from global projects {helpTip('Global projects provide configurations that other projects can inherit from.')}</p>}
                         proj={{metadata: null, spec: globalProj, status: null}}
                     />
                 )}
@@ -678,7 +678,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                 <EditablePanel
                     save={item => saveProject(item)}
                     values={proj}
-                    title={<React.Fragment>GPG SIGNATURE KEYS {helpTip('IDs of GnuPG keys that commits must be signed with in order to be allowed to sync to')}</React.Fragment>}
+                    title={<React.Fragment>GPG signature keys {helpTip('IDs of GnuPG keys that commits must be signed with in order to be allowed to sync to')}</React.Fragment>}
                     view={
                         <React.Fragment>
                             {proj.spec.signatureKeys
@@ -717,7 +717,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                                 })
                                             )
                                         }>
-                                        ADD KEY
+                                        Add key
                                     </button>
                                 </React.Fragment>
                             )}
@@ -729,7 +729,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                 <EditablePanel
                     save={item => saveProject(item)}
                     values={proj}
-                    title={<React.Fragment>RESOURCE MONITORING {helpTip('Enables monitoring of top level resources in the application target namespace')}</React.Fragment>}
+                    title={<React.Fragment>Resource monitoring {helpTip('Enables monitoring of top level resources in the application target namespace')}</React.Fragment>}
                     view={
                         proj.spec.orphanedResources ? (
                             <React.Fragment>
@@ -775,7 +775,7 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                         formApi.values.spec.orphanedResources ? (
                             <React.Fragment>
                                 <button className='kit-button kit-button--base' onClick={() => formApi.setValue('spec.orphanedResources', null)}>
-                                    DISABLE
+                                    Disable
                                 </button>
                                 <div className='row white-box__details-row'>
                                     <div className='columns small-4'>
@@ -835,12 +835,12 @@ export const ProjectDetails: React.FC<RouteComponentProps<{name: string}> & {obj
                                             })
                                         )
                                     }>
-                                    ADD RESOURCE
+                                    Add resource
                                 </button>
                             </React.Fragment>
                         ) : (
                             <button className='kit-button kit-button--base' onClick={() => formApi.setValue('spec.orphanedResources.ignore', [])}>
-                                ENABLE
+                                Enable
                             </button>
                         )
                     }

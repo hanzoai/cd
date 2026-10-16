@@ -133,7 +133,7 @@ export const AppSetTile = ({appSet, selected, pref, ctx, tileRef}: AppSetTilePro
                         {/* Created At row */}
                         <div className='row applications-tiles__field-row'>
                             <div className='columns applications-tiles__field-label' title='Age:'>
-                                Created At:
+                                Created at:
                             </div>
                             <div className='columns applications-tiles__field-value'>{AppUtils.formatCreationTimestamp(appSet.metadata.creationTimestamp)}</div>
                         </div>
@@ -152,13 +152,13 @@ export const AppSetTile = ({appSet, selected, pref, ctx, tileRef}: AppSetTilePro
                         <i className='fa fa-window-maximize' />
                     </button>
                 )}
-                <button title={favList?.includes(appSet.metadata.name) ? 'Remove Favorite' : 'Add Favorite'} className='large-text-height' onClick={handleFavoriteToggle}>
+                <button title={favList?.includes(appSet.metadata.name) ? 'Remove favorite' : 'Add favorite'} className='large-text-height' onClick={handleFavoriteToggle}>
                     <i
                         className={favList?.includes(appSet.metadata.name) ? 'fas fa-star fa-lg' : 'far fa-star fa-lg'}
                         style={{
                             cursor: 'pointer',
                             margin: '-1px 0px 0px 0px',
-                            color: favList?.includes(appSet.metadata.name) ? '#FFCE25' : '#8fa4b1'
+                            color: favList?.includes(appSet.metadata.name) ? 'var(--hz-ink)' : 'var(--hz-faint)'
                         }}
                     />
                 </button>

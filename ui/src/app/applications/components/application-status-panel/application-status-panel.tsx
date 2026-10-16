@@ -127,7 +127,7 @@ const ProgressiveSyncStatus = ({application}: {application: models.Application})
                 return (
                     <div className='application-status-panel__item'>
                         {sectionHeader({
-                            title: 'PROGRESSIVE SYNC',
+                            title: 'Progressive sync',
                             helpContent: 'Shows the current status of progressive sync for applications managed by an ApplicationSet.'
                         })}
                         <div className='application-status-panel__item-value'>
@@ -158,7 +158,7 @@ const ProgressiveSyncStatus = ({application}: {application: models.Application})
                     return (
                         <div className='application-status-panel__item'>
                             {sectionHeader({
-                                title: 'PROGRESSIVE SYNC',
+                                title: 'Progressive sync',
                                 helpContent: 'Shows the current status of progressive sync for applications managed by an ApplicationSet with RollingSync strategy.'
                             })}
                             <div className='application-status-panel__item-value'>
@@ -175,7 +175,7 @@ const ProgressiveSyncStatus = ({application}: {application: models.Application})
                 return (
                     <div className='application-status-panel__item'>
                         {sectionHeader({
-                            title: 'PROGRESSIVE SYNC',
+                            title: 'Progressive sync',
                             helpContent: 'Shows the current status of progressive sync for applications managed by an ApplicationSet with RollingSync strategy.'
                         })}
                         <div className='application-status-panel__item-value' style={{color: getProgressiveSyncStatusColor(appResource.status)}}>
@@ -228,7 +228,7 @@ export const ApplicationStatusPanel = ({application, showDiff, showOperation, sh
     return (
         <div className='application-status-panel row'>
             <div className='application-status-panel__item'>
-                {sectionHeader({title: 'APP HEALTH', helpContent: 'The health status of your app'})}
+                {sectionHeader({title: 'App health', helpContent: 'The health status of your app'})}
                 <div className='application-status-panel__item-value'>
                     <HealthStatusIcon state={application.status.health} />
                     &nbsp;
@@ -240,7 +240,7 @@ export const ApplicationStatusPanel = ({application, showDiff, showOperation, sh
                 <div className='application-status-panel__item'>
                     <div style={{lineHeight: '19.5px', marginBottom: '0.3em'}}>
                         {sectionLabel({
-                            title: 'SOURCE HYDRATOR',
+                            title: 'Source hydrator',
                             helpContent: 'The source hydrator reads manifests from git, hydrates (renders) them, and pushes them to a different location in git.'
                         })}
                     </div>
@@ -275,7 +275,7 @@ export const ApplicationStatusPanel = ({application, showDiff, showOperation, sh
             <div className='application-status-panel__item'>
                 {sectionHeader(
                     {
-                        title: 'SYNC STATUS',
+                        title: 'Sync status',
                         helpContent: 'Whether or not the version of your app is up to date with your repo. You may wish to sync your app if it is out-of-sync.'
                     },
                     () => showMetadataInfo(application.status.sync ? 'SYNC_STATUS_REVISION' : null)
@@ -315,7 +315,7 @@ export const ApplicationStatusPanel = ({application, showDiff, showOperation, sh
                 <div className='application-status-panel__item'>
                     {sectionHeader(
                         {
-                            title: 'LAST SYNC',
+                            title: 'Last sync',
                             helpContent:
                                 'Whether or not your last app sync was successful. It has been ' +
                                 daysSinceLastSynchronized +
@@ -361,7 +361,7 @@ export const ApplicationStatusPanel = ({application, showDiff, showOperation, sh
             )}
             {application.status.conditions && (
                 <div className={`application-status-panel__item`}>
-                    {sectionHeader({title: 'APP CONDITIONS'})}
+                    {sectionHeader({title: 'App conditions'})}
                     <div className='application-status-panel__item-value application-status-panel__conditions' onClick={() => showConditions && showConditions()}>
                         {infos && (
                             <a className='info'>
@@ -392,7 +392,7 @@ export const ApplicationStatusPanel = ({application, showDiff, showOperation, sh
                         {data?.assignedWindows && (
                             <div className='application-status-panel__item' style={{position: 'relative'}}>
                                 {sectionLabel({
-                                    title: 'SYNC WINDOWS',
+                                    title: 'Sync windows',
                                     helpContent:
                                         'The aggregate state of sync windows for this app. ' +
                                         'Red: no syncs allowed. ' +

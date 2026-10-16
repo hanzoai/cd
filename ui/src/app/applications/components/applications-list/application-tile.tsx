@@ -166,8 +166,8 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
 
                         {/* Target Revision row */}
                         <div className='row applications-tiles__field-row'>
-                            <div className='columns applications-tiles__field-label' title='Target Revision:'>
-                                Target Revision:
+                            <div className='columns applications-tiles__field-label' title='Target revision:'>
+                                Target revision:
                             </div>
                             <div className='columns applications-tiles__field-value'>{targetRevision}</div>
                         </div>
@@ -213,7 +213,7 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
                         {/* Created At row */}
                         <div className='row applications-tiles__field-row'>
                             <div className='columns applications-tiles__field-label' title='Age:'>
-                                Created At:
+                                Created at:
                             </div>
                             <div className='columns applications-tiles__field-value'>{AppUtils.formatCreationTimestamp(app.metadata.creationTimestamp)}</div>
                         </div>
@@ -222,7 +222,7 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
                         {app.status.operationState && (
                             <div className='row applications-tiles__field-row'>
                                 <div className='columns applications-tiles__field-label' title='Last sync:'>
-                                    Last Sync:
+                                    Last sync:
                                 </div>
                                 <div className='columns applications-tiles__field-value'>
                                     {AppUtils.formatCreationTimestamp(app.status.operationState.finishedAt || app.status.operationState.startedAt)}
@@ -245,13 +245,13 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
                         <i className='fa fa-window-maximize' />
                     </button>
                 )}
-                <button title={favList?.includes(app.metadata.name) ? 'Remove Favorite' : 'Add Favorite'} className='large-text-height' onClick={handleFavoriteToggle}>
+                <button title={favList?.includes(app.metadata.name) ? 'Remove favorite' : 'Add favorite'} className='large-text-height' onClick={handleFavoriteToggle}>
                     <i
                         className={favList?.includes(app.metadata.name) ? 'fas fa-star fa-lg' : 'far fa-star fa-lg'}
                         style={{
                             cursor: 'pointer',
                             margin: '-1px 0px 0px 0px',
-                            color: favList?.includes(app.metadata.name) ? '#FFCE25' : '#8fa4b1'
+                            color: favList?.includes(app.metadata.name) ? 'var(--hz-ink)' : 'var(--hz-faint)'
                         }}
                     />
                 </button>
@@ -261,7 +261,7 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
             <div className='applications-tiles__actions'>
                 <button
                     type='button'
-                    className='kit-button kit-button--base'
+                    className='kit-button kit-button--base-o'
                     qe-id='applications-tiles-button-sync'
                     onClick={() => syncApplication(app.metadata.name, app.metadata.namespace)}>
                     <i className='fa fa-sync' /> Sync
@@ -274,8 +274,9 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
                         because this used to be an <a>, where `disabled` is meaningless. */}
                     <button
                         type='button'
-                        className='kit-button kit-button--base'
+                        className='kit-button kit-button--base-o'
                         qe-id='applications-tiles-button-refresh'
+                        aria-label='Refresh'
                         onClick={() => refreshApplication(app.metadata.name, app.metadata.namespace)}>
                         <i className={classNames('fa fa-redo', {'status-icon--spin': AppUtils.isAppRefreshing(app)})} /> <span className='show-for-xxlarge'>Refresh</span>
                     </button>
@@ -284,8 +285,9 @@ export const ApplicationTile = ({app, selected, pref, ctx, tileRef, syncApplicat
                 <Tooltip className='custom-tooltip' content={'Delete'}>
                     <button
                         type='button'
-                        className='kit-button kit-button--base'
+                        className='kit-button kit-button--base-o'
                         qe-id='applications-tiles-button-delete'
+                        aria-label='Delete'
                         onClick={() => deleteApplication(app.metadata.name, app.metadata.namespace)}>
                         <i className='fa fa-times-circle' /> <span className='show-for-xxlarge'>Delete</span>
                     </button>

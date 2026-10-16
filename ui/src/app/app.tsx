@@ -10,6 +10,7 @@ import help from './help';
 import login from './login';
 import settings from './settings';
 import {Layout, ThemeWrapper} from './shared/components/layout/layout';
+import {GlyphName} from './shared/components/glyph';
 import {Page} from './shared/components';
 import {Spinner} from './shared/components';
 import {VersionPanel} from './shared/components/version-info/version-info-panel';
@@ -41,7 +42,8 @@ interface NavItem {
     title: string;
     tooltip?: string;
     path: string;
-    iconClassName: string;
+    glyph?: GlyphName;
+    iconClassName?: string;
 }
 
 const navItems: NavItem[] = [
@@ -49,30 +51,30 @@ const navItems: NavItem[] = [
         title: 'Applications',
         tooltip: 'Manage your applications, and diagnose health problems.',
         path: '/applications',
-        iconClassName: 'kit-icon kit-icon-application'
+        glyph: 'application'
     },
     {
         title: 'ApplicationSets',
         tooltip: 'Manage your ApplicationSets, and diagnose health problems.',
         path: '/applicationsets',
-        iconClassName: 'kit-icon kit-icon-applicationset'
+        glyph: 'applicationset'
     },
     {
         title: 'Settings',
         tooltip: 'Manage your repositories, projects, settings',
         path: '/settings',
-        iconClassName: 'kit-icon kit-icon-settings'
+        glyph: 'settings'
     },
     {
-        title: 'User Info',
+        title: 'User info',
         path: '/user-info',
-        iconClassName: 'fa fa-user-circle'
+        glyph: 'user'
     },
     {
         title: 'Documentation',
         tooltip: 'Read the documentation, and get help and assistance.',
         path: '/help',
-        iconClassName: 'kit-icon kit-icon-docs'
+        glyph: 'docs'
     }
 ];
 
@@ -253,7 +255,7 @@ export class App extends React.Component<
                     </Helmet>
                     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', flexDirection: 'column', gap: '12px'}}>
                         <Spinner show={true} />
-                        <span style={{color: '#6d7f8b'}}>Checking session…</span>
+                        <span style={{color: 'var(--hz-dim)'}}>Checking session…</span>
                     </div>
                 </React.Fragment>
             );

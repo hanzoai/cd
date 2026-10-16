@@ -49,21 +49,36 @@
     li.disabled {
         a {
             cursor: default;
-            color: $kit-color-gray-5;
+            color: var(--hz-faint);
         }
     }
 
     li.selected {
         a {
             cursor: default;
-            color: $kit-color-gray-8;
+            color: var(--hz-ink);
         }
     }
 
     &__size-menu {
         margin-left: auto;
+        font-size: 13px;
+
+        a {
+            color: var(--hz-dim);
+
+            &:hover {
+                color: var(--hz-ink);
+            }
+        }
+
         li {
             display: block;
         }
+    }
+
+    &__page-link,
+    &__break-link {
+        color: var(--hz-dim);
     }
 }

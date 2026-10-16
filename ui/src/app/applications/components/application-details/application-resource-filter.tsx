@@ -126,9 +126,9 @@ export const Filters = (props: FiltersProps) => {
 
     return (
         <FiltersGroup title='Resource filters' content={props.children} appliedFilter={pref.resourceFilter} onClearFilter={onClearFilter} collapsed={props.collapsed}>
-            {ResourceFilter({label: 'NAME', prefix: 'name', options: names.map(toOption), field: true})}
+            {ResourceFilter({label: 'Name', prefix: 'name', options: names.map(toOption), field: true})}
             {ResourceFilter({
-                label: 'KINDS',
+                label: 'Kinds',
                 prefix: 'kind',
                 options: kinds.map(label => ({
                     label,
@@ -138,7 +138,7 @@ export const Filters = (props: FiltersProps) => {
                 field: true
             })}
             {ResourceFilter({
-                label: 'SYNC STATUS',
+                label: 'Sync status',
                 prefix: 'sync',
                 options: ['Synced', 'OutOfSync'].map(label => ({
                     label,
@@ -147,7 +147,7 @@ export const Filters = (props: FiltersProps) => {
                 }))
             })}
             {ResourceFilter({
-                label: 'HEALTH STATUS',
+                label: 'Health status',
                 prefix: 'health',
                 options: ['Progressing', 'Suspended', 'Healthy', 'Degraded', 'Missing', 'Unknown'].map(label => ({
                     label,
@@ -155,7 +155,7 @@ export const Filters = (props: FiltersProps) => {
                     icon: <HealthStatusIcon state={{status: label as HealthStatusCode, message: ''}} noSpin={true} />
                 }))
             })}
-            {namespaces.length > 1 && ResourceFilter({label: 'NAMESPACES', prefix: 'namespace', options: (namespaces || []).filter(l => l && l !== '').map(toOption), field: true})}
+            {namespaces.length > 1 && ResourceFilter({label: 'Namespaces', prefix: 'namespace', options: (namespaces || []).filter(l => l && l !== '').map(toOption), field: true})}
             {(tree.orphanedNodes || []).length > 0 && (
                 <div className={`filter filter__item ${pref.orphanedResources ? 'filter__item--selected' : ''}`}>
                     <Checkbox

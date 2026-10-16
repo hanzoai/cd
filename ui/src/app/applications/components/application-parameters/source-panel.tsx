@@ -148,7 +148,7 @@ export const SourcePanel = (props: {
                                 }
                                 const sourcePanel = () => (
                                     <div className='white-box'>
-                                        <p>SOURCE</p>
+                                        <p>Source</p>
                                         <div className='row kit-form-row'>
                                             <div className='columns small-10'>
                                                 <FormField

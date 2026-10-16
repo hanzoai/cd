@@ -267,10 +267,12 @@ const ApplicationsToolbar: React.FC<ApplicationsToolbarProps> = ({applications, 
     return (
         <React.Fragment key='app-list-tools'>
             <ApplicationsListSearchBar content={query.get('search')} apps={applications} ctx={ctx} />
-            <Tooltip content='Toggle Health Status Bar'>
+            <Tooltip content='Health bar'>
                 <button
-                    className={`applications-list__accordion kit-button kit-button--base${healthBarPrefs.showHealthStatusBar ? '-o' : ''}`}
-                    style={{border: 'none'}}
+                    type='button'
+                    aria-label='Health bar'
+                    aria-pressed={!!healthBarPrefs.showHealthStatusBar}
+                    className={`applications-list__accordion ${healthBarPrefs.showHealthStatusBar ? 'selected' : ''}`}
                     onClick={() => {
                         const showHealthStatusBar = !healthBarPrefs.showHealthStatusBar;
                         services.viewPreferences.updatePreferences({
@@ -342,11 +344,11 @@ export const ApplicationsList = (props: RouteComponentProps<any>) => {
     function getPageTitle(view: string) {
         switch (view) {
             case List:
-                return 'Applications List';
+                return 'Applications list';
             case Tiles:
-                return 'Applications Tiles';
+                return 'Applications tiles';
             case Summary:
-                return 'Applications Summary';
+                return 'Applications summary';
         }
         return '';
     }
@@ -410,18 +412,18 @@ export const ApplicationsList = (props: RouteComponentProps<any>) => {
                                                             actionMenu: {
                                                                 items: [
                                                                     {
-                                                                        title: 'New App',
+                                                                        title: 'New app',
                                                                         iconClassName: 'fa fa-plus',
                                                                         qeId: 'applications-list-button-new-app',
                                                                         action: () => ctx.navigation.goto('.', {new: '{}'}, {replace: true})
                                                                     },
                                                                     {
-                                                                        title: 'Sync Apps',
+                                                                        title: 'Sync apps',
                                                                         iconClassName: 'fa fa-sync',
                                                                         action: () => ctx.navigation.goto('.', {syncApps: true}, {replace: true})
                                                                     },
                                                                     {
-                                                                        title: 'Refresh Apps',
+                                                                        title: 'Refresh apps',
                                                                         iconClassName: 'fa fa-redo',
                                                                         action: () => ctx.navigation.goto('.', {refreshApps: true}, {replace: true})
                                                                     }
@@ -432,13 +434,12 @@ export const ApplicationsList = (props: RouteComponentProps<any>) => {
                                                     <div className='applications-list'>
                                                         {apps.length === 0 && pref.projectsFilter?.length === 0 && (pref.labelsFilter || []).length === 0 ? (
                                                             <EmptyState icon='kit-icon-application'>
-                                                                <h4>No applications available to you just yet</h4>
-                                                                <h5>Create new application to start managing resources in your cluster</h5>
+                                                                <h4>No applications you can access</h4>
                                                                 <button
                                                                     qe-id='applications-list-button-create-application'
-                                                                    className='kit-button kit-button--base'
+                                                                    className='kit-button kit-button--base-o'
                                                                     onClick={() => ctx.navigation.goto('.', {new: JSON.stringify({})}, {replace: true})}>
-                                                                    Create application
+                                                                    New application
                                                                 </button>
                                                             </EmptyState>
                                                         ) : (

@@ -33,7 +33,7 @@ export const BadgePanel = ({app, project, appNamespace, nsEnabled}: {app?: strin
         return (
             <div className='white-box'>
                 <div className='white-box__details'>
-                    <p>STATUS BADGE</p>
+                    <p>Status badge</p>
                     <p>
                         <img src={badgeURL} />{' '}
                     </p>

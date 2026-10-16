@@ -71,7 +71,7 @@ export function PodView(props: PodViewProps) {
                     <>
                         <div className='pod-view__settings'>
                             <div className='pod-view__settings__section'>
-                                GROUP BY:&nbsp;
+                                Group by:&nbsp;
                                 <DropDownMenu
                                     anchor={() => (
                                         <button className='kit-button kit-button--base-o'>
@@ -107,7 +107,7 @@ export function PodView(props: PodViewProps) {
                                             })
                                         }>
                                         <i className={`fa fa-${podPrefs.hideUnschedulable ? 'eye-slash' : 'eye'}`} style={{width: '15px', marginRight: '5px'}} />
-                                        UNSCHEDULABLE
+                                        Unschedulable
                                     </button>
                                 </div>
                             )}
@@ -242,7 +242,7 @@ export function PodView(props: PodViewProps) {
                                                                 )
                                                         )}
                                                     </div>
-                                                    <div className='pod-view__node__label'>PODS</div>
+                                                    <div className='pod-view__node__label'>Pods</div>
                                                     {(podPrefs.sortMode === 'parentResource' || podPrefs.sortMode === 'topLevelResource') && (
                                                         <div key={group.uid}>{group.renderQuickStarts()}</div>
                                                     )}

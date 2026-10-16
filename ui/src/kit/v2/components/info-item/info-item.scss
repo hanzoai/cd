@@ -28,13 +28,13 @@
     &--colored {
         background-color: $sherbert;
         border: 1px solid $sherbert;
-        color: white;
+        color: $space;
     }
 
     &--dark#{&}--colored {
         background-color: $spray-tan;
-        border: 1px solid $sherbert;
-        color: white;
+        border: 1px solid $silver-lining;
+        color: $shine;
     }
 
     &--canary {
@@ -46,7 +46,7 @@
     &--bluegreen {
         background-color: $sea;
         border: 1px solid $sea;
-        color: white;
+        color: $space;
     }
 
     &--monospace {

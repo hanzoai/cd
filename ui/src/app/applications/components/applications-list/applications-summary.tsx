@@ -37,12 +37,12 @@ export const ApplicationsSummary = ({applications}: {applications: models.Applic
     });
 
     const attributes = [
-        {title: 'APPLICATIONS', value: applications.length},
-        {title: 'SYNCED', value: applications.filter(app => app.status.sync.status === 'Synced').length},
-        {title: 'HEALTHY', value: applications.filter(app => app.status.health.status === 'Healthy').length},
-        {title: 'HYDRATED', value: applications.filter(app => app.status.sourceHydrator?.currentOperation?.phase === 'Hydrated').length},
-        {title: 'CLUSTERS', value: new Set(applications.map(app => app.spec.destination.server || app.spec.destination.name)).size},
-        {title: 'NAMESPACES', value: new Set(applications.map(app => app.spec.destination.namespace)).size}
+        {title: 'Applications', value: applications.length},
+        {title: 'Synced', value: applications.filter(app => app.status.sync.status === 'Synced').length},
+        {title: 'Healthy', value: applications.filter(app => app.status.health.status === 'Healthy').length},
+        {title: 'Hydrated', value: applications.filter(app => app.status.sourceHydrator?.currentOperation?.phase === 'Hydrated').length},
+        {title: 'Clusters', value: new Set(applications.map(app => app.spec.destination.server || app.spec.destination.name)).size},
+        {title: 'Namespaces', value: new Set(applications.map(app => app.spec.destination.namespace)).size}
     ];
 
     const charts = [
@@ -68,7 +68,7 @@ export const ApplicationsSummary = ({applications}: {applications: models.Applic
             <div className='row'>
                 <div className='columns large-3 small-12'>
                     <div className='white-box__details'>
-                        <p className='row'>SUMMARY</p>
+                        <p className='row'>Summary</p>
                         {attributes.map(attr => (
                             <div className='row white-box__details-row' key={attr.title}>
                                 <div className='columns small-8'>{attr.title}</div>

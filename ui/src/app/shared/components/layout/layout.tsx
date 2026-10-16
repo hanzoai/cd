@@ -1,18 +1,19 @@
 import * as React from 'react';
 import {Sidebar} from '../../../sidebar/sidebar';
+import {GlyphName} from '../glyph';
 import {ViewPreferences} from '../../services';
 import {useTheme} from '../../utils';
 
 require('./layout.scss');
 
 export interface LayoutProps {
-    navItems: Array<{path: string; iconClassName: string; title: string}>;
+    navItems: Array<{path: string; glyph?: GlyphName; iconClassName?: string; title: string; tooltip?: string}>;
     onVersionClick?: () => void;
     children?: React.ReactNode;
     pref: ViewPreferences;
 }
 
-const getBGColor = (theme: string): string => (theme === 'light' ? '#e5e5e5' : '#0a0a0a');
+const getBGColor = (theme: string): string => (theme === 'light' ? '#f7f7f7' : '#000000');
 
 export const ThemeWrapper = (props: {children: React.ReactNode; theme: string}) => {
     const [systemTheme] = useTheme({
@@ -24,9 +25,15 @@ export const ThemeWrapper = (props: {children: React.ReactNode; theme: string}) 
 export const Layout = (props: LayoutProps) => {
     const [theme] = useTheme({theme: props.pref.theme});
     React.useEffect(() => {
-        if (theme) {
-            document.body.style.background = getBGColor(theme);
+        if (!theme) {
+            return undefined;
         }
+        document.body.style.background = getBGColor(theme);
+        document.documentElement.dataset.theme = theme;
+        // Pages outside the layout (login) draw their own dark card.
+        return () => {
+            delete document.documentElement.dataset.theme;
+        };
     }, [theme]);
 
     return (

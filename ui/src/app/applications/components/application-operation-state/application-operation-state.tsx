@@ -56,12 +56,12 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
     const [messageFilters, setMessageFilters] = React.useState<string[]>([]);
 
     const operationAttributes = [
-        {title: 'OPERATION', value: utils.getOperationType(application)},
-        {title: 'PHASE', value: operationState.phase},
+        {title: 'Operation', value: utils.getOperationType(application)},
+        {title: 'Phase', value: operationState.phase},
         ...(operationState.message
             ? [
                   {
-                      title: 'MESSAGE',
+                      title: 'Message',
                       value: (
                           <pre
                               style={{
@@ -76,9 +76,9 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
                   }
               ]
             : []),
-        {title: 'STARTED AT', value: <Timestamp date={operationState.startedAt} />},
+        {title: 'Started at', value: <Timestamp date={operationState.startedAt} />},
         {
-            title: 'DURATION',
+            title: 'Duration',
             value: (
                 <Ticker>
                     {time => (
@@ -90,7 +90,7 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
     ];
 
     if (operationState.finishedAt && operationState.phase !== 'Running') {
-        operationAttributes.push({title: 'FINISHED AT', value: <Timestamp date={operationState.finishedAt} />});
+        operationAttributes.push({title: 'Finished at', value: <Timestamp date={operationState.finishedAt} />});
     } else if (operationState.phase !== 'Terminating') {
         operationAttributes.push({
             title: '',
@@ -117,7 +117,7 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
     }
     if (operationState.syncResult) {
         operationAttributes.push({
-            title: 'REVISION',
+            title: 'Revision',
             value: (
                 <div>
                     <Revision repoUrl={utils.getAppDefaultSource(application).repoURL} revision={utils.getAppDefaultOperationSyncRevision(application)} />
@@ -134,7 +134,7 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
             initiator = operationState.operation.initiatedBy.username;
         }
     }
-    operationAttributes.push({title: 'INITIATED BY', value: initiator || 'Unknown'});
+    operationAttributes.push({title: 'Initiated by', value: initiator || 'Unknown'});
 
     const resultAttributes: {title: string; value: string}[] = [];
     const syncResult = operationState.syncResult;
@@ -236,14 +236,14 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
             {syncResult && syncResult.resources && syncResult.resources.length > 0 && (
                 <React.Fragment>
                     <div style={{display: 'flex'}}>
-                        <label style={{display: 'block', marginBottom: '1em'}}>RESULT</label>
+                        <label style={{display: 'block', marginBottom: '1em'}}>Result</label>
                         <div style={{marginLeft: 'auto'}}>
-                            <Filter options={Healths} filters={healthFilters} setFilters={setHealthFilters} title='HEALTH' style={{marginRight: '5px'}} />
-                            <Filter options={Statuses} filters={filters} setFilters={setFilters} title='STATUS' style={{marginRight: '5px'}} />
-                            <Filter options={OperationPhases} filters={filters} setFilters={setFilters} title='HOOK' style={{marginRight: '5px'}} />
+                            <Filter options={Healths} filters={healthFilters} setFilters={setHealthFilters} title='Health' style={{marginRight: '5px'}} />
+                            <Filter options={Statuses} filters={filters} setFilters={setFilters} title='Status' style={{marginRight: '5px'}} />
+                            <Filter options={OperationPhases} filters={filters} setFilters={setFilters} title='Hook' style={{marginRight: '5px'}} />
                             <Tooltip placement='top-start' content='Filter on resources that have changed or remained unchanged'>
                                 <div style={{display: 'inline-block'}}>
-                                    <Filter options={FilterableMessageStatuses} filters={messageFilters} setFilters={setMessageFilters} title='MESSAGE' />
+                                    <Filter options={FilterableMessageStatuses} filters={messageFilters} setFilters={setMessageFilters} title='Message' />
                                 </div>
                             </Tooltip>
                         </div>
@@ -251,15 +251,15 @@ export const ApplicationOperationState: React.FC<Props> = ({application, operati
                     <div className='kit-table-list'>
                         <div className='kit-table-list__head'>
                             <div className='row'>
-                                <div className='columns large-1 show-for-large application-operation-state__icons_container_padding'>SYNC WAVE</div>
-                                <div className='columns large-1 show-for-large application-operation-state__icons_container_padding'>KIND</div>
-                                <div className='columns large-1 show-for-large'>NAMESPACE</div>
-                                <div className='columns large-2 small-2'>NAME</div>
-                                <div className='columns large-1 small-2'>STATUS</div>
-                                <div className='columns large-1 small-2'>HEALTH</div>
-                                <div className='columns large-1 show-for-large'>HOOK</div>
-                                <div className='columns large-3 small-4'>MESSAGE</div>
-                                <div className='columns large-1 small-2'>IMAGES</div>
+                                <div className='columns large-1 show-for-large application-operation-state__icons_container_padding'>Sync wave</div>
+                                <div className='columns large-1 show-for-large application-operation-state__icons_container_padding'>Kind</div>
+                                <div className='columns large-1 show-for-large'>Namespace</div>
+                                <div className='columns large-2 small-2'>Name</div>
+                                <div className='columns large-1 small-2'>Status</div>
+                                <div className='columns large-1 small-2'>Health</div>
+                                <div className='columns large-1 show-for-large'>Hook</div>
+                                <div className='columns large-3 small-4'>Message</div>
+                                <div className='columns large-1 small-2'>Images</div>
                             </div>
                         </div>
                         {filtered.length > 0 ? (

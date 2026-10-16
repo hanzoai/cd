@@ -1,7 +1,11 @@
-export const SUCCESS_COLOR = '#4ADE80';
+// State hues, from @hanzo/design: state-success (green-500), state-error
+// (red-500), amber for drift, and three rungs of the neutral ladder for the
+// states without a verdict: in progress (the theme's second ink, so it reads
+// on either ground), unknown, suspended. A var() works in an SVG fill too.
+export const SUCCESS_COLOR = '#22C55E';
 export const WARNING_COLOR = '#EAB308';
 export const FAILED_COLOR = '#EF4444';
-export const RUNNING_COLOR = '#2F81F7';
+export const RUNNING_COLOR = 'var(--hz-ink-2)';
 export const GRAY4_COLOR = '#A3A3A3';
 export const GRAY6_COLOR = '#737373';
 export const TERMINATING_COLOR = '#DC2626';

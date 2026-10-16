@@ -76,7 +76,7 @@ const getCertTypeValue = (label: string) => {
 
 const CertTypeFilter = (props: CertsFilterProps) => (
     <Filter
-        label='CERT TYPE'
+        label='Cert type'
         selected={props.pref.certTypeFilter.map(getCertTypeLabel)}
         setSelected={s => props.onChange({...props.pref, certTypeFilter: s.map(getCertTypeValue)})}
         options={getFilterOptions(props.certs, 'certType', cert => cert.certType, ['https', 'ssh'], getCertTypeIcon, getCertTypeLabel)}

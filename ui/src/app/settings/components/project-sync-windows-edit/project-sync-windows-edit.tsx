@@ -24,7 +24,7 @@ function helpTip(text: string) {
 
 export const ProjectSyncWindowApplicationsEdit = (props: ProjectSyncWindowProps) => (
     <>
-        <p>APPLICATIONS</p>
+        <p>Applications</p>
         <div>Manage applications assigned to this window ("*" for any)</div>
         <div className='kit-table-list__row'>
             {(props.window.applications || []).map((a, i) => (
@@ -54,7 +54,7 @@ export const ProjectSyncWindowApplicationsEdit = (props: ProjectSyncWindowProps)
 
 export const ProjectSyncWindowNamespaceEdit = (props: ProjectSyncWindowProps) => (
     <>
-        <p>NAMESPACES</p>
+        <p>Namespaces</p>
         <div>Manage namespaces assigned to this window ("*" for any)</div>
         <div className='kit-table-list__row'>
             {(props.window.namespaces || []).map((n, i) => (
@@ -84,7 +84,7 @@ export const ProjectSyncWindowNamespaceEdit = (props: ProjectSyncWindowProps) =>
 
 export const ProjectSyncWindowClusterEdit = (props: ProjectSyncWindowProps) => (
     <>
-        <p>CLUSTERS</p>
+        <p>Clusters</p>
         <div>Manage clusters assigned to this window ("*" for any)</div>
         <div className='kit-table-list__row'>
             {(props.window.clusters || []).map((c, i) => (

@@ -275,6 +275,25 @@ a blank page. Routing is v7 (`HistoryRouter` over `shared/history`, nested
 components the v5 `{history, location, match}` props they still read. `import *
 as x` of an ESM-only package (minimatch 10) is a namespace, not a function.
 
+**Look.** The palette is the `--hz-*` custom properties at the top of
+`ui/src/kit/src/styles/main.scss` (dark under `:root, .theme-dark`, light under
+`.theme-light`), taken from @hanzo/design and the hanzo.ai app shell. The kit's
+accent ramp (`$kit-color-teal-1..8` in `kit/src/styles/config.scss` and
+`kit/v2/styles/colors.scss`) points at them, so those SCSS variables are `var()`s
+and cannot go through `lighten`/`rgba`/`mix`; reach for another rung instead. Hue
+is spent on state only (`shared/components/colors.ts`); in progress is neutral.
+`.kit-button--base` is the one primary (ink pill), `--base-o` a ghost. Chrome
+icons are `shared/components/glyph.tsx`; Font Awesome 7 reads its font path from
+its own module, so main.scss configures it with `@use … with ($font-path)` — a
+global `$fa-font-path` is ignored and every `fa` icon renders as an empty box.
+
+**Version.** `GET /v1/version` and the sidebar report `gitTag` when the build
+was stamped clean. The image build has no usable git, so hanzo.yml's `args`
+pass `GIT_TAG` (a tag the image is published under: `3.7.11` from main; from a
+git tag, `v3.7.5` on the delegated lane and `3.7.5` on buildx, both published),
+`GIT_COMMIT` and `BUILD_DATE`. An unstamped build reports
+`v<VERSION>+unknown` and the sidebar shows nothing for it.
+
 A wrong **internal** import does not read as a typo — it reads as a missing
 dependency (`cannot find module providing package … -mod=readonly`) and sends you
 hunting a `require` line that was never the problem. That is what a stale

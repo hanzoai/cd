@@ -82,8 +82,8 @@ export const FiltersGroup = (props: {
                 {props.title && <div className='filters-group__title'>{props.title}</div>}
                 {props.appliedFilter?.length > 0 && props.onClearFilter && (
                     <div className='filters-group__header'>
-                        <button onClick={() => props.onClearFilter()} className='kit-button kit-button--base kit-button--sm'>
-                            <i className='fa fa-times-circle' /> CLEAR ALL
+                        <button onClick={() => props.onClearFilter()} className='kit-button kit-button--base-o kit-button--sm'>
+                            <i className='fa fa-times-circle' /> Clear all
                         </button>
                     </div>
                 )}
@@ -152,17 +152,17 @@ export const Filter = (props: FilterProps) => {
     return (
         <div className='filter'>
             <div className='filter__header'>
-                <span className='filter__header__label' title={props.label || 'FILTER'}>
-                    {props.label || 'FILTER'}
+                <span className='filter__header__label' title={props.label || 'Filter'}>
+                    {props.label || 'Filter'}
                 </span>
                 {(props.selected || []).length > 0 || (props.field && Object.keys(values).length > 0) ? (
                     <button
-                        className='kit-button kit-button--base kit-button--sm kit-button--right'
+                        className='kit-button kit-button--base-o kit-button--sm kit-button--right'
                         onClick={() => {
                             setValues({} as {[label: string]: boolean});
                             setInput('');
                         }}>
-                        <i className='fa fa-times-circle' /> CLEAR
+                        <i className='fa fa-times-circle' /> Clear
                     </button>
                 ) : (
                     <i className={`fa fa-caret-${collapsed ? 'down' : 'up'} filter__collapse`} onClick={() => setCollapsed(!collapsed)} />
@@ -189,7 +189,6 @@ export const Filter = (props: FilterProps) => {
                                     setValues(update);
                                 }}
                                 style={{width: '100%'}}
-                                inputStyle={{marginBottom: '0.5em', backgroundColor: 'black', border: 'none', color: '#fff'}}
                             />
                         )}
                         {((props.field ? tags : options) || []).map((opt, i) => (
@@ -212,15 +211,15 @@ export const Filter = (props: FilterProps) => {
 
 const FilterError = (props: {retry: () => void}) => (
     <div className='filter__error'>
-        <i className='fa fa-exclamation-circle' /> ERROR LOADING FILTER
+        <i className='fa fa-exclamation-circle' /> Error loading filter
         <div onClick={() => props.retry()} className='filter__error__retry'>
-            <i className='fa fa-redo' /> RETRY
+            <i className='fa fa-redo' /> Retry
         </div>
     </div>
 );
 
 const FilterLoading = () => (
     <div className='filter__loading'>
-        <i className='fa fa-circle-notch fa-spin' /> LOADING
+        <i className='fa fa-circle-notch fa-spin' /> Loading
     </div>
 );

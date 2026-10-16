@@ -13,7 +13,7 @@ interface ProjectRoleGroupsProps {
 
 export const ProjectRoleGroupsEdit = (props: ProjectRoleGroupsProps) => (
     <>
-        <p>GROUPS</p>
+        <p>Groups</p>
         <div>OIDC group names to bind to this role</div>
         {
             <div className='kit-table-list'>

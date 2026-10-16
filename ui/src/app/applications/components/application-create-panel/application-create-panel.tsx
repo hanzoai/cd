@@ -305,7 +305,7 @@ export const ApplicationCreatePanel = (props: {
 
                                     const generalPanel = () => (
                                         <div className='white-box'>
-                                            <p>GENERAL</p>
+                                            <p>General</p>
                                             {/*
                                                     Need to specify "type='button'" because the default type 'submit'
                                                     will activate yaml mode whenever enter is pressed while in the panel.
@@ -366,7 +366,7 @@ export const ApplicationCreatePanel = (props: {
                                             const count = formApp.spec.sources?.length ?? 0;
                                             return (
                                                 <div className='white-box'>
-                                                    <p>SOURCES</p>
+                                                    <p>Sources</p>
                                                     {Array.from({length: count}, (_, i) => (
                                                         <CollapsibleMultiSourceSection
                                                             key={`msrc-${i}`}
@@ -391,7 +391,7 @@ export const ApplicationCreatePanel = (props: {
 
                                         return (
                                             <div className='white-box'>
-                                                <p>SOURCE</p>
+                                                <p>Source</p>
                                                 {authSettingsCtx?.hydratorEnabled && (
                                                     <div className='row kit-form-row'>
                                                         <div className='columns small-12'>
@@ -452,7 +452,7 @@ export const ApplicationCreatePanel = (props: {
                                     };
                                     const destinationPanel = () => (
                                         <div className='white-box'>
-                                            <p>DESTINATION</p>
+                                            <p>Destination</p>
                                             <div className='row kit-form-row'>
                                                 {(destinationComboValue.toUpperCase() === 'URL' && (
                                                     <div className='columns small-10'>

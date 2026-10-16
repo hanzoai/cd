@@ -82,11 +82,9 @@ $soft: rgba(255, 255, 255, 0.56);
         padding-top: 24px;
     }
 
-    // The kit ships its buttons uppercase. A control that shouts one line and
-    // whispers the next is two voices; these are the product's own.
+    // The sign-in card's buttons are full-width controls, so they take the
+    // card's radius instead of the pill.
     .kit-button {
-        text-transform: none;
-        letter-spacing: 0;
         font-size: 14px;
         border-radius: 10px;
     }

@@ -1,2 +1,5 @@
-$sidebar-width: 230px;
-$collapsed-sidebar-width: 60px;
+$sidebar-width: 240px;
+$collapsed-sidebar-width: 56px;
+// Phones: the sidebar is always the rail, and opens over the page. Kept in step
+// with PHONE in sidebar/sidebar.tsx.
+$phone-max: 639px;

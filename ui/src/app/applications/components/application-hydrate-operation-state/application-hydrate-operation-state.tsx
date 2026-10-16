@@ -15,11 +15,11 @@ interface Props {
 
 export const ApplicationHydrateOperationState: React.FunctionComponent<Props> = ({hydrateOperationState}) => {
     const operationAttributes = [
-        {title: 'PHASE', value: hydrateOperationState.phase},
-        ...(hydrateOperationState.message ? [{title: 'MESSAGE', value: hydrateOperationState.message}] : []),
-        {title: 'STARTED AT', value: <Timestamp date={hydrateOperationState.startedAt} />},
+        {title: 'Phase', value: hydrateOperationState.phase},
+        ...(hydrateOperationState.message ? [{title: 'Message', value: hydrateOperationState.message}] : []),
+        {title: 'Started at', value: <Timestamp date={hydrateOperationState.startedAt} />},
         {
-            title: 'DURATION',
+            title: 'Duration',
             value: (
                 <Ticker>
                     {time => (
@@ -36,11 +36,11 @@ export const ApplicationHydrateOperationState: React.FunctionComponent<Props> = 
     ];
 
     if (hydrateOperationState.finishedAt && hydrateOperationState.phase !== 'Hydrating') {
-        operationAttributes.push({title: 'FINISHED AT', value: <Timestamp date={hydrateOperationState.finishedAt} />});
+        operationAttributes.push({title: 'Finished at', value: <Timestamp date={hydrateOperationState.finishedAt} />});
     }
     if (hydrateOperationState.drySHA) {
         operationAttributes.push({
-            title: 'DRY REVISION',
+            title: 'Dry revision',
             value: (
                 <div>
                     <Revision repoUrl={hydrateOperationState.sourceHydrator.drySource.repoURL} revision={hydrateOperationState.drySHA} />
@@ -50,7 +50,7 @@ export const ApplicationHydrateOperationState: React.FunctionComponent<Props> = 
     }
     if (hydrateOperationState.finishedAt && hydrateOperationState.hydratedSHA) {
         operationAttributes.push({
-            title: 'HYDRATED REVISION',
+            title: 'Hydrated revision',
             value: (
                 <div>
                     <Revision repoUrl={getHydratorSyncSourceRepoURL(hydrateOperationState.sourceHydrator)} revision={hydrateOperationState.hydratedSHA} />

@@ -102,19 +102,19 @@ export const ApplicationNodeInfo = (props: {
     controlled: {summary: models.ResourceStatus; state: models.ResourceDiff};
 }) => {
     const attributes: {title: string; value: any}[] = [
-        {title: 'KIND', value: props.node.kind},
-        {title: 'NAME', value: <ClipboardText text={props.node.name} />},
-        {title: 'NAMESPACE', value: <ClipboardText text={props.node.namespace} />}
+        {title: 'Kind', value: props.node.kind},
+        {title: 'Name', value: <ClipboardText text={props.node.name} />},
+        {title: 'Namespace', value: <ClipboardText text={props.node.namespace} />}
     ];
     if (props.node.createdAt) {
         attributes.push({
-            title: 'CREATED AT',
+            title: 'Created at',
             value: formatCreationTimestamp(props.node.createdAt)
         });
     }
     if ((props.node.images || []).length) {
         attributes.push({
-            title: 'IMAGES',
+            title: 'Images',
             value: (
                 <div className='application-node-info__labels'>
                     {(props.node.images || []).sort().map(image => (
@@ -130,13 +130,13 @@ export const ApplicationNodeInfo = (props: {
     if (props.live) {
         if (props.node.kind === 'Pod') {
             const {reason, message, netContainerStatuses} = getPodStateReason(props.live);
-            attributes.push({title: 'STATE', value: reason});
+            attributes.push({title: 'State', value: reason});
             if (message) {
-                attributes.push({title: 'STATE DETAILS', value: message});
+                attributes.push({title: 'State details', value: message});
             }
             if (netContainerStatuses.length > 0) {
                 attributes.push({
-                    title: 'CONTAINER STATE',
+                    title: 'Container state',
                     value: (
                         <div className='application-node-info__labels'>
                             {netContainerStatuses.map((container, i) => {
@@ -147,22 +147,22 @@ export const ApplicationNodeInfo = (props: {
                 });
             }
         } else if (props.node.kind === 'Service') {
-            attributes.push({title: 'TYPE', value: props.live.spec.type});
+            attributes.push({title: 'Type', value: props.live.spec.type});
             let hostNames = '';
             const status = props.live.status;
             if (status && status.loadBalancer && status.loadBalancer.ingress) {
                 hostNames = (status.loadBalancer.ingress || []).map((item: any) => item.hostname || item.ip).join(', ');
             }
-            attributes.push({title: 'HOSTNAMES', value: hostNames});
+            attributes.push({title: 'Hostnames', value: hostNames});
         } else if (props.node.kind === 'ReplicaSet') {
-            attributes.push({title: 'REPLICAS', value: `${props.live.spec?.replicas || 0}/${props.live.status?.readyReplicas || 0}/${props.live.status?.replicas || 0}`});
+            attributes.push({title: 'Replicas', value: `${props.live.spec?.replicas || 0}/${props.live.status?.readyReplicas || 0}/${props.live.status?.replicas || 0}`});
         }
     }
 
     if (props.controlled) {
         if (!props.controlled.summary.hook) {
             attributes.push({
-                title: 'STATUS',
+                title: 'Status',
                 value: (
                     <span>
                         <ComparisonStatusIcon status={props.controlled.summary.status} resource={props.controlled.summary} label={true} />
@@ -172,7 +172,7 @@ export const ApplicationNodeInfo = (props: {
         }
         if (props.controlled.summary.health !== undefined) {
             attributes.push({
-                title: 'HEALTH',
+                title: 'Health',
                 value: (
                     <span>
                         <HealthStatusIcon state={props.controlled.summary.health} /> {props.controlled.summary.health.status}
@@ -180,14 +180,14 @@ export const ApplicationNodeInfo = (props: {
                 )
             } as any);
             if (props.controlled.summary.health.message) {
-                attributes.push({title: 'HEALTH DETAILS', value: props.controlled.summary.health.message});
+                attributes.push({title: 'Health details', value: props.controlled.summary.health.message});
             }
         }
     } else if (props.node && (props.node as ResourceTreeNode).health) {
         const treeNode = props.node as ResourceTreeNode;
         if (treeNode && treeNode.health) {
             attributes.push({
-                title: 'HEALTH',
+                title: 'Health',
                 value: (
                     <span>
                         <HealthStatusIcon state={treeNode.health} /> {treeNode.health.message || treeNode.health.status}
@@ -198,7 +198,7 @@ export const ApplicationNodeInfo = (props: {
     }
     if (props.links) {
         attributes.push({
-            title: 'LINKS',
+            title: 'Links',
             value: <DeepLinks links={props.links.items} />
         });
     }

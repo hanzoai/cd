@@ -7,7 +7,6 @@
         font-size: 12px;
         font-weight: 500;
         color: $kit-color-gray-6;
-        text-transform: uppercase;
     }
 
     &__row {
@@ -47,7 +46,7 @@
             cursor: pointer;
 
             &:hover {
-                box-shadow: 1px 2px 3px rgba($kit-color-gray-9, .1), 0 0 0 1px rgba($kit-color-teal-5, .5);
+                box-shadow: inset 2px 0 0 var(--entry-status, transparent), 0 0 0 1px var(--hz-faint);
             }
         }
 

@@ -105,7 +105,6 @@
     &__multi-source-label {
         font-weight: 600;
         font-size: 13px;
-        text-transform: uppercase;
         @include themify($themes) {
             color: themed('text-2');
         }

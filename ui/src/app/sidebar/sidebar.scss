@@ -1,63 +1,98 @@
-@import 'src/kit/v2/styles/colors.scss';
 @import '../shared/config.scss';
 
-$deselected-text: #a3a3a3;
-
+// The hanzo.ai app shell's sidebar (@hanzo/ui chat Sidebar): a panel on the
+// page ground with a hairline edge, rows of 16px line icons and 14px labels,
+// quiet ink at rest, full ink and a tint for the current page.
 .sidebar {
     min-width: $sidebar-width;
     width: $sidebar-width;
-    padding: 0 20px;
+    padding: 12px 10px;
     top: 0;
     left: 0;
     position: fixed;
     height: 100vh;
     max-height: 100vh;
-    color: #fafafa;
-    background-color: #0a0a0a;
-    border-right: 1px solid rgb(255 255 255 / 0.1);
+    color: var(--hz-ink);
+    background-color: var(--hz-page);
+    border-right: 1px solid var(--hz-line);
     overflow: auto;
     z-index: 2;
 
-    &__container {
-        padding: 0 5px;
-    }
-
-    &__logo-container {
-        margin-top: 10px;
-        font-size: 12px;
-        color: $deselected-text;
-        margin-left: 12px;
-    }
-
-    &__logo {
-        width: 100%;
+    &__head {
         display: flex;
-        flex-direction: row-reverse;
         align-items: center;
-        justify-content: flex-end;
-        font-size: 24px;
-        font-weight: 500;
-        margin: 1em 0;
-        margin-left: -7px;
+        gap: 6px;
+        height: 36px;
+        margin-bottom: 12px;
+        padding-left: 6px;
+    }
 
-        &__character {
-            cursor: pointer;
-            width: 42px;
-        }
+    &__brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        color: var(--hz-ink);
+        text-decoration: none;
 
-        &__text-logo {
-            cursor: pointer;
-            height: 2em;
+        &:hover,
+        &:focus {
+            color: var(--hz-ink);
+            text-decoration: none;
         }
+    }
+
+    &__name {
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
     }
 
     &__version {
-        cursor: pointer;
-        width: 110px;
-        text-align: left;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        font-family: inherit;
+        font-size: 11px;
+        color: var(--hz-faint);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        cursor: pointer;
+
+        &:hover {
+            color: var(--hz-dim);
+        }
+    }
+
+    &__toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 28px;
+        height: 28px;
+        margin-left: auto;
+        padding: 0;
+        border: 0;
+        border-radius: 8px;
+        background: none;
+        color: var(--hz-dim);
+        cursor: pointer;
+
+        &:hover {
+            color: var(--hz-ink);
+            background: var(--hz-tint);
+        }
+    }
+
+    &__toggle:focus-visible,
+    &__brand:focus-visible,
+    &__version:focus-visible,
+    &__nav-item:focus-visible {
+        outline: 2px solid var(--hz-ring);
+        outline-offset: -2px;
     }
 
     &__tooltip {
@@ -68,114 +103,115 @@ $deselected-text: #a3a3a3;
     }
 
     &__nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
         list-style: none;
         margin: 0;
         padding: 0;
     }
 
     &__nav-item {
-        cursor: pointer;
         display: flex;
         align-items: center;
-        font-size: 16px;
-        font-weight: 500;
-        $height: 2.5em;
-        height: $height;
-        line-height: $height;
-        color: $deselected-text;
-        // Reset native <a>/<button> chrome so anchors and the filter button match the original divs.
+        gap: 10px;
         width: 100%;
+        height: 34px;
+        padding: 0 8px;
+        border: none;
+        border-radius: 8px;
+        background: none;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
         text-align: left;
         text-decoration: none;
-        background: none;
-        border: none;
-        padding: 0;
+        color: var(--hz-dim);
+        cursor: pointer;
         appearance: none;
-        -webkit-appearance: none; // older Safari still needs the prefix
-        font-family: inherit;
+        -webkit-appearance: none;
 
-        // Visible keyboard focus on the dark sidebar background (default ring is low-contrast here).
-        &:focus-visible {
-            outline: 2px solid rgb(255 255 255 / 0.4);
-            outline-offset: -2px;
+        // Out-specify the kit's global `a:hover` so a row only changes by tint.
+        &:hover,
+        &:focus {
+            color: var(--hz-ink);
+            background: var(--hz-tint);
+            text-decoration: none;
         }
 
-        i {
-            font-size: 26px;
-            color: #fafafa;
-            width: 40px;
-            padding-right: 45px;
-        }
-
-        i.fa {
-            font-size: 22px;
-            margin-left: 2px;
-            margin-right: -2px;
-            margin-top: 12px;
-            width: 32px;           
-        }
-
-        &--active {
-            color: #fafafa;
-            // Out-specify the kit's global `a:hover { color: accent }` so the active item stays paper-white.
-            &:hover,
-            &:focus {
-                color: #fafafa;
-            }
-            i {
-                color: #fafafa;
-            }
+        &--active,
+        &--active:hover,
+        &--active:focus {
+            color: var(--hz-ink);
+            background: var(--hz-tint);
         }
     }
 
-    &__collapse-button {
-        text-align: center;
-        cursor: pointer;
-        margin-left: auto;
-        margin-bottom: 1em;
-        font-size: 20px;
-        color: $deselected-text;
+    &__nav-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 20px;
+        opacity: 0.8;
+
+        i {
+            font-size: 15px;
+        }
+    }
+
+    &__nav-item--active &__nav-icon {
+        opacity: 1;
+    }
+
+    &__nav-label {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &--collapsed {
         min-width: $collapsed-sidebar-width;
         width: $collapsed-sidebar-width;
-        padding: 15px 5px;
+        padding: 12px 8px;
         overflow: hidden !important;
 
-        .sidebar__logo {
-            margin-left: 0;
+        .sidebar__head {
             flex-direction: column;
-            margin-bottom: 18px;
-            margin-top: -7px;
-            justify-content: center;
+            height: auto;
+            gap: 12px;
+            padding-left: 0;
         }
 
-        .sidebar__collapse-button {
+        .sidebar__brand {
+            padding-top: 8px;
+        }
+
+        .sidebar__toggle {
             margin-left: 0;
-            margin-top: 1em;
         }
 
-        .sidebar__logo img {
-            margin-right: 0;
+        .sidebar__nav-item {
+            justify-content: center;
+            padding: 0;
         }
 
-        .sidebar__nav-item i {
-            margin-right: 0;
-            margin-left: 7px;
+        .sidebar__tools {
+            display: none;
         }
+    }
 
-        .sidebar__nav-item i.fa {
-            margin-left: 9px;
-        }
+    // On a phone the open sidebar lies over the page and its bars, above this
+    // scrim; below sliding panels (20) and the lists that open over it (21).
+    &--over {
+        z-index: 12;
+    }
 
-        .sidebar__filter-button {
-            i {
-                font-size: 14px;
-                margin-top: 2em;
-                margin-left: 13px;
-                color: $deselected-text;
-            }
-        }
+    &__scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 11;
+        background: rgba(0, 0, 0, 0.6);
     }
 }

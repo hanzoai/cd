@@ -2,16 +2,16 @@
 
 $themes: (
     light: (
-        background-1: $kit-color-gray-3,
-        text-1: $kit-color-gray-7,     
+        background-1: var(--hz-page),
+        text-1: $kit-color-gray-7,
         background-2: $white-color,
-        text-2: $kit-color-gray-8,        
+        text-2: $kit-color-gray-9,
         light-kit-gray-6: $kit-color-gray-6,
         light-kit-gray-2: $kit-color-gray-2,
         light-kit-teal-1: $kit-color-teal-1,
         light-kit-teal-7: $kit-color-teal-7,
         light-kit-teal-5: $kit-color-teal-5,
-        pod-cyan: lightcyan,
+        pod-cyan: $kit-color-gray-3,
         layout-loader-bg: rgba($kit-color-gray-7, 0.4),
         overlay: rgba(222, 222, 222, 0.62),
         shadow: $kit-color-gray-5,
@@ -19,19 +19,19 @@ $themes: (
     ),
     dark: (
         background-1: $dark-theme-background-1,
-        text-1: $kit-color-gray-3,        
+        text-1: $kit-color-gray-3,
         background-2: $dark-theme-background-2,
-        text-2: $white-color,        
+        text-2: $kit-color-gray-1,
         light-kit-gray-6: $kit-color-gray-2,
         light-kit-gray-2: $dark-theme-sliding-panel,
-        light-kit-teal-1: $kit-color-gray-6,
+        light-kit-teal-1: $kit-color-gray-8,
         light-kit-teal-7: $kit-color-teal-5,
         light-kit-teal-5: $kit-color-teal-4,
-        pod-cyan: $kit-color-teal-8,
-        layout-loader-bg: rgba($kit-color-gray-3, 0.4),
-        overlay: rgba(70, 70, 70, 0.62),
+        pod-cyan: $kit-color-gray-7,
+        layout-loader-bg: rgba(0, 0, 0, 0.6),
+        overlay: rgba(0, 0, 0, 0.8),
         shadow: $dark-theme-background-1,
-        border: $kit-color-gray-7
+        border: var(--hz-line)
     )
 );
 

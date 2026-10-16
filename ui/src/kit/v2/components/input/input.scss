@@ -1,35 +1,30 @@
 @import '../../styles/colors.scss';
 
+// A text field on the page's own ground: a hairline that lifts on focus.
 .input-container {
     min-width: 0;
     box-sizing: border-box;
+
     .input {
         box-sizing: border-box;
         width: 100%;
         appearance: none;
-        border-radius: 5px;
-        padding: 7px 10px;
-        background-color: $kit-color-gray-3;
-        border: 1px solid $kit-color-gray-5;
-        color: $kit-color-gray-7;
+        border-radius: 8px;
+        padding: 6px 10px;
+        background-color: transparent;
+        border: 1px solid var(--hz-line);
+        color: var(--hz-ink);
         min-width: 0;
-        font-size: 14px;
+        font-family: inherit;
+        font-size: 13px;
         line-height: 1.5em;
+
+        &:focus {
+            border-color: var(--hz-dim);
+        }
     }
 
     input::placeholder {
-        color: $kit-color-gray-6;
-    }
-
-    &--dark {
-        .input {
-            background-color: $space;
-            border: 1px solid $silver-lining;
-            color: $shine;
-        }
-
-        input::placeholder {
-            color: $dull-shine;
-        }
+        color: var(--hz-faint);
     }
 }

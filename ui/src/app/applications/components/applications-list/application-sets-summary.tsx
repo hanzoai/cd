@@ -21,8 +21,8 @@ export const ApplicationSetsSummary = ({appSets}: {appSets: models.ApplicationSe
     });
 
     const attributes = [
-        {title: 'APPLICATIONSETS', value: appSets.length},
-        {title: 'HEALTHY', value: appSets.filter(appSet => getAppSetHealthStatus(appSet) === 'Healthy').length}
+        {title: 'ApplicationSets', value: appSets.length},
+        {title: 'Healthy', value: appSets.filter(appSet => getAppSetHealthStatus(appSet) === 'Healthy').length}
     ];
 
     const charts = [
@@ -38,7 +38,7 @@ export const ApplicationSetsSummary = ({appSets}: {appSets: models.ApplicationSe
             <div className='row'>
                 <div className='columns large-3 small-12'>
                     <div className='white-box__details'>
-                        <p className='row'>SUMMARY</p>
+                        <p className='row'>Summary</p>
                         {attributes.map(attr => (
                             <div className='row white-box__details-row' key={attr.title}>
                                 <div className='columns small-8'>{attr.title}</div>

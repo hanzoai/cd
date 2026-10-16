@@ -179,7 +179,7 @@ export const ClustersList = () => {
                                                             <div className='row'>
                                                                 <IconColumn />
                                                                 <div className='columns small-2 sortable' onClick={() => requestSort('name')}>
-                                                                    NAME
+                                                                    Name
                                                                     {sortIcon('name')}
                                                                 </div>
                                                                 <div className='columns small-5 sortable' onClick={() => requestSort('url')}>
@@ -187,10 +187,10 @@ export const ClustersList = () => {
                                                                     {sortIcon('url')}
                                                                 </div>
                                                                 <div className='columns small-2 sortable' onClick={() => requestSort('version')}>
-                                                                    VERSION
+                                                                    Version
                                                                     {sortIcon('version')}
                                                                 </div>
-                                                                <div className='columns small-2'>CONNECTION STATUS</div>
+                                                                <div className='columns small-2'>Connection status</div>
                                                             </div>
                                                         </div>
                                                         {clustersToDisplay.map(cluster => (

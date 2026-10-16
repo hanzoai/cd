@@ -52,7 +52,7 @@ export const HydratorSourcePanel = (props: HydratorSourcePanelProps) => {
     return (
         <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
             <div style={{display: 'flex', flexDirection: 'column'}}>
-                <p style={{marginBottom: 0, fontWeight: 600}}>DRY SOURCE</p>
+                <p style={{marginBottom: 0, fontWeight: 600}}>Dry source</p>
                 <div style={subsectionBodyStyle}>
                     <div style={{display: 'flex', width: '100%'}}>
                         <div style={{flex: 1, minWidth: 0}}>
@@ -83,7 +83,7 @@ export const HydratorSourcePanel = (props: HydratorSourcePanelProps) => {
                 </div>
             </div>
             <div style={{display: 'flex', flexDirection: 'column'}}>
-                <p style={{marginBottom: 0, fontWeight: 600}}>SYNC SOURCE</p>
+                <p style={{marginBottom: 0, fontWeight: 600}}>Sync source</p>
                 <div style={subsectionBodyStyle}>
                     <div style={{display: 'flex', width: '100%'}}>
                         <div style={{flex: 1, minWidth: 0}}>
@@ -114,7 +114,7 @@ export const HydratorSourcePanel = (props: HydratorSourcePanelProps) => {
                 </div>
             </div>
             <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
-                <p style={{fontWeight: 600}}>HYDRATE TO</p>
+                <p style={{fontWeight: 600}}>Hydrate to</p>
                 <div style={subsectionBodyStyle}>
                     <LabeledRevisionField
                         formApi={props.formApi}

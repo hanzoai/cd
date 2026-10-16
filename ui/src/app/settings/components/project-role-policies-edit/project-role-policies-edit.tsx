@@ -28,15 +28,15 @@ export const ProjectRolePoliciesEdit = (props: ProjectRolePoliciesProps) => {
         <DataLoader load={() => services.applications.list([props.projName], objectListKind, {fields: ['items.metadata.name']}).then(list => list.items)}>
             {applications => (
                 <React.Fragment>
-                    <p>POLICY RULES</p>
+                    <p>Policy rules</p>
                     <div>Manage this role's permissions to applications, appsets, repositories, clusters, exec and logs</div>
                     <div className='kit-table-list'>
                         <div className='kit-table-list__head'>
                             <div className='row'>
-                                <div className='columns small-3'>RESOURCE</div>
-                                <div className='columns small-3'>ACTION</div>
-                                <div className='columns small-3'>OBJECT</div>
-                                <div className='columns small-3'>PERMISSION</div>
+                                <div className='columns small-3'>Resource</div>
+                                <div className='columns small-3'>Action</div>
+                                <div className='columns small-3'>Object</div>
+                                <div className='columns small-3'>Permission</div>
                             </div>
                         </div>
                         <div className='kit-table-list__row'>

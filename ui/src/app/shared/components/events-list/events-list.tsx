@@ -37,11 +37,11 @@ export const EventsList = (props: {events: models.Event[]}) => {
                 <div className='kit-table-list'>
                     <div className='kit-table-list__head'>
                         <div className='row'>
-                            <div className='columns small-2 xxlarge-2'>REASON</div>
-                            <div className='columns small-4 xxlarge-5'>MESSAGE</div>
-                            <div className='columns small-2 xxlarge-1'>COUNT</div>
-                            <div className='columns small-2 xxlarge-2'>FIRST OCCURRED</div>
-                            <div className='columns small-2 xxlarge-2'>LAST OCCURRED</div>
+                            <div className='columns small-2 xxlarge-2'>Reason</div>
+                            <div className='columns small-4 xxlarge-5'>Message</div>
+                            <div className='columns small-2 xxlarge-1'>Count</div>
+                            <div className='columns small-2 xxlarge-2'>First occurred</div>
+                            <div className='columns small-2 xxlarge-2'>Last occurred</div>
                         </div>
                     </div>
                     {events.map(event => (

@@ -1,3 +1,9 @@
+// Font Awesome 7 reads its font path from its own module, not from a global, so
+// it is configured here, before anything loads it. The fonts are copied to
+// assets/fonts (webpack.config.js), and a relative url in an injected <style>
+// resolves against <base href>, the same way kit-icon's does.
+@use '@fortawesome/fontawesome-free/scss/variables' with ($font-path: 'assets/fonts');
+
 @import './config';
 @import './kit-icon';
 
@@ -14,26 +20,107 @@
 @include foundation-typography;
 @include foundation-visibility-classes;
 
+// The Hanzo palette, from @hanzo/design (tokens/colors.css) and the hanzo.ai app
+// shell: one hue on a neutral ladder, with hue spent only on state. Every SCSS
+// colour in config.scss that used to be an accent hue now reads one of these, so
+// both themes follow from this block. Layout stamps the theme on <html> as
+// data-theme, so what is appended to <body> (tooltips, menus, suggestion lists)
+// takes the same palette as the page.
+:root,
+.theme-dark {
+    color-scheme: dark;
+    accent-color: var(--hz-ink);
+    --hz-page: #000000;
+    --hz-surface: #171717;
+    --hz-raised: #262626;
+    --hz-line: #2e2e2e;
+    --hz-ink: #fafafa;
+    --hz-ink-2: #d4d4d4;
+    --hz-dim: #a3a3a3;
+    --hz-faint: #737373;
+    --hz-tint: rgb(255 255 255 / 0.06);
+    --hz-on-ink: #000000;
+    --hz-ring: rgb(255 255 255 / 0.4);
+}
+
+:root[data-theme='light'],
+.theme-light {
+    color-scheme: light;
+    accent-color: var(--hz-ink);
+    --hz-page: #f7f7f7;
+    --hz-surface: #ffffff;
+    --hz-raised: #ededed;
+    --hz-line: #e5e5e5;
+    --hz-ink: #0a0a0a;
+    --hz-ink-2: #262626;
+    --hz-dim: #525252;
+    --hz-faint: #737373;
+    --hz-tint: rgb(0 0 0 / 0.05);
+    --hz-on-ink: #fafafa;
+    --hz-ring: rgb(0 0 0 / 0.4);
+}
+
 body {
     margin: 0;
     font-family: $body-font-family;
     font-weight: normal;
     font-size: 16px;
     font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     color: $kit-color-gray-7;
-    background: $kit-color-gray-3;
+    background: var(--hz-page);
 
-    button, a, span, input {
-        outline: none !important
+    // A pointer focus draws no ring; a keyboard focus keeps the one each
+    // control declares. A text field shows focus by its caret and border.
+    button, a, span {
+        &:focus:not(:focus-visible) {
+            outline: none;
+        }
+    }
+
+    input {
+        outline: none !important;
     }
 }
 
 a, a:hover {
-    color: $kit-color-teal-6;
+    color: var(--hz-ink);
 }
 
 h1, h2 {
-    color: $kit-color-teal-6;
+    color: var(--hz-ink);
+}
+
+// One focus ring for every control that does not declare its own.
+:focus-visible {
+    outline: 2px solid var(--hz-ring);
+    outline-offset: 2px;
+}
+
+// Tooltips (tippy's light theme, appended to <body>) as the shell draws them:
+// the surface, ink and a hairline. `body` outranks the theme's own sheet.
+body .tippy-tooltip.light-theme {
+    color: var(--hz-ink);
+    background-color: var(--hz-surface);
+    box-shadow: 0 0 0 1px var(--hz-line), 0 8px 24px rgb(0 0 0 / 0.3);
+    font-size: 12px;
+
+    &[data-placement^='top'] > .tippy-arrow {
+        border-top-color: var(--hz-surface);
+    }
+
+    &[data-placement^='bottom'] > .tippy-arrow {
+        border-bottom-color: var(--hz-surface);
+    }
+
+    &[data-placement^='left'] > .tippy-arrow {
+        border-left-color: var(--hz-surface);
+    }
+
+    &[data-placement^='right'] > .tippy-arrow {
+        border-right-color: var(--hz-surface);
+    }
 }
 
 @import './elements/buttons';

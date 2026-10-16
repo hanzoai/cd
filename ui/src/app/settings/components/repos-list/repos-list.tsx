@@ -893,26 +893,26 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                                             <div className='row'>
                                                                 <IconColumn />
                                                                 <div className='columns small-1 sortable' onClick={() => requestSort('type')}>
-                                                                    TYPE
+                                                                    Type
                                                                     {sortIcon('type')}
                                                                 </div>
                                                                 <div className='columns small-2 sortable' onClick={() => requestSort('name')}>
-                                                                    NAME
+                                                                    Name
                                                                     {sortIcon('name')}
                                                                 </div>
                                                                 <div className='columns small-4 sortable' onClick={() => requestSort('repository')}>
-                                                                    REPOSITORY
+                                                                    Repository
                                                                     {sortIcon('repository')}
                                                                 </div>
                                                                 <div className='columns small-1 sortable' onClick={() => requestSort('project')}>
-                                                                    PROJECT
+                                                                    Project
                                                                     {sortIcon('project')}
                                                                 </div>
                                                                 <div className='columns small-1 sortable' onClick={() => requestSort('permission')}>
-                                                                    PERMISSION
+                                                                    Permission
                                                                     {sortIcon('permission')}
                                                                 </div>
-                                                                <div className='columns small-2'>CONNECTION STATUS</div>
+                                                                <div className='columns small-2'>Connection status</div>
                                                             </div>
                                                         </div>
                                                         {reposToDisplay.map(repo => {
@@ -1060,7 +1060,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                     <form onSubmit={formApi.submitForm} role='form' className='repos-list width-control'>
                                         {authSettings?.hydratorEnabled && (
                                             <div className='white-box'>
-                                                <p>SAVE AS WRITE CREDENTIAL (BETA)</p>
+                                                <p>Save as write credential (beta)</p>
                                                 <p>
                                                     The Source Hydrator is a Beta feature which enables Applications to push hydrated manifests to git before syncing. To use Source
                                                     Hydrator for a repository, you must save two credentials: a read credential for pulling manifests and a write credential for
@@ -1075,7 +1075,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         )}
                                         {method === ConnectionMethod.SSH && (
                                             <div className='white-box'>
-                                                <p>CONNECT REPO USING SSH</p>
+                                                <p>Connect repo using SSH</p>
                                                 {formApi.getFormState().values.write === false && (
                                                     <div className='kit-form-row'>
                                                         <FormField formApi={formApi} label='Name (mandatory for Helm)' field='name' component={Text} />
@@ -1122,7 +1122,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         )}
                                         {method === ConnectionMethod.HTTPS && (
                                             <div className='white-box'>
-                                                <p>CONNECT REPO USING HTTP/HTTPS</p>
+                                                <p>Connect repo using HTTP/HTTPS</p>
                                                 <div className='kit-form-row'>
                                                     <FormField
                                                         formApi={formApi}
@@ -1226,7 +1226,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         )}
                                         {method === ConnectionMethod.GITHUBAPP && (
                                             <div className='white-box'>
-                                                <p>CONNECT REPO USING GITHUB APP</p>
+                                                <p>Connect repo using a GitHub app</p>
                                                 <div className='kit-form-row'>
                                                     <FormField
                                                         formApi={formApi}
@@ -1298,7 +1298,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         )}
                                         {method === ConnectionMethod.GOOGLECLOUD && (
                                             <div className='white-box'>
-                                                <p>CONNECT REPO USING GOOGLE CLOUD</p>
+                                                <p>Connect repo using Google Cloud</p>
                                                 <div className='kit-form-row'>
                                                     <FormField formApi={formApi} label='Project' field='project' component={AutocompleteField} componentProps={{items: projects}} />
                                                 </div>
@@ -1322,7 +1322,7 @@ export const ReposList = ({match, location}: RouteComponentProps) => {
                                         )}
                                         {method === ConnectionMethod.AZURESERVICEPRINCIPAL && (
                                             <div className='white-box'>
-                                                <p>CONNECT REPO USING AZURE SERVICE PRINCIPAL</p>
+                                                <p>Connect repo using an Azure service principal</p>
                                                 <div className='kit-form-row'>
                                                     <FormField
                                                         formApi={formApi}

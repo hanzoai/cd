@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 From: https://github.com/cncf/artwork/blob/3e6dbd6b9f3fd3b03e848c10a9921ccc5b5dabf7/projects/istio/icon/white/istio-icon-white.svg
-Only modified to set the fill color to #8fa4b1.
+Only modified to set the fill color to #a3a3a3.
 -->
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 77.62745 102.5">
     <defs>
         <style>
             .cls-1 {
-            fill: #8fa4b1;
+            fill: #a3a3a3;
             }
         </style>
     </defs>

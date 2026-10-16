@@ -253,7 +253,7 @@ function editList(type: field, formApi: FormApi) {
                 onClick={() =>
                     formApi.setValue(`spec.${type}`, (formApi.values.spec[type] || []).concat(isClusterResourceList ? {group: '*', kind: '*', name: ''} : {group: '*', kind: '*'}))
                 }>
-                ADD RESOURCE
+                Add resource
             </button>
         </React.Fragment>
     );

@@ -20,38 +20,44 @@ $kit-color-gray-7: #525252;
 $kit-color-gray-8: #262626;
 $kit-color-gray-9: #0A0A0A;
 
-$kit-color-teal-1: #CAE2FF;
-$kit-color-teal-2: #A5CDFF;
-$kit-color-teal-3: #79C0FF;
-$kit-color-teal-4: #58A6FF;
-$kit-color-teal-5: #2F81F7;
-$kit-color-teal-6: #2F81F7;
-$kit-color-teal-7: #1F6FEB;
-$kit-color-teal-8: #1A5DC7;
+// The kit's accent ramp, kept under its upstream names so every component
+// reads it unchanged. Hanzo has no accent hue: the ramp is ink on the neutral
+// ladder, and each rung is a custom property (main.scss) so it inverts with the
+// theme. Being var()s, they cannot go through Sass colour functions.
+$kit-color-teal-1: var(--hz-tint);
+$kit-color-teal-2: var(--hz-tint);
+$kit-color-teal-3: var(--hz-tint);
+$kit-color-teal-4: var(--hz-ink-2);
+$kit-color-teal-5: var(--hz-ink);
+$kit-color-teal-6: var(--hz-ink);
+$kit-color-teal-7: var(--hz-ink);
+$kit-color-teal-8: var(--hz-dim);
 
 $white-color: #ffffff;
-$dark-theme-background-1: #0a0a0a;
+$dark-theme-background-1: #000000;
 $dark-theme-background-2: #171717;
-$dark-theme-sliding-panel: #171717;
-// Status colors
+$dark-theme-sliding-panel: #0a0a0a;
+// Status colours: the only hue on the page, and only where it carries state.
+// @hanzo/design's state-success (green-500) and state-error (red-500), with
+// amber for drift. In progress is not a state worth a hue, so it is neutral.
 $kit-failed-color: #EF4444;
 $kit-failed-color-dark: #DC2626;
 $kit-failed-color-light: #FCA5A5;
 $kit-status-failed-color: #EF4444;
 $kit-color-red: #EF4444;
 
-$kit-success-color: #4ADE80;
+$kit-success-color: #22C55E;
 $kit-success-color-dark: #16A34A;
 $kit-success-color-light: #4ADE80;
-$kit-status-success-color: #4ADE80;
-$kit-color-green: #4ADE80;
+$kit-status-success-color: #22C55E;
+$kit-color-green: #22C55E;
 
 $kit-status-warning-color: #EAB308;
 $kit-color-yellow: #EAB308;
 
-$kit-running-color-dark: #1F6FEB;
-$kit-running-color-light: #58A6FF;
-$kit-running-color: #2F81F7;
+$kit-running-color-dark: #737373;
+$kit-running-color-light: #D4D4D4;
+$kit-running-color: #A3A3A3;
 $kit-suspended-color: #737373;
 
 $kit-waiting-color-dark: $kit-color-gray-6;
@@ -62,7 +68,7 @@ $kit-init-color: $kit-color-gray-5;
 
 
 $kit-breakpoint-md: 1400px;
-$border-radius: 5px;
+$border-radius: 8px;
 $top-bar-height: 50px;
 $nav-width: 60px;
 $basePageWidth: 1024px;

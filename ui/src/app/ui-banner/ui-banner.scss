@@ -1,23 +1,53 @@
 @import 'src/kit/src/styles/config';
+@import '../shared/config.scss';
 
+// The operator's notice: a raised strip across the page, beside the sidebar.
 .ui-banner {
-    background: $kit-color-gray-5;
+    background: var(--hz-raised);
+    border-bottom: 1px solid var(--hz-line);
     position: fixed;
-    left: 0;
+    left: $sidebar-width;
     right: 0;
     z-index: 10;
     text-align: center;
-    color: $kit-color-teal-8;
+    color: var(--hz-ink);
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 10px 5px 70px;
+    padding: 5px 16px;
 
     a {
         text-decoration: underline;
-        color: $kit-color-teal-8;
+        text-underline-offset: 2px;
+        color: var(--hz-ink);
+    }
+
+    .cd-layout__content--sb-collapsed & {
+        left: $collapsed-sidebar-width;
+    }
+
+    // A phone gives the message the width and lets the actions wrap.
+    @media (max-width: $phone-max) {
+        left: $collapsed-sidebar-width;
+        gap: 6px;
+        padding: 4px 8px;
+        font-size: 13px;
+
+        .ui-banner-text {
+            flex: 1 1 auto;
+            min-width: 0;
+            margin-right: 0;
+        }
+
+        .ui-banner-button {
+            flex: 0 1 auto;
+            max-width: 96px;
+            padding: 4px 10px;
+            font-size: 12px;
+            white-space: normal;
+        }
     }
 }
 

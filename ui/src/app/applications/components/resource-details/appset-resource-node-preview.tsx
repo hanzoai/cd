@@ -61,7 +61,7 @@ export const AppSetResourceNodePreview = (props: AppSetResourceNodePreviewProps)
 
     return (
         <div className='applicationset-preview' style={{padding: '15px'}}>
-            <div style={{marginBottom: '15px', fontSize: '13px', color: '#6d7f8b'}}>
+            <div style={{marginBottom: '15px', fontSize: '13px', color: 'var(--hz-dim)'}}>
                 <i className='fa fa-info-circle' style={{marginRight: '6px'}} />
                 Preview shows what child Applications will change when this app-of-appset syncs.
             </div>

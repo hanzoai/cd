@@ -52,7 +52,7 @@ export const ProjectSyncWindowsEditPanel = (props: ProjectSyncWindowsEditPanelPr
                 {api => (
                     <form onSubmit={api.submitForm} role='form' className='width-control'>
                         <div className='white-box'>
-                            <p>GENERAL</p>
+                            <p>General</p>
                             <div className='kit-form-row'>
                                 <FormField formApi={api} label='Kind' field='window.kind' component={FormSelect} componentProps={{options: ['allow', 'deny']}} />
                             </div>

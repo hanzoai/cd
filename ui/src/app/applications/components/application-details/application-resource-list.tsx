@@ -51,19 +51,19 @@ export const ApplicationResourceParentRef = (props: ApplicationResourceParentRef
 
     return (
         <EditablePanel
-            title='PARENT NODE'
+            title='Parent node'
             values={firstParentNode}
             items={[
                 {
-                    title: 'KIND',
+                    title: 'Kind',
                     view: firstParentNode.kind
                 },
                 {
-                    title: 'NAME',
+                    title: 'Name',
                     view: firstParentNode.name
                 },
                 {
-                    title: 'NAMESPACE',
+                    title: 'Namespace',
                     view: firstParentNode.namespace
                 }
             ]}
@@ -168,23 +168,23 @@ export const ApplicationResourceList = (props: ApplicationResourceListProps) => 
                         <div className='row'>
                             <div className='columns small-1 xxxlarge-1 application-resource-list__icon-column' />
                             <div className='columns small-2 xxxlarge-2' onClick={() => handleSort('name')} style={{cursor: 'pointer'}}>
-                                NAME {getSortArrow('name')}
+                                Name {getSortArrow('name')}
                             </div>
                             <div className='columns small-1 xxxlarge-1' onClick={() => handleSort('group-kind')} style={{cursor: 'pointer'}}>
-                                GROUP/KIND {getSortArrow('group-kind')}
+                                Group/kind {getSortArrow('group-kind')}
                             </div>
                             <div className='columns small-1 xxxlarge-1' onClick={() => handleSort('syncOrder')} style={{cursor: 'pointer'}}>
-                                SYNC ORDER {getSortArrow('syncOrder')}
+                                Sync order {getSortArrow('syncOrder')}
                             </div>
                             <div className='columns small-2 xxxlarge-1' onClick={() => handleSort('namespace')} style={{cursor: 'pointer'}}>
-                                NAMESPACE {getSortArrow('namespace')}
+                                Namespace {getSortArrow('namespace')}
                             </div>
-                            {isSameKind && props.resources[0].kind === 'ReplicaSet' && <div className='columns small-1 xxxlarge-1'>REVISION</div>}
+                            {isSameKind && props.resources[0].kind === 'ReplicaSet' && <div className='columns small-1 xxxlarge-1'>Revision</div>}
                             <div className='columns small-2 xxxlarge-2' onClick={() => handleSort('createdAt')} style={{cursor: 'pointer'}}>
-                                CREATED AT {getSortArrow('createdAt')}
+                                Created at {getSortArrow('createdAt')}
                             </div>
                             <div className='columns small-2 xxxlarge-1' onClick={() => handleSort('status')} style={{cursor: 'pointer'}}>
-                                STATUS {getSortArrow('status')}
+                                Status {getSortArrow('status')}
                             </div>
                         </div>
                     </div>

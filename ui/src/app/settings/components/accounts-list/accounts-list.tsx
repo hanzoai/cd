@@ -101,15 +101,15 @@ export const AccountsList = () => {
                                                 <div className='kit-table-list__head'>
                                                     <div className='row'>
                                                         <div className='columns small-3 sortable' onClick={() => requestSort('name')}>
-                                                            NAME
+                                                            Name
                                                             {sortIcon('name')}
                                                         </div>
                                                         <div className='columns small-3 sortable' onClick={() => requestSort('enabled')}>
-                                                            ENABLED
+                                                            Enabled
                                                             {sortIcon('enabled')}
                                                         </div>
                                                         <div className='columns small-6 sortable' onClick={() => requestSort('capabilities')}>
-                                                            CAPABILITIES
+                                                            Capabilities
                                                             {sortIcon('capabilities')}
                                                         </div>
                                                     </div>

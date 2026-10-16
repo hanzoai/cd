@@ -1320,7 +1320,18 @@ Are you sure you want to disable auto-sync and rollback application '${props.mat
         (app: appModels.Application, needOverlapLabelOnNarrowScreen: boolean, includeToggleAutoSync = false) => {
             const refreshing = app.metadata.annotations && app.metadata.annotations[appModels.AnnotationRefreshKey];
             const fullName = AppUtils.nodeKey({group: 'apps.hanzo.ai', kind: app.kind, name: app.metadata.name, namespace: app.metadata.namespace});
-            const ActionMenuItem = (prop: {actionLabel: string}) => <span className={needOverlapLabelOnNarrowScreen ? 'show-for-large' : ''}>{prop.actionLabel}</span>;
+            // Below large the label is hidden from sight, not from screen readers.
+            const ActionMenuItem = (prop: {actionLabel: string}) =>
+                needOverlapLabelOnNarrowScreen ? (
+                    <>
+                        <span className='show-for-large' aria-hidden='true'>
+                            {prop.actionLabel}
+                        </span>
+                        <span className='show-for-sr'>{prop.actionLabel}</span>
+                    </>
+                ) : (
+                    <span>{prop.actionLabel}</span>
+                );
             return [
                 {
                     iconClassName: 'fa fa-info-circle',

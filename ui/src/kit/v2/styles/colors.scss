@@ -8,14 +8,14 @@ $kit-color-gray-7: #525252;
 $kit-color-gray-8: #262626;
 $kit-color-gray-9: #0a0a0a;
 
-$kit-color-teal-1: #cae2ff;
-$kit-color-teal-2: #a5cdff;
-$kit-color-teal-3: #79c0ff;
-$kit-color-teal-4: #58a6ff;
-$kit-color-teal-5: #2f81f7;
-$kit-color-teal-6: #2f81f7;
-$kit-color-teal-7: #1f6feb;
-$kit-color-teal-8: #1a5dc7;
+$kit-color-teal-1: var(--hz-tint);
+$kit-color-teal-2: var(--hz-tint);
+$kit-color-teal-3: var(--hz-tint);
+$kit-color-teal-4: var(--hz-ink-2);
+$kit-color-teal-5: var(--hz-ink);
+$kit-color-teal-6: var(--hz-ink);
+$kit-color-teal-7: var(--hz-ink);
+$kit-color-teal-8: var(--hz-dim);
 
 $white-color: #ffffff;
 
@@ -26,18 +26,18 @@ $kit-failed-color-light: #fca5a5;
 $kit-status-failed-color: #ef4444;
 $kit-color-red: #ef4444;
 
-$kit-success-color: #4ade80;
+$kit-success-color: #22c55e;
 $kit-success-color-dark: #16a34a;
 $kit-success-color-light: #4ade80;
-$kit-status-success-color: #4ade80;
-$kit-color-green: #4ade80;
+$kit-status-success-color: #22c55e;
+$kit-color-green: #22c55e;
 
 $kit-status-warning-color: #eab308;
 $kit-color-yellow: #eab308;
 
-$kit-running-color-dark: #1f6feb;
-$kit-running-color-light: #58a6ff;
-$kit-running-color: #2f81f7;
+$kit-running-color-dark: #737373;
+$kit-running-color-light: #d4d4d4;
+$kit-running-color: #a3a3a3;
 
 $kit-waiting-color-dark: $kit-color-gray-6;
 $kit-waiting-color-light: $kit-color-gray-5;
@@ -46,19 +46,19 @@ $kit-cancelled-color: $kit-color-gray-5;
 $kit-init-color: $kit-color-gray-5;
 
 // Dark Mode
-$space: #0a0a0a;
+$space: #000000;
 $midnight-sky: #0f0f0f;
-$slate: #161b22;
+$slate: #171717;
 $shine: #e5e5e5;
 $dull-shine: #a3a3a3;
-$silver-lining: #30363d;
-$fog: #161b22;
+$silver-lining: #2e2e2e;
+$fog: #171717;
 $glow: #404040;
 
 // Highlights
 $spray-tan: #404040;
-$sherbert: #2f81f7;
-$peach: #58a6ff;
+$sherbert: #fafafa;
+$peach: #d4d4d4;
 
 // Statuses
 $lime: #4ade80;
@@ -66,9 +66,9 @@ $grass: #16a34a;
 $leaf: #166534;
 $forest: #0f1a14;
 
-$sky: #58a6ff;
-$sea: #1f6feb;
-$deep-sea: #0d1117;
+$sky: #d4d4d4;
+$sea: #a3a3a3;
+$deep-sea: #0a0a0a;
 
 $coral: #ef4444;
 $clay: #dc2626;

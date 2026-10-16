@@ -235,15 +235,15 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                                                         <div className='row'>
                                                             <IconColumn />
                                                             <div className='columns small-3 sortable' onClick={() => requestSort('serverName')}>
-                                                                SERVER NAME
+                                                                Server name
                                                                 {sortIcon('serverName')}
                                                             </div>
                                                             <div className='columns small-3 sortable' onClick={() => requestSort('certType')}>
-                                                                CERT TYPE
+                                                                Cert type
                                                                 {sortIcon('certType')}
                                                             </div>
                                                             <div className='columns small-5 sortable' onClick={() => requestSort('certInfo')}>
-                                                                CERT INFO
+                                                                Cert info
                                                                 {sortIcon('certInfo')}
                                                             </div>
                                                         </div>
@@ -323,7 +323,7 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                     {formApiTLS => (
                         <form onSubmit={formApiTLS.submitForm} role='form' className='certs-list width-control' encType='multipart/form-data'>
                             <div className='white-box'>
-                                <p>CREATE TLS REPOSITORY CERTIFICATE</p>
+                                <p>Create TLS repository certificate</p>
                                 <div className='kit-form-row'>
                                     <FormField formApi={formApiTLS} label='Repository Server Name' field='serverName' component={Text} />
                                 </div>
@@ -360,7 +360,7 @@ export const CertsList = ({match, location}: RouteComponentProps) => {
                     {formApiSSH => (
                         <form onSubmit={formApiSSH.submitForm} role='form' className='certs-list width-control' encType='multipart/form-data'>
                             <div className='white-box'>
-                                <p>CREATE SSH KNOWN HOST ENTRIES</p>
+                                <p>Create SSH known host entries</p>
                                 <p>
                                     Paste SSH known hosts data in the text area below, one entry per line. You can use output from <code>ssh-keyscan</code> or the contents on
                                     <code>ssh_known_hosts</code> file verbatim. Lines starting with <code>#</code> will be treated as comments and ignored.

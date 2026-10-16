@@ -48,7 +48,7 @@ export const ProjectRoleEditPanel = (props: ProjectRoleEditPanelProps) => {
                 {api => (
                     <form onSubmit={api.submitForm} role='form' className='width-control'>
                         <div className='white-box'>
-                            <p>GENERAL</p>
+                            <p>General</p>
                             <div className='kit-form-row'>
                                 <FormField formApi={api} label='Role Name' componentProps={{readOnly: props.nameReadonly}} field='roleName' component={Text} />
                             </div>

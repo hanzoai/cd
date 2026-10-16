@@ -93,7 +93,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
 
     const attributes = [
         {
-            title: 'PROJECT',
+            title: 'Project',
             view: <Link to={'/settings/projects/' + app.spec.project}>{app.spec.project}</Link>,
             edit: (formApi: FormApi) => (
                 <DataLoader load={() => services.projects.list('items.metadata.name').then(projs => projs.map(item => item.metadata.name))}>
@@ -102,14 +102,14 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             )
         },
         {
-            title: 'LABELS',
+            title: 'Labels',
             view: Object.keys(app.metadata.labels || {})
                 .map(label => `${label}=${app.metadata.labels[label]}`)
                 .join(' '),
             edit: (formApi: FormApi) => <FormField formApi={formApi} field='metadata.labels' component={MapInputField} />
         },
         {
-            title: 'ANNOTATIONS',
+            title: 'Annotations',
             view: (
                 <Expandable height={48}>
                     {Object.keys(app.metadata.annotations || {})
@@ -120,12 +120,12 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             edit: (formApi: FormApi) => <EditAnnotations formApi={formApi} app={app} />
         },
         {
-            title: 'NOTIFICATION SUBSCRIPTIONS',
+            title: 'Notification subscriptions',
             view: false, // eventually the subscription input values will be merged in 'ANNOTATIONS', therefore 'ANNOATIONS' section is responsible to represent subscription values,
             edit: () => <EditNotificationSubscriptions {...notificationSubscriptions} />
         },
         {
-            title: 'CLUSTER',
+            title: 'Cluster',
             view: <Cluster server={app.spec.destination.server} name={app.spec.destination.name} showUrl={true} />,
             edit: (formApi: FormApi) => (
                 <DataLoader load={() => services.clusters.list().then(clusters => clusters.sort())}>
@@ -186,16 +186,16 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             )
         },
         {
-            title: 'NAMESPACE',
+            title: 'Namespace',
             view: <ClipboardText text={app.spec.destination.namespace} />,
             edit: (formApi: FormApi) => <FormField formApi={formApi} field='spec.destination.namespace' component={Text} />
         },
         {
-            title: 'CREATED AT',
+            title: 'Created at',
             view: formatCreationTimestamp(app.metadata.creationTimestamp)
         },
         {
-            title: 'REVISION HISTORY LIMIT',
+            title: 'Revision history limit',
             view: app.spec.revisionHistoryLimit,
             edit: (formApi: FormApi) => (
                 <div style={{position: 'relative'}}>
@@ -218,7 +218,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             )
         },
         {
-            title: 'SYNC OPTIONS',
+            title: 'Sync options',
             view: (
                 <div style={{display: 'flex', flexWrap: 'wrap'}}>
                     {((app.spec.syncPolicy || {}).syncOptions || []).map(opt =>
@@ -241,7 +241,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             )
         },
         {
-            title: 'RETRY OPTIONS',
+            title: 'Retry options',
             view: <ApplicationRetryView initValues={app.spec.syncPolicy ? app.spec.syncPolicy.retry : null} />,
             edit: (formApi: FormApi) => (
                 <div>
@@ -250,7 +250,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             )
         },
         {
-            title: 'STATUS',
+            title: 'Status',
             view: (
                 <span>
                     <ComparisonStatusIcon status={app.status.sync.status} /> {app.status.sync.status} {syncStatusMessage(app)}
@@ -258,7 +258,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             )
         },
         {
-            title: 'HEALTH',
+            title: 'Health',
             view: (
                 <span>
                     <HealthStatusIcon state={app.status.health} /> {app.status.health.status}
@@ -266,7 +266,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             )
         },
         {
-            title: 'LINKS',
+            title: 'Links',
             view: (
                 <DataLoader load={() => services.applications.getLinks(app.metadata.name, app.metadata.namespace)} input={app} key='appLinks'>
                     {(links: models.LinksResponse) => <DeepLinks links={links.items} />}
@@ -301,7 +301,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
 
     if ((app.status.summary.images || []).length) {
         attributes.push({
-            title: 'IMAGES',
+            title: 'Images',
             view: (
                 <div className='application-summary__labels'>
                     {(app.status.summary.images || []).sort().map(image => (
@@ -317,7 +317,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
     const standardSourceItems: EditablePanelItem[] = useAuthSettingsCtx?.hydratorEnabled
         ? [
               {
-                  title: 'ENABLE HYDRATOR',
+                  title: 'Enable hydrator',
                   hint: 'Enable Source Hydrator to render and push manifests to a Git branch.',
                   view: false, // Hide in view mode
                   edit: (formApi: FormApi) => (
@@ -352,7 +352,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                               checked={!!(formApi.getFormState().values as models.Application).spec.sourceHydrator}
                               id='enable-hydrator'
                           />
-                          <label htmlFor='enable-hydrator'>SOURCE HYDRATOR ENABLED</label>
+                          <label htmlFor='enable-hydrator'>Source hydrator enabled</label>
                       </div>
                   )
               }
@@ -361,14 +361,14 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
 
     const sourceItems: EditablePanelItem[] = [
         {
-            title: 'REPO URL',
+            title: 'Repo URL',
             view: <Repo url={app.spec.source?.repoURL} />,
             edit: (formApi: FormApi) => <FormField formApi={formApi} field='spec.source.repoURL' component={Text} />
         },
         ...(isHelm
             ? [
                   {
-                      title: 'CHART',
+                      title: 'Chart',
                       view: <span>{source && `${source.chart}:${source.targetRevision}`}</span>,
                       edit: (formApi: FormApi) => (
                           <DataLoader
@@ -410,19 +410,19 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
               ]
             : [
                   {
-                      title: 'TAG PREFIX',
+                      title: 'Tag prefix',
                       view: source.tagPrefix ? <span>{source.tagPrefix}</span> : null,
                       edit: (formApi: FormApi) => <FormField formApi={formApi} field='spec.source.tagPrefix' component={Text} />
                   },
                   {
-                      title: 'TARGET REVISION',
+                      title: 'Target revision',
                       view: <Revision repoUrl={source.repoURL} revision={source.targetRevision || 'HEAD'} />,
                       edit: (formApi: FormApi) => (
                           <RevisionFormField hideLabel={true} formApi={formApi} fieldValue='spec.source.targetRevision' repoURL={source.repoURL} repoType={repoType} />
                       )
                   },
                   {
-                      title: 'PATH',
+                      title: 'Path',
                       view: (
                           <Revision repoUrl={source.repoURL} revision={source.targetRevision || 'HEAD'} path={source.path} isForPath={true}>
                               {processPath(source.path)}
@@ -435,13 +435,13 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
 
     const drySourceItems: EditablePanelItem[] = [
         {
-            title: 'REPO URL',
+            title: 'Repo URL',
             hint: 'Git repo containing the unrendered source (Helm/Kustomize/manifests).',
             view: <Repo url={app.spec.sourceHydrator?.drySource?.repoURL} />,
             edit: (formApi: FormApi) => <FormField formApi={formApi} field='spec.sourceHydrator.drySource.repoURL' component={Text} />
         },
         {
-            title: 'TARGET REVISION',
+            title: 'Target revision',
             hint: 'Git revision to read the dry source from (branch/tag/SHA).',
             view: <Revision repoUrl={app.spec.sourceHydrator?.drySource?.repoURL} revision={app.spec.sourceHydrator?.drySource?.targetRevision || 'HEAD'} />,
             edit: (formApi: FormApi) => (
@@ -455,7 +455,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             )
         },
         {
-            title: 'PATH',
+            title: 'Path',
             hint: 'Directory in the dry repo with the unrendered source.',
             view: (
                 <Revision
@@ -472,13 +472,13 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
 
     const syncSourceItems: EditablePanelItem[] = [
         {
-            title: 'REPO URL (OPTIONAL)',
+            title: 'Repo URL (optional)',
             hint: 'Git repo for hydrated manifests. Defaults to the dry source repo when unset.',
             view: <Repo url={getHydratorSyncSourceRepoURL(app.spec.sourceHydrator)} />,
             edit: (formApi: FormApi) => <FormField formApi={formApi} field='spec.sourceHydrator.syncSource.repoURL' component={Text} />
         },
         {
-            title: 'TARGET BRANCH',
+            title: 'Target branch',
             hint: 'Branch where hydrated manifests are written and synced from.',
             view: <Revision repoUrl={getHydratorSyncSourceRepoURL(app.spec.sourceHydrator)} revision={app.spec.sourceHydrator?.syncSource?.targetBranch || 'HEAD'} />,
             edit: (formApi: FormApi) => {
@@ -497,7 +497,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             }
         },
         {
-            title: 'PATH',
+            title: 'Path',
             hint: 'Output directory for hydrated manifests; must be a non-root path.',
             view: (
                 <Revision
@@ -514,7 +514,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
 
     const hydrateToItems: EditablePanelItem[] = [
         {
-            title: 'TARGET BRANCH (OPTIONAL)',
+            title: 'Target branch (optional)',
             hint: 'Optional staging branch to write hydrated output before syncing.',
             view: (
                 <Revision
@@ -699,7 +699,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                     onClick={() => {
                         setAdjustedCount(adjustedCount + 1);
                     }}>
-                    ADD NEW ITEM
+                    Add new item
                 </button>
             ),
             view: null as any,
@@ -725,7 +725,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                 <EditablePanel
                     save={updateAppSource}
                     values={app}
-                    title='SOURCE'
+                    title='Source'
                     items={sourceAttributes}
                     hasMultipleSources={hasMultipleSources}
                     onModeSwitch={() => notificationSubscriptions.onResetNotificationSubscriptions()}
@@ -735,10 +735,10 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                 {ctx => (
                     <div className='white-box'>
                         <div className='white-box__details'>
-                            <p>SYNC POLICY</p>
+                            <p>Sync policy</p>
                             <div className='row white-box__details-row'>
                                 <div className='columns small-3'>
-                                    {app.spec.syncPolicy?.automated && app.spec.syncPolicy.automated.enabled !== false ? <span>AUTOMATED</span> : <span>NONE</span>}
+                                    {app.spec.syncPolicy?.automated && app.spec.syncPolicy.automated.enabled !== false ? <span>Automated</span> : <span>None</span>}
                                 </div>
                             </div>
                             <div className='row white-box__details-row'>
@@ -751,7 +751,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                                             checked={app.spec.syncPolicy?.automated && app.spec.syncPolicy.automated.enabled !== false}
                                             id='enable-auto-sync'
                                         />
-                                        <label htmlFor='enable-auto-sync'>ENABLE AUTO-SYNC</label>
+                                        <label htmlFor='enable-auto-sync'>Enable auto-sync</label>
                                         <HelpIcon title='If checked, application will automatically sync when changes are detected' />
                                     </div>
                                 </div>
@@ -778,7 +778,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                                                     checked={!!app.spec.syncPolicy?.automated?.prune}
                                                     id='prune-resources'
                                                 />
-                                                <label htmlFor='prune-resources'>PRUNE RESOURCES</label>
+                                                <label htmlFor='prune-resources'>Prune resources</label>
                                             </div>
                                         </div>
                                     </div>
@@ -802,7 +802,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
                                                     checked={!!app.spec.syncPolicy?.automated?.selfHeal}
                                                     id='self-heal'
                                                 />
-                                                <label htmlFor='self-heal'>SELF HEAL</label>
+                                                <label htmlFor='self-heal'>Self heal</label>
                                             </div>
                                         </div>
                                     </div>
@@ -816,7 +816,7 @@ export const ApplicationSummary = (props: ApplicationSummaryProps) => {
             <EditablePanel
                 save={updateApp}
                 values={app}
-                title='INFO'
+                title='Info'
                 items={infoItems}
                 onModeSwitch={() => {
                     setAdjustedCount(0);

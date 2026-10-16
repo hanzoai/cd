@@ -85,13 +85,13 @@ export const ApplicationTableRow = ({app, selected, pref, ctx, syncApplication, 
                 <div className='columns small-4'>
                     <div className='applications-list__meta-column'>
                         <div className='applications-list__fav-col'>
-                            <Tooltip content={favList?.includes(app.metadata.name) ? 'Remove Favorite' : 'Add Favorite'}>
+                            <Tooltip content={favList?.includes(app.metadata.name) ? 'Remove favorite' : 'Add favorite'}>
                                 <button type='button' onClick={handleFavoriteToggle}>
                                     <i
                                         className={favList?.includes(app.metadata.name) ? 'fas fa-star' : 'far fa-star'}
                                         style={{
                                             cursor: 'pointer',
-                                            color: favList?.includes(app.metadata.name) ? '#FFCE25' : '#8fa4b1'
+                                            color: favList?.includes(app.metadata.name) ? 'var(--hz-ink)' : 'var(--hz-faint)'
                                         }}
                                     />
                                 </button>

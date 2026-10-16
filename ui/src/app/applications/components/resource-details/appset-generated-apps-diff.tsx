@@ -169,14 +169,14 @@ export const AppSetGeneratedAppsDiff = (props: AppSetGeneratedAppsDiffProps) => 
                 <div className='white-box__details'>
                     {permissionDenied ? (
                         <>
-                            <p>PERMISSION DENIED</p>
+                            <p>Permission denied</p>
                             <div>
                                 You need <code>applicationsets, create</code> permission on project <code>{rbacProject || 'unknown'}</code> to preview generated Applications.
                             </div>
                         </>
                     ) : (
                         <>
-                            <p>PREVIEW FAILED</p>
+                            <p>Preview failed</p>
                             <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxHeight: '400px', overflow: 'auto'}}>{error}</pre>
                         </>
                     )}
@@ -203,7 +203,7 @@ export const AppSetGeneratedAppsDiff = (props: AppSetGeneratedAppsDiffProps) => 
                     onTabSelected={setResultTab}
                     tabs={[
                         {
-                            title: 'LIVE APPS',
+                            title: 'Live apps',
                             key: 'current',
                             content:
                                 currentApps.length === 0 ? (
@@ -219,7 +219,7 @@ export const AppSetGeneratedAppsDiff = (props: AppSetGeneratedAppsDiffProps) => 
                                 )
                         },
                         {
-                            title: 'DIFF',
+                            title: 'Diff',
                             key: 'diff',
                             content:
                                 diffStates && diffStates.length > 0 ? (
@@ -231,7 +231,7 @@ export const AppSetGeneratedAppsDiff = (props: AppSetGeneratedAppsDiffProps) => 
                                 )
                         },
                         {
-                            title: 'DESIRED APPS',
+                            title: 'Desired apps',
                             key: 'preview',
                             content:
                                 generated.length === 0 ? (

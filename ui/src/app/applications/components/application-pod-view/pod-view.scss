@@ -194,7 +194,8 @@ $pod-age-icon-clr: #ffce25;
             }
 
             &__stat-icon-app {
-                background-color: $kit-color-teal-7;
+                background-color: var(--hz-ink-2);
+                box-shadow: inset 0 0 0 1px var(--hz-line);
             }
 
             &__stat-icon-neighbors {
@@ -203,7 +204,7 @@ $pod-age-icon-clr: #ffce25;
 
             &__stat {
                 &__bar {
-                    background-color: $kit-color-gray-4;
+                    background-color: var(--hz-raised);
                     height: $max-rows * $pod-size;
                     width: $stat-width;
                     position: relative;
@@ -214,7 +215,7 @@ $pod-age-icon-clr: #ffce25;
 
                     &--fill {
                         position: absolute;
-                        background-color: $kit-color-teal-7;
+                        background-color: var(--hz-ink-2);
                         width: 100%;
                         bottom: 0;
                     }
@@ -224,11 +225,11 @@ $pod-age-icon-clr: #ffce25;
                     }
 
                     &:hover > &--fill {
-                        background-color: $kit-color-teal-8;
+                        background-color: var(--hz-ink);
                     }
 
                     &:hover &--neighbors {
-                        background-color: $kit-color-gray-7;
+                        background-color: $kit-color-gray-5;
                     }
                 }
             }

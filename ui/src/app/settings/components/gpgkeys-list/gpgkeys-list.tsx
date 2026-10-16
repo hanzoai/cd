@@ -187,15 +187,15 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
                                                     <div className='kit-table-list__head'>
                                                         <div className='row'>
                                                             <div className='columns small-3 sortable' onClick={() => requestSort('keyId')}>
-                                                                KEY ID
+                                                                Key ID
                                                                 {sortIcon('keyId')}
                                                             </div>
                                                             <div className='columns small-3 sortable' onClick={() => requestSort('keyType')}>
-                                                                KEY TYPE
+                                                                Key type
                                                                 {sortIcon('keyType')}
                                                             </div>
                                                             <div className='columns small-6 sortable' onClick={() => requestSort('identity')}>
-                                                                IDENTITY
+                                                                Identity
                                                                 {sortIcon('identity')}
                                                             </div>
                                                         </div>
@@ -269,7 +269,7 @@ export const GpgKeysList = ({match, location}: RouteComponentProps) => {
                     {formApi => (
                         <form onSubmit={formApi.submitForm} role='form' className='gpgkeys-list width-control' encType='multipart/form-data'>
                             <div className='white-box'>
-                                <p>ADD GnuPG PUBLIC KEY</p>
+                                <p>Add GnuPG public key</p>
                                 <div className='kit-form-row'>
                                     <FormField formApi={formApi} label='GnuPG public key data (ASCII-armored)' field='keyData' component={TextArea} />
                                 </div>

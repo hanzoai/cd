@@ -1,20 +1,22 @@
 @import '../../styles/colors.scss';
 
 .checkbox {
-    $size: 1.25em;
+    $size: 16px;
+    flex: none;
     width: $size;
     height: $size;
-    padding: 3px;
-    border: 2px solid $kit-color-gray-7;
-    border-radius: 3px;
+    padding: 2px;
+    border: 1px solid var(--hz-faint);
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(0, 0, 0, 0);
+    font-size: 9px;
+    color: transparent;
 
     &--selected {
-        border-color: $kit-color-teal-6;
-        background-color: $kit-color-teal-6;
-        color: white;
+        border-color: var(--hz-ink);
+        background-color: var(--hz-ink);
+        color: var(--hz-on-ink);
     }
 }

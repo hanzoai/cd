@@ -7,7 +7,8 @@
     $autocompleteClass: &;
 
     &__items {
-        z-index: 3;
+        // Lists open over the sidebar, which holds the filters that use them.
+        z-index: 21;
         position: fixed;
         white-space: nowrap;
         max-height: 12em;
@@ -39,7 +40,7 @@
             }
 
             &--selected {
-                background-color: $kit-color-teal-3;
+                background-color: $kit-color-gray-3;
             }
         }
 
@@ -51,6 +52,11 @@
 
             #{$autocompleteClass}__items__item {
                 border-bottom: 1px solid $silver-lining;
+
+                &:hover,
+                &--selected {
+                    background-color: $spray-tan;
+                }
             }
         }
     }

@@ -105,7 +105,8 @@ const renderActionMenu = (actionMenu: ActionMenu) => (
                 <button
                     disabled={!!item.disabled}
                     qe-id={item.qeId}
-                    className='kit-button kit-button--base'
+                    aria-label={typeof item.title === 'string' ? item.title : undefined}
+                    className='kit-button kit-button--base-o'
                     onClick={() => item.action()}
                     key={i}
                 >

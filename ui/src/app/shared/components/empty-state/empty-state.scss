@@ -1,23 +1,53 @@
 @import 'src/kit/src/styles/config';
 
+// A small line icon, one line of text, and a quiet action.
 .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 96px 16px;
     text-align: center;
+
     &__icon {
-        position: relative;
-        background-color: $kit-color-gray-4;
-        width: 15em;
-        height: 15em;
-        border-radius: 7.5em;
-        margin: 2em auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border: 1px solid var(--hz-line);
+        border-radius: 12px;
+        color: var(--hz-dim);
+
         i {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translateY(-50%) translateX(-50%);
-            color: white;
-            &::before {
-                font-size: 10em;
-            }
+            font-size: 22px;
+            line-height: 1;
         }
+    }
+
+    h4 {
+        margin: 4px 0 0;
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--hz-ink);
+    }
+
+    h5 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--hz-dim);
+
+        a {
+            color: var(--hz-ink);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+    }
+
+    .kit-button {
+        margin-top: 4px;
     }
 }

@@ -71,7 +71,7 @@ const getStatusIcon = (status: string) => {
 
 const StatusFilter = (props: ClustersFilterProps) => (
     <Filter
-        label='CONNECTION STATUS'
+        label='Connection status'
         selected={props.pref.statusFilter}
         setSelected={s => props.onChange({...props.pref, statusFilter: s})}
         options={getFilterOptions(
@@ -96,7 +96,7 @@ const CredentialFilter = React.memo((props: ClustersFilterProps) => {
 
     return (
         <Filter
-            label='CREDENTIAL TYPE'
+            label='Credential type'
             selected={props.pref.credentialFilter}
             setSelected={s => props.onChange({...props.pref, credentialFilter: s})}
             options={credentialOptions}

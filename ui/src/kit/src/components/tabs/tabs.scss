@@ -18,7 +18,7 @@
         }
         overflow: hidden;
         list-style: none;
-        box-shadow: 0 1px 3px rgba(143,164,177,.3);
+        box-shadow: inset 0 -1px 0 var(--hz-line);
 
         &.center {
             text-align: center;
@@ -28,12 +28,9 @@
             display: inline-block;
             margin: 0 16px;
             padding: 12px 36px;            
-            @include themify($themes) {
-                color: themed('light-kit-gray-6');
-            }
+            color: var(--hz-dim);
             font-size: 13px;
             font-weight: 500;
-            text-transform: uppercase;
             transition: color .2s;
 
             &:first-child {
@@ -48,21 +45,17 @@
                 vertical-align: middle;
                 margin-right: 4px;
                 font-size: 18px;
-                color: #aaa;
+                color: var(--hz-dim);
             }
         }
 
         &.transparent {
             background-color: transparent;
             box-shadow: none;
-            border-bottom: 1px solid $kit-color-gray-4;
-
-            .theme-dark & {
-                border-color: $kit-color-gray-7;
-            }
+            border-bottom: 1px solid var(--hz-line);
 
             a {
-                color: $kit-color-teal-5;
+                color: var(--hz-dim);
 
                 &.active {
                     @include themify($themes) {              

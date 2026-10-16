@@ -51,7 +51,7 @@ interface AccountsFilterProps {
 
 const StatusFilter = (props: AccountsFilterProps) => (
     <Filter
-        label='STATUS'
+        label='Status'
         selected={props.pref.statusFilter.map(s => s.charAt(0).toUpperCase() + s.slice(1))}
         setSelected={s => props.onChange({...props.pref, statusFilter: s.map(v => v.toLowerCase())})}
         options={getFilterOptions(props.accounts, 'status', getAccountStatus, ['enabled', 'disabled'], undefined, capitalize)}
@@ -96,7 +96,7 @@ const CapabilitiesFilter = React.memo((props: AccountsFilterProps) => {
 
     return (
         <Filter
-            label='CAPABILITIES'
+            label='Capabilities'
             selected={props.pref.capabilitiesFilter.map(formatCapabilityLabel)}
             setSelected={s => props.onChange({...props.pref, capabilitiesFilter: s.map(normalizeCapability)})}
             options={capabilitiesOptions}

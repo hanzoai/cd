@@ -56,7 +56,7 @@ const KeyTypeFilter = React.memo((props: GpgKeysFilterProps) => {
 
     return (
         <Filter
-            label='KEY TYPE'
+            label='Key type'
             selected={props.pref.keyTypeFilter.map(s => s.toUpperCase())}
             setSelected={s => props.onChange({...props.pref, keyTypeFilter: s.map(v => v.toLowerCase())})}
             options={keyTypeOptions}

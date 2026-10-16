@@ -1,92 +1,93 @@
+// Buttons are pills in sentence case: `--base` is the one primary on a surface
+// (ink fill), `--base-o` is a ghost (hairline, no fill). Everything else is a
+// variant of those two.
 .kit-button {
     cursor: pointer;
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     vertical-align: middle;
-    padding: 8px 18px;
+    padding: 7px 14px;
+    font-family: inherit;
     font-size: 13px;
     font-weight: 500;
     line-height: 1.4;
+    letter-spacing: 0;
     text-align: center;
-    border-radius: 24px;
-    color: $kit-color-teal-6;
+    white-space: nowrap;
+    border: 0;
+    border-radius: 9999px;
+    color: var(--hz-ink);
+    background-color: transparent;
     user-select: none;
-    transition: background-color .2s, border .2s, color .2s;
-    text-transform: uppercase;
+    transition: background-color .15s, box-shadow .15s, color .15s;
+
+    i {
+        font-size: 12px;
+    }
 
     &.disabled,
     &[disabled] {
-        color: $kit-color-gray-6;
+        color: var(--hz-faint);
         cursor: not-allowed;
 
-        &:hover {
-            color: $kit-color-gray-6;
-        }
-        
+        &:hover,
         &:focus {
-            color: $kit-color-gray-6;
+            color: var(--hz-faint);
         }
     }
 
     &:not(.disabled):not([disabled]) {
         &:hover {
-            background-color: #d1d5d9;
-        }
-
-        &:focus {
-            background-color: #d1d5d9;
+            background-color: var(--hz-tint);
         }
     }
 
+    &:focus-visible {
+        outline: 2px solid var(--hz-ring);
+        outline-offset: 2px;
+    }
+
     &--base {
-        color: $kit-color-gray-1;
-        background-color: $kit-color-gray-6;
+        color: var(--hz-on-ink);
+        background-color: var(--hz-ink);
 
         &:not(.disabled):not([disabled]) {
-            &:hover {
-                color: $kit-color-gray-1;
-                background-color: $kit-color-gray-5;
-            }
-
+            &:hover,
             &:focus {
-                color: $kit-color-gray-1;
-                background-color: $kit-color-gray-5;
-                border: 1px solid $kit-color-teal-5 !important;
+                color: var(--hz-on-ink);
+                background-color: var(--hz-ink-2);
             }
         }
 
         &.disabled,
         &[disabled] {
-            color: $kit-color-gray-6;
-            background-color: $kit-color-gray-4;
+            color: var(--hz-faint);
+            background-color: var(--hz-raised);
 
             &:hover {
-                color: $kit-color-gray-7;
+                color: var(--hz-faint);
             }
         }
     }
 
     &--link {
-        color: $kit-color-teal-6;
+        color: var(--hz-ink);
 
         &:not(.disabled):not([disabled]) {
-            &:hover {
-                background-color: $kit-color-gray-3;
-            }
-
+            &:hover,
             &:focus {
-                background-color: $kit-color-gray-3;
+                background-color: var(--hz-tint);
             }
         }
 
         &.disabled,
         &[disabled] {
-            color: $kit-color-gray-6;
+            color: var(--hz-faint);
 
-            &:hover {
-                background-color: transparent;
-            }
-
+            &:hover,
             &:focus {
                 background-color: transparent;
             }
@@ -94,32 +95,27 @@
     }
 
     &--base-o {
-        color: $kit-color-teal-6;
-        box-shadow: inset 0 0 0 1px $kit-color-teal-5;
+        color: var(--hz-ink);
+        background-color: transparent;
+        box-shadow: inset 0 0 0 1px var(--hz-line);
 
         &:not(.disabled):not([disabled]) {
-            &:hover {
-                color: $kit-color-gray-1;
-                background-color:$kit-color-teal-6;
-            }
-
+            &:hover,
             &:focus {
-                color: $kit-color-gray-1;
-                background-color:$kit-color-teal-6;
+                color: var(--hz-ink);
+                background-color: var(--hz-tint);
+                box-shadow: inset 0 0 0 1px var(--hz-faint);
             }
         }
 
         &.disabled,
         &[disabled] {
-            color: $kit-color-gray-6;
-            box-shadow: inset 0 0 0 1px $kit-color-gray-4;
+            color: var(--hz-faint);
+            box-shadow: inset 0 0 0 1px var(--hz-line);
 
-            &:hover {
-                color: $kit-color-gray-7;
-            }
-
+            &:hover,
             &:focus {
-                color: $kit-color-gray-7;
+                color: var(--hz-faint);
             }
         }
     }
@@ -139,9 +135,9 @@
         width: 40px;
         min-width: 40px;
         font-weight: lighter;
-        color: $kit-color-teal-6;
+        color: var(--hz-ink);
         background-color: transparent;
-        box-shadow: inset 0 0 0 1px rgba($kit-color-teal-6, .4);
+        box-shadow: inset 0 0 0 1px var(--hz-line);
 
         & > i {
             line-height: 40px;
@@ -171,11 +167,9 @@
     }
 
     &--sm {
-        min-width: 60px;
-        padding: 0 14px;
+        padding: 0 12px;
         font-size: 12px;
-        line-height: 28px;
-        border-radius: 18px;
+        line-height: 26px;
     }
 
     &--radius {
@@ -183,29 +177,23 @@
         height: 56px;
         min-width: 0;
         padding: 0;
-        color: #fff;
+        color: var(--hz-on-ink);
         line-height: 56px;
         margin: 0 0 4px;
         font-size: 20px;
         box-shadow: 0 2px 3px rgba(0,0,0,.3);
-        background-color: $kit-color-teal-5;
+        background-color: var(--hz-ink);
         border-radius: 50%;
 
-        &:hover {
-            background: lighten($kit-color-teal-5, 10) !important;
-        }
-
+        &:hover,
         &:focus {
-            background: lighten($kit-color-teal-5, 10) !important;
+            background: var(--hz-ink-2) !important;
         }
 
         &:not(.disabled) {
-            &:hover {
-                color: #fff;
-            }
-
+            &:hover,
             &:focus {
-                color: #fff;
+                color: var(--hz-on-ink);
             }
         }
 
@@ -219,7 +207,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        border: 1px solid rgba($kit-color-teal-6, .5);
+        border: 1px solid var(--hz-line);
         padding: 0;
         font-size: 20px;
 
@@ -235,17 +223,13 @@
     }
 
     &--special {
-        color: #fff;
-        background: $kit-color-teal-7;
+        color: var(--hz-on-ink);
+        background: var(--hz-ink);
         &:not(.disabled) {
-            &:hover {
-                color: #fff;
-                background: $kit-color-teal-6 !important;
-            }
-
+            &:hover,
             &:focus {
-                color: #fff;
-                background: $kit-color-teal-6 !important;
+                color: var(--hz-on-ink);
+                background: var(--hz-ink-2) !important;
             }
         }
     }

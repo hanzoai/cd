@@ -12,7 +12,6 @@ const CustomBanner = (props: {
     combinedBannerClassName: string;
     show: boolean;
     heightOfBanner: string;
-    leftOffset: string;
     permanent: boolean;
     url: string;
     content: string;
@@ -20,7 +19,7 @@ const CustomBanner = (props: {
     prefs: object;
 }) => {
     return (
-        <div className={props.combinedBannerClassName} style={{visibility: props.show ? 'visible' : 'hidden', height: props.heightOfBanner, marginLeft: props.leftOffset}}>
+        <div className={props.combinedBannerClassName} style={{visibility: props.show ? 'visible' : 'hidden', height: props.heightOfBanner}}>
             <div className='ui-banner-text' style={{maxHeight: props.permanent ? '25px' : '50px'}}>
                 {props.url !== undefined ? (
                     <a href={props.url} target='_blank' rel='noopener noreferrer'>
@@ -32,11 +31,11 @@ const CustomBanner = (props: {
             </div>
             {!props.permanent ? (
                 <>
-                    <button className='ui-banner-button kit-button kit-button--base' style={{marginRight: '5px'}} onClick={() => props.setVisible(false)}>
+                    <button className='ui-banner-button kit-button kit-button--base-o' style={{marginRight: '5px'}} onClick={() => props.setVisible(false)}>
                         Dismiss for now
                     </button>
                     <button
-                        className='ui-banner-button kit-button kit-button--base'
+                        className='ui-banner-button kit-button kit-button--base-o'
                         onClick={() => services.viewPreferences.updatePreferences({...props.prefs, hideBannerContent: props.content})}>
                         Don't show again
                     </button>
@@ -83,7 +82,6 @@ export const Banner = (props: React.PropsWithChildren<{}>) => {
                 position: string;
             }) => {
                 const heightOfBanner = permanent ? '28px' : '70px';
-                const leftOffset = prefs.hideSidebar ? '60px' : '230px';
                 let show = false;
                 if (!content || content === '' || content === null) {
                     if (prefs.hideBannerContent) {
@@ -123,7 +121,6 @@ export const Banner = (props: React.PropsWithChildren<{}>) => {
                                 combinedBannerClassName={'ui-banner ui-banner-top'}
                                 show={show}
                                 heightOfBanner={heightOfBanner}
-                                leftOffset={leftOffset}
                                 permanent={permanent}
                                 url={url}
                                 content={content}
@@ -136,7 +133,6 @@ export const Banner = (props: React.PropsWithChildren<{}>) => {
                                 combinedBannerClassName={'ui-banner ui-banner-bottom'}
                                 show={show}
                                 heightOfBanner={heightOfBanner}
-                                leftOffset={leftOffset}
                                 permanent={permanent}
                                 url={url}
                                 content={content}

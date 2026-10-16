@@ -156,7 +156,7 @@ function EditablePanel<T extends {} = {}>({
             return (
                 <div key={content.sectionName} className='editable-panel__subsection'>
                     <div className='row white-box__details-row'>
-                        <div className='columns small-12' style={{fontWeight: 'bold', fontSize: '14px', marginTop: '15px', marginBottom: '5px', textTransform: 'uppercase'}}>
+                        <div className='columns small-12' style={{fontWeight: 'bold', fontSize: '14px', marginTop: '15px', marginBottom: '5px'}}>
                             {content.sectionName}
                         </div>
                     </div>

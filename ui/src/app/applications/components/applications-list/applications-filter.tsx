@@ -204,7 +204,7 @@ const getAppSetOptions = (
 
 const SyncFilter = (props: AppFilterProps) => (
     <Filter
-        label='SYNC STATUS'
+        label='Sync status'
         selected={props.pref.syncFilter}
         setSelected={s => props.onChange({...props.pref, syncFilter: s})}
         options={getOptions(
@@ -221,7 +221,7 @@ const SyncFilter = (props: AppFilterProps) => (
 
 const AppHealthFilter = (props: AppFilterProps) => (
     <Filter
-        label='HEALTH STATUS'
+        label='Health status'
         selected={props.pref.healthFilter}
         setSelected={s => props.onChange({...props.pref, healthFilter: s})}
         options={getOptions(
@@ -238,7 +238,7 @@ const AppHealthFilter = (props: AppFilterProps) => (
 
 const AppSetHealthFilter = (props: AppSetFilterProps) => (
     <Filter
-        label='HEALTH STATUS'
+        label='Health status'
         selected={props.pref.healthFilter}
         setSelected={s => props.onChange({...props.pref, healthFilter: s})}
         options={getAppSetOptions(
@@ -277,7 +277,7 @@ const LabelsFilter = React.memo(
             return suggestions.map(s => ({label: s}));
         }, [props.apps]);
 
-        return <Filter label='LABELS' selected={props.pref.labelsFilter} setSelected={s => props.onChange(s)} field={true} options={labelOptions} />;
+        return <Filter label='Labels' selected={props.pref.labelsFilter} setSelected={s => props.onChange(s)} field={true} options={labelOptions} />;
     }
 );
 
@@ -309,7 +309,7 @@ const AnnotationsFilter = React.memo((props: AppFilterProps) => {
 
     return (
         <Filter
-            label='ANNOTATIONS'
+            label='Annotations'
             selected={props.pref.annotationsFilter}
             setSelected={s => props.onChange({...props.pref, annotationsFilter: s})}
             field={true}
@@ -329,7 +329,7 @@ const ProjectFilter = (props: AppFilterProps) => {
     });
     return (
         <Filter
-            label='PROJECTS'
+            label='Projects'
             selected={props.pref.projectsFilter}
             setSelected={s => props.onChange({...props.pref, projectsFilter: s})}
             field={true}
@@ -358,7 +358,7 @@ const ClusterFilter = React.memo((props: AppFilterProps) => {
 
     return (
         <Filter
-            label='CLUSTERS'
+            label='Clusters'
             selected={props.pref.clustersFilter}
             setSelected={s => props.onChange({...props.pref, clustersFilter: s})}
             field={true}
@@ -377,7 +377,7 @@ const NamespaceFilter = React.memo((props: AppFilterProps) => {
     );
     return (
         <Filter
-            label='NAMESPACES'
+            label='Namespaces'
             selected={props.pref.namespacesFilter}
             setSelected={s => props.onChange({...props.pref, namespacesFilter: s})}
             field={true}
@@ -397,7 +397,7 @@ const TargetRevisionFilter = (props: AppFilterProps) => {
     );
     return (
         <Filter
-            label='TARGET REVISION'
+            label='Target revision'
             selected={props.pref.targetRevisionFilter}
             setSelected={s => props.onChange({...props.pref, targetRevisionFilter: s})}
             field={true}
@@ -415,7 +415,7 @@ const RepoFilter = React.memo((props: AppFilterProps) => {
             ),
         [props.apps, props.pref.reposFilter]
     );
-    return <Filter label='REPOSITORIES' selected={props.pref.reposFilter} setSelected={s => props.onChange({...props.pref, reposFilter: s})} field={true} options={repoOptions} />;
+    return <Filter label='Repositories' selected={props.pref.reposFilter} setSelected={s => props.onChange({...props.pref, reposFilter: s})} field={true} options={repoOptions} />;
 });
 
 const FavoriteFilter = (props: {value: boolean; onChange: (showFavorites: boolean) => void}) => {
@@ -435,9 +435,9 @@ const FavoriteFilter = (props: {value: boolean; onChange: (showFavorites: boolea
                 }}
             />
             <div style={{marginRight: '5px', textAlign: 'center', width: '25px'}}>
-                <i style={{color: '#FFCE25'}} className='fas fa-star' />
+                <i style={{color: 'var(--hz-ink)'}} className='fas fa-star' />
             </div>
-            <div className='filter__item__label'>Favorites Only</div>
+            <div className='filter__item__label'>Favorites only</div>
         </div>
     );
 };
@@ -460,7 +460,7 @@ function getAutoSyncOptions(apps: FilteredApp[]) {
 
 const AutoSyncFilter = (props: AppFilterProps) => (
     <Filter
-        label='AUTO SYNC'
+        label='Auto sync'
         selected={props.pref.autoSyncFilter}
         setSelected={s => props.onChange({...props.pref, autoSyncFilter: s})}
         options={getAutoSyncOptions(props.apps)}
@@ -511,7 +511,7 @@ function getOperationOptions(apps: FilteredApp[]) {
 
 const OperationFilter = (props: AppFilterProps) => (
     <Filter
-        label='OPERATION STATUS'
+        label='Operation status'
         selected={props.pref.operationFilter}
         setSelected={s => props.onChange({...props.pref, operationFilter: s})}
         options={getOperationOptions(props.apps)}

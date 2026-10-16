@@ -78,7 +78,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         if (state) {
             const numErrors = events.filter(event => event.type !== 'Normal').reduce((total, event) => total + event.count, 0);
             tabs.push({
-                title: 'EVENTS',
+                title: 'Events',
                 icon: 'fa fa-calendar-alt',
                 badge: (numErrors > 0 && numErrors) || null,
                 key: 'events',
@@ -93,14 +93,14 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
             const containerGroups = [
                 {
                     offset: 0,
-                    title: 'CONTAINERS',
+                    title: 'Containers',
                     containers: podState.spec.containers || []
                 }
             ];
             if (podState.spec.initContainers?.length > 0) {
                 containerGroups.push({
                     offset: (podState.spec.containers || []).length,
-                    title: 'INIT CONTAINERS',
+                    title: 'Init containers',
                     containers: podState.spec.initContainers || []
                 });
             }
@@ -116,7 +116,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                     {
                         key: 'logs',
                         icon: 'fa fa-align-left',
-                        title: 'LOGS',
+                        title: 'Logs',
                         content: (
                             <div className='application-details__tab-content-full-height'>
                                 <PodsLogsViewer
@@ -160,7 +160,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         if (node?.kind === 'ApplicationSet' && node?.group === 'apps.hanzo.ai') {
             const appSetSyncStatus = controlledState?.summary?.status || SyncStatuses.Unknown;
             tabs.push({
-                title: 'PREVIEW',
+                title: 'Preview',
                 key: 'preview',
                 badge: appSetSyncStatus === SyncStatuses.OutOfSync ? '!' : null,
                 content: <AppSetResourceNodePreview liveAppSet={state} targetAppSet={controlledState?.state?.targetState} syncStatus={appSetSyncStatus} />
@@ -186,12 +186,12 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
     const getApplicationTabs = () => {
         const tabs: Tab[] = [
             {
-                title: 'SUMMARY',
+                title: 'Summary',
                 key: 'summary',
                 content: <ApplicationSummary app={application} updateApp={(app, query: {validate?: boolean}) => updateApp(app, query)} />
             },
             {
-                title: application.spec.sources === undefined ? 'PARAMETERS' : 'SOURCES',
+                title: application.spec.sources === undefined ? 'Parameters' : 'Sources',
                 key: 'parameters',
                 content: (
                     <ApplicationParameters
@@ -206,7 +206,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                 )
             },
             {
-                title: 'MANIFEST',
+                title: 'Manifest',
                 key: 'manifest',
                 content: (
                     <YamlEditor
@@ -224,7 +224,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         if (application.status.sync.status !== SyncStatuses.Synced) {
             tabs.push({
                 icon: 'fa fa-file-medical',
-                title: 'DIFF',
+                title: 'Diff',
                 key: 'diff',
                 content: (
                     <DataLoader
@@ -241,7 +241,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         }
 
         tabs.push({
-            title: 'EVENTS',
+            title: 'Events',
             key: 'event',
             content: <ApplicationResourceEvents applicationName={application.metadata.name} applicationNamespace={application.metadata.namespace} />
         });
@@ -327,13 +327,13 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                                     onClick={() => appContext.navigation.goto('.', {deploy: AppUtils.nodeKey(selectedNode)}, {replace: true})}
                                     style={{marginLeft: 'auto', marginRight: '5px'}}
                                     className='kit-button kit-button--base'>
-                                    <i className='fa fa-sync-alt' /> <span className='show-for-large'>SYNC</span>
+                                    <i className='fa fa-sync-alt' /> <span className='show-for-large'>Sync</span>
                                 </button>
                                 <button
                                     onClick={() => AppUtils.deletePopup(appContext, selectedNode, application, !!data.controlledState, data.childResources, props.appChanged)}
                                     style={{marginRight: '5px'}}
                                     className='kit-button kit-button--base'>
-                                    <i className='fa fa-trash' /> <span className='show-for-large'>DELETE</span>
+                                    <i className='fa fa-trash' /> <span className='show-for-large'>Delete</span>
                                 </button>
                                 {data.resourceActionsMenuItems?.length > 0 && (
                                     <DropDown
@@ -357,7 +357,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                                     extensions,
                                     [
                                         {
-                                            title: 'SUMMARY',
+                                            title: 'Summary',
                                             icon: 'fa fa-file-alt',
                                             key: 'summary',
                                             content: (

@@ -232,12 +232,12 @@ export const PodTerminalViewer: React.FC<PodTerminalViewerProps> = ({
     const containerGroups = [
         {
             offset: 0,
-            title: 'CONTAINERS',
+            title: 'Containers',
             containers: podState.spec.containers || []
         },
         {
             offset: (podState.spec.containers || []).length,
-            title: 'INIT CONTAINERS',
+            title: 'Init containers',
             containers: podState.spec.initContainers || []
         }
     ];

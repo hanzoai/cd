@@ -66,31 +66,31 @@ export const ClusterDetails = (props: RouteComponentProps<{server: string}> & {o
                                 item.annotations = updated.annotations;
                                 loaderRef.current.setData(await services.clusters.update(item, 'name', 'namespaces', 'labels', 'annotations'));
                             }}
-                            title='GENERAL'
+                            title='General'
                             items={[
                                 {
-                                    title: 'SERVER',
+                                    title: 'Server',
                                     view: cluster.server
                                 },
                                 {
-                                    title: 'CREDENTIALS TYPE',
+                                    title: 'Credentials type',
                                     view:
                                         (cluster.config.awsAuthConfig && `IAM AUTH (cluster name: ${cluster.config.awsAuthConfig.clusterName})`) ||
                                         (cluster.config.execProviderConfig && `External provider (command: ${cluster.config.execProviderConfig.command})`) ||
                                         'Token/Basic Auth'
                                 },
                                 {
-                                    title: 'NAME',
+                                    title: 'Name',
                                     view: cluster.name,
                                     edit: formApi => <FormField formApi={formApi} field='name' component={Text} />
                                 },
                                 {
-                                    title: 'NAMESPACES',
+                                    title: 'Namespaces',
                                     view: ((cluster.namespaces || []).length === 0 && 'All namespaces') || cluster.namespaces.join(', '),
                                     edit: formApi => <FormField formApi={formApi} field='namespaces' component={NamespacesEditor} />
                                 },
                                 {
-                                    title: 'APPLICATIONS',
+                                    title: 'Applications',
                                     view: (
                                         <div>
                                             <DataLoader load={() => services.applications.list([], objectListKind)}>
@@ -107,14 +107,14 @@ export const ClusterDetails = (props: RouteComponentProps<{server: string}> & {o
                                     )
                                 },
                                 {
-                                    title: 'LABELS',
+                                    title: 'Labels',
                                     view: Object.keys(cluster.labels || [])
                                         .map(label => `${label}=${cluster.labels[label]}`)
                                         .join(' '),
                                     edit: formApi => <FormField formApi={formApi} field='labels' component={MapInputField} />
                                 },
                                 {
-                                    title: 'ANNOTATIONS',
+                                    title: 'Annotations',
                                     view: Object.keys(cluster.annotations || [])
                                         .map(annotation => `${annotation}=${cluster.annotations[annotation]}`)
                                         .join(' '),
@@ -123,24 +123,24 @@ export const ClusterDetails = (props: RouteComponentProps<{server: string}> & {o
                             ]}
                         />
                         <div className='white-box'>
-                            <p>CONNECTION STATE</p>
+                            <p>Connection state</p>
                             <div className='white-box__details'>
                                 <div className='row white-box__details-row'>
-                                    <div className='columns small-3'>STATUS:</div>
+                                    <div className='columns small-3'>Status:</div>
                                     <div className='columns small-9'>
                                         <ConnectionStateIcon state={cluster.info.connectionState} /> {cluster.info.connectionState.status}
                                     </div>
                                 </div>
                                 <div className='row white-box__details-row'>
-                                    <div className='columns small-3'>VERSION:</div>
+                                    <div className='columns small-3'>Version:</div>
                                     <div className='columns small-9'> {cluster.info.serverVersion}</div>
                                 </div>
                                 <div className='row white-box__details-row'>
-                                    <div className='columns small-3'>DETAILS:</div>
+                                    <div className='columns small-3'>Details:</div>
                                     <div className='columns small-9'> {cluster.info.connectionState.message} </div>
                                 </div>
                                 <div className='row white-box__details-row'>
-                                    <div className='columns small-3'>MODIFIED AT:</div>
+                                    <div className='columns small-3'>Modified at:</div>
                                     <div className='columns small-9'>
                                         <Ticker>
                                             {now => {
@@ -163,12 +163,12 @@ export const ClusterDetails = (props: RouteComponentProps<{server: string}> & {o
                         </div>
 
                         <div className='white-box'>
-                            <p>CACHE INFO</p>
+                            <p>Cache info</p>
                             <div className='white-box__details'>
                                 <Ticker>
                                     {() => (
                                         <div className='row white-box__details-row'>
-                                            <div className='columns small-3'>RE-SYNCHRONIZED:</div>
+                                            <div className='columns small-3'>Re-synchronized:</div>
                                             <div className='columns small-9'>
                                                 <Timestamp date={cluster.info.cacheInfo.lastCacheSyncTime} />
                                             </div>
@@ -180,11 +180,11 @@ export const ClusterDetails = (props: RouteComponentProps<{server: string}> & {o
                                     <div className='columns small-9'> {cluster.info.cacheInfo.apisCount} </div>
                                 </div>
                                 <div className='row white-box__details-row'>
-                                    <div className='columns small-3'>RESOURCES COUNT:</div>
+                                    <div className='columns small-3'>Resources count:</div>
                                     <div className='columns small-9'> {cluster.info.cacheInfo.resourcesCount} </div>
                                 </div>
                                 <div className='row white-box__details-row'>
-                                    <div className='columns small-3'>APPLICATIONS COUNT:</div>
+                                    <div className='columns small-3'>Applications count:</div>
                                     <div className='columns small-9'> {cluster.info.applicationsCount} </div>
                                 </div>
                             </div>

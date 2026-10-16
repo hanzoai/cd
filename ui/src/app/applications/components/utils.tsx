@@ -1787,12 +1787,10 @@ export function isYoungerThanXMinutes(pod: any, x: number): boolean {
 }
 
 export const BASE_COLORS = [
-    '#2F81F7', // accent blue
     '#A3A3A3', // neutral
+    '#737373', // mid neutral
     '#22C55E', // green
-    '#EAB308', // amber
-    '#E5E5E5', // light neutral
-    '#737373' // mid neutral
+    '#EAB308' // amber
 ];
 
 export const urlPattern = new RegExp(

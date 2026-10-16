@@ -602,18 +602,18 @@ function gatherCoreSourceDetails(i: number, attributes: EditablePanelItem[], sou
     // For single source apps using the source field, these fields are shown in the Summary tab.
     if (hasMultipleSources) {
         attributes.push({
-            title: 'REPO URL',
+            title: 'Repo URL',
             view: <Repo url={source.repoURL} />,
             edit: (formApi: FormApi) => <FormField formApi={formApi} field={repoUrlField} component={Text} />
         });
         attributes.push({
-            title: 'NAME',
+            title: 'Name',
             view: <span>{source?.name}</span>,
             edit: (formApi: FormApi) => <FormField formApi={formApi} field={nameField} component={Text} />
         });
         if (isHelm) {
             attributes.push({
-                title: 'CHART',
+                title: 'Chart',
                 view: (
                     <span>
                         {source.chart}:{source.targetRevision}
@@ -662,12 +662,12 @@ function gatherCoreSourceDetails(i: number, attributes: EditablePanelItem[], sou
         } else {
             const targetRevision = source ? source.targetRevision || 'HEAD' : 'Unknown';
             attributes.push({
-                title: 'TARGET REVISION',
+                title: 'Target revision',
                 view: <Revision repoUrl={source?.repoURL} revision={targetRevision} />,
                 edit: (formApi: FormApi) => <RevisionFormField helpIconTop={'0'} hideLabel={true} formApi={formApi} repoURL={source?.repoURL} fieldValue={revisionField} />
             });
             attributes.push({
-                title: 'PATH',
+                title: 'Path',
                 view: (
                     <Revision repoUrl={source?.repoURL} revision={targetRevision} path={source?.path} isForPath={true}>
                         {processPath(source?.path)}
@@ -676,7 +676,7 @@ function gatherCoreSourceDetails(i: number, attributes: EditablePanelItem[], sou
                 edit: (formApi: FormApi) => <FormField formApi={formApi} field={sourcesPathField} component={Text} />
             });
             attributes.push({
-                title: 'REF',
+                title: 'Ref',
                 view: <span>{source?.ref}</span>,
                 edit: (formApi: FormApi) => <FormField formApi={formApi} field={refField} component={Text} />
             });
@@ -699,7 +699,7 @@ function gatherDetails(
 ): EditablePanelItem[] {
     if (repoDetails.type === 'Kustomize' && repoDetails.kustomize) {
         attributes.push({
-            title: 'VERSION',
+            title: 'Version',
             view: (source.kustomize && source.kustomize.version) || <span>default</span>,
             edit: (formApi: FormApi) => (
                 <DataLoader load={() => services.authService.settings()}>
@@ -718,7 +718,7 @@ function gatherDetails(
         });
 
         attributes.push({
-            title: 'NAME PREFIX',
+            title: 'Name prefix',
             view: source.kustomize && source.kustomize.namePrefix,
             edit: (formApi: FormApi) => (
                 <FormField formApi={formApi} field={isMultiSource ? 'spec.sources[' + ind + '].kustomize.namePrefix' : 'spec.source.kustomize.namePrefix'} component={Text} />
@@ -726,7 +726,7 @@ function gatherDetails(
         });
 
         attributes.push({
-            title: 'NAME SUFFIX',
+            title: 'Name suffix',
             view: source.kustomize && source.kustomize.nameSuffix,
             edit: (formApi: FormApi) => (
                 <FormField formApi={formApi} field={isMultiSource ? 'spec.sources[' + ind + '].kustomize.nameSuffix' : 'spec.source.kustomize.nameSuffix'} component={Text} />
@@ -734,7 +734,7 @@ function gatherDetails(
         });
 
         attributes.push({
-            title: 'NAMESPACE',
+            title: 'Namespace',
             view: source.kustomize && source.kustomize.namespace,
             edit: (formApi: FormApi) => (
                 <FormField formApi={formApi} field={isMultiSource ? 'spec.sources[' + ind + '].kustomize.namespace' : 'spec.source.kustomize.namespace'} component={Text} />
@@ -776,7 +776,7 @@ function gatherDetails(
         const isValuesObject = source?.helm?.valuesObject;
         const helmValues = isValuesObject ? jsYaml.dump(source.helm.valuesObject) : source?.helm?.values;
         attributes.push({
-            title: 'VALUES FILES',
+            title: 'Values files',
             view: (source.helm && (source.helm.valueFiles || []).join(', ')) || 'No values files selected',
             edit: (formApi: FormApi) => (
                 <FormField
@@ -791,7 +791,7 @@ function gatherDetails(
             )
         });
         attributes.push({
-            title: 'VALUES',
+            title: 'Values',
             view: source.helm && (
                 <Expandable>
                     <pre>{helmValues}</pre>
@@ -860,7 +860,7 @@ function gatherDetails(
         );
     } else if (repoDetails.type === 'Plugin') {
         attributes.push({
-            title: 'NAME',
+            title: 'Name',
             view: <div style={{marginTop: 15, marginBottom: 5}}>{ValueEditor(app.spec.source?.plugin?.name, null)}</div>,
             edit: (formApi: FormApi) => (
                 <DataLoader load={() => services.authService.plugins()}>
@@ -876,7 +876,7 @@ function gatherDetails(
             )
         });
         attributes.push({
-            title: 'ENV',
+            title: 'Env',
             view: (
                 <div style={{marginTop: 15}}>
                     {(app.spec.source?.plugin?.env || []).map(val => (
@@ -1036,12 +1036,12 @@ function gatherDetails(
         const directory = source.directory || ({} as ApplicationSourceDirectory);
         const fieldValue = isMultiSource ? 'spec.sources[' + ind + '].directory.recurse' : 'spec.source.directory.recurse';
         attributes.push({
-            title: 'DIRECTORY RECURSE',
+            title: 'Directory recurse',
             view: (!!directory.recurse).toString(),
             edit: (formApi: FormApi) => <FormField formApi={formApi} field={fieldValue} component={CheckboxField} />
         });
         attributes.push({
-            title: 'TOP-LEVEL ARGUMENTS',
+            title: 'Top-level arguments',
             view: ((directory?.jsonnet && directory?.jsonnet.tlas) || []).map((i, j) => (
                 <label key={j}>
                     {i.name}='{i.value}' {i.code && 'code'}
@@ -1056,7 +1056,7 @@ function gatherDetails(
             )
         });
         attributes.push({
-            title: 'EXTERNAL VARIABLES',
+            title: 'External variables',
             view: ((directory.jsonnet && directory.jsonnet.extVars) || []).map((i, j) => (
                 <label key={j}>
                     {i.name}='{i.value}' {i.code && 'code'}
@@ -1072,7 +1072,7 @@ function gatherDetails(
         });
 
         attributes.push({
-            title: 'INCLUDE',
+            title: 'Include',
             view: directory && directory.include,
             edit: (formApi: FormApi) => (
                 <FormField formApi={formApi} field={isMultiSource ? 'spec.sources[' + ind + '].directory.include' : 'spec.source.directory.include'} component={Text} />
@@ -1080,7 +1080,7 @@ function gatherDetails(
         });
 
         attributes.push({
-            title: 'EXCLUDE',
+            title: 'Exclude',
             view: directory && directory.exclude,
             edit: (formApi: FormApi) => (
                 <FormField formApi={formApi} field={isMultiSource ? 'spec.sources[' + ind + '].directory.exclude' : 'spec.source.directory.exclude'} component={Text} />

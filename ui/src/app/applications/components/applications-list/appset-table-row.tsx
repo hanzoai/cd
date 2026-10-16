@@ -76,13 +76,13 @@ export const AppSetTableRow = ({appSet, selected, pref, ctx}: AppSetTableRowProp
                 <div className='columns small-4'>
                     <div className='applications-list__meta-column'>
                         <div className='applications-list__fav-col'>
-                            <Tooltip content={favList?.includes(appSet.metadata.name) ? 'Remove Favorite' : 'Add Favorite'}>
+                            <Tooltip content={favList?.includes(appSet.metadata.name) ? 'Remove favorite' : 'Add favorite'}>
                                 <button type='button' onClick={handleFavoriteToggle}>
                                     <i
                                         className={favList?.includes(appSet.metadata.name) ? 'fas fa-star' : 'far fa-star'}
                                         style={{
                                             cursor: 'pointer',
-                                            color: favList?.includes(appSet.metadata.name) ? '#FFCE25' : '#8fa4b1'
+                                            color: favList?.includes(appSet.metadata.name) ? 'var(--hz-ink)' : 'var(--hz-faint)'
                                         }}
                                     />
                                 </button>

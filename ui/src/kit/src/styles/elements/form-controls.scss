@@ -18,7 +18,6 @@
 
         &:not(.kit-label-placeholder) {
             font-size: 13px;
-            text-transform: uppercase;
 
             & + .kit-field,
             & + .kit-textarea {
@@ -206,7 +205,7 @@
         }
 
         &:checked + span {
-            color: #fff;
+            color: var(--hz-on-ink);
             background-color: $kit-color-teal-6;
             border: 0;
 
@@ -313,7 +312,7 @@
         }
 
         &:checked + span {
-            background-color: lighten($kit-color-teal-5, 30);
+            background-color: var(--hz-dim);
 
             &::before {
                 left: 16px;

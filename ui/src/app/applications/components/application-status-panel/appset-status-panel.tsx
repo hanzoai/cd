@@ -48,7 +48,7 @@ export const ApplicationSetStatusPanel = ({appSet, showConditions}: Props) => {
     return (
         <div className='application-status-panel row'>
             <div className='application-status-panel__item'>
-                {sectionLabel({title: 'APPSET HEALTH', helpContent: 'The health status of your ApplicationSet derived from its conditions'})}
+                {sectionLabel({title: 'AppSet health', helpContent: 'The health status of your ApplicationSet derived from its conditions'})}
                 <div className='application-status-panel__item-value'>
                     <HealthStatusIcon state={{status: healthStatus, message: ''}} />
                     &nbsp;
@@ -59,7 +59,7 @@ export const ApplicationSetStatusPanel = ({appSet, showConditions}: Props) => {
 
             {conditions.length > 0 && (
                 <div className='application-status-panel__item'>
-                    {sectionLabel({title: 'CONDITIONS'})}
+                    {sectionLabel({title: 'Conditions'})}
                     <div className='application-status-panel__item-value application-status-panel__conditions' onClick={() => showConditions && showConditions()}>
                         {conditionCounts.info > 0 && (
                             <a className='info'>
@@ -89,7 +89,7 @@ export const ApplicationSetStatusPanel = ({appSet, showConditions}: Props) => {
 
             {latestCondition?.lastTransitionTime && (
                 <div className='application-status-panel__item'>
-                    {sectionLabel({title: 'LAST UPDATED'})}
+                    {sectionLabel({title: 'Last updated'})}
                     <div className='application-status-panel__item-value'>
                         <Timestamp date={latestCondition.lastTransitionTime} />
                     </div>

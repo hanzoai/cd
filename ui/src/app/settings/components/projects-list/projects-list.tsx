@@ -76,11 +76,11 @@ export function ProjectsList() {
                                                     <div className='row'>
                                                         <IconColumn />
                                                         <div className='columns small-3 sortable' onClick={() => requestSort('name')}>
-                                                            NAME
+                                                            Name
                                                             {sortIcon('name')}
                                                         </div>
                                                         <div className='columns small-6 sortable' onClick={() => requestSort('description')}>
-                                                            DESCRIPTION
+                                                            Description
                                                             {sortIcon('description')}
                                                         </div>
                                                     </div>
@@ -150,7 +150,7 @@ export function ProjectsList() {
                     {api => (
                         <form onSubmit={api.submitForm} role='form' className='width-control'>
                             <div className='white-box'>
-                                <p>GENERAL</p>
+                                <p>General</p>
                                 <div className='kit-form-row'>
                                     <FormField formApi={api} label='Project Name' field='metadata.name' component={Text} />
                                 </div>

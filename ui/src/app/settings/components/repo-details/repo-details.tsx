@@ -166,7 +166,7 @@ export const RepoDetails = (props: {item: UnifiedRepo; save?: (params: NewHTTPSR
                           await save(params);
                       }
             }
-            title={template ? 'CREDENTIAL TEMPLATE' : 'CONNECTED REPOSITORY'}
+            title={template ? 'Credential template' : 'Connected repository'}
             items={FormItems()}
         />
     );

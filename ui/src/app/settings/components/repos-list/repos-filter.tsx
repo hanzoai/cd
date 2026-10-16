@@ -131,7 +131,7 @@ const getStatusIcon = (status: string) => {
 
 const TypeFilter = (props: ReposFilterProps) => (
     <Filter
-        label='TYPE'
+        label='Type'
         selected={props.pref.typeFilter.map(getTypeLabel)}
         setSelected={s => props.onChange({...props.pref, typeFilter: s.map(v => v.toLowerCase())})}
         options={getFilterOptions(props.repos, 'type', getRepoType, ['git', 'helm', 'oci'], getTypeIcon, getTypeLabel)}
@@ -144,13 +144,13 @@ const ProjectFilter = React.memo((props: ReposFilterProps) => {
         [props.repos, props.pref.projectFilter]
     );
     return (
-        <Filter label='PROJECT' selected={props.pref.projectFilter} setSelected={s => props.onChange({...props.pref, projectFilter: s})} field={true} options={projectOptions} />
+        <Filter label='Project' selected={props.pref.projectFilter} setSelected={s => props.onChange({...props.pref, projectFilter: s})} field={true} options={projectOptions} />
     );
 });
 
 const StatusFilter = (props: ReposFilterProps) => (
     <Filter
-        label='CONNECTION STATUS'
+        label='Connection status'
         selected={props.pref.statusFilter}
         setSelected={s => props.onChange({...props.pref, statusFilter: s})}
         options={getFilterOptions(
@@ -166,7 +166,7 @@ const StatusFilter = (props: ReposFilterProps) => (
 
 const PermissionFilter = (props: ReposFilterProps) => (
     <Filter
-        label='PERMISSION'
+        label='Permission'
         selected={props.pref.credentialTypeFilter.map(s => s.charAt(0).toUpperCase() + s.slice(1))}
         setSelected={s => props.onChange({...props.pref, credentialTypeFilter: s.map(v => v.toLowerCase())})}
         options={getFilterOptions(props.repos, 'credentialType', repo => (isWrite(repo) ? 'write' : 'read'), ['read', 'write'], undefined, capitalize)}
@@ -176,7 +176,7 @@ const PermissionFilter = (props: ReposFilterProps) => (
 
 const CategoryFilter = (props: ReposFilterProps) => (
     <Filter
-        label='CATEGORY'
+        label='Category'
         selected={props.pref.templateFilter.map(s => s.charAt(0).toUpperCase() + s.slice(1))}
         setSelected={s => props.onChange({...props.pref, templateFilter: s.map(v => v.toLowerCase())})}
         options={getFilterOptions(props.repos, 'template', repo => (isTemplate(repo) ? 'template' : 'repository'), ['repository', 'template'], undefined, capitalize)}

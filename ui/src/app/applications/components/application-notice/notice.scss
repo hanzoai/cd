@@ -1,7 +1,7 @@
 @import 'src/kit/src/styles/config';
 
 $notice-severities: (
-    'info': ($kit-running-color, mix($kit-running-color, white, 15%), $kit-color-teal-8),
+    'info': ($kit-running-color, mix($kit-running-color, white, 15%), $kit-color-gray-7),
     'warning': ($kit-status-warning-color, mix($kit-status-warning-color, white, 25%), darken($kit-status-warning-color, 35%)),
     'critical': ($kit-failed-color, mix($kit-failed-color, white, 25%), darken($kit-failed-color, 25%))
 );

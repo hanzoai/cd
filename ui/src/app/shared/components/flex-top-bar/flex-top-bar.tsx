@@ -34,16 +34,17 @@ const FlexTopBarContent = (props: {toolbar: ToolbarWithOptions}) => {
             <div className='flex-top-bar__actions'>
                 {props.toolbar.actionMenu && (
                     <React.Fragment>
+                        {/* The first action is the page's one primary; the rest are ghosts. */}
                         {props.toolbar.actionMenu.items.map((item, i) => (
                             <Tooltip className='custom-tooltip' content={item.title} key={item.qeId || i}>
                                 <button
                                     disabled={!!item.disabled}
                                     qe-id={item.qeId}
-                                    className='kit-button kit-button--base'
+                                    aria-label={typeof item.title === 'string' ? item.title : undefined}
+                                    className={`kit-button ${i === 0 ? 'kit-button--base' : 'kit-button--base-o'}`}
                                     onClick={() => item.action()}
-                                    style={{marginRight: 2}}
                                     key={i}>
-                                    {item.iconClassName && <i className={item.iconClassName} style={{marginLeft: '-5px', marginRight: '5px'}} />}
+                                    {item.iconClassName && <i className={item.iconClassName} />}
                                     <span className='show-for-large'>{item.title}</span>
                                 </button>
                             </Tooltip>

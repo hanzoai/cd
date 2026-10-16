@@ -2,23 +2,22 @@
 @import 'node_modules/foundation-sites/scss/util/util';
 @import 'src/kit/src/styles/theme';
 
-$sidebar-color: #30303d;
-$slate: #191826;
-
+// The list filters, in the sidebar: sections under a quiet label, rows that
+// match the sidebar's nav rows.
 .filter {
-    border-radius: 5px;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 12px;
     width: 100%;
-    color: #a3a3a3;
-    font-weight: 500;
+    color: var(--hz-dim);
+    font-size: 13px;
+    font-weight: 400;
 
     &__header {
-        font-size: 13px;
-        color: $kit-color-gray-5;
+        font-size: 12px;
+        color: var(--hz-faint);
         font-weight: 500;
-        margin-bottom: 0.5em;
-        height: 28px;
+        margin-bottom: 4px;
+        padding: 0 8px;
+        height: 26px;
         position: relative;
         display: flex;
         align-items: center;
@@ -32,26 +31,9 @@ $slate: #191826;
         .kit-button {
             flex: none;
             margin-left: auto;
-            background: $slate;
-            font-size: 10px;
-            font-weight: bold;
-
-            width: 35px;
-            overflow: hidden;
-            height: 25px;
-            line-height: 25px;
-            padding: 0 2px;
-            min-width: unset;
-
-            i {
-                margin-right: 2px;
-            }
-
-            &:hover {
-                padding: 0 14px;
-                width: unset;
-                background: $sidebar-color !important;
-            }
+            font-size: 11px;
+            line-height: 22px;
+            padding: 0 8px;
         }
     }
 
@@ -60,8 +42,12 @@ $slate: #191826;
         right: 0;
         cursor: pointer;
         margin-left: auto;
-        color: $kit-color-gray-7;
-        font-size: 20px;
+        color: var(--hz-faint);
+        font-size: 14px;
+
+        &:hover {
+            color: var(--hz-ink);
+        }
     }
 
     &__error {
@@ -83,14 +69,19 @@ $slate: #191826;
     }
 
     &__item {
-        height: 2em;
-        padding: 0 5px;
-        border-radius: 5px;
+        height: 30px;
+        padding: 0 8px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
-        margin: 0.15em 0;
+        margin: 1px 0;
         cursor: pointer;
         flex-wrap: nowrap;
+
+        &:hover {
+            color: var(--hz-ink);
+            background: var(--hz-tint);
+        }
 
         i.fa {
             width: 25px;
@@ -105,9 +96,8 @@ $slate: #191826;
         }
 
         &--selected {
-            background-color: $slate;
-            color: white;
-            font-weight: 500;
+            background-color: var(--hz-tint);
+            color: var(--hz-ink);
         }
     }
 
@@ -125,7 +115,7 @@ $slate: #191826;
 .filters-group {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 2em;
+    margin-top: 16px;
     
     &__toggle {
         display: none;
@@ -136,12 +126,12 @@ $slate: #191826;
     }
 
     .filters-group__title {
-        border-bottom: 1px solid;
         width: 100%;
-        text-align: center;
-        padding: 0 5px;
-        margin: 0.15em 0 0.5em 0;
-        color: #a3a3a3;
+        padding: 16px 8px 0;
+        border-top: 1px solid var(--hz-line);
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--hz-faint);
     }
 
     .fa-filter {
@@ -164,17 +154,9 @@ $slate: #191826;
 
         .kit-button {
             margin-left: auto;
-            background: $slate;
-            font-size: 10px;
-            font-weight: bold;
-
-            i {
-                margin-right: 2px;
-            }
-
-            &:hover {
-                background: $sidebar-color !important;
-            }
+            font-size: 11px;
+            line-height: 22px;
+            padding: 0 8px;
         }
     }
 }

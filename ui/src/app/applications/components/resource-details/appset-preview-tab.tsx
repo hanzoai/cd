@@ -68,14 +68,14 @@ export const AppSetPreviewTab = (props: AppSetPreviewTabProps) => {
 
     return (
         <div className='applicationset-preview' style={{padding: '15px'}}>
-            <div style={{marginBottom: '15px', fontSize: '13px', color: '#6d7f8b'}}>
+            <div style={{marginBottom: '15px', fontSize: '13px', color: 'var(--hz-dim)'}}>
                 <i className='fa fa-info-circle' style={{marginRight: '6px'}} />
                 Preview what Applications your ApplicationSet will generate. The diff compares your proposed ApplicationSet's output to the current ApplicationSet's output.
             </div>
             <div className='white-box'>
                 <div className='white-box__details'>
                     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                        <p style={{margin: 0}}>APPLICATIONSET MANIFEST{editing && ' (edits are not saved)'}</p>
+                        <p style={{margin: 0}}>ApplicationSet manifest{editing && ' (edits are not saved)'}</p>
                         <div>
                             {editing ? (
                                 <>
@@ -117,7 +117,7 @@ export const AppSetPreviewTab = (props: AppSetPreviewTabProps) => {
             {parseError && (
                 <div ref={resultRef} className='white-box' style={{marginTop: '15px'}}>
                     <div className='white-box__details'>
-                        <p>PREVIEW FAILED</p>
+                        <p>Preview failed</p>
                         <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxHeight: '400px', overflow: 'auto'}}>{parseError}</pre>
                     </div>
                 </div>
