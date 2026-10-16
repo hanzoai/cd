@@ -2,6 +2,7 @@ import {DropDown, Tooltip} from '../../../../kit/src';
 import classNames from 'classnames';
 import * as dagre from 'dagre';
 import * as React from 'react';
+import Color from 'color';
 import Moment from 'react-moment';
 import * as moment from 'moment';
 
@@ -41,7 +42,6 @@ function treeNodeKey(node: NodeId & {uid?: string}) {
     return node.uid || nodeKey(node);
 }
 
-const color = require('color');
 
 export interface ResourceTreeNode extends models.ResourceNode {
     status?: models.SyncStatusCode;
@@ -110,7 +110,7 @@ const NODE_TYPES = {
 // init would hit its temporal dead zone once webpack concatenates the cycle.
 let trafficColorsCache: string[];
 const trafficColors = () =>
-    (trafficColorsCache ??= [0, 0.25, 0.4, 0.6].map(darken => BASE_COLORS.map(item => color(item).darken(darken).hex())).reduce((first, second) => first.concat(second), []));
+    (trafficColorsCache ??= [0, 0.25, 0.4, 0.6].map(darken => BASE_COLORS.map(item => Color(item).darken(darken).hex())).reduce((first, second) => first.concat(second), []));
 
 function getGraphSize(nodes: dagre.Node[]): {width: number; height: number} {
     let width = 0;
